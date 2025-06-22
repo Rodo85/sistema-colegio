@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'matricula',
 ]
 
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -124,8 +125,21 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
-
+STATICFILES_DIRS = [ BASE_DIR / 'static' ]
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Colegio",
+    "welcome_sign": "Bienvenido",
+    "site_logo": "sis_colegio/img/logo1.png",
+    "site_brand": "Inicio",
+    "custom_css": "sis_colegio/css/ocultar_version.css",
+    "copyright": "Ing. Rodolfo Garro",
+}
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
