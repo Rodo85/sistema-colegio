@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     #Aquí van nuestras apps
     'matricula',
+    'catalogos',
 ]
 
 
@@ -139,6 +140,7 @@ JAZZMIN_SETTINGS = {
     "site_brand": "Inicio",
     "custom_css": "sis_colegio/css/ocultar_version.css",
     "copyright": "Ing. Rodolfo Garro",
+
 }
 
 MEDIA_URL = '/media/'
