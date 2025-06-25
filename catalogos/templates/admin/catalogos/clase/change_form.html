@@ -1,0 +1,33 @@
+{% extends "admin/change_form.html" %}
+{% load i18n %}
+
+{% block after_field_sets %}
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      ["profesor","materia","subgrupo"].forEach(name => {
+        const fld = document.querySelector(`#id_${name}`);
+        if (!fld) return;
+
+        // Creamos el checkbox
+        const chk = document.createElement("input");
+        chk.type = "checkbox";
+        chk.name = `preserve_${name}`;
+        chk.id   = `id_preserve_${name}`;
+
+        // Si el campo ya tiene un valor (viene en GET o inicializado), lo marcamos
+        if (fld.value) {
+          chk.checked = true;
+        }
+
+        // Etiqueta para el checkbox
+        const label = document.createElement("label");
+        label.htmlFor = chk.id;
+        label.style.marginLeft = "8px";
+        label.textContent = "Preservar";
+
+        // Lo insertamos junto al campo
+        fld.parentElement.append(chk, label);
+      });
+    });
+  </script>
+{% endblock %}

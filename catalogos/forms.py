@@ -12,7 +12,7 @@ class EspecialidadForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         current_year = datetime.date.today().year
-        # ej. 2025 → 2030  (ajuste el rango a su gusto)
+        
         YEARS = [(y, y) for y in range(current_year, current_year + 3)]
 
         # Cambiamos el widget del campo 'año' a un Select

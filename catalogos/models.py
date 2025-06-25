@@ -69,7 +69,7 @@ class Distrito(models.Model):
 class Nivel(models.Model):
     """Ej.: 7, 8, 9, 10 …"""
     numero = models.PositiveSmallIntegerField(unique=True)
-    nombre = models.CharField(max_length=20)          # «Sétimo», «Décimo», …
+    nombre = models.CharField("Nivel",max_length=20)          # «Sétimo», «Décimo», …
 
     class Meta:
         verbose_name = "Nivel"
@@ -161,7 +161,7 @@ class Profesor(models.Model):
     nombres          = models.CharField(max_length=100)
 
     correo           = models.EmailField(blank=True)
-    telefono         = models.CharField(max_length=20, blank=True)
+    telefono         = models.CharField("Teléfono",max_length=20, blank=True)
 
     materias = models.ManyToManyField(
         Materia,
@@ -172,7 +172,7 @@ class Profesor(models.Model):
 
     class Meta:
         verbose_name = "Profesor"
-        verbose_name_plural = "Profesores"
+        verbose_name_plural = "Docentes"
         ordering = ("primer_apellido", "segundo_apellido", "nombres")
 
     def __str__(self):
@@ -190,11 +190,9 @@ class Clase(models.Model):
     asigne la Clase a CADA subgrupo de esa sección
     (o cree un subgrupo 'Ú' si solo hay uno).
     """
-    profesor  = models.ForeignKey(Profesor, on_delete=models.CASCADE)
+    profesor  = models.ForeignKey(Profesor, on_delete=models.CASCADE,verbose_name="Docente")
     materia   = models.ForeignKey(Materia,  on_delete=models.PROTECT)
     subgrupo  = models.ForeignKey(Subgrupo, on_delete=models.PROTECT)
-
-    # Campo opcional para multi-año o multi-semestre
     periodo   = models.CharField(max_length=20, default="Actual")
 
     class Meta:
