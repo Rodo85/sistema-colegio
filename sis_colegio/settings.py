@@ -28,9 +28,17 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
-# Application definition
 
+#Multiusuario
+AUTH_USER_MODEL = "core.User"
+
+# Application definition
 INSTALLED_APPS = [
+    #Aquí van nuestras para un proyecto multi-tenant.
+    "core.apps.CoreConfig",
+    'matricula',
+    "catalogos.apps.CatalogosConfig",
+
     'jazzmin',
     'crispy_forms',
     'django.contrib.admin',
@@ -39,14 +47,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    #Aquí van nuestras apps
-    'matricula',
-    'catalogos',
 ]
 
-
 MIDDLEWARE = [
+    
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -54,6 +58,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    "core.middleware.InstitucionMiddleware",
 ]
 
 ROOT_URLCONF = 'sis_colegio.urls'
@@ -61,7 +67,7 @@ ROOT_URLCONF = 'sis_colegio.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [ BASE_DIR / "templates" ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -122,6 +128,7 @@ USE_I18N = True
 USE_TZ = True
 
 
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
@@ -141,7 +148,13 @@ JAZZMIN_SETTINGS = {
     "custom_css": "sis_colegio/css/ocultar_version.css",
     "copyright": "Ing. Rodolfo Garro",
 
+    "topmenu_links": [
+        {"app": "core"},
+        {"app": "catalogos"},
+    ]
+
 }
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+

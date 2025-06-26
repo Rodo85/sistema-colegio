@@ -1,47 +1,6 @@
 from django.db import models
 
-# Create your models here.
-class TipoIdentificacion(models.Model):
-    nombre = models.CharField("Tipo de identificación", max_length=50)
-
-    class Meta:
-        verbose_name = "Identificación"
-        verbose_name_plural = "Tipo de Identificación"
-
-    def __str__(self):
-        return self.nombre
-
-class Nacionalidad(models.Model):
-    nombre = models.CharField("Nacionalidad", max_length=50)
-
-    class Meta:
-        verbose_name = "Nacionalidad"
-        verbose_name_plural = "Nacionalidades"
-
-    def __str__(self):
-        return self.nombre
-
-class Especialidad(models.Model):
-    nombre = models.CharField("Especialidad", max_length=100)
-    año    = models.PositiveSmallIntegerField("Año")
-
-    class Meta:
-        verbose_name = "Especialidad"
-        verbose_name_plural = "Especialidades"
-
-    def __str__(self):
-        return f"{self.nombre} ({self.año})"
-
-class Adecuacion(models.Model):
-    descripcion = models.CharField("Adecuación", max_length=100)
-    class Meta:
-        verbose_name = "Adecuación curricular"
-        verbose_name_plural = "Adecuaciones"
-
-    def __str__(self):
-        return self.descripcion
-
-
+# Modelos globales
 class Provincia(models.Model):
     nombre = models.CharField("Provincia", max_length=50)
 
@@ -61,13 +20,10 @@ class Distrito(models.Model):
 
     def __str__(self):
         return f"{self.nombre} ({self.canton})"
-
-
-# ──────────────────────────────────────────────────────────────
-# 1.  ESTRUCTURA DE GRUPOS
-# ──────────────────────────────────────────────────────────────
+    
 class Nivel(models.Model):
     """Ej.: 7, 8, 9, 10 …"""
+    institucion     = models.ForeignKey("core.Institucion", on_delete=models.PROTECT)
     numero = models.PositiveSmallIntegerField(unique=True)
     nombre = models.CharField("Nivel",max_length=20)          # «Sétimo», «Décimo», …
 
@@ -79,12 +35,88 @@ class Nivel(models.Model):
     def __str__(self):
         return f"{self.nombre} ({self.numero})"
 
+class TipoIdentificacion(models.Model):
+    nombre = models.CharField("Tipo de identificación", max_length=50)
 
+    class Meta:
+        verbose_name = "Identificación"
+        verbose_name_plural = "Tipo de Identificación"
+
+    def __str__(self):
+        return self.nombre
+
+class Nacionalidad(models.Model):
+    nombre = models.CharField("Nacionalidad", max_length=50)
+
+    class Meta:
+        verbose_name = "Nacionalidad"
+        verbose_name_plural = "Nacionalidades"
+
+    def __str__(self):
+        return self.nombre
+    
+class Adecuacion(models.Model):
+    descripcion = models.CharField("Adecuación", max_length=100)
+    class Meta:
+        verbose_name = "Adecuación curricular"
+        verbose_name_plural = "Adecuaciones"
+
+    def __str__(self):
+        return self.descripcion
+
+"""
+class Especialidad(models.Model):
+    institucion = models.ForeignKey("core.Institucion", on_delete=models.PROTECT)
+    nombre = models.CharField("Especialidad", max_length=100)
+    año    = models.PositiveSmallIntegerField("Año")
+
+    class Meta:
+        verbose_name = "Especialidad"
+        verbose_name_plural = "Especialidades"
+
+    def __str__(self):
+        return f"{self.nombre} ({self.año})"
+"""
+class Especialidad(models.Model):
+    nombre = models.CharField(max_length=100, unique=True)
+
+    class Meta:
+        verbose_name = "Especialidad"
+        verbose_name_plural = "Especialidades"
+        
+    def __str__(self):
+        return self.nombre
+
+class SubArea(models.Model):
+    especialidad = models.ForeignKey(Especialidad, on_delete=models.PROTECT)
+    nombre       = models.CharField(max_length=100)
+    class Meta:
+        unique_together = ("especialidad", "nombre")
+        verbose_name = "Sub area"          
+        verbose_name_plural = "Subáreas"
+    def __str__(self):
+        return f"{self.especialidad} – {self.nombre}"
+
+class Materia(models.Model):
+    ACADEMICA = "A"
+    TECNICA   = "T"
+    tipo      = models.CharField(max_length=1, choices=[(ACADEMICA,"Académica"),(TECNICA,"Técnica")])
+    nombre    = models.CharField(max_length=120)
+    subarea   = models.ForeignKey(SubArea, null=True, blank=True, on_delete=models.PROTECT)
+    class Meta:
+        unique_together = ("nombre", "subarea", "tipo")
+    def __str__(self):
+        return self.nombre
+
+
+
+# clases propias por institución
 class Seccion(models.Model):
     """
     Ej.: 7-1, 7-2 … 9-3.
     Una Sección puede dividirse en varios Subgrupos (A,B,C…).
     """
+    institucion     = models.ForeignKey("core.Institucion", on_delete=models.PROTECT)
     nivel  = models.ForeignKey(Nivel, on_delete=models.PROTECT)
     numero = models.PositiveSmallIntegerField()
 
@@ -107,6 +139,7 @@ class Subgrupo(models.Model):
     Letra «A», «B», «C»…  Si el colegio NO usa subdivisiones,
     basta crear un único Subgrupo con letra 'Ú' (Único).
     """
+    institucion     = models.ForeignKey("core.Institucion", on_delete=models.PROTECT)
     seccion = models.ForeignKey(
         Seccion,
         on_delete=models.PROTECT,
@@ -131,6 +164,7 @@ class Subgrupo(models.Model):
 # ──────────────────────────────────────────────────────────────
 # 2.  MATERIAS Y PROFESORES
 # ──────────────────────────────────────────────────────────────
+"""
 class Materia(models.Model):
     TIPO_ACADEMICA = "A"
     TIPO_TECNICA   = "T"
@@ -138,7 +172,6 @@ class Materia(models.Model):
         (TIPO_ACADEMICA, "Académica"),
         (TIPO_TECNICA,   "Técnica"),
     ]
-
     nombre = models.CharField(max_length=100)
     tipo   = models.CharField(max_length=1, choices=TIPO_CHOICES)
 
@@ -149,12 +182,15 @@ class Materia(models.Model):
 
     def __str__(self):
         return f"{self.nombre} ({self.get_tipo_display()})"
+"""
 
 
 class Profesor(models.Model):
     """
     La PK es el id automático; la identificación queda editable.
     """
+    institucion = models.ForeignKey("core.Institucion", on_delete=models.PROTECT)
+    usuario     = models.ForeignKey("core.User", on_delete=models.PROTECT) 
     identificacion   = models.CharField("Identificación", max_length=20, unique=True)
     primer_apellido  = models.CharField(max_length=50)
     segundo_apellido = models.CharField(max_length=50, blank=True)
@@ -182,14 +218,17 @@ class Profesor(models.Model):
 # ──────────────────────────────────────────────────────────────
 # 3.  CLASE  (Profesor × Materia × Subgrupo)
 # ──────────────────────────────────────────────────────────────
-class Clase(models.Model):
-    """
+"""
     Representa que un PROFESOR imparte una MATERIA
     a un SUBGRUPO (p. ej. 7-1A) en un PERIODO lectivo.
     Si el colegio dicta la materia a toda la sección,
     asigne la Clase a CADA subgrupo de esa sección
     (o cree un subgrupo 'Ú' si solo hay uno).
     """
+"""
+class Clase(models.Model):
+    
+    institucion     = models.ForeignKey("core.Institucion", on_delete=models.PROTECT)
     profesor  = models.ForeignKey(Profesor, on_delete=models.CASCADE,verbose_name="Docente")
     materia   = models.ForeignKey(Materia,  on_delete=models.PROTECT)
     subgrupo  = models.ForeignKey(Subgrupo, on_delete=models.PROTECT)
@@ -207,3 +246,12 @@ class Clase(models.Model):
     def __str__(self):
         return (f"{self.materia.nombre} – {self.subgrupo.codigo} – "
                 f"{self.profesor.nombres.split()[0]}")
+"""
+class Clase(models.Model):
+    institucion = models.ForeignKey("core.Institucion", on_delete=models.PROTECT)
+    profesor    = models.ForeignKey(Profesor, on_delete=models.PROTECT)
+    materia     = models.ForeignKey("catalogos.Materia", on_delete=models.PROTECT)
+    subgrupo    = models.ForeignKey("catalogos.Subgrupo", on_delete=models.PROTECT)
+    periodo     = models.CharField(max_length=20, default="Actual")
+    class Meta:
+        unique_together = ("materia","subgrupo","periodo")

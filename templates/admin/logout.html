@@ -1,0 +1,14 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Desconectado" %}{% endblock %}
+
+{% block content %}
+  <h1 class="text-center">{% trans "Desconectado" %}</h1>
+  <p class="text-center">{% trans "Gracias por pasar un tiempo de calidad en el sitio hoy." %}</p>
+  <p class="text-center">
+    <a href="{% url 'admin:login' %}" class="btn btn-primary">
+      {% trans "Iniciar sesión de nuevo" %}
+    </a>
+  </p>
+{% endblock %}

@@ -1,0 +1,14 @@
+{# templates/admin/base_site.html #}
+{% extends "admin/base.html" %}
+{% load admin_extras %}
+
+{% block usertools %}
+  {{ block.super }}
+  <li class="nav-item">
+    <a class="nav-link" href="#">
+      {{ request.user.email }}
+      {% user_role as role %}
+      {% if role %} ({{ role }}){% endif %}
+    </a>
+  </li>
+{% endblock %}

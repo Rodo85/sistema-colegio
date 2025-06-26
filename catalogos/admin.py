@@ -2,126 +2,88 @@ from django.contrib import admin
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from .models import (
-    TipoIdentificacion,
-    Nacionalidad,
-    Adecuacion,
-    Especialidad,
-    Nivel,
-    Seccion,
-    Subgrupo,
-    Materia,
-    Profesor,
-    Clase,
+    TipoIdentificacion, Nacionalidad, Adecuacion,
+    Especialidad, SubArea,
+    Nivel, Seccion, Subgrupo,
+    Materia, Profesor, Clase,
 )
 from .forms import EspecialidadForm
 
+# ────────── MIXIN FILTRO POR COLEGIO ─────────────────────────
+class InstitucionScopedAdmin(admin.ModelAdmin):
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(institucion_id=request.institucion_activa_id)
 
-# ──────────────────────────
-# 1. Catálogos “simples”
-# ──────────────────────────
-admin.site.register([
-    TipoIdentificacion,
-    Nacionalidad,
-    Adecuacion,
-])
+    def save_model(self, request, obj, form, change):
+        if not change and hasattr(obj, "institucion_id") and not obj.institucion_id:
+            obj.institucion_id = request.institucion_activa_id
+        super().save_model(request, obj, form, change)
 
-# ──────────────────────────
-# 2. Especialidad con formulario de años
-# ──────────────────────────
+# ────────── CATÁLOGOS GLOBALES ───────────────────────────────
+admin.site.register([TipoIdentificacion, Nacionalidad, Adecuacion, SubArea])
+
 @admin.register(Especialidad)
 class EspecialidadAdmin(admin.ModelAdmin):
-    form = EspecialidadForm
-    list_display  = ("nombre", "año")
-    list_filter   = ("año",)
+    form          = EspecialidadForm
+    list_display  = ("nombre",)
     search_fields = ("nombre",)
 
+@admin.register(Nivel)
+class NivelAdmin(admin.ModelAdmin):
+    list_display = ("numero", "nombre")
+    ordering     = ("numero",)
 
-# ──────────────────────────
-# 3. Inlines
-# ──────────────────────────
+@admin.register(Materia)
+class MateriaAdmin(admin.ModelAdmin):
+    list_display  = ("nombre", "tipo", "subarea")
+    list_filter   = ("tipo",)
+    search_fields = ("nombre",)
+
+# ────────── MODELOS POR INSTITUCIÓN ─────────────────────────
 class SubgrupoInline(admin.TabularInline):
     model = Subgrupo
     extra = 0
-
 
 class ClaseInline(admin.TabularInline):
     model = Clase
     extra = 0
     autocomplete_fields = ("materia", "subgrupo")
 
-
-# ──────────────────────────
-# 4. ModelAdmin de catálogos con jerarquía
-# ──────────────────────────
-@admin.register(Nivel)
-class NivelAdmin(admin.ModelAdmin):
-    list_display = ("numero", "nombre")
-    ordering     = ("numero",)
-
-
 @admin.register(Seccion)
-class SeccionAdmin(admin.ModelAdmin):
-    list_display = ("codigo",)
+class SeccionAdmin(InstitucionScopedAdmin):
+    list_display = ("codigo", "institucion")
     ordering     = ("nivel__numero", "numero")
     inlines      = [SubgrupoInline]
 
-
 @admin.register(Subgrupo)
-class SubgrupoAdmin(admin.ModelAdmin):
-    list_display    = ("codigo", "seccion")
-    list_filter     = ("seccion__nivel__numero",)
-    search_fields   = ("seccion__nivel__numero", "seccion__numero", "letra")
-
-
-@admin.register(Materia)
-class MateriaAdmin(admin.ModelAdmin):
-    list_display  = ("nombre", "tipo")
-    list_filter   = ("tipo",)
-    search_fields = ("nombre",)
-
+class SubgrupoAdmin(InstitucionScopedAdmin):
+    list_display  = ("codigo", "seccion")
+    list_filter   = ("seccion__nivel__numero",)
+    search_fields = ("codigo",)
 
 @admin.register(Profesor)
-class ProfesorAdmin(admin.ModelAdmin):
-    list_display  = (
-        "identificacion",
-        "primer_apellido",
-        "segundo_apellido",
-        "nombres",
-        "correo",
-        "telefono",
-    )
-    search_fields = (
-        "identificacion",
-        "primer_apellido",
-        "segundo_apellido",
-        "nombres",
-    )
-    inlines = [ClaseInline]
+class ProfesorAdmin(InstitucionScopedAdmin):
+    list_display  = ("identificacion", "primer_apellido", "segundo_apellido", "nombres", "correo", "telefono")
+    search_fields = ("identificacion", "primer_apellido", "segundo_apellido", "nombres")
+    inlines       = [ClaseInline]
 
-
-# ──────────────────────────
-# 5. ClaseAdmin con “preservar campos”
-# ──────────────────────────
 @admin.register(Clase)
-class ClaseAdmin(admin.ModelAdmin):
+class ClaseAdmin(InstitucionScopedAdmin):
     change_form_template = "admin/catalogos/clase/change_form.html"
-    list_display         = ("materia", "subgrupo", "profesor", "periodo")
-    list_filter          = (
-        "periodo",
-        "materia__tipo",
-        "subgrupo__seccion__nivel__numero",
-        "profesor"
-    )
-    autocomplete_fields  = ("profesor", "materia", "subgrupo")
+    list_display        = ("materia", "subgrupo", "profesor", "periodo")
+    list_filter         = ("periodo", "materia__tipo", "subgrupo__seccion__nivel__numero")
+    autocomplete_fields = ("profesor", "materia", "subgrupo")
 
+    # preserva campos marcados
     def response_add(self, request, obj, post_url_continue=None):
-        # Si pulsó “Guardar y añadir otro”, trasladamos los campos marcados
         if "_addanother" in request.POST:
             params = []
             for field in ("profesor", "materia", "subgrupo"):
                 if request.POST.get(f"preserve_{field}") == "on":
-                    val = getattr(obj, field)
-                    params.append(f"{field}={val.pk}")
+                    params.append(f"{field}={getattr(obj, field).pk}")
             url = reverse("admin:catalogos_clase_add")
             if params:
                 url += "?" + "&".join(params)

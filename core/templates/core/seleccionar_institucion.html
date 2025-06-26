@@ -1,0 +1,40 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Seleccione institución" %}{% endblock %}
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">{% trans "Seleccione institución" %}</h1>
+
+{# ---------- CASO: sin instituciones ---------- #}
+{% if not membresias %}
+  <div class="alert alert-danger">
+    {% trans "No tiene ninguna institución asignada." %}
+  </div>
+
+
+{# ---------- CASO: hay una o más ---------- #}
+{% else %}
+  <form method="post" class="card p-4">
+    {% csrf_token %}
+    {% for m in membresias %}
+      <div class="form-check mb-2">
+        <input class="form-check-input"
+               type="radio"
+               id="inst{{ forloop.counter }}"
+               name="institucion_id"
+               value="{{ m.institucion.id }}"
+               {% if forloop.first %}checked{% endif %}>
+        <label class="form-check-label" for="inst{{ forloop.counter }}">
+          <strong>{{ m.institucion.nombre }}</strong>
+          — {{ m.get_rol_display }}
+        </label>
+      </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary mt-3">
+      {% trans "Entrar" %}
+    </button>
+  </form>
+{% endif %}
+{% endblock %}
