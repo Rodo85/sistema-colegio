@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.admin import RelatedOnlyFieldListFilter
-from core.admin_utils import InstitucionScopedAdmin
+from core.mixins import InstitucionScopedAdmin
 from .models import Seccion, Subgrupo, Profesor, Clase
 
 class SubgrupoInline(admin.TabularInline):

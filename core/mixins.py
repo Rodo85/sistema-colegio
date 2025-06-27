@@ -1,4 +1,4 @@
-# core/admin_utils.py
+# core/mixins.py
 from django.contrib import admin
 
 class InstitucionScopedAdmin(admin.ModelAdmin):

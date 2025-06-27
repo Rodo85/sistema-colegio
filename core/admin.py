@@ -1,9 +1,9 @@
 # core/admin.py
 from django.contrib import admin
+from .models import Miembro, Institucion, User
+from core.mixins import InstitucionScopedAdmin
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from django.utils.translation import gettext_lazy as _
-from .models import User, Institucion, Miembro
-
 # ----------- Institución -----------
 @admin.register(Institucion)
 class InstitucionAdmin(admin.ModelAdmin):
@@ -18,11 +18,18 @@ class InstitucionAdmin(admin.ModelAdmin):
 
 # ----------- Miembro  (usuario en colegio) -----------
 @admin.register(Miembro)
-class MiembroAdmin(admin.ModelAdmin):
-    list_display  = ("usuario", "institucion", "rol")
-    list_filter   = ("rol", "institucion")
-    search_fields = ("usuario__email", "institucion__nombre")
+class MiembroAdmin(InstitucionScopedAdmin):
+    list_display  = ('usuario', 'rol', 'institucion')
+    list_filter   = ('rol',)
+    search_fields = ('usuario__email', 'usuario__first_name', 'usuario__last_name')
+    fields         = ('institucion', 'usuario', 'rol')
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "institucion":
+            kwargs["queryset"] = Institucion.objects.filter(
+                id=request.institucion_activa_id
+            )
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 @admin.register(User)
 class UserAdmin(DjangoUserAdmin):
