@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     "core.apps.CoreConfig",
     'matricula',
     "catalogos.apps.CatalogosConfig",
-
+    "config_institucional",
+    
     'jazzmin',
     'crispy_forms',
     'django.contrib.admin',
@@ -151,6 +152,7 @@ JAZZMIN_SETTINGS = {
     "topmenu_links": [
         {"app": "core"},
         {"app": "catalogos"},
+        {"app": "config_institucional"},
     ]
 
 }

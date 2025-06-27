@@ -22,8 +22,6 @@ class Distrito(models.Model):
         return f"{self.nombre} ({self.canton})"
     
 class Nivel(models.Model):
-    """Ej.: 7, 8, 9, 10 …"""
-    institucion     = models.ForeignKey("core.Institucion", on_delete=models.PROTECT)
     numero = models.PositiveSmallIntegerField(unique=True)
     nombre = models.CharField("Nivel",max_length=20)          # «Sétimo», «Décimo», …
 
@@ -64,21 +62,27 @@ class Adecuacion(models.Model):
     def __str__(self):
         return self.descripcion
 
-"""
-class Especialidad(models.Model):
-    institucion = models.ForeignKey("core.Institucion", on_delete=models.PROTECT)
-    nombre = models.CharField("Especialidad", max_length=100)
-    año    = models.PositiveSmallIntegerField("Año")
+# ────────── 0. Modalidad (tabla “padre” de Especialidad) ───────
+class Modalidad(models.Model):
+    nombre = models.CharField("Modalidad", max_length=100, unique=True)
 
     class Meta:
-        verbose_name = "Especialidad"
-        verbose_name_plural = "Especialidades"
+        verbose_name = "Modalidad"
+        verbose_name_plural = "Modalidades"
+        ordering = ("nombre",)
 
     def __str__(self):
-        return f"{self.nombre} ({self.año})"
-"""
+        return self.nombre
+
+
+
 class Especialidad(models.Model):
-    nombre = models.CharField(max_length=100, unique=True)
+    modalidad = models.ForeignKey(
+        Modalidad,
+        on_delete=models.PROTECT,
+        verbose_name="Modalidad"
+    )
+    nombre    = models.CharField("Especialidad", max_length=100, unique=True)
 
     class Meta:
         verbose_name = "Especialidad"
@@ -86,6 +90,8 @@ class Especialidad(models.Model):
         
     def __str__(self):
         return self.nombre
+    
+
 
 class SubArea(models.Model):
     especialidad = models.ForeignKey(Especialidad, on_delete=models.PROTECT)
@@ -108,14 +114,9 @@ class Materia(models.Model):
     def __str__(self):
         return self.nombre
 
-
-
+"""
 # clases propias por institución
 class Seccion(models.Model):
-    """
-    Ej.: 7-1, 7-2 … 9-3.
-    Una Sección puede dividirse en varios Subgrupos (A,B,C…).
-    """
     institucion     = models.ForeignKey("core.Institucion", on_delete=models.PROTECT)
     nivel  = models.ForeignKey(Nivel, on_delete=models.PROTECT)
     numero = models.PositiveSmallIntegerField()
@@ -133,12 +134,10 @@ class Seccion(models.Model):
     def __str__(self):
         return self.codigo
 
+"""
 
+"""
 class Subgrupo(models.Model):
-    """
-    Letra «A», «B», «C»…  Si el colegio NO usa subdivisiones,
-    basta crear un único Subgrupo con letra 'Ú' (Único).
-    """
     institucion     = models.ForeignKey("core.Institucion", on_delete=models.PROTECT)
     seccion = models.ForeignKey(
         Seccion,
@@ -159,6 +158,8 @@ class Subgrupo(models.Model):
 
     def __str__(self):
         return self.codigo
+
+"""
 
 
 # ──────────────────────────────────────────────────────────────
@@ -185,10 +186,9 @@ class Materia(models.Model):
 """
 
 
+"""
 class Profesor(models.Model):
-    """
-    La PK es el id automático; la identificación queda editable.
-    """
+
     institucion = models.ForeignKey("core.Institucion", on_delete=models.PROTECT)
     usuario     = models.ForeignKey("core.User", on_delete=models.PROTECT) 
     identificacion   = models.CharField("Identificación", max_length=20, unique=True)
@@ -213,6 +213,8 @@ class Profesor(models.Model):
 
     def __str__(self):
         return f"{self.nombres} {self.primer_apellido}"
+"""
+
 
 
 # ──────────────────────────────────────────────────────────────
@@ -247,6 +249,8 @@ class Clase(models.Model):
         return (f"{self.materia.nombre} – {self.subgrupo.codigo} – "
                 f"{self.profesor.nombres.split()[0]}")
 """
+
+"""
 class Clase(models.Model):
     institucion = models.ForeignKey("core.Institucion", on_delete=models.PROTECT)
     profesor    = models.ForeignKey(Profesor, on_delete=models.PROTECT)
@@ -255,3 +259,5 @@ class Clase(models.Model):
     periodo     = models.CharField(max_length=20, default="Actual")
     class Meta:
         unique_together = ("materia","subgrupo","periodo")
+"""
+
