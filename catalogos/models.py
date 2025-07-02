@@ -9,17 +9,13 @@ class Provincia(models.Model):
 
 class Canton(models.Model):
     provincia = models.ForeignKey(Provincia, on_delete=models.PROTECT,
-                                  related_name="cantones")
-    nombre     = models.CharField(max_length=50)
-    def __str__(self):
-        return f"{self.nombre} ({self.provincia})"
+                                related_name="cantones")  # <- Este related_name
+    nombre = models.CharField(max_length=50)
 
 class Distrito(models.Model):
     canton = models.ForeignKey(Canton, on_delete=models.PROTECT,
-                               related_name="distritos")
+                             related_name="distritos")  # <- Este related_name
     nombre = models.CharField(max_length=50)
-    def __str__(self):
-        return f"{self.nombre} ({self.canton})"
     
 class Nivel(models.Model):
     numero = models.PositiveSmallIntegerField(unique=True)

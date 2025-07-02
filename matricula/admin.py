@@ -3,24 +3,32 @@ from django.contrib import admin
 
 from core.mixins import InstitucionScopedAdmin
 from .models import Estudiante, EncargadoEstudiante, PersonaContacto
-
+from catalogos.models import Provincia
 
 # ─────────────────────────────  Formularios  ────────────────────────────
 class EstudianteForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Establecer la primera provincia como valor por defecto
+        if 'provincia' in self.fields and not self.instance.pk:
+            primera_provincia = Provincia.objects.first()
+            if primera_provincia:
+                self.fields['provincia'].initial = primera_provincia.id
+
     class Meta:
-        model  = Estudiante
+        model = Estudiante
         fields = "__all__"
         widgets = {
-            "identificacion": forms.TextInput(attrs={"autocomplete": "off"}),
-            "provincia": forms.Select(),
-            "canton":    forms.Select(),
-            "distrito":  forms.Select(),
+            'provincia': forms.Select(attrs={'id': 'id_provincia'}),
+            'canton': forms.Select(attrs={'id': 'id_canton'}),
+            'distrito': forms.Select(attrs={'id': 'id_distrito'}),
+            'identificacion': forms.TextInput(attrs={'autocomplete': 'off'}),
         }
 
     class Media:
         js = (
-            "admin/js/jquery.init.js",
-            "smart-selects/admin/js/chainedfk.js",
+            'admin/js/jquery.init.js',
+            'matricula/js/dependent-dropdowns.js',
         )
 
 

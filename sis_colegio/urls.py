@@ -21,7 +21,7 @@ from core import views as core_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('chaining/', include('smart_selects.urls')),       # ← smart_selects, no smart-selects
+    path('catalogos/', include('catalogos.urls')),
     path('seleccionar-institucion/', core_views.seleccionar_institucion, name='seleccionar_institucion'),
     path('', RedirectView.as_view(pattern_name='admin:index', permanent=False)),
 ]

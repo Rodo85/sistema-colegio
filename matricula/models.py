@@ -80,26 +80,16 @@ class Estudiante(models.Model):
 
     provincia = models.ForeignKey(Provincia, on_delete=models.PROTECT)
 
-    canton = ChainedForeignKey(
-        Canton,                               # modelo hijo
-        chained_field="provincia",            # FK en ESTE modelo
-        chained_model_field="provincia",      # FK en el modelo hijo
-        show_all=False,
-        auto_choose=False,
-        sort=True,
-        blank=True, null=True,
-        on_delete=models.PROTECT,
+    canton = models.ForeignKey(
+    Canton,
+    on_delete=models.PROTECT,
+    blank=True, null=True
     )
 
-    distrito = ChainedForeignKey(
+    distrito = models.ForeignKey(
         Distrito,
-        chained_field="canton",
-        chained_model_field="canton",
-        show_all=False,
-        auto_choose=False,
-        sort=True,
-        blank=True, null=True,
         on_delete=models.PROTECT,
+        blank=True, null=True
     )
 
     direccion_exacta = models.TextField(blank=True)

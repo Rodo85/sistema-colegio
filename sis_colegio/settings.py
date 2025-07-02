@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     "catalogos.apps.CatalogosConfig",
     "config_institucional",
     
-    'jazzmin',
+    #'jazzmin',
     'crispy_forms',
     
     'django.contrib.admin',
@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "smart_selects",
 ]
 
 MIDDLEWARE = [
