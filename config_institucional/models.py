@@ -23,28 +23,7 @@ class NivelInstitucion(models.Model):
 
     def __str__(self):
         return f"{self.institucion} → {self.nivel}"
-
-class SubAreaInstitucion(models.Model):
-    institucion = models.ForeignKey(
-        Institucion,
-        on_delete=models.CASCADE,
-        verbose_name="Institución"
-    )
-    subarea     = models.ForeignKey(
-        SubArea,
-        on_delete=models.PROTECT,
-        verbose_name="Subárea"
-    )
-
-    class Meta:
-        verbose_name = "Subárea por institución"
-        verbose_name_plural = "Subáreas por institución"
-        unique_together = ("institucion", "subarea")
-        ordering = ("subarea__especialidad__modalidad__nombre", "subarea__nombre")
-
-    def __str__(self):
-        return f"{self.institucion} → {self.subarea}"
-
+    
 class Seccion(models.Model):
     institucion = models.ForeignKey(
         Institucion,
@@ -98,6 +77,7 @@ class Subgrupo(models.Model):
     def __str__(self):
         return self.codigo
 
+# docentes/models.py
 class Profesor(models.Model):
     institucion      = models.ForeignKey(
         Institucion,
@@ -109,54 +89,59 @@ class Profesor(models.Model):
         on_delete=models.PROTECT,
         verbose_name="Usuario"
     )
-    identificacion   = models.CharField("Identificación", max_length=20, unique=True)
-    primer_apellido  = models.CharField("Primer apellido", max_length=50)
-    segundo_apellido = models.CharField("Segundo apellido", max_length=50, blank=True)
-    nombres          = models.CharField("Nombres", max_length=100)
-    correo           = models.EmailField("Correo", blank=True)
+    identificacion = models.CharField(
+        "Identificación",
+        max_length=20,
+        unique=True,
+        db_index=True 
+    )
     telefono         = models.CharField("Teléfono", max_length=20, blank=True)
 
     class Meta:
         verbose_name = "Profesor"
-        verbose_name_plural = "Profesores"
-        ordering = ("primer_apellido", "segundo_apellido", "nombres")
+        verbose_name_plural = "Docentes"
+        ordering = ("usuario__last_name", "usuario__second_last_name", "usuario__first_name")
 
     def __str__(self):
-        return f"{self.nombres} {self.primer_apellido}"
+        return self.usuario.full_name()
 
 class Clase(models.Model):
-    institucion = models.ForeignKey(
-        Institucion,
+    institucion = models.ForeignKey("core.Institucion", on_delete=models.PROTECT)
+    profesor = models.ForeignKey(
+        "config_institucional.Profesor",
         on_delete=models.PROTECT,
-        verbose_name="Institución"
+        verbose_name="Profesor",
     )
-    profesor    = models.ForeignKey(
-        Profesor,
+
+    # mientras migra datos dejamos null/blank; después quite esas opciones
+    subarea = models.ForeignKey(
+        "catalogos.SubArea",
         on_delete=models.PROTECT,
-        verbose_name="Profesor"
+        null=True, blank=True,
+        verbose_name="Subárea",
     )
-    materia     = models.ForeignKey(
-        "catalogos.Materia",
-        on_delete=models.PROTECT,
-        verbose_name="Materia"
-    )
-    subgrupo    = models.ForeignKey(
+
+    subgrupo = models.ForeignKey(
         "config_institucional.Subgrupo",
         on_delete=models.PROTECT,
-        verbose_name="Subgrupo"
     )
-    periodo     = models.CharField("Periodo lectivo", max_length=20, default="Actual")
+
+    periodo = models.CharField("Periodo lectivo", max_length=20, default="Actual")
 
     class Meta:
         verbose_name = "Clase"
         verbose_name_plural = "Clases"
-        unique_together = ("materia", "subgrupo", "periodo")
+        unique_together = ("subarea", "subgrupo", "periodo")
         ordering = (
             "subgrupo__seccion__nivel__numero",
             "subgrupo__seccion__numero",
             "subgrupo__letra",
-            "materia__nombre",
+            "subarea__nombre",
         )
 
-    def __str__(self):
-        return f"{self.materia.nombre} – {self.subgrupo.codigo} – {self.profesor.nombres.split()[0]}"
+    def __str__(self) -> str:
+        # si subarea llega a ser None, evitamos AttributeError
+        nombre_subarea = self.subarea.nombre if self.subarea else "—"
+        return f"{nombre_subarea} – {self.subgrupo.codigo} – {self.profesor.usuario.full_name()}"
+
+

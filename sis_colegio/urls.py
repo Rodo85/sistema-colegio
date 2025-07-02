@@ -16,11 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from core import views as core_views
 from django.views.generic import RedirectView
+from core import views as core_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("seleccionar-institucion/", core_views.seleccionar_institucion, name="seleccionar_institucion"),
-    path("", RedirectView.as_view(pattern_name="admin:index", permanent=False)),
+    path('chaining/', include('smart_selects.urls')),       # ← smart_selects, no smart-selects
+    path('seleccionar-institucion/', core_views.seleccionar_institucion, name='seleccionar_institucion'),
+    path('', RedirectView.as_view(pattern_name='admin:index', permanent=False)),
 ]

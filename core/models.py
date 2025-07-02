@@ -21,11 +21,15 @@ class User(AbstractBaseUser, PermissionsMixin):
     id         = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email      = models.EmailField(unique=True)
     first_name = models.CharField("Nombre", max_length=50, blank=True)
-    last_name  = models.CharField("Apellidos", max_length=100, blank=True)
+    last_name  = models.CharField("1° Apellido", max_length=100, blank=True)
+    second_last_name  = models.CharField("2° Apellido", max_length=50, blank=True)
     is_active  = models.BooleanField(default=True)
     is_staff   = models.BooleanField(default=False)
     objects    = UserManager()
-
+    
+    def full_name(self):
+        return f"{self.first_name} {self.last_name} {self.second_last_name}".strip()
+    
     class Meta:
         verbose_name = "Usuario"
         verbose_name_plural = "Usuarios"

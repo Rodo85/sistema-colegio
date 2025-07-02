@@ -19,23 +19,31 @@ class InstitucionAdmin(admin.ModelAdmin):
 # ----------- Miembro  (usuario en colegio) -----------
 @admin.register(Miembro)
 class MiembroAdmin(InstitucionScopedAdmin):
-    list_display  = ('usuario', 'rol', 'institucion')
-    list_filter   = ('rol',)
-    search_fields = ('usuario__email', 'usuario__first_name', 'usuario__last_name')
-    fields         = ('institucion', 'usuario', 'rol')
+    list_display  = ("usuario", "rol", "institucion")
+    list_filter   = ("rol",)
+    search_fields = ("usuario__email", "usuario__first_name", "usuario__last_name")
+    fields        = ("institucion", "usuario", "rol")
 
+    # --- limitar institución solo a directores ---
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == "institucion":
+        if (
+            db_field.name == "institucion"
+            and not request.user.is_superuser            # ← nueva condición
+        ):
             kwargs["queryset"] = Institucion.objects.filter(
                 id=request.institucion_activa_id
             )
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
+    # --- superuser puede elegir libremente; director la ve readonly ---
+    def get_readonly_fields(self, request, obj=None):
+        return () if request.user.is_superuser else ("institucion",)
+
 @admin.register(User)
 class UserAdmin(DjangoUserAdmin):
     fieldsets = (
         (None, {"fields": ("email", "password")}),
-        (_("Información personal"), {"fields": ("first_name", "last_name")}),
+        (_("Información personal"), {"fields": ("first_name", "last_name","second_last_name")}),
         (_("Permisos"), {
             "fields": (
                 "is_active",
@@ -53,6 +61,6 @@ class UserAdmin(DjangoUserAdmin):
             "fields": ("email", "password1", "password2"),
         }),
     )
-    list_display = ("email", "first_name", "last_name", "is_staff", "is_superuser")
+    list_display = ("email", "first_name", "last_name","second_last_name","is_staff", "is_superuser")
     search_fields = ("email", "first_name", "last_name")
     ordering = ("email",)

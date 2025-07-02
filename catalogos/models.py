@@ -1,23 +1,23 @@
+#app catalogos
 from django.db import models
 
 # Modelos globales
 class Provincia(models.Model):
-    nombre = models.CharField("Provincia", max_length=50)
-
+    nombre = models.CharField(max_length=50)
     def __str__(self):
         return self.nombre
 
 class Canton(models.Model):
-    provincia = models.ForeignKey(Provincia, on_delete=models.PROTECT, verbose_name="Provincia")
-    nombre    = models.CharField("Cantón", max_length=50)
-
+    provincia = models.ForeignKey(Provincia, on_delete=models.PROTECT,
+                                  related_name="cantones")
+    nombre     = models.CharField(max_length=50)
     def __str__(self):
         return f"{self.nombre} ({self.provincia})"
 
 class Distrito(models.Model):
-    canton = models.ForeignKey(Canton, on_delete=models.PROTECT, verbose_name="Cantón")
-    nombre = models.CharField("Distrito", max_length=50)
-
+    canton = models.ForeignKey(Canton, on_delete=models.PROTECT,
+                               related_name="distritos")
+    nombre = models.CharField(max_length=50)
     def __str__(self):
         return f"{self.nombre} ({self.canton})"
     
@@ -101,163 +101,52 @@ class SubArea(models.Model):
         verbose_name = "Sub area"          
         verbose_name_plural = "Subáreas"
     def __str__(self):
-        return f"{self.especialidad} – {self.nombre}"
+        return f"{self.nombre}"
 
-class Materia(models.Model):
-    ACADEMICA = "A"
-    TECNICA   = "T"
-    tipo      = models.CharField(max_length=1, choices=[(ACADEMICA,"Académica"),(TECNICA,"Técnica")])
-    nombre    = models.CharField(max_length=120)
-    subarea   = models.ForeignKey(SubArea, null=True, blank=True, on_delete=models.PROTECT)
-    class Meta:
-        unique_together = ("nombre", "subarea", "tipo")
-    def __str__(self):
-        return self.nombre
-
-"""
-# clases propias por institución
-class Seccion(models.Model):
-    institucion     = models.ForeignKey("core.Institucion", on_delete=models.PROTECT)
-    nivel  = models.ForeignKey(Nivel, on_delete=models.PROTECT)
-    numero = models.PositiveSmallIntegerField()
+class Sexo(models.Model):
+    codigo = models.CharField("Código", max_length=1, unique=True)  # F, M, X
+    nombre = models.CharField("Nombre", max_length=50)              # Femenino, Masculino, No binario...
 
     class Meta:
-        verbose_name = "Sección"
-        verbose_name_plural = "Secciones"
-        unique_together = ("nivel", "numero")
-        ordering = ("nivel__numero", "numero")
-
-    @property
-    def codigo(self):
-        return f"{self.nivel.numero}-{self.numero}"
-
-    def __str__(self):
-        return self.codigo
-
-"""
-
-"""
-class Subgrupo(models.Model):
-    institucion     = models.ForeignKey("core.Institucion", on_delete=models.PROTECT)
-    seccion = models.ForeignKey(
-        Seccion,
-        on_delete=models.PROTECT,
-        related_name="subgrupos"
-    )
-    letra = models.CharField(max_length=2)            # «A», «B», «Ú»…
-
-    class Meta:
-        verbose_name = "Subgrupo"
-        verbose_name_plural = "Subgrupos"
-        unique_together = ("seccion", "letra")
-        ordering = ("seccion__nivel__numero", "seccion__numero", "letra")
-
-    @property
-    def codigo(self):
-        return f"{self.seccion.codigo}{self.letra}"
-
-    def __str__(self):
-        return self.codigo
-
-"""
-
-
-# ──────────────────────────────────────────────────────────────
-# 2.  MATERIAS Y PROFESORES
-# ──────────────────────────────────────────────────────────────
-"""
-class Materia(models.Model):
-    TIPO_ACADEMICA = "A"
-    TIPO_TECNICA   = "T"
-    TIPO_CHOICES = [
-        (TIPO_ACADEMICA, "Académica"),
-        (TIPO_TECNICA,   "Técnica"),
-    ]
-    nombre = models.CharField(max_length=100)
-    tipo   = models.CharField(max_length=1, choices=TIPO_CHOICES)
-
-    class Meta:
-        verbose_name = "Materia"
-        verbose_name_plural = "Materias"
+        verbose_name = "Sexo"
+        verbose_name_plural = "Sexos"
         ordering = ("nombre",)
 
     def __str__(self):
-        return f"{self.nombre} ({self.get_tipo_display()})"
-"""
+        return self.nombre
 
-
-"""
-class Profesor(models.Model):
-
-    institucion = models.ForeignKey("core.Institucion", on_delete=models.PROTECT)
-    usuario     = models.ForeignKey("core.User", on_delete=models.PROTECT) 
-    identificacion   = models.CharField("Identificación", max_length=20, unique=True)
-    primer_apellido  = models.CharField(max_length=50)
-    segundo_apellido = models.CharField(max_length=50, blank=True)
-    nombres          = models.CharField(max_length=100)
-
-    correo           = models.EmailField(blank=True)
-    telefono         = models.CharField("Teléfono",max_length=20, blank=True)
-
-    materias = models.ManyToManyField(
-        Materia,
-        through="Clase",
-        related_name="profesores",
-        blank=True,
-    )
-
+class EstadoCivil(models.Model):
+    estado = models.CharField("Estado civil", max_length=30, unique=True)
     class Meta:
-        verbose_name = "Profesor"
-        verbose_name_plural = "Docentes"
-        ordering = ("primer_apellido", "segundo_apellido", "nombres")
-
+        verbose_name = "Estado civil"
+        verbose_name_plural = "Estados civiles"
+        ordering = ("estado",)
     def __str__(self):
-        return f"{self.nombres} {self.primer_apellido}"
-"""
+        return self.estado
 
-
-
-# ──────────────────────────────────────────────────────────────
-# 3.  CLASE  (Profesor × Materia × Subgrupo)
-# ──────────────────────────────────────────────────────────────
-"""
-    Representa que un PROFESOR imparte una MATERIA
-    a un SUBGRUPO (p. ej. 7-1A) en un PERIODO lectivo.
-    Si el colegio dicta la materia a toda la sección,
-    asigne la Clase a CADA subgrupo de esa sección
-    (o cree un subgrupo 'Ú' si solo hay uno).
-    """
-"""
-class Clase(models.Model):
-    
-    institucion     = models.ForeignKey("core.Institucion", on_delete=models.PROTECT)
-    profesor  = models.ForeignKey(Profesor, on_delete=models.CASCADE,verbose_name="Docente")
-    materia   = models.ForeignKey(Materia,  on_delete=models.PROTECT)
-    subgrupo  = models.ForeignKey(Subgrupo, on_delete=models.PROTECT)
-    periodo   = models.CharField(max_length=20, default="Actual")
-
+class Parentesco(models.Model):
+    parentezco = models.CharField("Parentesco", max_length=30, unique=True)
     class Meta:
-        verbose_name = "Clase"
-        verbose_name_plural = "Clases"
-        unique_together = ("profesor", "materia", "subgrupo", "periodo")
-        ordering = ("subgrupo__seccion__nivel__numero",
-                    "subgrupo__seccion__numero",
-                    "subgrupo__letra",
-                    "materia__nombre")
-
+        verbose_name = "Parentesco"
+        verbose_name_plural = "Parentescos"
+        ordering = ("parentezco",)
     def __str__(self):
-        return (f"{self.materia.nombre} – {self.subgrupo.codigo} – "
-                f"{self.profesor.nombres.split()[0]}")
-"""
+        return self.parentezco
 
-"""
-class Clase(models.Model):
-    institucion = models.ForeignKey("core.Institucion", on_delete=models.PROTECT)
-    profesor    = models.ForeignKey(Profesor, on_delete=models.PROTECT)
-    materia     = models.ForeignKey("catalogos.Materia", on_delete=models.PROTECT)
-    subgrupo    = models.ForeignKey("catalogos.Subgrupo", on_delete=models.PROTECT)
-    periodo     = models.CharField(max_length=20, default="Actual")
+class Escolaridad(models.Model):
+    descripcion = models.CharField("Escolaridad", max_length=50, unique=True)
     class Meta:
-        unique_together = ("materia","subgrupo","periodo")
-"""
+        verbose_name = "Escolaridad"
+        verbose_name_plural = "Escolaridades"
+        ordering = ("descripcion",)
+    def __str__(self):
+        return self.descripcion
 
+class Ocupacion(models.Model):
+    descripcion = models.CharField("Ocupación", max_length=50, unique=True)
+    class Meta:
+        verbose_name = "Ocupación"
+        verbose_name_plural = "Ocupaciones"
+        ordering = ("descripcion",)
+    def __str__(self):
+        return self.descripcion
