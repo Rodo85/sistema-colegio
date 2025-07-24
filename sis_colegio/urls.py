@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import RedirectView
+from django.conf import settings
+from django.conf.urls.static import static
 from core import views as core_views
 
 urlpatterns = [
@@ -25,3 +27,7 @@ urlpatterns = [
     path('seleccionar-institucion/', core_views.seleccionar_institucion, name='seleccionar_institucion'),
     path('', RedirectView.as_view(pattern_name='admin:index', permanent=False)),
 ]
+
+# Configuración para servir archivos media en desarrollo
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

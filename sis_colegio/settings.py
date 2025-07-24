@@ -32,23 +32,29 @@ ALLOWED_HOSTS = []
 #Multiusuario
 AUTH_USER_MODEL = "core.User"
 
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+
 # Application definition
 INSTALLED_APPS = [
-    #Aquí van nuestras para un proyecto multi-tenant.
+    # Apps del proyecto multi-tenant
     "core.apps.CoreConfig",
-    'matricula',
+    "matricula",
     "catalogos.apps.CatalogosConfig",
     "config_institucional",
-    
-    #'jazzmin',
-    'crispy_forms',
-    
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+
+    "crispy_forms",
+    "jazzmin",
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",  
 ]
 
 MIDDLEWARE = [
@@ -68,18 +74,24 @@ ROOT_URLCONF = 'sis_colegio.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [ BASE_DIR / "templates" ],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [ BASE_DIR / "templates" ],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.request",
+                "django.template.context_processors.static",
+                "django.template.context_processors.media",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
+
+
+WSGI_APPLICATION = 'sis_colegio.wsgi.application'
+
 
 WSGI_APPLICATION = 'sis_colegio.wsgi.application'
 
@@ -134,32 +146,64 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [ BASE_DIR / 'static' ]
-STATIC_ROOT = BASE_DIR / "staticfiles"
-USE_DJANGO_JQUERY = True
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-JAZZMIN_SETTINGS = {
-    "site_title": "Colegio",
-    "welcome_sign": "Bienvenido",
-    "site_logo": "sis_colegio/img/logo1.png",
-    "site_brand": "Inicio",
-    "custom_css": "sis_colegio/css/ocultar_version.css",
-    "copyright": "Ing. Rodolfo Garro",
+USE_DJANGO_JQUERY = True
 
-    "topmenu_links": [
-        {"app": "core"},
-        {"app": "catalogos"},
-        {"app": "config_institucional"},
-        {"app": "matricula"},
-    ]
 
-}
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": False,
+    "footer_small_text": False,
+    "body_small_text": False,
+    "brand_small_text": False,
+    "brand_colour": "navbar-success",
+    "accent": "accent-teal",
+    "navbar": "navbar-dark",
+    "no_navbar_border": False,
+    "navbar_fixed": False,
+    "layout_boxed": False,
+    "footer_fixed": False,
+    "sidebar_fixed": False,
+    "sidebar": "sidebar-dark-success",
+    "sidebar_nav_small_text": False,
+    "sidebar_disable_expand": False,
+    "sidebar_nav_child_indent": False,
+    "sidebar_nav_compact_style": False,
+    "sidebar_nav_legacy_style": False,
+    "sidebar_nav_flat_style": False,
+    "theme": "cosmo",
+    "dark_mode_theme": None,
+    "button_classes": {
+        "primary": "btn-primary",
+        "secondary": "btn-secondary",
+        "info": "btn-info",
+        "warning": "btn-warning",
+        "danger": "btn-danger",
+        "success": "btn-success"
+    }
+}
+
+JAZZMIN_SETTINGS = {
+    "copyright": "Ing. Rodolfo Garro Monge",
+    "welcome_sign": "Sistema Integral de Gestión Administrativa y Educativa",
+    "site_title": "Cole Smart",
+    "site_header": "Cole Smart",
+    "site_brand": "Cole Smart",
+    "topmenu_links": [
+        {"app": "matricula"},
+        {"app": "catalogos"},
+        {"app": "config_institucional"},
+    ],
+    "show_ui_builder": False,
+    "show_jazzmin_version": False,
+}

@@ -93,6 +93,14 @@ class Estudiante(models.Model):
     )
 
     direccion_exacta = models.TextField(blank=True)
+    
+    foto = models.ImageField(
+        "Foto del estudiante",
+        upload_to='estudiantes/fotos/%Y/%m/',
+        blank=True,
+        null=True,
+        help_text="Foto del estudiante (formato: JPG, PNG. Máximo 2MB)"
+    )
 
     contactos = models.ManyToManyField(
         PersonaContacto,
@@ -130,7 +138,7 @@ class EncargadoEstudiante(models.Model):
     estudiante       = models.ForeignKey(Estudiante,      on_delete=models.CASCADE)
     persona_contacto = models.ForeignKey(PersonaContacto, on_delete=models.CASCADE)
     parentesco       = models.ForeignKey(Parentesco,      on_delete=models.PROTECT)
-    convivencia      = models.BooleanField("Convive con el estudiante", default=False)
+    convivencia      = models.BooleanField("Convive con el estudiante", blank=True)
 
     class Meta:
         verbose_name = "Encargado de estudiante"

@@ -1,5 +1,132 @@
 
-.main-footer .float-right {
+.main-footer .float-right,
+.main-footer .version,
+.main-footer [href*="jazzmin"] {
     display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    font-size: 0 !important;
+    pointer-events: none !important;
 }
+
+/* Estilos para el widget de previsualización de imágenes */
+
+.current-image-preview {
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+}
+
+.current-image-preview label {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.current-image-preview img {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+}
+
+.current-image-preview img:hover {
+    transform: scale(1.05);
+}
+
+.new-image-preview {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #e8f5e8;
+    border: 1px solid #28a745;
+    border-radius: 5px;
+}
+
+.new-image-preview label {
+    font-weight: 600;
+    color: #155724;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.new-image-preview img {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border: 2px solid #28a745;
+}
+
+.image-upload-input {
+    margin-top: 10px;
+}
+
+/* Estilos para la miniatura en la lista del admin */
+.field-foto_miniatura img {
+    transition: transform 0.2s ease;
+}
+
+.field-foto_miniatura img:hover {
+    transform: scale(1.2);
+    z-index: 1000;
+    position: relative;
+}
+
+/* Estilos para el placeholder "Sin foto" */
+.field-foto_miniatura div {
+    font-size: 10px;
+    text-align: center;
+    line-height: 40px;
+}
+
+/* Refuerzo ultra-específico para ocultar la versión de Jazzmin en el footer */
+.main-footer .float-right,
+.main-footer .version,
+.main-footer [href*="jazzmin"],
+.main-footer,
+footer.main-footer,
+footer .float-right,
+footer .version,
+footer [href*="jazzmin"] {
+    color: transparent !important;
+    background: none !important;
+    text-shadow: none !important;
+    font-size: 0 !important;
+    pointer-events: none !important;
+    user-select: none !important;
+}
+
+.main-footer .float-right::after,
+.main-footer .version::after,
+.main-footer [href*="jazzmin"]::after,
+footer .float-right::after,
+footer .version::after,
+footer [href*="jazzmin"]::after {
+    content: "" !important;
+}
+
+/* Refuerzo final con JavaScript */
+@media screen {
+    /* Solo para que el bloque JS se cargue en el admin */
+}
+
+/* Bloque JS para eliminar cualquier texto de versión de Jazzmin en el footer */
+/* NOTA: Si tu configuración no permite JS en CSS, agrega este bloque en tu base_site.html */
+
+/* <script> bloque para eliminar cualquier texto de versión de Jazzmin en el footer */
+/*
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var footer = document.querySelector('.main-footer');
+    if (footer) {
+        var nodes = footer.querySelectorAll('.float-right, .version, [href*="jazzmin"]');
+        nodes.forEach(function(node) {
+            node.style.display = 'none';
+            node.style.visibility = 'hidden';
+            node.textContent = '';
+        });
+    }
+});
+</script>
+*/
 

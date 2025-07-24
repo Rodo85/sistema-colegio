@@ -8,18 +8,32 @@ class Provincia(models.Model):
         return self.nombre
 
 class Canton(models.Model):
-    provincia = models.ForeignKey(Provincia, on_delete=models.PROTECT,
-                                related_name="cantones")  # <- Este related_name
+    provincia = models.ForeignKey(Provincia, on_delete=models.PROTECT, related_name="cantones")
     nombre = models.CharField(max_length=50)
+    
+    class Meta:
+        verbose_name = "Cantón"
+        verbose_name_plural = "Cantones"
+        ordering = ("nombre",)
+    
+    def __str__(self):
+        return f"{self.nombre} ({self.provincia.nombre})"
 
 class Distrito(models.Model):
-    canton = models.ForeignKey(Canton, on_delete=models.PROTECT,
-                             related_name="distritos")  # <- Este related_name
+    canton = models.ForeignKey(Canton, on_delete=models.PROTECT, related_name="distritos")
     nombre = models.CharField(max_length=50)
+    
+    class Meta:
+        verbose_name = "Distrito"
+        verbose_name_plural = "Distritos"
+        ordering = ("nombre",)
+    
+    def __str__(self):
+        return f"{self.nombre} ({self.canton.nombre}, {self.canton.provincia.nombre})"
     
 class Nivel(models.Model):
     numero = models.PositiveSmallIntegerField(unique=True)
-    nombre = models.CharField("Nivel",max_length=20)          # «Sétimo», «Décimo», …
+    nombre = models.CharField("Nivel",max_length=20)
 
     class Meta:
         verbose_name = "Nivel"
