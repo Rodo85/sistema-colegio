@@ -5,7 +5,7 @@ from core.models import Institucion
 from catalogos.models import (
     TipoIdentificacion, Sexo, Nacionalidad,
     Provincia, Canton, Distrito,
-    EstadoCivil, Parentesco, Escolaridad, Ocupacion,
+    EstadoCivil, Parentesco, Escolaridad, Ocupacion, Adecuacion,
 )
 
 
@@ -108,6 +108,18 @@ class Estudiante(models.Model):
         related_name="estudiantes",
     )
 
+    correo = models.EmailField("Correo electrónico MEP", max_length=100, null=True, blank=True)
+    ed_religiosa = models.BooleanField("Recibe Ed. Religiosa", default=False)
+    recibe_afectividad_sexualidad = models.BooleanField("Recibe Afectividad y Sexualidad", default=False)
+    adecuacion = models.ForeignKey(Adecuacion, on_delete=models.PROTECT, blank=True, null=True)
+    numero_poliza = models.CharField("Número de Póliza", max_length=50, blank=True)
+    rige_poliza = models.DateField("Rige Póliza", blank=True, null=True)
+    vence_poliza = models.DateField("Vence Póliza", blank=True, null=True)
+    presenta_enfermedad = models.BooleanField("Presenta alguna enfermedad", default=False)
+    detalle_enfermedad = models.CharField("Nombre de la(s) enfermedad(es)", max_length=255, blank=True)
+    autoriza_derecho_imagen = models.BooleanField("Autoriza derecho de imagen", default=False)
+    fecha_matricula = models.DateTimeField("Fecha de matrícula", null=True, blank=True)
+
     class Meta:
         verbose_name = "Estudiante"
         verbose_name_plural = "Estudiantes"
@@ -127,6 +139,9 @@ class Estudiante(models.Model):
             valor = getattr(self, campo)
             if isinstance(valor, str):
                 setattr(self, campo, valor.strip().upper())
+        # Generar correo automáticamente
+        if self.identificacion:
+            self.correo = f"{self.identificacion}@est.mep.go.cr"
         super().save(*args, **kwargs)
 
     def __str__(self):

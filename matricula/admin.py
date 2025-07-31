@@ -30,7 +30,8 @@ class EstudianteForm(forms.ModelForm):
     class Media:
         js = (
             'admin/js/jquery.init.js',
-            "matricula/js/dependent-dropdowns.js"
+            "matricula/js/dependent-dropdowns.js",
+            "matricula/js/autocomplete-correo.js",
         )
 
 class PersonaContactoForm(forms.ModelForm):
@@ -52,27 +53,32 @@ class EstudianteAdmin(InstitucionScopedAdmin):
     form    = EstudianteForm
     inlines = [EncargadoInline]
     fields = None  # Fuerza el uso de fieldsets
-
     fieldsets = (
         ('Información Institucional', {
             'fields': ('institucion', 'tipo_estudiante'),
             'classes': ('collapse',)
         }),
-        ('Identificación', {
-            'fields': ('tipo_identificacion', 'identificacion'),
-        }),
         ('Datos Personales', {
             'fields': (
+                'tipo_identificacion', 'identificacion',
                 'primer_apellido', 'segundo_apellido', 'nombres',
-                'fecha_nacimiento', 'sexo', 'nacionalidad', 'foto'
+                'fecha_nacimiento', 'sexo', 'nacionalidad', 'foto',
             ),
         }),
         ('Información de Contacto', {
-            'fields': ('celular', 'telefono_casa'),
+            'fields': ('celular', 'telefono_casa', 'correo'),
         }),
         ('Dirección', {
             'fields': ('provincia', 'canton', 'distrito', 'direccion_exacta'),
             'description': 'Seleccione la provincia para cargar los cantones disponibles, luego seleccione el cantón para cargar los distritos.'
+        }),
+        ('Datos Académicos y de Salud', {
+            'fields': (
+                'ed_religiosa', 'recibe_afectividad_sexualidad', 'adecuacion',
+                'numero_poliza', 'rige_poliza', 'vence_poliza',
+                'presenta_enfermedad', 'detalle_enfermedad',
+                'autoriza_derecho_imagen', 'fecha_matricula',
+            ),
         }),
     )
     #mostrar foto, identificacion, primer apellido, segundo apellido, nombres, tipo de estudiante en el panel de administracion
