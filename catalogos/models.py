@@ -42,19 +42,22 @@ class Nivel(models.Model):
 
     def __str__(self):
         return f"{self.nombre} ({self.numero})"
+    def save(self, *args, **kwargs):
+        if self.nombre:
+            self.nombre = self.nombre.strip().upper()
+        super().save(*args, **kwargs)
 
 class TipoIdentificacion(models.Model):
     nombre = models.CharField("Tipo de identificación", max_length=50)
-
-    class Meta:
-        verbose_name = "Identificación"
-        verbose_name_plural = "Tipo de Identificación"
-
+    def save(self, *args, **kwargs):
+        if self.nombre:
+            self.nombre = self.nombre.strip().upper()
+        super().save(*args, **kwargs)
     def __str__(self):
         return self.nombre
 
 class Nacionalidad(models.Model):
-    nombre = models.CharField("Nacionalidad", max_length=50)
+    nombre = models.CharField("Nacionalidad", max_length=50, unique=True)
 
     class Meta:
         verbose_name = "Nacionalidad"
@@ -64,17 +67,25 @@ class Nacionalidad(models.Model):
         return self.nombre
     
 class Adecuacion(models.Model):
-    descripcion = models.CharField("Adecuación", max_length=100)
+    descripcion = models.CharField(max_length=100, unique=True)
     class Meta:
         verbose_name = "Adecuación curricular"
         verbose_name_plural = "Adecuaciones"
 
+    def save(self, *args, **kwargs):
+        if self.descripcion:
+            self.descripcion = self.descripcion.strip().upper()
+        super().save(*args, **kwargs)
     def __str__(self):
         return self.descripcion
 
 # ────────── 0. Modalidad (tabla “padre” de Especialidad) ───────
 class Modalidad(models.Model):
     nombre = models.CharField("Modalidad", max_length=100, unique=True)
+    def save(self, *args, **kwargs):
+        if self.nombre:
+            self.nombre = self.nombre.strip().upper()
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = "Modalidad"
@@ -87,12 +98,12 @@ class Modalidad(models.Model):
 
 
 class Especialidad(models.Model):
-    modalidad = models.ForeignKey(
-        Modalidad,
-        on_delete=models.PROTECT,
-        verbose_name="Modalidad"
-    )
-    nombre    = models.CharField("Especialidad", max_length=100, unique=True)
+    modalidad = models.ForeignKey(Modalidad, on_delete=models.PROTECT)
+    nombre = models.CharField(max_length=100, unique=True)
+    def save(self, *args, **kwargs):
+        if self.nombre:
+            self.nombre = self.nombre.strip().upper()
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = "Especialidad"
@@ -104,18 +115,48 @@ class Especialidad(models.Model):
 
 
 class SubArea(models.Model):
-    especialidad = models.ForeignKey(Especialidad, on_delete=models.PROTECT)
-    nombre       = models.CharField(max_length=100)
+    """
+    Catálogo unificado de materias y subáreas. Si es_academica=True, representa una materia académica (Matemática, Español, etc.) y especialidad debe ser None. Si es_academica=False, representa una materia técnica y debe tener especialidad asignada.
+    """
+    especialidad = models.ForeignKey(
+        Especialidad,
+        on_delete=models.PROTECT,
+        null=True, blank=True
+    )
+    nombre = models.CharField(max_length=100)
+    es_academica = models.BooleanField(default=False)
+
     class Meta:
-        unique_together = ("especialidad", "nombre")
-        verbose_name = "Sub area"          
-        verbose_name_plural = "Subáreas"
+        unique_together = ("nombre", "especialidad")
+        verbose_name = "Sub area"
+        verbose_name_plural = "Subáreas-Materias"
+
+    def clean(self):
+        from django.core.exceptions import ValidationError
+        # Validar reglas de negocio
+        if self.es_academica and self.especialidad is not None:
+            raise ValidationError("Una materia académica no debe tener especialidad asignada.")
+        if not self.es_academica and self.especialidad is None:
+            raise ValidationError("Una materia técnica debe tener especialidad asignada.")
+
+    def save(self, *args, **kwargs):
+        # Normalizar texto: mayúsculas y sin espacios de sobra
+        if self.nombre:
+            self.nombre = self.nombre.strip().upper()
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.nombre}"
 
 class Sexo(models.Model):
     codigo = models.CharField("Código", max_length=1, unique=True)  # F, M, X
-    nombre = models.CharField("Nombre", max_length=50)              # Femenino, Masculino, No binario...
+    nombre = models.CharField(max_length=20)              # Femenino, Masculino, No binario...
+    def save(self, *args, **kwargs):
+        if self.codigo:
+            self.codigo = self.codigo.strip().upper()
+        if self.nombre:
+            self.nombre = self.nombre.strip().upper()
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = "Sexo"
@@ -126,25 +167,33 @@ class Sexo(models.Model):
         return self.nombre
 
 class EstadoCivil(models.Model):
-    estado = models.CharField("Estado civil", max_length=30, unique=True)
+    descripcion = models.CharField("Estado civil", max_length=30, unique=True)
+    def save(self, *args, **kwargs):
+        if self.descripcion:
+            self.descripcion = self.descripcion.strip().upper()
+        super().save(*args, **kwargs)
     class Meta:
         verbose_name = "Estado civil"
         verbose_name_plural = "Estados civiles"
-        ordering = ("estado",)
+        ordering = ("descripcion",)
     def __str__(self):
-        return self.estado
+        return self.descripcion
 
 class Parentesco(models.Model):
-    parentezco = models.CharField("Parentesco", max_length=30, unique=True)
-    class Meta:
-        verbose_name = "Parentesco"
-        verbose_name_plural = "Parentescos"
-        ordering = ("parentezco",)
+    descripcion = models.CharField("Parentesco", max_length=30, unique=True)
+    def save(self, *args, **kwargs):
+        if self.descripcion:
+            self.descripcion = self.descripcion.strip().upper()
+        super().save(*args, **kwargs)
     def __str__(self):
-        return self.parentezco
+        return self.descripcion
 
 class Escolaridad(models.Model):
     descripcion = models.CharField("Escolaridad", max_length=50, unique=True)
+    def save(self, *args, **kwargs):
+        if self.descripcion:
+            self.descripcion = self.descripcion.strip().upper()
+        super().save(*args, **kwargs)
     class Meta:
         verbose_name = "Escolaridad"
         verbose_name_plural = "Escolaridades"
@@ -154,6 +203,10 @@ class Escolaridad(models.Model):
 
 class Ocupacion(models.Model):
     descripcion = models.CharField("Ocupación", max_length=50, unique=True)
+    def save(self, *args, **kwargs):
+        if self.descripcion:
+            self.descripcion = self.descripcion.strip().upper()
+        super().save(*args, **kwargs)
     class Meta:
         verbose_name = "Ocupación"
         verbose_name_plural = "Ocupaciones"

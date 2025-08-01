@@ -30,6 +30,7 @@ class DistritoAdmin(admin.ModelAdmin):
 class NivelAdmin(admin.ModelAdmin):
     list_display = ("numero", "nombre")
     ordering     = ("numero",)
+    search_fields = ("nombre",)
 
 @admin.register(TipoIdentificacion)
 class TipoIdentificacionAdmin(admin.ModelAdmin):
@@ -68,13 +69,15 @@ class SexoAdmin(admin.ModelAdmin):
 
 @admin.register(EstadoCivil)
 class EstadoCivilAdmin(admin.ModelAdmin):
-    list_display   = ("estado",)
-    search_fields  = ("estado",)
+    list_display = ("descripcion",)
+    search_fields = ("descripcion",)
+    ordering = ("descripcion",)
 
 @admin.register(Parentesco)
 class ParentescoAdmin(admin.ModelAdmin):
-    list_display   = ("parentezco",)
-    search_fields  = ("parentezco",)
+    list_display = ("descripcion",)
+    search_fields = ("descripcion",)
+    ordering = ("descripcion",)
 
 @admin.register(Escolaridad)
 class EscolaridadAdmin(admin.ModelAdmin):

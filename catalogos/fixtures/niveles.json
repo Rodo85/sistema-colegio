@@ -1,0 +1,14 @@
+[
+  {"model": "catalogos.nivel", "pk": 1, "fields": {"numero": 1, "nombre": "Primero"}},
+  {"model": "catalogos.nivel", "pk": 2, "fields": {"numero": 2, "nombre": "Segundo"}},
+  {"model": "catalogos.nivel", "pk": 3, "fields": {"numero": 3, "nombre": "Tercero"}},
+  {"model": "catalogos.nivel", "pk": 4, "fields": {"numero": 4, "nombre": "Cuarto"}},
+  {"model": "catalogos.nivel", "pk": 5, "fields": {"numero": 5, "nombre": "Quinto"}},
+  {"model": "catalogos.nivel", "pk": 6, "fields": {"numero": 6, "nombre": "Sexto"}},
+  {"model": "catalogos.nivel", "pk": 7, "fields": {"numero": 7, "nombre": "Sétimo"}},
+  {"model": "catalogos.nivel", "pk": 8, "fields": {"numero": 8, "nombre": "Octavo"}},
+  {"model": "catalogos.nivel", "pk": 9, "fields": {"numero": 9, "nombre": "Noveno"}},
+  {"model": "catalogos.nivel", "pk": 10, "fields": {"numero": 10, "nombre": "Décimo"}},
+  {"model": "catalogos.nivel", "pk": 11, "fields": {"numero": 11, "nombre": "Undécimo"}},
+  {"model": "catalogos.nivel", "pk": 12, "fields": {"numero": 12, "nombre": "Duodécimo"}}
+]

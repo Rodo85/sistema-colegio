@@ -1,0 +1,4 @@
+[
+  {"model": "catalogos.modalidad", "pk": 1, "fields": {"nombre": "Comercial y Servicios"}},
+  {"model": "catalogos.modalidad", "pk": 2, "fields": {"nombre": "Industrial"}}
+]

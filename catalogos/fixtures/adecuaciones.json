@@ -1,0 +1,5 @@
+[
+  {"model": "catalogos.adecuacion", "pk": 1, "fields": {"descripcion": "No Significativa"}},
+  {"model": "catalogos.adecuacion", "pk": 2, "fields": {"descripcion": "Significativa"}},
+  {"model": "catalogos.adecuacion", "pk": 3, "fields": {"descripcion": "De acceso"}}
+]

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
     "matricula",
     "catalogos.apps.CatalogosConfig",
     "config_institucional",
+    "django_extensions",
 
     "crispy_forms",
     "jazzmin",
@@ -200,10 +202,19 @@ JAZZMIN_SETTINGS = {
     "site_header": "Cole Smart",
     "site_brand": "Cole Smart",
     "topmenu_links": [
+        {"app": "core"},
         {"app": "matricula"},
         {"app": "catalogos"},
-        {"app": "config_institucional"},
+        {"app": "config_institucional"},  
     ],
     "show_ui_builder": False,
     "show_jazzmin_version": False,
 }
+
+# Configuración para HTTPS local con mkcert
+dev_cert = os.path.join(BASE_DIR, 'miapp.local+3.pem')
+dev_key = os.path.join(BASE_DIR, 'miapp.local+3-key.pem')
+if os.path.exists(dev_cert) and os.path.exists(dev_key):
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True

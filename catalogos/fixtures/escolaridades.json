@@ -1,0 +1,9 @@
+[
+  {"model": "catalogos.escolaridad", "pk": 1, "fields": {"descripcion": "Ninguna"}},
+  {"model": "catalogos.escolaridad", "pk": 2, "fields": {"descripcion": "Primaria"}},
+  {"model": "catalogos.escolaridad", "pk": 3, "fields": {"descripcion": "Secundaria"}},
+  {"model": "catalogos.escolaridad", "pk": 4, "fields": {"descripcion": "Técnico"}},
+  {"model": "catalogos.escolaridad", "pk": 5, "fields": {"descripcion": "Universitaria"}},
+  {"model": "catalogos.escolaridad", "pk": 6, "fields": {"descripcion": "Posgrado"}},
+  {"model": "catalogos.escolaridad", "pk": 7, "fields": {"descripcion": "Otra"}}
+]

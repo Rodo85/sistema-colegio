@@ -1,0 +1,13 @@
+[
+  {"model": "catalogos.parentesco", "pk": 1, "fields": {"descripcion": "Padre"}},
+  {"model": "catalogos.parentesco", "pk": 2, "fields": {"descripcion": "Madre"}},
+  {"model": "catalogos.parentesco", "pk": 3, "fields": {"descripcion": "Tutor(a) legal"}},
+  {"model": "catalogos.parentesco", "pk": 4, "fields": {"descripcion": "Encargado(a)"}},
+  {"model": "catalogos.parentesco", "pk": 5, "fields": {"descripcion": "Abuelo(a)"}},
+  {"model": "catalogos.parentesco", "pk": 6, "fields": {"descripcion": "Hermano(a)"}},
+  {"model": "catalogos.parentesco", "pk": 7, "fields": {"descripcion": "Tío(a)"}},
+  {"model": "catalogos.parentesco", "pk": 8, "fields": {"descripcion": "Primo(a)"}},
+  {"model": "catalogos.parentesco", "pk": 9, "fields": {"descripcion": "Padrastro"}},
+  {"model": "catalogos.parentesco", "pk": 10, "fields": {"descripcion": "Madrastra"}},
+  {"model": "catalogos.parentesco", "pk": 13, "fields": {"descripcion": "Otro"}}
+]

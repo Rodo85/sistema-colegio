@@ -1,0 +1,13 @@
+[
+  {"model": "catalogos.nacionalidad", "pk": 1, "fields": {"nombre": "Costarricense"}},
+  {"model": "catalogos.nacionalidad", "pk": 2, "fields": {"nombre": "Nicaragüense"}},
+  {"model": "catalogos.nacionalidad", "pk": 3, "fields": {"nombre": "Panameña"}},
+  {"model": "catalogos.nacionalidad", "pk": 4, "fields": {"nombre": "Salvadoreña"}},
+  {"model": "catalogos.nacionalidad", "pk": 5, "fields": {"nombre": "Hondureña"}},
+  {"model": "catalogos.nacionalidad", "pk": 6, "fields": {"nombre": "Guatemalteca"}},
+  {"model": "catalogos.nacionalidad", "pk": 7, "fields": {"nombre": "Colombiana"}},
+  {"model": "catalogos.nacionalidad", "pk": 8, "fields": {"nombre": "Venezolana"}},
+  {"model": "catalogos.nacionalidad", "pk": 9, "fields": {"nombre": "Estadounidense"}},
+  {"model": "catalogos.nacionalidad", "pk": 10, "fields": {"nombre": "Mexicana"}},
+  {"model": "catalogos.nacionalidad", "pk": 11, "fields": {"nombre": "Otra"}}
+]

@@ -1,0 +1,12 @@
+python manage.py load_ubicaciones
+python manage.py loaddata catalogos/fixtures/adecuaciones.json
+python manage.py loaddata catalogos/fixtures/escolaridades.json
+python manage.py loaddata catalogos/fixtures/estados_civiles.json
+python manage.py loaddata catalogos/fixtures/nacionalidades.json
+python manage.py loaddata catalogos/fixtures/niveles.json
+python manage.py loaddata catalogos/fixtures/ocupaciones.json
+python manage.py loaddata catalogos/fixtures/parentescos.json
+python manage.py loaddata catalogos/fixtures/sexos.json
+python manage.py loaddata catalogos/fixtures/tipos_identificacion.json
+python manage.py loaddata catalogos/fixtures/modalidades.json
+python manage.py loaddata catalogos/fixtures/especialidades.json

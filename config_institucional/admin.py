@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.admin import RelatedOnlyFieldListFilter
 from core.mixins import InstitucionScopedAdmin
 from core.models import Institucion
-from .models import Seccion, Subgrupo, Profesor, Clase
+from .models import Seccion, Subgrupo, Profesor, Clase, PeriodoLectivo
 from catalogos.models import SubArea  
 
 class SubgrupoInline(admin.TabularInline):
@@ -15,16 +15,16 @@ class ClaseInline(admin.TabularInline):
     autocomplete_fields = ("subarea", "subgrupo")
 
 @admin.register(Seccion)
-class SeccionAdmin(InstitucionScopedAdmin):
-    list_display = ("codigo", "institucion")
-    ordering     = ("nivel__numero", "numero")
-    inlines      = [SubgrupoInline]
+class SeccionAdmin(admin.ModelAdmin):
+    list_display = ("codigo", "nivel", "numero", "institucion")
+    search_fields = ("codigo",)
+    list_filter = ("nivel", "institucion")
 
 @admin.register(Subgrupo)
-class SubgrupoAdmin(InstitucionScopedAdmin):
-    list_display      = ("codigo", "seccion")
-    list_filter       = ("seccion__nivel__numero",)
-    search_fields     = ("codigo",)
+class SubgrupoAdmin(admin.ModelAdmin):
+    list_display = ("codigo", "seccion", "letra", "institucion")
+    search_fields = ("codigo",)
+    list_filter = ("seccion", "institucion")
 
 @admin.register(Profesor)
 class ProfesorAdmin(InstitucionScopedAdmin):
@@ -97,6 +97,12 @@ class ClaseAdmin(InstitucionScopedAdmin):
 
     def get_readonly_fields(self, request, obj=None):
         return () if request.user.is_superuser else ("institucion",)
+
+@admin.register(PeriodoLectivo)
+class PeriodoLectivoAdmin(admin.ModelAdmin):
+    list_display = ("institucion", "anio", "nombre", "fecha_inicio", "fecha_fin")
+    search_fields = ("nombre", "anio", "institucion__nombre")
+    list_filter = ("institucion", "anio")
 
 
 

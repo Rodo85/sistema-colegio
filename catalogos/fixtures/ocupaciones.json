@@ -1,0 +1,17 @@
+[
+  {"model": "catalogos.ocupacion", "pk": 1, "fields": {"descripcion": "Estudiante"}},
+  {"model": "catalogos.ocupacion", "pk": 2, "fields": {"descripcion": "Ama de casa"}},
+  {"model": "catalogos.ocupacion", "pk": 3, "fields": {"descripcion": "Agricultor(a)"}},
+  {"model": "catalogos.ocupacion", "pk": 4, "fields": {"descripcion": "Comerciante"}},
+  {"model": "catalogos.ocupacion", "pk": 5, "fields": {"descripcion": "Empleado(a) público(a)"}},
+  {"model": "catalogos.ocupacion", "pk": 6, "fields": {"descripcion": "Empleado(a) privado(a)"}},
+  {"model": "catalogos.ocupacion", "pk": 7, "fields": {"descripcion": "Independiente / Trabajador(a) por cuenta propia"}},
+  {"model": "catalogos.ocupacion", "pk": 8, "fields": {"descripcion": "Profesional"}},
+  {"model": "catalogos.ocupacion", "pk": 9, "fields": {"descripcion": "Técnico(a)"}},
+  {"model": "catalogos.ocupacion", "pk": 10, "fields": {"descripcion": "Obrero(a)"}},
+  {"model": "catalogos.ocupacion", "pk": 11, "fields": {"descripcion": "Conductor(a)"}},
+  {"model": "catalogos.ocupacion", "pk": 12, "fields": {"descripcion": "Artesano(a)"}},
+  {"model": "catalogos.ocupacion", "pk": 13, "fields": {"descripcion": "Jubilado(a) / Pensionado(a)"}},
+  {"model": "catalogos.ocupacion", "pk": 14, "fields": {"descripcion": "Desempleado(a)"}},
+  {"model": "catalogos.ocupacion", "pk": 15, "fields": {"descripcion": "Otra"}}
+]

@@ -1,0 +1,6 @@
+[
+  {"model": "catalogos.sexo", "pk": 1, "fields": {"codigo": "F", "nombre": "Femenino"}},
+  {"model": "catalogos.sexo", "pk": 2, "fields": {"codigo": "M", "nombre": "Masculino"}},
+  {"model": "catalogos.sexo", "pk": 3, "fields": {"codigo": "X", "nombre": "No binario"}},
+  {"model": "catalogos.sexo", "pk": 4, "fields": {"codigo": "N", "nombre": "Prefiero no indicar"}}
+]

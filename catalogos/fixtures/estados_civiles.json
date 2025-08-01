@@ -1,0 +1,8 @@
+[
+  {"model": "catalogos.estadocivil", "pk": 1, "fields": {"descripcion": "Soltero(a)"}},
+  {"model": "catalogos.estadocivil", "pk": 2, "fields": {"descripcion": "Casado(a)"}},
+  {"model": "catalogos.estadocivil", "pk": 3, "fields": {"descripcion": "Divorciado(a)"}},
+  {"model": "catalogos.estadocivil", "pk": 4, "fields": {"descripcion": "Viudo(a)"}},
+  {"model": "catalogos.estadocivil", "pk": 5, "fields": {"descripcion": "Unión libre"}},
+  {"model": "catalogos.estadocivil", "pk": 6, "fields": {"descripcion": "Separado(a)"}}
+]

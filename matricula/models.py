@@ -6,7 +6,9 @@ from catalogos.models import (
     TipoIdentificacion, Sexo, Nacionalidad,
     Provincia, Canton, Distrito,
     EstadoCivil, Parentesco, Escolaridad, Ocupacion, Adecuacion,
+    Nivel, Especialidad,
 )
+from config_institucional.models import Seccion, Subgrupo, PeriodoLectivo
 
 
 # ─────────────────────────  PERSONA CONTACTO  ──────────────────────────
@@ -37,15 +39,16 @@ class PersonaContacto(models.Model):
         ]
 
     def save(self, *args, **kwargs):
-        # normaliza a MAYÚSCULAS y sin espacios extra
         for campo in (
             "identificacion", "primer_apellido", "segundo_apellido",
-            "nombres", "celular_avisos", "correo",
-            "lugar_trabajo", "telefono_trabajo",
+            "nombres", "celular_avisos", "lugar_trabajo", "telefono_trabajo",
         ):
-            valor = getattr(self, campo)
+            valor = getattr(self, campo, None)
             if isinstance(valor, str):
                 setattr(self, campo, valor.strip().upper())
+        # Correos electrónicos en minúscula
+        if self.correo:
+            self.correo = self.correo.strip().lower()
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -112,13 +115,13 @@ class Estudiante(models.Model):
     ed_religiosa = models.BooleanField("Recibe Ed. Religiosa", default=False)
     recibe_afectividad_sexualidad = models.BooleanField("Recibe Afectividad y Sexualidad", default=False)
     adecuacion = models.ForeignKey(Adecuacion, on_delete=models.PROTECT, blank=True, null=True)
-    numero_poliza = models.CharField("Número de Póliza", max_length=50, blank=True)
     rige_poliza = models.DateField("Rige Póliza", blank=True, null=True)
     vence_poliza = models.DateField("Vence Póliza", blank=True, null=True)
     presenta_enfermedad = models.BooleanField("Presenta alguna enfermedad", default=False)
     detalle_enfermedad = models.CharField("Nombre de la(s) enfermedad(es)", max_length=255, blank=True)
     autoriza_derecho_imagen = models.BooleanField("Autoriza derecho de imagen", default=False)
-    fecha_matricula = models.DateTimeField("Fecha de matrícula", null=True, blank=True)
+    numero_poliza = models.CharField("Número de póliza", max_length=50, blank=True)
+    fecha_matricula = models.DateField("Fecha registro", null=True, blank=True)
 
     class Meta:
         verbose_name = "Estudiante"
@@ -134,11 +137,14 @@ class Estudiante(models.Model):
     def save(self, *args, **kwargs):
         for campo in (
             "identificacion", "primer_apellido", "segundo_apellido",
-            "nombres", "celular", "telefono_casa", "direccion_exacta",
+            "nombres", "celular", "telefono_casa", "direccion_exacta", "numero_poliza"
         ):
             valor = getattr(self, campo)
             if isinstance(valor, str):
                 setattr(self, campo, valor.strip().upper())
+        # Correos electrónicos en minúscula
+        if self.correo:
+            self.correo = self.correo.strip().lower()
         # Generar correo automáticamente
         if self.identificacion:
             self.correo = f"{self.identificacion}@est.mep.go.cr"
@@ -162,3 +168,48 @@ class EncargadoEstudiante(models.Model):
 
     def __str__(self):
         return f"{self.persona_contacto} – {self.estudiante} ({self.parentesco})"
+
+    def save(self, *args, **kwargs):
+        # Normalizar campos de texto si los hay
+        for campo in ("convivencia",):
+            valor = getattr(self, campo, None)
+            if isinstance(valor, str):
+                setattr(self, campo, valor.strip().upper())
+        super().save(*args, **kwargs)
+
+# Eliminar modelos duplicados de Nivel, Seccion, Subgrupo, Periodo
+# Mantener solo el modelo de MatriculaAcademica, referenciando los modelos correctos
+
+class MatriculaAcademica(models.Model):
+    ACTIVO = 'activo'
+    RETIRADO = 'retirado'
+    PROMOVIDO = 'promovido'
+    REPITENTE = 'repitente'
+    ESTADO_CHOICES = [
+        (ACTIVO, 'Activo'),
+        (RETIRADO, 'Retirado'),
+        (PROMOVIDO, 'Promovido'),
+        (REPITENTE, 'Repitente'),
+    ]
+    estudiante = models.ForeignKey('Estudiante', on_delete=models.CASCADE, related_name='matriculas_academicas')
+    nivel = models.ForeignKey(Nivel, on_delete=models.PROTECT)
+    seccion = models.ForeignKey(Seccion, on_delete=models.PROTECT)
+    subgrupo = models.ForeignKey(Subgrupo, on_delete=models.PROTECT, null=True, blank=True)
+    periodo = models.ForeignKey(PeriodoLectivo, on_delete=models.PROTECT)
+    fecha_asignacion = models.DateField(auto_now_add=True)
+    estado = models.CharField(max_length=15, choices=ESTADO_CHOICES, default=ACTIVO)
+    especialidad = models.ForeignKey(Especialidad, on_delete=models.PROTECT, null=True, blank=True)
+    class Meta:
+        verbose_name = "Matrícula académica"
+        verbose_name_plural = "Matrículas académicas"
+        unique_together = ("estudiante", "nivel", "seccion", "subgrupo", "periodo")
+    def __str__(self):
+        return f"{self.estudiante} - {self.nivel} {self.seccion} {self.subgrupo or ''} ({self.periodo})"
+
+    def save(self, *args, **kwargs):
+        # Normalizar campos de texto si los hay
+        for campo in ("estado",):
+            valor = getattr(self, campo, None)
+            if isinstance(valor, str):
+                setattr(self, campo, valor.strip().upper())
+        super().save(*args, **kwargs)

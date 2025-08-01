@@ -53,6 +53,13 @@ class Institucion(models.Model):
     tipo          = models.CharField(max_length=1, choices=TIPO_CHOICES)
     fecha_inicio  = models.DateField(auto_now_add=True)
     fecha_fin     = models.DateField()        # fecha de caducidad de licencia
+    def save(self, *args, **kwargs):
+        for campo in ("nombre", "correo", "telefono", "direccion"):
+            valor = getattr(self, campo, None)
+            if isinstance(valor, str):
+                setattr(self, campo, valor.strip().upper())
+        super().save(*args, **kwargs)
+
     class Meta:
         ordering = ("nombre",)
         verbose_name = "Institución"          

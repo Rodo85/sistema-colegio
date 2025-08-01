@@ -2,6 +2,8 @@
 from django.db import models
 from core.models import Institucion
 from catalogos.models import Nivel, SubArea
+from django.core.exceptions import ValidationError
+import datetime
 
 class NivelInstitucion(models.Model):
     institucion = models.ForeignKey(
@@ -105,6 +107,13 @@ class Profesor(models.Model):
     def __str__(self):
         return self.usuario.full_name()
 
+    def save(self, *args, **kwargs):
+        for campo in ("identificacion", "telefono"):
+            valor = getattr(self, campo, None)
+            if isinstance(valor, str):
+                setattr(self, campo, valor.strip().upper())
+        super().save(*args, **kwargs)
+
 class Clase(models.Model):
     institucion = models.ForeignKey("core.Institucion", on_delete=models.PROTECT)
     profesor = models.ForeignKey(
@@ -143,5 +152,40 @@ class Clase(models.Model):
         # si subarea llega a ser None, evitamos AttributeError
         nombre_subarea = self.subarea.nombre if self.subarea else "—"
         return f"{nombre_subarea} – {self.subgrupo.codigo} – {self.profesor.usuario.full_name()}"
+
+    def save(self, *args, **kwargs):
+        for campo in ("periodo",):
+            valor = getattr(self, campo, None)
+            if isinstance(valor, str):
+                setattr(self, campo, valor.strip().upper())
+        super().save(*args, **kwargs)
+
+class PeriodoLectivo(models.Model):
+    def year_choices():
+        current = datetime.date.today().year
+        return [(y, y) for y in range(current - 5, current + 6)]
+
+    institucion = models.ForeignKey('core.Institucion', on_delete=models.CASCADE)
+    anio = models.PositiveIntegerField(choices=year_choices())
+    nombre = models.CharField(max_length=30)  # Ej: "1er Periodo", "Trimestre 2"
+    fecha_inicio = models.DateField()
+    fecha_fin = models.DateField()
+
+    class Meta:
+        unique_together = ("institucion", "anio", "nombre")
+        ordering = ("institucion", "anio", "fecha_inicio")
+
+    def __str__(self):
+        return f"{self.institucion} - {self.anio} - {self.nombre}"
+
+    def clean(self):
+        # Normalizar nombre
+        if self.nombre:
+            self.nombre = self.nombre.strip().upper()
+        super().clean()
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
 
 

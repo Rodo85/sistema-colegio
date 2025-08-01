@@ -1,0 +1,5 @@
+[
+  {"model": "catalogos.tipoidentificacion", "pk": 1, "fields": {"nombre": "Cédula de identidad"}},
+  {"model": "catalogos.tipoidentificacion", "pk": 2, "fields": {"nombre": "DIMEX"}},
+  {"model": "catalogos.tipoidentificacion", "pk": 3, "fields": {"nombre": "Yís Rö (YR)"}}
+]

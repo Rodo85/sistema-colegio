@@ -3,9 +3,10 @@ from django.contrib import admin
 from django.utils.html import format_html
 
 from core.mixins import InstitucionScopedAdmin
-from .models import Estudiante, EncargadoEstudiante, PersonaContacto
+from .models import Estudiante, EncargadoEstudiante, PersonaContacto, MatriculaAcademica
 from .widgets import ImagePreviewWidget
 from catalogos.models import Provincia, Canton, Distrito
+from .forms import MatriculaAcademicaForm
 
 # ─────────────────────────────  Formularios  ────────────────────────────
 class EstudianteForm(forms.ModelForm):
@@ -25,6 +26,8 @@ class EstudianteForm(forms.ModelForm):
             'distrito': forms.Select(attrs={'id': 'id_distrito'}),
             'identificacion': forms.TextInput(attrs={'autocomplete': 'off'}),
             'foto': ImagePreviewWidget(),
+            'numero_poliza': forms.TextInput(attrs={'autocomplete': 'off', 'name': 'num_poliza_custom', 'id': 'id_num_poliza_custom'}),
+            'fecha_matricula': forms.TextInput(attrs={'autocomplete': 'off', 'name': 'fecha_matricula_custom', 'id': 'id_fecha_matricula_custom'}),
         }
 
     class Media:
@@ -41,52 +44,110 @@ class PersonaContactoForm(forms.ModelForm):
         widgets = {
             "identificacion": forms.TextInput(attrs={"autocomplete": "off"}),
         }
+    class Media:
+        js = (
+            'admin/js/jquery.init.js',
+        )
 
 # ────────────────────────────  Inline  ──────────────────────────────────
 class EncargadoInline(admin.TabularInline):
     model = EncargadoEstudiante
     extra = 0
 
+class MatriculaAcademicaInline(admin.StackedInline):  # Cambiado a StackedInline para vista vertical
+    model = MatriculaAcademica
+    form = MatriculaAcademicaForm
+    extra = 0
+    fields = ('periodo', 'nivel', 'seccion', 'subgrupo', 'estado', 'especialidad')
+    # Permitir histórico, no forzar matrícula inmediata
+    # Validar que no haya doble matrícula activa en el mismo periodo
+    def get_formset(self, request, obj=None, **kwargs):
+        formset = super().get_formset(request, obj, **kwargs)
+        original_save_new = formset.save_new
+        def save_new_with_validation(form, commit=True):
+            instance = original_save_new(form, commit=False)
+            # Solo validar si la matrícula es activa y tiene periodo y estudiante
+            if instance.estado == 'activo' and instance.periodo and instance.estudiante:
+                existe = MatriculaAcademica.objects.filter(
+                    estudiante=instance.estudiante,
+                    periodo=instance.periodo,
+                    estado='activo'
+                ).exclude(pk=instance.pk).exists()
+                if existe:
+                    from django.core.exceptions import ValidationError
+                    raise ValidationError("Ya existe una matrícula activa para este periodo.")
+            if commit:
+                instance.save()
+            return instance
+        formset.save_new = save_new_with_validation
+        return formset
+
 # ────────────────────────  Estudiante admin  ───────────────────────────
 @admin.register(Estudiante)
 class EstudianteAdmin(InstitucionScopedAdmin):
     form    = EstudianteForm
-    inlines = [EncargadoInline]
+    inlines = [EncargadoInline, MatriculaAcademicaInline]
     fields = None  # Fuerza el uso de fieldsets
-    fieldsets = (
-        ('Información Institucional', {
-            'fields': ('institucion', 'tipo_estudiante'),
-            'classes': ('collapse',)
-        }),
-        ('Datos Personales', {
-            'fields': (
-                'tipo_identificacion', 'identificacion',
-                'primer_apellido', 'segundo_apellido', 'nombres',
-                'fecha_nacimiento', 'sexo', 'nacionalidad', 'foto',
-            ),
-        }),
-        ('Información de Contacto', {
-            'fields': ('celular', 'telefono_casa', 'correo'),
-        }),
-        ('Dirección', {
-            'fields': ('provincia', 'canton', 'distrito', 'direccion_exacta'),
-            'description': 'Seleccione la provincia para cargar los cantones disponibles, luego seleccione el cantón para cargar los distritos.'
-        }),
-        ('Datos Académicos y de Salud', {
-            'fields': (
-                'ed_religiosa', 'recibe_afectividad_sexualidad', 'adecuacion',
-                'numero_poliza', 'rige_poliza', 'vence_poliza',
-                'presenta_enfermedad', 'detalle_enfermedad',
-                'autoriza_derecho_imagen', 'fecha_matricula',
-            ),
-        }),
-    )
-    #mostrar foto, identificacion, primer apellido, segundo apellido, nombres, tipo de estudiante en el panel de administracion
-    list_display  = ("foto_miniatura", "identificacion", "primer_apellido", "segundo_apellido", "nombres", "tipo_estudiante")
-    search_fields = ("primer_apellido", "segundo_apellido", "nombres", "identificacion")
+
+    # Mejorar búsqueda: usar ^ para búsquedas desde el inicio
+    search_fields = ("^identificacion", "^primer_apellido", "^nombres")
+
+    def get_fieldsets(self, request, obj=None):
+        fieldsets = []
+        # Solo superadmin ve Información Institucional
+        if request.user.is_superuser:
+            fieldsets.append(
+                ('Información Institucional', {
+                    'fields': ('institucion',),
+                    'classes': ('collapse',)
+                })
+            )
+        # Datos Personales (incluye tipo_estudiante y los de contacto al final)
+        fieldsets.append(
+            ('Datos Personales', {
+                'fields': (
+                    'tipo_estudiante',
+                    'tipo_identificacion', 'identificacion',
+                    'primer_apellido', 'segundo_apellido', 'nombres',
+                    'fecha_nacimiento', 'sexo', 'nacionalidad',
+                    'celular', 'telefono_casa', 'correo',
+                    'foto',  # <-- Agregado aquí
+                ),
+            })
+        )
+        # Domicilio (antes Dirección)
+        fieldsets.append(
+            ('Domicilio', {
+                'fields': ('provincia', 'canton', 'distrito', 'direccion_exacta'),
+                'description': 'Seleccione la provincia para cargar los cantones disponibles, luego seleccione el cantón para cargar los distritos.'
+            })
+        )
+        # Datos Académicos y de Salud
+        fieldsets.append(
+            ('Datos Académicos y de Salud', {
+                'fields': (
+                    'ed_religiosa', 'recibe_afectividad_sexualidad', 'adecuacion',
+                    'numero_poliza', 'rige_poliza', 'vence_poliza', 'fecha_matricula',
+                    'presenta_enfermedad', 'detalle_enfermedad',
+                    'autoriza_derecho_imagen',
+                ),
+            })
+        )
+        return fieldsets
+
+    # Quitar foto de la lista
+    list_display  = ("identificacion", "primer_apellido", "segundo_apellido", "nombres", "tipo_estudiante")
+    # Solo búsqueda por identificación
+    search_fields = ("identificacion",)
+    # Filtros igual
     list_filter   = ("institucion", "tipo_estudiante", "sexo", "nacionalidad")
     list_per_page = 25
     ordering = ("primer_apellido", "nombres")
+
+    def get_search_results(self, request, queryset, search_term):
+        queryset, use_distinct = super().get_search_results(request, queryset, search_term)
+        # Limitar resultados del autocomplete a 20
+        return queryset[:20], use_distinct
 
     def foto_miniatura(self, obj):
         if obj.foto:
@@ -123,17 +184,13 @@ class PersonaContactoAdmin(InstitucionScopedAdmin):
             'fields': ('institucion',),
             'classes': ('collapse',)
         }),
-        ('Identificación', {
-            'fields': ('identificacion',),
-        }),
-        ('Datos Personales', {
+        ('Datos de la Persona de Contacto', {
             'fields': (
+                'identificacion',
                 'primer_apellido', 'segundo_apellido', 'nombres',
-                'estado_civil', 'escolaridad', 'ocupacion'
+                'estado_civil', 'escolaridad', 'ocupacion',
+                'celular_avisos', 'correo', 'lugar_trabajo', 'telefono_trabajo',
             ),
-        }),
-        ('Información de Contacto', {
-            'fields': ('celular_avisos', 'correo', 'lugar_trabajo', 'telefono_trabajo'),
         }),
     )
 
@@ -154,3 +211,14 @@ class PersonaContactoAdmin(InstitucionScopedAdmin):
             if db_field.name == "institucion":
                 field.disabled = True
         return field
+
+# Eliminar los admin de Nivel, Seccion, Subgrupo y Periodo (ya están en sus apps)
+# Mantener solo el admin de MatriculaAcademica
+
+@admin.register(MatriculaAcademica)
+class MatriculaAcademicaAdmin(admin.ModelAdmin):
+    # Solo usar autocomplete_fields para evitar combobox con miles de opciones
+    autocomplete_fields = ("estudiante", "nivel", "seccion", "subgrupo")
+    list_display = ("estudiante", "nivel", "seccion", "subgrupo", "periodo", "estado", "fecha_asignacion")
+    search_fields = ("estudiante__identificacion", "estudiante__primer_apellido", "estudiante__nombres")
+    list_filter = ("nivel", "seccion", "subgrupo", "periodo", "estado")
