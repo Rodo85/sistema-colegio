@@ -1,0 +1,15 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_urls %}
+
+{% block submit_buttons_bottom %}
+    {{ block.super }}
+    {% if show_nueva_matricula %}
+        <div style="margin-top: 15px; text-align: left;">
+            <a href="{% url 'admin:matricula_matriculaacademica_add' %}?estudiante={{ estudiante_id }}" 
+               class="button" 
+               style="background: #28a745; color: white; padding: 10px 40px; border-radius: 6px; text-decoration: none; font-weight: bold; display: inline-block;">
+                📚 Nueva Matrícula
+            </a>
+        </div>
+    {% endif %}
+{% endblock %}

@@ -10,3 +10,5 @@ python manage.py loaddata catalogos/fixtures/sexos.json
 python manage.py loaddata catalogos/fixtures/tipos_identificacion.json
 python manage.py loaddata catalogos/fixtures/modalidades.json
 python manage.py loaddata catalogos/fixtures/especialidades.json
+python manage.py loaddata catalogos/fixtures/secciones.json
+python manage.py loaddata catalogos/fixtures/subgrupos.json

@@ -1,43 +1,106 @@
 from django import forms
 from .models import MatriculaAcademica, Nivel
 from django.utils.safestring import mark_safe
+from dal import autocomplete
 
 class MatriculaAcademicaForm(forms.ModelForm):
     class Meta:
         model = MatriculaAcademica
         fields = '__all__'
+        widgets = {
+            # FLUJO DEPENDIENTE: Curso Lectivo → Especialidad, Sección, Subgrupo
+            'especialidad': autocomplete.ModelSelect2(
+                url='especialidad-autocomplete', 
+                forward=['curso_lectivo'],  # Especialidad depende de curso_lectivo
+                attrs={
+                    'data-placeholder': 'Seleccione primero un curso lectivo...',
+                    'data-allow-clear': True,
+                }
+            ),
+            'seccion': autocomplete.ModelSelect2(
+                url='seccion-autocomplete',
+                forward=['curso_lectivo'],  # Sección depende de curso_lectivo
+                attrs={
+                    'data-placeholder': 'Seleccione primero un curso lectivo...',
+                    'data-allow-clear': True,
+                }
+            ),
+            'subgrupo': autocomplete.ModelSelect2(
+                url='subgrupo-autocomplete',
+                forward=['curso_lectivo'],  # Subgrupo depende de curso_lectivo
+                attrs={
+                    'data-placeholder': 'Seleccione primero un curso lectivo...',
+                    'data-allow-clear': True,
+                }
+            ),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Obtener el nivel (puede ser instancia o id)
-        nivel = self.initial.get('nivel') or self.data.get('nivel') or getattr(self.instance, 'nivel', None)
-        estudiante = self.initial.get('estudiante') or self.data.get('estudiante') or getattr(self.instance, 'estudiante', None)
-        # Si el nivel es décimo (10)
-        if nivel and hasattr(nivel, 'nombre') and (str(nivel.nombre).strip() == '10' or str(nivel) == '10'):
-            self.fields['especialidad'].required = True
-            self.fields['especialidad'].widget.attrs.pop('readonly', None)
-        # Si el nivel es 11 o 12
-        elif nivel and hasattr(nivel, 'nombre') and (str(nivel.nombre).strip() in ['11', '12'] or str(nivel) in ['11', '12']):
-            # Buscar la especialidad de décimo
-            especialidad_10 = None
-            if estudiante:
-                matricula_10 = MatriculaAcademica.objects.filter(estudiante=estudiante, nivel__nombre='10').order_by('-id').first()
-                if matricula_10:
-                    especialidad_10 = matricula_10.especialidad
-            if especialidad_10:
-                self.fields['especialidad'].initial = especialidad_10
-            self.fields['especialidad'].required = False
-            self.fields['especialidad'].widget.attrs.pop('readonly', None)
-        else:
-            # Otros niveles: especialidad no requerida
-            self.fields['especialidad'].required = False
-            self.fields['especialidad'].widget = forms.HiddenInput()
+        # Dejar que el JavaScript maneje la visibilidad, como con provincia/cantón/distrito
+        # El campo siempre está presente pero se oculta/muestra dinámicamente
+        
+        # Filtrar especialidades si tenemos datos iniciales
+        if self.instance and self.instance.pk:
+            self._filtrar_especialidades()
+        elif self.initial:
+            self._filtrar_especialidades()
+
+    def _filtrar_especialidades(self):
+        """Filtra las especialidades disponibles según la institución y curso lectivo"""
+        try:
+            if hasattr(self, 'instance') and self.instance and self.instance.pk:
+                # Para edición
+                if self.instance.estudiante and self.instance.curso_lectivo:
+                    especialidades_disponibles = MatriculaAcademica.get_especialidades_disponibles(
+                        institucion=self.instance.estudiante.institucion,
+                        curso_lectivo=self.instance.curso_lectivo
+                    )
+                    self.fields['especialidad'].queryset = especialidades_disponibles
+            elif self.initial:
+                # Para creación con datos iniciales
+                from config_institucional.models import CursoLectivo
+                from core.models import Institucion
+                
+                curso_lectivo_id = self.initial.get('curso_lectivo')
+                estudiante_id = self.initial.get('estudiante')
+                
+                if curso_lectivo_id and estudiante_id:
+                    try:
+                        curso_lectivo = CursoLectivo.objects.get(id=curso_lectivo_id)
+                        estudiante = self.instance.estudiante if self.instance else None
+                        if not estudiante and estudiante_id:
+                            from .models import Estudiante
+                            estudiante = Estudiante.objects.get(id=estudiante_id)
+                        
+                        if estudiante and curso_lectivo:
+                            especialidades_disponibles = MatriculaAcademica.get_especialidades_disponibles(
+                                institucion=estudiante.institucion,
+                                curso_lectivo=curso_lectivo
+                            )
+                            self.fields['especialidad'].queryset = especialidades_disponibles
+                    except (CursoLectivo.DoesNotExist, ValueError, Estudiante.DoesNotExist):
+                        pass
+        except Exception:
+            # Si hay algún error, no mostrar especialidades
+            self.fields['especialidad'].queryset = self.fields['especialidad'].queryset.none()
 
     def clean(self):
         cleaned_data = super().clean()
         nivel = cleaned_data.get('nivel')
         especialidad = cleaned_data.get('especialidad')
         estudiante = cleaned_data.get('estudiante')
+        curso_lectivo = cleaned_data.get('curso_lectivo')
+        
+        # Validar que la especialidad esté disponible para la institución y curso lectivo
+        if especialidad and estudiante and curso_lectivo:
+            especialidades_disponibles = MatriculaAcademica.get_especialidades_disponibles(
+                institucion=estudiante.institucion,
+                curso_lectivo=curso_lectivo
+            )
+            if especialidad not in especialidades_disponibles:
+                self.add_error('especialidad', 'Esta especialidad no está disponible para el curso lectivo seleccionado.')
+        
         # Décimo: especialidad obligatoria
         if nivel and hasattr(nivel, 'nombre') and (str(nivel.nombre).strip() == '10' or str(nivel) == '10'):
             if not especialidad:
@@ -52,3 +115,9 @@ class MatriculaAcademicaForm(forms.ModelForm):
             if not especialidad and not especialidad_10:
                 self.add_error('especialidad', 'Debe seleccionar la especialidad si no existe una asignada en décimo.')
         return cleaned_data
+
+    class Media:
+        js = (
+            'admin/js/jquery.init.js',
+            'matricula/js/dependent-especialidad.js',
+        )

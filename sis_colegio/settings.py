@@ -42,6 +42,10 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Application definition
 INSTALLED_APPS = [
+    # Django Autocomplete Light (DAL) - DEBE ir ANTES del admin
+    'dal',
+    'dal_select2',
+    
     # Apps del proyecto multi-tenant
     "core.apps.CoreConfig",
     "matricula",
@@ -51,6 +55,7 @@ INSTALLED_APPS = [
 
     "crispy_forms",
     "jazzmin",
+    "ingreso_clases",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -163,58 +168,90 @@ USE_DJANGO_JQUERY = True
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-JAZZMIN_UI_TWEAKS = {
-    "navbar_small_text": False,
-    "footer_small_text": False,
-    "body_small_text": False,
-    "brand_small_text": False,
-    "brand_colour": "navbar-success",
-    "accent": "accent-teal",
-    "navbar": "navbar-dark",
-    "no_navbar_border": False,
-    "navbar_fixed": False,
-    "layout_boxed": False,
-    "footer_fixed": False,
-    "sidebar_fixed": False,
-    "sidebar": "sidebar-dark-success",
-    "sidebar_nav_small_text": False,
-    "sidebar_disable_expand": False,
-    "sidebar_nav_child_indent": False,
-    "sidebar_nav_compact_style": False,
-    "sidebar_nav_legacy_style": False,
-    "sidebar_nav_flat_style": False,
-    "theme": "cosmo",
-    "dark_mode_theme": None,
-    "button_classes": {
-        "primary": "btn-primary",
-        "secondary": "btn-secondary",
-        "info": "btn-info",
-        "warning": "btn-warning",
-        "danger": "btn-danger",
-        "success": "btn-success"
-    }
-}
+# ─────────────────────  Email  ─────────────────────
+# Por defecto en desarrollo imprime en consola
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'no-reply@colesmart.local'
 
-JAZZMIN_SETTINGS = {
-    "copyright": "Ing. Rodolfo Garro Monge",
-    "welcome_sign": "Sistema Integral de Gestión Administrativa y Educativa",
-    "site_title": "Cole Smart",
-    "site_header": "Cole Smart",
-    "site_brand": "Cole Smart",
-    "topmenu_links": [
-        {"app": "core"},
-        {"app": "matricula"},
-        {"app": "catalogos"},
-        {"app": "config_institucional"},  
-    ],
-    "show_ui_builder": False,
-    "show_jazzmin_version": False,
-}
+# Si existen variables de entorno SMTP, forzamos envío real (incluso en DEBUG)
+if os.getenv('EMAIL_HOST') and os.getenv('EMAIL_HOST_USER') and os.getenv('EMAIL_HOST_PASSWORD'):
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = os.getenv('EMAIL_HOST')
+    EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
+    EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+    EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True').lower() == 'true'
+    DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER)
 
 # Configuración para HTTPS local con mkcert
 dev_cert = os.path.join(BASE_DIR, 'miapp.local+3.pem')
 dev_key = os.path.join(BASE_DIR, 'miapp.local+3-key.pem')
 if os.path.exists(dev_cert) and os.path.exists(dev_key):
-    SECURE_SSL_REDIRECT = False
+    # Configuración para HTTPS local
+    SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+
+# Importar configuración personalizada de Jazzmin
+try:
+    from .jazzmin_config import JAZZMIN_SETTINGS, JAZZMIN_UI_TWEAKS
+except ImportError:
+    # Configuración por defecto si no existe el archivo personalizado
+    JAZZMIN_UI_TWEAKS = {
+        "navbar_small_text": False,
+        "footer_small_text": False,
+        "body_small_text": False,
+        "brand_small_text": False,
+        "brand_colour": "navbar-success",
+        "accent": "accent-teal",
+        "navbar": "navbar-dark",
+        "no_navbar_border": False,
+        "navbar_fixed": False,
+        "layout_boxed": False,
+        "footer_fixed": False,
+        "sidebar_fixed": False,
+        "sidebar": "sidebar-dark-success",
+        "sidebar_nav_small_text": False,
+        "sidebar_disable_expand": False,
+        "sidebar_nav_child_indent": False,
+        "sidebar_nav_compact_style": False,
+        "sidebar_nav_legacy_style": False,
+        "sidebar_nav_flat_style": False,
+        "theme": "cosmo",
+        "dark_mode_theme": None,
+        "button_classes": {
+            "primary": "btn-primary",
+            "secondary": "btn-secondary",
+            "info": "btn-info",
+            "warning": "btn-warning",
+            "danger": "btn-danger",
+            "success": "btn-success"
+        }
+    }
+    
+    JAZZMIN_SETTINGS = {
+        "copyright": "Ing. Rodolfo Garro Monge",
+        "welcome_sign": "Sistema Integral de Gestión Administrativa y Educativa",
+        "site_title": "Cole Smart",
+        "site_header": "Cole Smart",
+        "site_brand": "Cole Smart",
+        "topmenu_links": [
+            {"app": "core"},
+            {"app": "matricula"},
+            {"app": "catalogos"},
+            {"app": "config_institucional"},
+        ],
+        "custom_links": {
+            "matricula": [
+                {
+                    "name": "Consulta de Estudiante",
+                    "url": "consulta_estudiante",
+                    "icon": "fas fa-search",
+                    "permissions": ["matricula.view_estudiante"],
+                },
+            ]
+        },
+        "show_ui_builder": False,
+        "show_jazzmin_version": False,
+    }

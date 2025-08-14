@@ -1,0 +1,519 @@
+{% extends 'admin/base_site.html' %}
+
+{% block extrahead %}
+  {{ block.super }}
+  <style>
+    /* Footer centrado SIEMPRE (pantalla y PDF) */
+    .footer-institucional {
+      text-align: center;
+      font-size: 1.15em;
+      margin-bottom: 0;
+      color: #000;
+      font-weight: 600;
+      width: 100%;
+    }
+
+    /* Botón imprimir */
+    .print-btn {
+      margin-bottom: 1em;
+      background: #1976d2;
+      color: #fff;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .print-btn:hover { 
+      background: #1565c0; 
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(25, 118, 210, 0.4);
+    }
+    .print-btn:active {
+      transform: translateY(0);
+    }
+
+    /* Contenedor general */
+    .print-container {
+      box-shadow: 0 2px 8px #bbb;
+      border: 1px solid #aaa;
+      border-radius: 12px;
+      padding: 1.5em;
+      margin: 0 auto 2em auto;
+      background: #fff;
+      max-width: 1000px;
+    }
+
+    /* Columnas */
+    .columns {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5em;
+    }
+    @media (min-width: 900px) {
+      .columns { flex-direction: row; }
+      .col { width: 50%; }
+    }
+    .col { box-sizing: border-box; }
+    .datos-personales-list b { display: inline-block; min-width: 160px; }
+    .encargado-block { margin-bottom: 1em; }
+
+    /* Encabezado institucional elegante */
+    .header-institucional {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8em;
+      margin-bottom: 1em;
+      text-align: center;
+    }
+    .header-foto {
+      flex: 0 0 auto;
+    }
+    .header-foto img {
+      width: 180px;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid #999;
+      margin-left: 3em;
+    }
+    .header-texto {
+      flex: 1 1 auto;
+      margin-left: -0.5em;
+    }
+    .titulo-matricula {
+      font-size: 25px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      margin-bottom: 0.2em;
+      margin-top: 0.3em;
+    }
+    .texto-encabezado {
+      font-size: 16px;
+      color: #222;
+      margin-bottom: 1em;
+      font-weight: 500;
+      line-height: 1.2em;
+    }
+    .header-logos-derecha {
+      flex: 0 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.8em;
+    }
+    .header-logos-derecha .logo-grande {
+      max-height: 80px;
+      max-width: 70px;
+    }
+    .header-logos-derecha img:first-child {
+      max-height: 100px;
+      max-width: 250px;
+    }
+
+    /* Firma */
+    .firma-block {
+      text-align: left;
+      font-size: 1em;
+    }
+    .firma-linea {
+      border-bottom: 1.5px solid #333;
+      width: 400px;
+      display: inline-block;
+      margin-bottom: 0.2em;
+    }
+    .cuerpo {
+      margin-left: 2em;
+    }
+
+    /* --- ESTILOS MEJORADOS PARA LA CONSULTA --- */
+    .consulta-container {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .consulta-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #2c3e50;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .consulta-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .consulta-form .btn-buscar {
+      margin-bottom: 0;
+    }
+
+    /* Mantener alineación original para campos y botón buscar */
+    .consulta-form {
+      align-items: flex-end;
+    }
+
+    /* Solo el botón de imprimir se alinea con el botón de buscar */
+    .consulta-form .btn-buscar[onclick*="print"] {
+      height: auto;
+      line-height: 1.2;
+      padding: 0.75rem 1.5rem;
+      margin-bottom: 0;
+      align-self: flex-end;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      min-width: 200px;
+    }
+
+    .form-label {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #495057;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-select,
+    .form-input {
+      padding: 0.75rem 1rem;
+      border: 2px solid #e9ecef;
+      border-radius: 8px;
+      font-size: 1rem;
+      background: #fff;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .form-select:focus,
+    .form-input:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .form-select {
+      cursor: pointer;
+      padding-right: 1rem;
+    }
+
+    .btn-buscar {
+      background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-buscar:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+      background: linear-gradient(135deg, #218838 0%, #1ea085 100%);
+    }
+
+    .btn-buscar:active {
+      transform: translateY(0);
+    }
+
+    .error-message {
+      background: #f8d7da;
+      color: #721c24;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      border: 1px solid #f5c6cb;
+      margin-top: 1rem;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .consulta-container {
+        padding: 1.5rem;
+      }
+      
+      .consulta-form {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .form-group {
+        min-width: auto;
+      }
+      
+      .consulta-title {
+        font-size: 1.8rem;
+      }
+    }
+
+    /* --- SOLO IMPRESIÓN (PDF) --- */
+    @media print {
+      html, body {
+        background: #fff !important;
+        color: #000 !important;
+        font-family: "Arial", sans-serif !important;
+        font-size: 15px !important;
+        margin: 0;
+        padding: 0;
+      }
+      .print-btn,
+      .noprint, .noprint *, .hide-on-print,
+      .copyright, .module-footer, .breadcrumbs, .user-tools, .module-header,
+      .module-title, .module-nav, .footer, .login-footer,
+      #header, #nav-sidebar, #footer, #branding, .submit-row, .changeform-tabs,
+      .object-tools, .object-tools li, .object-tools .addlink, .pagination,
+      .related-widget-wrapper, .messagelist, .navbar, .sidebar, .admin-autocomplete,
+      .results, .nav, .globalnav, .changelist-filter {
+        display: none !important;
+      }
+      .print-container {
+        box-shadow: none !important;
+        border: none !important;
+        max-width: 100% !important;
+        padding: 0.5em !important;
+        margin: 0 !important;
+      }
+      .columns {
+        flex-direction: row !important;
+        gap: 0.7em !important;
+      }
+      .col {
+        width: 50% !important;
+        box-sizing: border-box !important;
+      }
+      .header-institucional .logo-grande {
+        max-height: 110px !important;
+        max-width: 100px !important;
+      }
+      .header-logos-derecha img:first-child {
+        max-height: 120px !important;
+        max-width: 300px !important;
+      }
+
+      .texto-encabezado {
+        font-size: 1.3em !important;
+      }
+      h1 { display: none !important; }
+      .header-foto img {
+        width: 180px !important;
+        height: 180px !important;
+        margin-left: 20px !important;
+      }
+      .cuerpo { margin-left: 1em !important; }
+      .datos-personales-list strong {
+        font-size: 1.6em !important;
+        color: #2c3e50 !important;
+        font-weight: bold !important;
+      }
+      h2 {
+        font-size: 1.4em !important;
+        font-weight: bold !important;
+        margin-bottom: 0.5em !important;
+      }
+      .datos-personales-list b {
+        font-size: 1.1em !important;
+      }
+      .encargado-block {
+        font-size: 1.1em !important;
+      }
+      .footer-institucional {
+        /* Mantener centrado y sin sobrescribir nada */
+        text-align: center !important;
+        width: 100% !important;
+        font-size: 1em !important;
+        margin-bottom: 0 !important;
+      }
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+<div class="consulta-container noprint">
+  <h1 class="consulta-title">Consulta de Estudiante</h1>
+  <form method="post" class="consulta-form">{% csrf_token %}
+    <div class="form-group">
+      <label for="id_curso_lectivo" class="form-label">Curso Lectivo</label>
+      <select name="curso_lectivo" id="id_curso_lectivo" class="form-select" required>
+        <option value="">Seleccione un curso lectivo</option>
+        {% for curso in cursos_lectivos %}
+          <option value="{{ curso.pk }}" {% if curso_lectivo and curso.pk == curso_lectivo.pk %}selected{% endif %}>{{ curso.nombre }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="id_identificacion" class="form-label">Identificación</label>
+      <input type="text" name="identificacion" id="id_identificacion"
+             value="{{ identificacion }}" class="form-input" required autocomplete="off"
+             placeholder="Ingrese la identificación">
+    </div>
+          <div class="form-group">
+        <button type="submit" class="btn-buscar">
+          🔍 Buscar
+        </button>
+      </div>
+      {% if estudiante %}
+        <div class="form-group">
+          <button class="btn-buscar" onclick="window.print()" style="background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);">
+            <span style="font-size:1.2em;">🖨️</span> Imprimir ficha
+          </button>
+        </div>
+      {% endif %}
+  </form>
+  {% if error %}<div class="error-message">{{ error }}</div>{% endif %}
+</div>
+
+{% if estudiante %}
+
+  <div class="print-container">
+    <!-- Encabezado institucional con foto a la izquierda y logos a la derecha -->
+    <div class="header-institucional">
+      <!-- Foto del estudiante -->
+      <div class="header-foto">
+        {% if estudiante.foto %}
+          <img src="{{ estudiante.foto.url }}" alt="Foto estudiante">
+        {% else %}
+          <div style="width:180px;height:180px;background:#eee;
+                      border-radius:8px;border:1px solid #aaa;
+                      display:flex;align-items:center;justify-content:center;
+                      color:#999;font-size:.9em;">
+            Sin&nbsp;foto
+          </div>
+        {% endif %}
+      </div>
+      <!-- Texto central -->
+      <div class="header-texto">
+                  <div class="titulo-matricula">
+            {{ plantilla.titulo|default:"CURSO LECTIVO 2025"|cut:"MATRÍCULA " }}
+          </div>
+        <div class="texto-encabezado">
+          {{ plantilla.encabezado|safe|linebreaksbr }}
+        </div>
+      </div>
+      <!-- Logos a la derecha -->
+      <div class="header-logos-derecha">
+        {% if plantilla and plantilla.logo_mep %}
+          <img src="{{ plantilla.logo_mep.url }}"
+               alt="Logo MEP" class="logo-grande">
+        {% endif %}
+        {% if institucion and institucion.logo %}
+          <img src="{{ institucion.logo.url }}"
+               alt="Logo institución" class="logo-grande">
+        {% endif %}
+        
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="columns cuerpo">
+      <!-- Columna de Datos del Estudiante -->
+      <div class="col">
+        <h2>Datos del Estudiante</h2>
+        <div style="display:flex;gap:1em;align-items:flex-start;">
+          <div class="datos-personales-list">
+            <strong style="font-size: 1.4em; color: #2c3e50;">{{ estudiante.primer_apellido }} {{ estudiante.segundo_apellido }}
+                    {{ estudiante.nombres }}</strong><br>
+            <strong style="font-size: 20px; color: #2c3e50;">{{ estudiante.identificacion }}</strong><br>
+            <b>Tipo identificación:</b> {{ estudiante.tipo_identificacion }}<br>        
+            <b>Tipo estudiante:</b> {{ estudiante.get_tipo_estudiante_display }}<br>
+            <b>Nivel:</b> {{ matricula.nivel }}<br>
+            {% if matricula.especialidad %}
+              {% if matricula.nivel.nombre == 'Décimo' or matricula.nivel.nombre == 'Undécimo' or matricula.nivel.nombre == 'Duodécimo' %}
+                <b>Especialidad:</b> {{ matricula.especialidad }}<br>
+              {% endif %}
+            {% endif %}
+            <b>Fecha nacimiento:</b> {{ estudiante.fecha_nacimiento }}<br>
+            <b>Edad:</b> {{ edad_estudiante }}<br>
+            <b>Género:</b> {{ estudiante.sexo }}<br>
+            <b>Nacionalidad:</b> {{ estudiante.nacionalidad }}<br>
+            <b>Celular:</b> {{ estudiante.celular }}<br>
+            <b>Teléfono casa:</b> {{ estudiante.telefono_casa }}<br>
+            <b>Correo:</b> {{ estudiante.correo }}<br>
+            <b>Domicilio:</b> {{ estudiante.provincia }}, {{ estudiante.canton }},
+                                 {{ estudiante.distrito }}<br>
+            <b>Dirección exacta:</b> {{ estudiante.direccion_exacta }}<br>
+            <b>Recibe Ed. Religiosa:</b> {{ estudiante.ed_religiosa|yesno:"Sí,No" }}<br>
+            <b>Adecuación:</b> {{ estudiante.adecuacion }}<br>
+            <b>Presenta enfermedad:</b> {{ estudiante.presenta_enfermedad|yesno:"Sí,No" }}<br>
+            <b>Detalle enfermedad:</b> {{ estudiante.detalle_enfermedad }}<br>
+            <b>Autoriza derecho de imagen:</b> {{ estudiante.autoriza_derecho_imagen|yesno:"Sí,No" }}<br>
+            <b>Número de póliza:</b> {{ estudiante.numero_poliza }}<br>
+            <b>Rige póliza:</b> {{ estudiante.rige_poliza }}<br>
+            <b>Vence póliza:</b> {{ estudiante.vence_poliza }}<br> 
+              
+          </div>
+        </div>
+      </div>
+      <!-- Columna de Matrícula y Encargados -->
+      <div class="col">
+        <h2>Encargados</h2>
+        {% if encargados %}
+          <ul>
+            {% for enc in encargados %}
+              <li class="encargado-block">
+                <b>{{ enc.persona_contacto }}</b> ({{ enc.parentesco }})<br>
+                <b>Identificación:</b> {{ enc.persona_contacto.identificacion }}<br>
+                <b>Celular:</b> {{ enc.persona_contacto.celular_avisos }}<br>
+                <b>Correo:</b> {{ enc.persona_contacto.correo }}<br>
+                <b>Lugar de trabajo:</b> {{ enc.persona_contacto.lugar_trabajo }}<br>
+                <b>Teléfono trabajo:</b> {{ enc.persona_contacto.telefono_trabajo }}<br>
+                <b>Estado civil:</b> {{ enc.persona_contacto.estado_civil }}<br>
+                <b>Escolaridad:</b> {{ enc.persona_contacto.escolaridad }}<br>
+                <b>Ocupación:</b> {{ enc.persona_contacto.ocupacion }}<br>
+                <b>Convive con el estudiante:</b> {{ enc.convivencia|yesno:"Sí,No" }}<br>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>No hay encargados registrados.</p>
+        {% endif %}
+
+        <!-- Firma responsable -->
+          <div class="firma-block">
+            <br>
+            <b>Fecha asignación:</b> {{ matricula.fecha_asignacion }}<br><br><br>
+            <span>Firma responsable:</span><br><br>
+            <span class="firma-linea"></span><br>
+            <span>Cédula:</span><br><br>
+            <span class="firma-linea"></span><br><br><br><br>
+          </div>
+      </div>
+    </div>
+
+    
+
+    <!-- Pie de página institucional -->
+    {% if plantilla and plantilla.pie_pagina %}
+      <div class="footer-institucional">
+        {{ plantilla.pie_pagina|safe|linebreaksbr }}
+      </div>
+    {% endif %}
+  </div>
+{% endif %}
+{% endblock %}

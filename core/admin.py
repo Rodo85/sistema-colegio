@@ -10,6 +10,13 @@ class InstitucionAdmin(admin.ModelAdmin):
     list_display  = ("nombre", "tipo", "correo", "telefono", "fecha_inicio", "fecha_fin", "activa")
     search_fields = ("nombre", "correo")
     list_filter   = ("tipo", "fecha_fin")
+    fields = (
+        "nombre", "tipo", "correo", "telefono", "direccion",
+        "fecha_inicio", "fecha_fin", "logo",
+        "whatsapp_phone", "whatsapp_from_id", "whatsapp_token",
+    )
+    # Ambas fechas editables; si deseas mantenerlas iguales, la lógica se maneja en save()
+    readonly_fields = ()
 
     @admin.display(boolean=True, description="Licencia activa")
     def activa(self, obj):

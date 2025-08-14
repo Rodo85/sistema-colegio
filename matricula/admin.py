@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 
 from core.mixins import InstitucionScopedAdmin
-from .models import Estudiante, EncargadoEstudiante, PersonaContacto, MatriculaAcademica
+from .models import Estudiante, EncargadoEstudiante, PersonaContacto, MatriculaAcademica, PlantillaImpresionMatricula
 from .widgets import ImagePreviewWidget
 from catalogos.models import Provincia, Canton, Distrito
 from .forms import MatriculaAcademicaForm
@@ -17,6 +17,36 @@ class EstudianteForm(forms.ModelForm):
             if primera_provincia:
                 self.fields['provincia'].initial = primera_provincia.id
 
+    def clean(self):
+        cleaned_data = super().clean()
+        tipo_identificacion = cleaned_data.get('tipo_identificacion')
+        identificacion = cleaned_data.get('identificacion')
+        
+        # Validar identificación para Cédula de identidad
+        if tipo_identificacion and identificacion:
+            # Verificar si es "Cédula de identidad" (asumiendo que el nombre contiene "Cédula")
+            if 'cédula' in str(tipo_identificacion).lower() or 'cedula' in str(tipo_identificacion).lower():
+                # Limpiar la identificación de guiones y espacios
+                identificacion_limpia = identificacion.replace('-', '').replace(' ', '')
+                
+                # Validar que tenga exactamente 9 caracteres
+                if len(identificacion_limpia) != 9:
+                    self.add_error('identificacion', 
+                        'La cédula de identidad debe tener exactamente 9 dígitos. '
+                        f'Si es cédula de identidad no ingrese guiones. (tiene {len(identificacion_limpia)} caracteres)')
+                
+                # Validar que solo contenga números
+                if not identificacion_limpia.isdigit():
+                    self.add_error('identificacion', 
+                        'La cédula de identidad solo debe contener números. '
+                        'Si es cédula de identidad no ingrese guiones.')
+                
+                # Si pasa la validación, guardar la versión limpia
+                if len(self.errors) == 0:
+                    cleaned_data['identificacion'] = identificacion_limpia
+        
+        return cleaned_data
+
     class Meta:
         model = Estudiante
         fields = "__all__"
@@ -24,7 +54,11 @@ class EstudianteForm(forms.ModelForm):
             'provincia': forms.Select(attrs={'id': 'id_provincia'}),
             'canton': forms.Select(attrs={'id': 'id_canton'}),
             'distrito': forms.Select(attrs={'id': 'id_distrito'}),
-            'identificacion': forms.TextInput(attrs={'autocomplete': 'off'}),
+            'identificacion': forms.TextInput(attrs={
+                'autocomplete': 'off',
+                'placeholder': "Si es cédula de identidad no ingrese guiones. Ejemplo: 914750521",
+                'title': 'Ingrese 9 dígitos sin guiones ni espacios'
+            }),
             'foto': ImagePreviewWidget(),
             'numero_poliza': forms.TextInput(attrs={'autocomplete': 'off', 'name': 'num_poliza_custom', 'id': 'id_num_poliza_custom'}),
             'fecha_matricula': forms.TextInput(attrs={'autocomplete': 'off', 'name': 'fecha_matricula_custom', 'id': 'id_fecha_matricula_custom'}),
@@ -38,11 +72,42 @@ class EstudianteForm(forms.ModelForm):
         )
 
 class PersonaContactoForm(forms.ModelForm):
+    def clean(self):
+        cleaned_data = super().clean()
+        identificacion = cleaned_data.get('identificacion')
+        
+        # Validar identificación para Cédula de identidad
+        if identificacion:
+            # Limpiar la identificación de guiones y espacios
+            identificacion_limpia = identificacion.replace('-', '').replace(' ', '')
+            
+            # Validar que tenga exactamente 9 caracteres
+            if len(identificacion_limpia) != 9:
+                self.add_error('identificacion', 
+                    'La cédula de identidad debe tener exactamente 9 dígitos. '
+                    f'Si es cédula de identidad no ingrese guiones. (tiene {len(identificacion_limpia)} caracteres)')
+            
+            # Validar que solo contenga números
+            if not identificacion_limpia.isdigit():
+                self.add_error('identificacion', 
+                    'La cédula de identidad solo debe contener números. '
+                    'Si es cédula de identidad no ingrese guiones.')
+            
+            # Si pasa la validación, guardar la versión limpia
+            if len(self.errors) == 0:
+                cleaned_data['identificacion'] = identificacion_limpia
+        
+        return cleaned_data
+
     class Meta:
         model  = PersonaContacto
         fields = "__all__"
         widgets = {
-            "identificacion": forms.TextInput(attrs={"autocomplete": "off"}),
+            "identificacion": forms.TextInput(attrs={
+                "autocomplete": "off",
+                "placeholder": "Si es cédula de identidad no ingrese guiones. Ejemplo: 914750521",
+                "title": "Ingrese 9 dígitos sin guiones ni espacios"
+            }),
         }
     class Media:
         js = (
@@ -53,44 +118,29 @@ class PersonaContactoForm(forms.ModelForm):
 class EncargadoInline(admin.TabularInline):
     model = EncargadoEstudiante
     extra = 0
+    fields = ("persona_contacto", "parentesco", "convivencia", "principal")
+    readonly_fields = ()
 
 class MatriculaAcademicaInline(admin.StackedInline):  # Cambiado a StackedInline para vista vertical
     model = MatriculaAcademica
     form = MatriculaAcademicaForm
     extra = 0
-    fields = ('periodo', 'nivel', 'seccion', 'subgrupo', 'estado', 'especialidad')
+    fields = ('curso_lectivo', 'nivel', 'seccion', 'subgrupo', 'estado', 'especialidad')
     # Permitir histórico, no forzar matrícula inmediata
-    # Validar que no haya doble matrícula activa en el mismo periodo
-    def get_formset(self, request, obj=None, **kwargs):
-        formset = super().get_formset(request, obj, **kwargs)
-        original_save_new = formset.save_new
-        def save_new_with_validation(form, commit=True):
-            instance = original_save_new(form, commit=False)
-            # Solo validar si la matrícula es activa y tiene periodo y estudiante
-            if instance.estado == 'activo' and instance.periodo and instance.estudiante:
-                existe = MatriculaAcademica.objects.filter(
-                    estudiante=instance.estudiante,
-                    periodo=instance.periodo,
-                    estado='activo'
-                ).exclude(pk=instance.pk).exists()
-                if existe:
-                    from django.core.exceptions import ValidationError
-                    raise ValidationError("Ya existe una matrícula activa para este periodo.")
-            if commit:
-                instance.save()
-            return instance
-        formset.save_new = save_new_with_validation
-        return formset
+    # Validación de matrícula activa se moverá al modelo
+    
+    class Media:
+        js = (
+            'admin/js/jquery.init.js',
+            'matricula/js/dependent-especialidad-inline.js',  # Para inlines
+        )
 
 # ────────────────────────  Estudiante admin  ───────────────────────────
 @admin.register(Estudiante)
 class EstudianteAdmin(InstitucionScopedAdmin):
     form    = EstudianteForm
-    inlines = [EncargadoInline, MatriculaAcademicaInline]
+    inlines = [EncargadoInline]
     fields = None  # Fuerza el uso de fieldsets
-
-    # Mejorar búsqueda: usar ^ para búsquedas desde el inicio
-    search_fields = ("^identificacion", "^primer_apellido", "^nombres")
 
     def get_fieldsets(self, request, obj=None):
         fieldsets = []
@@ -126,8 +176,8 @@ class EstudianteAdmin(InstitucionScopedAdmin):
         fieldsets.append(
             ('Datos Académicos y de Salud', {
                 'fields': (
-                    'ed_religiosa', 'recibe_afectividad_sexualidad', 'adecuacion',
-                    'numero_poliza', 'rige_poliza', 'vence_poliza', 'fecha_matricula',
+                    'ed_religiosa', 'adecuacion',
+                    'numero_poliza', 'rige_poliza', 'vence_poliza',
                     'presenta_enfermedad', 'detalle_enfermedad',
                     'autoriza_derecho_imagen',
                 ),
@@ -135,30 +185,52 @@ class EstudianteAdmin(InstitucionScopedAdmin):
         )
         return fieldsets
 
-    # Quitar foto de la lista
-    list_display  = ("identificacion", "primer_apellido", "segundo_apellido", "nombres", "tipo_estudiante")
+    def get_list_display(self, request):
+        """Agregar enlaces de acción personalizados"""
+        list_display = list(super().get_list_display(request))
+        if 'acciones' not in list_display:
+            list_display.append('acciones')
+        return list_display
+
+    def acciones(self, obj):
+        """Enlaces de acción para cada estudiante"""
+        if obj.pk:
+            return format_html(
+                '<a class="button" href="{}">📚 Matrícula</a>',
+                f'/admin/matricula/matriculaacademica/add/?estudiante={obj.pk}'
+            )
+        return ""
+    acciones.short_description = "Acciones"
+
+    # Lista simplificada sin foto
+    list_display = ("identificacion", "primer_apellido", "segundo_apellido", "nombres", "tipo_estudiante")
     # Solo búsqueda por identificación
     search_fields = ("identificacion",)
-    # Filtros igual
-    list_filter   = ("institucion", "tipo_estudiante", "sexo", "nacionalidad")
+    # Sin filtros adicionales
+    list_filter = ()
     list_per_page = 25
     ordering = ("primer_apellido", "nombres")
 
     def get_search_results(self, request, queryset, search_term):
         queryset, use_distinct = super().get_search_results(request, queryset, search_term)
-        # Limitar resultados del autocomplete a 20
-        return queryset[:20], use_distinct
+        # Solo limitar resultados si no es una acción de borrado masivo
+        if not (request.method == 'POST' and 'action' in request.POST and request.POST['action'] == 'delete_selected'):
+            queryset = queryset[:20]
+        return queryset, use_distinct
 
-    def foto_miniatura(self, obj):
-        if obj.foto:
-            return format_html(
-                '<img src="{}" alt="Foto" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid #ddd;" />',
-                obj.foto.url
-            )
-        return format_html(
-            '<div style="width: 40px; height: 40px; border-radius: 50%; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center; border: 1px solid #ddd; color: #999; font-size: 12px;">Sin foto</div>'
-        )
-    foto_miniatura.short_description = "Foto"
+    def get_form(self, request, obj=None, **kwargs):
+        """Personalizar etiquetas de campos"""
+        form = super().get_form(request, obj, **kwargs)
+        if form.base_fields.get('sexo'):
+            form.base_fields['sexo'].label = "Género"
+        return form
+
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        """Agregar botón de nueva matrícula en la vista de edición"""
+        extra_context = extra_context or {}
+        extra_context['show_nueva_matricula'] = True
+        extra_context['estudiante_id'] = object_id
+        return super().change_view(request, object_id, form_url, extra_context)
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         field = super().formfield_for_foreignkey(db_field, request, **kwargs)
@@ -215,10 +287,139 @@ class PersonaContactoAdmin(InstitucionScopedAdmin):
 # Eliminar los admin de Nivel, Seccion, Subgrupo y Periodo (ya están en sus apps)
 # Mantener solo el admin de MatriculaAcademica
 
+# ────────────────────────  Matrícula Académica admin  ───────────────────────────
 @admin.register(MatriculaAcademica)
-class MatriculaAcademicaAdmin(admin.ModelAdmin):
-    # Solo usar autocomplete_fields para evitar combobox con miles de opciones
-    autocomplete_fields = ("estudiante", "nivel", "seccion", "subgrupo")
-    list_display = ("estudiante", "nivel", "seccion", "subgrupo", "periodo", "estado", "fecha_asignacion")
+class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
+    form = MatriculaAcademicaForm
+    
+    class Media:
+        js = (
+            'admin/js/jquery.init.js',
+            # DAL maneja las dependencias automáticamente, no necesitamos JS custom
+        )
+    
+    # def __init__(self, *args, **kwargs):
+    #     print("=" * 50)
+    #     print("DEBUG: MATRICULAACADEMICAADMIN INSTANCIÁNDOSE")
+    #     print("=" * 50)
+    #     super().__init__(*args, **kwargs)
+        
+    # def add_view(self, request, form_url='', extra_context=None):
+    #     """Debug: verificar que se ejecute al crear nueva matrícula"""
+    #     print("=" * 50)
+    #     print("DEBUG: ADD_VIEW EJECUTÁNDOSE")
+    #     print("=" * 50)
+    #     return super().add_view(request, form_url, extra_context)
+    list_display = ("identificacion_estudiante", "nombre_estudiante", "nivel", "seccion", "subgrupo", "curso_lectivo", "estado", "especialidad", "fecha_asignacion")
+    list_filter = ("nivel", "seccion", "subgrupo", "curso_lectivo", "estado", "especialidad")
     search_fields = ("estudiante__identificacion", "estudiante__primer_apellido", "estudiante__nombres")
-    list_filter = ("nivel", "seccion", "subgrupo", "periodo", "estado")
+    ordering = ("curso_lectivo__anio", "estudiante__primer_apellido", "estudiante__nombres")
+    
+    # DAL maneja especialidad, seccion y subgrupo, autocomplete_fields para el resto
+    autocomplete_fields = ("estudiante", "nivel")
+    
+    fields = ('estudiante', 'curso_lectivo', 'nivel', 'especialidad', 'seccion', 'subgrupo', 'estado')
+    
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        # Usuarios normales solo ven matrículas de su institución
+        return qs.filter(estudiante__institucion=request.institucion_activa_id)
+    
+    def identificacion_estudiante(self, obj):
+        """Mostrar identificación del estudiante"""
+        return obj.estudiante.identificacion
+    identificacion_estudiante.short_description = "Identificación"
+    identificacion_estudiante.admin_order_field = 'estudiante__identificacion'
+
+    def nombre_estudiante(self, obj):
+        """Mostrar nombre completo del estudiante"""
+        return f"{obj.estudiante.primer_apellido} {obj.estudiante.nombres}"
+    nombre_estudiante.short_description = "Nombre"
+    nombre_estudiante.admin_order_field = 'estudiante__primer_apellido'
+
+    def get_form(self, request, obj=None, **kwargs):
+        """Personalizar formulario para lógica inteligente de matrícula"""
+        form = super().get_form(request, obj, **kwargs)
+        
+        # Establecer estado por defecto para nuevas matrículas (valor de choice: 'activo')
+        if not obj and 'estado' in form.base_fields:
+            form.base_fields['estado'].initial = 'activo'
+        
+        # Si es una nueva matrícula (no obj) y hay estudiante en GET params
+        if not obj and 'estudiante' in request.GET:
+            try:
+                from matricula.models import Estudiante
+                estudiante_id = request.GET.get('estudiante')
+                estudiante = Estudiante.objects.get(pk=estudiante_id)
+                
+                # Buscar la ÚLTIMA matrícula activa del estudiante (por año más reciente)
+                from matricula.models import MatriculaAcademica
+                matricula_activa = MatriculaAcademica.objects.filter(
+                    estudiante=estudiante,
+                    estado__iexact='activo'
+                ).order_by('-curso_lectivo__anio').first()
+                
+                if matricula_activa:
+                    # Intentar obtener datos de siguiente matrícula
+                    siguiente_data = MatriculaAcademica.get_siguiente_matricula_data(estudiante, matricula_activa.curso_lectivo)
+                    
+                    if siguiente_data:
+                        # Pre-llenar campos con datos inteligentes
+                        form.base_fields['estudiante'].initial = estudiante
+                        form.base_fields['nivel'].initial = siguiente_data['nivel']
+                        form.base_fields['curso_lectivo'].initial = siguiente_data['curso_lectivo']
+                        if siguiente_data['especialidad']:
+                            form.base_fields['especialidad'].initial = siguiente_data['especialidad']
+                        
+                        # Agregar mensaje informativo
+                        form.base_fields['estudiante'].help_text = "Estudiante seleccionado automáticamente"
+                        form.base_fields['nivel'].help_text = f"Nivel automático: {siguiente_data['nivel'].nombre}"
+                        form.base_fields['curso_lectivo'].help_text = f"Curso automático: {siguiente_data['curso_lectivo'].nombre}"
+                        if siguiente_data['especialidad']:
+                            form.base_fields['especialidad'].help_text = f"Especialidad mantenida: {siguiente_data['especialidad'].nombre}"
+                    else:
+                        # Solo pre-llenar estudiante si no hay datos inteligentes
+                        form.base_fields['estudiante'].initial = estudiante
+                        form.base_fields['estudiante'].help_text = "Estudiante seleccionado. Complete manualmente los demás campos."
+                else:
+                    # Solo pre-llenar estudiante, proceso completamente manual
+                    form.base_fields['estudiante'].initial = estudiante
+                    form.base_fields['estudiante'].help_text = "Estudiante seleccionado. Complete manualmente nivel, curso lectivo y demás campos."
+                        
+            except (Estudiante.DoesNotExist, ValueError):
+                pass
+        
+        return form
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        field = super().formfield_for_foreignkey(db_field, request, **kwargs)
+        bloqueados = {"estudiante", "nivel"}  # especialidad, seccion y subgrupo las maneja DAL
+        if db_field.name in bloqueados and not request.user.is_superuser:
+            field.widget.can_add_related = False
+            field.widget.can_change_related = False
+        
+        # DAL maneja el filtrado de especialidad, seccion y subgrupo automáticamente
+        return field
+
+@admin.register(PlantillaImpresionMatricula)
+class PlantillaImpresionMatriculaAdmin(admin.ModelAdmin):
+    list_display = ("titulo",)
+    fields = ("titulo", "logo_mep", "encabezado", "pie_pagina")
+
+    def has_add_permission(self, request):
+        # Solo permitir agregar si no existe ninguna plantilla
+        if PlantillaImpresionMatricula.objects.exists():
+            return False
+        return super().has_add_permission(request)
+
+    def has_module_permission(self, request):
+        # Solo superusuarios pueden ver el módulo
+        return request.user.is_superuser
+
+    def has_change_permission(self, request, obj=None):
+        return request.user.is_superuser
+
+    def has_delete_permission(self, request, obj=None):
+        return request.user.is_superuser

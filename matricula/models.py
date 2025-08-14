@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 from smart_selects.db_fields import ChainedForeignKey
 
 from core.models import Institucion
@@ -113,7 +114,6 @@ class Estudiante(models.Model):
 
     correo = models.EmailField("Correo electrónico MEP", max_length=100, null=True, blank=True)
     ed_religiosa = models.BooleanField("Recibe Ed. Religiosa", default=False)
-    recibe_afectividad_sexualidad = models.BooleanField("Recibe Afectividad y Sexualidad", default=False)
     adecuacion = models.ForeignKey(Adecuacion, on_delete=models.PROTECT, blank=True, null=True)
     rige_poliza = models.DateField("Rige Póliza", blank=True, null=True)
     vence_poliza = models.DateField("Vence Póliza", blank=True, null=True)
@@ -121,7 +121,6 @@ class Estudiante(models.Model):
     detalle_enfermedad = models.CharField("Nombre de la(s) enfermedad(es)", max_length=255, blank=True)
     autoriza_derecho_imagen = models.BooleanField("Autoriza derecho de imagen", default=False)
     numero_poliza = models.CharField("Número de póliza", max_length=50, blank=True)
-    fecha_matricula = models.DateField("Fecha registro", null=True, blank=True)
 
     class Meta:
         verbose_name = "Estudiante"
@@ -160,11 +159,20 @@ class EncargadoEstudiante(models.Model):
     persona_contacto = models.ForeignKey(PersonaContacto, on_delete=models.CASCADE)
     parentesco       = models.ForeignKey(Parentesco,      on_delete=models.PROTECT)
     convivencia      = models.BooleanField("Convive con el estudiante", blank=True)
+    principal        = models.BooleanField("Es encargado principal", default=False)
 
     class Meta:
         verbose_name = "Encargado de estudiante"
         verbose_name_plural = "Encargados de estudiantes"
         unique_together = ("estudiante", "persona_contacto", "parentesco")
+        constraints = [
+            # Un solo encargado principal por estudiante
+            models.UniqueConstraint(
+                fields=["estudiante"],
+                condition=Q(principal=True),
+                name="unique_principal_por_estudiante",
+            ),
+        ]
 
     def __str__(self):
         return f"{self.persona_contacto} – {self.estudiante} ({self.parentesco})"
@@ -193,23 +201,118 @@ class MatriculaAcademica(models.Model):
     ]
     estudiante = models.ForeignKey('Estudiante', on_delete=models.CASCADE, related_name='matriculas_academicas')
     nivel = models.ForeignKey(Nivel, on_delete=models.PROTECT)
-    seccion = models.ForeignKey(Seccion, on_delete=models.PROTECT)
-    subgrupo = models.ForeignKey(Subgrupo, on_delete=models.PROTECT, null=True, blank=True)
-    periodo = models.ForeignKey(PeriodoLectivo, on_delete=models.PROTECT)
+    seccion = models.ForeignKey(Seccion, on_delete=models.PROTECT, null=True, blank=True, verbose_name="Sección")
+    subgrupo = models.ForeignKey(Subgrupo, on_delete=models.PROTECT, null=True, blank=True, verbose_name="Subgrupo")
+    curso_lectivo = models.ForeignKey('config_institucional.CursoLectivo', on_delete=models.PROTECT, verbose_name="Curso Lectivo")
     fecha_asignacion = models.DateField(auto_now_add=True)
-    estado = models.CharField(max_length=15, choices=ESTADO_CHOICES, default=ACTIVO)
+    estado = models.CharField(max_length=15, choices=ESTADO_CHOICES, default=ACTIVO, null=True, blank=True)
     especialidad = models.ForeignKey(Especialidad, on_delete=models.PROTECT, null=True, blank=True)
+    
     class Meta:
         verbose_name = "Matrícula académica"
         verbose_name_plural = "Matrículas académicas"
-        unique_together = ("estudiante", "nivel", "seccion", "subgrupo", "periodo")
+        unique_together = ("estudiante", "nivel", "seccion", "subgrupo", "curso_lectivo")
+    
     def __str__(self):
-        return f"{self.estudiante} - {self.nivel} {self.seccion} {self.subgrupo or ''} ({self.periodo})"
+        return f"{self.estudiante} - {self.nivel} {self.seccion or ''} {self.subgrupo or ''} ({self.curso_lectivo})"
 
     def save(self, *args, **kwargs):
-        # Normalizar campos de texto si los hay
-        for campo in ("estado",):
-            valor = getattr(self, campo, None)
-            if isinstance(valor, str):
-                setattr(self, campo, valor.strip().upper())
+        # No alterar "estado": debe coincidir con las keys de choices ('activo', 'retirado', ...)
         super().save(*args, **kwargs)
+
+    def clean(self):
+        from django.core.exceptions import ValidationError
+        
+        # Validar especialidad para décimo, undécimo y duodécimo
+        if self.nivel and self.nivel.nombre in ['Décimo', 'Undécimo', 'Duodécimo']:
+            if not self.especialidad:
+                raise ValidationError("La especialidad es obligatoria para décimo, undécimo y duodécimo.")
+        
+        # Solo validar si el estudiante ya está guardado (tiene pk)
+        if self.estado == 'activo' and self.curso_lectivo and self.estudiante and getattr(self.estudiante, 'pk', None):
+            existe = MatriculaAcademica.objects.filter(
+                estudiante=self.estudiante,
+                curso_lectivo=self.curso_lectivo,
+                estado='activo'
+            ).exclude(pk=self.pk).exists()
+            if existe:
+                raise ValidationError("Ya existe una matrícula activa para este curso lectivo.")
+        super().clean()
+
+    @classmethod
+    def get_siguiente_matricula_data(cls, estudiante, curso_lectivo_actual):
+        """
+        Obtiene los datos para la siguiente matrícula de un estudiante
+        """
+        from catalogos.models import Nivel
+        from config_institucional.models import CursoLectivo
+        
+        # Buscar matrícula activa en el curso lectivo actual del estudiante
+        matricula_actual = cls.objects.filter(
+            estudiante=estudiante,
+            curso_lectivo=curso_lectivo_actual,
+            estado__iexact='activo'
+        ).first()
+        
+        if not matricula_actual:
+            return None  # No hay matrícula activa, proceso manual
+        
+        # Obtener siguiente nivel
+        nivel_actual = matricula_actual.nivel
+        try:
+            siguiente_nivel = Nivel.objects.get(numero=nivel_actual.numero + 1)
+        except Nivel.DoesNotExist:
+            return None  # No hay siguiente nivel disponible
+        
+        # Obtener siguiente curso lectivo
+        try:
+            siguiente_curso = CursoLectivo.objects.get(
+                institucion=estudiante.institucion,
+                anio=curso_lectivo_actual.anio + 1
+            )
+        except CursoLectivo.DoesNotExist:
+            return None  # No hay siguiente curso lectivo disponible
+        
+        # Preparar datos para siguiente matrícula
+        siguiente_data = {
+            'nivel': siguiente_nivel,
+            'curso_lectivo': siguiente_curso,
+            'especialidad': None,
+        }
+        
+        # Para niveles 10→11 y 11→12, mantener la especialidad
+        if nivel_actual.numero in [10, 11]:
+            siguiente_data['especialidad'] = matricula_actual.especialidad
+        
+        return siguiente_data
+
+    @classmethod
+    def get_especialidades_disponibles(cls, institucion, curso_lectivo):
+        """
+        Obtiene las especialidades disponibles para una institución y curso lectivo específicos.
+        Solo retorna las especialidades que han sido configuradas como activas.
+        """
+        from config_institucional.models import EspecialidadCursoLectivo
+        
+        especialidades_configuradas = EspecialidadCursoLectivo.objects.filter(
+            institucion=institucion,
+            curso_lectivo=curso_lectivo,
+            activa=True
+        ).values_list('especialidad_id', flat=True)
+        
+        return Especialidad.objects.filter(id__in=especialidades_configuradas)
+
+class PlantillaImpresionMatricula(models.Model):
+    titulo = models.CharField("Título principal", max_length=200)
+    logo_mep = models.ImageField("Logo MEP", upload_to="plantillas/logos_mep/", null=False, blank=False)
+    encabezado = models.TextField("Encabezado superior", help_text="Puedes usar variables como {{ institucion.nombre }}")
+    pie_pagina = models.TextField("Pie de página", help_text="Puedes usar variables como {{ institucion.nombre }}")
+
+    def save(self, *args, **kwargs):
+        if PlantillaImpresionMatricula.objects.exists() and not self.pk:
+            raise Exception("Solo puede existir una plantilla global de impresión de matrícula.")
+        super().save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = "Plantilla global de impresión de matrícula"
+        verbose_name_plural = "Plantilla global de impresión de matrícula"

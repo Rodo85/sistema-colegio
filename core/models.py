@@ -51,13 +51,22 @@ class Institucion(models.Model):
     telefono      = models.CharField(max_length=25, blank=True)
     direccion     = models.TextField(blank=True)
     tipo          = models.CharField(max_length=1, choices=TIPO_CHOICES)
-    fecha_inicio  = models.DateField(auto_now_add=True)
+    fecha_inicio  = models.DateField()
     fecha_fin     = models.DateField()        # fecha de caducidad de licencia
+    logo          = models.ImageField("Logo institucional", upload_to="instituciones/logos/", null=True, blank=True)
+    whatsapp_phone = models.CharField("WhatsApp emisor (E.164)", max_length=20, blank=True,
+                                       help_text="Número remitente con prefijo país, ej. +5068XXXXXXX")
+    whatsapp_token = models.CharField("Token API WhatsApp", max_length=255, blank=True)
+    whatsapp_from_id = models.CharField("WhatsApp From (ID/phone)", max_length=50, blank=True,
+                                        help_text="ID del teléfono o phone_number_id según proveedor")
     def save(self, *args, **kwargs):
         for campo in ("nombre", "correo", "telefono", "direccion"):
             valor = getattr(self, campo, None)
             if isinstance(valor, str):
                 setattr(self, campo, valor.strip().upper())
+        # Si deseas forzar igualdad, descomenta:
+        # if self.fecha_fin:
+        #     self.fecha_inicio = self.fecha_fin
         super().save(*args, **kwargs)
 
     class Meta:

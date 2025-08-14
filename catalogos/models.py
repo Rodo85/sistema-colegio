@@ -159,8 +159,8 @@ class Sexo(models.Model):
         super().save(*args, **kwargs)
 
     class Meta:
-        verbose_name = "Sexo"
-        verbose_name_plural = "Sexos"
+        verbose_name = "Género"
+        verbose_name_plural = "Géneros"
         ordering = ("nombre",)
 
     def __str__(self):
@@ -213,3 +213,56 @@ class Ocupacion(models.Model):
         ordering = ("descripcion",)
     def __str__(self):
         return self.descripcion
+
+
+# ═══════════════════════════════════════════════════════════════════
+#                    SECCIONES Y SUBGRUPOS GLOBALES
+# ═══════════════════════════════════════════════════════════════════
+
+class Seccion(models.Model):
+    """
+    Catálogo global de secciones.
+    Las instituciones seleccionan de este catálogo cuáles usar por año.
+    """
+    nivel = models.ForeignKey(Nivel, on_delete=models.PROTECT, verbose_name="Nivel", related_name="secciones_globales")
+    numero = models.PositiveSmallIntegerField(verbose_name="Número de sección")
+
+    class Meta:
+        verbose_name = "Sección"
+        verbose_name_plural = "Secciones"
+        unique_together = ("nivel", "numero")
+        ordering = ("nivel__numero", "numero")
+
+    def __str__(self):
+        return f"{self.nivel.numero}-{self.numero}"
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+
+class Subgrupo(models.Model):
+    """
+    Catálogo global de subgrupos.
+    Las instituciones seleccionan de este catálogo cuáles usar por año.
+    """
+    seccion = models.ForeignKey(Seccion, on_delete=models.PROTECT, related_name="subgrupos", verbose_name="Sección")
+    letra = models.CharField("Letra de subgrupo", max_length=2)
+
+    class Meta:
+        verbose_name = "Subgrupo"
+        verbose_name_plural = "Subgrupos"
+        unique_together = ("seccion", "letra")
+        ordering = ("seccion__nivel__numero", "seccion__numero", "letra")
+
+    def __str__(self):
+        return f"{self.seccion.nivel.numero}-{self.seccion.numero}{self.letra}"
+
+    @property
+    def codigo(self):
+        """Mantener compatibilidad con código existente."""
+        return f"{self.seccion.numero}-{self.letra}"
+
+    def save(self, *args, **kwargs):
+        if self.letra:
+            self.letra = self.letra.strip().upper()
+        super().save(*args, **kwargs)
