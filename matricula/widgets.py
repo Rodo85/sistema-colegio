@@ -86,12 +86,12 @@ class ImagePreviewWidget(forms.FileInput):
             initializeImagePreview();
         }
         
-        // También inicializar cuando Jazzmin termine de cargar
-        if (typeof $ !== 'undefined') {
-            $(document).ready(function() {
-                setTimeout(initializeImagePreview, 500);
-            });
-        }
+        // También inicializar cuando Jazzmin termine de cargar (COMENTADO TEMPORALMENTE)
+        // if (typeof $ !== 'undefined') {
+        //     $(document).ready(function() {
+        //         setTimeout(initializeImagePreview, 500);
+        //     });
+        // }
         </script>
         ''' % name)
         

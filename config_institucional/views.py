@@ -1,3 +1,451 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
+from django.db import transaction
+from django.core.paginator import Paginator
+from django.contrib.admin.views.decorators import staff_member_required
 
-# Create your views here.
+from .models import SeccionCursoLectivo, EspecialidadCursoLectivo, SubgrupoCursoLectivo
+from catalogos.models import CursoLectivo, Seccion, Especialidad, Subgrupo
+from core.models import Institucion
+
+@staff_member_required
+def gestionar_secciones_curso_lectivo(request):
+    """
+    Vista para gestionar secciones por curso lectivo de forma masiva.
+    Permite seleccionar múltiples secciones y activarlas/desactivarlas de una vez.
+    """
+    # Obtener la institución activa del usuario
+    if request.user.is_superuser:
+        # Superusuario puede seleccionar cualquier institución
+        institucion_id = request.GET.get('institucion')
+        if institucion_id:
+            institucion = get_object_or_404(Institucion, id=institucion_id)
+        else:
+            # Mostrar primera institución por defecto
+            institucion = Institucion.objects.first()
+    else:
+        # Usuario normal solo puede ver su institución
+        institucion = request.institucion_activa
+    
+    # Obtener curso lectivo seleccionado
+    curso_lectivo_id = request.GET.get('curso_lectivo')
+    if curso_lectivo_id:
+        curso_lectivo = get_object_or_404(CursoLectivo, id=curso_lectivo_id)
+    else:
+        # Mostrar curso lectivo más reciente por defecto
+        curso_lectivo = CursoLectivo.objects.order_by('-anio').first()
+    
+    # Obtener todas las secciones disponibles
+    secciones_disponibles = Seccion.objects.all().order_by('nivel__numero', 'numero')
+    
+    # Obtener secciones ya configuradas para este curso lectivo e institución
+    secciones_configuradas = {}
+    if institucion and curso_lectivo:
+        secciones_existentes = SeccionCursoLectivo.objects.filter(
+            institucion=institucion,
+            curso_lectivo=curso_lectivo
+        ).select_related('seccion')
+        
+        for seccion_config in secciones_existentes:
+            secciones_configuradas[seccion_config.seccion.id] = {
+                'activa': seccion_config.activa,
+                'id': seccion_config.id
+            }
+    
+    # Obtener instituciones para el selector (solo para superusuarios)
+    instituciones = Institucion.objects.all().order_by('nombre') if request.user.is_superuser else []
+    
+    # Obtener cursos lectivos disponibles
+    cursos_lectivos = CursoLectivo.objects.all().order_by('-anio')
+    
+    # Paginación para las secciones
+    paginator = Paginator(secciones_disponibles, 50)  # 50 secciones por página
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    context = {
+        'institucion': institucion,
+        'curso_lectivo': curso_lectivo,
+        'secciones_configuradas': secciones_configuradas,
+        'page_obj': page_obj,
+        'instituciones': instituciones,
+        'cursos_lectivos': cursos_lectivos,
+        'es_superusuario': request.user.is_superuser,
+    }
+    
+    return render(request, 'config_institucional/gestionar_secciones_curso_lectivo.html', context)
+
+@staff_member_required
+@require_http_methods(["POST"])
+def actualizar_secciones_curso_lectivo(request):
+    """
+    Vista AJAX para actualizar secciones por curso lectivo.
+    Permite crear, actualizar y eliminar registros de forma masiva.
+    """
+    try:
+        institucion_id = request.POST.get('institucion_id')
+        curso_lectivo_id = request.POST.get('curso_lectivo_id')
+        secciones_data = request.POST.getlist('secciones[]')
+        
+        if not institucion_id or not curso_lectivo_id:
+            return JsonResponse({'success': False, 'message': 'Faltan parámetros requeridos'})
+        
+        institucion = get_object_or_404(Institucion, id=institucion_id)
+        curso_lectivo = get_object_or_404(CursoLectivo, id=curso_lectivo_id)
+        
+        with transaction.atomic():
+            # Obtener secciones existentes
+            secciones_existentes = SeccionCursoLectivo.objects.filter(
+                institucion=institucion,
+                curso_lectivo=curso_lectivo
+            )
+            
+            # Crear un diccionario para acceso rápido
+            secciones_por_id = {sc.seccion_id: sc for sc in secciones_existentes}
+            
+            # Procesar cada sección
+            creadas = 0
+            actualizadas = 0
+            eliminadas = 0
+            
+            # Obtener IDs de secciones procesadas
+            secciones_procesadas = set()
+            
+            for seccion_data in secciones_data:
+                if not seccion_data:
+                    continue
+                    
+                try:
+                    seccion_id, activa = seccion_data.split(':')
+                    seccion_id = int(seccion_id)
+                    activa = activa.lower() == 'true'
+                    secciones_procesadas.add(seccion_id)
+                    
+                    if seccion_id in secciones_por_id:
+                        # Actualizar existente
+                        seccion_config = secciones_por_id[seccion_id]
+                        if seccion_config.activa != activa:
+                            seccion_config.activa = activa
+                            seccion_config.save()
+                            actualizadas += 1
+                    else:
+                        # Crear nuevo
+                        seccion = get_object_or_404(Seccion, id=seccion_id)
+                        SeccionCursoLectivo.objects.create(
+                            institucion=institucion,
+                            curso_lectivo=curso_lectivo,
+                            seccion=seccion,
+                            activa=activa
+                        )
+                        creadas += 1
+                        
+                except (ValueError, Seccion.DoesNotExist):
+                    continue
+            
+            # Eliminar secciones que ya no están seleccionadas
+            for seccion_config in secciones_existentes:
+                if seccion_config.seccion_id not in secciones_procesadas:
+                    seccion_config.delete()
+                    eliminadas += 1
+            
+            return JsonResponse({
+                'success': True,
+                'message': f'Operación completada: {creadas} creadas, {actualizadas} actualizadas, {eliminadas} eliminadas'
+            })
+            
+    except Exception as e:
+        return JsonResponse({'success': False, 'message': f'Error: {str(e)}'})
+
+@staff_member_required
+def gestionar_especialidades_curso_lectivo(request):
+    """
+    Vista para gestionar especialidades por curso lectivo de forma masiva.
+    Similar a la gestión de secciones pero para especialidades.
+    """
+    # Obtener la institución activa del usuario
+    if request.user.is_superuser:
+        institucion_id = request.GET.get('institucion')
+        if institucion_id:
+            institucion = get_object_or_404(Institucion, id=institucion_id)
+        else:
+            institucion = Institucion.objects.first()
+    else:
+        institucion = request.institucion_activa
+    
+    # Obtener curso lectivo seleccionado
+    curso_lectivo_id = request.GET.get('curso_lectivo')
+    if curso_lectivo_id:
+        curso_lectivo = get_object_or_404(CursoLectivo, id=curso_lectivo_id)
+    else:
+        curso_lectivo = CursoLectivo.objects.order_by('-anio').first()
+    
+    # Obtener todas las especialidades disponibles
+    especialidades_disponibles = Especialidad.objects.all().order_by('modalidad__nombre', 'nombre')
+    
+    # Obtener especialidades ya configuradas
+    especialidades_configuradas = {}
+    if institucion and curso_lectivo:
+        especialidades_existentes = EspecialidadCursoLectivo.objects.filter(
+            institucion=institucion,
+            curso_lectivo=curso_lectivo
+        ).select_related('especialidad')
+        
+        for especialidad_config in especialidades_existentes:
+            especialidades_configuradas[especialidad_config.especialidad.id] = {
+                'activa': especialidad_config.activa,
+                'id': especialidad_config.id
+            }
+    
+    # Obtener instituciones para el selector (solo para superusuarios)
+    instituciones = Institucion.objects.all().order_by('nombre') if request.user.is_superuser else []
+    
+    # Obtener cursos lectivos disponibles
+    cursos_lectivos = CursoLectivo.objects.all().order_by('-anio')
+    
+    # Paginación para las especialidades
+    paginator = Paginator(especialidades_disponibles, 50)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    context = {
+        'institucion': institucion,
+        'curso_lectivo': curso_lectivo,
+        'especialidades_configuradas': especialidades_configuradas,
+        'page_obj': page_obj,
+        'instituciones': instituciones,
+        'cursos_lectivos': cursos_lectivos,
+        'es_superusuario': request.user.is_superuser,
+    }
+    
+    return render(request, 'config_institucional/gestionar_especialidades_curso_lectivo.html', context)
+
+@staff_member_required
+@require_http_methods(["POST"])
+def actualizar_especialidades_curso_lectivo(request):
+    """
+    Vista AJAX para actualizar especialidades por curso lectivo.
+    """
+    try:
+        institucion_id = request.POST.get('institucion_id')
+        curso_lectivo_id = request.POST.get('curso_lectivo_id')
+        especialidades_data = request.POST.getlist('especialidades[]')
+        
+        if not institucion_id or not curso_lectivo_id:
+            return JsonResponse({'success': False, 'message': 'Faltan parámetros requeridos'})
+        
+        institucion = get_object_or_404(Institucion, id=institucion_id)
+        curso_lectivo = get_object_or_404(CursoLectivo, id=curso_lectivo_id)
+        
+        with transaction.atomic():
+            # Obtener especialidades existentes
+            especialidades_existentes = EspecialidadCursoLectivo.objects.filter(
+                institucion=institucion,
+                curso_lectivo=curso_lectivo
+            )
+            
+            # Crear un diccionario para acceso rápido
+            especialidades_por_id = {ec.especialidad_id: ec for ec in especialidades_existentes}
+            
+            # Procesar cada especialidad
+            creadas = 0
+            actualizadas = 0
+            eliminadas = 0
+            
+            # Obtener IDs de especialidades procesadas
+            especialidades_procesadas = set()
+            
+            for especialidad_data in especialidades_data:
+                if not especialidad_data:
+                    continue
+                    
+                try:
+                    especialidad_id, activa = especialidad_data.split(':')
+                    especialidad_id = int(especialidad_id)
+                    activa = activa.lower() == 'true'
+                    especialidades_procesadas.add(especialidad_id)
+                    
+                    if especialidad_id in especialidades_por_id:
+                        # Actualizar existente
+                        especialidad_config = especialidades_por_id[especialidad_id]
+                        if especialidad_config.activa != activa:
+                            especialidad_config.activa = activa
+                            especialidad_config.save()
+                            actualizadas += 1
+                    else:
+                        # Crear nuevo
+                        especialidad = get_object_or_404(Especialidad, id=especialidad_id)
+                        EspecialidadCursoLectivo.objects.create(
+                            institucion=institucion,
+                            curso_lectivo=curso_lectivo,
+                            especialidad=especialidad,
+                            activa=activa
+                        )
+                        creadas += 1
+                        
+                except (ValueError, Especialidad.DoesNotExist):
+                    continue
+            
+            # Eliminar especialidades que ya no están seleccionadas
+            for especialidad_config in especialidades_existentes:
+                if especialidad_config.especialidad_id not in especialidades_procesadas:
+                    especialidad_config.delete()
+                    eliminadas += 1
+            
+            return JsonResponse({
+                'success': True,
+                'message': f'Operación completada: {creadas} creadas, {actualizadas} actualizadas, {eliminadas} eliminadas'
+            })
+            
+    except Exception as e:
+        return JsonResponse({'success': False, 'message': f'Error: {str(e)}'})
+
+@staff_member_required
+def gestionar_subgrupos_curso_lectivo(request):
+    """
+    Vista para gestionar subgrupos por curso lectivo de forma masiva.
+    Permite seleccionar múltiples subgrupos y activarlos/desactivarlos de una vez.
+    """
+    # Obtener la institución activa del usuario
+    if request.user.is_superuser:
+        # Superusuario puede seleccionar cualquier institución
+        institucion_id = request.GET.get('institucion')
+        if institucion_id:
+            institucion = get_object_or_404(Institucion, id=institucion_id)
+        else:
+            # Mostrar primera institución por defecto
+            institucion = Institucion.objects.first()
+    else:
+        # Usuario normal solo puede ver su institución
+        institucion = request.institucion_activa
+    
+    # Obtener curso lectivo seleccionado
+    curso_lectivo_id = request.GET.get('curso_lectivo')
+    if curso_lectivo_id:
+        curso_lectivo = get_object_or_404(CursoLectivo, id=curso_lectivo_id)
+    else:
+        # Mostrar curso lectivo más reciente por defecto
+        curso_lectivo = CursoLectivo.objects.order_by('-anio').first()
+    
+    # Obtener todos los subgrupos disponibles
+    subgrupos_disponibles = Subgrupo.objects.all().order_by('seccion__nivel__numero', 'seccion__numero', 'letra')
+    
+    # Obtener subgrupos ya configurados para este curso lectivo e institución
+    subgrupos_configurados = {}
+    if institucion and curso_lectivo:
+        subgrupos_existentes = SubgrupoCursoLectivo.objects.filter(
+            institucion=institucion,
+            curso_lectivo=curso_lectivo
+        ).select_related('subgrupo', 'subgrupo__seccion', 'subgrupo__seccion__nivel')
+        
+        for subgrupo_config in subgrupos_existentes:
+            subgrupos_configurados[subgrupo_config.subgrupo.id] = {
+                'activa': subgrupo_config.activa,
+                'id': subgrupo_config.id
+            }
+    
+    # Obtener instituciones para el selector (solo para superusuarios)
+    instituciones = Institucion.objects.all().order_by('nombre') if request.user.is_superuser else []
+    
+    # Obtener cursos lectivos disponibles
+    cursos_lectivos = CursoLectivo.objects.all().order_by('-anio')
+    
+    # Paginación para los subgrupos
+    paginator = Paginator(subgrupos_disponibles, 50)  # 50 subgrupos por página
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    context = {
+        'institucion': institucion,
+        'curso_lectivo': curso_lectivo,
+        'subgrupos_configurados': subgrupos_configurados,
+        'page_obj': page_obj,
+        'instituciones': instituciones,
+        'cursos_lectivos': cursos_lectivos,
+        'es_superusuario': request.user.is_superuser,
+    }
+    
+    return render(request, 'config_institucional/gestionar_subgrupos_curso_lectivo.html', context)
+
+@staff_member_required
+@require_http_methods(["POST"])
+def actualizar_subgrupos_curso_lectivo(request):
+    """
+    Vista AJAX para actualizar subgrupos por curso lectivo.
+    Permite crear, actualizar y eliminar registros de forma masiva.
+    """
+    try:
+        institucion_id = request.POST.get('institucion_id')
+        curso_lectivo_id = request.POST.get('curso_lectivo_id')
+        subgrupos_data = request.POST.getlist('subgrupos[]')
+        
+        if not institucion_id or not curso_lectivo_id:
+            return JsonResponse({'success': False, 'message': 'Faltan parámetros requeridos'})
+        
+        institucion = get_object_or_404(Institucion, id=institucion_id)
+        curso_lectivo = get_object_or_404(CursoLectivo, id=curso_lectivo_id)
+        
+        with transaction.atomic():
+            # Obtener subgrupos existentes
+            subgrupos_existentes = SubgrupoCursoLectivo.objects.filter(
+                institucion=institucion,
+                curso_lectivo=curso_lectivo
+            )
+            
+            # Crear un diccionario para acceso rápido
+            subgrupos_por_id = {sg.subgrupo_id: sg for sg in subgrupos_existentes}
+            
+            # Procesar cada subgrupo
+            creados = 0
+            actualizados = 0
+            eliminados = 0
+            
+            # Obtener IDs de subgrupos procesados
+            subgrupos_procesados = set()
+            
+            for subgrupo_data in subgrupos_data:
+                if not subgrupo_data:
+                    continue
+                    
+                try:
+                    subgrupo_id, activa = subgrupo_data.split(':')
+                    subgrupo_id = int(subgrupo_id)
+                    activa = activa.lower() == 'true'
+                    subgrupos_procesados.add(subgrupo_id)
+                    
+                    if subgrupo_id in subgrupos_por_id:
+                        # Actualizar existente
+                        subgrupo_config = subgrupos_por_id[subgrupo_id]
+                        if subgrupo_config.activa != activa:
+                            subgrupo_config.activa = activa
+                            subgrupo_config.save()
+                            actualizados += 1
+                    else:
+                        # Crear nuevo
+                        subgrupo = get_object_or_404(Subgrupo, id=subgrupo_id)
+                        SubgrupoCursoLectivo.objects.create(
+                            institucion=institucion,
+                            curso_lectivo=curso_lectivo,
+                            subgrupo=subgrupo,
+                            activa=activa
+                        )
+                        creados += 1
+                        
+                except (ValueError, Subgrupo.DoesNotExist):
+                    continue
+            
+            # Eliminar subgrupos que ya no están seleccionados
+            for subgrupo_config in subgrupos_existentes:
+                if subgrupo_config.subgrupo_id not in subgrupos_procesados:
+                    subgrupo_config.delete()
+                    eliminados += 1
+            
+            return JsonResponse({
+                'success': True,
+                'message': f'Operación completada: {creados} creados, {actualizados} actualizados, {eliminados} eliminados'
+            })
+            
+    except Exception as e:
+        return JsonResponse({'success': False, 'message': f'Error: {str(e)}'})

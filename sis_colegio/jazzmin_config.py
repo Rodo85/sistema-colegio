@@ -8,7 +8,6 @@ JAZZMIN_SETTINGS = {
     "site_header": "Cole Smart",
     "site_brand": "Cole Smart",
     
-    # Configuración del menú principal
     "order_with_respect_to": [
         "core",
         "matricula", 
@@ -17,23 +16,19 @@ JAZZMIN_SETTINGS = {
         "auth",
     ],
     
-    # Iconos personalizados para las aplicaciones
     "icons": {
-        # Core y autenticación
         "core.user": "fas fa-users",
         "core.institucion": "fas fa-university",
         "core.membresia": "fas fa-user-tie",
         "auth.group": "fas fa-users-cog",
         "auth.user": "fas fa-user-shield",
         
-        # Matrícula
         "matricula.estudiante": "fas fa-user-graduate",
         "matricula.personacontacto": "fas fa-address-book",
         "matricula.encargadoestudiante": "fas fa-user-friends",
         "matricula.matriculaacademica": "fas fa-clipboard-list",
         "matricula.plantillaimpresionmatricula": "fas fa-file-alt",
         
-        # Catálogos globales
         "catalogos.adecuacion": "fas fa-wheelchair",
         "catalogos.canton": "fas fa-map-marker-alt",
         "catalogos.distrito": "fas fa-map-pin",
@@ -50,20 +45,16 @@ JAZZMIN_SETTINGS = {
         "catalogos.subarea": "fas fa-book-open",
         "catalogos.tipoidentificacion": "fas fa-id-card",
         
-        # Configuración institucional
         "config_institucional.periodolectivo": "fas fa-calendar-alt",
         "config_institucional.seccion": "fas fa-chalkboard",
         "config_institucional.subgrupo": "fas fa-users",
     },
     
-    # Configuración del menú lateral
     "show_sidebar": True,
     "navigation_expanded": True,
     
-    # Personalización de colores
     "changeform_format": "horizontal_tabs",
     
-    # Enlaces personalizados en el menú superior
     "topmenu_links": [
         {"app": "core"},
         {"app": "matricula"},
@@ -71,7 +62,6 @@ JAZZMIN_SETTINGS = {
         {"app": "config_institucional"},
     ],
     
-    # Enlaces personalizados para matrícula
     "custom_links": {
         "matricula": [
             {
@@ -83,14 +73,11 @@ JAZZMIN_SETTINGS = {
         ]
     },
     
-    # Configuraciones adicionales
     "show_ui_builder": False,
     "show_jazzmin_version": False,
     
-    # Personalización del menú
     "menu_title": "Menú Principal",
     
-    # Agrupación de menús
     "menu_groups": [
         {
             "name": "Gestión Académica",
@@ -98,61 +85,11 @@ JAZZMIN_SETTINGS = {
             "models": [
                 "matricula.estudiante",
                 "matricula.matriculaacademica",
-                "matricula.plantillaimpresionmatricula",
-            ]
-        },
-        {
-            "name": "Contactos y Encargados",
-            "icon": "fas fa-address-book",
-            "models": [
-                "matricula.personacontacto",
-                "matricula.encargadoestudiante",
-            ]
-        },
-        {
-            "name": "Catálogos Globales",
-            "icon": "fas fa-database",
-            "models": [
-                "catalogos.provincia",
-                "catalogos.canton", 
-                "catalogos.distrito",
-                "catalogos.nivel",
-                "catalogos.especialidad",
-                "catalogos.subarea",
-                "catalogos.adecuacion",
-                "catalogos.escolaridad",
-                "catalogos.ocupacion",
-                "catalogos.estadocivil",
-                "catalogos.parentesco",
-                "catalogos.sexo",
-                "catalogos.nacionalidad",
-                "catalogos.tipoidentificacion",
-                "catalogos.modalidad",
-            ]
-        },
-        {
-            "name": "Configuración Institucional",
-            "icon": "fas fa-cogs",
-            "models": [
-                "config_institucional.periodolectivo",
-                "config_institucional.seccion",
-                "config_institucional.subgrupo",
-            ]
-        },
-        {
-            "name": "Administración del Sistema",
-            "icon": "fas fa-shield-alt",
-            "models": [
-                "core.institucion",
-                "core.user",
-                "core.membresia",
-                "auth.group",
             ]
         },
     ],
 }
 
-# Configuración de la interfaz de usuario
 JAZZMIN_UI_TWEAKS = {
     "navbar_small_text": False,
     "footer_small_text": False,

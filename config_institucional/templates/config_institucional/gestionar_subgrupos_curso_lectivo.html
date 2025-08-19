@@ -1,0 +1,464 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+{% load config_extras %}
+
+{% block title %}Gestionar Subgrupos por Curso Lectivo{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+    .gestion-container {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .filtros {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        border: 1px solid #dee2e6;
+    }
+    
+    .filtros select {
+        padding: 8px 12px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        margin-right: 15px;
+        min-width: 200px;
+    }
+    
+    .filtros label {
+        font-weight: 600;
+        margin-right: 10px;
+        color: #495057;
+    }
+    
+    .subgrupos-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .subgrupo-item {
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
+        padding: 15px;
+        display: flex;
+        align-items: center;
+        transition: all 0.2s ease;
+    }
+    
+    .subgrupo-item:hover {
+        background: #e9ecef;
+        border-color: #adb5bd;
+    }
+    
+    .subgrupo-item input[type="checkbox"] {
+        margin-right: 15px;
+        transform: scale(1.2);
+    }
+    
+    .subgrupo-info {
+        flex: 1;
+    }
+    
+    .subgrupo-nivel {
+        font-weight: 700;
+        color: #007bff;
+        margin-bottom: 5px;
+        font-size: 1.1em;
+        letter-spacing: 0.5px;
+    }
+    
+    .subgrupo-seccion {
+        font-weight: 500;
+        color: #6c757d;
+        margin-bottom: 3px;
+        font-size: 0.85em;
+    }
+    
+    .subgrupo-letra {
+        font-size: 1.3em;
+        color: #007bff;
+        font-weight: 700;
+        text-align: center;
+        min-width: 35px;
+        background: #e3f2fd;
+        border-radius: 50%;
+        padding: 8px;
+        margin-right: 15px;
+        border: 2px solid #007bff;
+    }
+    
+    .acciones {
+        text-align: center;
+        margin: 20px 0;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border: 1px solid #dee2e6;
+    }
+    
+    .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        margin: 0 10px;
+        transition: all 0.2s ease;
+    }
+    
+    .btn-primary {
+        background: #007bff;
+        color: white;
+    }
+    
+    .btn-primary:hover {
+        background: #0056b3;
+    }
+    
+    .btn-success {
+        background: #28a745;
+        color: white;
+    }
+    
+    .btn-success:hover {
+        background: #1e7e34;
+    }
+    
+    .btn-danger {
+        background: #dc3545;
+        color: white;
+    }
+    
+    .btn-danger:hover {
+        background: #c82333;
+    }
+    
+    .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+    
+    .mensaje {
+        padding: 15px;
+        border-radius: 6px;
+        margin: 15px 0;
+        display: none;
+    }
+    
+    .mensaje.success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+    
+    .mensaje.error {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+    
+    .paginacion {
+        text-align: center;
+        margin-top: 20px;
+    }
+    
+    .paginacion a {
+        display: inline-block;
+        padding: 8px 12px;
+        margin: 0 5px;
+        text-decoration: none;
+        color: #007bff;
+        border: 1px solid #007bff;
+        border-radius: 4px;
+    }
+    
+    .paginacion a:hover {
+        background: #007bff;
+        color: white;
+    }
+    
+    .paginacion .current {
+        background: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
+    
+    .loading {
+        display: none;
+        text-align: center;
+        padding: 20px;
+        color: #6c757d;
+    }
+    
+    .spinner {
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #007bff;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 10px;
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    .filtro-nivel {
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #dee2e6;
+    }
+    
+    .filtro-nivel select {
+        min-width: 150px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="gestion-container">
+    <h1>Gestionar Subgrupos por Curso Lectivo</h1>
+    
+    <!-- Filtros -->
+    <div class="filtros">
+        <form id="filtros-form" method="get">
+            {% if es_superusuario %}
+            <label for="institucion">Institución:</label>
+            <select name="institucion" id="institucion" onchange="this.form.submit()">
+                <option value="">Seleccionar institución</option>
+                {% for inst in instituciones %}
+                <option value="{{ inst.id }}" {% if institucion.id == inst.id %}selected{% endif %}>
+                    {{ inst.nombre }}
+                </option>
+                {% endfor %}
+            </select>
+            {% endif %}
+            
+            <label for="curso_lectivo">Curso Lectivo:</label>
+            <select name="curso_lectivo" id="curso_lectivo" onchange="this.form.submit()">
+                <option value="">Seleccionar curso lectivo</option>
+                {% for curso in cursos_lectivos %}
+                <option value="{{ curso.id }}" {% if curso_lectivo.id == curso.id %}selected{% endif %}>
+                    {{ curso.nombre }}
+                </option>
+                {% endfor %}
+            </select>
+            
+            <div class="filtro-nivel">
+                <label for="filtro_nivel">Filtrar por Nivel:</label>
+                <select name="nivel" id="filtro_nivel" onchange="filtrarPorNivel()">
+                    <option value="">Todos los niveles</option>
+                    <option value="7">Sétimo</option>
+                    <option value="8">Octavo</option>
+                    <option value="9">Noveno</option>
+                    <option value="10">Décimo</option>
+                    <option value="11">Undécimo</option>
+                    <option value="12">Duodécimo</option>
+                </select>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Mensajes -->
+    <div id="mensaje" class="mensaje"></div>
+    
+    <!-- Loading -->
+    <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <p>Procesando cambios...</p>
+    </div>
+    
+    {% if institucion and curso_lectivo %}
+    <div class="subgrupos-container">
+        <h2>Subgrupos para {{ institucion.nombre }} - {{ curso_lectivo.nombre }}</h2>
+        
+
+        
+        <!-- Acciones masivas -->
+        <div class="acciones">
+            <button type="button" class="btn btn-success" onclick="seleccionarTodas()">
+                ✅ Seleccionar Todas
+            </button>
+            <button type="button" class="btn btn-danger" onclick="deseleccionarTodas()">
+                ❌ Deseleccionar Todas
+            </button>
+            <button type="button" class="btn btn-primary" onclick="guardarCambios()">
+                💾 Guardar Cambios
+            </button>
+        </div>
+        
+        <!-- Grid de subgrupos -->
+        <form id="subgrupos-form">
+            {% csrf_token %}
+            <input type="hidden" name="institucion_id" value="{{ institucion.id }}">
+            <input type="hidden" name="curso_lectivo_id" value="{{ curso_lectivo.id }}">
+            
+            <div class="subgrupos-grid">
+                {% for subgrupo in page_obj %}
+                <div class="subgrupo-item" data-nivel="{{ subgrupo.seccion.nivel.numero }}">
+                    <input type="checkbox" 
+                           name="subgrupos" 
+                           value="{{ subgrupo.id }}:true"
+                           id="subgrupo_{{ subgrupo.id }}"
+                           {% with config=subgrupos_configurados|get_item:subgrupo.id %}
+                               {% if config and config.activa %}
+                                   checked
+                               {% endif %}
+                           {% endwith %}
+                           onchange="actualizarValorSubgrupo({{ subgrupo.id }}, this.checked)">
+                    
+                    <div class="subgrupo-letra">{{ subgrupo.letra }}</div>
+                    
+                    <div class="subgrupo-info">
+                        <div class="subgrupo-nivel">{{ subgrupo.seccion.nivel.numero }}-{{ subgrupo.seccion.numero }} {{ subgrupo.letra }}</div>
+                        <div class="subgrupo-seccion">{{ subgrupo.seccion.nivel.nombre }} - Sección {{ subgrupo.seccion.numero }}</div>
+                    </div>
+                </div>
+                {% empty %}
+                <p>No hay subgrupos disponibles.</p>
+                {% endfor %}
+            </div>
+        </form>
+        
+        <!-- Paginación -->
+        {% if page_obj.has_other_pages %}
+        <div class="paginacion">
+            {% if page_obj.has_previous %}
+                <a href="?page=1{% if request.GET.institucion %}&institucion={{ request.GET.institucion }}{% endif %}{% if request.GET.curso_lectivo %}&curso_lectivo={{ request.GET.curso_lectivo }}{% endif %}">&laquo; Primera</a>
+                <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.institucion %}&institucion={{ request.GET.institucion }}{% endif %}{% if request.GET.curso_lectivo %}&curso_lectivo={{ request.GET.curso_lectivo }}{% endif %}">Anterior</a>
+            {% endif %}
+            
+            <span class="current">
+                Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+            </span>
+            
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{% if request.GET.institucion %}&institucion={{ request.GET.institucion }}{% endif %}{% if request.GET.curso_lectivo %}&curso_lectivo={{ request.GET.curso_lectivo }}{% endif %}">Siguiente</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.institucion %}&institucion={{ request.GET.institucion }}{% endif %}{% if request.GET.curso_lectivo %}&curso_lectivo={{ request.GET.curso_lectivo }}{% endif %}">Última &raquo;</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+    {% else %}
+    <div class="mensaje error">
+        <p>Por favor seleccione una institución y un curso lectivo para continuar.</p>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+function actualizarValorSubgrupo(subgrupoId, activa) {
+    const checkbox = document.getElementById('subgrupo_' + subgrupoId);
+    checkbox.value = subgrupoId + ':' + activa;
+}
+
+function filtrarPorNivel() {
+    const nivelSeleccionado = document.getElementById('filtro_nivel').value;
+    const subgrupos = document.querySelectorAll('.subgrupo-item');
+    
+    subgrupos.forEach(item => {
+        const nivel = item.getAttribute('data-nivel');
+        if (!nivelSeleccionado || nivel === nivelSeleccionado) {
+            item.style.display = 'block';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+}
+
+function seleccionarTodas() {
+    const checkboxes = document.querySelectorAll('input[name="subgrupos"]:not([style*="display: none"])');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = true;
+        actualizarValorSubgrupo(checkbox.value.split(':')[0], true);
+    });
+}
+
+function deseleccionarTodas() {
+    const checkboxes = document.querySelectorAll('input[name="subgrupos"]:not([style*="display: none"])');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = false;
+        actualizarValorSubgrupo(checkbox.value.split(':')[0], false);
+    });
+}
+
+function mostrarMensaje(texto, tipo) {
+    const mensaje = document.getElementById('mensaje');
+    mensaje.textContent = texto;
+    mensaje.className = 'mensaje ' + tipo;
+    mensaje.style.display = 'block';
+    
+    setTimeout(() => {
+        mensaje.style.display = 'none';
+    }, 5000);
+}
+
+function mostrarLoading(mostrar) {
+    const loading = document.getElementById('loading');
+    loading.style.display = mostrar ? 'block' : 'none';
+}
+
+async function guardarCambios() {
+    const form = document.getElementById('subgrupos-form');
+    const formData = new FormData(form);
+    
+    // Obtener solo los checkboxes marcados
+    const checkboxes = document.querySelectorAll('input[name="subgrupos"]:checked');
+    formData.delete('subgrupos');
+    
+    checkboxes.forEach(checkbox => {
+        formData.append('subgrupos[]', checkbox.value);
+    });
+    
+    mostrarLoading(true);
+    
+    try {
+        const response = await fetch('{% url "config_institucional:actualizar_subgrupos_curso_lectivo" %}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            }
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            mostrarMensaje(data.message, 'success');
+            // Recargar la página para mostrar los cambios
+            setTimeout(() => {
+                location.reload();
+            }, 2000);
+        } else {
+            mostrarMensaje(data.message, 'error');
+        }
+    } catch (error) {
+        mostrarMensaje('Error al guardar los cambios: ' + error.message, 'error');
+    } finally {
+        mostrarLoading(false);
+    }
+}
+
+// Inicializar valores de los checkboxes al cargar la página
+document.addEventListener('DOMContentLoaded', function() {
+    const checkboxes = document.querySelectorAll('input[name="subgrupos"]');
+    checkboxes.forEach(checkbox => {
+        const subgrupoId = checkbox.id.replace('subgrupo_', '');
+        actualizarValorSubgrupo(subgrupoId, checkbox.checked);
+    });
+});
+</script>
+{% endblock %}

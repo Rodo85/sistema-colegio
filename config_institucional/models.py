@@ -1,7 +1,7 @@
 # config_institucional/models.py
 from django.db import models
 from core.models import Institucion
-from catalogos.models import Nivel, SubArea, Seccion as SeccionGlobal, Subgrupo as SubgrupoGlobal
+from catalogos.models import Nivel, SubArea, Seccion, Subgrupo, CursoLectivo
 from django.core.exceptions import ValidationError
 import datetime
 
@@ -25,96 +25,8 @@ class NivelInstitucion(models.Model):
 
     def __str__(self):
         return f"{self.institucion} → {self.nivel}"
-    
-class Seccion(models.Model):
-    institucion = models.ForeignKey(
-        Institucion,
-        on_delete=models.PROTECT,
-        verbose_name="Institución"
-    )
-    nivel  = models.ForeignKey(
-        Nivel,
-        on_delete=models.PROTECT,
-        verbose_name="Nivel"
-    )
-    numero = models.PositiveSmallIntegerField(verbose_name="Número de sección")
 
-    class Meta:
-        verbose_name = "Sección"
-        verbose_name_plural = "Secciones"
-        unique_together = ("nivel", "numero")
-        ordering = ("nivel__numero", "numero")
-
-    @property
-    def codigo(self):
-        return f"{self.nivel.numero}-{self.numero}"
-
-    def __str__(self):
-        return self.codigo
-
-class Subgrupo(models.Model):
-    institucion = models.ForeignKey(
-        Institucion,
-        on_delete=models.PROTECT,
-        verbose_name="Institución"
-    )
-    seccion = models.ForeignKey(
-        Seccion,
-        on_delete=models.PROTECT,
-        related_name="subgrupos",
-        verbose_name="Sección"
-    )
-    letra = models.CharField("Letra de subgrupo", max_length=2)
-
-    class Meta:
-        verbose_name = "Subgrupo"
-        verbose_name_plural = "Subgrupos"
-        unique_together = ("seccion", "letra")
-        ordering = ("seccion__nivel__numero", "seccion__numero", "letra")
-
-    @property
-    def codigo(self):
-        return f"{self.seccion.codigo}{self.letra}"
-
-    def __str__(self):
-        return self.codigo
-
-
-class CursoLectivo(models.Model):
-    """
-    Modelo para manejar el año lectivo (matrícula por año)
-    Ejemplo: Curso Lectivo 2025, Curso Lectivo 2026
-    """
-    def year_choices():
-        current = datetime.date.today().year
-        return [(y, y) for y in range(current - 5, current + 6)]
-
-    institucion = models.ForeignKey('core.Institucion', on_delete=models.CASCADE)
-    anio = models.PositiveIntegerField(choices=year_choices(), verbose_name="Año")
-    nombre = models.CharField(max_length=50, verbose_name="Nombre del curso", 
-                             help_text="Ej: Curso Lectivo 2025")
-    fecha_inicio = models.DateField(verbose_name="Fecha de inicio del año lectivo")
-    fecha_fin = models.DateField(verbose_name="Fecha de fin del año lectivo")
-    activo = models.BooleanField(default=True, verbose_name="Curso activo")
-
-    class Meta:
-        verbose_name = "Curso Lectivo"
-        verbose_name_plural = "Cursos Lectivos"
-        unique_together = ("institucion", "anio")
-        ordering = ("-anio",)
-
-    def __str__(self):
-        return f"{self.institucion} - {self.nombre}"
-
-    def clean(self):
-        # Normalizar nombre
-        if self.nombre:
-            self.nombre = self.nombre.strip()
-        super().clean()
-
-    def save(self, *args, **kwargs):
-        self.full_clean()
-        super().save(*args, **kwargs)
+# CursoLectivo ahora está en catalogos.models
 
 
 # docentes/models.py
@@ -169,7 +81,7 @@ class Clase(models.Model):
     )
 
     subgrupo = models.ForeignKey(
-        "config_institucional.Subgrupo",
+        "catalogos.Subgrupo",
         on_delete=models.PROTECT,
     )
 
@@ -227,15 +139,14 @@ class PeriodoLectivo(models.Model):
 
 class EspecialidadCursoLectivo(models.Model):
     """
-    Modelo para configurar qué especialidades usará cada colegio en cada curso lectivo.
-    Esto permite que cada institución seleccione solo las especialidades que necesita.
+    Tabla intermedia para vincular Especialidades con Cursos Lectivos por institución.
+    Permite que cada institución configure qué especialidades estarán disponibles
+    para cada curso lectivo específico.
     """
     institucion = models.ForeignKey('core.Institucion', on_delete=models.CASCADE, verbose_name="Institución")
     curso_lectivo = models.ForeignKey(CursoLectivo, on_delete=models.CASCADE, verbose_name="Curso Lectivo")
     especialidad = models.ForeignKey('catalogos.Especialidad', on_delete=models.PROTECT, verbose_name="Especialidad")
     activa = models.BooleanField(default=True, verbose_name="Especialidad activa para este curso")
-    fecha_creacion = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de creación")
-    fecha_modificacion = models.DateTimeField(auto_now=True, verbose_name="Fecha de modificación")
 
     class Meta:
         verbose_name = "Especialidad por curso lectivo"
@@ -249,10 +160,13 @@ class EspecialidadCursoLectivo(models.Model):
     def clean(self):
         from django.core.exceptions import ValidationError
         
-        # Validar que el curso lectivo pertenezca a la institución
-        if self.curso_lectivo and self.institucion:
-            if self.curso_lectivo.institucion != self.institucion:
-                raise ValidationError("El curso lectivo debe pertenecer a la institución seleccionada.")
+        # Validación: El curso lectivo es global, no pertenece a una institución específica
+        # Solo validamos que la institución y curso lectivo estén seleccionados
+        if not self.curso_lectivo:
+            raise ValidationError("Debe seleccionar un curso lectivo.")
+        
+        if not self.institucion:
+            raise ValidationError("Debe seleccionar una institución.")
         
         super().clean()
 
@@ -269,10 +183,8 @@ class SeccionCursoLectivo(models.Model):
     """
     institucion = models.ForeignKey('core.Institucion', on_delete=models.CASCADE, verbose_name="Institución")
     curso_lectivo = models.ForeignKey(CursoLectivo, on_delete=models.CASCADE, verbose_name="Curso Lectivo")
-    seccion = models.ForeignKey(SeccionGlobal, on_delete=models.PROTECT, verbose_name="Sección")
+    seccion = models.ForeignKey(Seccion, on_delete=models.PROTECT, verbose_name="Sección")
     activa = models.BooleanField(default=True, verbose_name="Sección activa para este curso")
-    fecha_creacion = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de creación")
-    fecha_modificacion = models.DateTimeField(auto_now=True, verbose_name="Fecha de modificación")
 
     class Meta:
         unique_together = ("institucion", "curso_lectivo", "seccion")
@@ -286,10 +198,13 @@ class SeccionCursoLectivo(models.Model):
     def clean(self):
         from django.core.exceptions import ValidationError
         
-        # Validar que el curso lectivo pertenezca a la institución
-        if self.curso_lectivo and self.institucion:
-            if self.curso_lectivo.institucion != self.institucion:
-                raise ValidationError("El curso lectivo debe pertenecer a la institución seleccionada.")
+        # Validación: El curso lectivo es global, no pertenece a una institución específica
+        # Solo validamos que la institución y curso lectivo estén seleccionados
+        if not self.curso_lectivo:
+            raise ValidationError("Debe seleccionar un curso lectivo.")
+        
+        if not self.institucion:
+            raise ValidationError("Debe seleccionar una institución.")
         
         # Validación: Las secciones son globales, no hay restricción por institución
         
@@ -308,10 +223,8 @@ class SubgrupoCursoLectivo(models.Model):
     """
     institucion = models.ForeignKey('core.Institucion', on_delete=models.CASCADE, verbose_name="Institución")
     curso_lectivo = models.ForeignKey(CursoLectivo, on_delete=models.CASCADE, verbose_name="Curso Lectivo")
-    subgrupo = models.ForeignKey(SubgrupoGlobal, on_delete=models.PROTECT, verbose_name="Subgrupo")
+    subgrupo = models.ForeignKey(Subgrupo, on_delete=models.PROTECT, verbose_name="Subgrupo")
     activa = models.BooleanField(default=True, verbose_name="Subgrupo activo para este curso")
-    fecha_creacion = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de creación")
-    fecha_modificacion = models.DateTimeField(auto_now=True, verbose_name="Fecha de modificación")
 
     class Meta:
         unique_together = ("institucion", "curso_lectivo", "subgrupo")
@@ -325,10 +238,13 @@ class SubgrupoCursoLectivo(models.Model):
     def clean(self):
         from django.core.exceptions import ValidationError
         
-        # Validar que el curso lectivo pertenezca a la institución
-        if self.curso_lectivo and self.institucion:
-            if self.curso_lectivo.institucion != self.institucion:
-                raise ValidationError("El curso lectivo debe pertenecer a la institución seleccionada.")
+        # Validación: El curso lectivo es global, no pertenece a una institución específica
+        # Solo validamos que la institución y curso lectivo estén seleccionados
+        if not self.curso_lectivo:
+            raise ValidationError("Debe seleccionar un curso lectivo.")
+        
+        if not self.institucion:
+            raise ValidationError("Debe seleccionar una institución.")
         
         # Validación: Los subgrupos son globales, no hay restricción por institución
         

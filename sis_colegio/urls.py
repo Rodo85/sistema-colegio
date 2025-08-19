@@ -11,7 +11,7 @@ Class-based views
     1. Add an import:  from other_app.views import Home
     2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
 Including another URLconf
-    1. Import the include() function: from django.urls import include, path
+    1. Import the include() function: from other_app.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
@@ -26,6 +26,7 @@ urlpatterns = [
     path('catalogos/', include('catalogos.urls')),
     path('matricula/', include('matricula.urls')),
     path('ingreso/', include('ingreso_clases.urls')),
+    path('config/', include('config_institucional.urls')),
     path('seleccionar-institucion/', core_views.seleccionar_institucion, name='seleccionar_institucion'),
     path('', RedirectView.as_view(pattern_name='admin:index', permanent=False)),
 ]

@@ -133,6 +133,7 @@ class MatriculaAcademicaInline(admin.StackedInline):  # Cambiado a StackedInline
         js = (
             'admin/js/jquery.init.js',
             'matricula/js/dependent-especialidad.js',  # Para inlines también
+            'matricula/js/clear-dependent-fields.js',  # Limpieza automática de campos dependientes
         )
 
 # ────────────────────────  Estudiante admin  ───────────────────────────
@@ -296,20 +297,10 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
         js = (
             'admin/js/jquery.init.js',
             'matricula/js/dependent-especialidad.js',  # Forzar el JS correcto
+            'matricula/js/clear-dependent-fields.js',  # Limpieza automática de campos dependientes
         )
     
-    # def __init__(self, *args, **kwargs):
-    #     print("=" * 50)
-    #     print("DEBUG: MATRICULAACADEMICAADMIN INSTANCIÁNDOSE")
-    #     print("=" * 50)
-    #     super().__init__(*args, **kwargs)
-        
-    # def add_view(self, request, form_url='', extra_context=None):
-    #     """Debug: verificar que se ejecute al crear nueva matrícula"""
-    #     print("=" * 50)
-    #     print("DEBUG: ADD_VIEW EJECUTÁNDOSE")
-    #     print("=" * 50)
-    #     return super().add_view(request, form_url, extra_context)
+
     list_display = ("identificacion_estudiante", "nombre_estudiante", "nivel", "seccion", "subgrupo", "curso_lectivo", "estado", "especialidad", "fecha_asignacion")
     list_filter = ("nivel", "seccion", "subgrupo", "curso_lectivo", "estado", "especialidad")
     search_fields = ("estudiante__identificacion", "estudiante__primer_apellido", "estudiante__nombres")

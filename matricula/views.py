@@ -1,16 +1,13 @@
-from django.shortcuts import render
-from django.http import JsonResponse
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import JsonResponse, HttpResponse
+from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.decorators import login_required
-from .models import Estudiante, MatriculaAcademica, PlantillaImpresionMatricula
-from config_institucional.models import CursoLectivo, Nivel
-from catalogos.models import Seccion, Subgrupo
-from catalogos.models import Especialidad
-from django.contrib.auth.decorators import login_required
-from datetime import date
-
-# Django Autocomplete Light
+from config_institucional.models import Nivel
+from catalogos.models import CursoLectivo, Seccion, Subgrupo, Especialidad
+from core.models import Institucion
+from .models import Estudiante, MatriculaAcademica
 from dal import autocomplete
+import json
 
 @login_required
 def consulta_estudiante(request):
@@ -21,42 +18,90 @@ def consulta_estudiante(request):
     identificacion = ''
     error = ''
     institucion = None
-    plantilla = PlantillaImpresionMatricula.objects.first()
     edad_estudiante = ""
+    
+    # Obtener todos los cursos lectivos disponibles para el select
+    cursos_lectivos = CursoLectivo.objects.all().order_by('-anio')
+    
+    # Obtener instituciones disponibles solo para superusuario
+    instituciones = []
+    if request.user.is_superuser:
+        instituciones = Institucion.objects.all().order_by('nombre')
     
     if request.method == 'POST':
         curso_lectivo_id = request.POST.get('curso_lectivo')
         identificacion = request.POST.get('identificacion', '').strip()
-        try:
-            curso_lectivo = CursoLectivo.objects.get(pk=curso_lectivo_id)
-            estudiante = Estudiante.objects.get(identificacion=identificacion)
-            institucion = estudiante.institucion
-            # Solo considerar matrícula ACTIVA para el curso seleccionado
-            matricula = MatriculaAcademica.objects.filter(
-                estudiante=estudiante,
-                curso_lectivo=curso_lectivo,
-                estado__iexact='activo'
-            ).first()
-            if matricula:
-                encargados = estudiante.encargadoestudiante_set.select_related('persona_contacto', 'parentesco').all()
-            else:
-                # No mostrar datos cuando no hay matrícula activa en ese curso
-                estudiante = None
-                institucion = None
-                encargados = []
-                error = 'No existe matrícula activa para ese curso lectivo.'
-            
-            # Calcular edad únicamente si hay estudiante válido (con matrícula activa)
-            edad_estudiante = ""
-            if estudiante and estudiante.fecha_nacimiento:
-                from datetime import date
-                today = date.today()
-                edad_estudiante = today.year - estudiante.fecha_nacimiento.year - ((today.month, today.day) < (estudiante.fecha_nacimiento.month, estudiante.fecha_nacimiento.day))
-                edad_estudiante = str(edad_estudiante) + " años"
-        except (CursoLectivo.DoesNotExist, Estudiante.DoesNotExist):
-            error = 'Estudiante o curso lectivo no encontrado.'
-        except Exception as e:
-            error = f'Error: {str(e)}'
+        institucion_id = request.POST.get('institucion')
+        
+        if not curso_lectivo_id or not identificacion:
+            error = 'Debe seleccionar un curso lectivo e ingresar la identificación del estudiante.'
+        elif request.user.is_superuser and not institucion_id:
+            error = 'Debe seleccionar una institución.'
+        else:
+            try:
+                curso_lectivo = CursoLectivo.objects.get(pk=curso_lectivo_id)
+                
+                # Determinar la institución según el tipo de usuario
+                if request.user.is_superuser:
+                    institucion = Institucion.objects.get(pk=institucion_id)
+                else:
+                    # Usuario normal: usar institución activa
+                    institucion_id = getattr(request, 'institucion_activa_id', None)
+                    if not institucion_id:
+                        error = 'No se pudo determinar la institución activa.'
+                        return render(request, 'matricula/consulta_estudiante.html', {
+                            'error': error,
+                            'cursos_lectivos': cursos_lectivos,
+                            'instituciones': instituciones,
+                            'es_superusuario': request.user.is_superuser,
+                        })
+                    institucion = Institucion.objects.get(pk=institucion_id)
+                
+                # Buscar estudiante por identificación e institución
+                estudiante = Estudiante.objects.get(
+                    identificacion=identificacion,
+                    institucion=institucion
+                )
+                
+                # Buscar matrícula activa para el curso seleccionado
+                matricula = MatriculaAcademica.objects.filter(
+                    estudiante=estudiante,
+                    curso_lectivo=curso_lectivo,
+                    estado__iexact='activo'
+                ).first()
+                
+                if matricula:
+                    # Si hay matrícula activa, obtener encargados
+                    encargados = estudiante.encargadoestudiante_set.select_related(
+                        'persona_contacto', 'parentesco'
+                    ).all()
+                    
+                    # Calcular edad del estudiante
+                    if estudiante.fecha_nacimiento:
+                        from datetime import date
+                        today = date.today()
+                        edad_estudiante = today.year - estudiante.fecha_nacimiento.year - (
+                            (today.month, today.day) < (
+                                estudiante.fecha_nacimiento.month, 
+                                estudiante.fecha_nacimiento.day
+                            )
+                        )
+                        edad_estudiante = f"{edad_estudiante} años"
+                else:
+                    # No hay matrícula activa, mostrar error
+                    estudiante = None
+                    institucion = None
+                    encargados = []
+                    error = f'No existe matrícula activa para el estudiante con identificación {identificacion} en el curso lectivo {curso_lectivo.nombre}.'
+                    
+            except CursoLectivo.DoesNotExist:
+                error = 'El curso lectivo seleccionado no existe.'
+            except Institucion.DoesNotExist:
+                error = 'La institución seleccionada no existe.'
+            except Estudiante.DoesNotExist:
+                error = f'No se encontró ningún estudiante con la identificación {identificacion} en la institución {institucion.nombre}.'
+            except Exception as e:
+                error = f'Error inesperado: {str(e)}'
     
     context = {
         'estudiante': estudiante,
@@ -66,8 +111,10 @@ def consulta_estudiante(request):
         'identificacion': identificacion,
         'error': error,
         'institucion': institucion,
-        'plantilla': plantilla,
         'edad_estudiante': edad_estudiante,
+        'cursos_lectivos': cursos_lectivos,
+        'instituciones': instituciones,
+        'es_superusuario': request.user.is_superuser,
     }
     
     return render(request, 'matricula/consulta_estudiante.html', context)
@@ -180,17 +227,17 @@ class EspecialidadAutocomplete(autocomplete.Select2QuerySetView):
         print(f"📊 Nivel ID: {nivel_id}")
         print(f"📅 Forwarded completo: {self.forwarded}")
         
+        # Inicializar qs como None
+        qs = None
+        
         # REQUIERE tanto curso lectivo como nivel
         if curso_lectivo_id and nivel_id:
             try:
                 from config_institucional.models import EspecialidadCursoLectivo
                 from catalogos.models import Nivel
                 
-                # Verificar que el curso lectivo pertenezca a la institución
-                curso_lectivo = CursoLectivo.objects.get(
-                    id=curso_lectivo_id,
-                    institucion_id=institucion_id
-                )
+                # Verificar que el curso lectivo existe (ahora es global)
+                curso_lectivo = CursoLectivo.objects.get(id=curso_lectivo_id)
                 print(f"✅ Curso lectivo encontrado: {curso_lectivo.nombre}")
                 
                 # Verificar que el nivel existe
@@ -226,6 +273,11 @@ class EspecialidadAutocomplete(autocomplete.Select2QuerySetView):
                 print("❌ No hay curso lectivo seleccionado")
             if not nivel_id:
                 print("❌ No hay nivel seleccionado")
+            return Especialidad.objects.none()
+        
+        # Verificar que qs esté definido
+        if qs is None:
+            print("❌ qs no está definido")
             return Especialidad.objects.none()
         
         # Filtro por búsqueda
@@ -276,13 +328,15 @@ class SeccionAutocomplete(autocomplete.Select2QuerySetView):
         if curso_lectivo_id and nivel_id:
             try:
                 from config_institucional.models import SeccionCursoLectivo
+                from catalogos.models import Nivel
                 
-                # Verificar que el curso lectivo pertenezca a la institución
-                curso_lectivo = CursoLectivo.objects.get(
-                    id=curso_lectivo_id,
-                    institucion_id=institucion_id
-                )
+                # Verificar que el curso lectivo existe (ahora es global)
+                curso_lectivo = CursoLectivo.objects.get(id=curso_lectivo_id)
                 print(f"✅ Curso lectivo encontrado: {curso_lectivo.nombre}")
+                
+                # Verificar que el nivel existe
+                nivel = Nivel.objects.get(id=nivel_id)
+                print(f"✅ Nivel encontrado: {nivel}")
                 
                 # Obtener secciones configuradas y activas para este curso lectivo
                 secciones_configuradas = SeccionCursoLectivo.objects.filter(
@@ -294,16 +348,12 @@ class SeccionAutocomplete(autocomplete.Select2QuerySetView):
                 print(f"🎯 Secciones configuradas IDs: {list(secciones_configuradas)}")
                 
                 # Filtrar secciones por nivel
-                from config_institucional.models import Nivel
-                nivel = Nivel.objects.get(id=nivel_id)
-                print(f"🎯 Nivel seleccionado: {nivel.nombre} ({nivel.numero})")
-                
-                # Filtrar secciones por nivel y curso lectivo
                 qs = Seccion.objects.filter(
                     id__in=secciones_configuradas,
                     nivel=nivel
                 )
-                print(f"📋 Secciones encontradas para nivel {nivel.numero}: {[f'{s.nivel.numero}-{s.numero}' for s in qs]}")
+                print(f"🎯 Nivel seleccionado: {nivel.nombre}")
+                print(f"📋 Secciones encontradas para nivel {nivel.numero}: {[sec.numero for sec in qs]}")
                 
             except (CursoLectivo.DoesNotExist, Nivel.DoesNotExist, ValueError) as e:
                 print(f"❌ Error: {e}")
@@ -362,11 +412,8 @@ class SubgrupoAutocomplete(autocomplete.Select2QuerySetView):
             try:
                 from config_institucional.models import SubgrupoCursoLectivo
                 
-                # Verificar que el curso lectivo pertenezca a la institución
-                curso_lectivo = CursoLectivo.objects.get(
-                    id=curso_lectivo_id,
-                    institucion_id=institucion_id
-                )
+                # Verificar que el curso lectivo existe (ahora es global)
+                curso_lectivo = CursoLectivo.objects.get(id=curso_lectivo_id)
                 print(f"✅ Curso lectivo encontrado: {curso_lectivo.nombre}")
                 
                 # Verificar que la sección existe

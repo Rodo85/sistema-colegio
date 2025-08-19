@@ -77,6 +77,10 @@ MIDDLEWARE = [
     "core.middleware.InstitucionMiddleware",
 ]
 
+# Middleware adicional para desarrollo - evitar caché del navegador
+if DEBUG:
+    MIDDLEWARE.append('sis_colegio.middleware.NoCacheMiddleware')
+
 ROOT_URLCONF = 'sis_colegio.urls'
 
 TEMPLATES = [
@@ -153,12 +157,49 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Deshabilitar caché de archivos estáticos en desarrollo
+if DEBUG:
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+    # Forzar recarga de archivos estáticos
+    STATICFILES_FINDERS = [
+        'django.contrib.staticfiles.finders.FileSystemFinder',
+        'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    ]
+    
+    # Configuración agresiva anti-caché
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+    
+    # Forzar que los archivos estáticos no se cacheen
+    import time
+    STATIC_URL = f'/static/?v={int(time.time())}/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Configuración de caché deshabilitada para desarrollo
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
+
+# Configuración adicional anti-caché
+if DEBUG:
+    # Deshabilitar caché de sesiones
+    SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+    SESSION_CACHE_ALIAS = 'default'
+    
+    # Forzar recarga de archivos estáticos en cada request
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 USE_DJANGO_JQUERY = True
 
@@ -183,75 +224,10 @@ if os.getenv('EMAIL_HOST') and os.getenv('EMAIL_HOST_USER') and os.getenv('EMAIL
     EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True').lower() == 'true'
     DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER)
 
-# Configuración para HTTPS local con mkcert
-dev_cert = os.path.join(BASE_DIR, 'miapp.local+3.pem')
-dev_key = os.path.join(BASE_DIR, 'miapp.local+3-key.pem')
-if os.path.exists(dev_cert) and os.path.exists(dev_key):
-    # Configuración para HTTPS local
-    SECURE_SSL_REDIRECT = True
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
 
 # Importar configuración personalizada de Jazzmin
 try:
-    from .jazzmin_config import JAZZMIN_SETTINGS, JAZZMIN_UI_TWEAKS
+	from .jazzmin_config import JAZZMIN_SETTINGS, JAZZMIN_UI_TWEAKS
 except ImportError:
-    # Configuración por defecto si no existe el archivo personalizado
-    JAZZMIN_UI_TWEAKS = {
-        "navbar_small_text": False,
-        "footer_small_text": False,
-        "body_small_text": False,
-        "brand_small_text": False,
-        "brand_colour": "navbar-success",
-        "accent": "accent-teal",
-        "navbar": "navbar-dark",
-        "no_navbar_border": False,
-        "navbar_fixed": False,
-        "layout_boxed": False,
-        "footer_fixed": False,
-        "sidebar_fixed": False,
-        "sidebar": "sidebar-dark-success",
-        "sidebar_nav_small_text": False,
-        "sidebar_disable_expand": False,
-        "sidebar_nav_child_indent": False,
-        "sidebar_nav_compact_style": False,
-        "sidebar_nav_legacy_style": False,
-        "sidebar_nav_flat_style": False,
-        "theme": "cosmo",
-        "dark_mode_theme": None,
-        "button_classes": {
-            "primary": "btn-primary",
-            "secondary": "btn-secondary",
-            "info": "btn-info",
-            "warning": "btn-warning",
-            "danger": "btn-danger",
-            "success": "btn-success"
-        }
-    }
-    
-    JAZZMIN_SETTINGS = {
-        "copyright": "Ing. Rodolfo Garro Monge",
-        "welcome_sign": "Sistema Integral de Gestión Administrativa y Educativa",
-        "site_title": "Cole Smart",
-        "site_header": "Cole Smart",
-        "site_brand": "Cole Smart",
-        "topmenu_links": [
-            {"app": "core"},
-            {"app": "matricula"},
-            {"app": "catalogos"},
-            {"app": "config_institucional"},
-        ],
-        "custom_links": {
-            "matricula": [
-                {
-                    "name": "Consulta de Estudiante",
-                    "url": "consulta_estudiante",
-                    "icon": "fas fa-search",
-                    "permissions": ["matricula.view_estudiante"],
-                },
-            ]
-        },
-        "show_ui_builder": False,
-        "show_jazzmin_version": False,
-    }
+	JAZZMIN_SETTINGS = {}
+	JAZZMIN_UI_TWEAKS = {}

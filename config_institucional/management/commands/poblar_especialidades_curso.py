@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.db import transaction
-from config_institucional.models import EspecialidadCursoLectivo, CursoLectivo
+from config_institucional.models import EspecialidadCursoLectivo
+from catalogos.models import CursoLectivo
 from catalogos.models import Especialidad
 from core.models import Institucion
 

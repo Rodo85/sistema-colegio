@@ -1,13 +1,15 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+from django.utils import timezone
 from django.db.models import Q
 from smart_selects.db_fields import ChainedForeignKey
 
-from core.models import Institucion
+from core.models import Institucion, User
 from catalogos.models import (
     TipoIdentificacion, Sexo, Nacionalidad,
     Provincia, Canton, Distrito,
     EstadoCivil, Parentesco, Escolaridad, Ocupacion, Adecuacion,
-    Nivel, Especialidad,
+    Nivel, Especialidad, CursoLectivo,
 )
 from config_institucional.models import Seccion, Subgrupo, PeriodoLectivo
 
@@ -203,7 +205,7 @@ class MatriculaAcademica(models.Model):
     nivel = models.ForeignKey(Nivel, on_delete=models.PROTECT)
     seccion = models.ForeignKey(Seccion, on_delete=models.PROTECT, null=True, blank=True, verbose_name="Sección")
     subgrupo = models.ForeignKey(Subgrupo, on_delete=models.PROTECT, null=True, blank=True, verbose_name="Subgrupo")
-    curso_lectivo = models.ForeignKey('config_institucional.CursoLectivo', on_delete=models.PROTECT, verbose_name="Curso Lectivo")
+    curso_lectivo = models.ForeignKey('catalogos.CursoLectivo', on_delete=models.PROTECT, verbose_name="Curso Lectivo")
     fecha_asignacion = models.DateField(auto_now_add=True)
     estado = models.CharField(max_length=15, choices=ESTADO_CHOICES, default=ACTIVO, null=True, blank=True)
     especialidad = models.ForeignKey(Especialidad, on_delete=models.PROTECT, null=True, blank=True)
@@ -244,8 +246,7 @@ class MatriculaAcademica(models.Model):
         """
         Obtiene los datos para la siguiente matrícula de un estudiante
         """
-        from catalogos.models import Nivel
-        from config_institucional.models import CursoLectivo
+        from catalogos.models import Nivel, CursoLectivo
         
         # Buscar matrícula activa en el curso lectivo actual del estudiante
         matricula_actual = cls.objects.filter(
@@ -264,12 +265,9 @@ class MatriculaAcademica(models.Model):
         except Nivel.DoesNotExist:
             return None  # No hay siguiente nivel disponible
         
-        # Obtener siguiente curso lectivo
+        # Obtener siguiente curso lectivo (ahora es global)
         try:
-            siguiente_curso = CursoLectivo.objects.get(
-                institucion=estudiante.institucion,
-                anio=curso_lectivo_actual.anio + 1
-            )
+            siguiente_curso = CursoLectivo.objects.get(anio=curso_lectivo_actual.anio + 1)
         except CursoLectivo.DoesNotExist:
             return None  # No hay siguiente curso lectivo disponible
         

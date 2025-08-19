@@ -1,5 +1,6 @@
 #app catalogos
 from django.db import models
+import datetime
 
 # Modelos globales
 class Provincia(models.Model):
@@ -265,4 +266,39 @@ class Subgrupo(models.Model):
     def save(self, *args, **kwargs):
         if self.letra:
             self.letra = self.letra.strip().upper()
+        super().save(*args, **kwargs)
+
+class CursoLectivo(models.Model):
+    """
+    Modelo global para manejar el año lectivo (matrícula por año)
+    Ejemplo: Curso Lectivo 2025, Curso Lectivo 2026
+    """
+    def year_choices():
+        current = datetime.date.today().year
+        return [(y, y) for y in range(current - 5, current + 6)]
+
+    anio = models.PositiveIntegerField(choices=year_choices(), verbose_name="Año")
+    nombre = models.CharField(max_length=50, verbose_name="Nombre del curso", 
+                             help_text="Ej: Curso Lectivo 2025")
+    fecha_inicio = models.DateField(verbose_name="Fecha de inicio del año lectivo")
+    fecha_fin = models.DateField(verbose_name="Fecha de fin del año lectivo")
+    activo = models.BooleanField(default=True, verbose_name="Curso activo")
+
+    class Meta:
+        verbose_name = "Curso Lectivo"
+        verbose_name_plural = "Cursos Lectivos"
+        unique_together = ("anio",)
+        ordering = ("-anio",)
+
+    def __str__(self):
+        return self.nombre
+
+    def clean(self):
+        # Normalizar nombre
+        if self.nombre:
+            self.nombre = self.nombre.strip()
+        super().clean()
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
         super().save(*args, **kwargs)

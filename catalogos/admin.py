@@ -7,7 +7,7 @@ from .models import (
     Nivel, TipoIdentificacion, Nacionalidad, Adecuacion,
     Modalidad, Especialidad, SubArea, Sexo,
     EstadoCivil, Parentesco, Escolaridad, Ocupacion,
-    Seccion, Subgrupo
+    Seccion, Subgrupo, CursoLectivo
 )
 
 # ── Registrar modelos de ubicación con búsqueda para autocomplete_fields ──
@@ -148,3 +148,19 @@ class SubgrupoAdmin(admin.ModelAdmin):
     @admin.display(description="Subgrupo", ordering=("seccion__nivel__numero", "seccion__numero", "letra"))
     def codigo(self, obj):
         return f"{_nivel_num(obj.seccion)}-{obj.seccion.numero}{obj.letra}"
+
+@admin.register(CursoLectivo)
+class CursoLectivoAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'anio', 'fecha_inicio', 'fecha_fin', 'activo')
+    list_filter = ('anio', 'activo')
+    search_fields = ('nombre', 'anio')
+    ordering = ('-anio',)
+    
+    fieldsets = (
+        ('Información General', {
+            'fields': ('anio', 'nombre', 'activo')
+        }),
+        ('Fechas', {
+            'fields': ('fecha_inicio', 'fecha_fin')
+        }),
+    )

@@ -1,9 +1,11 @@
 from django.contrib import admin
 from django.contrib.admin import RelatedOnlyFieldListFilter
+from django.utils.html import format_html
+from django.urls import reverse
 from core.mixins import InstitucionScopedAdmin
 from core.models import Institucion
-from .models import NivelInstitucion, Seccion, Subgrupo, Profesor, Clase, PeriodoLectivo, CursoLectivo, EspecialidadCursoLectivo, SeccionCursoLectivo, SubgrupoCursoLectivo
-from catalogos.models import SubArea  
+from .models import NivelInstitucion, Profesor, Clase, PeriodoLectivo, EspecialidadCursoLectivo, SeccionCursoLectivo, SubgrupoCursoLectivo
+from catalogos.models import SubArea, CursoLectivo, Seccion, Subgrupo
 
 # NOTA: SubgrupoInline eliminado - ahora se maneja desde catalogos.admin
 
@@ -11,18 +13,6 @@ class ClaseInline(admin.TabularInline):
     model = Clase
     extra = 0
     autocomplete_fields = ("subarea", "subgrupo")
-
-@admin.register(Seccion)
-class SeccionAdmin(admin.ModelAdmin):
-    list_display = ("codigo", "nivel", "numero", "institucion")
-    search_fields = ("codigo",)
-    list_filter = ("nivel", "institucion")
-
-@admin.register(Subgrupo)
-class SubgrupoAdmin(admin.ModelAdmin):
-    list_display = ("codigo", "seccion", "letra", "institucion")
-    search_fields = ("codigo",)
-    list_filter = ("seccion", "institucion")
 
 @admin.register(Profesor)
 class ProfesorAdmin(InstitucionScopedAdmin):
@@ -96,28 +86,7 @@ class ClaseAdmin(InstitucionScopedAdmin):
     def get_readonly_fields(self, request, obj=None):
         return () if request.user.is_superuser else ("institucion",)
 
-@admin.register(CursoLectivo)
-class CursoLectivoAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'anio', 'institucion', 'fecha_inicio', 'fecha_fin', 'activo')
-    list_filter = ('anio', 'activo', 'institucion')
-    search_fields = ('nombre', 'anio')
-    ordering = ('-anio',)
-    
-    fieldsets = (
-        ('Información General', {
-            'fields': ('institucion', 'anio', 'nombre', 'activo')
-        }),
-        ('Fechas', {
-            'fields': ('fecha_inicio', 'fecha_fin')
-        }),
-    )
-    
-    def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        if request.user.is_superuser:
-            return qs
-        # Usuarios normales solo ven cursos de su institución
-        return qs.filter(institucion=request.institucion_activa_id)
+# CursoLectivo ahora está en catalogos.admin
 
 @admin.register(PeriodoLectivo)
 class PeriodoLectivoAdmin(admin.ModelAdmin):
@@ -144,7 +113,7 @@ class PeriodoLectivoAdmin(admin.ModelAdmin):
 
 @admin.register(EspecialidadCursoLectivo)
 class EspecialidadCursoLectivoAdmin(admin.ModelAdmin):
-    list_display = ('institucion', 'curso_lectivo', 'especialidad', 'activa', 'fecha_creacion')
+    list_display = ('institucion', 'curso_lectivo', 'especialidad', 'activa', 'vista_masiva')
     list_filter = ('institucion', 'curso_lectivo__anio', 'especialidad__modalidad', 'activa')
     search_fields = ('institucion__nombre', 'curso_lectivo__nombre', 'especialidad__nombre')
     ordering = ('institucion__nombre', '-curso_lectivo__anio', 'especialidad__nombre')
@@ -154,13 +123,20 @@ class EspecialidadCursoLectivoAdmin(admin.ModelAdmin):
         ('Información General', {
             'fields': ('institucion', 'curso_lectivo', 'especialidad', 'activa')
         }),
-        ('Información del Sistema', {
-            'fields': ('fecha_creacion', 'fecha_modificacion'),
-            'classes': ('collapse',)
-        }),
     )
     
-    readonly_fields = ('fecha_creacion', 'fecha_modificacion')
+    def vista_masiva(self, obj):
+        """Enlace a la vista masiva para gestionar especialidades."""
+        if obj:
+            url = reverse('config_institucional:gestionar_especialidades_curso_lectivo')
+            return format_html(
+                '<a href="{}?institucion={}&curso_lectivo={}" class="button" target="_blank">'
+                '📋 Vista Masiva</a>',
+                url, obj.institucion.id, obj.curso_lectivo.id
+            )
+        return "—"
+    vista_masiva.short_description = "Vista Masiva"
+    vista_masiva.allow_tags = True
     
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -171,16 +147,16 @@ class EspecialidadCursoLectivoAdmin(admin.ModelAdmin):
     
     def get_readonly_fields(self, request, obj=None):
         if request.user.is_superuser:
-            return ('fecha_creacion', 'fecha_modificacion')
+            return ()
         # Usuarios normales no pueden cambiar la institución
-        return ('institucion', 'fecha_creacion', 'fecha_modificacion')
+        return ('institucion',)
 
 
 @admin.register(SeccionCursoLectivo)
 class SeccionCursoLectivoAdmin(admin.ModelAdmin):
     """Admin para gestionar las secciones disponibles por curso lectivo."""
     
-    list_display = ('institucion', 'curso_lectivo', 'seccion', 'activa', 'fecha_creacion')
+    list_display = ('institucion', 'curso_lectivo', 'seccion', 'activa', 'vista_masiva')
     list_filter = ('institucion', 'curso_lectivo__anio', 'seccion__nivel', 'activa')
     search_fields = ('institucion__nombre', 'curso_lectivo__nombre', 'seccion__numero')
     ordering = ('institucion__nombre', '-curso_lectivo__anio', 'seccion__nivel__numero', 'seccion__numero')
@@ -193,13 +169,20 @@ class SeccionCursoLectivoAdmin(admin.ModelAdmin):
         (None, {
             'fields': ('institucion', 'curso_lectivo', 'seccion', 'activa')
         }),
-        ('Información del Sistema', {
-            'fields': ('fecha_creacion', 'fecha_modificacion'),
-            'classes': ('collapse',)
-        }),
     )
     
-    readonly_fields = ('fecha_creacion', 'fecha_modificacion')
+    def vista_masiva(self, obj):
+        """Enlace a la vista masiva para gestionar secciones."""
+        if obj:
+            url = reverse('config_institucional:gestionar_secciones_curso_lectivo')
+            return format_html(
+                '<a href="{}?institucion={}&curso_lectivo={}" class="button" target="_blank">'
+                '📋 Vista Masiva</a>',
+                url, obj.institucion.id, obj.curso_lectivo.id
+            )
+        return "—"
+    vista_masiva.short_description = "Vista Masiva"
+    vista_masiva.allow_tags = True
     
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -209,8 +192,8 @@ class SeccionCursoLectivoAdmin(admin.ModelAdmin):
     
     def get_readonly_fields(self, request, obj=None):
         if request.user.is_superuser:
-            return ('fecha_creacion', 'fecha_modificacion')
-        return ('institucion', 'fecha_creacion', 'fecha_modificacion')
+            return ()
+        return ('institucion',)
     
     def agregar_todas_secciones(self, request, queryset):
         """Agregar todas las secciones disponibles de la institución a un curso lectivo específico."""
@@ -230,7 +213,6 @@ class SeccionCursoLectivoAdmin(admin.ModelAdmin):
         ).values_list('seccion_id', flat=True)
         
         # Obtener todas las secciones globales que no estén ya asignadas
-        from catalogos.models import Seccion
         secciones_disponibles = Seccion.objects.all().exclude(id__in=secciones_existentes)
         
         # Crear las asignaciones
@@ -311,7 +293,7 @@ class SeccionCursoLectivoAdmin(admin.ModelAdmin):
 class SubgrupoCursoLectivoAdmin(admin.ModelAdmin):
     """Admin para gestionar los subgrupos disponibles por curso lectivo."""
     
-    list_display = ('institucion', 'curso_lectivo', 'subgrupo', 'activa', 'fecha_creacion')
+    list_display = ('institucion', 'curso_lectivo', 'subgrupo', 'activa', 'vista_masiva')
     list_filter = ('institucion', 'curso_lectivo__anio', 'subgrupo__seccion__nivel', 'activa')
     search_fields = ('institucion__nombre', 'curso_lectivo__nombre', 'subgrupo__letra')
     ordering = ('institucion__nombre', '-curso_lectivo__anio', 'subgrupo__seccion__nivel__numero', 'subgrupo__letra')
@@ -324,13 +306,20 @@ class SubgrupoCursoLectivoAdmin(admin.ModelAdmin):
         (None, {
             'fields': ('institucion', 'curso_lectivo', 'subgrupo', 'activa')
         }),
-        ('Información del Sistema', {
-            'fields': ('fecha_creacion', 'fecha_modificacion'),
-            'classes': ('collapse',)
-        }),
     )
     
-    readonly_fields = ('fecha_creacion', 'fecha_modificacion')
+    def vista_masiva(self, obj):
+        """Enlace a la vista masiva para gestionar subgrupos."""
+        if obj:
+            url = reverse('config_institucional:gestionar_subgrupos_curso_lectivo')
+            return format_html(
+                '<a href="{}?institucion={}&curso_lectivo={}" class="button" target="_blank">'
+                '📋 Vista Masiva</a>',
+                url, obj.institucion.id, obj.curso_lectivo.id
+            )
+        return "—"
+    vista_masiva.short_description = "Vista Masiva"
+    vista_masiva.allow_tags = True
     
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -340,8 +329,8 @@ class SubgrupoCursoLectivoAdmin(admin.ModelAdmin):
     
     def get_readonly_fields(self, request, obj=None):
         if request.user.is_superuser:
-            return ('fecha_creacion', 'fecha_modificacion')
-        return ('institucion', 'fecha_creacion', 'fecha_modificacion')
+            return ()
+        return ('institucion',)
     
     def agregar_todos_subgrupos(self, request, queryset):
         """Agregar todos los subgrupos disponibles de la institución a un curso lectivo específico."""
@@ -361,7 +350,6 @@ class SubgrupoCursoLectivoAdmin(admin.ModelAdmin):
         ).values_list('subgrupo_id', flat=True)
         
         # Obtener todos los subgrupos globales que no estén ya asignados
-        from catalogos.models import Subgrupo
         subgrupos_disponibles = Subgrupo.objects.all().exclude(id__in=subgrupos_existentes)
         
         # Crear las asignaciones
@@ -435,7 +423,7 @@ class SubgrupoCursoLectivoAdmin(admin.ModelAdmin):
         count = queryset.update(activa=False)
         self.message_user(request, f"Se desactivaron {count} subgrupos.")
     
-    desactivar_seleccionadas.short_description = "❌ Desactivar subgrupos seleccionados"
+    desactivar_seleccionadas.short_description = "❌ Desactivar subgrupos seleccionadas"
 
 
 

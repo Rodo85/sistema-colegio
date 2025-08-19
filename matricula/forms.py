@@ -1,6 +1,9 @@
 from django import forms
-from .models import MatriculaAcademica, Nivel
-from django.utils.safestring import mark_safe
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
+from .models import Estudiante, MatriculaAcademica, PlantillaImpresionMatricula
+from config_institucional.models import Nivel
+from catalogos.models import CursoLectivo
 from dal import autocomplete
 
 class MatriculaAcademicaForm(forms.ModelForm):
@@ -120,4 +123,5 @@ class MatriculaAcademicaForm(forms.ModelForm):
         js = (
             'admin/js/jquery.init.js',
             'matricula/js/dependent-especialidad.js',  # Usar el archivo que funciona
+            'matricula/js/clear-dependent-fields.js',  # Limpieza automática de campos dependientes
         )
