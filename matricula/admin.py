@@ -132,7 +132,7 @@ class MatriculaAcademicaInline(admin.StackedInline):  # Cambiado a StackedInline
     class Media:
         js = (
             'admin/js/jquery.init.js',
-            'matricula/js/dependent-especialidad-inline.js',  # Para inlines
+            'matricula/js/dependent-especialidad.js',  # Para inlines también
         )
 
 # ────────────────────────  Estudiante admin  ───────────────────────────
@@ -295,7 +295,7 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
     class Media:
         js = (
             'admin/js/jquery.init.js',
-            # DAL maneja las dependencias automáticamente, no necesitamos JS custom
+            'matricula/js/dependent-especialidad.js',  # Forzar el JS correcto
         )
     
     # def __init__(self, *args, **kwargs):

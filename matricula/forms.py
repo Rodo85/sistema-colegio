@@ -11,9 +11,9 @@ class MatriculaAcademicaForm(forms.ModelForm):
             # FLUJO DEPENDIENTE: Curso Lectivo → Especialidad, Sección, Subgrupo
             'especialidad': autocomplete.ModelSelect2(
                 url='especialidad-autocomplete', 
-                forward=['curso_lectivo'],  # Especialidad depende de curso_lectivo
+                forward=['curso_lectivo', 'nivel'],  # Especialidad depende de curso_lectivo y nivel
                 attrs={
-                    'data-placeholder': 'Seleccione primero un curso lectivo...',
+                    'data-placeholder': 'Seleccione primero un curso lectivo y un nivel...',
                     'data-allow-clear': True,
                 }
             ),
@@ -27,9 +27,9 @@ class MatriculaAcademicaForm(forms.ModelForm):
             ),
             'subgrupo': autocomplete.ModelSelect2(
                 url='subgrupo-autocomplete',
-                forward=['curso_lectivo'],  # Subgrupo depende de curso_lectivo
+                forward=['curso_lectivo', 'seccion'],  # Subgrupo depende de curso_lectivo y seccion
                 attrs={
-                    'data-placeholder': 'Seleccione primero un curso lectivo...',
+                    'data-placeholder': 'Seleccione primero un curso lectivo y una sección...',
                     'data-allow-clear': True,
                 }
             ),
@@ -119,5 +119,5 @@ class MatriculaAcademicaForm(forms.ModelForm):
     class Media:
         js = (
             'admin/js/jquery.init.js',
-            'matricula/js/dependent-especialidad.js',
+            'matricula/js/dependent-especialidad.js',  # Usar el archivo que funciona
         )

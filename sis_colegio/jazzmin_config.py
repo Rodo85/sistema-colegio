@@ -68,7 +68,7 @@ JAZZMIN_SETTINGS = {
         {"app": "core"},
         {"app": "matricula"},
         {"app": "catalogos"},
-        {"app": "config_institucional"},  
+        {"app": "config_institucional"},
     ],
     
     # Enlaces personalizados para matrícula

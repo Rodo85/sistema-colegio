@@ -145,9 +145,10 @@ def get_especialidades_disponibles(request):
 
 class EspecialidadAutocomplete(autocomplete.Select2QuerySetView):
     """
-    Autocompletado para Especialidad que filtra por Curso Lectivo e institución.
+    Autocompletado para Especialidad que filtra por Curso Lectivo, Nivel e institución.
+    Solo muestra especialidades para niveles 10, 11, 12.
     Busca directamente en EspecialidadCursoLectivo.
-    Forward: curso_lectivo → especialidad
+    Forward: curso_lectivo, nivel → especialidad
     """
     def get_queryset(self):
         # DEBUG: Imprimir información de debug
@@ -172,14 +173,18 @@ class EspecialidadAutocomplete(autocomplete.Select2QuerySetView):
                 print("❌ No hay institución activa")
                 return Especialidad.objects.none()
         
-        # FILTRO POR CURSO LECTIVO (forward) - BUSCAR EN EspecialidadCursoLectivo
+        # FILTRO POR CURSO LECTIVO Y NIVEL (forward) - BUSCAR EN EspecialidadCursoLectivo
         curso_lectivo_id = self.forwarded.get('curso_lectivo', None)
+        nivel_id = self.forwarded.get('nivel', None)
         print(f"📅 Curso lectivo ID: {curso_lectivo_id}")
+        print(f"📊 Nivel ID: {nivel_id}")
         print(f"📅 Forwarded completo: {self.forwarded}")
         
-        if curso_lectivo_id:
+        # REQUIERE tanto curso lectivo como nivel
+        if curso_lectivo_id and nivel_id:
             try:
                 from config_institucional.models import EspecialidadCursoLectivo
+                from catalogos.models import Nivel
                 
                 # Verificar que el curso lectivo pertenezca a la institución
                 curso_lectivo = CursoLectivo.objects.get(
@@ -187,6 +192,17 @@ class EspecialidadAutocomplete(autocomplete.Select2QuerySetView):
                     institucion_id=institucion_id
                 )
                 print(f"✅ Curso lectivo encontrado: {curso_lectivo.nombre}")
+                
+                # Verificar que el nivel existe
+                nivel = Nivel.objects.get(id=nivel_id)
+                print(f"✅ Nivel encontrado: {nivel}")
+                
+                # SOLO mostrar especialidades para niveles 10, 11, 12
+                if nivel.numero not in [10, 11, 12]:
+                    print(f"❌ Nivel {nivel.numero} ({nivel.nombre}) no requiere especialidad")
+                    return Especialidad.objects.none()
+                
+                print(f"✅ Nivel {nivel.numero} ({nivel.nombre}) requiere especialidad")
                 
                 # Obtener especialidades configuradas y activas para este curso lectivo
                 especialidades_configuradas = EspecialidadCursoLectivo.objects.filter(
@@ -201,12 +217,15 @@ class EspecialidadAutocomplete(autocomplete.Select2QuerySetView):
                 qs = Especialidad.objects.filter(id__in=especialidades_configuradas)
                 print(f"📋 Especialidades encontradas: {[esp.nombre for esp in qs]}")
                 
-            except (CursoLectivo.DoesNotExist, ValueError) as e:
+            except (CursoLectivo.DoesNotExist, Nivel.DoesNotExist, ValueError) as e:
                 print(f"❌ Error: {e}")
                 return Especialidad.objects.none()
         else:
-            # Sin curso lectivo, no mostrar especialidades
-            print("❌ No hay curso lectivo seleccionado")
+            # Sin curso lectivo o nivel, no mostrar especialidades
+            if not curso_lectivo_id:
+                print("❌ No hay curso lectivo seleccionado")
+            if not nivel_id:
+                print("❌ No hay nivel seleccionado")
             return Especialidad.objects.none()
         
         # Filtro por búsqueda
@@ -296,9 +315,9 @@ class SeccionAutocomplete(autocomplete.Select2QuerySetView):
 
 class SubgrupoAutocomplete(autocomplete.Select2QuerySetView):
     """
-    Autocompletado para Subgrupo que filtra por Curso Lectivo e institución.
+    Autocompletado para Subgrupo que filtra por Curso Lectivo, Sección e institución.
     Busca directamente en SubgrupoCursoLectivo.
-    Forward: curso_lectivo → subgrupo
+    Forward: curso_lectivo, seccion → subgrupo
     """
     def get_queryset(self):
         print("🔥 SubgrupoAutocomplete.get_queryset() llamado")
@@ -322,12 +341,14 @@ class SubgrupoAutocomplete(autocomplete.Select2QuerySetView):
                 print("❌ No hay institución activa")
                 return Subgrupo.objects.none()
         
-        # FILTRO POR CURSO LECTIVO (forward) - BUSCAR EN SubgrupoCursoLectivo
+        # FILTRO POR CURSO LECTIVO Y SECCIÓN (forward) - BUSCAR EN SubgrupoCursoLectivo
         curso_lectivo_id = self.forwarded.get('curso_lectivo', None)
+        seccion_id = self.forwarded.get('seccion', None)
         print(f"📅 Curso lectivo ID: {curso_lectivo_id}")
+        print(f"📍 Sección ID: {seccion_id}")
         print(f"📅 Forwarded completo: {self.forwarded}")
         
-        if curso_lectivo_id:
+        if curso_lectivo_id and seccion_id:
             try:
                 from config_institucional.models import SubgrupoCursoLectivo
                 
@@ -338,25 +359,34 @@ class SubgrupoAutocomplete(autocomplete.Select2QuerySetView):
                 )
                 print(f"✅ Curso lectivo encontrado: {curso_lectivo.nombre}")
                 
+                # Verificar que la sección existe
+                seccion = Seccion.objects.get(id=seccion_id)
+                print(f"✅ Sección encontrada: {seccion}")
+                
                 # Obtener subgrupos configurados y activos para este curso lectivo
+                # que pertenezcan específicamente a la sección seleccionada
                 subgrupos_configurados = SubgrupoCursoLectivo.objects.filter(
                     institucion_id=institucion_id,
                     curso_lectivo=curso_lectivo,
-                    activa=True
+                    activa=True,
+                    subgrupo__seccion=seccion  # FILTRO ADICIONAL: solo subgrupos de la sección seleccionada
                 ).values_list('subgrupo_id', flat=True)
                 
-                print(f"🎯 Subgrupos configurados IDs: {list(subgrupos_configurados)}")
+                print(f"🎯 Subgrupos configurados IDs para sección {seccion}: {list(subgrupos_configurados)}")
                 
                 # Filtrar subgrupos
                 qs = Subgrupo.objects.filter(id__in=subgrupos_configurados)
                 print(f"📋 Subgrupos encontrados: {[f'{s.letra} - Sección {s.seccion.numero}' for s in qs]}")
                 
-            except (CursoLectivo.DoesNotExist, ValueError) as e:
+            except (CursoLectivo.DoesNotExist, Seccion.DoesNotExist, ValueError) as e:
                 print(f"❌ Error: {e}")
                 return Subgrupo.objects.none()
         else:
-            # Sin curso lectivo, no mostrar subgrupos
-            print("❌ No hay curso lectivo seleccionado")
+            # Sin curso lectivo o sección, no mostrar subgrupos
+            if not curso_lectivo_id:
+                print("❌ No hay curso lectivo seleccionado")
+            if not seccion_id:
+                print("❌ No hay sección seleccionada")
             return Subgrupo.objects.none()
         
         # Filtro por búsqueda
