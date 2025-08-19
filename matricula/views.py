@@ -266,12 +266,14 @@ class SeccionAutocomplete(autocomplete.Select2QuerySetView):
                 print("❌ No hay institución activa")
                 return Seccion.objects.none()
         
-        # FILTRO POR CURSO LECTIVO (forward) - BUSCAR EN SeccionCursoLectivo
+        # FILTRO POR CURSO LECTIVO Y NIVEL (forward) - BUSCAR EN SeccionCursoLectivo
         curso_lectivo_id = self.forwarded.get('curso_lectivo', None)
+        nivel_id = self.forwarded.get('nivel', None)
         print(f"📅 Curso lectivo ID: {curso_lectivo_id}")
+        print(f"📅 Nivel ID: {nivel_id}")
         print(f"📅 Forwarded completo: {self.forwarded}")
         
-        if curso_lectivo_id:
+        if curso_lectivo_id and nivel_id:
             try:
                 from config_institucional.models import SeccionCursoLectivo
                 
@@ -291,11 +293,19 @@ class SeccionAutocomplete(autocomplete.Select2QuerySetView):
                 
                 print(f"🎯 Secciones configuradas IDs: {list(secciones_configuradas)}")
                 
-                # Filtrar secciones
-                qs = Seccion.objects.filter(id__in=secciones_configuradas)
-                print(f"📋 Secciones encontradas: {[f'Sección {s.numero} - {s.nivel.nombre}' for s in qs]}")
+                # Filtrar secciones por nivel
+                from config_institucional.models import Nivel
+                nivel = Nivel.objects.get(id=nivel_id)
+                print(f"🎯 Nivel seleccionado: {nivel.nombre} ({nivel.numero})")
                 
-            except (CursoLectivo.DoesNotExist, ValueError) as e:
+                # Filtrar secciones por nivel y curso lectivo
+                qs = Seccion.objects.filter(
+                    id__in=secciones_configuradas,
+                    nivel=nivel
+                )
+                print(f"📋 Secciones encontradas para nivel {nivel.numero}: {[f'{s.nivel.numero}-{s.numero}' for s in qs]}")
+                
+            except (CursoLectivo.DoesNotExist, Nivel.DoesNotExist, ValueError) as e:
                 print(f"❌ Error: {e}")
                 return Seccion.objects.none()
         else:

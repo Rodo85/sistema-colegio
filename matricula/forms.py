@@ -19,9 +19,9 @@ class MatriculaAcademicaForm(forms.ModelForm):
             ),
             'seccion': autocomplete.ModelSelect2(
                 url='seccion-autocomplete',
-                forward=['curso_lectivo'],  # Sección depende de curso_lectivo
+                forward=['curso_lectivo', 'nivel'],  # Sección depende de curso_lectivo y nivel
                 attrs={
-                    'data-placeholder': 'Seleccione primero un curso lectivo...',
+                    'data-placeholder': 'Seleccione primero un curso lectivo y un nivel...',
                     'data-allow-clear': True,
                 }
             ),
