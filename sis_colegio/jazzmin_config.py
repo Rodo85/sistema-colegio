@@ -4,9 +4,9 @@
 JAZZMIN_SETTINGS = {
     "copyright": "Ing. Rodolfo Garro Monge",
     "welcome_sign": "Sistema Integral de Gestión Administrativa y Educativa",
-    "site_title": "Cole Smart",
-    "site_header": "Cole Smart",
-    "site_brand": "Cole Smart",
+    "site_title": "School Smart",
+    "site_header": "School Smart",
+    "site_brand": "School Smart",
     
     "order_with_respect_to": [
         "core",

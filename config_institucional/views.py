@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.db import transaction
-from django.core.paginator import Paginator
+
 from django.contrib.admin.views.decorators import staff_member_required
 from django.utils import timezone
 from django.db.models import Q
@@ -94,16 +94,11 @@ def gestionar_secciones_curso_lectivo(request):
     # Obtener cursos lectivos disponibles
     cursos_lectivos = CursoLectivo.objects.all().order_by('-anio')
     
-    # Paginación para las secciones
-    paginator = Paginator(secciones_disponibles, 50)  # 50 secciones por página
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    
     context = {
         'institucion': institucion,
         'curso_lectivo': curso_lectivo,
         'secciones_configuradas': secciones_configuradas,
-        'page_obj': page_obj,
+        'secciones_disponibles': secciones_disponibles,
         'instituciones': instituciones,
         'cursos_lectivos': cursos_lectivos,
         'es_superusuario': request.user.is_superuser,
@@ -251,16 +246,11 @@ def gestionar_especialidades_curso_lectivo(request):
     # Obtener cursos lectivos disponibles
     cursos_lectivos = CursoLectivo.objects.all().order_by('-anio')
     
-    # Paginación para las especialidades
-    paginator = Paginator(especialidades_disponibles, 50)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    
     context = {
         'institucion': institucion,
         'curso_lectivo': curso_lectivo,
         'especialidades_configuradas': especialidades_configuradas,
-        'page_obj': page_obj,
+        'especialidades_disponibles': especialidades_disponibles,
         'instituciones': instituciones,
         'cursos_lectivos': cursos_lectivos,
         'es_superusuario': request.user.is_superuser,
@@ -410,16 +400,11 @@ def gestionar_subgrupos_curso_lectivo(request):
     # Obtener cursos lectivos disponibles
     cursos_lectivos = CursoLectivo.objects.all().order_by('-anio')
     
-    # Paginación para los subgrupos
-    paginator = Paginator(subgrupos_disponibles, 50)  # 50 subgrupos por página
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    
     context = {
         'institucion': institucion,
         'curso_lectivo': curso_lectivo,
         'subgrupos_configurados': subgrupos_configurados,
-        'page_obj': page_obj,
+        'subgrupos_disponibles': subgrupos_disponibles,
         'instituciones': instituciones,
         'cursos_lectivos': cursos_lectivos,
         'es_superusuario': request.user.is_superuser,

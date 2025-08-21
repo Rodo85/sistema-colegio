@@ -287,48 +287,31 @@
             <input type="hidden" name="institucion_id" value="{{ institucion.id }}">
             <input type="hidden" name="curso_lectivo_id" value="{{ curso_lectivo.id }}">
             
-            <div class="especialidades-grid">
-                {% for especialidad in page_obj %}
-                <div class="especialidad-item" data-modalidad="{{ especialidad.modalidad.nombre|upper }}">
-                    <input type="checkbox" 
-                           name="especialidades" 
-                           value="{{ especialidad.id }}:true"
-                           id="especialidad_{{ especialidad.id }}"
-                           {% if especialidad.id in especialidades_configuradas %}
-                               {% if especialidades_configuradas|get_item:especialidad.id|get_item:'activa' %}
-                                   checked
-                               {% endif %}
-                           {% endif %}
-                           onchange="actualizarValorEspecialidad({{ especialidad.id }}, this.checked)">
-                    
-                    <div class="especialidad-info">
-                        <div class="especialidad-nombre">{{ especialidad.nombre }}</div>
-                    </div>
-                </div>
-                {% empty %}
-                <p>No hay especialidades disponibles.</p>
-                {% endfor %}
-            </div>
+                         <div class="especialidades-grid">
+                 {% for especialidad in especialidades_disponibles %}
+                 <div class="especialidad-item" data-modalidad="{{ especialidad.modalidad.nombre|upper }}">
+                     <input type="checkbox" 
+                            name="especialidades" 
+                            value="{{ especialidad.id }}:true"
+                            id="especialidad_{{ especialidad.id }}"
+                            {% if especialidad.id in especialidades_configuradas %}
+                                {% if especialidades_configuradas|get_item:especialidad.id|get_item:'activa' %}
+                                    checked
+                                {% endif %}
+                            {% endif %}
+                            onchange="actualizarValorEspecialidad({{ especialidad.id }}, this.checked)">
+                     
+                     <div class="especialidad-info">
+                         <div class="especialidad-nombre">{{ especialidad.nombre }}</div>
+                     </div>
+                 </div>
+                 {% empty %}
+                 <p>No hay especialidades disponibles.</p>
+                 {% endfor %}
+             </div>
         </form>
         
-        <!-- Paginación -->
-        {% if page_obj.has_other_pages %}
-        <div class="paginacion">
-            {% if page_obj.has_previous %}
-                <a href="?page=1{% if request.GET.institucion %}&institucion={{ request.GET.institucion }}{% endif %}{% if request.GET.curso_lectivo %}&curso_lectivo={{ request.GET.curso_lectivo }}{% endif %}">&laquo; Primera</a>
-                <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.institucion %}&institucion={{ request.GET.institucion }}{% endif %}{% if request.GET.curso_lectivo %}&curso_lectivo={{ request.GET.curso_lectivo }}{% endif %}">Anterior</a>
-            {% endif %}
-            
-            <span class="current">
-                Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
-            </span>
-            
-            {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}{% if request.GET.institucion %}&institucion={{ request.GET.institucion }}{% endif %}{% if request.GET.curso_lectivo %}&curso_lectivo={{ request.GET.curso_lectivo }}{% endif %}">Siguiente</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.institucion %}&institucion={{ request.GET.institucion }}{% endif %}{% if request.GET.curso_lectivo %}&curso_lectivo={{ request.GET.curso_lectivo }}{% endif %}">Última &raquo;</a>
-            {% endif %}
-        </div>
-        {% endif %}
+        
     </div>
     {% else %}
     <div class="mensaje error">
@@ -397,6 +380,19 @@ function limpiarLocalStorage() {
     localStorage.removeItem(storageKey);
 }
 
+function getEstados() {
+    const storageKey = `especialidades_seleccionadas_${getInstitucionCursoKey()}`;
+    const selecciones = JSON.parse(localStorage.getItem(storageKey) || '{}');
+    
+    // Convertir formato de especialidades (true/false) a formato de estados (1/0)
+    const estados = {};
+    Object.keys(selecciones).forEach(id => {
+        estados[id] = selecciones[id] ? 1 : 0;
+    });
+    
+    return estados;
+}
+
 function filtrarPorModalidad() {
     const modalidadSeleccionada = document.getElementById('filtro_modalidad').value;
     const especialidades = document.querySelectorAll('.especialidad-item');
@@ -447,13 +443,27 @@ async function guardarCambios() {
     const form = document.getElementById('especialidades-form');
     const formData = new FormData(form);
     
-    // Obtener solo los checkboxes marcados
-    const checkboxes = document.querySelectorAll('input[name="especialidades"]:checked');
+    // Limpiar campos previos
     formData.delete('especialidades');
+    formData.delete('especialidades[]');
     
-    checkboxes.forEach(checkbox => {
-        formData.append('especialidades[]', checkbox.value);
-    });
+    // 1) Consolidar seleccionadas desde localStorage (todas las páginas)
+    const estados = getEstados();
+    const idsSeleccionadosLS = Object.keys(estados).filter(id => estados[id] === 1);
+    
+    // 2) Asegurar también las seleccionadas visibles por si no han sido tocadas
+    const idsSeleccionadosDOM = Array.from(document.querySelectorAll('input[name="especialidades"]'))
+        .filter(cb => cb.checked)
+        .map(cb => cb.id.replace('especialidad_', ''));
+    
+    const setFinal = new Set([...idsSeleccionadosLS, ...idsSeleccionadosDOM]);
+    
+    // 3) Enviar en formato "id:true"
+    if (setFinal.size === 0) {
+        // Si nada en LS ni DOM, no enviamos nada
+    } else {
+        setFinal.forEach(id => formData.append('especialidades[]', `${id}:true`));
+    }
     
     mostrarLoading(true);
     

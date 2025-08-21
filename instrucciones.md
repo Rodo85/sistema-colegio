@@ -76,5 +76,3 @@ Cuando trabajemos con dropdown al parecer hay problemas de dependencia, con much
    - Provincia → Cantón → Distrito (dependent-dropdowns.js)
    - Nivel → Especialidad (dependent-especialidad.js)
 
-**Nota importante**
-Cuando te pida algo haz los cambios automaticamente, no me preguntes si quiero que tu lo hagas solo hazlo
