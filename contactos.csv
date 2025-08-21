@@ -1,0 +1,826 @@
+intitucion_id;tipo_identificacion;identificacion;primer_apellido;segundo_apellido;nombres;estado_civil_id;id_Parentesco_contacto;celular_avisos;correo;lugar_trabajo;telefono_trabajo;escolaridad_id;ocupacion_id
+1;1;104700577;Sanchez;;Mayela;2;4;72504432;lauraquiros2218@gmail.com;Aldeas infantiles SOS;71457860;2;6
+1;1;502700827;Rodriguez;Navarrete;Marisol;1;2;88684791;marisolrodrigueznavarrete@gmail.com;Ama de casa;88684791;2;2
+1;1;104210073;Sanchez;Navarro;Maria Teresa;4;4;84859460;;ama de casa;;2;2
+1;1;10780276;Valerio;Salvatierra;Maritza;1;4;70132127;isv90@yahoo.com;Ama de casa;;2;2
+1;1;111350778;Solano;Jarquin;Ruth pamela;2;2;87902448;pamelasmena84@gmail.com;ama de casa;87902448;2;2
+1;1;112410673;Quesada;Chinchilla;Jeimy Lorena;1;2;72108692;jeimyquesada54@gmail.com;Ama de casa;72108692;2;2
+1;1;112800650;Granados;Cerdas;Lilliana Vanessa;5;2;62242689;liligranados3586@gmail.com;Ama de casa;62242689;2;2
+1;1;113090211;Fallas;Valverde;Marjorie Alicia;2;2;89789781;marjoriefallasvalverde@gmail.com;Ama de casa;;2;2
+1;1;113530140;QUIROS;GARCIA;VIVIANA;2;2;60182999;NICOLHUGHES16@GMAIL.COM;AMA DE CASA;;2;2
+1;1;113740100;TENORIO;MATA;KEMBLY;5;2;62733859;kemblytenorio@gmail.com;ama de casa;;2;2
+1;1;113950944;Mendez;Nunez;Maria;1;2;84422512;magdalenamendez0607@gmail.com;Ama de casa;84422512;2;2
+1;1;114280323;Valerio;Salvatierra;Jackeline;2;2;71762886;jvarelavalerio@gmail.com;Ama de casa;71762886;2;2
+1;1;114820412;Barrantes;Catro;Kiara;2;2;61691221;kiarabcanthuan91@gmail.com;Ama de Casa;61691221;2;2
+1;1;115940676;Castro;Fernandez;Emily;5;2;70849591;emilycastro1495@gmail.com;Ama de casa;70849591;2;2
+1;2;155804092326;Reyes;Lopez;Mercedes;1;4;61125388;lidiethreyes123@gmail.com;Ama de casa;;2;2
+1;2;155806385633;Silva;Vargas;Apolinaria;2;4;61951324;paolazilba@gmail.com;Ama de casa;61951324;2;2
+1;2;155806840330;Hernandez;Roque;Maria Auxiliadora;5;2;63351280;mh6072112@gmail.com;Ama de casa;63351280;2;2
+1;2;155818650822;Coronado;Zeas;Bertha;5;2;60332374;coronadobertha937@gnail.com;Ama de casa;60332374;2;2
+1;2;155819405017;Morales;Rocha;Marisol;5;2;60240231;marisol951646@gmail.com;Ama de casa;60240231;2;2
+1;2;155820230606;Calero;Diaz;Maria Isabel;2;2;60466864;karendiaz087@gmail.com;Ama de casa;60466864;2;2
+1;2;155832110207;Isamar;Zambrana;Maryel;2;2;70422636;Maryelzambrana13@gmail.com;Ama de Casa;70422636;2;2
+1;2;155834993609;Medina;Perez;Aura Lila;2;2;63843317;;ama de casa;63843317;2;2
+1;2;155843543000;Villega;Castellon;Luz Marina;2;2;71908838;luzmanrinavillegacastellon@gmail.com;Ama de casa;71908838;2;2
+1;1;204970643;Alvarez;Esquivel;Jazmin Argery;2;2;85123371;;Ama de casa;85123371;2;2
+1;1;303130046;Cordero;Mesen;Maria Yamileth;2;4;61281260;;Ama de casa;61281260;2;2
+1;1;304040354;Ulloa;Legaspi;Dennise;3;2;70155766;ulloa.legaspi86@gmail.com;Ama de Casa;70155766;2;2
+1;1;502700827;Rodriguez;Navarrate;Marisol;1;2;88684791;luisdiego3rodriguez@gmail.com;Ama de casa;88684791;2;2
+1;1;702010185;Mendez;Castro;Yessica;5;2;63739895;yessica.fe1990@gmail.com;Ama de Casa;63739895;2;2
+1;1;800900895;LOPEZ;RIVERA;SEYLA MASSIELL;5;2;61043830;MASSIELLLOPEZ784@GMAIL.COM;AMA DE CASA;61043830;2;2
+1;1;900920257;Quesada;Brenes;Mayra;3;2;63680729;cquesada780@gmail.com;Ama de casa;63680729;2;2
+1;1;901200915;Cruz;Martinez;Jacqueline del Carmen;2;2;72842448;jacquicruzm@gmail.com;Ama de Casa;72842448;2;2
+1;2;C0363333353;Castro;Castro;Justina;1;4;71228393;socorrocastro021169@gmail.com;Ama de casa;71228393;2;2
+1;1;108480632;Mora;Chacon;Maria;4;2;72546642;morachaconrocio@gmail.com;ama de casa ;72546642;2;2
+1;1;112870918;Duran;Salazar;Raquel Maria;1;2;87537953;deykelduran30@gmail.com;Ama de casa ;87537953;2;2
+1;1;115300761;Almanzo;Urena;Paola;2;2;62466528;paolaalmanzo88@gmail.com;Ama de casa ;62466528;2;2
+1;2;155819375031;Urbina;Lumbis;Juvelki;2;2;61378400;juvelkiurbina1987@gmail.com;ama de casa ;;2;2
+1;2;155821485712;Gomez;Maltez;Jennifer;2;2;85812341;gomeznoelquis77@gmail.com;Ama de casa ;85812341;2;2
+1;2;155823836727;Gutierrez;Narvaez;Yrelis;5;2;87673943;yarelisgutierres1984@gmail.com;Ama de casa ;;2;2
+1;2;1642803810000s;Calderon;Isaguirre;Santos Segunda;5;2;61798302;;Ama de casa ;61798302;2;2
+1;1;801150007;Condega;Paizano;Iraida;2;2;85120381;condegairayda1209@gmail.com;Ama de casa ;;2;2
+1;1;900780634;Carmona;Guerrero;Amelia;2;4;85355321;amecar4565@gmail.com;Ama de casa ;85355321;2;2
+1;2;155824292700;Jarquin;Sanchez;Maria Auxiliadora;1;2;83434238;mj83434238@gmail.com;Ama de casa y venta de comidas;83434238;2;2
+1;1;205920427;Porras;Murillo;Elizabeth;1;2;63675031;marvinporras2936@gmail.com;Ama de casas;63675031;2;2
+1;2;155828419701;Auxiliadora;Gomez;Carolina;2;2;60020810;;ama decasa;60020810;2;2
+1;1;115350961;Serrano;Calvo;Haydee Priscilla;5;2;87276711;priscillaserrano556@gmail.com;Casa;;2;2
+1;2;155807893312;Urbina;Vega;Marina Victoria;4;4;71283878;marina62urbinavega@gmail.com;casa;;2;2
+1;2;155821762830;Jimenez;Bermudez;Reyna;2;2;60607047;rebejj16@gmail.com;casa;60607047;2;2
+1;1;109910529;Rivera;Alfaro;Rosa;1;2;61685841;rosarivera2301@gmail.com;Curridabat;61685841;2;2
+1;2;155819591331;Yadira;Sanchez;Marlyn;2;2;71653134;sanchezmarlyn2020@gmail.com;Curridabat;71653134;2;2
+1;2;155836091229;Perez;Fernandez;Jennifer Tatiana;1;2;70623244;jennifertatianaperezfernandez@gmail.com;Curridabat;83439219;2;2
+1;1;107190093;Beita;Granados;Iris;3;4;87715055;kimirisbeita15.11@gmail.com;De la casa;87715955;2;2
+1;2;155826126501;Brenes;Ramirez;Eva;5;2;71232329;ebreness597@gmail.com;De la casa;71232329;2;2
+1;2;155819957102;Elena;Castillo;Julia;1;2;60351080;juliacastill6@gmail.com;Escazu;60351080;2;6
+1;1;109950028;Brenes;Aguilera;Juan Carlos;1;1;85121653;brenesjuancarlos752@gmail.com;Estructuras Eliecer Ch;71268063;2;6
+1;1;112720942;Moya;Ureña;Monica;5;2;87778596;monicamoya63@gmail.com;Hogar;87778596;2;2
+1;2;4430105470002;Barrera;Soto;Felipa;4;4;60847189;;Hogar;60847189;2;2
+1;2;155805501334;Garcia;Saenz;Maura;1;2;61911559;maurasaenz85@gmail.com;Hogares cercanos;63189686;2;2
+1;2;155807278734;Martinez;Martinez;Gloria Isabel;1;2;86264475;;Limpieza ;86264475;2;2
+1;1;801440990;Rodriguez;Torres;Yelic;2;2;61651536;yelictorres266@gmail.com;Monplaza;88013355;2;6
+1;1;111420838;Flores;Picado;Manuel;5;1;85474216;manuel.flores1182@gmail.com;Municipalidad de desamparados ;85474216;2;8
+1;1;108600339;Soto;Monge;Douglas Gustavo;2;1;89810596;corphyd@hotmail.com;oficina en la casa;22764007;2;7
+1;1;109430207;Segura;Sanchez;Guiselle;2;2;84027219;guis.seguras18@gmail.com;Panaderia Luisita;22766537;2;6
+1;2;155805304109;Aguilar;Aleman;Juana;2;2;64789528;ev09664@gmail.com;Panaderia Marcel;22764811;2;2
+1;2;1558055001334;Garcia;Saenz;Maura;1;2;61911559;maurasaenz85@gmail.com;Residencias en los Guizaros;63189686;2;2
+1;1;109430660;Delgado;Quesada;Lidia Maritza;4;2;62824120;maritza97531@gmail.com;San Francisco La Pacifica ;62824120;2;2
+1;1;116080234;Jimenez;Rojas;Belkis;1;2;60643058;titajmnz1995@gmail.com;San Jose;64272349;2;6
+1;2;1155819691017;Lopez;Chavarria;Rosa Esmeralda;1;2;63150449;rosslopezchavarria@gmail.com;Soda la triunfadora;63150449;2;11
+1;1;701460771;Rangel;Duran;Luis Enrique;2;1;70725522;luisenriquerangelduran1982@gmail.com;Tribunales de San Jose;64479176;2;6
+1;1;110460173;Mena;Barrientos;Gustavo;3;1;88305005;gustavomena78@gmail.com;Zona Franca Metropolitana;;2;9
+1;1;104570634;Ugalde;Perez;Juan Luis;3;1;61622965;andreyugalde67@gmail.com;A domicilio;61622965;3;6
+1;2;155818490927;Urania;Leiva;Vanicia;1;2;62548711;vanicialeiva@gmail.com;A domicilio;62548711;3;2
+1;2;155820980312;Lopez;Mendoza;Dora;1;2;72187319;roldanyl2903@gmail.com;A domicilio;72187319;3;7
+1;1;114750140;Hernandez;Mairena;Tatiana;1;2;60804155;tatihernandezm11@gmail.com;Acira ;;3;6
+1;1;110400398;Amador;Mora;Lilliana;2;2;86533491;;Alimentos Zuñiga ;86533491;3;8
+1;2;C01460539;Urbina;Munguia;Maudilia Nazarena;2;2;62920598;maudiliamunguia43@gmail.com;Ama  de casa;;3;2
+1;1;110170284;Garro;Navarro;Jessica;2;2;85926128;jessigana26@gmail.com;Ama casa;85926128;3;2
+1;1;103720808;Brenes;Guzman;Nelsie Lidieth;2;2;61173977;nelsy.brenescr@gmail.com;Ama de casa;61173977;3;2
+1;1;106260444;Sanabria;Carvajal;Rosibel;1;4;;;Ama de casa;22769457;3;2
+1;1;107320616;Campos;Diaz;Leticia Cecilia;2;4;89788079;leticiacampos@hotmail.com;Ama de casa;89788079;3;2
+1;1;108340408;Guerrero;Bermudez;Mayitt;2;2;86494748;mayittgb@gmail.com;ama de casa;86494748;3;2
+1;1;108420593;Calderon;Mora;Shirley Rocio;3;2;86948216;shirleycaleronm71@gmail.com;ama de casa;;3;2
+1;1;108460702;Vargas;Guerrero;Olga Marta;2;2;85155472;olvarguer@gmail.com;Ama de casa;;3;2
+1;1;108840520;Garbanzo;Fallas;Ana Luisa;2;4;86022860;anagarbanzofallas123@gmail.com;Ama de casa;86022860;3;2
+1;1;109130828;Rodriguez;Espinoza;Karla Marcela;2;2;86448870;marugez1102@gmail.com;Ama de casa;86448870;3;2
+1;1;109150555;Anchia;Alvarez;Patricia;2;2;70552791;patriciaanchia43@gmail.com;Ama de casa;;3;2
+1;1;109150933;MOYA;URENA;CINTHYA ISELA;5;2;87881789;cinthiamoyaurena@gmail.com;AMA DE CASA;87881789;3;2
+1;1;109230721;Mena;Porras;Anayency;1;4;61709643;menaporrasana16@outlook.com;Ama de casa;;3;2
+1;1;109240582;Ramirez;Alvarez;Zulay;2;2;71757343;zulay140511@gmail.com;ama de casa;71757343;3;2
+1;1;109780716;Porras;Mora;Wendy;5;2;86302913;wendyporras516@gmail.com;Ama de casa;86302913;3;2
+1;1;109800036;Vargas;Guerrero;Marleny;2;2;85124678;mvargue77@gmail.com;Ama de casa;85124678;3;2
+1;1;109850783;Cerdas;Monge;Adriana del Milagro;2;2;88196419;nanamonge11@gmail.com;ama de casa;88196419;3;2
+1;1;109870708;Segura;Sanchez;Maria Marlene;2;2;88841908;segurasanchezmarlene@gmail.com;ama de casa;;3;2
+1;1;110070670;URENA;ROBLES;LIGIA MARIA;2;2;84929779;;AMA DE CASA;;3;2
+1;1;110200692;Calderon;Vargas;Xinia;5;2;71208180;yesecalderon78@gmail.com;Ama de casa;71208180;3;2
+1;1;110560673;Valverde;Campos;Marcia;3;2;64894473;marciavalverde83@gmail.com;ama de casa;64894473;3;7
+1;1;110650734;Valdivia;Fonseca;Olga Vanessa;2;2;61081799;dayris62@hotmail.com;Ama de Casa;61081799;3;2
+1;1;110690946;Cardenas;Bonilla;Cristina;1;2;60107103;ccardenasboonilla23@gmail.com;ama de casa;60107103;3;2
+1;1;111290205;Sibaja;Sanchez;Wendy;3;2;72738347;wendysibaja90@gmail.com;Ama de casa;;3;2
+1;1;111310262;Chacon;Rubio;Cindy;2;2;83217818;;Ama de casa;83217818;3;2
+1;1;111350779;Solano;Jarquin;Ruth Pamela;2;2;87902448;pamelasmena84@gmail.com;Ama de casa;87902448;3;2
+1;1;111400699;Collado;Carmona;Cinthya;5;2;87284736;cinthyacollado82@gmail.com;ama de casa;87284736;3;2
+1;1;111410672;bermudez;rosales;cibdy paola;2;2;85547046;cindypaolabermudezrosales466@gmail.com;ama de casa;85547046;3;2
+1;1;111480229;Diaz;Muñoz;Damaris;2;2;63541763;damarisdiaz535@gmail.com;Ama de casa;;3;2
+1;1;111670960;Chinchilla;Sanchez;Yahaira Mercedes;2;2;60100011;yahairachinchilla14f@gmail.com;ama de casa;60100011;3;2
+1;1;111700105;FERNANDEZ;VEGA;MARIA CAROLINA;5;4;87518734;CARLIVEGA83@GMAIL.COM;AMA DE CASA;;3;2
+1;1;111940351;Valerio;Fernandez;Yesenia;5;2;72257304;yeseniavalerio1984@gmail.com;Ama de Casa;72257304;3;2
+1;1;112080102;Segura;Sanchez;Hazel;2;2;89136766;hazelsegura29@gmail.com;Ama de casa;89136766;3;2
+1;1;112380944;Sanchez;Camacho;Laura;2;2;60725016;lauschm2204@gmail.com;Ama de casa;;3;2
+1;1;112410139;Gonzalez;Siezar;Geovanna;2;2;62968098;johasiezar25@gmail.com;ama de casa;;3;2
+1;1;112510783;Nunez;Fernandez;Leidy Emilce;2;2;61245329;leidyfabre1985@gmail.com;Ama de casa;;3;2
+1;1;112610567;Peña;Ramirez;Gloria;2;2;86998710;gloriapena1911@hotmail.com;ama de casa;86998710;3;2
+1;1;112650851;Fonseca;Monge;Noelia;1;2;64702222;noeliafonsecamonge@gmail.com;ama de casa;64702222;3;2
+1;1;112750990;Solano;Perez;Dunia;2;2;86156143;duniasp.ds@gmail.com;Ama de casa;86156143;3;2
+1;1;113010350;Lopez;Espinoza;Leidy;5;2;62031059;dayan.22@hotmail.com;Ama de casa;62031059;3;2
+1;1;113020330;Muñoz;Sandoval;Katherine Priscilla;5;2;85547863;munossandovalkaterine@gmail.com;Ama de casa;85547863;3;2
+1;1;113140598;Guerrera;Fallas;Tatiana;2;2;88218762;pequeguerrero0987@gmail.com;Ama de casa;88218762;3;2
+1;1;113150058;Campos;Vindas;Jennifer;2;2;89123257;jennifercamposvindas@gmail.com;Ama de casa;89123257;3;2
+1;1;113170557;Calderon;Delgado;Jazmin;3;2;62244486;jazmincaderon52@gmail.com;Ama de Casa;62244486;3;2
+1;1;113270205;Portilla;Arguedas;Angie;1;2;63587036;portillanagie549@gmail.com;ama de casa;63587036;3;2
+1;1;113330459;Jimenez;Ramirez;Susan;1;2;87064777;edgargarciamenocal1975@gmail.com;Ama de Casa;87064777;3;2
+1;1;113360996;Tencio;Chacon;Maria Isabel;2;2;60561511;tencioisabel33@gmail.com;Ama de Casa;;3;2
+1;1;113470601;Garcia;Monge;Jennifer Emilia;5;2;88840176;jennyf0204@gmail.com;Ama de casa;88840176;3;2
+1;1;113530791;Moya;Badilla;Kattia Vanessa;5;2;60081486;vanessabadilla31@gmail.com;Ama de casa;;3;2
+1;1;113610728;Nunez;Bonilla;Nancy;1;2;70101765;nunezpatri368@gmail.com;Ama de Casa;70101765;3;2
+1;1;113810660;Segura;Sanchez;Monica;1;2;88273828;monicsegura287@gmail.com;Ama de Casa;88273828;3;2
+1;1;113830645;Gutierrez;Cabalceta;Kimberly;1;2;71259408;kimguti02@gmail.com;Ama de casa;71259408;3;2
+1;1;114480551;Diaz;Munoz;Carla;1;2;62153629;carladiazmunoz5@gmail.com;Ama de casa;62153629;3;2
+1;1;114660823;Castro;Marchena;Johanna;5;2;64560346;johannacastromarchena05@gmail.com;Ama de casa;;3;2
+1;1;114680026;Hernandez;Herrera;Yuri;5;2;60210602;yurih4777@gmail.com;Ama de casa;;3;2
+1;1;114790496;Gutierrez;Cabalceta;Monica;2;4;64714908;monikalexa2990@gmail.com;Ama de casa;64714908;3;2
+1;1;114990400;Orias;Martinez;Liseth;5;2;71807998;yajaorias0@gmail.com;Ama de casa;71807998;3;2
+1;1;115180847;Barboza;Fonseca;Ariana Marcela;5;2;86199231;arianamarceka01@gmail.com;Ama de casa;86199231;3;2
+1;1;115270830;Quesada;Castro;Alba;4;2;87326476;a.y.q.c.20051893@gmail.com;Ama de casa;;3;2
+1;1;115730110;Torres;Trana;Ana Mercedez;1;2;86400654;anat42487@gmail.com;ama de casa;86400654;3;2
+1;1;117310234;Quiros;Perez;Dayana;1;2;60019474;dayanaquiros831@gmail.com;Ama de Casa;60019474;3;2
+1;1;120310756;Herrera;Brenes;Maricruz;2;2;64711115;sebasmoyaherrera@gmail.com;Ama de casa;64711115;3;2
+1;2;134000657331;Romero;Bautista;Edith;1;2;71844858;edithromerobautista@gmail.com;Ama de Casa;71844858;3;2
+1;2;155805247508;Lopez;Palacios;Minerva del Carmen;2;2;85021752;minerva052009@gmail.com;Ama de casa;85021752;3;2
+1;2;155807685013;Duarte;Perez;Reina de losAngeles;2;2;70151102;;Ama de casa;;3;2
+1;2;155808634212;Ayerdid;Marin;Araceli;5;2;86496662;xiokshamartinez123@gmail.com;Ama de casa;;3;2
+1;2;155811914223;Rojas;Narvaez;Jacqueline del Carmen;2;2;86866288;jkrn1321@gmail.com;ama de casa;86866288;3;2
+1;2;155814547815;Sirias;Reyes;Dritza;1;2;85335953;siriad78@gmail.com;Ama de casa;;3;2
+1;2;155818758409;Potosme;Pavon;Maria Elena;2;2;62309781;marielenapavp@gmail.com;Ama de casa;62309781;3;2
+1;2;155818895923;CRUZ;ESTRADA;HEINY;2;2;60442928;HEIMYCRUZ2986@GMAIL.COM;AMA DE CASA;;3;2
+1;2;155819009421;Garcia;Saenz;Idania;1;2;60520052;idaniasgarsia8@gmail.com;ama de casa;60520052;3;2
+1;2;155820661323;Navarrete;Davila;Carla;5;4;60213552;;ama de casa;;3;2
+1;2;155820702136;Maria;Santamaria;Scarleth;5;2;83256137;;ama de casa;83256137;3;2
+1;2;155820884025;Martinez;Arroliga;Sandra Vanessa;5;2;88591423;vanesacastillo02@gmail.com;Ama de casa;88591423;3;2
+1;2;155823015915;Sanchez;Rocha;Esmeralda del Rosario;2;2;61004935;sofiesmeralda292018@gmail.com;ama de casa;;3;2
+1;2;155834813829;Altamirano;Gutierrez;Junieth Rafaela;2;2;72517629;altamiranojunieth7@gmail.com;Ama de casa;72517629;3;2
+1;2;155837593016;Mendoza;Peralta;Martha Lorena;2;4;71455268;mendozaaraicamarthalorena@gmail.com;Ama de casa;71455268;3;2
+1;2;155838216901;GARCIA;BERMUDEZ;MARIA ESTHER;2;2;61092111;garciabermudezmariaesther@gmail.com;AMA DE CASA;61092111;3;2
+1;2;155851715720;RAMIREZ;CONDE;KARLA MARIA;5;2;60353972;susanaabigailcnd3@gmail.com;AMA DE CASA;;3;2
+1;2;155854534607;Antonia;Davila;Maria;2;2;62780483;mariadaviladavila10@gmail.com;Ama de casa;;3;2
+1;1;408360355;Sarria;Rodriguez;Ana Patricia;5;2;72695226;garciarodriguezpatricia087@gmail.com;ama de casa;72695226;3;2
+1;1;602250640;Lopez;Lopez;Brigida;2;4;83767232;brigidalopez469@gmail.com;Ama de casa;83767232;3;2
+1;1;602570810;Retana;Arauz;Lorena;2;2;81214128;lorenaretanarauz@gmail.com;ama de casa;8124128;3;2
+1;1;603530580;Jimenez;Aguilar;Sandra;2;2;89486869;jimenezaguilarsandra93@gmail.com;Ama de Casa;89486869;3;2
+1;1;701500666;Brenes;Barrantes;Nanci;2;2;62004399;nancibrenes2019@gmail.com;Ama de casa;62004399;3;2
+1;1;800920667;Urbina;Ruiz;Margarita;2;2;89887622;murbinaruiz70@gmail.com;Ama de casa;;3;2
+1;1;800930126;Valdivia;Davila;Velkis;2;2;61172987;valdiviavelkis04@gmail.com;Ama de casa;61172987;3;2
+1;1;900930299;Jimenez;Aguilar;Yamileth;2;2;88033711;;Ama de Casa;88033711;3;2
+1;2;C01725255;Aguirre;Rivera;Silvia;2;2;70579033;silviaguirrerivera@gmail.com;Ama de casa;70579033;3;2
+1;2;c01984762;Gomez;Mairena;Fatima;5;2;70298100;fatimarosariogomezmairena@gmail.com;Ama de casa;70298100;3;2
+1;1;109050616;Quesada;Araya;Marjorie del Milagro;5;4;70809413;arroyoquemarju1996@gmail.com;ama de casa ;70809413;3;2
+1;1;109880287;Hernandez;Fallas;Alba Vanessa;2;2;88326002;hernandezfallasvanessa@gmail.com;ama de casa ;88326002;3;2
+1;1;109890137;Garcia;Chacon;Kattia;5;2;86220608;danny.g.g.dg@gmail.com;ama de casa ;86220608;3;2
+1;1;110740866;Navarro;Abarca;Ana Mercedes;1;2;63677985;ananavarroabarca310@gmail.com;Ama de casa ;63677985;3;2
+1;1;112270272;Segura;Martinez;Karen;5;2;86331935;karenseguramartinez261207@gmail.com;ama de casa ;86331935;3;2
+1;1;112460330;BERMUDEZ;VARGAS;SARA GABRIELA;3;2;64231114;saritabermudez2016@gmail.com;AMA DE CASA ;;3;2
+1;1;113110576;Mora;Rios;Mailyn;2;2;88608136;mailinmora0440@gmail.com;Ama de Casa ;88608136;3;2
+1;1;115470746;Vega;Urena;Marigen;5;2;86835226;marigenvega2@gmail.com;ama de casa ;86835226;3;2
+1;1;115640720;Loria;Rodriguez;Maria Paulina;5;2;86941774;alejandro.aguero25@outlook.com;Ama de casa ;;3;2
+1;1;115750569;Serrano;Madrigal;Maria Jose;1;2;64345433;;Ama de casa ;64345433;3;2
+1;2;155019537603;Robleto;Suarez;Marta Lorena;2;2;71104176;martarobleto123@gmail.com;Ama de Casa ;71104176;3;2
+1;2;155810606130;Espinoza;Reyes;Rosa Alejandra;1;2;63648743;rosaalejandraespinozareyes@gmail.com;Ama de casa ;63648743;3;2
+1;2;155810615630;Espinoza;Gazo;Claudia Lucia;2;2;89089199;espinoza.claudia1175@gmail.com;Ama de casa ;89089199;3;2
+1;2;155813612025;Zamora;Salinas;Raquel Carolina;2;2;70419787;raquelcarolinazamorasalinas@gmail.com;Ama de casa ;70419787;3;2
+1;2;155826007135;Balmaceda;Bermudez;Jenniffer;2;2;63521692;tatianabalmaceda53@gmail.com;Ama de casa ;;3;2
+1;2;155839100211;Enriquez;Rodriguez;Magalis;2;2;84087881;;Ama de casa ;84087881;3;2
+1;1;503260462;Juarez;Vasquez;Roxana Mayela;1;2;88744380;roxanajuarezvasquez@gmail.com;Ama de casa ;88744380;3;2
+1;1;602490906;Pizarro;Salas;Roxana;5;2;86787775;roxanapizarro125@gmail.com;ama de casa ;86787775;3;2
+1;1;603020574;Umana;Saldana;Keilin;1;2;71751526;kelinumana@gmail.com;ama de casa ;71751526;3;2
+1;1;603130232;Lorenzana;Moraga;Cindia Vanessa;5;2;85925358;vanessalorenzano2017@gmail.com;Ama de Casa ;85925358;3;2
+1;2;C01394583;Cruz;Cano;Flor;5;2;63108069;;Ama de casa ;;3;2
+1;1;112730422;Sanchez;Barrantes;Kenneth;1;1;87327333;ken081285@gmail.com;Archivo Nacional;25277001;3;6
+1;1;502450075;Torres;Diaz;Maria;3;2;83377949;melivenegast@gmail.com;Aserri ;83377949;3;2
+1;1;109930517;Martinez;Garcia;Mariana;3;2;72033270;valeleam97@gmail.com;ATD;72033270;3;6
+1;1;112400385;Alvarado;Castro;Kattia Yorleny;1;2;64181265;;Auto transportes San Antonio;64181265;3;6
+1;2;155840480711;Hernandez;Ramirez;Carlos Jose;5;1;72703685;carrmrez25@gmail.com;Barrio cuba panaderia TUTU;72703685;3;8
+1;1;108290483;Rojas;Salazar;Jorge Alberto;3;1;87208368;familiarojas1@hotmail.com;Casa;87208368;3;7
+1;1;110470087;Fallas;Castro;Gabriela;3;2;88761714;gabriela.castro.fallas@gmail.com;Casa;;3;2
+1;1;110660976;Ramirez;Piedra;Silvia;2;2;84487261;rkrp0180@gmail.com;Casa;84487261;3;2
+1;1;110780613;VALVERDE;JIMENEZ;GRETTEL;1;2;62551227;;CASA;;3;2
+1;1;111170433;Rodriguez;Borbon;Shirley Maria;3;2;85281063;shirleycompu2016@gmail.com;Casa;85281063;3;6
+1;1;111180879;Picado;Picado;Mauren;2;2;60126211;mpicado1510@gmail.com;casa;;3;2
+1;1;111260067;Sanchez;Cordero;Maria Marcela;1;2;89885650;marce191281@gmail.co;Casa;89885650;3;2
+1;1;111760718;Padilla;Quiros;Laura;1;2;86328295;dilansteller1212@gmail.com;Casa;;3;2
+1;1;112020140;Aguero;Fernandez;Jacqueline;1;2;71413949;jackelineaguero9242@gmail.com;casa;71413949;3;2
+1;1;113420339;Duarte;Araya;Maria;5;2;60067015;mariaraya988@gmail.com;casa;60067015;3;2
+1;1;113860701;Wong;Pena;Suyin;1;2;84493165;suyingwong0701@gmail.com;casa;84493165;3;7
+1;1;114850448;Cerdas;Araya;Sheirys Dayan;1;2;63819280;arayashey580@gmail.com;casa;63819280;3;2
+1;2;155804232713;Rivera;Perez;Edelma;2;2;86585722;perezriveraedelma@gmail.com;casa;86585722;3;2
+1;2;155818254835;Calero;Ruiz;Aling del Carmen;2;2;62958775;caleroruizalinf936@gmail.com;Casa;;3;2
+1;2;155818651432;Ortiz;Martinez;Yanette;2;2;87930801;yanetteom@gmail.com;CASA;;3;2
+1;1;602960201;Valverde;Padilla;Maria;2;2;83953788;maryvalverde20@gmail.com;casa;83953788;3;2
+1;1;603190120;Salazar;Campos;Yency;2;2;61259262;salazarcamposyency@gmail.com;casa;;3;2
+1;1;801430405;Lopez;Padilla;Maxdaniel;2;1;61780280;mdlopezpadilla@yahoo.com;Casa;61780280;3;6
+1;1;601580584;Villalobos;Jimenez;Arnoldo;2;1;70924487;;COFAGO S.A;70924487;3;7
+1;1;303550202;Gomez;Duran;Gionnathan;5;1;83667866;marielhw02@gmail.com;Comerciante;83667866;3;7
+1;1;503330210;Guadamuz;Rodriguez;Enoc;2;1;62182221;enoc.rodriguez100983@gmail.com;Comerciante;;3;7
+1;1;502770920;Solorzano;Corrales;Melis;1;1;86139534;melissolorzano@gmail.com;Consorcio de informacion y seguridad;25277000;3;6
+1;1;108740237;Espinoza;Valerio;Maria;3;2;84303644;espinozavaleriomarialidieth@gmail.com;Cuidado de adulto Mayor;84303644;3;7
+1;1;109080731;Ulloa;Villaplana;Johanna;5;2;89979361;johauvilla13@gmail.com;de la casa;89979361;3;2
+1;1;112140110;DÌ€iaz;Munoz;Marlene;1;2;61575214;ashlysegurad19@gmai.com;de la casa;61575214;3;6
+1;1;112260129;Serrano;Arley;Ana Maria;2;2;86844403;anaserrano05@gmail.com;De la casa;86844403;3;2
+1;1;112500383;Madrigal;Ugalde;Jenberlyn;2;2;71625735;madrigalugaldejen@gmail.com;De la casa;62386758;3;2
+1;1;113820483;Ruiz;Hernandez;Cindy;3;2;64186658;chayoruiz0707@gmail.co;De la casa;64186658;3;2
+1;2;155807013520;Carchache;Rios;Lilliam;2;2;84030932;lilliamqtewq@gmail.com;DEQUISA;84030932;3;6
+1;1;108890957;Zuniga;Urena;Ana Beatriz;1;2;84702279;zunigaana889@gmail.com;desempleada;84702279;3;6
+1;1;104970090;Ilama;Rojas;Walter Asdrubal;2;4;64511703;walterilamarojas@gmail.com;Desempleado;;3;6
+1;1;109320578;Miranda;Campos;Silvia;3;2;61467903;elenitamiranda08@gmail.com;distribuidora de huevos de Fatima;;3;6
+1;1;110310208;Fallas;Gamboa;Greidy Margarita;2;2;62124268;margaritafallas22@gmail.com;Ekono Desamparados;62124268;3;6
+1;1;11960624;Venegas;Gamboa;Hector Steve;1;1;83465890;steve030709@gmail.com;Elevadores Centroamericanos;22561241;3;8
+1;2;15584698228;Fernandez;Garcia;Jessel;1;2;71194426;fernandezgarciajessel01@gmail.com;Empleada domestica;61112680;3;2
+1;1;115430071;Acuna;Sanchez;Laura de los Angeles;1;2;6021-3893;machasanchez0@gmail.com;en el hogar;72056595;3;7
+1;2;C01577143;Amador;Jiron;Ana Gabriea;2;2;60262010;anagabrielaamadorjiron94@gmail.com;Escazu Trejos Montealegre ;60262010;3;2
+1;1;111870695;Sandi;Cordero;Wendy;3;2;84832477;wendycorderogarro@hotmail.com;FEDURO( Display);84832477;3;6
+1;1;112410294;Urena;Jimenez;Melvin Rolando;1;1;84589748;melvinure2014@gmail.com;Ferreteria Yoes;88243317;3;6
+1;2;155019721217;Silva;Melendez;Paulina;2;2;62638569;paulinafiorella1112@hotmail.com;Flor de Loto Sabana Norte;62638569;3;6
+1;1;114590339;Obando;lopez;Erick Rodolfo;1;1;62872959;obandoerick09@gmail.com;Gravilias ;62872959;3;8
+1;1;113520687;Marin;Brenes;Yeilyn;1;2;84327097;;grupo calder;;3;8
+1;2;155846116825;Lopez;Betanco;Ervin Samuel;5;4;85193364;erving982@gmail.com;guachielin de escazu;86179106;3;6
+1;1;114160337;Monge;Granados;Karolin Dayana;1;2;62946990;karolin2790@gmail.com;Guatuso;62946990;3;2
+1;2;155811027310;Silva;Vargas;Karla Patricia;1;2;72666537;kpatriciasilva11@gmail.com;Happy Step;22761818;3;6
+1;2;155824934626;Monoz;Ordenez;Karina del Socorro;1;2;71437629;km2843173@gmail.com;Heredia;71437629;3;6
+1;1;113720970;Rojas;Ballestero;Daisy Miriam;5;2;83526101;rojasdaisy007@gmail.com;hogar;83526101;3;2
+1;2;155819931304;Blanco;Palacios;Maria;3;2;61205088;mariablancop0985@gmail.com;Hogar;61205088;3;2
+1;2;155821889315;Blanco;Palacios;Maria;3;2;61205088;mariablancop0985@gmail.com;Hogar;61205088;3;2
+1;1;501850827;Jimenez;Aguilar;Maria Isabel;3;4;71236678;;Hogar;71236678;3;2
+1;1;108270221;Fallas;Chaves;Alexander;2;1;85794914;afallaschaves@gmail.com;Independiente;;3;11
+1;2;155803211919;Heliodoro;Chavez;Rosa;2;1;64782774;;Independiente;;3;7
+1;2;155827216436;Blanco;Cruz;Carlos;2;1;63147052;acostarubia02@gmail.com;Independiente;63147052;3;6
+1;1;303090492;Rivera;Serrano;Alexander;2;1;71828558;alexriveserra@hotmail.com;Independiente;71828558;3;7
+1;1;115470507;Arauz;Rizo;Rosa;3;2;61590890;arauzrizo48@gmail.com;Ins Guadalupe;61590890;3;6
+1;1;107830702;Lopez;Campos;Jose Alfredo;3;1;84724060;pequelocam97@gmail.com;ISTMO CENTER;84724060;3;11
+1;1;110560399;Acuna;Araya;Keylin;2;2;60888454;keylinacuna8@gmail.com;kyc kontrataciones S.A;64888954;3;6
+1;1;801160796;Sanchez;Perez;Yadira;2;2;83036835;yadirasaqn321@gmail.com;La casa;83036835;3;7
+1;2;155829925308;Calero;Cerna;Maria Alejandra;1;2;62929442;;Limpieza ;62929442;3;6
+1;1;801550464;Alvarado;Gonzalez;Emma Albertina;2;2;84165327;elma131010@icloud.com;Lomas de Ayarco;22722031;3;2
+1;1;107320712;Serrano;Calvo;Ana Patricia;1;2;86146794;patri10@gmail.com;lomas de ayarco Curridabat;;3;2
+1;1;113190964;Venegas;Ramirez;Fren;3;1;86394744;fred_svr@hotmail.com;Maderas de Centroamerica;86394744;3;8
+1;1;114910431;Ledezma;Matamoros;Thais Elizabeth;5;2;64422899;lezmathais@gmail.com;Manicurista;64422899;3;7
+1;1;110950931;Segura;Duran;Marlon;2;1;83769588;;Maquinaria Pesada;84281024;3;10
+1;1;114710175;Mora;Badilla;Maria Alejandra;2;2;72096996;alejandramoya03@gmail.com;Megasuper;72096996;3;6
+1;1;115360396;Cordero;Matarrita;Karen;1;2;63935059;;Mi punto favorito, San Jose;61877658;3;7
+1;1;110200201;Ramirez;Barrantes;Kattia;1;2;62349974;kattiaramirez873@gmail.com;Motel Paraiso;;3;6
+1;1;11120020;Cerdas;Muñoz;Greivin;5;1;70673825;crgreivincm@gmail.com;Muebles Dora y Guillermo Algarrobo ;;3;7
+1;1;113310582;Cardenas;Prado;Karla;1;2;64652729;vanesacardenasprado@gmail.com;Multiplaza Curriabat ;64652729;3;6
+1;1;110450127;Valverde;Camareno;Joel;1;4;83937747;valverdecjoel@gmail.com;Municipalidad de Desamparados;83937747;3;6
+1;1;111140101;Lopez;Aragon;Deborath Michelle;3;2;60427722;deboratjlopezaragon22@gmail.com;negocio propio;;3;8
+1;1;114910556;Ortiz;Ortiz;Tatiana del Carmen;1;2;88852157;tatiortiz356@gmail.com;;88852157;3;2
+1;1;112220069;Orias;Martinez;Mileidy;2;4;86971715;miliarias8@gmail.com;;;3;2
+1;1;111360287;Mora;Vargas;Hazel;2;2;70907406;hazelmoraardilla@gmail.com;;;3;2
+1;1;114000594;Amador;Villegas;Sandy;2;2;61997707;amadorsan36@gmail.com;;;3;2
+1;1;118410130;Zuniga;Castillo;Paula Elizabeth;1;4;61583405;zunigacastillopaula10@gmail.com;;61583405;3;2
+1;1;110040039;Delgado;Martinez;Yessenia;2;2;84716613;jesseniadm0309@gmail.com;Oficios domesticos;84716613;3;2
+1;1;109700279;Campos;Guillen;Jenny Alexandra;2;2;71136410;camposalexandra701@gmail.com;Pasamaneria;71136410;3;6
+1;1;111720764;Perez;Mora;Melissa;3;2;88264078;melissapm2427@gmaill.com;Patatas bravas;;3;6
+1;2;122200754130;Martinez;Castillo;Zuleyma Ester;1;2;61028489;zuleymamartinezcastillo@gmail.com;Pavas;61028489;3;2
+1;1;104710685;Castro;Padilla;Hilda Maria;2;4;60515150;hernadezgilda03@gmail.com;Pensionada;60515150;3;2
+1;1;105950824;Ramirez;Fallas;Marvin;2;1;86527923;marvinramirezfallas@gmail.com;Policia;26000288;3;5
+1;2;155825778131;Perez;Valle;Homero;5;1;63621940;geinerf539@gmail.com;propio;63621940;3;10
+1;1;113290521;Barquero;Carvajal;Yuriana;1;2;60887969;yurianabarquero87@gmail.com;Puertas de Baño Alfa;60887969;3;2
+1;1;107870588;Rivera;Cascante;Olman Antonio;2;1;83758032;olmanrivera793@gmail.com;PWC;22241555;3;11
+1;1;601630778;BARRANTES;UREÃ‘A;ELIO DE JESUS;2;1;72601690;FBARSOL@HOTMAIL.COM;RETIRADO;;3;13
+1;1;113050810;Cascante;FAllas;Yariela;1;2;88143690;yaricascante7@gmail.com;Salon de belleza;;3;7
+1;2;155821818116;Mendoza;Mayorga;Marisol;5;2;71605223;marosolmenma84@gmail.com;San Antonio;71605223;3;6
+1;2;155823737828;Martinez;Brenes;Neylin del Rosario;2;2;62872136;neylin.martinez23@gmail.com;San Antonio;62872136;3;2
+1;2;155818521700;Lara;Delgado;Yoryina;2;2;64255644;yoryina0880@gmail.com;San Antonio, Desamparados;64255644;3;6
+1;2;155852851024;Perez;Perez;Concepcion de Maria;1;2;61169960;concepcionperez2026@gmail.com;San Jose;62261733;3;8
+1;2;155602638424;Contreras;Diaz;Adelayda;2;2;86905632;conterasmartha0920@gmail.com;santa escazu;;3;2
+1;1;502890989;Guevara;Mairena;Vilma;3;2;70131232;guevarav576@gmail.com;Sermoles ;;3;6
+1;1;113290608;Tenorio;Mata;Juan;5;1;63679184;teno0827@gmail.com;Servicentro Roijo, Guatuso Patarra;22763531;3;8
+1;1;109140419;Slagano;Serrano;Rosa;3;2;87673936;rosaelena1275@gmail.com;Servicios domesticos;;3;2
+1;1;107310364;Valverde;Mora;Hernan Jesus;2;1;88242546;;Servicios Sanitarios Cruz Verde;88242546;3;6
+1;1;116400572;Melendez;Pastor;Joselyn;2;2;71293898;jozhii1710@gmail.com;Soda Gusticos;60908854;3;6
+1;1;112390934;Munoz;Saborio;Alexandra Guiselle;1;2;71839193;alexandramumoz2020@gmail.com;Sodexo Costa Rica;70061976;3;6
+1;2;155831960026;Elena;Carmona;Gloria;2;2;62916976;gloriagomes170@gmail.com;super la cosecha;89583147;3;2
+1;1;113720262;Ramirez;Castro;Marjorie;5;2;72054340;marjorierc14@gmail.com;Torre Mercedez;;3;6
+1;1;115010579;Castillo;Rodriguez;Georgina de los Ang;2;2;60902254;georgitatiana@gmail.com;Trabajadora independiente ;60902254;3;7
+1;1;111380752;Camacho;Romero;Andrea;1;2;84279497;andreacamrom31@gmail.com;Universidad Veritas;40105600;3;6
+1;1;111520425;Hidalgo;Araya;Maybel;2;2;60868643;maybelhidalgo0@gmail.com;vendedor ;60868643;3;7
+1;1;113270143;Nunez;Lopez;Cindy Pamela;2;2;63463236;yarielyader@gmail.com;Ventas en la casa;63463236;3;7
+1;1;113730044;Fonseca;Aguilera;Angie;5;2;61175468;fonsecaangie9@gmail.com;villa olimpica de Escazu;;3;6
+1;1;112630788;Tenorio;Mata;Dahianna;1;2;85816010;danianna1329@gmail.com;villas de ayarco;88579389;3;6
+1;2;155820737611;Pineda;Vilchez;Narciso;5;1;86864674;Jv587904@gmail.com;Villas de Ayarco;86864674;3;6
+1;2;155806369203;Gutierrez;Aguirre;Francisco;5;1;61296111;aguirregfran@gmail.com;VMA Seguridad;22179700;3;6
+1;1;111110489;Montero;Lopez;Andrea;2;2;87920182;andreaml302011@hotmail.com;WaypeCR;87920182;3;7
+1;2;155820000122;Diaz;Calderon;Rosa Idalia;5;2;64834151;rossydiazcastellon@gmail.com;;;3;2
+1;1;110070577;Araya;Montero;Luis;2;1;84225973;luis78t@gmail.com;Agente de ventas;84225973;4;6
+1;1;800870729;Rivas;Ortiz;Robinson;2;1;83585472;;albanil;;4;7
+1;1;111170914;Bermudez;Mora;Xinia Maria;2;2;61634924;Xnicoale@gmail.com;Ama  de casa;61634924;4;2
+1;1;302410014;Cordero;Vargas;Dalia Eugenia;1;4;89500537;icordero63@gmail.com;Ama casa;89500537;4;2
+1;2;155846043112;Aguilar;Siles;Rosa;1;4;72785860;;Ama de  casa;72785860;4;2
+1;1;115670897;Mesen;Soto;Daisy;2;2;8731-5208;mesendaisy5@gmail.com;Ama de casa;8731-5208;4;2
+1;1;104410709;Duarte;Duarte;Ligia Maria;4;4;89388974;godloveligia@gmail.com;ama de casa;89388974;4;2
+1;1;106780436;Mora;Jimenez;Dinia;2;2;85502253;alej673@gmail.com;Ama de casa;85502253;4;2
+1;1;109290699;Umana;Rosales;Giovanna de los Angeles;2;2;86541157;giovannauma0106@gmail.com;ama de casa;;4;2
+1;1;109990266;Fonseca;Garcia;Vera;2;2;61944660;;Ama de casa;61944660;4;2
+1;1;110540048;Salas;Sandi;Elizabeth;3;2;89469316;elisalas95@yahoo.com;ama de casa;;4;2
+1;1;110890068;Munoz;Araya;Sandra;3;2;61308833;sandramunoz354@gmail.com;Ama de Casa;61308833;4;2
+1;1;110930289;Campos;Salas;Ericka Vanessa;3;2;70044267;erickacampossalas367@gmail.com;Ama de casa;70044267;4;2
+1;1;111310167;Godinez;Arias;Alexandra;2;2;60436771;alexandragodinez8226@gmail.com;ama de casa;;4;2
+1;1;111350789;Calvo;Barrios;Laura;5;2;84366234;lcalvobarrios@gmail.com;Ama de casa;64747434;4;2
+1;1;111380348;Sanabria;Rostran;Sileni;2;2;63478866;sanabriasileni26@gmail.com;Ama de casa;63478867;4;2
+1;1;111830433;Ulloa;Gamboa;Karla Vanessa;1;2;71868541;ulloakarla81@gmail.com;Ama de casa;;4;2
+1;1;112180339;Ugalde;Ocon;Elieth;2;4;71316722;Marcediuga08@gmail.com;Ama de casa;71316722;4;2
+1;1;112320395;Brenes;Lizano;Ginette;2;2;60269430;gibrenes1985@gmail.com;ama de casa;;4;2
+1;1;112490837;Azofeifa;Bonilla;Viviana;2;2;71363308;vivianaazofeifabonila@gmail.com;ama de casa;;4;2
+1;1;112600078;Abarca;Quesada;Kathia;5;2;84819994;kathia1085@gmail.com;Ama de casa;;4;2
+1;1;112650699;Quesada;Ilama;Elsa Belisa;2;2;87114491;elsiquesada2301@gmail.com;Ama De casa;;4;2
+1;1;112860139;Chacon;Castro;Ana Lucia;1;2;60776300;chaconcastroanita@gmail.com;ama de casa;;4;2
+1;1;112930124;Poveda;Talavera;Carla Vanesa;1;2;71727147;crla_1930@hotmail.com;Ama de casa;;4;2
+1;1;112950912;Chinchilla;Obando;Angie;1;2;60834989;angiechinchillaobando@gmail.com;Ama de casa;;4;2
+1;1;113140241;Cordoba;Ramirez;Katherine;2;2;61340637;katcr2017@gmail.com;Ama de casa;61340637;4;2
+1;1;113380219;Muñoz;Sandoval;Kimberlyn;2;2;63013446;kimberlyn198654@gmail.com;ama de casa;63013446;4;2
+1;1;113490728;Duran;Flores;Maria;2;2;62614235;mariastifens08@gmail.com;ama de casa;62614235;4;2
+1;1;113570250;Lopez;Barboza;Andrea;1;2;70628019;medezjeyckel@gmail.com;Ama de casa;70628019;4;2
+1;1;113800013;Roman;Retana;Karol;3;2;64264482;romankarol581@gmail.com;ama de casa;64264482;4;2
+1;1;114130014;VILLALOBOS;MONGE;JOSELYN RACHELLE;2;2;88222780;joselynne06@hotmail.com;AMA DE CASA;88222780;4;2
+1;1;114180323;Ortiz;Valverde;Lisseth;1;2;61400530;yeisam271290@gmail.com;Ama de casa;;4;2
+1;1;114220475;Quiros;Mena;Yendry;5;2;60574252;quirosjen@hotmail.com;Ama de casa;60574252;4;2
+1;1;114670032;Chavarria;Ugalde;Ana Elisa;2;2;60736408;elisachavarriaugalde@gmail.com;Ama de Casa;60736408;4;2
+1;1;114920380;CORDERO;GARRO;ELIZABETH;3;2;70897085;elizabeth083129@gmail.com;AMA DE CASA;70897085;4;2
+1;1;115020055;Gomez;Araya;Karla;1;2;62681775;gomezarayakarla71@gmail.com;Ama de casa;62681775;4;2
+1;1;115390043;CAMPOS;FONSECA;MARIA LARISA;1;2;60402438;romansolem4@gmail.com;AMA DE CASA;60402438;4;2
+1;1;116060335;Gamboa;Cerdas;Maria Jose;5;2;62426098;marigc1295@hotmail.com;Ama de casa;22741552;4;2
+1;1;116230906;Alvarado;Zuniga;Dayaba;1;4;72509406;;Ama de casa;72509406;4;2
+1;1;117220962;Mathiew;Rodriguez;Genesis;1;4;63457950;genesisdmathiew@gmail.com;Ama de Casa;63457950;4;2
+1;2;155804456630;Melendes;Gomez;Maria Lourdes;5;2;86200353;mariamelendezg85@gmail.com;Ama de casa;86200353;4;2
+1;2;15581235400;Castillo;Rodriguez;Josefa;2;2;89766178;marijodmayorga07@gmail.com;Ama de casa;89766178;4;2
+1;2;155815025917;Paola;Garay;Doriana;2;2;71089551;dorianapaolagaray318@gmail.com;ama de casa;71089551;4;2
+1;2;155819479433;Mendieta;Ureña;Dina;3;2;84325203;raquelurena414@gmail.com;Ama de casa;84325203;4;2
+1;2;155820398709;Rios;Chaves;Kathia Juniethe;5;2;61317955;kathiar383@gmail.com;ama de casa;61317955;4;2
+1;2;155821373024;Blandon;Rios;Juana;2;2;85312367;blandonjuana5@gmail.com;Ama de Casa;85312367;4;2
+1;2;155822481531;Soza;Ruiz;Judith;5;2;87200224;judithfernanda2042014@gmail.com;ama de casa;;4;2
+1;2;155832936201;Carmen;Borge;Tomasa del;5;2;61050835;c4976143@gmail.com;Ama de casa;61050835;4;2
+1;2;155833651112;Gonzalez;Arauz;Aleyda;5;2;60352688;alydagonzalezarauz@gmail.com;ama de casa;;4;2
+1;2;155839226621;Rios;Flores;Jessica;5;2;63711831;lightprime7358@gmail.com;ama de casa;63711831;4;2
+1;2;155850506526;Garcia;Velasquez;Regina Gabriela;5;2;61554020;daneljosecuadra08@gmail.com;Ama de casa;;4;2
+1;1;206730931;Potoy;Mora;Cindy;1;2;61500822;moracindy9003@gmail.com;Ama de Casa;;4;2
+1;1;502820308;Porras;Jinesta;Yolanda;2;4;84039187;Yolaporrasj@gmail.com;Ama de casa;84039187;4;2
+1;1;503350405;Barquero;Mendez;Nancy;3;2;70444073;;ama de casa;70444073;4;2
+1;1;503450249;Fuentes;Jiron;Gabriela;5;2;64373470;gabyfuentesah@gmail.com;Ama de casa;64373470;4;2
+1;1;701830833;Jimenez;Reyes;Yaina;3;2;70668912;jaynajj0717@gmail.com;Ama de Casa;70668912;4;2
+1;1;800940154;Ortiz;Castro;Jessy Maria;4;2;89583561;alonsoyessi1981@gmail.com;Ama de casa;89583561;4;2
+1;1;801020730;Lacayo;Rostran;Maria Lujana;2;2;83574577;lujana.lr1985@gmail.com;Ama de casa;83574577;4;2
+1;1;801040632;Arias;Mendoza;Aura Lila;1;2;71897022;aariasmendoza0607@gmail.com;ama de casa;;4;2
+1;1;801180405;Rosales;Rivera;Erika;2;2;87098257;mac077um46@gmail.com;Ama de casa;;4;2
+1;1;801180797;Meza;Vargas;Exela Carolina;2;2;60737738;mezacarolina206@gmail.com;ama de casa;60737738;4;2
+1;1;801280289;GAMEZ;MARTINEZ;DIGNA;1;2;60397713;Dignagamez81@gmail.com;AMA DE CASA;;4;2
+1;1;801480093;Arroliga;Garcia;Lidia del Carmen;2;2;83311371;garc8030li@gmail.com;Ama de casa;;4;2
+1;1;108150515;Murillo;Cordoba;Irene Patricia;2;2;86880761;;Ama de casa ;89469899;4;2
+1;1;112040458;Fallas;Montoya;Karen Veronica;3;2;71280366;karenfallas2014@gmail.com;Ama de Casa ;71280366;4;2
+1;1;112610525;Cordero;Arguedas;Diana;3;2;63657530;dianaca299@gmail.com;ama de casa ;63657530;4;2
+1;1;113180920;Loaisiga;Montoya;Ligia Yahaira;2;2;72394006;loasigamontoya@gmail.com;Ama de casa ;;4;2
+1;1;114940042;Pena;Amador;Angie Virginia;5;2;63268127;angelycr92@gmail.com;Ama de casa ;63268127;4;2
+1;1;115370930;Vega;Sanchez;Maria Elena;2;2;88556951;mar18evagas@gmail.com;Ama de casa ;;4;2
+1;1;115430740;Retana;Perez;Cristy Tatiana;1;2;87951110;cristyretanaperez@gmail.com;Ama de Casa ;87951110;4;2
+1;1;115450923;Cruz;Guzman;Grettel Karina;1;2;60247802;karycruz@outlook.com;Ama de Casa ;60247802;4;2
+1;2;155809455527;Moya;Torres;Griselda Raquel;5;2;62683411;raquelmoya031@gmail.com;Ama de Casa ;62683411;4;2
+1;2;155811988318;Somarriba;Medrano;Lydys;2;2;84231769;iperlaflores77@gmail.com;Ama de casa ;84231769;4;2
+1;2;155812325400;Castillo;Rodriguez;Josefa;2;2;89766178;marijodemayorga07@gmail.com;ama de casa ;89766178;4;2
+1;2;1558198194'6;Arauz;Rojas;Karina Del Carmen;5;2;707755530;jairolizano@yahoo.com;ama de casa ;707755530;4;2
+1;2;155820415405;De;Monthiel;Santa Isabel Obando;2;2;87135304;obandoisabel458@gmail.com;Ama de casa ;;4;2
+1;2;155831013630;Maria;Lopez;Dulce;2;2;62094902;yurleysanchez@iclou.com;Ama de casa ;;4;2
+1;2;155840648223;Martinez;Picado;Jesica Estefania;2;2;70198074;martinezpicado96@gmail.com;Ama de casa ;;4;2
+1;2;C01219305;Reyes;Marquez;Sefora Luz;2;2;63005878;seforam71@gmail.com;Ama de casa ;63005878;4;2
+1;2;c03807339;Zuniga;Lopez;Michel;5;2;63526840;zunigamichelle486@gmail.com;ama de casa ;63526840;4;2
+1;2;CO3751353;GARCIA;ARAICA;JEAMY MASSIEL;2;2;61910086;garciajeamy90@gamil.com;AMA DE CASA ;;4;2
+1;1;503910208;Venegas;Vallejos;Tatiana Elena;5;2;61876965;tatianavenegas384@gmail.com;Ama de casa.;61876965;4;2
+1;1;112570419;Artavia;Barboza;Cinthya;2;2;83271479;cinthyaartavia07@gmail.com;Ama de casita;83271479;4;2
+1;2;155819343802;Aleman;Aguirre;Jorlyn Margarita;5;2;84171476;alemanmargara@gmail.com;Bcr Consultorios;88370847;4;2
+1;1;115140825;Calvo;Alvarado;Nelsy;2;2;70688001;calvonelsy@gmail.com;belen de heredia;70688001;4;6
+1;1;111440123;Valerio;Salvatierra;Junior;5;1;71461000;juniorvaleio55@gmail.com;Buen precio Curriabat;22713636;4;7
+1;1;108150517;Murillo;Cordoba;Irene Patricia;2;2;89469899;;Casa;89469899;4;2
+1;1;110330926;Zamora;Solis;Gabriela;3;2;85225630;gzamora79@hotmail.es;casa;;4;2
+1;1;111360404;Aguiar;Marino;Ivannia;1;2;88569086;iaguiar.ma@gmail.com;Casa;;4;2
+1;1;111960978;Sibaja;Mora;Jessica;2;2;85053595;jessicasibaja@hotmail.com;Casa;85053595;4;7
+1;1;113120177;Lopez;Campos;Yehimy;2;2;85495973;nayelithomas9@gmail.com;casa;;4;2
+1;1;113680811;Guadamuz;Rojas;Katherine;5;2;71624601;katguadamuz@gmail.com;Casa;;4;2
+1;1;114000691;Lizano;Elizondo;Andreina;1;2;60310282;andreinalizano74@gmail.com;Casa;60310282;4;7
+1;1;114050328;Calderon;Brenes;Rosaura;2;2;71125738;roscaldeb89@icloud.com;casa;;4;2
+1;1;114520786;Morales;Quiros;Karol Stephanie;1;2;8331991;karitomorales870@gmail.com;Casa;83331991;4;2
+1;1;114980816;Oses;Martinez;Dilania;3;2;61742727;dilaniaoses3023@gmail.com;casa;61742727;4;2
+1;1;115520170;Altamirano;Castillo;Yeltsin;1;2;87169818;yeltsinaltamirano7@gmail.com;Casa;87169818;4;2
+1;1;116790057;Delgado;Jimenez;Alexa Daniela;2;2;63894658;aelxadegado2396@gmail.com;casa;63894658;4;2
+1;2;155809347305;Esmeralda;Mendez;Marta;1;2;85052551;martaesm2@gmail.com;casa;85052551;4;2
+1;2;155813395706;Garcia;Perez;Cinthya;4;2;63410319;garpcin30@gmail.com;casa;63410319;4;6
+1;2;155822189304;RIVAS;CANO;MARINDA;2;2;71353534;CR09326@GMAIL.COM;CASA;;4;2
+1;1;205330148;Vilchez;Villegas;Ana Lorena;2;2;60581045;analore2978@gmail.com;Casa;;4;2
+1;1;303650479;Carvajal;Padilla;Angela;2;2;64030814;angelacarvajal04@gmail.com;casa;64030814;4;2
+1;1;401570873;Ramirez;Lopez;Mireya;2;4;62865406;mirekrja50@gmail.com;Casa;;4;2
+1;1;603050453;Santamaria;;Lilliana;2;2;60584281;lilianasantamariamorales64@gmail.com;casa;;4;2
+1;1;701740937;BRENES;HERRERA;KAREN;2;2;70342345;BRENESKAREN154@GMAIL.COM;CASA;86627003;4;8
+1;1;801070672;Baltodano;Perez;Ana Rosa;3;2;62510375;120370332@est.mep.go.cr;casa;62510375;4;2
+1;1;115280705;Mendez;Valverde;Estefania;5;2;63918309;emendezval93@gmail.com;Casa de habitacion;22709445;4;8
+1;1;205280799;Bustos;Lopez;Juan Jose;2;1;70735277;jjbustos2278@gmail.com;CCSS;70735277;4;2
+1;1;111250299;Avalos;Solis;Yely Vanessa;5;2;86013580;vanesoli2010@gmail.com;Centro Comercial del Sur ;86013580;4;7
+1;2;155827629005;MORALES;CUNINGHAM;EVELING DEL CARMEN;1;2;64191774;evelingmorales86@gmail.com;CENTRO COMERCIAL EL PUEBLO ;62555152;4;9
+1;1;108470691;Nuñez;Jimenez;Elmer;5;4;63718015;elmernenezj27@gmail.com;Cerveceria de Costa Rica;24376648;4;6
+1;2;155836613426;Garcia;Gonzalez;Norma;5;2;64397396;garcialijia865@gmail.com;Cocina Medica Barana;88882406;4;6
+1;1;110180352;Rojas;Bravo;Rodrigo Alberto;2;1;86413532;roalberto2@hotmail.com;Comerciante;86413532;4;7
+1;1;118440721;Reyes;Sacida;Bryan Josue;1;4;70277467;brayanreyessacida@gmail.com;Comerciante;70277467;4;7
+1;1;205600907;Santamaria;Arias;Daniel;2;1;72302642;danielsantamaria1980@gmail.com;Comerciante;72302642;4;7
+1;2;C02450720;Leyton;Alvarez;Luis;5;1;62034763;;Comercio;62034763;4;7
+1;1;112810321;Avalos;Mena;Froilan;5;1;88593032;favalos@contactodigital.cr;Contacto Digital Desamparados los Gudos ;40822669;4;7
+1;1;114670620;Zambrana;Monge;Jose Mercedes;3;1;64184181;cheo912024@gmail.com;Contratos;64184181;4;8
+1;1;108470623;Delgado;Abarca;Nidia Cristina;3;2;84896755;;Coorporacion Manzate;22769631;4;6
+1;1;113650563;Varela;Conejo;Rosa Angela;5;2;71222385;rosavarela1002@gmail.com;Ctp Dos Cercas;71222385;4;6
+1;1;801180002;Lope;Nicoya;Regina;2;2;70545917;reginalopex@gmail.com;De la casa;70545917;4;2
+1;2;155841933414;Hernandez;Fuentes;Peter;2;1;70561058;hernandezpeter788@gmail.com;Dependiente;70561058;4;14
+1;2;155804117528;Jarquin;Eugarrio;Milton Antonio;5;1;89908907;jarquinantonio96@gmail.com;Deposito Las Gravilias;;4;6
+1;1;113600706;Campos;Abarca;Francinie Lorena;1;2;86162679;lorenac880@gmail.com;Desamparados;86162679;4;6
+1;1;112370788;Ulloa;Sanabria;Leslie;3;2;72399474;lulloa@promek-group.com;Desempleada;72399474;4;7
+1;1;205340593;Loaiciga;Trana;Iveth;3;2;86019377;loayamileth1078@gmail.com;Desempleada;86019377;4;6
+1;1;303300522;Noguera;Manzanares;Silvia;1;2;83342726;snoguera610@gmail.com;Desempleada ;83342726;4;6
+1;1;110120660;Brizuela;Abarca;Marcial;3;1;63463240;marcial.brizuela34@gmail.com;Distribuidora Brigo;63463240;4;6
+1;1;110410061;Guerrero;Gonzalez;Monserrat;2;2;61909380;;Empleada Domestica;61909380;4;2
+1;2;C03626522;Aguilar;Rivas;Cinthia Ivannia;1;2;70235985;cinthiaaguilar169@gmail.com;Empleada Domestica;70235985;4;2
+1;1;701360134;Castrillo;Campos;Krissia Yunneth;3;2;64297122;castrillokrissia017@gmail.com;Empleada Domestica ;64297122;4;2
+1;1;112350208;Fallas;Angulo;Cinthya;1;2;85125040;fallascinthya496@gmail.com;empleda domestica;;4;2
+1;1;111420119;Quesada;Badilla;Grettel;3;2;83042508;construjunkan@yahoo.com;En el hogar;83042508;4;8
+1;2;155835641004;Garcia;Mendez;Heiling Lisbeth;1;2;61020900;heygaciamendez01@gmail.com;en el hogar;;4;6
+1;1;107530919;Marin;Marin;Miriam;2;2;88711325;miryammarin100509@gmail.com;En la casa de Habitacion;61774324;4;2
+1;2;155851697204;Fonseca;Herrera;Meyling;2;2;61931093;;Envasa;;4;6
+1;2;155822949418;Jalinas;Aleman;Gema Auxiliadora;5;2;62647431;gemaaleman@gmail.com;Escazu trabaja como ama de casa;62647431;4;2
+1;1;109910132;Bermudez;Navarro;Giselle;5;2;87970281;guiselber@gmail.com;Escuela Ciudadela Fatima;;4;6
+1;1;112850501;Herra;Badilla;Kimberly;2;2;88052102;alfacompukimberly@gmail.com;Escuela Cristiana Linda Vista;22566961;4;6
+1;2;155819062716;Balladarez;;Karla;1;2;86862728;karlaballadrez07@gmail.com;Escuela Cristiana Linda Vista;22766961;4;6
+1;1;701980476;Angulo;Guzman;Maria Del Rocio;1;2;85720830;joyro.0213@gmail.com;Escuela de Guatuso ;22741611;4;6
+1;1;112230743;Solis;Siles;Gabriela;5;2;61886753;gabrielitacr07@gmail.com;estudiante;;4;2
+1;1;109500223;Taylor;Ward;Tanya;2;2;60832271;;Fundever;60832271;4;6
+1;2;155822325012;Bermudez;Diaz;Roberto;2;1;60234029;robertobermudez18@hotmail.com;Grupo Bumo;88345607;4;6
+1;1;108170701;Solis;Cascante;Ronny Alberto;2;1;64823670;facturacionrsolis@gmail.com;Grupo Casino Platinium;22763400;4;6
+1;2;155819160721;Castro;Calderon;Mayra;1;2;71491104;mayracastrocalderon28@gmail.com;Guacima de Alajuela;71491104;4;2
+1;1;114590307;Diaz;Trejos;Jeannette;1;2;87520221;jeannethe91@hotmail.com;Guatuzo;87520221;4;2
+1;1;112480550;Siles;Mena;Susana;2;2;70589598;susanasilesmena@gmail.com;Hatillo;70589598;4;6
+1;1;115330332;Castro;Marin;Shirley;2;4;62471819;shicm53@gmail.com;Hogar;62471819;4;2
+1;1;112330340;Guevra;Alfaro;Carlos;1;1;61206231;calipa2019@icon.com;Hospital Clinica Biblica;22252900;4;6
+1;1;113310140;Valverde;Gutierrez;Jenny;2;2;61103683;jennyvg2905@gmail.com;Icu medical;22209500;4;8
+1;1;106240271;Aguilar;Cascante;Luis Antonio;2;1;86549104;luisantonioaguilar97@gmail.com;iglesia Cristiana asambleas de Dios;22765358;4;7
+1;1;113030667;Madrigal;Ramirez;Juan Esteban;5;4;61891530;;Independiente;;4;11
+1;1;115840705;Vagas;Cordero;Josefin;1;2;60576259;josieamber.jv@gmail.com;independiente;;4;7
+1;2;155851191521;Lanuza;Rodriguez;Marisol del Carmen;5;2;86936640;lanuza14@gmail.com;Independiente;86936640;4;7
+1;1;303590545;Marin;Lopez;Andrey;2;1;71659691;marinloipezandrey@gmail.com;Independiente;71659691;4;11
+1;1;109310196;Paez;Nuñez;Enrique;2;1;71090668;sergrasopaez@gmail.com;independiente ;71090668;4;7
+1;1;502690206;Obando;Cardenas;Xiomara;3;2;89671937;kriswinter28@gmail.com;Industria Nacional del Brillo;22767829;4;8
+1;1;114480893;Rojas;Guillen;Maria Jose;4;2;61658102;rojasguillenmariajose@gmail.com;Industrias de maiz;22268383;4;9
+1;1;112850811;Montes;Sanabria;Heidelyn;5;2;83819340;hlin21@hotmail.com;ISSA;83819340;4;6
+1;1;115310799;Garcia;Quiros;Kimberly;1;2;8467531;kimgarcia63.kk@gmail.com;kinder Montesori Juan Silvestre;22767718;4;6
+1;1;113350721;Garro;Ramirez;Luis Diego;5;1;89096924;diego27garro@gmail.com;La Constanza;89096924;4;8
+1;1;900970046;Rojas;Fallas;Katia;2;2;83322035;katiaro971@gmail.com;Laboratorio lisan;22599797 ext139;4;8
+1;2;155803486708;Quintanilla;Gomez;Eveling;1;2;63850682;evelin1uintanillagomez@gmail.com;Linda vista;63850682;4;6
+1;1;113650223;Tellez;Menocal;Gloria Stephanye;1;2;60889781;stephanyetellezmenocal@gmail.com;Linda vista en una casa;60889781;4;2
+1;1;108700422;Araya;Cruz;Elizabeth;3;2;87027344;eliaraya73@gmail.com;manzate ;87027344;4;8
+1;1;114530118;Chacon;Herrera;Jorge Enrique;2;1;61112680;herrerajorgenrique@gmail.com;Mensajeria independiente;61112680;4;11
+1;1;113070344;Quesada;Mesen;Ana Yancy;1;2;61479949;anayancyquesada61@gmail.com;MIni Super la Cuadra;61479941;4;6
+1;1;110830017;Cordero;Villalobos;Manfred;2;1;72024542;manfred.a2509@gmail.com;Ministerio de Seguridad Publica;72024542;4;5
+1;2;155806506731;ORTIZ;JOSES;YADER ALEXANDER;1;1;83981276;facturasyaderoj@gmail.com;MOTO REPUESTOS LA ALEGRIA;83981276;4;7
+1;1;113590124;CRUZ;DIAS;KATHERINE ROSEY;2;2;70056966;katherincruz2110@gmail.com;MUNDO COSMETICO PLAZA HIGUERONES;89484569;4;6
+1;1;114250102;Valverde;Campos;Blanca;2;2;64001424;blancavalderde08041990@gmail.com;Negocio Propio ;;4;7
+1;2;155815130103;Morales;Lopez;Laritza;5;2;71579358;laritzamolo20@gmail.com;nicole arcangel;;4;6
+1;1;106320281;Calderon;Meza;Maria;2;4;70158353;;;;4;2
+1;1;303860900;Sojo;Hidalgo;Anais;2;2;85604330;anaissojo0483@gmail.com;;;4;2
+1;1;115000266;Rosales;Molinares;Adriana;2;2;89957117;adrianarm1415@gmail.com;;89957117;4;1
+1;1;112490075;Calderon;Munoz;Jessica;3;2;62238708;jessicacalderonm973@gmail.com;Panaderia Luisita;62238708;4;6
+1;1;113470677;Mendez;Nunez;Juanita;5;2;63376569;juanita.mendezn@gmail.com;Partido Nueva Republica;63376569;4;6
+1;1;111240323;Rojas;Robles;Jessica Natalia;2;2;62517415;jessicanrobles2@gmail.com;Pavas;62517415;4;6
+1;1;106420892;Porras;Cordero;Carlos ALberto;2;1;71768385;porrasca01@gmail.com;Pensionado;71768385;4;13
+1;1;113520440;Camacho;Benavides;Vivian;2;2;60897291;vivian.c_88@hotmail.com;Piscina Municipal de Curridabat;60897291;4;6
+1;1;801360378;Aleman;Gutierrez;Yarelis;2;2;72895772;yarealemn1982@gmail.com;Portoracion Pipasa;72895772;4;7
+1;1;110000584;Sibaja;Sanchez;Jessica;3;2;61313203;;Profesora de baile;;4;8
+1;1;111690189;Castrillo;Rueda;Catherine;1;2;63119834;kacastrillo@gmail.com;Profumo S.A;63119834;4;6
+1;1;108710558;Dinarte;Villalobos;Juan Alonso;2;1;88489914;arlynbr@gmail.com;propio;88489914;4;7
+1;1;115490673;Monge;Munoz;Fabiola;5;2;71769080;famomu033018@gmail.com;Propio;71769080;4;7
+1;1;304030099;Carvajal;Calderon;Pamela;2;2;62806544;pamecarcal@gmail.com;propio;62806544;4;7
+1;1;801580716;CORDERO;vEGA;wALTER;2;1;70624329;WC97674@GMAIL.COM;PROPIO;70624329;4;11
+1;1;113870223;Naranjo;Monge;Angie;1;2;88064567;angie2688@hotmail.com;Propio ;88064567;4;7
+1;1;503760866;Barquero;Mendez;Zelia Daiana;1;2;60036795;;Restaurante Lottos Sabana;60036795;4;6
+1;1;111420320;Jimenez;Solis;Claudi Marcela;2;2;88264811;claudiajs92@gmail.com;Salon Comunal de Patarra;88264811;4;6
+1;1;115820887;Gamboa;;Nefertiti;3;2;89059888;nefertitigam@gmail.com;Salon de belleza lashes by Neff;89059888;4;7
+1;2;155810502901;Solis;Morales;Janeth;2;2;61650681;janethsolismorales@gmail.com;san jose ;61650681;4;7
+1;2;155819502901;Solos;Morales;Janeth;2;2;61650681;janethsolismorales@gmail.com;san jose ;61650681;4;7
+1;1;702200110;Peraza;Picado;Kathia;1;2;63411374;perazakattia@gmail.com;Santa Ana;63411374;4;6
+1;2;155802995102;Ocana;Pavon;Maria Nelly;5;2;73001713;nellyocana29@gmail.com;Santa Ana Lindora ;73001713;4;2
+1;2;155824622316;del;Carmen;Francis;5;2;71347095;paisanofrancis57@gmail.com;servicio Domestico;71347095;4;2
+1;1;116320966;Flores;Gonzalez;Michelle;1;2;71387801;mfg21sacf05@gmail.com;SIGMA ;71387801;4;8
+1;1;111940092;Saborio;Melendez;Lenny;3;2;61534669;saboriomelendezlenny@gmail.com;Sleepland;61534669;4;6
+1;1;110750038;Tenorio;Solis;Cynthian;3;2;84918226;cynthiatenorio77@gmail.com;Super  Tenorio;89616713;4;6
+1;1;115860654;Retana;Cordaba;Jennifer Maria;1;2;63710979;retanacordobaj@gmail.com;Super y licorera munoz;;4;6
+1;2;155813613203;Catin;Palacio;Jonathan;2;1;71584902;;Taller Gomez;71584902;4;8
+1;1;110510765;Zamora;Quesada;Cinthya;2;2;71246858;thashanailsacademy@gmail.com;Tecnica en uñas ;71246858;4;9
+1;2;155833468322;Gonzales;Vargas;Mariela de los Angeles;1;2;62111411;mari2192.vargasaz@gmail.com;Tibas, Servicios Domesticos;;4;2
+1;1;701630988;Valverde;Sanchez;Jose;3;1;85406391;jvalverde044@gmail.com;Trabajador independiente ;85406391;4;7
+1;1;800900338;Xiao;Chen;Yendy;5;2;87266174;yendychen@gmail.com;Trabajador Independiente ;87266174;4;7
+1;1;110170439;Alvarez;Cisneros;Rebeca Maria;3;2;60295638;rebecaalvarez0107@gmail.com;Uber;60295638;4;7
+1;1;110830790;Arias;Calvo;Cinthya;1;2;85013233;cinthyaarias24@hotmail.es;UCIMED;25490000;4;6
+1;1;801180364;Baltodano;Pavon;Marta Lorena;2;4;63105161;maumarin10@gmail.com;Uniexpress;;4;6
+1;2;155819373029;Garay;Ramos;Johanna Lissette;2;2;87161074;lissettegaray07@gmail.com;Vias Tulin, Montes De Oca;;4;2
+1;2;155803224106;Ortega;Vega;Hellen;2;2;71055982;ortegahellen690@gmail.com;zapateria el diamante en san jose;;4;7
+1;1;112150503;CHACON;CASTRO;VERONICA;3;2;87577863;vchaconcas@gmail.com;ALFARO Y HERNANDEZ ;40001771;5;6
+1;1;108160857;Hernandez;Carballo;Arlin Vianney;2;2;88890874;ahernazdez9608@gamil.com;Ama casa;88890874;5;2
+1;1;114730286;CAMPOS;ACUNA;ANGGEL STEPHANIE;2;2;88228224;anggelca03@gmail.com;AMA CASA;88228224;5;2
+1;1;104420262;Arias;Segura;Clara;2;4;84586305;mr25807@gmail.com;Ama de Casa;84586305;5;2
+1;1;105880480;Chaves;Sanchez;Rocio;1;4;87475402;rociochsanchez@gmail.com;Ama de casa;87475402;5;2
+1;1;106020145;Sandoval;Lizano;Dinorah;2;4;84723747;dinorahsandoval29@gmail.com;Ama de casa;;5;2
+1;1;106910931;Calvo;Alpizar;Ana Giselle;2;4;84973758;fporrasseas@hotmail.com;Ama de casa;;5;2
+1;1;108660541;Duarte;Araya;Sandra;2;2;60759244;duartsandy04@gmail.com;Ama de casa;60759244;5;2
+1;1;108830546;Barberena;Morales;Xiomara;2;2;86393082;xbarberenamorales@gmail.com;ama de casa;86393082;5;2
+1;1;110630805;Villalobos;Rodriguez;Maureen;3;2;88786642;villalobosmaureen@gmail.com;ama de casa;88786642;5;2
+1;1;110780196;Calderon;Cordero;Grettel Magaly;2;2;71088026;calderoncorderogrettelmagaly@gmail.com;Ama de casa;71088026;5;2
+1;1;110900852;Porras;Hernandez;Meilyn Melania;2;2;89431670;melanipo95@gmail.com;Ama de casa;89431670;5;2
+1;1;110940469;Ortiz;Obando;Karol;2;2;87710075;fco1177@gmail.com;Ama de casa;87710075;5;2
+1;1;111140824;Montero;Madrigal;Flor;2;2;71823638;flormontero310@gmail.com;Ama de casa;71106153;5;2
+1;1;111710723;Segura;Alfaro;Marlen;2;2;88004571;gabriela05051983@gmail.com;Ama de casa;88004571;5;2
+1;1;111760286;Perez;Sevilla;Carolina;2;2;61155949;tutips.17@gmail.com;Ama de casa;;5;2
+1;1;111980246;Lizano;Madriz;Laura Rebeca;2;2;61936067;rebecalizano39@gmail.com;Ama de casa;61936067;5;2
+1;1;112170003;Villalobos;Monge;Nicole;3;2;60010530;nicole25vm@hotmail.com;Ama de casa;60010530;5;2
+1;1;112280377;Villagra;Montenegro;Diana;3;2;84045324;dianayencyvillagramontenegro@gmail.com;Ama de casa;84045324;5;2
+1;1;112770907;Cespedes;V;Estefania;2;4;87840958;cesvenia@gmail.com;Ama de casa;87840958;5;2
+1;1;113040812;Carranza;Ortiz;Karen;1;2;89084805;kcortiz63@gmail.com;ama de casa;;5;2
+1;1;113060682;Vasconcelos;Azofeifa;Maria del Milagro;2;2;87655809;mili651@hotmail.es;Ama de casa;87655809;5;2
+1;1;113070614;Acuna;Picado;Linzay;2;2;60278719;linzayap1887@gmail.com;Ama de casa;;5;2
+1;1;113340058;BERMUDEZ;MONGE;FLOR YESENIA;3;2;85422428;yesebermudez0328@gmail.com;AMA DE CASA;85422428;5;12
+1;1;113520112;Lopez;Torres;Sandra Pamela;2;2;88051354;sandrapamela17@gmail.com;Ama de casa;88051354;5;2
+1;1;113780353;Calderon;Calderon;Victoria;2;2;83220961;viccalderon13@gmail.com;Ama de casa;83220961;5;2
+1;1;114070829;Delgado;Lopez;Cristina;2;2;84771560;cristinajj.delgado@gmail.com;Ama de Casa;84771560;5;2
+1;1;114370589;Munoz;Hernandez;Erika;1;2;89412591;erika11mh@gmail.com;Ama de casa;89412591;5;2
+1;1;114700205;Cruz;Guzman;Yoselyn Paola;2;2;70999293;paocruzguzman280691@gmail.com;Ama de casa;70999293;5;2
+1;1;115460015;ARGUEDAS;KEIT;CHANTAL GHISLAINE;5;2;83377826;arguedaskeithchanthalghislaine@gmail.com;AMA DE CASA;85678128;5;2
+1;1;115560146;Cordero;Segura;Dayana;2;2;84362492;dayacordero91@hotmail.com;Ama de casa;84362492;5;2
+1;1;115620060;MURILLO;MONTERO;KEYLIN VANESSA;1;2;84489247;keylinmrll@gmail.com;AMA DE CASA;84489247;5;2
+1;1;116360236;Perez;Perez;Ruth;5;2;84317429;hazelperezp@gmail.com;Ama de Casa;84317429;5;2
+1;1;116550806;Zamoran;Aguierre;Carolina;1;2;60961100;karidaniela845@gmail.com;Ama de casa;60961100;5;2
+1;2;1222007617414;Yanes;Sorto;Marta Maritza;5;2;87767097;;Ama de casa;87767097;5;2
+1;2;15580941724;Cortes;Briceno;Mayela;2;2;61626634;maye0200272@gmail.com;ama de casa;;5;2
+1;2;15581517312;Obando;Gutierrez;Lorena Martina;2;2;71005643;dcerdasnarvaez@gmail.com;Ama de casa;61908611;5;2
+1;2;155819176516;Vega;Orosco;Damasia;3;2;70594914;damasiavegaorosco@gmail.com;Ama de casa;70594914;5;2
+1;2;155819179910;Garcia;Munoz;Caludia Eloisa;1;2;64690308;gmclau2126@gmail.com;Ama de casa;64690308;5;2
+1;2;155819881312;Chavarria;Solano;Maria;2;2;60745459;marichavas904@gmail.com;Ama de casa;60745459;5;2
+1;2;155820481529;Diaz;Castellon;Aracelly del Carmen;5;2;70051522;diazcastellon23@gmail.com;Ama de casa;70051522;5;2
+1;2;155820917405;Valdivia;Zeledon;Edith de los Milagros;5;4;70525545;edithzeledonv88@gmail.com;Ama de casa;70525545;5;2
+1;2;155820917505;Valdivia;Zeledon;Edith;5;2;70525545;edithzeledonv88@gmail.com;Ama de casa;70525545;5;2
+1;2;155838076621;Jesus;Velasquez;Marjhorie;2;2;71928827;velasquezmarjhorie@gmail.com;Ama de casa;71928827;5;2
+1;1;206340100;Ballestero;Campos;Cindia Vanessa;2;2;72477026;cinka29@outlook.com;Ama de casa;72477026;5;2
+1;1;402160440;Orozco;Lopez;Maria del Rocio;2;2;60224616;chiolopez3006@gmail.com;Ama de casa;;5;2
+1;1;801030490;MIRANDA;MONTOYA;CLAUDIA REGINA;2;2;70789630;kerenmiranda284@gmail.com;AMA DE CASA;70789630;5;2
+1;1;801060725;Lopez;Hernandez;Maria Isabel;2;2;;mariahernandezlop19@gmail.com;Ama de casa;;5;2
+1;1;801120936;Perez;Fajardo;Susana;2;2;72756300;fajardosusana23@gmail.com;ama de casa;;5;2
+1;1;801390352;Jalinas;Ruiz;Marieta de los Angeles;2;2;7272-6264;marietajalina82@gmail.com;ama de casa;7272-6264;5;2
+1;2;C01915740;Calderon;Gonzalez;Aurora;4;2;63710782;aucg28689@gmail.com;Ama de casa;63710782;5;2
+1;1;110540147;Montero;Campos;Lidsay Sidney;2;2;87890826;lmonterocampos79@gmail.com;Ama de Casa ;87890826;5;8
+1;1;112290707;Ramirez;Jimenez;Nathieska;1;2;88840299;nathijk18@gmail.com;Ama de casa ;88840299;5;2
+1;1;112810925;Navarro;Bolanos;Vanessa;2;2;83303210;kvane1486@gmail.com;ama de casa ;83303210;5;2
+1;2;155817759730;Cano;Gomez;Yamilet Del Carmen;5;2;62214767;Yamilethdelcarmengomes@gmail.com;ama de casa ;62214767;5;2
+1;2;CO1295921;Chavarria;Caceres;Jessica Elizabeth;5;2;70344008;jelizabetchc@gmail.com;Ama de Casa ;70344008;5;2
+1;1;113440782;Mendez;Brenes;Andrea Maria;3;2;71042384;andrea310210@hotmail.com;Amazone;25629000;5;6
+1;1;113150397;Jimenez;Martinez;Guiselle Elena;1;2;86985246;guiss0987@gmail.com;Bac credomatic ;86298070;5;9
+1;1;114120622;-murillo;Robles;Luis Ricardo;1;1;61858924;lmurillorobles@gmail.com;Banco Popular;21042020;5;6
+1;1;114130480;Segura;Carro;Matilde;5;2;71891216;noiseg89@gmail.com;Bar Matices (Desamparados);71841216;5;6
+1;2;155832595234;Osorio;Maradiaga;Raquel Sarai;4;2;60565582;maradiaga86sarai@gmail.com;Barrio Escalante ;60565582;5;2
+1;2;155822330401;ARIAS;AGUIERRE;YARIXZA YANORI;1;2;85335938;aguirreyarixza.22@gmail.com;BARRIO LA LIA CURRUDABAR;;5;2
+1;1;601710263;Escalante;Madrigal;Ricardo;2;1;63032576;ricardoescalantem@gmail.com;canal U television ;;5;8
+1;1;115830099;Calvo;Alvarado;Anyo leicy;3;2;63051861;alvaradoanyoleicy@gmail.com;CARPIO;63051861;5;6
+1;1;109050518;Perez;Ramirez;Nelly Vanessa;1;2;84803169;Keithboryj@gmail.com;Casa;;5;2
+1;1;109300982;Palma;Rojas;Sugeily;2;2;83148795;suge.palma@icloud.com;Casa;;5;2
+1;1;113540144;Miranda;Nunez;Marilu;2;2;86597672;urielvalem@gmail.com;casa;86597672;5;7
+1;1;113680229;Torres;Brenes;Paola Raquel;2;2;85390057;paola.to.bre@gmail.com;Casa;85390057;5;2
+1;1;114410199;SALAS;VARGAS;MILAGRO;5;2;87769532;SALASVMILA@GMAIL.COM;CASA;;5;2
+1;1;119010922;Umana;Rincon;Yara;1;4;71238069;umanayara03@gmail.com;casa;71238069;5;1
+1;2;155813279627;Urcuyo;Salmeron;Darling Aracelly;5;2;83097810;movimientos.jm@gmail.com;casa;83097810;5;8
+1;2;C01126885;Estrada;Miranda;Odilia;2;2;72286543;odiliaestradamairena@gmail.com;casa;72286543;5;2
+1;1;115770937;RODRIGUEZ;FIGUEROA;CHAUNNY DALLAN;1;2;70786303;shaunyrodriguez77@gmail.com;CASA ;60786303;5;2
+1;2;155836790310;Rojas;Acuna;Jennifer;1;4;63518402;massiel200430@gmail.com;casaca de fuego;;5;7
+1;1;109440703;Rojas;Ruiz;Manuel;2;1;89697985;manuel030876@gmail.com;CCSS;;5;6
+1;1;114450903;Borbon;Segura;Mirena;2;2;62970635;merena.borbon@gmail.com;centro educativo little people;22265852;5;6
+1;1;109690628;Zuniga;Mora;Maria de los Angeles;3;2;87055650;mariazunigamoracr@gmail.com;Centro Infantil Dejando Huellitas;40918111;5;6
+1;1;118690628;Martinez;Fonseca;Kevin Geovanny;1;4;62963706;geovannyfonseca2929@gmail.com;clima polar;22193072;5;9
+1;2;155810306430;Sandoval;Sanchez;Wendy Mary;1;2;63605671;wensan2913@hotmail.com;Clinica Dental Serranodental;22766445;5;6
+1;2;1558809029601;Ivania;Lopez;Mary;5;2;71212806;marylopezp71@gmail.com;Clorox San Francisco;71212806;5;6
+1;1;117400173;Arauz;Valle;Johanna Haydee;1;4;70920269;;CNP;70920269;5;8
+1;1;110940474;Ortiz;Sevilla;Luis Roberto;5;1;88258810;lrortix81@gmail.com;Comerciante;88258810   61954767;5;7
+1;1;503260419;Mendoza;Cano;Marcos Vinicio;2;1;88116418;marquinisfmc@gmail.com;Comerciante;88116418;5;7
+1;1;114570919;Umana;Alvarado;Stephanie;2;2;70040416;fana91@gmail.com;CoopeSalud;43500510;5;6
+1;1;113490655;guzman;Gonzalez;Jose Didier;2;1;88049533;josedidierguzmangonzalez@yahoo.com;corporacion lagar;40015555;5;6
+1;2;155811211422;Jimenez;Lopez;Marisol;5;2;70483786;marizol1803@hotmail.com;cuido de adulto mayor;;5;6
+1;1;119080080;Quesada;Picado;Kristel;1;4;89245650;kristelvanessa04qp@gmaill.com;de la casa;89245650;5;1
+1;1;202800721;Bogantes;Cespedes;Salma;3;4;89592012;marthacespedesm04@gmail.com;de la casa;89592012;5;2
+1;1;115620818;Lopez;Rivas;Yuritza;5;2;70616554;yuritzalopez_@hotmail.com;Deposito las Gravilias ;22701515;5;6
+1;1;801580170;Jimenez;Delgado;Carla;3;2;60732923;jimenezcarla120@gmail.com;Deposito Las Gravilias, Patarra;40225555;5;8
+1;1;801530678;Garsia;Rayo;Dina;2;2;70346420;dinagarcia2915@gmail.com;Desamparados;70346420;5;6
+1;1;111500961;Munoz;saborio;Ingrid;2;2;85948343;munozvanessa812@gmail.com;Desarrollos Culturales Costarricenses;22203015;5;9
+1;1;118670174;Rodriguez;Lopez;Yoan;1;4;60571202;yoanrl12.2.2003@gmail.com;Desempleado;;5;7
+1;2;155805854406;Mairena;Miranda;Judith De Los Santos;1;2;63466706;judithmairena11@gmail.com;Distribuidora La Cruz;83509494;5;6
+1;1;503400776;Herrera;Gonzalez;Xinia;5;2;84164619;rackyhergon1484@gmail.com;El hogar;84164619;5;7
+1;2;155830268235;Aguilar;Rivas;Marlen;1;2;61162262;marlingaguilar83@gmail.com;Empleada domestica, Santa Ana y Guachipelin.;87118642;5;2
+1;1;108460146;Leon;Matarrita;Sofia Elena;2;2;61883259;sophialeon05@hotmail.com;Emprendedora;61883259;5;8
+1;1;112180483;Abarca;Alpizar;Arelys;5;2;62779812;areabarca@gmail.com;en el hogar;;5;7
+1;1;112090061;Bonilla;Corrales;Natalia;2;2;83085865;corrbonaty584@gmail.com;Escuela Dos Cercas;22191805;5;6
+1;1;119260901;Brenes;Gomez;Adalay;1;4;70338722;adalaybrenes@gmail.com;estudiante;70338722;5;1
+1;1;119650376;Varela;Calderon;Keylin Dayana;1;4;64370681;keyvarecal@gmail.com;Estudiante;64370681;5;1
+1;2;155811204529;Reyes;Obregon;Jose Virgilio;3;1;63643754;joser7284@gmail.com;Estudios Cinemas;63643754;5;6
+1;1;112230677;Guzman;Barrios;Melissa;2;2;62836003;mbarrios12@hotmail.com;Eventos privados;62836003;5;6
+1;1;114090862;Chinchilla;Borbon;Silvia;3;2;64532547;pamechbo97@gmail.com;Funerales Vida Sabana este;25220300;5;6
+1;1;113870337;Jimenez;Chaves;Geovanna Daniela;2;2;86592222;geovanna1104@gmai.com;Funeraria Vida;;5;8
+1;1;123960919;Urena;Castro;Erlyn Pamela;1;2;64593783;erlynpamelacastro1806@gmail.com;Fusion ;;5;6
+1;1;114890598;Mora;Seas;Joselyn Beatriz;1;2;60818121;morajoselyn2014@gmail.com;Grupo EURO protetion ;87196282;5;6
+1;1;108850169;Villalobos;Sandoval;Xinia;2;2;89926807;xiniavillalobossandoval@hotmail.com;grupo purdy;25235167;5;6
+1;1;114110226;Chacon;Jimenez;Daniela Patricia;3;2;62414693;dndchacon@gmIL.COM;Grupo Sanchez;22345628;5;8
+1;1;108720753;Monge;Mena;Susan;2;2;85416850;s.monge.m@hotmail.com;Grupo Sur Quimica;85416850;5;6
+1;1;110540364;Valverde;Flores;Evelyn;2;2;85278263;evelyn.val.florers@gmail.com;Hogar;85278263;5;2
+1;1;113920803;Arias;Villavicencio.;Dixiana;2;2;87178672;dangels1306@hotmail.com;Hogar;87178672;5;2
+1;1;114750648;Mena;Herrera;Laura;2;2;62025457;menaherrera767@hotmail.com;Hogar;62025457;5;2
+1;1;113850741;Brenes;Gonzalez;Adriana;2;2;60061588;adrianalissethe@gmail.com;Hospital Cima ;60061588;5;6
+1;1;115780320;Varela;Conejo;Mauricio Alexander;5;1;62735748;licho-7@hotmail.com;Hospital Nacional de la Salud Mental;22426300;5;6
+1;1;109490163;Perez;Vindas;Grettel;3;2;85441196;grettel.perez.vindas1646@gmail.com;ICETE;22295934;5;6
+1;1;112160658;Monge;Barquero;Karla;2;2;63469266;karla.monge1984@gmail.com;Indeoendiente;63469266;5;7
+1;1;110350365;Benavides;Chaverri;Randall Esteban;2;1;60969766;randall829@gmail.com;Independiente;;5;9
+1;1;114810555;Quiros;Rojas;Monica;1;2;72891919;monikqr15@hotmail.com;Independiente;72891919;5;7
+1;2;155811846227;Mejia;Mendrano;Walter;2;1;86786370;wrservicioindustrial@hotmail.com;Independiente;86786370;5;7
+1;2;155819451633;Aguilar;Montenegro;Noel Antonio;5;1;70692510;naguilar27101981@gmail.com;Independiente;70692510;5;7
+1;1;602100933;Montero;Alvarado;Maria;1;4;83223243;imontero@inder.go.cr;INDER;22476877;5;9
+1;1;112690506;Corella;Camacho;Ileana Maria;2;2;8737-1024;icorellac@grupoins.com;Ins oficinas centrales;2287-6000 8344;5;6
+1;1;112380101;Monge;Viquez;Teresita;2;2;61943864;mongeviqueztere12@gmail.com;IQ Logistic;61943864;5;6
+1;1;113760051;Chamorro;Chavarria;Priscila;2;2;88630338;prich13@hotmail.com;Junta de pensiones del Magisterio;22846500;5;6
+1;1;603310828;Corrales;Mejias;Carlos;2;1;88229286;corralescarlos2@gmail.com;La Uruca, Roles y Mononeras;40700765;5;6
+1;1;111230590;Piedra;Vargas;Raquel;1;2;86748282;piedraraquel@yahoo.com;language line;86748282;5;8
+1;1;111830067;Velasquez;Urena;Jessica;1;2;85237483;comprasjvelasquezu@gmail.com;Loto 2;85237483;5;6
+1;1;114670019;Bermudez;Villafuerte;Ingrid;2;2;63187880;inbermudez10@gmail.com;Manicurista;70934696;5;7
+1;2;155801291513;Vasquez;Romero;Karla Vanessa;3;2;87893489;vasquezromerokarla@gmail.com;Marisqueria el Malecon;;5;6
+1;1;303760516;Rodriguez;Borbon;Guiselle Maria;2;2;83799788;guisellerodriguez1909@gmail.com;Mas X Menos de San Antonio;70769254;5;6
+1;1;114840231;Alvarado;Quiros;Josue;2;1;64717596;familiaalvarado908@gmail.com;MaxipalÌ€i;64757196;5;6
+1;1;111560289;Bonilla;Marchena;Dayan;2;2;71110662;dayan09111820@gmail.com;Megasuper;71110662;5;8
+1;1;109740767;Vargas;Vargas;Dalia;3;2;84427302;dalia.vargas.vargas@mep.go.cr;MEP;22764262;5;6
+1;1;114230568;Montero;Perez;Pamela Viviana;1;2;88163046;parmela15@gmail.com;ministerio de seguridad publica;26004217;5;5
+1;1;115990691;Ramos;Bonilla;Tifanny Maria;1;2;63893985;tramosbonilla02@gmail.com;Moveit;;5;8
+1;1;602300176;Campos;Gutierrez;Jorge Luis;2;1;72655300;jlc1234xz@gmail.com;Municipalidad LaUniÃ³n;72655300;5;6
+1;1;800970729;Rivas;Ortiz;Robinson;2;1;83585472;;Negocio Propio;83585472;5;7
+1;1;111100105;Mendoza;Fallas;Maria;1;2;64747434;mcarom1@hotmail.com;New Rest Costa Rica;60051504;5;8
+1;1;601290091;Cespedes;Chaves;Freddy;2;1;71559881;freddycespedes266@gmail.com;;;5;13
+1;2;155806366628;Ramirez;Pravia;Eduardo Rene;5;1;62537512;eduardo.ramirez.p23@gmail.com;Nucleo Sabana;22890977;5;8
+1;1;114280322;Hernandez;Gomez;Adriana;1;2;60063656;;Oficial de policia ;60063656;5;5
+1;1;115610741;Rojas;Q;Maria Fernanda;2;2;64404452;;Oficial de seguridad;64404452;5;6
+1;2;155832808722;Urbina;;Azucena;2;2;61667014;zeledonsusi@gmail.com;Oficios Domesticos;61667014;5;2
+1;1;115130929;Salas;Arguedas;Jennifer;5;2;61877835;jeniffersalasarguedas@gmail.com;Panaderia Luisita;22768885;5;8
+1;1;801070717;Lopez;Tellez;Sayonara Francisca;1;2;60482377;fsayonara401980@gmail.com;Panamericano School ;60482377;5;6
+1;1;112340168;Alfaro;Seas;Adan Alberto;3;1;88418520;chuchoal13@gmail.com;Pavas;88418520;5;6
+1;1;111510364;Cañas;Gomez;Carlos;3;1;70413239;ccanascr@gmail.com;Pensionado;70413239;5;13
+1;1;113910207;Diaz;Munoz;Noylin;1;2;89801182;noidimu@gmail.com;Pizza Hut;22202949;5;8
+1;1;114540309;Waterhouse;Diaz;Katherine Johanna;2;2;72054424;katherinw9262@hotmail.com;Pizza Hut;89176253;5;6
+1;1;115820826;Guevara;Sequeira;Marianela;1;2;84784942;mspaing1987@gmail.com;Policia Municipal de Guadalupe ;25276608;5;5
+1;2;155825526812;Escoto;Garcia;Arielka del Rosario;5;2;89071256;arielkaescotogarcia12@gmail.com;Pollos Api;;5;6
+1;1;119210903;Garcia;Nurinda;Asly;1;4;60610540;prisgarcia787@gmail.com;pops;60338229;5;6
+1;1;206500585;Lopez;Canales;Dinorah;2;2;85224806;dinorahlc@hotmail.com;Pops;61666252;5;6
+1;1;113480572;Campos;Segura;Daniela;1;2;84415415;negra070488@gmail.com;Porvenir Desamparados;84415415;5;7
+1;1;110270614;Trejos;Valverde;Mauricio;2;1;88329943;mtrejos@phidraulica.co;Precision hidraulica;88329943;5;8
+1;1;114310354;Alfaro;Castillo;Maria Veronica;2;2;60540790;veroalfaro06@hotmail.com;Precision Seas S,A San Francisco De Dos Rios;22502861;5;6
+1;1;106700242;Mora;Mora;Asdrubal;2;1;64056281;;Propio;64056281;5;7
+1;1;206170409;Oviedo;Alvarado;Andres;2;4;72601900;;propio;72601900;5;7
+1;1;108940696;Navarro;Camacho;Giovanni Humberto;5;1;70309713;puertasyventanasnavarro@gmail.com;puertas y ventanas;70309713;5;7
+1;1;114810241;Sanchez;Cordero;Maria Fernanda;5;2;84641873;marifersanchez1691@gmail.com;Quebrada Honda;22741414;5;6
+1;1;112390509;Nunez;Bonilla;Susan;1;2;71245936;karolnubonilla10@gmail.com;Restaurante el imperio;71245936;5;6
+1;1;801310072;Gutierrez;Zamora;Jeydi Raquel;3;2;88323041;heydigutierrez81@gmail.com;Restaurante Nuevo Mundo San Jose;88323141;5;6
+1;1;110650325;Montero;Madrigal;Kattia Mayela;1;2;60355310;;Santa Ana, Forum 1;60355310;5;8
+1;1;205150543;Flores;Solano;Ariel Gustavo;2;1;72993521;parflo0102@gmail.com;SEISAVI, La Aurora Heredia;24414507;5;6
+1;1;602680325;Mora;Barqero;Meybel;3;2;62637600;m.mb1975@hotmail.com;sinai Quesada Duran;22242815;5;7
+1;2;122201405026;Beltran;Lopez;Amilcar Eduardo;2;1;70470717;beltranamilcar40@gmail.com;Smurfit Kappa ;22771200;5;8
+1;1;113150580;Bernard;Delgado;Jason;2;1;61129618;jbernardcr@gmail.com;SoporteXperto;73004565;5;8
+1;2;C02294024;Garcia;Rios;Dayani;1;2;83113086;dayanigarcia22@gmail.com;Taller Cespedes;83113086;5;6
+1;1;116130847;Camacho;Fallas;Marvon Antonio;1;4;72049752;basesrusticas@yahoo.com;Taller ebanestria;72049752;5;7
+1;1;108470034;Vargas;Steller;Minor Enrique;2;1;88574641;minorvargassteller19@gmail.com;taxixta;88574641;5;11
+1;1;114000252;Varela;Conejo;Claudia;5;2;87186048;claudia2529@live.com;Telecable;87186048;5;8
+1;1;304380051;Solis;Mendez;Samanta;1;2;83699692;samsolis11@gmail.com;The spa ;22212106;5;7
+1;1;113550775;Sanchez;Garro;Katherine;3;2;63770308;katherine27sg@gmail.com;Trabajador Independiente ;63770308;5;7
+1;2;1550811846227;Mejia;Medrano;Walter;2;1;86786370;wrservicioindustrial@hotmail.com;trabajo indepediente;;5;9
+1;2;155803605124;Soza;Soza;Elias;2;1;86479575;eliassoza77@gmail.com;Trabajo Propio ;86479575;5;9
+1;1;114260585;Ramirez;Quesada;Laura;5;2;87918583;lramirezq90@gmail.com;Transporte;88088737;5;11
+1;1;113390684;Murillo;Garita;Andres Francisco;5;1;89565547;amg3116@gmail.com;Unilever ;60567866;5;8
+1;1;115010560;HIDALGO;MAYORGA;MARIA FERNANDDA;2;2;63387320;ferhi921905@gmail.com;VMV COSMETIC GROP;63387320;5;6
+1;1;113940925;Villalobos;Jimenez;Kembly;1;4;62222044;;Wallmart Curridabat;62222044;5;6
+1;1;112090539;Piedra;CalderÃ³n;Stephany;3;2;60539456;spiedra18@gmail.com;Walmart;60539456;5;6
+1;1;110330672;Frank;Guzman;Michael;2;1;61040460;michaelguzman.e@gmail.com;Zapote;61040460;5;7
+1;1;207810532;Chamorro;Madrigal;Daniel Antonio;1;4;63577144;dmadrig27@outloook.com;;;5;1
+1;1;109040735;Salas;Zamora;Evelyn Maria;3;2;87970223;godpower0772@gmail.com;Ama de casa;;7;2
+1;1;110470925;Rojas;Salazar;Karol;2;2;88539446;krojassa@gmail.com;ama de casa;;7;2
+1;1;111400500;Estrada;Artavia;Melissa;2;2;60826786;meli.estrada.artavia@gmail.com;Ama de casa;60826786;7;2
+1;1;116060586;Cedeno;Ramos;Fergie Faraday;1;2;72140141;0812am@gmail.com;Ama de casa;;7;2
+1;1;304140739;Mendez;Guillen;Paulina;3;2;83183518;pmg2008@live.com;Ama de casa;83183518;7;2
+1;1;801440121;Sandoval;Sanchez;Raquel;1;2;89954562;e.raquel22@hotmail.com;Ama de casa;89954562;7;2
+1;1;109320152;Camacho;Zamora;Folorobeth;2;2;88491260;zamoracr35@gmail.com;Ama de casa ;88491260;7;2
+1;1;114710452;Venegas;Barrios;Carrie Pamela;2;2;61970620;cpvenegas49@gmail.com;Ama de Casa ;61970620;7;5
+1;1;111820602;Gamboa;Montes;Cynthia Rosana;2;2;87835211;cyngamboa@hotmail.com;Anarg s.a.;;7;6
+1;1;110490973;CORDERO;BADILLA;ESTELA;3;2;60487318;stella_cr@live.com;ASA COMPANIA DE SEGUROS;64299314;7;8
+1;1;114280110;Brenes;Carvajal;Wendy;1;2;60212507;pamebre09@gmail.com;Asadem;25280700;7;8
+1;1;113470644;Alvarez;Ruiz;Karla;3;2;85263111;kalvarezr88@gmail.com;Banco Lafise San Pedro;22462067;7;8
+1;1;110860862;Centeno;Zuniga;Carlos;2;1;8312-6753;centenoz2080@gmail.com;Banco Nacional;2212-0900;7;8
+1;1;114220018;CASTILLO;URRUTIA;ANDREA PATRICIA;1;2;61369221;andreacasv9@gmail.com;BANCO NACIONAL;61369221;7;8
+1;1;111860843;Abarca;Rojas;Marcela;1;2;86760680;kendmarc32@gmail.com;Bar Restaurante Los Adobes;22768389;7;6
+1;1;114320007;Azofeifa;Lopez;Monica Tatiana;1;2;87250436;monicaalts90@gmail.com;Benemerita Cuerpo de Bomberos de CR;25473700 ext 3821;7;6
+1;1;110460829;Marchena;Villegas;Karol Viviana;2;2;88921779;k.decogypsum@gmail.com;Bufete Marchena y Vargas ;88921779;7;8
+1;1;108360868;Rojas;Carvajal;Maureen;2;2;85388301;rojasmaureen@hotmail.com;Buffet de Abogados;22348233;7;6
+1;1;304400084;Rodriguez;Arias;Mariel;5;2;62594882;marielhw02@gmail.com;casa;62594882;7;8
+1;2;C02824241;Galeano;Flores;Jaqueline Del Carmen;2;2;62229031;jakygaleano73@gmail.com;Casa;;7;2
+1;1;701520965;Cano;Garcia;Candy Vanessa;2;2;89353232;cvg.candy@gmail.com;CCSS;89353232;7;8
+1;1;112690177;Valverde;Piedra;Jefry;2;1;85577837;javpiedra@gmail.com;CCSS Clinica Marcial Fallas;22170400;7;8
+1;1;112830903;Mora;Garro;Paula;1;2;70372054;paulamora07@hotmail.com;Cementos Progreso;70372054;7;6
+1;1;115410122;Maria;;Fabiana;5;2;85758029;fbn419@hotmail.com;Claro Cr telecomunicacione ;70027571;7;8
+1;2;15555810306430;Sandoval;Sanchez;Wendy;1;2;63605671;wensan2913@hotmail.com;Clinica Dental Serrano Dental;22766445;7;6
+1;1;112470868;Vargas;Cerdas;Marilyn;1;2;88637706;marilynvalen.1707@gmail.com;Colegio de Periodistas;88637706;7;6
+1;1;801230786;Loaiza;Hincapie;Luisa;3;2;61083458;luisanyf@hotmail.es;Comerciante ;61083458;7;7
+1;1;114270193;Quesada;Sibaja;Cinthia;1;2;64318911;cinquesada1903@gmail.com;Consejo de transporte publico;25869128;7;6
+1;1;111760708;Arce;Gomez;Cindy Natalia;2;2;83525041;nathalia.ag@hotmail.com;copemep;22960825;7;6
+1;1;108880567;Rodriguez;Rojas;Vanessa;2;2;83644477;ledasa22@gmail.com;COSEVI;25220980;7;6
+1;1;701010413;Rojas;Rojas;Yaneth;2;2;87428233;janrojitas@gmail.com;Costurera;87428233;7;6
+1;1;112600430;DÌ€iaz;Fallas;Eduardo;2;1;60149320;diazfallasedu@gmail.com;CTP Maximo Quesada;;7;8
+1;1;113400068;Vakverde;Astua;Nancy;1;2;88613042;;CTP Maximo Quesada;22764262;7;5
+1;1;205480512;Granados;Segura;William Gerardo;2;1;87684125;wllmgs@gmail.com;CTP Maximo Quesda;22744262;7;5
+1;1;115690190;Campos;Arroyo;Mariana;2;2;89739119;marianacamposarroyo@gmail.com;CTP MÌ€Ì€aximo Quesada;22764262;7;5
+1;1;116150447;Guido;Campos;Karina;2;4;89638983;kari_guido21@hotmail.com;Curriabat ;89638983;7;5
+1;1;107260321;Fallas;Porras;Runnia;2;2;60641388;runniafallas2107@gmail.com;De la casa;60641388;7;2
+1;2;117001389035;Parra;Martinez;Eliana;1;2;70116801;elicolom08@gmai.com;De la casa;70116801;7;2
+1;2;155851610922;Guzman;Gutierrez;Lucia de Fatima;1;2;64606255;guzmangutierrezlucia@ymail.com;de la casa;64606255;7;2
+1;1;111770684;Quiros;Bolanos;Yesenia;3;2;83271841;yess081206@hotmail.com;Despacho Carvajal y Colegiado;22832525 ext. 108;7;6
+1;1;112940746;Cerdas;Calderon;Carolina;3;2;71352500;carolinacerdasc@gmail.com;Distribuidora Mora y Aguilar, San Sebastian;63997317;7;6
+1;1;111210195;Cerdas;Salazar;Viviana;2;2;88277316;cerdassalazar@yahoo.com;Escuela Dos cercas;22191805;7;5
+1;1;112350226;Murillo;Retana;Jessica;2;2;62011719;jessicamurilloretana@hotmail.com;Escuela La Lia, Curridabat;22724283;7;5
+1;1;110530421;Masis;Campos;Jenny;3;2;72991196;jennymaca2510@gmail.com;Escuela Las Mercedes;72991196;7;5
+1;1;110170578;Chacon;Villalobos;Rena;2;2;84890093;rechaconv@gmail.com;Escuela Rep de Venezuela;22892675;7;5
+1;1;113470110;Rodriguez;Chavarria;Sandra Maria;2;2;83118714;sans0888@hotmail.com;Escuela RepÃºblica Federal de Alemania;22769975;7;5
+1;1;106720876;Arrieta;Montoya;Dinorah Janet;2;4;87501300;ale0361lm@gmail.com;Escuela Republica Federal Alemana;;7;5
+1;1;109560484;Rojas;Moroto;Gloriana;3;2;83710274;gloriana.rojas.maroto@mep.go.cr;Escuela San Felipe Neri;22596220;7;8
+1;1;115510599;Fallas;Muñoz;Abigail;2;2;85336883;abi_fallas@hotmail.com;Escuela San Rafael;22752580;7;5
+1;1;109870964;Saenz;Breckenridge;Maria Stella;2;2;88402706;saenzstella@gmail.com;Facultad Latinoamericana de Ciencias Sociales;22530082;7;8
+1;1;111840956;Gamboa;Cruz;Jacqueline;5;2;83210059;jaquigam@yahoo.com;Hospital Blanco Cervantes;25227731;7;6
+1;1;111120152;Castro;Gutierrez;Carla;1;2;88420932;kr.cg@hotmail.com;Hospital de Trauma;22876000 ext 4845;7;8
+1;1;111630139;Barboza;Arguello;Jonathan;2;1;88790321;jonba21@hotmail.com;hospital San Juan de Dios;25478663;7;6
+1;1;110970443;Vargas;Villalobos;Federico Antonio;2;4;83273841;fvargasv@ice.go.cr;ICE;;7;6
+1;1;111990274;Calderon;Palomo;Yorleni Pamela;2;2;60264717;shandelc@hotmail.com;Imprenta la Trinidad;22266564;7;6
+1;1;111240999;Gutierrez;Chacon;Kimberlyn;3;2;86039586;delfin-chris@hotmail.com;INA;22106219;7;6
+1;1;107960667;Gomez;Bonilla;Roberto Carlo;2;1;83569588;robertogomezcr@gmail.com;Independiente;83569588;7;8
+1;1;109410699;Castro;Arguedas;Ronny Ricardo;2;1;83408204;rcastroarguedas@gmail.com;Independiente;83408204;7;7
+1;1;111670209;Miranda;Rodriguez;Ruth Angelina;5;2;88414170;angelina_miranda@hotmail.com;Infotre Global Solution;88414170;7;8
+1;1;112650883;Diaz;Sancho;Priscila;3;2;85647366;pri1002@hotmail.com;INS;22876000;7;6
+1;1;114520954;Venegas;Calderon;Evelyn;1;2;71970924;nativega23@hotmail.com;JComunicaciones;71970924;7;6
+1;1;104190921;Valverde;Rojas;Raymond;2;1;83996907;ticoraymond@gmail.com;Jubilado ;83996907;7;8
+1;1;113010718;Ramirez;Camacho;Carmen;1;2;86599067;lescarjos@gmail.com;Liceo San Miguel y Liceo Santa Ana;22282263;7;5
+1;1;304650317;Martinez;Obregon;Maria Alejandra;5;2;87635657;reisofi2510@gmail.com;Linda Vista;;7;6
+1;1;110370691;Amador;Venegas;Malena;3;2;87636458;malena.a.v@hotmail.com;MEO;87636458;7;8
+1;1;113740970;Ramirez;Camacho;Anayaci;5;2;87688242;anayaciramirezcamacho@mep.go.cr;Mep;;7;5
+1;1;108940750;Monge;Arguedas;Kathia;2;2;71051029;mongekathia@gmail.com;Ministerio de Educacion Publica;22741611;7;5
+1;1;107750072;Blanco;Chaves;Miguel;3;1;88761847;guelo.blanco@gmail.com;MOVATE;88761847;7;7
+1;1;112110862;Alvarado;Quesada;Carol Alejandra;1;2;83663744;ale28cr@gmail.com;Municipalidad Montes de Oca;22905589;7;6
+1;1;109910644;Oviedo;Chinchilla;Alejandra;1;2;72162294;oviedoale1978@gmail.com;Negocio Propio;;7;7
+1;1;202880963;Artavia;Fernandez;Francisco;3;1;83481581;javierartavia@yahoo.com;negocio propio;;7;7
+1;1;109920558;Bonilla;Ortiz;Jenny;1;2;84741573;petdesign_0518@hotmail.com;Negocio propio ;;7;7
+1;1;113220959;Reyes;Zuniga;Grettel;2;2;85852286;grema-rz@hotmail.com;Ocasional;85852286;7;6
+1;1;111610421;Morales;Orozco;Manuel;2;1;83333281;manmoroz@gmail.com;Parque de la libertad ;22769400;7;6
+1;1;302090040;Angulo;Viquez;Lilliana;1;4;83546667;lilliaviq@gmail.com;pensionada;83546667;7;13
+1;1;106490151;Murillo;Salazar;Walter Ramon;2;1;84938484;wamusa65@gmail.com;Pensionado;;7;13
+1;1;111740363;Naranjo;Picado;Aracelly;2;2;70131216;anaranjop@xn--podejudicial-72gaaaaaaaaanaaaa3917q.go.cr;Poder Judicial;70131216;7;5
+1;1;112860279;Alvarado;Quesada;Viviana;1;1;84335064;calvaradoq@poder-judicial.go.cr;Poder Judicial ;22954607;7;8
+1;1;901120723;Alvarez;Brenes;Yorlenia;3;2;62095960;Yorleniaalvarezbrenes@gmail.com;propio;62095960;7;7
+1;1;106990635;Villalobos;Sanchez;Omar Gerardo;2;1;88124643;ovisa16@yahoo.com;Servicentro El Muneco;22763723;7;6
+1;1;114420712;Campos;Arroyo;Natalia;1;2;71973752;natiuska18@hotmail.com;Valor Global;22394640;7;8
+1;1;115130891;Campos;Aguero;Karina;2;2;62927308;kari_38@hotmail.es;Academia Luva;62927308;7;8
+1;1;114850797;Gonzalez;Rojas;Joselin;1;2;84593208;ninag1491@hotmail.com;Acebanasa;40000790;7;6
+1;1;112160878;Barrantes;Cespedes;Yerlyn;5;2;64047616;ybarrantes84@gmail.com;agencia ARA Tours;22340044;7;6
+1;1;108070719;Gonzalez;Sehumann;Alejandra;3;2;71394037;galejandra413@yahoo.com;Ama de casa;72394037;7;2
+1;1;108980843;Mata;Granados;Viviana;2;2;86587133;viviana.mata2423@gmail.com;ama de casa;;7;2
+1;1;109600084;Mora;Segura;Ingrid;5;2;87771111;ingridmora81@gmail.com;ama de casa;;7;2
+1;1;113450129;Molina;Cordero;Saray Lizeth;2;2;63840535;sally.mc@hotmail.com;Ama de casa;63840535;7;2
+1;1;114170603;Serrano;Ramirez;Jessica;2;2;72462489;ashley2012.r@gmail.com;ama de casa;;7;8
+1;1;801580582;Martinez;Peralta;Anabell;2;2;70921959;anabellm2614@gmail.com;Ama de casa;70921959;7;2
+1;1;112360722;Morales;Mendez;Daniela;1;2;70194207;familiarojas1@hotmail.com;Arias Salud Carmen Montes de Oca;70194207;7;8
+1;1;114950589;Monge;Munoz;Hilbeth Josue;1;1;86050660;josue.monge@autostar.cr;Autostar ;22950000;7;6
+1;1;110120593;Alfaro;Mora;Iliana;3;2;86298282;ialfaro78@gmail.com;Banco Central de Costa Rica;22434453;7;6
+1;1;111210911;Pinto;Calvo;Patricia;2;2;84470921;hpcellen@hotmail.com;casa;84470921;7;2
+1;1;118970317;Castro;Montes;Jenny;1;4;87762032;jennycastromontes127@gmail.com;casa;87762032;7;1
+1;1;603720223;Borbon;Morales;Katherine;5;2;84373820;katherineborbonmorales@gmail.com;casa;84373820;7;2
+1;1;112190472;Quesda;Castro;Mauren;1;2;72946414;mauquegu@outlook.es;Centro infantil Jardin de suenos;72946414;7;6
+1;1;604250921;Campos;Alvarado;Vielka Julith;1;2;62064818;yulicamposavarado23@gmail.com;Colegio Universitario Paramedico;88472633;7;8
+1;1;107720045;Bejarano;Ramirez;Jorge;3;1;88591509;bejarano01sj@gmail.com;comerciante;;7;7
+1;1;111100554;Mesen;Ramirez;Alvaro de los Angeles;2;1;86237810;alvmes@gmail.com;Comerciante;;7;7
+1;1;111050283;Sandi;Diaz;Maria Alexandra;1;2;88302036;mary.alexandra00@gmail.com;Cooperativa 360 ;40528407;7;6
+1;1;114470603;Priscila;;Jessica;2;2;72462489;ashley2012.r@gmail.com;Desempleada;;7;8
+1;1;206170651;Alfaro;Solano;Antony;5;1;72666214;parabrisaschinogrecia@gmail.com;domicilio;72666214;7;2
+1;1;113220792;Diaz;Cerdas;Rebeca;3;2;60825594;rebecadiaz0728@gmail.com;elmec s.a;22514100 ext 214;7;7
+1;1;604050134;Suarez;Cerceno;Magaly;1;2;71742258;magafr@hotmail.es;GBM;71742258;7;8
+1;1;106860309;Jimenez;Rojas;Liliana;3;2;62284637;ljimenezr.lj@gmail.com;Gobyz Ad;86729056;7;8
+1;1;111750751;Delgado;Angulo;Natalia;2;2;60518585;ndelgadocr@hotmail.com;Grupo Q;70754875;7;6
+1;1;112760569;Roman;Rojas;Hellen;3;2;60216577;heanje80@gmail.com;HCG;60216577;7;6
+1;1;110940835;Carpio;Montenegro;Cinthya;1;2;72131434;cinkarm@gmail.com;Hospital de las mujeres;72131434;7;6
+1;1;112320682;Soto;Delgado;Ericka;3;2;87907613;ericka14sd@hotmail.com;Hospital Mexico;22423574;7;6
+1;1;801530804;Calderon;Gonzalez;Belicia;2;2;62327782;beliciagon07@gmail.com;INAMU;25278502;7;6
+1;1;112410499;Arroyo;Quintero;Pamela;1;2;87325828;pamelaaq33@gmail.com;Juzgado Civil Desamparados;;7;9
+1;1;113460254;Masis;Portilla;Gregory Antonio;2;1;87547054;barukgreg@gmail.com;Kay Concept ;22743678;7;7
+1;1;303970310;Mendez;Guillen;Fabiola;3;2;85357482;fmdes@hotmail.com;La casa.;85357482;7;2
+1;1;115720313;Ruiz;Vargas;Jazmin;5;2;64869407;minruiz953@gmail.com;Pali Patarra;64869407;7;6
+1;1;112670048;Ulloa;Mora;Kristel Frnacinie;5;2;71086269;krisulloamora@gmail.com;Poder Judicial;22953390;7;6
+1;1;502200785;Matarrita;Ugarte;Carlos Luis;4;1;70503477;carlosmatarrita543@gmail.com;Poder Judicial;22532935;7;6
+1;1;115310055;Mora;Chinchilla;Laura Pamela;3;2;62070099;pame11lmch@gmail.com;Poder Judicial ;62070099;7;6
+1;1;111340436;Orellana;Bustamante;Tatiana;2;2;86955257;sashama1981@hotmail.com;Reeco S.A ;22577074;7;7
+1;1;107569791;Jimenez;Villegas;Randall;3;1;60481596;rajivi63@hotmail.com;Revolution Tecnologys;41044000;7;6
+1;1;206440991;LOPEZ;VARGAS;MILENY;2;2;88917484;mileny.gabriel04@gmail.com;SAN JOSE, POPULAR PENCIONES;88917484;7;6
+1;1;113650265;Calvo;Brenes;Wendy;5;2;60722169;wendy.calvo@scotiabank.com;Scotia Bank;60516670;7;6
+1;1;111950479;Carranza;Orias;Geannina;5;2;62821071;geaninacarranza@yahoo.es;Sinart;22313333;7;6
+1;1;112690900;Obando;Cerdas;Ana Lucia;2;2;60794004;anaobando95@gmail.com;Soda Quebrada Honda;60794004;7;7
+1;1;115020259;Cedeno;Mora;Laura Alejandra;5;2;86012414;lauracedeno22@gmail.es;telacable;40804000;7;6
+1;1;109290150;Aguero;Fallas;Vilma Magaly;3;2;88694762;magalya468@gmail.com;Teletrabajo;87987713;7;7
+1;1;111410060;Ulate;Solis;Debora;1;2;72007591;deboulate@hotmail.com;Texipro;72007591;7;8
+1;1;113440900;Arrieta;Chaves;Sharon;5;2;89769936;todopequenito@gmail.com;trabajadora independiente ;89769936;7;6
+1;1;118480227;Aguero;Flores;Carlos A;1;4;61050625;;Uber;61050625;7;7
+1;1;112770021;Hidalgo;Aguero;Maria Marcela;1;2;70835776;chela162101@gmail.com;Viaja con Pri;70835776;7;7

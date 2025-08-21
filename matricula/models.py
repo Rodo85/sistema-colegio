@@ -16,19 +16,27 @@ from config_institucional.models import Seccion, Subgrupo, PeriodoLectivo
 
 # ─────────────────────────  PERSONA CONTACTO  ──────────────────────────
 class PersonaContacto(models.Model):
+    id = models.AutoField(primary_key=True)
     institucion       = models.ForeignKey(Institucion, on_delete=models.PROTECT)
+    tipo_identificacion = models.ForeignKey(TipoIdentificacion, on_delete=models.PROTECT, verbose_name="Tipo de identificación")
     identificacion    = models.CharField("Identificación", max_length=20)
     primer_apellido   = models.CharField("1° Apellido", max_length=50)
-    segundo_apellido  = models.CharField("2° Apellido", max_length=50, blank=True)
-    nombres           = models.CharField("Nombre(s)",  max_length=100)
-    celular_avisos    = models.CharField("Celular",    max_length=20)
-    correo            = models.CharField("Correo",     max_length=100)
-    lugar_trabajo     = models.CharField("Lugar de trabajo", max_length=100, blank=True)
-    telefono_trabajo  = models.CharField("Teléfono trabajo", max_length=20, blank=True)
 
-    estado_civil = models.ForeignKey(EstadoCivil,  on_delete=models.PROTECT)
-    escolaridad  = models.ForeignKey(Escolaridad, on_delete=models.PROTECT)
-    ocupacion    = models.ForeignKey(Ocupacion,   on_delete=models.PROTECT)
+    # ← ahora permite NULL
+    segundo_apellido  = models.CharField("2° Apellido", max_length=50, blank=True, null=True)
+
+    nombres           = models.CharField("Nombre(s)",  max_length=100)
+
+    # ← ahora permiten NULL
+    celular_avisos    = models.CharField("Celular", max_length=20, blank=True, null=True)
+    correo            = models.CharField("Correo", max_length=100, blank=True, null=True)
+    lugar_trabajo     = models.CharField("Lugar de trabajo", max_length=100, blank=True, null=True)
+    telefono_trabajo  = models.CharField("Teléfono trabajo", max_length=20, blank=True, null=True)
+
+    # ← ahora permiten NULL
+    estado_civil = models.ForeignKey(EstadoCivil, on_delete=models.PROTECT, blank=True, null=True)
+    escolaridad  = models.ForeignKey(Escolaridad, on_delete=models.PROTECT, blank=True, null=True)
+    ocupacion    = models.ForeignKey(Ocupacion,   on_delete=models.PROTECT, blank=True, null=True)
 
     class Meta:
         verbose_name = "Persona de contacto"
@@ -37,11 +45,24 @@ class PersonaContacto(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=["institucion", "identificacion"],
-                name="unique_persona_contacto_por_institucion"
+                name="unique_persona_contacto_por_institucion",
             )
         ]
 
+    def clean(self):
+        from django.core.exceptions import ValidationError
+        
+        # Validar que si es cédula, tenga exactamente 9 dígitos
+        if self.tipo_identificacion and self.identificacion:
+            tipo_nombre = self.tipo_identificacion.nombre.upper()
+            if 'CÉDULA' in tipo_nombre or 'CEDULA' in tipo_nombre:
+                if not self.identificacion.isdigit() or len(self.identificacion) != 9:
+                    raise ValidationError({
+                        'identificacion': 'La cédula debe tener exactamente 9 dígitos numéricos.'
+                    })
+
     def save(self, *args, **kwargs):
+        # Normaliza strings: recorta y a MAYÚSCULA (correo se maneja aparte)
         for campo in (
             "identificacion", "primer_apellido", "segundo_apellido",
             "nombres", "celular_avisos", "lugar_trabajo", "telefono_trabajo",
@@ -49,14 +70,15 @@ class PersonaContacto(models.Model):
             valor = getattr(self, campo, None)
             if isinstance(valor, str):
                 setattr(self, campo, valor.strip().upper())
+
         # Correos electrónicos en minúscula
         if self.correo:
             self.correo = self.correo.strip().lower()
+
         super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.primer_apellido} {self.nombres}"
-
 
 # ──────────────────────────────  ESTUDIANTE  ───────────────────────────
 class Estudiante(models.Model):
@@ -175,8 +197,7 @@ class EncargadoEstudiante(models.Model):
                 setattr(self, campo, valor.strip().upper())
         super().save(*args, **kwargs)
 
-# Eliminar modelos duplicados de Nivel, Seccion, Subgrupo, Periodo
-# Mantener solo el modelo de MatriculaAcademica, referenciando los modelos correctos
+
 
 class MatriculaAcademica(models.Model):
     ACTIVO = 'activo'

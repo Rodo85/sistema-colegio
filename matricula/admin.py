@@ -90,28 +90,31 @@ class EstudianteForm(forms.ModelForm):
 class PersonaContactoForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
+        tipo_identificacion = cleaned_data.get('tipo_identificacion')
         identificacion = cleaned_data.get('identificacion')
         
         # Validar identificación para Cédula de identidad
-        if identificacion:
-            # Limpiar la identificación de guiones y espacios
-            identificacion_limpia = identificacion.replace('-', '').replace(' ', '')
-            
-            # Validar que tenga exactamente 9 caracteres
-            if len(identificacion_limpia) != 9:
-                self.add_error('identificacion', 
-                    'La cédula de identidad debe tener exactamente 9 dígitos. '
-                    f'Si es cédula de identidad no ingrese guiones. (tiene {len(identificacion_limpia)} caracteres)')
-            
-            # Validar que solo contenga números
-            if not identificacion_limpia.isdigit():
-                self.add_error('identificacion', 
-                    'La cédula de identidad solo debe contener números. '
-                    'Si es cédula de identidad no ingrese guiones.')
-            
-            # Si pasa la validación, guardar la versión limpia
-            if len(self.errors) == 0:
-                cleaned_data['identificacion'] = identificacion_limpia
+        if tipo_identificacion and identificacion:
+            tipo_nombre = str(tipo_identificacion).lower()
+            if 'cédula' in tipo_nombre or 'cedula' in tipo_nombre:
+                # Limpiar la identificación de guiones y espacios
+                identificacion_limpia = identificacion.replace('-', '').replace(' ', '')
+                
+                # Validar que tenga exactamente 9 caracteres
+                if len(identificacion_limpia) != 9:
+                    self.add_error('identificacion', 
+                        'La cédula de identidad debe tener exactamente 9 dígitos. '
+                        f'Si es cédula de identidad no ingrese guiones. (tiene {len(identificacion_limpia)} caracteres)')
+                
+                # Validar que solo contenga números
+                if not identificacion_limpia.isdigit():
+                    self.add_error('identificacion', 
+                        'La cédula de identidad solo debe contener números. '
+                        'Si es cédula de identidad no ingrese guiones.')
+                
+                # Si pasa la validación, guardar la versión limpia
+                if len(self.errors) == 0:
+                    cleaned_data['identificacion'] = identificacion_limpia
         
         return cleaned_data
 
@@ -121,8 +124,8 @@ class PersonaContactoForm(forms.ModelForm):
         widgets = {
             "identificacion": forms.TextInput(attrs={
                 "autocomplete": "off",
-                "placeholder": "Si es cédula de identidad no ingrese guiones. Ejemplo: 914750521",
-                "title": "Ingrese 9 dígitos sin guiones ni espacios"
+                "placeholder": "Ingrese la identificación según el tipo seleccionado",
+                "title": "Para cédula: 9 dígitos sin guiones. Para DIMEX: formato correspondiente"
             }),
         }
     class Media:
@@ -292,15 +295,15 @@ class PersonaContactoAdmin(InstitucionScopedAdmin):
         }),
         ('Datos de la Persona de Contacto', {
             'fields': (
-                'identificacion',
-                'primer_apellido', 'segundo_apellido', 'nombres',
-                'estado_civil', 'escolaridad', 'ocupacion',
-                'celular_avisos', 'correo', 'lugar_trabajo', 'telefono_trabajo',
+                'identificacion', 'primer_apellido', 'segundo_apellido', 'nombres',
+                'celular_avisos', 'correo',
+                'tipo_identificacion', 'estado_civil', 'escolaridad', 'ocupacion',
+                'lugar_trabajo', 'telefono_trabajo',
             ),
         }),
     )
 
-    list_display  = ("primer_apellido", "nombres", "identificacion", "institucion", "celular_avisos")
+    list_display  = ("identificacion", "primer_apellido", "segundo_apellido", "celular_avisos", "correo")
     search_fields = ("primer_apellido", "segundo_apellido", "nombres", "identificacion", "correo")
     list_filter   = ("institucion", "estado_civil", "ocupacion", "escolaridad")
     list_per_page = 25

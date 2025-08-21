@@ -22,3 +22,4 @@ class RegistroIngreso(models.Model):
 
 
 
+
