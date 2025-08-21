@@ -156,11 +156,4 @@ class CursoLectivoAdmin(admin.ModelAdmin):
     search_fields = ('nombre', 'anio')
     ordering = ('-anio',)
     
-    fieldsets = (
-        ('Información General', {
-            'fields': ('anio', 'nombre', 'activo')
-        }),
-        ('Fechas', {
-            'fields': ('fecha_inicio', 'fecha_fin')
-        }),
-    )
+    fields = ('anio', 'nombre', 'fecha_inicio', 'fecha_fin', 'activo')

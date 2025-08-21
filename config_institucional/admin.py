@@ -113,11 +113,27 @@ class PeriodoLectivoAdmin(admin.ModelAdmin):
 
 @admin.register(EspecialidadCursoLectivo)
 class EspecialidadCursoLectivoAdmin(admin.ModelAdmin):
-    list_display = ('institucion', 'curso_lectivo', 'especialidad', 'activa', 'vista_masiva')
+    list_display = ('institucion', 'curso_lectivo', 'especialidad', 'activa')
     list_filter = ('institucion', 'curso_lectivo__anio', 'especialidad__modalidad', 'activa')
     search_fields = ('institucion__nombre', 'curso_lectivo__nombre', 'especialidad__nombre')
     ordering = ('institucion__nombre', '-curso_lectivo__anio', 'especialidad__nombre')
     autocomplete_fields = ('institucion', 'curso_lectivo', 'especialidad')
+    
+    def changelist_view(self, request, extra_context=None):
+        """Personalizar la vista de lista para agregar botón de vista masiva"""
+        extra_context = extra_context or {}
+        
+        # URL para la vista masiva
+        vista_masiva_url = reverse('config_institucional:gestionar_especialidades_curso_lectivo')
+        
+        # Si el usuario no es superusuario, pre-seleccionar su institución
+        if not request.user.is_superuser and hasattr(request, 'institucion_activa_id'):
+            vista_masiva_url += f'?institucion={request.institucion_activa_id}'
+        
+        extra_context['vista_masiva_url'] = vista_masiva_url
+        extra_context['vista_masiva_titulo'] = 'Gestión Masiva de Especialidades'
+        
+        return super().changelist_view(request, extra_context)
     
     fieldsets = (
         ('Información General', {
@@ -156,7 +172,7 @@ class EspecialidadCursoLectivoAdmin(admin.ModelAdmin):
 class SeccionCursoLectivoAdmin(admin.ModelAdmin):
     """Admin para gestionar las secciones disponibles por curso lectivo."""
     
-    list_display = ('institucion', 'curso_lectivo', 'seccion', 'activa', 'vista_masiva')
+    list_display = ('institucion', 'curso_lectivo', 'seccion', 'activa')
     list_filter = ('institucion', 'curso_lectivo__anio', 'seccion__nivel', 'activa')
     search_fields = ('institucion__nombre', 'curso_lectivo__nombre', 'seccion__numero')
     ordering = ('institucion__nombre', '-curso_lectivo__anio', 'seccion__nivel__numero', 'seccion__numero')
@@ -164,6 +180,22 @@ class SeccionCursoLectivoAdmin(admin.ModelAdmin):
     
     # ⚡ ACCIONES MASIVAS PARA FACILITAR GESTIÓN
     actions = ['agregar_todas_secciones', 'copiar_del_año_anterior', 'activar_seleccionadas', 'desactivar_seleccionadas']
+    
+    def changelist_view(self, request, extra_context=None):
+        """Personalizar la vista de lista para agregar botón de vista masiva"""
+        extra_context = extra_context or {}
+        
+        # URL para la vista masiva
+        vista_masiva_url = reverse('config_institucional:gestionar_secciones_curso_lectivo')
+        
+        # Si el usuario no es superusuario, pre-seleccionar su institución
+        if not request.user.is_superuser and hasattr(request, 'institucion_activa_id'):
+            vista_masiva_url += f'?institucion={request.institucion_activa_id}'
+        
+        extra_context['vista_masiva_url'] = vista_masiva_url
+        extra_context['vista_masiva_titulo'] = 'Gestión Masiva de Secciones'
+        
+        return super().changelist_view(request, extra_context)
     
     fieldsets = (
         (None, {
@@ -293,7 +325,7 @@ class SeccionCursoLectivoAdmin(admin.ModelAdmin):
 class SubgrupoCursoLectivoAdmin(admin.ModelAdmin):
     """Admin para gestionar los subgrupos disponibles por curso lectivo."""
     
-    list_display = ('institucion', 'curso_lectivo', 'subgrupo', 'activa', 'vista_masiva')
+    list_display = ('institucion', 'curso_lectivo', 'subgrupo', 'activa')
     list_filter = ('institucion', 'curso_lectivo__anio', 'subgrupo__seccion__nivel', 'activa')
     search_fields = ('institucion__nombre', 'curso_lectivo__nombre', 'subgrupo__letra')
     ordering = ('institucion__nombre', '-curso_lectivo__anio', 'subgrupo__seccion__nivel__numero', 'subgrupo__letra')
@@ -301,6 +333,22 @@ class SubgrupoCursoLectivoAdmin(admin.ModelAdmin):
     
     # ⚡ ACCIONES MASIVAS PARA FACILITAR GESTIÓN
     actions = ['agregar_todos_subgrupos', 'copiar_del_año_anterior', 'activar_seleccionadas', 'desactivar_seleccionadas']
+    
+    def changelist_view(self, request, extra_context=None):
+        """Personalizar la vista de lista para agregar botón de vista masiva"""
+        extra_context = extra_context or {}
+        
+        # URL para la vista masiva
+        vista_masiva_url = reverse('config_institucional:gestionar_subgrupos_curso_lectivo')
+        
+        # Si el usuario no es superusuario, pre-seleccionar su institución
+        if not request.user.is_superuser and hasattr(request, 'institucion_activa_id'):
+            vista_masiva_url += f'?institucion={request.institucion_activa_id}'
+        
+        extra_context['vista_masiva_url'] = vista_masiva_url
+        extra_context['vista_masiva_titulo'] = 'Gestión Masiva de Subgrupos'
+        
+        return super().changelist_view(request, extra_context)
     
     fieldsets = (
         (None, {

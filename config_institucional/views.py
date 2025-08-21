@@ -6,10 +6,31 @@ from django.views.decorators.http import require_http_methods
 from django.db import transaction
 from django.core.paginator import Paginator
 from django.contrib.admin.views.decorators import staff_member_required
+from django.utils import timezone
+from django.db.models import Q
 
 from .models import SeccionCursoLectivo, EspecialidadCursoLectivo, SubgrupoCursoLectivo
 from catalogos.models import CursoLectivo, Seccion, Especialidad, Subgrupo
 from core.models import Institucion
+
+
+def obtener_curso_lectivo_activo():
+    """
+    Obtiene el curso lectivo activo basado en las fechas actuales.
+    Si no hay ninguno activo por fechas, retorna el más reciente activo.
+    """
+    # Buscar curso lectivo activo basado en fechas
+    curso_lectivo = CursoLectivo.objects.filter(
+        Q(fecha_inicio__lte=timezone.now().date()) &
+        Q(fecha_fin__gte=timezone.now().date()) &
+        Q(activo=True)
+    ).order_by('-anio').first()
+    
+    # Si no hay curso activo por fechas, usar el más reciente
+    if not curso_lectivo:
+        curso_lectivo = CursoLectivo.objects.filter(activo=True).order_by('-anio').first()
+    
+    return curso_lectivo
 
 @staff_member_required
 def gestionar_secciones_curso_lectivo(request):
@@ -35,8 +56,20 @@ def gestionar_secciones_curso_lectivo(request):
     if curso_lectivo_id:
         curso_lectivo = get_object_or_404(CursoLectivo, id=curso_lectivo_id)
     else:
-        # Mostrar curso lectivo más reciente por defecto
-        curso_lectivo = CursoLectivo.objects.order_by('-anio').first()
+        # Mostrar curso lectivo activo (dentro del rango de fechas) por defecto
+        from django.utils import timezone
+        from django.db.models import Q
+        
+        # Buscar curso lectivo activo basado en fechas
+        curso_lectivo = CursoLectivo.objects.filter(
+            Q(fecha_inicio__lte=timezone.now().date()) &
+            Q(fecha_fin__gte=timezone.now().date()) &
+            Q(activo=True)
+        ).order_by('-anio').first()
+        
+        # Si no hay curso activo por fechas, usar el más reciente
+        if not curso_lectivo:
+            curso_lectivo = CursoLectivo.objects.filter(activo=True).order_by('-anio').first()
     
     # Obtener todas las secciones disponibles
     secciones_disponibles = Seccion.objects.all().order_by('nivel__numero', 'numero')
@@ -180,7 +213,20 @@ def gestionar_especialidades_curso_lectivo(request):
     if curso_lectivo_id:
         curso_lectivo = get_object_or_404(CursoLectivo, id=curso_lectivo_id)
     else:
-        curso_lectivo = CursoLectivo.objects.order_by('-anio').first()
+        # Mostrar curso lectivo activo (dentro del rango de fechas) por defecto
+        from django.utils import timezone
+        from django.db.models import Q
+        
+        # Buscar curso lectivo activo basado en fechas
+        curso_lectivo = CursoLectivo.objects.filter(
+            Q(fecha_inicio__lte=timezone.now().date()) &
+            Q(fecha_fin__gte=timezone.now().date()) &
+            Q(activo=True)
+        ).order_by('-anio').first()
+        
+        # Si no hay curso activo por fechas, usar el más reciente
+        if not curso_lectivo:
+            curso_lectivo = CursoLectivo.objects.filter(activo=True).order_by('-anio').first()
     
     # Obtener todas las especialidades disponibles
     especialidades_disponibles = Especialidad.objects.all().order_by('modalidad__nombre', 'nombre')
@@ -326,8 +372,20 @@ def gestionar_subgrupos_curso_lectivo(request):
     if curso_lectivo_id:
         curso_lectivo = get_object_or_404(CursoLectivo, id=curso_lectivo_id)
     else:
-        # Mostrar curso lectivo más reciente por defecto
-        curso_lectivo = CursoLectivo.objects.order_by('-anio').first()
+        # Mostrar curso lectivo activo (dentro del rango de fechas) por defecto
+        from django.utils import timezone
+        from django.db.models import Q
+        
+        # Buscar curso lectivo activo basado en fechas
+        curso_lectivo = CursoLectivo.objects.filter(
+            Q(fecha_inicio__lte=timezone.now().date()) &
+            Q(fecha_fin__gte=timezone.now().date()) &
+            Q(activo=True)
+        ).order_by('-anio').first()
+        
+        # Si no hay curso activo por fechas, usar el más reciente
+        if not curso_lectivo:
+            curso_lectivo = CursoLectivo.objects.filter(activo=True).order_by('-anio').first()
     
     # Obtener todos los subgrupos disponibles
     subgrupos_disponibles = Subgrupo.objects.all().order_by('seccion__nivel__numero', 'seccion__numero', 'letra')

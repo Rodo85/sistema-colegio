@@ -1,0 +1,301 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block title %}Importar Estudiantes Masivos{% endblock %}
+
+{% block extrahead %}
+<style>
+    .import-container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .upload-area {
+        border: 2px dashed #ddd;
+        border-radius: 8px;
+        padding: 40px;
+        text-align: center;
+        margin: 20px 0;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .upload-area:hover, .upload-area.dragover {
+        border-color: #007bff;
+        background-color: #f8f9fa;
+    }
+    
+    .upload-area.dragover {
+        border-color: #28a745;
+        background-color: #d4edda;
+    }
+    
+    .file-input {
+        display: none;
+    }
+    
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        color: white;
+        text-decoration: none;
+        display: inline-block;
+        margin: 10px;
+    }
+    
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+    
+    .progress {
+        height: 20px;
+        margin: 20px 0;
+        display: none;
+    }
+    
+    .result {
+        margin: 20px 0;
+        padding: 15px;
+        border-radius: 5px;
+        display: none;
+    }
+    
+    .result.success {
+        background-color: #d4edda;
+        border: 1px solid #c3e6cb;
+        color: #155724;
+    }
+    
+    .result.error {
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        color: #721c24;
+    }
+    
+    .result.info {
+        background-color: #d1ecf1;
+        border: 1px solid #bee5eb;
+        color: #0c5460;
+    }
+    
+    .format-info {
+        background-color: #e2e3e5;
+        border: 1px solid #d6d8db;
+        border-radius: 5px;
+        padding: 15px;
+        margin: 20px 0;
+    }
+    
+    .format-info h4 {
+        margin-top: 0;
+        color: #495057;
+    }
+    
+    .format-info ul {
+        margin-bottom: 0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="import-container">
+    <h1>📚 Importar Estudiantes Masivos</h1>
+    
+    <div class="format-info">
+        <h4>📋 Formato del Archivo</h4>
+        <p>El archivo debe ser un Excel (.xlsx, .xls) o CSV con las siguientes columnas:</p>
+        <ul>
+            <li><strong>tipo_estudiante:</strong> PR (Público Regular), PE (Público Especial)</li>
+            <li><strong>tipo_identificacion:</strong> 1 (Cédula), 2 (DIMEX), 3 (Pasaporte)</li>
+            <li><strong>identificacion:</strong> Número de identificación</li>
+            <li><strong>1er apellido estudiante:</strong> Primer apellido</li>
+            <li><strong>2do apellido estudiante:</strong> Segundo apellido</li>
+            <li><strong>Nombre estudiante2:</strong> Nombres</li>
+            <li><strong>Fecha nacimiento:</strong> DD/MM/YYYY</li>
+            <li><strong>id_Genero:</strong> 1 (Femenino), 2 (Masculino)</li>
+            <li><strong>id_nacionalidad:</strong> 1 (Costarricense), 2 (Extranjero)</li>
+            <li><strong>id_provincia, id_canton, id_didistrito:</strong> IDs de ubicación</li>
+            <li><strong>subgrupp:</strong> Subgrupo (ej: A, B, C)</li>
+            <li><strong>Sección:</strong> Sección (ej: 8-5, 7-1)</li>
+            <li><strong>Nivel que Matricula:</strong> Nivel (ej: 8 (Octavo), 7 (Sétimo))</li>
+            <li><strong>Especialidad:</strong> Solo para niveles 10, 11, 12</li>
+            <li><strong>cedula encargado:</strong> Identificación del encargado</li>
+            <li><strong>Nombre encargado:</strong> Nombre completo del encargado</li>
+            <li><strong>Parentesco:</strong> Relación con el estudiante</li>
+            <li><strong>Teléfono encargado:</strong> Teléfono del encargado</li>
+            <li><strong>Correo electronico:</strong> Email del encargado</li>
+        </ul>
+    </div>
+    
+    <div class="upload-area" id="uploadArea">
+        <div id="uploadText">
+            <h3>📁 Arrastra y suelta tu archivo aquí</h3>
+            <p>O haz clic para seleccionar un archivo</p>
+            <input type="file" id="fileInput" class="file-input" accept=".xlsx,.xls,.csv">
+            <a href="#" class="btn-primary" onclick="document.getElementById('fileInput').click(); return false;">
+                Seleccionar Archivo
+            </a>
+        </div>
+        <div id="fileInfo" style="display: none;">
+            <h4>📄 Archivo seleccionado:</h4>
+            <p id="fileName"></p>
+            <a href="#" class="btn-primary" onclick="uploadFile(); return false;">
+                🚀 Iniciar Importación
+            </a>
+            <a href="#" class="btn-primary" onclick="resetFile(); return false;">
+                🔄 Cambiar Archivo
+            </a>
+        </div>
+    </div>
+    
+    <div class="progress" id="progressBar">
+        <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+    </div>
+    
+    <div class="result" id="result"></div>
+</div>
+
+<script>
+let selectedFile = null;
+
+// Drag and drop functionality
+const uploadArea = document.getElementById('uploadArea');
+const fileInput = document.getElementById('fileInput');
+
+uploadArea.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    uploadArea.classList.add('dragover');
+});
+
+uploadArea.addEventListener('dragleave', () => {
+    uploadArea.classList.remove('dragover');
+});
+
+uploadArea.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadArea.classList.remove('dragover');
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+        handleFile(files[0]);
+    }
+});
+
+uploadArea.addEventListener('click', () => {
+    fileInput.click();
+});
+
+fileInput.addEventListener('change', (e) => {
+    if (e.target.files.length > 0) {
+        handleFile(e.target.files[0]);
+    }
+});
+
+function handleFile(file) {
+    // Validar tipo de archivo
+    const validTypes = ['.xlsx', '.xls', '.csv'];
+    const fileExtension = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
+    
+    if (!validTypes.includes(fileExtension)) {
+        showResult('❌ Solo se permiten archivos Excel (.xlsx, .xls) o CSV (.csv)', 'error');
+        return;
+    }
+    
+    selectedFile = file;
+    document.getElementById('fileName').textContent = file.name;
+    document.getElementById('uploadText').style.display = 'none';
+    document.getElementById('fileInfo').style.display = 'block';
+}
+
+function resetFile() {
+    selectedFile = null;
+    fileInput.value = '';
+    document.getElementById('uploadText').style.display = 'block';
+    document.getElementById('fileInfo').style.display = 'none';
+    hideResult();
+}
+
+function uploadFile() {
+    if (!selectedFile) {
+        showResult('❌ No se ha seleccionado ningún archivo', 'error');
+        return;
+    }
+    
+    const formData = new FormData();
+    formData.append('archivo', selectedFile);
+    
+    // Mostrar barra de progreso
+    document.getElementById('progressBar').style.display = 'block';
+    document.getElementById('progressBar').querySelector('.progress-bar').style.width = '0%';
+    
+    // Simular progreso
+    let progress = 0;
+    const progressInterval = setInterval(() => {
+        progress += Math.random() * 15;
+        if (progress > 90) progress = 90;
+        document.getElementById('progressBar').querySelector('.progress-bar').style.width = progress + '%';
+    }, 200);
+    
+    // Realizar la petición
+    fetch('{% url "matricula:importar_estudiantes_excel" %}', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        clearInterval(progressInterval);
+        document.getElementById('progressBar').querySelector('.progress-bar').style.width = '100%';
+        
+        setTimeout(() => {
+            document.getElementById('progressBar').style.display = 'none';
+            
+            if (data.success) {
+                showResult('✅ ' + data.message + '\n\n' + data.resultado, 'success');
+            } else {
+                showResult('❌ ' + data.message, 'error');
+            }
+        }, 500);
+    })
+    .catch(error => {
+        clearInterval(progressInterval);
+        document.getElementById('progressBar').style.display = 'none';
+        showResult('❌ Error durante la importación: ' + error.message, 'error');
+    });
+}
+
+function showResult(message, type) {
+    const resultDiv = document.getElementById('result');
+    resultDiv.textContent = message;
+    resultDiv.className = 'result ' + type;
+    resultDiv.style.display = 'block';
+}
+
+function hideResult() {
+    document.getElementById('result').style.display = 'none';
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>
+{% endblock %}

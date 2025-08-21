@@ -4,7 +4,7 @@
   {"model": "catalogos.especialidad", "pk": 3, "fields": {"modalidad": 1, "nombre": "Gerencia y producción en cocina"}},
   {"model": "catalogos.especialidad", "pk": 4, "fields": {"modalidad": 1, "nombre": "Ejecutivo comercial y de servicio al cliente"}},
   {"model": "catalogos.especialidad", "pk": 5, "fields": {"modalidad": 1, "nombre": "Desarrollo web"}},
-  {"model": "catalogos.especialidad", "pk": 6, "fields": {"modalidad": 1, "nombre": "Contabilidad y control interno"}},
+  {"model": "catalogos.especialidad", "pk": 6, "fields": {"modalidad": 1, "nombre": "Administración, Logística y Distribución"}},
   {"model": "catalogos.especialidad", "pk": 8, "fields": {"modalidad": 1, "nombre": "Informática en Desarrollo de Software"}},
   {"model": "catalogos.especialidad", "pk": 9, "fields": {"modalidad": 1, "nombre": "Ejecutivo para centros de servicio"}},
   {"model": "catalogos.especialidad", "pk": 10, "fields": {"modalidad": 1, "nombre": "Banca y finanzas"}},

@@ -1,0 +1,329 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block title %}Confirmar Importación de Estudiantes{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+    .confirm-container {
+        max-width: 1000px;
+        margin: 20px auto;
+        padding: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .summary-card {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        border-left: 4px solid #28a745;
+    }
+    
+    .summary-card h3 {
+        color: #28a745;
+        margin-top: 0;
+    }
+    
+    .summary-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin: 15px 0;
+    }
+    
+    .stat-item {
+        background: white;
+        padding: 15px;
+        border-radius: 6px;
+        text-align: center;
+        border: 1px solid #dee2e6;
+    }
+    
+    .stat-number {
+        font-size: 24px;
+        font-weight: 700;
+        color: #007bff;
+    }
+    
+    .stat-label {
+        color: #6c757d;
+        font-size: 14px;
+        margin-top: 5px;
+    }
+    
+    .preview-section {
+        margin: 20px 0;
+    }
+    
+    .preview-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 15px 0;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .preview-table th {
+        background: #007bff;
+        color: white;
+        padding: 12px;
+        text-align: left;
+        font-weight: 600;
+    }
+    
+    .preview-table td {
+        padding: 10px 12px;
+        border-bottom: 1px solid #dee2e6;
+    }
+    
+    .preview-table tr:nth-child(even) {
+        background: #f8f9fa;
+    }
+    
+    .preview-table tr:hover {
+        background: #e3f2fd;
+    }
+    
+    .status-valid {
+        color: #28a745;
+        font-weight: 600;
+    }
+    
+    .status-error {
+        color: #dc3545;
+        font-weight: 600;
+    }
+    
+    .actions {
+        text-align: center;
+        margin: 30px 0;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border: 1px solid #dee2e6;
+    }
+    
+    .btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        margin: 0 10px;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+    
+    .btn-primary {
+        background: #007bff;
+        color: white;
+    }
+    
+    .btn-primary:hover {
+        background: #0056b3;
+        transform: translateY(-2px);
+    }
+    
+    .btn-success {
+        background: #28a745;
+        color: white;
+    }
+    
+    .btn-success:hover {
+        background: #1e7e34;
+        transform: translateY(-2px);
+    }
+    
+    .btn-danger {
+        background: #dc3545;
+        color: white;
+    }
+    
+    .btn-danger:hover {
+        background: #c82333;
+        transform: translateY(-2px);
+    }
+    
+    .warning-box {
+        background: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeaa7;
+        padding: 15px;
+        border-radius: 6px;
+        margin: 20px 0;
+    }
+    
+    .warning-box h4 {
+        margin-top: 0;
+        color: #856404;
+    }
+    
+    .file-info {
+        background: #e3f2fd;
+        padding: 15px;
+        border-radius: 6px;
+        margin: 15px 0;
+        border-left: 4px solid #007bff;
+    }
+    
+    .file-info strong {
+        color: #007bff;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="confirm-container">
+    <h1>✅ Confirmar Importación de Estudiantes</h1>
+    
+    <!-- Información del archivo -->
+    <div class="file-info">
+        <strong>📄 Archivo:</strong> {{ excel_data.archivo_nombre }}<br>
+        <strong>📊 Total de filas:</strong> {{ excel_data.total_filas }}
+    </div>
+    
+    <!-- Resumen de validación -->
+    <div class="summary-card">
+        <h3>📋 Resumen de Validación</h3>
+        <div class="summary-stats">
+            <div class="stat-item">
+                <div class="stat-number">{{ excel_data.preview_data|length }}</div>
+                <div class="stat-label">Filas Validadas</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">{{ excel_data.errores_preview|length }}</div>
+                <div class="stat-label">Errores Encontrados</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">{{ excel_data.total_filas }}</div>
+                <div class="stat-label">Total a Procesar</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Advertencia -->
+    <div class="warning-box">
+        <h4>⚠️ Importante</h4>
+        <ul>
+            <li>Esta operación procesará <strong>{{ excel_data.total_filas }} estudiantes</strong></li>
+            <li>Los estudiantes con cédulas duplicadas se <strong>actualizarán</strong></li>
+            <li>Los estudiantes nuevos se <strong>crearán</strong></li>
+            <li>La operación es <strong>irreversible</strong> una vez confirmada</li>
+        </ul>
+    </div>
+    
+    <!-- Preview de datos -->
+    <div class="preview-section">
+        <h3>👀 Vista Previa de Datos (Primeras 10 filas)</h3>
+        
+        {% if excel_data.preview_data %}
+        <table class="preview-table">
+            <thead>
+                <tr>
+                    <th>Cédula</th>
+                    <th>Nombre Completo</th>
+                    <th>Fecha Nacimiento</th>
+                    <th>Género</th>
+                    <th>Nivel</th>
+                    <th>Sección</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for estudiante in excel_data.preview_data %}
+                <tr>
+                    <td><strong>{{ estudiante.cedula }}</strong></td>
+                    <td>{{ estudiante.nombre_completo }}</td>
+                    <td>{{ estudiante.fecha_nacimiento }}</td>
+                    <td>{{ estudiante.genero }}</td>
+                    <td>{{ estudiante.nivel }}</td>
+                    <td>{{ estudiante.seccion }}</td>
+                    <td class="status-valid">{{ estudiante.estado }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p style="color: #dc3545; text-align: center; padding: 20px;">
+            ❌ No se pudieron procesar datos para el preview
+        </p>
+        {% endif %}
+    </div>
+    
+    <!-- Errores encontrados -->
+    {% if excel_data.errores_preview %}
+    <div class="preview-section">
+        <h3>❌ Errores Encontrados en Preview</h3>
+        <div style="background: #f8d7da; padding: 15px; border-radius: 6px; border-left: 4px solid #dc3545;">
+            {% for error in excel_data.errores_preview %}
+            <div style="margin: 5px 0;">• {{ error }}</div>
+            {% endfor %}
+        </div>
+        <p style="color: #856404; margin-top: 10px;">
+            <strong>Nota:</strong> Estos errores son solo del preview. 
+            El archivo completo puede tener más o menos errores.
+        </p>
+    </div>
+    {% endif %}
+    
+    <!-- Acciones -->
+    <div class="actions">
+        <h3>🚀 ¿Deseas continuar con la importación?</h3>
+        <p>Revisa los datos del preview antes de confirmar</p>
+        
+        <a href="{% url 'matricula:importar_estudiantes_excel' %}" class="btn btn-danger">
+            ❌ Cancelar
+        </a>
+        
+        <form method="post" style="display: inline;">
+            {% csrf_token %}
+            <input type="file" name="archivo_excel" style="display: none;" 
+                   accept=".xlsx,.xls" onchange="handleFileChange(this)">
+            <button type="submit" class="btn btn-success" id="confirm-btn">
+                ✅ Confirmar Importación
+            </button>
+        </form>
+    </div>
+    
+    <!-- Información adicional -->
+    <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 20px;">
+        <h4>📚 Información Adicional</h4>
+        <ul>
+            <li><strong>Tiempo estimado:</strong> Aproximadamente 30 segundos para 1000 estudiantes</li>
+            <li><strong>Validaciones:</strong> Cédulas únicas, fechas válidas, campos obligatorios</li>
+            <li><strong>Seguridad:</strong> Transacciones atómicas - si algo falla, no se guarda nada</li>
+            <li><strong>Reporte:</strong> Al finalizar verás un resumen completo de la operación</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+function handleFileChange(input) {
+    // Esta función se ejecuta cuando se selecciona un archivo
+    // En este caso, no necesitamos hacer nada especial
+}
+
+// Confirmar antes de enviar
+document.getElementById('confirm-btn').addEventListener('click', function(e) {
+    if (!confirm('¿Estás seguro de que deseas importar {{ excel_data.total_filas }} estudiantes? Esta acción no se puede deshacer.')) {
+        e.preventDefault();
+        return false;
+    }
+    
+    // Cambiar texto del botón
+    this.textContent = '⏳ Procesando...';
+    this.disabled = true;
+    
+    // Mostrar mensaje de procesamiento
+    alert('Importación iniciada. Por favor espera mientras se procesan los datos...');
+});
+</script>
+{% endblock %}

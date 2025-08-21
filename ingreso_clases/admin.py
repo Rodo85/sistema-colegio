@@ -14,3 +14,4 @@ class RegistroIngresoAdmin(admin.ModelAdmin):
 
 
 
+

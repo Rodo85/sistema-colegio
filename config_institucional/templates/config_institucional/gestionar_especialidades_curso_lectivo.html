@@ -302,7 +302,6 @@
                            onchange="actualizarValorEspecialidad({{ especialidad.id }}, this.checked)">
                     
                     <div class="especialidad-info">
-                        <div class="especialidad-modalidad">{{ especialidad.modalidad.nombre }}</div>
                         <div class="especialidad-nombre">{{ especialidad.nombre }}</div>
                     </div>
                 </div>
@@ -342,6 +341,60 @@
 function actualizarValorEspecialidad(especialidadId, activa) {
     const checkbox = document.getElementById('especialidad_' + especialidadId);
     checkbox.value = especialidadId + ':' + activa;
+    
+    // Guardar selección en localStorage para persistir entre páginas
+    guardarSeleccion(especialidadId, activa);
+}
+
+function guardarSeleccion(especialidadId, activa) {
+    const storageKey = `especialidades_seleccionadas_${getInstitucionCursoKey()}`;
+    let selecciones = JSON.parse(localStorage.getItem(storageKey) || '{}');
+    
+    if (activa) {
+        selecciones[especialidadId] = true;
+    } else {
+        delete selecciones[especialidadId];
+    }
+    
+    localStorage.setItem(storageKey, JSON.stringify(selecciones));
+}
+
+function getInstitucionCursoKey() {
+    const institucionId = document.querySelector('input[name="institucion_id"]').value;
+    const cursoId = document.querySelector('input[name="curso_lectivo_id"]').value;
+    return `${institucionId}_${cursoId}`;
+}
+
+function cargarSeleccionesGuardadas() {
+    const storageKey = `especialidades_seleccionadas_${getInstitucionCursoKey()}`;
+    const selecciones = JSON.parse(localStorage.getItem(storageKey) || '{}');
+    
+    // Solo aplicar selecciones del localStorage si no hay nada en la base de datos
+    // Primero verificar si hay checkboxes ya marcados (de la base de datos)
+    const checkboxesMarcados = document.querySelectorAll('input[name="especialidades"]:checked');
+    
+    if (checkboxesMarcados.length === 0) {
+        // Si no hay nada marcado en la base de datos, aplicar localStorage
+        Object.keys(selecciones).forEach(especialidadId => {
+            const checkbox = document.querySelector('#especialidad_' + especialidadId);
+            if (checkbox) {
+                checkbox.checked = true;
+                checkbox.value = especialidadId + ':true';
+            }
+        });
+    } else {
+        // Si hay checkboxes marcados de la base de datos, sincronizar localStorage
+        limpiarLocalStorage();
+        checkboxesMarcados.forEach(checkbox => {
+            const id = checkbox.id.replace('especialidad_', '');
+            guardarSeleccion(id, true);
+        });
+    }
+}
+
+function limpiarLocalStorage() {
+    const storageKey = `especialidades_seleccionadas_${getInstitucionCursoKey()}`;
+    localStorage.removeItem(storageKey);
 }
 
 function filtrarPorModalidad() {
@@ -433,11 +486,25 @@ async function guardarCambios() {
 
 // Inicializar valores de los checkboxes al cargar la página
 document.addEventListener('DOMContentLoaded', function() {
+    // Cargar selecciones guardadas del localStorage
+    cargarSeleccionesGuardadas();
+    
     const checkboxes = document.querySelectorAll('input[name="especialidades"]');
     checkboxes.forEach(checkbox => {
         const especialidadId = checkbox.id.replace('especialidad_', '');
         actualizarValorEspecialidad(especialidadId, checkbox.checked);
     });
+    
+    // Limpiar localStorage cuando se cambie de institución o curso lectivo
+    const institucionSelect = document.querySelector('#institucion');
+    const cursoSelect = document.querySelector('#curso_lectivo');
+    
+    if (institucionSelect) {
+        institucionSelect.addEventListener('change', limpiarLocalStorage);
+    }
+    if (cursoSelect) {
+        cursoSelect.addEventListener('change', limpiarLocalStorage);
+    }
 });
 </script>
 {% endblock %}

@@ -4,9 +4,10 @@ from django.utils.html import format_html
 
 from core.mixins import InstitucionScopedAdmin
 from .models import Estudiante, EncargadoEstudiante, PersonaContacto, MatriculaAcademica, PlantillaImpresionMatricula
-from .widgets import ImagePreviewWidget
+
 from catalogos.models import Provincia, Canton, Distrito
 from .forms import MatriculaAcademicaForm
+from .widgets import ImagePreviewWidget
 
 # ─────────────────────────────  Formularios  ────────────────────────────
 class EstudianteForm(forms.ModelForm):
@@ -21,6 +22,7 @@ class EstudianteForm(forms.ModelForm):
         cleaned_data = super().clean()
         tipo_identificacion = cleaned_data.get('tipo_identificacion')
         identificacion = cleaned_data.get('identificacion')
+        foto = cleaned_data.get('foto')
         
         # Validar identificación para Cédula de identidad
         if tipo_identificacion and identificacion:
@@ -44,6 +46,17 @@ class EstudianteForm(forms.ModelForm):
                 # Si pasa la validación, guardar la versión limpia
                 if len(self.errors) == 0:
                     cleaned_data['identificacion'] = identificacion_limpia
+        
+        # Validar foto si se proporciona
+        if foto and hasattr(foto, 'size'):
+            # Verificar tamaño del archivo (máximo 5MB)
+            if foto.size > 5 * 1024 * 1024:  # 5MB en bytes
+                self.add_error('foto', 'La imagen no puede ser mayor a 5MB.')
+            
+            # Verificar tipo de archivo
+            allowed_types = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']
+            if hasattr(foto, 'content_type') and foto.content_type not in allowed_types:
+                self.add_error('foto', 'Solo se permiten archivos de imagen (JPG, PNG, GIF).')
         
         return cleaned_data
 
@@ -162,10 +175,13 @@ class EstudianteAdmin(InstitucionScopedAdmin):
                     'primer_apellido', 'segundo_apellido', 'nombres',
                     'fecha_nacimiento', 'sexo', 'nacionalidad',
                     'celular', 'telefono_casa', 'correo',
-                    'foto',  # <-- Agregado aquí
+                    'foto',
                 ),
+                'description': 'Información personal del estudiante.'
             })
         )
+        
+
         # Domicilio (antes Dirección)
         fieldsets.append(
             ('Domicilio', {
@@ -179,7 +195,7 @@ class EstudianteAdmin(InstitucionScopedAdmin):
                 'fields': (
                     'ed_religiosa', 'adecuacion',
                     'numero_poliza', 'rige_poliza', 'vence_poliza',
-                    'presenta_enfermedad', 'detalle_enfermedad',
+                    'presenta_enfermedad', 'detalle_enfermedad', 'medicamento_consume',
                     'autoriza_derecho_imagen',
                 ),
             })
@@ -203,12 +219,26 @@ class EstudianteAdmin(InstitucionScopedAdmin):
         return ""
     acciones.short_description = "Acciones"
 
-    # Lista simplificada sin foto
+
+
+    def foto_preview(self, obj):
+        """Vista previa de la foto del estudiante"""
+        if obj.foto:
+            return format_html(
+                '<img src="{}" style="max-width: 50px; max-height: 50px; border-radius: 5px; border: 2px solid #ddd;" title="{}" />',
+                obj.foto.url, obj.foto.name
+            )
+        return format_html(
+            '<span style="color: #999; font-style: italic;">Sin foto</span>'
+        )
+    foto_preview.short_description = "Foto"
+
+    # Lista sin foto (más limpia)
     list_display = ("identificacion", "primer_apellido", "segundo_apellido", "nombres", "tipo_estudiante")
-    # Solo búsqueda por identificación
-    search_fields = ("identificacion",)
-    # Sin filtros adicionales
-    list_filter = ()
+    # Búsqueda por identificación y nombre
+    search_fields = ("identificacion", "primer_apellido", "segundo_apellido", "nombres")
+    # Filtros incluyendo foto
+    list_filter = ('tipo_estudiante', 'sexo', 'nacionalidad')
     list_per_page = 25
     ordering = ("primer_apellido", "nombres")
 

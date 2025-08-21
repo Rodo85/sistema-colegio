@@ -15,250 +15,150 @@
         border-radius: 8px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
-    
     .filtros {
         background: #f8f9fa;
         padding: 20px;
         border-radius: 8px;
         margin-bottom: 20px;
         border: 1px solid #dee2e6;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 12px;
+        align-items: end;
     }
-    
+    .filtros label { font-weight: 600; color: #495057; margin-bottom: 6px; display:block; }
     .filtros select {
+        width: 100%;
         padding: 8px 12px;
         border: 1px solid #ced4da;
         border-radius: 4px;
-        margin-right: 15px;
-        min-width: 200px;
     }
-    
-    .filtros label {
-        font-weight: 600;
-        margin-right: 10px;
-        color: #495057;
-    }
-    
     .subgrupos-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
         gap: 15px;
         margin-bottom: 20px;
     }
-    
     .subgrupo-item {
         background: #f8f9fa;
         border: 1px solid #dee2e6;
         border-radius: 6px;
-        padding: 15px;
+        padding: 12px 14px;
         display: flex;
         align-items: center;
         transition: all 0.2s ease;
     }
-    
-    .subgrupo-item:hover {
-        background: #e9ecef;
-        border-color: #adb5bd;
-    }
-    
+    .subgrupo-item:hover { background: #e9ecef; border-color: #adb5bd; }
+    .subgrupo-item.hidden { display: none !important; }
     .subgrupo-item input[type="checkbox"] {
-        margin-right: 15px;
-        transform: scale(1.2);
+        margin-right: 14px;
+        transform: scale(1.15);
+        accent-color: #007bff;
     }
-    
-    .subgrupo-info {
-        flex: 1;
-    }
-    
+    .subgrupo-info { flex: 1; }
     .subgrupo-nivel {
         font-weight: 700;
         color: #007bff;
-        margin-bottom: 5px;
-        font-size: 1.1em;
-        letter-spacing: 0.5px;
+        margin-bottom: 2px;
+        font-size: 1.05em;
+        letter-spacing: 0.3px;
     }
-    
-    .subgrupo-seccion {
-        font-weight: 500;
-        color: #6c757d;
-        margin-bottom: 3px;
-        font-size: 0.85em;
-    }
-    
-    .subgrupo-letra {
-        font-size: 1.3em;
-        color: #007bff;
-        font-weight: 700;
-        text-align: center;
-        min-width: 35px;
-        background: #e3f2fd;
-        border-radius: 50%;
-        padding: 8px;
-        margin-right: 15px;
-        border: 2px solid #007bff;
-    }
-    
     .acciones {
+        position: sticky;
+        top: 0;
+        z-index: 5;
         text-align: center;
-        margin: 20px 0;
-        padding: 20px;
+        margin: 12px 0 18px;
+        padding: 16px;
         background: #f8f9fa;
         border-radius: 8px;
         border: 1px solid #dee2e6;
     }
-    
+    .acciones .fila { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; align-items:center; }
     .btn {
-        padding: 10px 20px;
+        padding: 10px 16px;
         border: none;
         border-radius: 6px;
         cursor: pointer;
         font-size: 14px;
         font-weight: 600;
-        margin: 0 10px;
         transition: all 0.2s ease;
     }
-    
-    .btn-primary {
-        background: #007bff;
-        color: white;
+    .btn-primary { background: #007bff; color: #fff; }
+    .btn-primary:hover { background: #0056b3; }
+    .btn-success { background: #28a745; color: #fff; }
+    .btn-success:hover { background: #1e7e34; }
+    .btn-danger { background: #dc3545; color: #fff; }
+    .btn-danger:hover { background: #c82333; }
+    .btn-warning { background: #ffc107; color: #212529; }
+    .btn-warning:hover { background: #e0a800; }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .contador {
+        font-size: 0.95em; color:#495057; margin-top:10px;
     }
-    
-    .btn-primary:hover {
-        background: #0056b3;
-    }
-    
-    .btn-success {
-        background: #28a745;
-        color: white;
-    }
-    
-    .btn-success:hover {
-        background: #1e7e34;
-    }
-    
-    .btn-danger {
-        background: #dc3545;
-        color: white;
-    }
-    
-    .btn-danger:hover {
-        background: #c82333;
-    }
-    
-    .btn:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-    }
-    
     .mensaje {
         padding: 15px;
         border-radius: 6px;
         margin: 15px 0;
         display: none;
     }
-    
     .mensaje.success {
         background: #d4edda;
         color: #155724;
         border: 1px solid #c3e6cb;
     }
-    
     .mensaje.error {
         background: #f8d7da;
         color: #721c24;
         border: 1px solid #f5c6cb;
     }
-    
-    .paginacion {
-        text-align: center;
-        margin-top: 20px;
-    }
-    
+    .paginacion { text-align: center; margin-top: 20px; }
     .paginacion a {
-        display: inline-block;
-        padding: 8px 12px;
-        margin: 0 5px;
-        text-decoration: none;
-        color: #007bff;
-        border: 1px solid #007bff;
-        border-radius: 4px;
+        display: inline-block; padding: 8px 12px; margin: 0 5px;
+        text-decoration: none; color: #007bff; border: 1px solid #007bff; border-radius: 4px;
     }
-    
-    .paginacion a:hover {
-        background: #007bff;
-        color: white;
-    }
-    
-    .paginacion .current {
-        background: #007bff;
-        color: white;
-        border-color: #007bff;
-    }
-    
-    .loading {
-        display: none;
-        text-align: center;
-        padding: 20px;
-        color: #6c757d;
-    }
-    
+    .paginacion a:hover { background: #007bff; color: white; }
+    .paginacion .current { background: #007bff; color: white; border-color: #007bff; }
+    .loading { display: none; text-align: center; padding: 20px; color: #6c757d; }
     .spinner {
-        border: 3px solid #f3f3f3;
-        border-top: 3px solid #007bff;
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        animation: spin 1s linear infinite;
-        margin: 0 auto 10px;
+        border: 3px solid #f3f3f3; border-top: 3px solid #007bff; border-radius: 50%;
+        width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto 10px;
     }
-    
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-    
-    .filtro-nivel {
-        margin-top: 15px;
-        padding-top: 15px;
-        border-top: 1px solid #dee2e6;
-    }
-    
-    .filtro-nivel select {
-        min-width: 150px;
-    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg);} }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="gestion-container">
     <h1>Gestionar Subgrupos por Curso Lectivo</h1>
-    
+
     <!-- Filtros -->
     <div class="filtros">
         <form id="filtros-form" method="get">
             {% if es_superusuario %}
-            <label for="institucion">Institución:</label>
-            <select name="institucion" id="institucion" onchange="this.form.submit()">
-                <option value="">Seleccionar institución</option>
-                {% for inst in instituciones %}
-                <option value="{{ inst.id }}" {% if institucion.id == inst.id %}selected{% endif %}>
-                    {{ inst.nombre }}
-                </option>
-                {% endfor %}
-            </select>
+                <div>
+                    <label for="institucion">Institución</label>
+                    <select name="institucion" id="institucion" onchange="this.form.submit()">
+                        <option value="">Seleccionar institución</option>
+                        {% for inst in instituciones %}
+                        <option value="{{ inst.id }}" {% if institucion.id == inst.id %}selected{% endif %}>{{ inst.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             {% endif %}
-            
-            <label for="curso_lectivo">Curso Lectivo:</label>
-            <select name="curso_lectivo" id="curso_lectivo" onchange="this.form.submit()">
-                <option value="">Seleccionar curso lectivo</option>
-                {% for curso in cursos_lectivos %}
-                <option value="{{ curso.id }}" {% if curso_lectivo.id == curso.id %}selected{% endif %}>
-                    {{ curso.nombre }}
-                </option>
-                {% endfor %}
-            </select>
-            
-            <div class="filtro-nivel">
-                <label for="filtro_nivel">Filtrar por Nivel:</label>
+
+            <div>
+                <label for="curso_lectivo">Curso lectivo</label>
+                <select name="curso_lectivo" id="curso_lectivo" onchange="this.form.submit()">
+                    <option value="">Seleccionar curso lectivo</option>
+                    {% for curso in cursos_lectivos %}
+                    <option value="{{ curso.id }}" {% if curso_lectivo.id == curso.id %}selected{% endif %}>{{ curso.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label for="filtro_nivel">Filtrar por nivel</label>
                 <select name="nivel" id="filtro_nivel" onchange="filtrarPorNivel()">
                     <option value="">Todos los niveles</option>
                     <option value="7">Sétimo</option>
@@ -271,60 +171,52 @@
             </div>
         </form>
     </div>
-    
+
     <!-- Mensajes -->
-    <div id="mensaje" class="mensaje"></div>
-    
+    <div id="mensaje" class="mensaje" role="alert" aria-live="polite"></div>
+
     <!-- Loading -->
-    <div id="loading" class="loading">
+    <div id="loading" class="loading" aria-live="polite" aria-busy="false">
         <div class="spinner"></div>
         <p>Procesando cambios...</p>
     </div>
-    
+
     {% if institucion and curso_lectivo %}
     <div class="subgrupos-container">
-        <h2>Subgrupos para {{ institucion.nombre }} - {{ curso_lectivo.nombre }}</h2>
-        
+        <h2>Subgrupos para {{ institucion.nombre }} — {{ curso_lectivo.nombre }}</h2>
 
-        
-        <!-- Acciones masivas -->
+        <!-- Acciones -->
         <div class="acciones">
-            <button type="button" class="btn btn-success" onclick="seleccionarTodas()">
-                ✅ Seleccionar Todas
-            </button>
-            <button type="button" class="btn btn-danger" onclick="deseleccionarTodas()">
-                ❌ Deseleccionar Todas
-            </button>
-            <button type="button" class="btn btn-primary" onclick="guardarCambios()">
-                💾 Guardar Cambios
-            </button>
+            <div class="fila">
+                <button type="button" class="btn btn-success" id="btn-select-visible">✅ Seleccionar visibles</button>
+                <button type="button" class="btn btn-danger" id="btn-deselect-visible">❌ Deseleccionar visibles</button>
+                <button type="button" class="btn btn-warning" id="btn-invertir-visible">🔁 Invertir visibles</button>
+                <button type="button" class="btn btn-primary" id="btn-guardar">💾 Guardar cambios</button>
+            </div>
+            <div id="contador" class="contador">Seleccionados: 0 · Visibles: 0 · Total: 0</div>
         </div>
-        
+
         <!-- Grid de subgrupos -->
         <form id="subgrupos-form">
             {% csrf_token %}
             <input type="hidden" name="institucion_id" value="{{ institucion.id }}">
             <input type="hidden" name="curso_lectivo_id" value="{{ curso_lectivo.id }}">
-            
-            <div class="subgrupos-grid">
+
+            <div class="subgrupos-grid" id="grid">
                 {% for subgrupo in page_obj %}
-                <div class="subgrupo-item" data-nivel="{{ subgrupo.seccion.nivel.numero }}">
-                    <input type="checkbox" 
-                           name="subgrupos" 
-                           value="{{ subgrupo.id }}:true"
-                           id="subgrupo_{{ subgrupo.id }}"
-                           {% with config=subgrupos_configurados|get_item:subgrupo.id %}
-                               {% if config and config.activa %}
-                                   checked
-                               {% endif %}
-                           {% endwith %}
-                           onchange="actualizarValorSubgrupo({{ subgrupo.id }}, this.checked)">
-                    
-                    <div class="subgrupo-letra">{{ subgrupo.letra }}</div>
-                    
+                <div class="subgrupo-item" data-nivel="{{ subgrupo.seccion.nivel.numero }}" data-id="{{ subgrupo.id }}">
+                    <input
+                        type="checkbox"
+                        name="subgrupos"
+                        id="subgrupo_{{ subgrupo.id }}"
+                        value="{{ subgrupo.id }}:false"
+                        {% with config=subgrupos_configurados|get_item:subgrupo.id %}
+                            {% if config and config.activa %}checked{% endif %}
+                        {% endwith %}
+                        onchange="actualizarValorSubgrupo({{ subgrupo.id }}, this.checked)"
+                    />
                     <div class="subgrupo-info">
-                        <div class="subgrupo-nivel">{{ subgrupo.seccion.nivel.numero }}-{{ subgrupo.seccion.numero }} {{ subgrupo.letra }}</div>
-                        <div class="subgrupo-seccion">{{ subgrupo.seccion.nivel.nombre }} - Sección {{ subgrupo.seccion.numero }}</div>
+                        <div class="subgrupo-nivel">{{ subgrupo.seccion.nivel.numero }}-{{ subgrupo.seccion.numero }}{{ subgrupo.letra }}</div>
                     </div>
                 </div>
                 {% empty %}
@@ -332,19 +224,17 @@
                 {% endfor %}
             </div>
         </form>
-        
+
         <!-- Paginación -->
         {% if page_obj.has_other_pages %}
-        <div class="paginacion">
+        <div class="paginacion" id="paginacion">
             {% if page_obj.has_previous %}
                 <a href="?page=1{% if request.GET.institucion %}&institucion={{ request.GET.institucion }}{% endif %}{% if request.GET.curso_lectivo %}&curso_lectivo={{ request.GET.curso_lectivo }}{% endif %}">&laquo; Primera</a>
                 <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.institucion %}&institucion={{ request.GET.institucion }}{% endif %}{% if request.GET.curso_lectivo %}&curso_lectivo={{ request.GET.curso_lectivo }}{% endif %}">Anterior</a>
             {% endif %}
-            
-            <span class="current">
-                Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
-            </span>
-            
+
+            <span class="current">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+
             {% if page_obj.has_next %}
                 <a href="?page={{ page_obj.next_page_number }}{% if request.GET.institucion %}&institucion={{ request.GET.institucion }}{% endif %}{% if request.GET.curso_lectivo %}&curso_lectivo={{ request.GET.curso_lectivo }}{% endif %}">Siguiente</a>
                 <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.institucion %}&institucion={{ request.GET.institucion }}{% endif %}{% if request.GET.curso_lectivo %}&curso_lectivo={{ request.GET.curso_lectivo }}{% endif %}">Última &raquo;</a>
@@ -353,112 +243,258 @@
         {% endif %}
     </div>
     {% else %}
-    <div class="mensaje error">
+    <div class="mensaje error" style="display:block">
         <p>Por favor seleccione una institución y un curso lectivo para continuar.</p>
     </div>
     {% endif %}
 </div>
 
 <script>
+/* ---------- Utilidades ---------- */
+function qs(sel, ctx=document){ return ctx.querySelector(sel); }
+function qsa(sel, ctx=document){ return Array.from(ctx.querySelectorAll(sel)); }
+
 function actualizarValorSubgrupo(subgrupoId, activa) {
     const checkbox = document.getElementById('subgrupo_' + subgrupoId);
-    checkbox.value = subgrupoId + ':' + activa;
+    // Mantener formato "id:true|false" para el backend
+    checkbox.value = subgrupoId + ':' + (activa ? 'true' : 'false');
+    
+    // Guardar selección en localStorage para persistir entre páginas
+    guardarSeleccion(subgrupoId, activa);
+    
+    actualizarContador();
 }
 
-function filtrarPorNivel() {
-    const nivelSeleccionado = document.getElementById('filtro_nivel').value;
-    const subgrupos = document.querySelectorAll('.subgrupo-item');
+function guardarSeleccion(subgrupoId, activa) {
+    const storageKey = `subgrupos_seleccionados_${getInstitucionCursoKey()}`;
+    let selecciones = JSON.parse(localStorage.getItem(storageKey) || '{}');
     
-    subgrupos.forEach(item => {
-        const nivel = item.getAttribute('data-nivel');
-        if (!nivelSeleccionado || nivel === nivelSeleccionado) {
-            item.style.display = 'block';
-        } else {
-            item.style.display = 'none';
-        }
-    });
+    if (activa) {
+        selecciones[subgrupoId] = true;
+    } else {
+        delete selecciones[subgrupoId];
+    }
+    
+    localStorage.setItem(storageKey, JSON.stringify(selecciones));
 }
 
-function seleccionarTodas() {
-    const checkboxes = document.querySelectorAll('input[name="subgrupos"]:not([style*="display: none"])');
-    checkboxes.forEach(checkbox => {
-        checkbox.checked = true;
-        actualizarValorSubgrupo(checkbox.value.split(':')[0], true);
-    });
+function getInstitucionCursoKey() {
+    const institucionId = qs('input[name="institucion_id"]').value;
+    const cursoId = qs('input[name="curso_lectivo_id"]').value;
+    return `${institucionId}_${cursoId}`;
 }
 
-function deseleccionarTodas() {
-    const checkboxes = document.querySelectorAll('input[name="subgrupos"]:not([style*="display: none"])');
-    checkboxes.forEach(checkbox => {
-        checkbox.checked = false;
-        actualizarValorSubgrupo(checkbox.value.split(':')[0], false);
-    });
-}
-
-function mostrarMensaje(texto, tipo) {
-    const mensaje = document.getElementById('mensaje');
-    mensaje.textContent = texto;
-    mensaje.className = 'mensaje ' + tipo;
-    mensaje.style.display = 'block';
+function cargarSeleccionesGuardadas() {
+    const storageKey = `subgrupos_seleccionados_${getInstitucionCursoKey()}`;
+    const selecciones = JSON.parse(localStorage.getItem(storageKey) || '{}');
     
-    setTimeout(() => {
-        mensaje.style.display = 'none';
-    }, 5000);
-}
-
-function mostrarLoading(mostrar) {
-    const loading = document.getElementById('loading');
-    loading.style.display = mostrar ? 'block' : 'none';
-}
-
-async function guardarCambios() {
-    const form = document.getElementById('subgrupos-form');
-    const formData = new FormData(form);
+    // Solo aplicar selecciones del localStorage si no hay nada en la base de datos
+    // Primero verificar si hay checkboxes ya marcados (de la base de datos)
+    const checkboxesMarcados = qsa('input[name="subgrupos"]:checked');
     
-    // Obtener solo los checkboxes marcados
-    const checkboxes = document.querySelectorAll('input[name="subgrupos"]:checked');
-    formData.delete('subgrupos');
-    
-    checkboxes.forEach(checkbox => {
-        formData.append('subgrupos[]', checkbox.value);
-    });
-    
-    mostrarLoading(true);
-    
-    try {
-        const response = await fetch('{% url "config_institucional:actualizar_subgrupos_curso_lectivo" %}', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+    if (checkboxesMarcados.length === 0) {
+        // Si no hay nada marcado en la base de datos, aplicar localStorage
+        Object.keys(selecciones).forEach(subgrupoId => {
+            const checkbox = qs('#subgrupo_' + subgrupoId);
+            if (checkbox) {
+                checkbox.checked = true;
+                checkbox.value = subgrupoId + ':true';
             }
         });
-        
-        const data = await response.json();
-        
-        if (data.success) {
-            mostrarMensaje(data.message, 'success');
-            // Recargar la página para mostrar los cambios
-            setTimeout(() => {
-                location.reload();
-            }, 2000);
-        } else {
-            mostrarMensaje(data.message, 'error');
-        }
-    } catch (error) {
-        mostrarMensaje('Error al guardar los cambios: ' + error.message, 'error');
-    } finally {
-        mostrarLoading(false);
+    } else {
+        // Si hay checkboxes marcados de la base de datos, sincronizar localStorage
+        limpiarLocalStorage();
+        checkboxesMarcados.forEach(checkbox => {
+            const id = checkbox.id.replace('subgrupo_', '');
+            guardarSeleccion(id, true);
+        });
     }
 }
 
-// Inicializar valores de los checkboxes al cargar la página
-document.addEventListener('DOMContentLoaded', function() {
-    const checkboxes = document.querySelectorAll('input[name="subgrupos"]');
-    checkboxes.forEach(checkbox => {
-        const subgrupoId = checkbox.id.replace('subgrupo_', '');
-        actualizarValorSubgrupo(subgrupoId, checkbox.checked);
+function limpiarLocalStorage() {
+    const storageKey = `subgrupos_seleccionados_${getInstitucionCursoKey()}`;
+    localStorage.removeItem(storageKey);
+}
+
+function getNivelSeleccionado() {
+    return localStorage.getItem('filtroNivel') || '';
+}
+
+function setNivelSeleccionado(val) {
+    if (val === null || val === undefined) val = '';
+    localStorage.setItem('filtroNivel', val);
+}
+
+/* ---------- Filtro por nivel (persistente) ---------- */
+function filtrarPorNivel() {
+    const nivelSeleccionado = qs('#filtro_nivel').value;
+    setNivelSeleccionado(nivelSeleccionado);
+
+    const items = qsa('.subgrupo-item');
+    let visibles = 0;
+    items.forEach(item => {
+        const nivel = item.getAttribute('data-nivel');
+        const visible = (!nivelSeleccionado || nivel === nivelSeleccionado);
+        item.classList.toggle('hidden', !visible);
+        if (visible) visibles++;
     });
+
+    actualizarContador();
+}
+
+function getCheckboxesVisibles() {
+    return qsa('.subgrupo-item:not(.hidden) input[name="subgrupos"]');
+}
+
+function getCheckboxesTodos() {
+    return qsa('input[name="subgrupos"]');
+}
+
+/* ---------- Selección masiva (solo visibles) ---------- */
+function seleccionarVisibles() {
+    getCheckboxesVisibles().forEach(cb => {
+        cb.checked = true;
+        const id = cb.id.replace('subgrupo_', '');
+        actualizarValorSubgrupo(id, true);
+    });
+}
+function deseleccionarVisibles() {
+    getCheckboxesVisibles().forEach(cb => {
+        cb.checked = false;
+        const id = cb.id.replace('subgrupo_', '');
+        actualizarValorSubgrupo(id, false);
+    });
+}
+function invertirVisibles() {
+    getCheckboxesVisibles().forEach(cb => {
+        cb.checked = !cb.checked;
+        const id = cb.id.replace('subgrupo_', '');
+        actualizarValorSubgrupo(id, cb.checked);
+    });
+}
+
+/* ---------- Contadores ---------- */
+function actualizarContador() {
+    const total = getCheckboxesTodos().length;
+    const visibles = getCheckboxesVisibles().length;
+    const seleccionados = getCheckboxesTodos().filter(cb => cb.checked).length;
+    const el = qs('#contador');
+    if (el) el.textContent = `Seleccionados: ${seleccionados} · Visibles: ${visibles} · Total: ${total}`;
+}
+
+/* ---------- Mensajes & Loading ---------- */
+function mostrarMensaje(texto, tipo) {
+    const mensaje = qs('#mensaje');
+    mensaje.textContent = texto;
+    mensaje.className = 'mensaje ' + tipo;
+    mensaje.style.display = 'block';
+    setTimeout(() => { mensaje.style.display = 'none'; }, 5000);
+}
+function mostrarLoading(mostrar) {
+    const loading = qs('#loading');
+    loading.style.display = mostrar ? 'block' : 'none';
+    loading.setAttribute('aria-busy', mostrar ? 'true' : 'false');
+}
+
+/* ---------- Guardar ---------- */
+async function guardarCambios() {
+    const btns = qsa('.acciones .btn');
+    btns.forEach(b => b.disabled = true);
+    mostrarLoading(true);
+
+    try {
+        const form = qs('#subgrupos-form');
+        const formData = new FormData(form);
+
+        // Reiniciar y enviar solo seleccionados (formato id:true)
+        formData.delete('subgrupos');
+        formData.delete('subgrupos[]');
+        getCheckboxesTodos().forEach(cb => {
+            if (cb.checked) formData.append('subgrupos[]', cb.value);
+        });
+
+        const resp = await fetch('{% url "config_institucional:actualizar_subgrupos_curso_lectivo" %}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': qs('[name=csrfmiddlewaretoken]').value
+            },
+            credentials: 'same-origin'
+        });
+
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const data = await resp.json();
+
+        if (data.success) {
+            mostrarMensaje(data.message || 'Cambios guardados correctamente.', 'success');
+            setTimeout(() => { location.reload(); }, 1200);
+        } else {
+            mostrarMensaje(data.message || 'No se pudieron guardar los cambios.', 'error');
+        }
+    } catch (err) {
+        mostrarMensaje('Error al guardar los cambios: ' + err.message, 'error');
+    } finally {
+        mostrarLoading(false);
+        btns.forEach(b => b.disabled = false);
+    }
+}
+
+/* ---------- Paginación: conservar filtro nivel en la URL ---------- */
+function reforzarPaginacionConNivel() {
+    const nivel = getNivelSeleccionado();
+    if (!nivel) return; // nada que hacer
+
+    const links = qsa('#paginacion a');
+    links.forEach(a => {
+        const url = new URL(a.href, window.location.origin);
+        url.searchParams.set('nivel', nivel);
+        a.href = url.toString();
+    });
+}
+
+/* ---------- Init ---------- */
+document.addEventListener('DOMContentLoaded', function() {
+    // Cargar selecciones guardadas del localStorage
+    cargarSeleccionesGuardadas();
+    
+    // Inicializar valores de los checkboxes (valor = "id:true|false")
+    qsa('input[name="subgrupos"]').forEach(cb => {
+        const id = cb.id.replace('subgrupo_', '');
+        actualizarValorSubgrupo(id, cb.checked);
+    });
+
+    // Aplicar filtro persistido
+    const savedNivel = getNivelSeleccionado();
+    if (savedNivel) {
+        const select = qs('#filtro_nivel');
+        if (select) select.value = savedNivel;
+    }
+    filtrarPorNivel(); // aplica y cuenta
+
+    // Reforzar paginación con el filtro actual
+    reforzarPaginacionConNivel();
+
+    // Botones
+    const btnSelect = qs('#btn-select-visible');
+    const btnDeselect = qs('#btn-deselect-visible');
+    const btnInvert = qs('#btn-invertir-visible');
+    const btnGuardar = qs('#btn-guardar');
+
+    if (btnSelect) btnSelect.addEventListener('click', seleccionarVisibles);
+    if (btnDeselect) btnDeselect.addEventListener('click', deseleccionarVisibles);
+    if (btnInvert) btnInvert.addEventListener('click', invertirVisibles);
+    if (btnGuardar) btnGuardar.addEventListener('click', guardarCambios);
+    
+    // Limpiar localStorage cuando se cambie de institución o curso lectivo
+    const institucionSelect = qs('#institucion');
+    const cursoSelect = qs('#curso_lectivo');
+    
+    if (institucionSelect) {
+        institucionSelect.addEventListener('change', limpiarLocalStorage);
+    }
+    if (cursoSelect) {
+        cursoSelect.addEventListener('change', limpiarLocalStorage);
+    }
 });
 </script>
 {% endblock %}

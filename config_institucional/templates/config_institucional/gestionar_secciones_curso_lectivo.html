@@ -11,296 +11,218 @@
         max-width: 1200px;
         margin: 20px auto;
         padding: 20px;
-        background: white;
+        background: #fff;
         border-radius: 8px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
-    
     .filtros {
         background: #f8f9fa;
         padding: 20px;
         border-radius: 8px;
         margin-bottom: 20px;
         border: 1px solid #dee2e6;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 12px;
+        align-items: end;
     }
-    
+    .filtros label { font-weight: 600; color: #495057; margin-bottom: 6px; display:block; }
     .filtros select {
+        width: 100%;
         padding: 8px 12px;
         border: 1px solid #ced4da;
         border-radius: 4px;
-        margin-right: 15px;
-        min-width: 200px;
     }
-    
-    .filtros label {
-        font-weight: 600;
-        margin-right: 10px;
-        color: #495057;
-    }
-    
+
     .secciones-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
         gap: 15px;
         margin-bottom: 20px;
     }
-    
     .seccion-item {
         background: #f8f9fa;
         border: 1px solid #dee2e6;
         border-radius: 6px;
-        padding: 15px;
+        padding: 12px 14px;
         display: flex;
         align-items: center;
         transition: all 0.2s ease;
     }
-    
-    .seccion-item:hover {
-        background: #e9ecef;
-        border-color: #adb5bd;
-    }
-    
+    .seccion-item:hover { background: #e9ecef; border-color: #adb5bd; }
+    .seccion-item.hidden { display: none !important; }
     .seccion-item input[type="checkbox"] {
-        margin-right: 15px;
-        transform: scale(1.2);
+        margin-right: 14px;
+        transform: scale(1.15);
+        accent-color: #007bff;
     }
-    
-    .seccion-info {
-        flex: 1;
-    }
-    
-    .seccion-nivel {
-        font-weight: 600;
-        color: #495057;
-        margin-bottom: 5px;
-    }
-    
-    .seccion-numero {
-        font-size: 1.1em;
-        color: #6c757d;
-    }
-    
+    .seccion-info { flex: 1; }
+    .seccion-nivel { font-weight: 700; color: #007bff; margin-bottom: 2px; font-size: 1.05em; }
+
     .acciones {
+        position: sticky;
+        top: 0;
+        z-index: 5;
         text-align: center;
-        margin: 20px 0;
-        padding: 20px;
+        margin: 12px 0 18px;
+        padding: 16px;
         background: #f8f9fa;
         border-radius: 8px;
         border: 1px solid #dee2e6;
     }
-    
+    .acciones .fila { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; align-items:center; }
     .btn {
-        padding: 10px 20px;
+        padding: 10px 16px;
         border: none;
         border-radius: 6px;
         cursor: pointer;
         font-size: 14px;
         font-weight: 600;
-        margin: 0 10px;
         transition: all 0.2s ease;
     }
-    
-    .btn-primary {
-        background: #007bff;
-        color: white;
-    }
-    
-    .btn-primary:hover {
-        background: #0056b3;
-    }
-    
-    .btn-success {
-        background: #28a745;
-        color: white;
-    }
-    
-    .btn-success:hover {
-        background: #1e7e34;
-    }
-    
-    .btn-danger {
-        background: #dc3545;
-        color: white;
-    }
-    
-    .btn-danger:hover {
-        background: #c82333;
-    }
-    
-    .btn:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-    }
-    
+    .btn-primary { background: #007bff; color: #fff; }
+    .btn-primary:hover { background: #0056b3; }
+    .btn-success { background: #28a745; color: #fff; }
+    .btn-success:hover { background: #1e7e34; }
+    .btn-danger { background: #dc3545; color: #fff; }
+    .btn-danger:hover { background: #c82333; }
+    .btn-warning { background: #ffc107; color: #212529; }
+    .btn-warning:hover { background: #e0a800; }
+    .btn:disabled { opacity: .6; cursor: not-allowed; }
+
+    .contador { font-size: .95em; color:#495057; margin-top:10px; }
+
     .mensaje {
         padding: 15px;
         border-radius: 6px;
         margin: 15px 0;
         display: none;
     }
-    
-    .mensaje.success {
-        background: #d4edda;
-        color: #155724;
-        border: 1px solid #c3e6cb;
-    }
-    
-    .mensaje.error {
-        background: #f8d7da;
-        color: #721c24;
-        border: 1px solid #f5c6cb;
-    }
-    
-    .paginacion {
-        text-align: center;
-        margin-top: 20px;
-    }
-    
+    .mensaje.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+    .mensaje.error   { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
+    .paginacion { text-align: center; margin-top: 20px; }
     .paginacion a {
-        display: inline-block;
-        padding: 8px 12px;
-        margin: 0 5px;
-        text-decoration: none;
-        color: #007bff;
-        border: 1px solid #007bff;
-        border-radius: 4px;
+        display: inline-block; padding: 8px 12px; margin: 0 5px;
+        text-decoration: none; color: #007bff; border: 1px solid #007bff; border-radius: 4px;
     }
-    
-    .paginacion a:hover {
-        background: #007bff;
-        color: white;
-    }
-    
-    .paginacion .current {
-        background: #007bff;
-        color: white;
-        border-color: #007bff;
-    }
-    
-    .loading {
-        display: none;
-        text-align: center;
-        padding: 20px;
-        color: #6c757d;
-    }
-    
+    .paginacion a:hover { background: #007bff; color: #fff; }
+    .paginacion .current { background: #007bff; color: #fff; border-color: #007bff; }
+
+    .loading { display: none; text-align: center; padding: 20px; color: #6c757d; }
     .spinner {
-        border: 3px solid #f3f3f3;
-        border-top: 3px solid #007bff;
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        animation: spin 1s linear infinite;
-        margin: 0 auto 10px;
+        border: 3px solid #f3f3f3; border-top: 3px solid #007bff; border-radius: 50%;
+        width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto 10px;
     }
-    
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg);} }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="gestion-container">
     <h1>Gestionar Secciones por Curso Lectivo</h1>
-    
+
     <!-- Filtros -->
     <div class="filtros">
         <form id="filtros-form" method="get">
             {% if es_superusuario %}
-            <label for="institucion">Institución:</label>
-            <select name="institucion" id="institucion" onchange="this.form.submit()">
-                <option value="">Seleccionar institución</option>
-                {% for inst in instituciones %}
-                <option value="{{ inst.id }}" {% if institucion.id == inst.id %}selected{% endif %}>
-                    {{ inst.nombre }}
-                </option>
-                {% endfor %}
-            </select>
+            <div>
+                <label for="institucion">Institución</label>
+                <select name="institucion" id="institucion" onchange="this.form.submit()">
+                    <option value="">Seleccionar institución</option>
+                    {% for inst in instituciones %}
+                    <option value="{{ inst.id }}" {% if institucion.id == inst.id %}selected{% endif %}>{{ inst.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
             {% endif %}
-            
-            <label for="curso_lectivo">Curso Lectivo:</label>
-            <select name="curso_lectivo" id="curso_lectivo" onchange="this.form.submit()">
-                <option value="">Seleccionar curso lectivo</option>
-                {% for curso in cursos_lectivos %}
-                <option value="{{ curso.id }}" {% if curso_lectivo.id == curso.id %}selected{% endif %}>
-                    {{ curso.nombre }}
-                </option>
-                {% endfor %}
-            </select>
+
+            <div>
+                <label for="curso_lectivo">Curso lectivo</label>
+                <select name="curso_lectivo" id="curso_lectivo" onchange="this.form.submit()">
+                    <option value="">Seleccionar curso lectivo</option>
+                    {% for curso in cursos_lectivos %}
+                    <option value="{{ curso.id }}" {% if curso_lectivo.id == curso.id %}selected{% endif %} data-anio="{{ curso.anio }}">{{ curso.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label for="filtro_nivel">Filtrar por nivel</label>
+                <select name="nivel" id="filtro_nivel" onchange="filtrarPorNivel()">
+                    <option value="">Todos los niveles</option>
+                    <option value="7">Sétimo</option>
+                    <option value="8">Octavo</option>
+                    <option value="9">Noveno</option>
+                    <option value="10">Décimo</option>
+                    <option value="11">Undécimo</option>
+                    <option value="12">Duodécimo</option>
+                </select>
+            </div>
         </form>
     </div>
-    
+
     <!-- Mensajes -->
-    <div id="mensaje" class="mensaje"></div>
-    
+    <div id="mensaje" class="mensaje" role="alert" aria-live="polite"></div>
+
     <!-- Loading -->
-    <div id="loading" class="loading">
+    <div id="loading" class="loading" aria-live="polite" aria-busy="false">
         <div class="spinner"></div>
         <p>Procesando cambios...</p>
     </div>
-    
+
     {% if institucion and curso_lectivo %}
     <div class="secciones-container">
-        <h2>Secciones para {{ institucion.nombre }} - {{ curso_lectivo.nombre }}</h2>
-        
-        <!-- Acciones masivas -->
+        <h2>Secciones para {{ institucion.nombre }} — {{ curso_lectivo.nombre }}</h2>
+
+        <!-- Acciones -->
         <div class="acciones">
-            <button type="button" class="btn btn-success" onclick="seleccionarTodas()">
-                ✅ Seleccionar Todas
-            </button>
-            <button type="button" class="btn btn-danger" onclick="deseleccionarTodas()">
-                ❌ Deseleccionar Todas
-            </button>
-            <button type="button" class="btn btn-primary" onclick="guardarCambios()">
-                💾 Guardar Cambios
-            </button>
+            <div class="fila">
+                <button type="button" class="btn btn-success" id="btn-select-visible">✅ Seleccionar visibles</button>
+                <button type="button" class="btn btn-danger" id="btn-deselect-visible">❌ Deseleccionar visibles</button>
+                <button type="button" class="btn btn-warning" id="btn-invertir-visible">🔁 Invertir visibles</button>
+                <button type="button" class="btn btn-primary" id="btn-guardar">💾 Guardar cambios</button>
+            </div>
+            <div id="contador" class="contador">Seleccionados: 0 · Visibles: 0 · Total: 0</div>
         </div>
-        
+
         <!-- Grid de secciones -->
         <form id="secciones-form">
             {% csrf_token %}
             <input type="hidden" name="institucion_id" value="{{ institucion.id }}">
             <input type="hidden" name="curso_lectivo_id" value="{{ curso_lectivo.id }}">
-            
-            <div class="secciones-grid">
+
+            <div class="secciones-grid" id="grid">
                 {% for seccion in page_obj %}
-                <div class="seccion-item">
-                    <input type="checkbox" 
-                           name="secciones" 
-                           value="{{ seccion.id }}:true"
-                           id="seccion_{{ seccion.id }}"
-                           {% if seccion.id in secciones_configuradas %}
-                               {% if secciones_configuradas|get_item:seccion.id|get_item:'activa' %}
-                                   checked
-                               {% endif %}
-                           {% endif %}
-                           onchange="actualizarValorSeccion({{ seccion.id }}, this.checked)">
-                    
+                <label class="seccion-item" data-nivel="{{ seccion.nivel.numero }}" data-id="{{ seccion.id }}" for="seccion_{{ seccion.id }}">
+                    <input
+                        type="checkbox"
+                        name="secciones"
+                        id="seccion_{{ seccion.id }}"
+                        value="{{ seccion.id }}:false"
+                        {% if seccion.id in secciones_configuradas and secciones_configuradas|get_item:seccion.id|get_item:'activa' %}checked{% endif %}
+                        onchange="actualizarValorSeccion({{ seccion.id }}, this.checked)"
+                    >
                     <div class="seccion-info">
-                        <div class="seccion-nivel">{{ seccion.nivel.nombre }}</div>
-                        <div class="seccion-numero">Sección {{ seccion.numero }}</div>
+                        <div class="seccion-nivel">{{ seccion.nivel.numero }}-{{ seccion.numero }}</div>
                     </div>
-                </div>
+                </label>
                 {% empty %}
                 <p>No hay secciones disponibles.</p>
                 {% endfor %}
             </div>
         </form>
-        
+
         <!-- Paginación -->
         {% if page_obj.has_other_pages %}
-        <div class="paginacion">
+        <div class="paginacion" id="paginacion">
             {% if page_obj.has_previous %}
                 <a href="?page=1{% if request.GET.institucion %}&institucion={{ request.GET.institucion }}{% endif %}{% if request.GET.curso_lectivo %}&curso_lectivo={{ request.GET.curso_lectivo }}{% endif %}">&laquo; Primera</a>
                 <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.institucion %}&institucion={{ request.GET.institucion }}{% endif %}{% if request.GET.curso_lectivo %}&curso_lectivo={{ request.GET.curso_lectivo }}{% endif %}">Anterior</a>
             {% endif %}
-            
-            <span class="current">
-                Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
-            </span>
-            
+
+            <span class="current">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+
             {% if page_obj.has_next %}
                 <a href="?page={{ page_obj.next_page_number }}{% if request.GET.institucion %}&institucion={{ request.GET.institucion }}{% endif %}{% if request.GET.curso_lectivo %}&curso_lectivo={{ request.GET.curso_lectivo }}{% endif %}">Siguiente</a>
                 <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.institucion %}&institucion={{ request.GET.institucion }}{% endif %}{% if request.GET.curso_lectivo %}&curso_lectivo={{ request.GET.curso_lectivo }}{% endif %}">Última &raquo;</a>
@@ -309,98 +231,265 @@
         {% endif %}
     </div>
     {% else %}
-    <div class="mensaje error">
+    <div class="mensaje error" style="display:block">
         <p>Por favor seleccione una institución y un curso lectivo para continuar.</p>
     </div>
     {% endif %}
 </div>
 
 <script>
+/* ========== Utilidades ========== */
+function qs(sel, ctx=document){ return ctx.querySelector(sel); }
+function qsa(sel, ctx=document){ return Array.from(ctx.querySelectorAll(sel)); }
+
+function getKey() {
+    const inst = qs('input[name="institucion_id"]')?.value || '';
+    const curso = qs('input[name="curso_lectivo_id"]')?.value || '';
+    return `${inst}_${curso}`;
+}
+function lsGet(key, def){ try { return JSON.parse(localStorage.getItem(key) || def); } catch(e){ return JSON.parse(def); } }
+function lsSet(key, val){ localStorage.setItem(key, JSON.stringify(val)); }
+
+/* Estados persistidos: id -> 1 (seleccionado) | 0 (no seleccionado) */
+function getEstados() {
+    return lsGet(`secciones_estado_${getKey()}`, '{}');
+}
+function setEstados(obj) {
+    lsSet(`secciones_estado_${getKey()}`, obj || {});
+}
+
+/* Filtro por nivel persistido por clave */
+function getFiltroNivel() {
+    return lsGet(`filtroNivel_secciones_${getKey()}`, '""');
+}
+function setFiltroNivel(val) {
+    lsSet(`filtroNivel_secciones_${getKey()}`, val || '');
+}
+
+/* ========== Lógica de selección ========== */
 function actualizarValorSeccion(seccionId, activa) {
-    const checkbox = document.getElementById('seccion_' + seccionId);
-    checkbox.value = seccionId + ':' + activa;
+    const cb = document.getElementById('seccion_' + seccionId);
+    if (!cb) return;
+
+    // Valor para backend: "id:true|false"
+    cb.value = `${seccionId}:${activa ? 'true' : 'false'}`;
+
+    // Persistir estado (guardamos 1/0 para mantener deselecciones también)
+    const estados = getEstados();
+    estados[seccionId] = activa ? 1 : 0;
+    setEstados(estados);
+
+    actualizarContador();
 }
 
-function seleccionarTodas() {
-    const checkboxes = document.querySelectorAll('input[name="secciones"]');
-    checkboxes.forEach(checkbox => {
-        checkbox.checked = true;
-        actualizarValorSeccion(checkbox.value.split(':')[0], true);
+function cargarEstadosPersistidos() {
+    const estados = getEstados();
+
+    // 1) Aplicar overrides de localStorage
+    qsa('input[name="secciones"]').forEach(cb => {
+        const id = cb.id.replace('seccion_', '');
+        if (String(id) in estados) {
+            cb.checked = !!estados[id];
+        }
+        // 2) Hidratar baseline para ids que aún no están en LS
+        if (!(String(id) in estados)) {
+            estados[id] = cb.checked ? 1 : 0;
+        }
+        // 3) Alinear value para backend
+        cb.value = `${id}:${cb.checked ? 'true' : 'false'}`;
+    });
+    setEstados(estados);
+}
+
+/* ========== Filtro por nivel ========== */
+function filtrarPorNivel() {
+    const select = qs('#filtro_nivel');
+    const nivelSeleccionado = select ? select.value : '';
+    setFiltroNivel(nivelSeleccionado);
+
+    const items = qsa('.seccion-item');
+    items.forEach(item => {
+        const nivel = item.getAttribute('data-nivel');
+        const visible = (!nivelSeleccionado || nivel === nivelSeleccionado);
+        item.classList.toggle('hidden', !visible);
+    });
+
+    actualizarContador();
+    reforzarPaginacionConFiltro();
+}
+
+function getCheckboxesVisibles() {
+    return qsa('.seccion-item:not(.hidden) input[name="secciones"]');
+}
+function getCheckboxesTodos() {
+    return qsa('input[name="secciones"]');
+}
+
+/* ========== Acciones masivas (solo visibles) ========== */
+function seleccionarVisibles() {
+    getCheckboxesVisibles().forEach(cb => {
+        cb.checked = true;
+        const id = cb.id.replace('seccion_', '');
+        actualizarValorSeccion(id, true);
+    });
+}
+function deseleccionarVisibles() {
+    getCheckboxesVisibles().forEach(cb => {
+        cb.checked = false;
+        const id = cb.id.replace('seccion_', '');
+        actualizarValorSeccion(id, false);
+    });
+}
+function invertirVisibles() {
+    getCheckboxesVisibles().forEach(cb => {
+        cb.checked = !cb.checked;
+        const id = cb.id.replace('seccion_', '');
+        actualizarValorSeccion(id, cb.checked);
     });
 }
 
-function deseleccionarTodas() {
-    const checkboxes = document.querySelectorAll('input[name="secciones"]');
-    checkboxes.forEach(checkbox => {
-        checkbox.checked = false;
-        actualizarValorSeccion(checkbox.value.split(':')[0], false);
-    });
+/* ========== Contadores ========== */
+function actualizarContador() {
+    const total = getCheckboxesTodos().length;
+    const visibles = getCheckboxesVisibles().length;
+    const seleccionados = getCheckboxesTodos().filter(cb => cb.checked).length;
+    const el = qs('#contador');
+    if (el) el.textContent = `Seleccionados: ${seleccionados} · Visibles: ${visibles} · Total: ${total}`;
 }
 
+/* ========== Mensajes & Loading ========== */
 function mostrarMensaje(texto, tipo) {
-    const mensaje = document.getElementById('mensaje');
+    const mensaje = qs('#mensaje');
     mensaje.textContent = texto;
     mensaje.className = 'mensaje ' + tipo;
     mensaje.style.display = 'block';
-    
-    setTimeout(() => {
-        mensaje.style.display = 'none';
-    }, 5000);
+    setTimeout(() => { mensaje.style.display = 'none'; }, 5000);
 }
-
 function mostrarLoading(mostrar) {
-    const loading = document.getElementById('loading');
+    const loading = qs('#loading');
     loading.style.display = mostrar ? 'block' : 'none';
+    loading.setAttribute('aria-busy', mostrar ? 'true' : 'false');
 }
 
+/* ========== Guardado ========== */
 async function guardarCambios() {
-    const form = document.getElementById('secciones-form');
-    const formData = new FormData(form);
-    
-    // Obtener solo los checkboxes marcados
-    const checkboxes = document.querySelectorAll('input[name="secciones"]:checked');
-    formData.delete('secciones');
-    
-    checkboxes.forEach(checkbox => {
-        formData.append('secciones[]', checkbox.value);
-    });
-    
+    const btns = qsa('.acciones .btn');
+    btns.forEach(b => b.disabled = true);
     mostrarLoading(true);
-    
+
     try {
-        const response = await fetch('{% url "config_institucional:actualizar_secciones_curso_lectivo" %}', {
+        const form = qs('#secciones-form');
+        const formData = new FormData(form);
+
+        // Limpiar campos previos
+        formData.delete('secciones');
+        formData.delete('secciones[]');
+
+        // 1) Consolidar seleccionadas desde localStorage (todas las páginas)
+        const estados = getEstados();
+        const idsSeleccionadosLS = Object.keys(estados).filter(id => estados[id] === 1);
+
+        // 2) Asegurar también las seleccionadas visibles por si no han sido tocadas
+        const idsSeleccionadosDOM = getCheckboxesTodos()
+            .filter(cb => cb.checked)
+            .map(cb => cb.id.replace('seccion_', ''));
+
+        const setFinal = new Set([...idsSeleccionadosLS, ...idsSeleccionadosDOM]);
+
+        // 3) Enviar en formato "id:true"
+        if (setFinal.size === 0) {
+            // Si nada en LS ni DOM, no enviamos nada
+        } else {
+            setFinal.forEach(id => formData.append('secciones[]', `${id}:true`));
+        }
+
+        const resp = await fetch('{% url "config_institucional:actualizar_secciones_curso_lectivo" %}', {
             method: 'POST',
             body: formData,
-            headers: {
-                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-            }
+            headers: { 'X-CSRFToken': qs('[name=csrfmiddlewaretoken]').value },
+            credentials: 'same-origin'
         });
-        
-        const data = await response.json();
-        
+
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const data = await resp.json();
+
         if (data.success) {
-            mostrarMensaje(data.message, 'success');
-            // Recargar la página para mostrar los cambios
-            setTimeout(() => {
-                location.reload();
-            }, 2000);
+            mostrarMensaje(data.message || 'Cambios guardados correctamente.', 'success');
+            setTimeout(() => { location.reload(); }, 1200);
         } else {
-            mostrarMensaje(data.message, 'error');
+            mostrarMensaje(data.message || 'No se pudieron guardar los cambios.', 'error');
         }
-    } catch (error) {
-        mostrarMensaje('Error al guardar los cambios: ' + error.message, 'error');
+    } catch (err) {
+        mostrarMensaje('Error al guardar los cambios: ' + err.message, 'error');
     } finally {
         mostrarLoading(false);
+        btns.forEach(b => b.disabled = false);
     }
 }
 
-// Inicializar valores de los checkboxes al cargar la página
-document.addEventListener('DOMContentLoaded', function() {
-    const checkboxes = document.querySelectorAll('input[name="secciones"]');
-    checkboxes.forEach(checkbox => {
-        const seccionId = checkbox.id.replace('seccion_', '');
-        actualizarValorSeccion(seccionId, checkbox.checked);
+/* ========== Paginación: conservar filtro en los links ========== */
+function reforzarPaginacionConFiltro() {
+    const nivel = getFiltroNivel();
+    if (!nivel) return;
+    const links = qsa('#paginacion a');
+    links.forEach(a => {
+        const url = new URL(a.href, window.location.origin);
+        url.searchParams.set('nivel', nivel);
+        a.href = url.toString();
     });
+}
+
+/* ========== Auto-selección del año actual ========== */
+function seleccionarAnioActual() {
+    const cursoSelect = qs('#curso_lectivo');
+    if (!cursoSelect || cursoSelect.value !== '') return; // Solo si no hay nada seleccionado
+    
+    const anioActual = new Date().getFullYear();
+    const opciones = qsa('#curso_lectivo option[data-anio]');
+    
+    // Buscar el curso lectivo del año actual
+    for (const opcion of opciones) {
+        if (opcion.getAttribute('data-anio') == anioActual) {
+            cursoSelect.value = opcion.value;
+            cursoSelect.form.submit(); // Enviar el formulario automáticamente
+            break;
+        }
+    }
+}
+
+/* ========== Init ========== */
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-seleccionar año actual si no hay curso seleccionado
+    seleccionarAnioActual();
+    
+    // Hidratar/Aplicar estados persistidos y alinear valores
+    cargarEstadosPersistidos();
+
+    // Filtro por nivel persistido
+    const savedNivel = getFiltroNivel();
+    if (savedNivel) {
+        const select = qs('#filtro_nivel');
+        if (select) select.value = savedNivel;
+    }
+    filtrarPorNivel(); // aplica y cuenta
+    reforzarPaginacionConFiltro();
+
+    // Controles
+    const btnSelect = qs('#btn-select-visible');
+    const btnDeselect = qs('#btn-deselect-visible');
+    const btnInvert  = qs('#btn-invertir-visible');
+    const btnGuardar = qs('#btn-guardar');
+
+    if (btnSelect) btnSelect.addEventListener('click', seleccionarVisibles);
+    if (btnDeselect) btnDeselect.addEventListener('click', deseleccionarVisibles);
+    if (btnInvert)  btnInvert.addEventListener('click', invertirVisibles);
+    if (btnGuardar) btnGuardar.addEventListener('click', guardarCambios);
+
+    // Actualizar estado al cambiar institución/curso (limpia el storage solo de esta clave)
+    const institucionSelect = qs('#institucion');
+    const cursoSelect = qs('#curso_lectivo');
+    if (institucionSelect) institucionSelect.addEventListener('change', () => setEstados({}));
+    if (cursoSelect)      cursoSelect.addEventListener('change', () => setEstados({}));
 });
 </script>
 {% endblock %}

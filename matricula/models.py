@@ -21,8 +21,8 @@ class PersonaContacto(models.Model):
     primer_apellido   = models.CharField("1° Apellido", max_length=50)
     segundo_apellido  = models.CharField("2° Apellido", max_length=50, blank=True)
     nombres           = models.CharField("Nombre(s)",  max_length=100)
-    celular_avisos    = models.CharField("Celular",    max_length=20, blank=True)
-    correo            = models.CharField("Correo",     max_length=100, blank=True)
+    celular_avisos    = models.CharField("Celular",    max_length=20)
+    correo            = models.CharField("Correo",     max_length=100)
     lugar_trabajo     = models.CharField("Lugar de trabajo", max_length=100, blank=True)
     telefono_trabajo  = models.CharField("Teléfono trabajo", max_length=20, blank=True)
 
@@ -74,7 +74,7 @@ class Estudiante(models.Model):
     identificacion      = models.CharField("Identificación", max_length=20)
 
     primer_apellido   = models.CharField("1° Apellido", max_length=50)
-    segundo_apellido  = models.CharField("2° Apellido", max_length=50, blank=True)
+    segundo_apellido  = models.CharField("2° Apellido", max_length=50)
     nombres           = models.CharField("Nombre(s)",   max_length=100)
 
     fecha_nacimiento = models.DateField()
@@ -98,31 +98,19 @@ class Estudiante(models.Model):
         blank=True, null=True
     )
 
-    direccion_exacta = models.TextField(blank=True)
+    direccion_exacta = models.TextField()
     
-    foto = models.ImageField(
-        "Foto del estudiante",
-        upload_to='estudiantes/fotos/%Y/%m/',
-        blank=True,
-        null=True,
-        help_text="Foto del estudiante (formato: JPG, PNG. Máximo 2MB)"
-    )
-
-    contactos = models.ManyToManyField(
-        PersonaContacto,
-        through="EncargadoEstudiante",
-        related_name="estudiantes",
-    )
-
-    correo = models.EmailField("Correo electrónico MEP", max_length=100, null=True, blank=True)
+    foto = models.ImageField("Foto", upload_to='estudiantes/fotos/%Y/%m/', blank=True, null=True)
+    correo = models.CharField("Correo electrónico", max_length=100, blank=True, null=True)
     ed_religiosa = models.BooleanField("Recibe Ed. Religiosa", default=False)
-    adecuacion = models.ForeignKey(Adecuacion, on_delete=models.PROTECT, blank=True, null=True)
     rige_poliza = models.DateField("Rige Póliza", blank=True, null=True)
     vence_poliza = models.DateField("Vence Póliza", blank=True, null=True)
     presenta_enfermedad = models.BooleanField("Presenta alguna enfermedad", default=False)
     detalle_enfermedad = models.CharField("Nombre de la(s) enfermedad(es)", max_length=255, blank=True)
     autoriza_derecho_imagen = models.BooleanField("Autoriza derecho de imagen", default=False)
     numero_poliza = models.CharField("Número de póliza", max_length=50, blank=True)
+    adecuacion = models.ForeignKey(Adecuacion, on_delete=models.PROTECT, blank=True, null=True)
+    medicamento_consume = models.TextField("Medicamentos que consume", blank=True, null=True)
 
     class Meta:
         verbose_name = "Estudiante"
