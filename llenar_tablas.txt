@@ -13,3 +13,4 @@ python manage.py loaddata catalogos/fixtures/especialidades.json
 python manage.py loaddata catalogos/fixtures/secciones.json
 python manage.py loaddata catalogos/fixtures/subgrupos.json
 python manage.py load_contactos
+python manage.py load_estudiantes

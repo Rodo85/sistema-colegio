@@ -89,49 +89,38 @@ class Estudiante(models.Model):
         (PN, "Plan nacional"),
     ]
 
-    institucion         = models.ForeignKey(Institucion, on_delete=models.PROTECT)
-    tipo_estudiante     = models.CharField("Tipo de estudiante", max_length=2,
-                                           choices=TIPO_CHOICES, default=PR)
-    tipo_identificacion = models.ForeignKey(TipoIdentificacion, on_delete=models.PROTECT)
-    identificacion      = models.CharField("Identificación", max_length=20)
+    # ======== SOLO estos campos quedan NO NULOS ========
+    institucion         = models.ForeignKey(Institucion, on_delete=models.PROTECT)                    # NOT NULL
+    tipo_estudiante     = models.CharField("Tipo de estudiante", max_length=2, choices=TIPO_CHOICES, default=PR)  # NOT NULL
+    tipo_identificacion = models.ForeignKey(TipoIdentificacion, on_delete=models.PROTECT)             # NOT NULL
+    identificacion      = models.CharField("Identificación", max_length=20)                           # NOT NULL
+    primer_apellido     = models.CharField("1° Apellido", max_length=50)                              # NOT NULL
+    segundo_apellido    = models.CharField("2° Apellido", max_length=50)                              # NOT NULL
+    nombres             = models.CharField("Nombre(s)", max_length=100)                               # NOT NULL
+    fecha_nacimiento    = models.DateField()                                                          # NOT NULL
+    sexo                = models.ForeignKey(Sexo, on_delete=models.PROTECT)                           # NOT NULL
+    nacionalidad        = models.ForeignKey(Nacionalidad, on_delete=models.PROTECT)                   # NOT NULL
+    correo              = models.CharField("Correo electrónico", max_length=100)                      # NOT NULL
 
-    primer_apellido   = models.CharField("1° Apellido", max_length=50)
-    segundo_apellido  = models.CharField("2° Apellido", max_length=50)
-    nombres           = models.CharField("Nombre(s)",   max_length=100)
+    # ======== TODOS los demás pueden ser NULOS ========
+    celular           = models.CharField(max_length=20, blank=True, null=True)
+    telefono_casa     = models.CharField(max_length=20, blank=True, null=True)
 
-    fecha_nacimiento = models.DateField()
-    celular         = models.CharField(max_length=20, blank=True)
-    telefono_casa   = models.CharField(max_length=20, blank=True)
+    provincia         = models.ForeignKey(Provincia, on_delete=models.PROTECT, blank=True, null=True)
+    canton            = models.ForeignKey(Canton, on_delete=models.PROTECT, blank=True, null=True)
+    distrito          = models.ForeignKey(Distrito, on_delete=models.PROTECT, blank=True, null=True)
 
-    sexo         = models.ForeignKey(Sexo,         on_delete=models.PROTECT)
-    nacionalidad = models.ForeignKey(Nacionalidad, on_delete=models.PROTECT)
+    direccion_exacta  = models.TextField(blank=True, null=True)
 
-    provincia = models.ForeignKey(Provincia, on_delete=models.PROTECT)
-
-    canton = models.ForeignKey(
-    Canton,
-    on_delete=models.PROTECT,
-    blank=True, null=True
-    )
-
-    distrito = models.ForeignKey(
-        Distrito,
-        on_delete=models.PROTECT,
-        blank=True, null=True
-    )
-
-    direccion_exacta = models.TextField()
-    
-    foto = models.ImageField("Foto", upload_to='estudiantes/fotos/%Y/%m/', blank=True, null=True)
-    correo = models.CharField("Correo electrónico", max_length=100, blank=True, null=True)
-    ed_religiosa = models.BooleanField("Recibe Ed. Religiosa", default=False)
-    rige_poliza = models.DateField("Rige Póliza", blank=True, null=True)
-    vence_poliza = models.DateField("Vence Póliza", blank=True, null=True)
-    presenta_enfermedad = models.BooleanField("Presenta alguna enfermedad", default=False)
-    detalle_enfermedad = models.CharField("Nombre de la(s) enfermedad(es)", max_length=255, blank=True)
-    autoriza_derecho_imagen = models.BooleanField("Autoriza derecho de imagen", default=False)
-    numero_poliza = models.CharField("Número de póliza", max_length=50, blank=True)
-    adecuacion = models.ForeignKey(Adecuacion, on_delete=models.PROTECT, blank=True, null=True)
+    foto              = models.ImageField("Foto", upload_to='estudiantes/fotos/%Y/%m/', blank=True, null=True)
+    ed_religiosa      = models.BooleanField("Recibe Ed. Religiosa", blank=True, null=True)
+    rige_poliza       = models.DateField("Rige Póliza", blank=True, null=True)
+    vence_poliza      = models.DateField("Vence Póliza", blank=True, null=True)
+    presenta_enfermedad = models.BooleanField("Presenta alguna enfermedad", blank=True, null=True)
+    detalle_enfermedad  = models.CharField("Nombre de la(s) enfermedad(es)", max_length=255, blank=True, null=True)
+    autoriza_derecho_imagen = models.BooleanField("Autoriza derecho de imagen", blank=True, null=True)
+    numero_poliza     = models.CharField("Número de póliza", max_length=50, blank=True, null=True)
+    adecuacion        = models.ForeignKey(Adecuacion, on_delete=models.PROTECT, blank=True, null=True)
     medicamento_consume = models.TextField("Medicamentos que consume", blank=True, null=True)
 
     class Meta:
@@ -146,19 +135,22 @@ class Estudiante(models.Model):
         ]
 
     def save(self, *args, **kwargs):
+        # Normaliza strings: recorta y MAYÚSCULAS (correo se maneja aparte)
         for campo in (
             "identificacion", "primer_apellido", "segundo_apellido",
             "nombres", "celular", "telefono_casa", "direccion_exacta", "numero_poliza"
         ):
-            valor = getattr(self, campo)
+            valor = getattr(self, campo, None)
             if isinstance(valor, str):
                 setattr(self, campo, valor.strip().upper())
-        # Correos electrónicos en minúscula
-        if self.correo:
-            self.correo = self.correo.strip().lower()
-        # Generar correo automáticamente
+
+        # Correos electrónicos en minúscula y obligatorio (no nulo).
+        # Si hay identificación, construye el institucional.
         if self.identificacion:
-            self.correo = f"{self.identificacion}@est.mep.go.cr"
+            self.correo = f"{self.identificacion.strip()}@est.mep.go.cr".lower()
+        elif isinstance(self.correo, str):
+            self.correo = self.correo.strip().lower()
+
         super().save(*args, **kwargs)
 
     def __str__(self):

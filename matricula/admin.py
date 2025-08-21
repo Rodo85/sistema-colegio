@@ -303,7 +303,7 @@ class PersonaContactoAdmin(InstitucionScopedAdmin):
         }),
     )
 
-    list_display  = ("identificacion", "primer_apellido", "segundo_apellido", "celular_avisos", "correo")
+    list_display  = ("identificacion", "primer_apellido", "segundo_apellido", "nombres", "celular_avisos", "correo")
     search_fields = ("primer_apellido", "segundo_apellido", "nombres", "identificacion", "correo")
     list_filter   = ("institucion", "estado_civil", "ocupacion", "escolaridad")
     list_per_page = 25

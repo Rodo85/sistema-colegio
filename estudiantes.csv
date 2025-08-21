@@ -1,0 +1,944 @@
+institucion_id;tipo_estudiante;tipo_identificacion_id;identificacion;primer_apellido;segundo_apellido;nombres;fecha_nacimiento;celular;sexo_id;nacionalidad_id;telefono_casa;provincia_id;canton_id;distrito_id;direccion_exacta;foto;correo;adecuacion_id;numero_poliza;rige_poliza;vence_poliza;ed_religiosa;presenta_enfermedad;detalle_enfermedad;medicamentos_consume;autoriza_derecho_imagen
+1;PR;1;121570695;Baca;Jalinas;Daniela Itzayana ;5/11/2002;;1;1;7109-1191;1;3;21;Patarra, barrio guizaros de la escuela de Guatuzo 600 sur, 275 este casa en obra gris;;121570695@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120450874;Martinez;Fonseca;Anthony Yareth;3/1/2004;61342650;2;1;;2;38;256;de la terminal de buses linda vista 50 oeste;;120450874@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;119350712;Sandoval ;Sanchez;Jeimy Francela;5/5/2005;61631373;1;1;61631373;1;3;21;Barrio Los angeles frente al salon comunal casa color gris porton negro ;;119350712@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;119500781;Madrigal;Herrera;Carlos Daniel ;14/11/2005;85104327;2;1;;1;3;21;De la Escuela de Guatuso 600 metros este y 50 metros sur;;119500781@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;100789031;Chavez;Rodriguez;Junieth ;28/11/2005;71992271;1;1;;1;38;249;Concepcion centro de  Tres Rios, frente al Pali, casa color naranja ;;100789031@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;119580894;Granados;Mora;Jose Antonio;16/2/2006;84923271;2;1;87684125;2;38;249;Frente de la  Esc. Cristiana;;119580894@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;119650376;Varela;Calderon;Keilyn Dayana;6/5/2006;64370681;1;1;;1;3;21;abastecedor Estibaliz calle Laurel Patarra ;;119650376@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;119680927;Rivera;Boza;Joshua David ;30/6/2006;61718219;2;1;;1;3;26;Urbanizacion Marianela Casa F13;;119680927@est.mep.go.cr;;;;;false;false;;;true
+1;PR;2;155828419631;Urbina ;Gomez;Jeremy;22/7/2006;60870129;2;2;60020810;2;38;256;Pulperia yerli 25 mts al sur casa color cafe ;;155828419631@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;703270751;Molina ;Montero;Xaviera Leonor ;17/10/2006;50119911;1;1;;1;3;21;300 mts este 25 norte del cementerio de patarra;;703270751@est.mep.go.cr;1;;;;false;false;;;true
+1;PR;1;119790590;Vargas;Saenz;Juan Sebastian;8/11/2006;89861242;2;1;22193128;1;3;15;500 m sur de la Iglesia Catolica;;119790590@est.mep.go.cr;1;;;;true;false;;;true
+1;PR;2;1555835190909;Galindo;Martinez;Jennifer Anahy;26/11/2006;70736539;1;2;;2;38;256;De la Guardia Rural 150 norte Barrio IMAS;;1555835190909@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;119800616;Luna ;Solis ;Diego;29/11/2006;61982957;2;1;61650681;2;38;256;Linda Vista de la pulperia los gemelos #1 100 norte y 25 oeste casa color negro amano derecha ;;119800616@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;119810455;Torres;Mendez;Aaron Andre;30/11/2006;71925212;2;1;63376569;1;3;21;de la entrada de barrio Cipreses 600 mts contiguo a la Alfareria;;119810455@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;119840315;De la Fuente ;Rodriguez ;Franco ;30/11/2006;86826363;2;1;83644477;1;3;24;Residencia San Lorenzo CAS 72 F;;119840315@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;119820109;Mena;Bravo;Keylin Vanessa;7/12/2006;84391117;1;1;;1;3;27;Sector 3, calle 7, casa 88;;119820109@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;119810354;Sanchez ;Fallas ;Yamil Jose ;11/12/2006;61147367;2;1;;1;3;21;Calle Don Bosco, del Ebais Guatuso, 400 mts Sureste ;;119810354@est.mep.go.cr;1;;;;false;false;;;true
+1;PR;1;119810291;Verzola; Amador;Carlos Andres;16/12/2006;84199573;2;1;87636458;1;3;24;calle mision 100 oeste 25 sur;;119810291@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;119810369;Alvarado;Rojas;Andres Josue ;1/1/2007;89027781;2;1;83710274;1;3;26;Del correo 200 metrs sur y 25 este ;;119810369@est.mep.go.cr;1;;;;false;false;;;true
+1;PR;1;119880230;Delgado ;Corrales;Aylin Esther;4/1/2007;72956968;1;1;;1;3;24;Residencia llanos de monte verde casa 48C;;119880230@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;119840650;Villalobos ;Lopez;Ruben Alexander;6/1/2007;72301299;2;1;;1;3;21;De la Escuela  Juan Monge Guillen 200 S y 200 E;;119840650@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;119860796;Coto ;Guzman;Gerlin Yariela;26/1/2007;70530911;1;1;;1;3;27;Urbanizacion Bretana casa 11;;119860796@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;119850431;Salazar;Arce;Gabriel ;1/2/2007;84431893;2;1;;2;38;249;Condomio la Floresta;;119850431@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;119870618;Gamboa;Diaz;Pablo;7/2/2007;64645286;2;1;;1;1;5;terminal de buses de zapote 100 oeste 175 sur;;119870618@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;119890056;Valverde;Viquez;Kristel;2/3/2007;84070059;1;1;;1;3;21;Patarra Urbanizacion Maron casa 127;;119890056@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;119890343;Medina;Carranza;Luis Angel ;3/3/2007;71245695;2;1;;2;38;249;Rio Azul costado sur de la iglesia catolica ;;119890343@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;119890170;Obando ;Mora;Michelle ;7/3/2007;71704550;1;1;70372054;1;3;35;Frente a Torres de Cafe apartamento color verde porton negro ;;119890170@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;119900355;Ramirez;Castro;Alexis Fabricio;13/3/2007;86819920;2;1;88420932;1;3;24;Del super San Lorenzo 200 este 75 norte y 100 oeate, residencial San lorenzo;;119900355@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;119900182;Campos;Montero;Emily;14/3/2007;84087331;1;1;87920182;1;3;24;Dos cercas, alameda 10 casa 301;;119900182@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;119900895;Monge;Porras;Kitzia Yannina;14/3/2007;86969745;1;1;62105699;1;3;21;300 suereste del bar uniespaña calle picapiedra;;119900895@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;119910403;Mora ;Serrano;Freddy Fernando;28/3/2007;71415355;2;1;22763479;1;3;21;25 sur 250 oeste de pali patarra;;119910403@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;119900442;Marchena;Mendoza;Jose Adrian;31/3/2007;70148327;2;1;;1;3;16;Barrio Los Olivos Tercera Casa a la Izquierda;;119900442@est.mep.go.cr;;;;;false;false;;;true
+1;PR;2;189500018724;Lopez;Martinez;Keny;4/4/2007;62748503;2;2;;1;3;21;de los apartamentos juncan 25 e mano derecha casa g83;;189500018724@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;119920112;Martinez;Lanuza;Britany Andalayo;14/4/2007;60292040;1;1;86936640;1;3;35;de maquinaria Coca 300 m a la derecha del bar Beto;;119920112@est.mep.go.cr;;;;;false;false;;;true
+1;PR;2;155839231519;Rios ;Flores;Aron Alexander;27/4/2007;63638605;2;2;63711831;1;3;21;Guatuso x AYA casa color cafe ;;155839231519@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;119940284;Romero  ;Silva;Josue ;29/4/2007;62103873;2;1;;1;3;21;Calle Italiano;;119940284@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;119930995;Loria;Solano;Daniel Josue;8/5/2007;71759357;2;1;71513131;1;3;21;Frente a la escuela Republica Federal de Alemania;;119930995@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;119940383;Barboza;Sequiera;Brandon Fabian;23/5/2007;89455521;2;1;;1;3;21;de la esc de Guatuso 150 sureste;;119940383@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;119960137;Aguero;Flores;Adriana Esperanza;25/5/2007;62382155;1;1;85106170;1;3;21;75m oeste de la iglesia catolica de Quebrada Honda;;119960137@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;119960563;Garcia;Brenes;Jimena Karina;25/5/2007;72335594;1;1;;2;38;256;Calle Lizanias 200 metros oeste de la Iglesia Cristiana;;119960563@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;119950772;Leiton;Salgano;Jesus ;29/5/2007;64023372;2;1;;1;3;21;150 metros este de la escuela Juan Monge Guillen;;119950772@est.mep.go.cr;1;;;;true;false;;;true
+1;PR;1;119930663;Garcia;Nurinda;Exon Benito;31/5/2007;60998859;2;1;;2;38;256;Calle Lizanias 300 o de la terminal de buses;;119930663@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;119960889;Gutierrez;Carcache;Jeferson;7/6/2007;61382243;2;1;61296111;2;38;256;De la ultima parada de buses a mano derecha;;119960889@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;703320170;Mendez;Castro;Kianny Karolay;12/6/2007;63641306;1;1;;1;3;21;Del Maximo Quesada, 600 metros sureste.;;703320170@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;119960929;Alvarez;Valverde;Sharon ;14/6/2007;7170 2019;1;1;;2;38;256;Frente al a cancha IMAS Rios Azul;;119960929@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;119950868;Jarquin;Alvarado;Katty Fernanda;19/6/2007;72221112;1;1;;1;3;21;De la Escuela de Patarra 1 kilometro al oeste;;119950868@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;119970314;Monestel;Moya;Daniel Jesus;24/6/2007;85050350;2;1;;1;3;21;De la iglesia catolica de Guatuso 75 metros este mano derecha;;119970314@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;605050818;Tellez ;Salazar;Olga Fabiola;25/6/2007;72863808;1;1;;1;3;21;Urbanizacion Maron;;605050818@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;119980436;Villagra;Rodriguez;Lillian Alexia;30/6/2007;71551411;1;1;88684791;2;38;256;escula cristiana 500 metros aleste;;119980436@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;119990028;Salazar;Reyes;Alana Colett;11/7/2007;64836283;1;1;85852286;2;38;256;Linda Vista contiguo a la escuela cristiana;;119990028@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;119970952;Vargas ;Mora ;Isaac Andres;16/7/2007;64804773;2;1;;2;38;256;ultima parada de Rio Azul 75 metros suroeste calle principal;;119970952@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120000641;Campos ;Granados;Emannuel;30/7/2007;64794528;2;1;;2;38;256;De la iglesia Asamblea de Dios, 125 m sur Linda Vista Casa E34;;120000641@est.mep.go.cr;1;;;;true;false;;;true
+1;PR;1;208930356;Noguera ;Manzanarez;Keren Alejandra ;30/7/2007;60261851;1;1;;1;3;21;75 Sur del EBAIS de Guatuso, porton grande a mano derecha;;208930356@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120010581;Segura;Mora;Melanny;4/8/2007;83769588;1;1;;1;3;21;400 E del CTP Maximo Quesada, calle La Gloria, tercera casa a mano izquerda;;120010581@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120030542;Chacon;Cavallini;Faeton;20/8/2007;62765789;2;1;;1;3;21;Fatima del Pali 300 sur 50 oeste;;120030542@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120050378;Araya;Arias;Valeria Jimena;15/9/2007;86737620;2;1;;1;3;21;Del cementerio 350 este 25 sur;;120050378@est.mep.go.cr;;;;;false;false;;;true
+1;PR;2;155840313830;Mendoza ;Villega;Sheyling Esther ;15/9/2007;72598865;1;2;;1;3;21;Ultima parada de Guizaros apartamento planta baja;;155840313830@est.mep.go.cr;1;;;;true;false;;;true
+1;PR;1;120040943;Muñoz;Contreras;Martha ;20/9/2007;87746365;1;1;;1;3;24;fatima, patarra 100 metros al este ebias de fatima;;120040943@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120050966;Gonzalez ;Robleto ;Freddy Antonio ;25/9/2007;70131206;2;1;;1;3;21;Barrio los Angeles, De la Esc, Monge Guillen, 800 este ;;120050966@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120070155;Morales ;Navarro;Amy Mariam;17/10/2007;83616457;1;1;83333281;2;38;256;Barrio Pueblo Nuevo penultima casa alameda principal a mano derecha;;120070155@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120350210;Martinez;Martinez ;Isaac Daniel;21/10/2007;71260167;2;1;;1;3;21;de la terminal de buses de guizaros, 200mts sur frente al comunal ;;120350210@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120100519;Rivas;Loria;Jose Gabriel;13/11/2007;86384609;2;1;;1;3;21;del antiguo ebais de Quebrda Honda 25 e porton beige apartamento n5;;120100519@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120090704;Avila;Marin;Cristhian Joel;1/12/2007;60514118;2;1;60514118;1;3;21;Calle la union, 175 oeste de la antigua Candelera;;120090704@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120150768;Rodriguez;Miranda;Sebastian Mauricio;9/12/2007;64070908;2;1;;1;3;21;Guatuso de la terminar de buses 500 m este;;120150768@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120150455;Largaespada;Montero;Angel Kaled;24/1/2008;62162689;2;1;;1;3;21;Calle Italiano porton de malla casa de las refris;;120150455@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120300163;Barquero;Ledezma;Danna Valeria;27/1/2008;70466772;1;1;64422899;1;3;21;sala eventos cascada fuego 2da entra mano izquierda pasando sobre el puente pica piedra subiendo la cuesta primera entrada a mano izquierda;;120300163@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120170186;Perez;Villalobos;Genesis;1/2/2008;62222044;1;1;;2;38;256;Rio Azul Quebradas ultima parada 25 metros este;;120170186@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120170255;Reyes;Obregon;Roy Alexander;5/2/2008;64123852;2;1;63643754;1;3;16;Sector 8 los Guido frente a la plaza;;120170255@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120180198;Soza;Garcia;Eymi Dayana;14/2/2008;62897346;1;1;;1;3;21;Barrio Los Angeles casa G18;;120180198@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;112170434;Hernandez ;Garcia ;Wuayner ;16/2/2008;60120053;2;1;60520052;1;3;21;Calle Picapiedra 10 mts oeste casa color rosado a mano derecha ;;112170434@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120180343;Castillo;Camacho;Bryan Onil;16/2/2008;62326342;2;1;;1;3;21;Linda Vista, calle Linda Vista casa 188;;120180343@est.mep.go.cr;1;;;;false;false;;;true
+1;PR;1;120180624;Benavides ;Castrillo;Kimberly Nicole ;17/2/2008;70486969;1;1;63119834;2;38;256;abastecedor mora 250 sur oeste casa E45 mano derecha;;120180624@est.mep.go.cr;;;;;false;false;;;true
+1;PR;2;155831013523;Sanchez ;Lopez ;Yurley Estefany ;19/2/2008;63954833;1;2;;2;38;250;Calle camacho del taller los Guido 75 mts este ;;155831013523@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120180394;QUINTERO;VALVERDE;FAURICIO JESUS;20/2/2008;60634013;2;1;0;2;38;256;CALLE PROGRESO AL FONDO GRADA 30 MANO DERECHA SEGUNDA CASA GRIS;;120180394@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;901270821;Cortes;Lopez;Maria Jose;18/3/2008;60344435;1;1;;1;3;26;de la escuela de gravilias alameda 4 arco amarillo tercera casa a mano izquierda;;901270821@est.mep.go.cr;;;;;false;false;;;true
+1;PR;2;33283;Mendoza;Gomez;Genesis Sarai;29/3/2008;77760252;1;2;;1;3;21;Guizaros de la ultima parada de autobus 100m arriba;;33283@est.mep.go.cr;;;;;true;false;;;true
+1;PR;2;155831932233;CUADRA ;MORALES ;ESMERALDA NAHOMI ;30/3/2008;63337700;1;2;;1;1;1;CALLA BLANCOS FRENTE AL ANTIGUO CANAL 04;;155831932233@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120220028;Gutierrez;Monge;Jose Adrian;4/4/2008;85674050;2;1;70188793;1;3;21;1 km sur escuela guilla monge;;120220028@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;801540661;Arias;Aguierre;Walter Isaac;22/4/2008;63419747;2;1;85335938;2;38;256;del cruce de linda vista 100 metros este casa A126;;801540661@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120250122;Cordero ;Vargas;Luisa Fernanda;28/4/2008;72451671;1;1;71043510;1;3;24;Frente a Ferreteria JOES;;120250122@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120250864;Piedra;Vargas;Samuel;2/5/2008;86027811;2;1;;1;3;26;de la esquina noreste de la iglesi catolica 50m al norte ;;120250864@est.mep.go.cr;;;;;false;false;;;true
+1;PR;2;134000657401;Herrera ;Romero;Celeste Nazareth ;2/5/2008;70437119;1;5;;1;3;21;De la escuela de Guatuso 100 metros oeste;;134000657401@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120260577;Paez ;Nuñez ;Daniel ;7/5/2008;70390897;2;1;71090640;1;3;21;Urbanizacion Maron, casa 62 ;;120260577@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120240219;Mora;Aguilera;Andrea Jimena;14/5/2008;87922302;1;1;;1;3;21;del cementerio de patarra 150m oeste, 75 sur urb los naranjitos, casa numero 15;;120240219@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120250591;Orias;Lopez;Caleb Alexander;25/5/2008;72248381;2;1;;2;38;256;Linda Vista, Escuela Cristina Asambla de Dios 10 metros t oeste 75 metros al sur ;;120250591@est.mep.go.cr;;;;;false;false;;;true
+1;PR;2;155832780624;urroz;aguilar;genesis tatiana;2/6/2008;62677718;1;2;87315605;1;3;21;entrada calle laurel 50 mts sur contiguo abastecedor estibaliz;;155832780624@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120270019;Rivera;Zamora;Camila;9/6/2008;87626154;1;1;22703924;1;3;21;Urbanizacion Bretana casa 10A;;120270019@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120270701;Castillo;Mora;Dana de los Angeles;9/6/2008;84410889;1;1;;1;3;21;Frente al Cementerio de Patarra casa colo lila verjas negras;;120270701@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120270092;Tenorio ;Caldero;Gerald Steven;10/6/2008;62017908;2;1;;1;3;21;1 kilometro de la escuela juan monge guillen;;120270092@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120270919;Rojas ;Segura;Andres Caleb;12/6/2008;86238983;2;1;;2;38;256;ultima parada de buses frente a la delegacion;;120270919@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120270400;Escalante;Centeno;Vielka;20/6/2008;63212337;1;1;;1;3;21;200 metros noreste de la iglesia catolica de Guatuso;;120270400@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120290450;Catin;Zamora;Yorly Daniela;11/7/2008;70623675;1;1;;1;3;21;Del Puente Picapiedra 200 metros;;120290450@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120290909;Gonzalez;Rodriguez;Maximiliano Isaac ;18/7/2008;84297650;2;1;;2;38;256;calle carvajar casa 290;;120290909@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120300558;Mejia;Urena;Jennifer;19/7/2008;86846212;1;1;;1;3;21;guizaros de la ultima parada 800 m norte;;120300558@est.mep.go.cr;1;;;;true;false;;;true
+1;PR;1;120300440;Thomas;Campos;Joel ;30/7/2008;72590178;2;1;84415415;1;3;26;Los Claveles, El Porvenir.;;120300440@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120300671;Urrutia;Castillo;Keilyn Lisbeth;30/7/2008;64220529;1;1;;2;38;256;Quebradas Rio Azul, del abastecedor Los Angeles 275m sur oeste.;;120300671@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120320342;Diaz;Padilla;Franco;2/8/2008;;2;1;;1;3;25;San Rafael Abajo;;120320342@est.mep.go.cr;;;;;false;false;;;true
+1;PR;2;15584604043005;Luquez;Aguilar;Davys Antonio;4/9/2008;72785860;2;2;72785860;2;38;256;Del super los gemelos numero uno 25 metros norte;;15584604043005@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120340896;Segura;Diaz;Kyrla;5/9/2008;63386569;1;1;;1;3;21;150 SE de la terminal de buses de Guatuso;;120340896@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120340412;Montero;Madrigal;Yazer Jilian;8/9/2008;61589895;2;1;;1;3;21;Del cementerio de Patarra, 500 este y 150 al norte Casa de porton verde a mano derecha;;120340412@est.mep.go.cr;1;;;;false;false;;;true
+1;PR;1;120370573;Montero;Gonzalez;Jardel Daniel;21/9/2008;61140039;2;1;;2;38;256;Linda Vista CAlle Laurel de la entrada  tercer poste casa e75 porton gris;;120370573@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120370335;Ugarte ;Cano;Jose Manuel;2/10/2008;62097738;2;1;;2;38;256;de la pulperia los gemelos 75m norte porton negro ;;120370335@est.mep.go.cr;;;;;false;false;;;true
+1;PR;2;155828419417;Urbina ;Gomez;Betsabe;2/10/2008;60719444;1;2;60020810;2;38;256;Pulperia Yerlin 25 al sur casa color cafe ;;155828419417@est.mep.go.cr;;;;;false;false;;;true
+1;PR;2;155837633824;Lopez ;Velasquez;Steven Alexander;20/10/2008;70553874;2;2;;1;3;21;Guizaros ultima parada de bus;;155837633824@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120390746;Edwards;Taylor;Lia Akyra;23/10/2008;71569204;1;1;22596982;1;3;26;200m este de la chicharronera El Porvenir;;120390746@est.mep.go.cr;;;;;false;false;;;true
+1;PR;2;C03115200;Vargas;Fonseca;Rouwse Brittany;24/10/2008;61209681;1;2;;1;3;21; Guatuso De la ultima parada 3k al sur.;;C03115200@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120380983;Barrantes;Barquero;Dereck Andrey;28/10/2008;64694488;2;1;;2;38;256;Calle Lizanias, Quebradas;;120380983@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120380986;Sandi;Borbon;Kiara;29/10/2008;62202340;1;1;;2;38;256;Barrio Imas;;120380986@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120390238;Cordero;Chacon;Landon Jafeth;6/11/2008;61573968;2;1;61281260;2;38;256;25 mts este del comedor San Lazaro, Quebradas.;;120390238@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120380992;Garro;Camacho;Johans Daniel;7/11/2008;87891542;2;1;;1;3;16;El Llano, Calle Sabanillas;;120380992@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120410595;Quesada;Sanchez;Jose Daniel;19/11/2008;84859460;2;1;;1;3;21;Maron Rancho el Encanto;;120410595@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120410596;Quesada ;Sanchez;Jose Dario;19/11/2008;84859469;2;1;;1;3;21;Urbanizacion Maron Rancho El Encanto;;120410596@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120410539;Varela ;Calderon;Keylor Fabricio ;26/11/2008;62149967;2;1;;1;3;21;Abastecedor Estibaliz, calle Laurel Patarra ;;120410539@est.mep.go.cr;1;;;;false;true;;;true
+1;PR;1;120440666;Retana ;Castrillo ;Jostin Fabian ;11/12/2008;61621432;2;1;;1;3;26;De la Esc, Porvenir 200 mts Sur Calle sin Salida;;120440666@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120430568;Calderon;Ramirez;Keisy Viviana ;25/12/2008;62224736;1;1;88840299;1;3;21;Urbanizacion Maron Casa 141 ;;120430568@est.mep.go.cr;1;;;;false;false;;;true
+1;PR;1;120440721;Zuniga ;Siles ;Isaac Esteban;26/12/2008;70336441;2;1;;2;38;256;25m sur ultima parada Linda Vista;;120440721@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120450547;Bravo;Leiva;Erick Josue;26/12/2008;60862716;2;1;60862716;1;3;21;Del Bar Uniespana 75 m oeste;;120450547@est.mep.go.cr;;;;;true;false;;;true
+1;PR;2;155834419914;Palacio;Sanchez;Amilcar Albert;26/12/2008;61004935;2;2;;1;3;21;del Cementerio de Patarra 500 s 100 e;;155834419914@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120460422;Roque;Santamaria;Mariangel Jose;11/1/2009;63263589;1;1;83256137;1;3;21;del bar Uniespana 500 m oeste casa mano izquierda;;120460422@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120460527;Vargas;Rodriguez;Nataly;13/1/2009;63842221;1;1;86448870;1;3;21;Patarra,200mts este del cementerio Urb Naranjitos casa3;;120460527@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120470378;Munoz;Ortiz;Mathias;16/1/2009;63536661;2;1;87710075;1;3;21;Guatuso de la ultima parada de bus, 700 m suroeste, calle Tirra;;120470378@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;703440269;Ugalde;Borbon;Brandon Phoenix;21/1/2009;72089861;2;1;;1;3;21;Del bar El DEscanso 500m sur, Calle El Tirra;;703440269@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120470029;Rojas ;Morales;Keylor;21/1/2009;89587255;2;1;83331991;1;3;21;500 sur de la Escula de Guatuso, 125 oeste;;120470029@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120460911;Ramirez;Fernandez;Guiselle Isamar;22/1/2009;70303853;1;1;71194426;2;38;256;Linda Vista, Frente a la escuela cristianaporton rojo junto a pulperia los gemelos;;120460911@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120460883;Mejia;Otero;Walter;23/1/2009;63254504;2;1;22760163;1;3;21; Guisaros, de la ultima parada de bus 800 metros norte.;;120460883@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120470014;GAMEZ;CRUZ;ANDREY DAVID;24/1/2009;60092349;2;1;;1;3;21;COPERATI CALEROS, 300 SUR, 75 ESTE, 100 NORTE, URBANIZACION SANTA FE, ULTIMA CASA MANO9 IZQUIERDA;;120470014@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120480364;artavia;bermudez;abigail ;29/1/2009;63139958;1;1;85547046;1;3;21;400 m sur del colegio maximo quesada;;120480364@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120480205;Cerda;Obando;Angel Gabriel;3/2/2009;72365018;2;1;61908611;1;3;21;de los tanques del AYA de Guatuso 800mts oeste.;;120480205@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;209140941;Flores;Caldera;Nataly Alí­n ;11/2/2009;;1;1;;1;3;21;Del ebais de Guatuso, 50 metros al este, casa a mano derecha;;209140941@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120470870;Gil;Claderon;Genesis Esther;12/2/2009;72930157;1;1;;1;3;21;600 mtrs este del cementerio de Patarra calle Laurel 4ta alameda casa E24;;120470870@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120490460;Potoy;Sibaja;Genesis Valeria;23/2/2009;87906040;1;1;85053595;1;3;21;Calle aguacate de la distribuidora Provee 2 entrada a mano derecha;;120490460@est.mep.go.cr;1;;;;false;false;;;true
+1;PR;1;120490688;Vega;Suarez;Keilyn Arellys;26/2/2009;64170887;1;1;61873510;2;38;256;Linda Vista, Pulperia Los gemelos 25 mts este casa color naranja.;;120490688@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120500364;Morales;Carpio;Mathias Jospshel;1/3/2009;72152105;2;1;22741906;1;3;35;150 m norte y 75 m este de la Guardia Rural;;120500364@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120500907;Reyes ;Marchena;Tony ;4/3/2009;85836999;2;1;;1;3;35;Casa 16B, Villa Karen ;;120500907@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120510454;Gutierrez;Rios;Veronica Alexandra;17/3/2009;63711831;1;1;63711831;1;3;21;De la terminal de Guatuso, 3km a mano derecha, calle el Espino;;120510454@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;209160135;Porras;Murillo;Kimberly Dayana ;18/3/2009;87337443;1;1;63675031;1;3;21;Barrio los Angeles;;209160135@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120510130;Jarquin;Cordoba;Kerson Josue;20/3/2009;64769413;2;1;61340637;1;3;21;del 2do cruce 75mts mano derecha apartamentos terracota;;120510130@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120510933;Ruiz;Diaz;Leiner Samuel ;24/3/2009;60819601;2;1;70051522;1;3;21;esc. Juan Monge Guillen 1 km al este Barrio los Angeles;;120510933@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120530306;Rivas;Munoz;Johanna Jazmin;28/3/2009;71437286;1;1;;1;3;21;Del cementerio de Patarra, 330 mtrs al norte, calle laurel, segunda casa a  mano izquierda ;;120530306@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120510289;Brenes;Toruño;Donovan Farid;10/4/2009;64755689;2;1;85121653;1;3;21;Linda Vista, del cementerio 500 mts suroeste;;120510289@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120520159;Solis ;Alvarado;Fabiana;11/4/2009;87676911;1;1;;1;3;24;100m norte del polideportivo El Pprvenir, casa roja a mano Izquierda;;120520159@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120520290;Fernanandez; Mathiew;Kean Jhoandy;12/4/2009;70170125;2;1;86614219;1;3;21;1 Km al este de la escuela Juan Monge Guillen ;;120520290@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120510740;Segura;Rosales;Rachel Dayanna;14/4/2009;62552262;1;1;;1;3;21;Barrio Guizaros, de la ultima parada 125 O, casa 73;;120510740@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120560457;Flores ;Hernandez;Fabricio Miguel ;30/4/2009;61911183;2;1;;2;38;256;Ultima parada de buses de Linda Vista ;;120560457@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120550762;Guerrero;Calderon;Franklin Adrian;13/5/2009;61159249;2;1;83220961;1;3;21;300 m sureste del CTP Maximo Quesada calle el aguacate;;120550762@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120550320;Aguilar;Cerdas;Scarleth Naomy;15/5/2009;63508434;1;1;;2;38;256;De la pulperia Los Gemelos, 75m oeste;;120550320@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120550323;Villagra ;Rodriguez;Tamara;15/5/2009;70434806;1;1;88684791;2;38;256;De la Escuela Cristiana 500 este;;120550323@est.mep.go.cr;2;;;;false;false;;;true
+1;PR;1;120560778;Perez;Perez;Deiby Antonio;22/5/2009;61644712;2;1;;2;38;256;Del supermercado Estrella 250 mtrs al sur Barrio Pueblo Nuevo entrando a la alameda al finalizar la calle bajando, ultima casa a mano derecha, casa color blanco con negro (latas);;120560778@est.mep.go.cr;;;;;true;false;;;true
+1;PR;2;155832595227;Marin;Osorio ;Grace Scarleth ;23/5/2009;60566361;1;2;;2;38;256;Frente al kinder Francisco Gamboa Marin ;;155832595227@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120580630;Quiros;Barquero;Marco Antonio ;11/6/2009;72912786;2;1;;1;3;21;Urbanizacion maron 73;;120580630@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120580695;Mena;Calderon;Sebastian David;13/6/2009;63710782;2;1;;2;38;256;Calle Bodegas, San Antonio, Apartamento Uno;;120580695@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120590038;Paez ;Valverde;Didier Gerardo;19/6/2009;60846627;2;1;;2;38;256;de pulperia los gemelos 1 25m norte y 25m este;;120590038@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120550771;Aguilera;Cruz;Alisson Naomy;23/6/2009;71720659;1;1;0;1;3;21;de la entrada del Sapo y la Culebra 300 sur 75 este 100 norte calle sin salida;;120550771@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120590016;Roman;Arguello;Caleb ;25/6/2009;87925444;2;1;;1;3;21;Guatuso Frente a la Iglesia catolica casa amarila;;120590016@est.mep.go.cr;;;;;false;false;;;true
+1;PR;2;155836790417;Rojas ;Acuna;Freey Emanuel ;25/6/2009;60067372;2;2;;1;3;21;terminal de autobuses de guatuso 200 sur;;155836790417@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120580948;Morales;Solano;Rachel Arianna ;26/6/2009;88154030;1;1;;1;3;21;De la esc Juan Monge Guillen 1 km este de la pulperia el policia 5o mts oeste casa porton negro obra gris;;120580948@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120600420;Bustos;Ballesteros;Michelle ;27/6/2009;71908049;1;1;;1;3;21;Del cementerio de patarra 600m este, calle El Italiano, de la entrada principal 300m este, casa de alto a mano izquierda color blanco;;120600420@est.mep.go.cr;1;;;;true;false;;;true
+1;PR;1;120600308;Venegas;Chacon;Lindsay Jimena;3/7/2009;64183922;1;1;83465890;1;3;35;San Anotnio carretera a Rio Azul, junto al Supermercado Azul.;;120600308@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120610266;Carvajal;Padilla;Kira Waleska;8/7/2009;61129759;1;1;;1;3;21;500m este del cementerio Patarra;;120610266@est.mep.go.cr;1;;;;false;false;;;true
+1;PR;1;120600676;Munoz;Sandoval;Nathalie;13/7/2009;62981574;1;1;63605671;1;3;21;50 Norte de la iglesia de Guatuso;;120600676@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120610735;Aguilera ;Naranjo;Andrew Jose ;21/7/2009;83764093;2;1;;1;3;21;del bar Uniespana, 300m sur, 100m este y 75m norte ;;120610735@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120610525;Matarrita;Jimenez ;Briana;23/7/2009;70668912;1;1;70668912;1;3;21;Calle la Union despues de la cuesta, ultima casa. ;;120610525@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;305870527;Alvarado;Garcia;Alexa;26/7/2009;72218648;1;1;;1;3;21;Barrio los angeles 2 entrada casa 496;;305870527@est.mep.go.cr;1;;;;true;false;;;true
+1;PR;2;134000657508;Herrera ;Romero;Anthony Manuel;1/8/2009;71728041;2;5;;1;3;21;Guatuso de la escuela 100 m oeste;;134000657508@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120630284;Quesada;Segura;Taylor Fiorella;3/8/2009;71181643;1;1;71891216;1;3;21;Barrio El Escondite, 75mts SurEste del CTP Maximo Quesada;;120630284@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120620429;LOPEZ;QUIROS;JENNIFER VIVIANA ;5/8/2009;;1;1;;1;3;21;GUIZAROS DE LA ESCUELA 500 SUR DEL SALON COMUNAL 300 NORTE CASA COLOR BLANCO;;120620429@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120620579;Obregon;Ramirez;Brayan Isaac ;10/8/2009;61253452;2;1;;2;38;256;Rio azul de la guardia rural 500 mts al este frente a la iglesia monte de olivos casa color verde y rejas verdes;;120620579@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120630212;Aldecoba;Torres;Jimena;12/8/2009;83278609;1;1;85390057;1;3;21;Urb Maron, Condominios Brisas de la Montana, Casa nÂº6;;120630212@est.mep.go.cr;;;;;true;false;;;true
+1;PR;2;2090082752;Gutierrez;Castellano;Fernanda Lisbeth ;17/8/2009;87329643;1;2;;1;3;21;Urb Maron casa 16;;2090082752@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120630615;Mora;Marchena;Hefziba ;24/8/2009;72403590;1;1;;1;3;21;400 metros sur del Maximo Quesada Urbanizacion Maroncasa M-1;;120630615@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120660259;Delgado;Ramirez;Santiago;31/8/2009;64590259;2;1;;1;3;16;Del Ebais del Llano 125 S, segunda entrada a mano izquierda;;120660259@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120660256;Mora;Campos;Endor Daniel;1/9/2009;89735683;2;1;89123257;1;3;21;1 km al este de la escuela de Patarrá, cuarta casa,barrio los Angeles.;;120660256@est.mep.go.cr;1;;;;false;false;;;true
+1;PR;1;120640464;Santamaria;Mora;Nicole;2/9/2009;60941202;1;1;72302642;1;3;4;del parquesito de San Cayetano 75 mts norte;;120640464@est.mep.go.cr;;;;;false;false;;;true
+1;PR;2;155834813936;Soza;Altamirano;Ashly Carolina;10/9/2009;72568397;1;2;72517629;1;3;21;Patarra Desamparados del bar el escondite 300 mts este sobre calle aguacate 200 mts sur sobre calle los muñoz ;;155834813936@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120650710;Guadamuz;Cortes;Areli Isabella;14/9/2009;70873443;1;1;;1;3;21;residencial Monte Verde casa 3A;;120650710@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120670903;Villalobos;Lopez ;Alejandro;28/9/2009;88072885;2;1;;1;3;21;De la escuela Juan Monge Guillen 200mts sur y 200 mts este;;120670903@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120680631;Obando;Vargas;Jimena Raquel;12/10/2009;71682973;1;1;;1;3;18;125m sur del Buen Pastor ;;120680631@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120680550;Trejos;Obando;Angelica;13/10/2009;62565090;1;1;88329943;1;3;21;Quebrada Honda;;120680550@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120670824;Portuando ;Pasos;David Jeremiah ;14/10/2009;63283607;2;1;22742184;1;3;21;50 metros oeste del CTP Maximo Quesada casa porton marron a mano derecha ;;120670824@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120700266;Torres;Mendez;Danna Camila;23/10/2009;87742368;1;1;63376569;1;3;21;de la entrada barrio cipreses 600 mts contiguo a la Alfareria;;120700266@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120690892;Soto;Ortiz;Walter Alonso;28/10/2009;89583561;2;1;89583561;1;3;21;Barrio Los Angeles, de la Escuela Juan Monge Guillen 1 km al este casa G5;;120690892@est.mep.go.cr;1;;;;false;false;;;true
+1;PR;1;120710244;Carpio;Lacayo;Donovan Josue;1/11/2009;63580700;2;1;83574577;1;3;21;Guatuzo, Patarrá, Urbanizacion Maron, casa #26;;120710244@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120710797;Bejarano ;Morera;Santiago Arturo;11/11/2009;61911589;2;1;;1;3;21;de la escuela 50 este casa naranja;;120710797@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;124200635;Orozco ;Delgado;Hillary Noemy  ;15/11/2009;85805434;1;1;;1;3;21;25 mts suroeste de Cemex, Guatuso;;124200635@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120710744;Garcia;Jimenez;Britanny ;17/11/2009;62678385;1;1;87064777;1;3;21;De la Escuela de Guatuso 200 Este, Casa blanca a mano derecha;;120710744@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120720444;Thomas ;Lopez;Dominick Joel;25/11/2009;71013329;2;1;0;1;3;21;Barrio Cipreses 150 suroeste mano derecha ultima casa;;120720444@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120720472;Sanchez;Blanco;David;25/11/2009;64039723;2;1;;1;3;21;Del cementerio de Patarra, 200 este, casa color verde;;120720472@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120720631;Badilla;Monge;Gabriel Josue;28/11/2009;71307654;2;1;85423273;1;3;21;500 mts oeste de la Escuela de Patarra;;120720631@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120730135;Luna ;Solis;Natalie Rosario;3/12/2009;60392676;1;1;61650681;2;38;256;Linda Vista de la pulperia los gemelos 1 100 norte 25 oeste casa color negro man derecha ;;120730135@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120740081;Matey;Altamirano;Evril Jaslin;8/12/2009;63062290;1;1;87169818;1;3;21;Guatuso, Barrio Los Guizaros;;120740081@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;703500525;Ramirez;Umana;Erick Ramses;10/12/2009;71751526;2;1;;1;3;21;Al frente del bar Uniespana;;703500525@est.mep.go.cr;1;;;;true;false;;;true
+1;PR;1;120740205;Aguilar ;Valverde;Esteban;14/12/2009;86476168;2;1;22764749;2;38;256;Linda vista, de la antigua guardia rural 50 metros oeste;;120740205@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120740643;Soto ;Murillo ;Jathniel Ariel ;14/12/2009;87984598;2;1;89469899;1;3;21;500 mts del CTP  Maximo Quesada calle la gloria ;;120740643@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120740897;Coto;Guzman;Angie Nicole;20/12/2009;60585393;1;1;;1;3;27;Urbanizacion la Bretana casa 11;;120740897@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;305900064;MIRANDA;FERNANDEZ ;HEILYN ;20/12/2009;61528238;1;1;22766904;2;38;256;LINDA VISTA CALLE 2 CASA C42 20 OESTE DEL MINISUPER LIOKANG;;305900064@est.mep.go.cr;;;;;false;false;;;true
+1;PR;2;155854534430;Davila;.;Alexander Antonio;21/12/2009;71616035;2;2;;1;3;21;Guatuso, calle El Espino;;155854534430@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120760273;Mora;Bermudez;Mia de Angeles;22/12/2009;87675520;1;1;;1;3;21;Quebrada Honda, puente calle picapiedra, entrando a mano izq tercer casa porton blanco;;120760273@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120750243;JIMENEZ;TENORIO;BYRON ANDRES;27/12/2009;64021763;2;1;;1;3;21;GUIZAROS 800 SUR 25 OESTE DE LA IGLESIA CATOLICA;;120750243@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120760138;Fernandez;Brenes;Brandon Roberto;28/12/2009;64799300;2;1;62004399;1;3;21;Guatuso, del Ebais 250 suroeste;;120760138@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120750194;Vega ;Rojas;Bradley Daniel;29/12/2009;86619856;2;1;;2;38;256;Calle El Italiano, del cementerio de Patarra 650 este;;120750194@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120750419;MASIS;URENA;SEBASTIAN;2/1/2010;63958463;2;1;;1;3;21;DE LA ULTIMA PARA DE GUATUSO 50 NORTE, BAR EL DESCANSO.;;120750419@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;703500937;Jimenez ;Angulo ;Brithany Saray ;4/1/2010;86116119;1;1;;1;3;21;Dela escuela de Guatuso 400 mts este 150 sur ;;703500937@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120760463;FLETE ;BRENES;JOHANNA ;7/1/2010;62356394;1;1;0;2;38;256;150 M ESTE DE LA ANTIGUA PULPERIA MARISEL LINDA VISTA;;120760463@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120760464;FLETE;BRENES;NOEMY;7/1/2010;62355130;1;1;0;2;38;256;150 M ESTE DE LA ANTIGUA PULPERIA MARISEL LINDA VISTA;;120760464@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120770121;Cascante;Loaiciga;Loan Sofia;7/1/2010;;1;1;86019377;2;38;256;600 mts cementerio de Patarra a la par de Cajetica;;120770121@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120770721;Valverde;Ulloa;Dariana;26/1/2010;88593105;1;1;71086269;1;3;35;Del McDonald de Sana Anotnio 50mts al este y 50mts al sur;;120770721@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120780088;Calderon;Artavia;Julian;27/1/2010;83274043;2;1;83271479;1;3;21;Urbanizacion Maron casa contiguo al segundo playground, casa de 2 plantas, colr cafe claro.;;120780088@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120780199;Morales;Chamorro;Sofia;28/1/2010;62933794;1;1;88630338;1;3;21;del restaurante Atardecer 50 este, 350 norte, porton negro al final de la calle, casa de dos plantas;;120780199@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120780527;Hernandez;Carcache ;Johan Alexander;31/1/2010;72165401;2;1;70561058;1;10;66;Alajuelita ;;120780527@est.mep.go.cr;;;;;true;false;;;true
+1;PR;2;155836034428;Reyes ;Amador ;Ana Belen ;1/2/2010;61062930;1;2;60262010;1;3;21;Barrio los Angeles de la Escuela Juan Monge Guillen 1 km y medio al oeste casa  G74;;155836034428@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120800001;Cascante;Meza;Rachel;13/2/2010;72258973;1;1;60767738;2;38;256;Quebradas de Rio Azul de la ultima parada 400 mts sur calle Lizanias casa porton grande negro;;120800001@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120790699;Quesada  ;Barrantes;Yamil Antonio ;19/2/2010;62591140;2;1;;2;38;256;125m este de la pulperia katica, muro largo porton de madera ;;120790699@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120800156;Flores;Balladarez;Kristel Julissa;23/2/2010;64408442;1;1;86862728;2;38;256;Linda Vista, frente a la Iglesia Cristiana Asamblea de Dios;;120800156@est.mep.go.cr;;;;;false;false;;;true
+1;PR;2;155843623713;Arauz;Duarte;Moises Leonardo;1/3/2010;;2;2;;2;38;256;Del super los gemelos numero 1 25 metros norte;;155843623713@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120810553;ROCHA;CRUZ;ALICIA JESSENIA;6/3/2010;70590269;1;1;;2;38;256;CALLE LIZANIDAS DE LA ULTIMA PARADA 500 SUR CASA COLOR VERDE;;120810553@est.mep.go.cr;;;;;false;false;;;true
+1;PR;2;155840109214;Gago;Medina;Joslui;7/3/2010;71600801;2;2;;1;3;21;De la Terminal de buses de Guizaros apartamento enfrente color naranja;;155840109214@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;605240098;Leon ;Sibaja;Valeria Celeste;12/3/2010;60291362;1;1;;1;3;21;Urbanizacion Maron casa 24;;605240098@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120810672;Macis;Garcia;Eduardo;13/3/2010;71462583;2;1;;1;3;21;Del restaurante Atardecer 200 metros sur, casa blanca con apartamentos;;120810672@est.mep.go.cr;1;;;;true;false;;;true
+1;PR;1;120820174;Garbanzo;Ulate;Mathias;17/3/2010;70581303;2;1;72007591;1;3;21;Guatuso, Residencial Vistas  de Patarra, casa 13;;120820174@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120810837;Retana;Arley;Fernanda Valentina;20/3/2010;86478789;1;1;;1;3;21;De la escuela de Guatuso 1 klometro al este, calle pitacho;;120810837@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;209300426;Perez;Espinoza;Wardy;20/3/2010;64682236;2;1;;2;38;256;Rio Azul Quebradas de la ultima parada 300 sur;;209300426@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120830592;Sanchez;Quesada;Natalia Alejandra;13/4/2010;70770723;1;1;72108692;1;3;21;De Puertas y Ventanas, 800 suroeste, Barrio los Cipreses;;120830592@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120840344;Segura;Gonzalez;Sleyder Santiago;15/4/2010;70221106;2;1;22702647;1;3;27;Sector 3, Calle 5 casa 27;;120840344@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120840771;Alvarado;Brenes;Sofia;25/4/2010;61905433;1;1;60212507;1;3;21;guatuso de la parada de buses 1 kilometro sur este;;120840771@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120850556;Salguero;Cardenas;Keisy Cristal;26/4/2010;61153760;1;1;60107103;2;38;256;Linda Vista, 25m este de la Escuela Cristiana;;120850556@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120850489;Gomez;Rodriguez;Harley Said;29/4/2010;61860329;2;1;40801212;1;3;21;ikm sureste de Cemex en Guatuso casa 2 plantas a la derecha;;120850489@est.mep.go.cr;;;;;true;false;;;true
+1;PR;2;155831960310;Olivares;Carmona;Alisson Sarai;30/4/2010;64725812;1;2;;1;3;21;De la escuela de Guatuso 800m sur ;;155831960310@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120860248;Urbina;Quiros;Anthony ;4/5/2010;60950051;2;1;;1;3;21;Frente al cementerio de Linda Vista ;;120860248@est.mep.go.cr;1;;;;true;false;;;true
+1;PR;1;120860275;Arroyo;Lara;Genesis;12/5/2010;71530775;1;1;64255644;1;3;21;urbanizacion  Finare del Este, casa blanca porton verde;;120860275@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120870901;Peralta;Alburola;Rachel Lorena;28/5/2010;60839355;1;1;;3;38;256;Dela Escuela Cristiana de Linda Vista 50 m hacia arriba;;120870901@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120870970;Calvo;Sibaja;Daniel Santiago;2/6/2010;62782408;2;1;;1;3;21;Urbanizacion maron casa 24;;120870970@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120880335;Salazar ;Navarrete;Camila;12/6/2010;61487386;1;1;;1;3;21;De la Ferreteria San Juan 150 oeste;;120880335@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;703530816;Chavez;Mayorga;Haikel David;14/6/2010;61610697;2;1;;2;38;256;Calle Lizanias 700mts de la terminal de Rio Azul, casa esquinera, color beige;;703530816@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;402870883;Orozco  ;Calderon;Keysel Celeste ;19/6/2010;64048287;1;1;;2;38;256;Linda vista, del ebais 200 al norte alameda salsipuedes ;;402870883@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120890558;Mejia ;Ortiz;Miguel Angel ;21/6/2010;70442936;2;1;88852157;1;3;21;Guatuso, Barrio Don Bosco, del Puente Rio Damas, 175 oeste, casa nÂº14, color amarillo porton negro;;120890558@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120890793;Granja;Calderon;Ian Jael;24/6/2010;63492512;2;1;0;1;3;21;del Ebais de Guatuso 125 sur casa color verde;;120890793@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120900084;Ulloa;Rojas;Andrew Joel;26/6/2010;;2;1;62517415;1;3;21;De la Antigua Guardia Rural 200 m suroeste;;120900084@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120900232;ARLEY;RAMIREZ;MARCOS EZEQUIEL;26/6/2010;60872989;2;1;;2;38;256;DE LA ULTIMA PARADA DE BUSES DE RIO AZUL, 400 METROS ESTE, MANO IZQUIERDA;;120900232@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120900921;Lopez ;Loaisiga ;Edward Alfonso ;7/7/2010;71060035;2;1;;1;3;21;Urbanizacion Monte bello ;;120900921@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120900516;Aguilar;Hernandez;Anderson David;9/7/2010;60210602;2;1;;2;38;256;De la escuela publica de Linda Vista, 1km al sur, camino hacia Coris, finca de porton negro a mano derecha;;120900516@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120920924;Saenz;Martinez;Eithan Antonio;20/7/2010;63161069;2;1;88591423;2;38;256;A la par de la pulperia Gemelos 2, casa color gris;;120920924@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120920158;Munoz;Cascante;Camila;22/7/2010;86769363;1;1;0;1;3;21;150 al sureste de la escuela Guatuso porton de madera;;120920158@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120930143;Navarro ;Moya;Bryan;29/7/2010;64551598;2;1;72096996;1;3;21;De la Candelera 300 oeste, 50 norte, casa color anaranjada;;120930143@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120930491;Cedeño;Alvarez;Valesska ;8/8/2010;64884070;1;1;85263111;2;38;256;Pueblo Nuevo casa a mano derecha gris #26;;120930491@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120920263;Camacho;Sacasa;Dereck Andre;9/8/2010;70993935;2;1;;1;3;21;De la entrada Barrio Los Angeles Cipreses 350mts suroeste;;120920263@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120920264;Camacho;Sacasa;Chelsea Angelina;9/8/2010;71009885;1;1;;1;3;21;De la entrada Barrio Los Cipreses 350mt suroeste;;120920264@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120920891;Lopez ;Guzman;Valeria;10/8/2010;62192587;1;1;62836003;1;3;21;Del CTP Maximo Quesada, 150 sur este, 75 este.;;120920891@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120940364;Miranda ;Castillo;Rachel Tatiana;20/8/2010;64277532;1;1;40823941;1;3;21;De los apartamentos Juncan 25 m mano derecha Casa g 83;;120940364@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120940367;Azofeifa;Quiros;Seremsy Sofia;22/8/2010;;1;1;;1;3;27;los guido sector 2, calle 5 casa 216;;120940367@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120940989;BERMUDEZ;LOPEZ;JOSUE DAVID;27/8/2010;64825992;2;1;;1;3;21;300 METROS SURESTE DE LA ESCUELA DE GUATUSO;;120940989@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;209360155;Gutierrez ;Aleman;Kimberly Tatiana ;30/8/2010;70283304;1;1;84171476;1;3;21;De la escuela Guatuso 300 mts sur casa color blanco a mano derecha ;;209360155@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120970130;Mora ;Ramirez;Tiara Nohemi;16/9/2010;61689838;1;1;;1;3;21;De la escuela Juan Killen, 1,5 km, Barrio Los Angeles;;120970130@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120970234;Flores ;Romero ;Mariela ;17/9/2010;72329347;1;1;72513567;2;38;256;Linda vista calle laurel primera alameda, cuarta casa E98;;120970234@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120970306;Echavarria;Guerrero;Mateo;18/9/2010;61909380;2;1;61909380;1;3;21;De la escuela de Guatuso 75mts este y 25 mts sur entrada servidumbre;;120970306@est.mep.go.cr;1;;;;false;false;;;true
+1;PR;1;120950656;Guzman ;Barboza;Jose Gabriel;19/9/2010;63553375;2;1;;1;3;21;ultima parada de buses contiguo al antiguo salon el indio;;120950656@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120970491;Cerda;Obando;Dania Nazareth;20/9/2010;72617732;1;1;61908611;1;3;21;De los tanques del AYA de Guatuso 800 mts oeste.;;120970491@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120970340;Jimenez;Corella;Ian Isaac ;29/9/2010;89841480;2;1;;1;3;21;De la escuela Juan Monge Guillen, 1 kilometro este;;120970340@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120970795;Diaz;Oses;Monserrath;30/9/2010;61742727;1;1;;2;38;256;Calle Valderramos, del abastecedor los Angles 100m este casa color beige;;120970795@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120980047;Ramirez ;Hidalgo;Genesis Alejandra ;30/9/2010;88310008;1;1;;1;3;21;200m del super Lady River ;;120980047@est.mep.go.cr;1;;;;false;false;;;true
+1;PR;1;120980051;Urena;Lopez;Gustavo Adolfo;1/10/2010;72739827;2;1;;1;3;21;Del bar Espana 100m oeste;;120980051@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120970746;Rojas ;Morales;Kiany;3/10/2010;86252575;1;1;83331991;1;3;21;500 sur de la Escuela de Guatuso, 125 oeste;;120970746@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120980058;Chaves;Sanabria;Tamara Priscilla ;5/10/2010;63036910;1;1;63478867;1;3;21;Urbanizacion Maron casa 149;;120980058@est.mep.go.cr;1;;;;true;false;;;true
+1;PR;1;120980850;Gomez;Morales;Danna Paola;6/10/2010;71534543;1;1;60240231;2;38;256;De la escuela de Linda Vista, 500 este;;120980850@est.mep.go.cr;;;;;false;false;;;true
+1;PR;2;155832150824;Paisano;NIO;Kambell Mateo;7/10/2010;64154304;2;2;;1;3;21;de la escuela Juan Monge Guillen kilometro y medio, barrio Los Ageles frente al salon comunal ;;155832150824@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120970957;Tellez;Castro;Santiago;8/10/2010;63734100;2;1;;2;38;256;Linda vista, 150 norte del abastecedor gemelos1, 25 este casa b13;;120970957@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120980257;Zamora;Barquero;Dereck Alberto;11/10/2010;87990968;2;1;89175375;1;3;21;del bar el escondite 200 este 300 sur urb maron casa 73;;120980257@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120990328;Ortega;Lopez;Josue David;12/10/2010;61655511;2;1;;2;38;256;de la iglesia asambleas de Dios 20 este 25 sur;;120990328@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120990265;UMANA;ROSALES;BRITTANY TAKICHA;16/10/2010;72842763;1;1;0;1;3;21;BARRIO LOS ANGELES DE LA PULPERIA EL POLI 200 M MANO IZQUIERDA;;120990265@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120980541;Guevara;Solano;Allison Jimena;18/10/2010;60952365;1;1;;1;3;21;Barrio Don Bosco, proyecto IMAS casa 25;;120980541@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120990668;Vargas ;Wong;Mathew;30/10/2010;62194975;2;1;;2;38;256;de la panaderia Marcel diagonal, casa verjas azules ;;120990668@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120990805;Collado ;Carmona;Sebastian;31/10/2010;88830991;2;1;87284736;1;3;21;Patarra Centro casa contigua al ebais color rojo y portones negro esquinera ;;120990805@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120990837;Castro;Oviedo;Esteban ;1/11/2010;72162294;2;1;;1;3;26;Condominio Don Alfonso casa 26 San Lorenzo;;120990837@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121000464;Montiel ;Obando ;Alex Javier ;2/11/2010;71566580;2;1;;1;3;21;De la escuela de Patarra 2kmt oese calle 5 Casa Amarilla barrio Los Angeles ;;121000464@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121000589;Vargas;Calderon;Jason Javier;2/11/2010;88066211;2;1;22502148;1;3;26;El Porvenir, del restaurante SienJo 25 m este casa #7-21;;121000589@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;209380180;Rojas ;Lopez ;Cindy Saray;2/11/2010;;1;1;;1;3;21;Barrio los Angeles, de la escuela Juan Monge Guillen 1km al este;;209380180@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121010262;Jaime ;Reyes;Rina ;4/11/2010;60817733;1;1;;2;38;256;de la parada final de buses de Rio Azul, 800 sur calle Lizanias ;;121010262@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;402890935;Castro;Araya;Paula ;5/11/2010;60803595;1;1;;1;3;21;Quebrada Honda, 50 oeste de panificado la luisita.;;402890935@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121010097;Chacon ;Martinez;Fergy Nahomy ;10/11/2010;86355454;1;1;22742064;1;3;21;Barrio Cipreces 500 metros oeste Fabrica Puertas y ventanas ;;121010097@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121010541;Soza; Ortiz;Elia Dayanara;20/11/2010;61055688;1;1;;1;3;21;Rio Azul, Linda Vista calle los Laureles ;;121010541@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121010773;Jimenez; Sanchez ;Kirsten Sofia ;23/11/2010;87661979;1;1;63770308;1;3;15;Del Antiguo Radio Reloj, 250 metros sureste, casa mano izquierda #36;;121010773@est.mep.go.cr;;;;;true;false;;;true
+1;PR;2;C03753049;Velazquez;Calero;Hector Benjamin ;24/11/2010;71637966;2;2;;1;3;21;Barrio los Angeles ;;C03753049@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121010991;Paniagua;Duran ;Dian Andres ;26/11/2010;87859634;2;1;;1;3;21;600m este de la escuela de Guatuso, 50 m sur barrio guisaros;;121010991@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121030032;Obando ;Pereza;Erick Santiago;5/12/2010;63175908;2;1;63411374;2;38;256;Frente a plaza Deportes Rio Azul Calle cementerio casa color pastel ;;121030032@est.mep.go.cr;1;;;;true;false;;;true
+1;PR;1;121030032;Obando ;Peraza;Erick Santiago;5/12/2010;63175908;2;1;63411374;2;38;256;Rio Azul, frente a la plaza de deportes;;121030032@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121040252;Espinoza;Ulloa;Alexander Bayardo;3/1/2011;62953081;2;1;;1;3;21;Guatuso, del bar El Descanso, 300 metros sureste, casa gemela a mano izquierda;;121040252@est.mep.go.cr;1;;;;true;false;;;true
+1;PR;1;121050268;Ortiz;Orias;Dereck Andres;10/1/2011;61212766;2;1;71807998;1;3;21;1km Este de la Escuela Juan Monge Guillen, casa blanco con negro a mano derecha;;121050268@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121050370;Guzman;Saballos;Amanda;12/1/2011;64736925;1;1;61848291;1;3;21;Urbanizacion Marron casa #52;;121050370@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121060992;Tenorio;Lopez;Jazlin Pamela ;25/1/2011;87791630;1;1;63679184;1;3;21;800 sur y 25 este de la escuela de Guatuso;;121060992@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121070325;Catin ;Zamora ;Fatima Alejandra ;4/2/2011;62710446;1;1;70419787;1;3;21;Del puente de piedra 200 este casa color salmon ;;121070325@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121080022;Sandi;Diaz;Gabriel ;4/2/2011;85668080;2;1;22592330;1;3;35;De la Cruz Roja, 300 este, 25 sur, Cuidadela Damas, casa 87;;121080022@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121080314;Quiros ;Serrano ;Kiara Naomy;11/2/2011;83197362;1;1;;1;3;21;350 oeste del antiguo super patarra, calle la union ;;121080314@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;703580231;Espinoza ; Reyes ;Martha Anyelina ;12/2/2011;62882073;1;1;63648743;1;3;21;Del cementerio de patarra 300 metros 25 sur ;;703580231@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121050911;Morales ;Navarro ;Isaac Santiago ;13/2/2011;85702283;2;1;;2;38;256;Barrio pueblo nuevo alameda principal penultima casa mano derecha ;;121050911@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121080633;Ortiz ;Ocampo;Tamara Michelle ;24/2/2011;61766582;1;1;88258810;1;3;21;600 este del cementerio de Patarra, 25 norte, calle don Jesus;;121080633@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121090454;Torres ;Trana;Sara Noemy ;25/2/2011;62250258;1;1;;1;3;21;1km este de la escuela Juan Monge Guillen;;121090454@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121090233;Quesada;Calvo;Dorian Jhoel;1/3/2011;62962070;2;1;60722169;1;3;21;De Cascada de Fuego 100 este entrad MD 4ta casa;;121090233@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121100298;Arevalo;Molina;Abigail Yeray;9/3/2011;70837539;1;1;;1;3;21;Dela Escuela Juan Monge Guillen 200 sur 100 oeste y 50 al norte frente al parque infantil;;121100298@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121100769;Villalobos ;Jimenez ;Fiorella Lucia;16/3/2011;61843880;1;1;22768227;1;3;21;del cementerio de Patarra 300m este casa muro granito porton negro;;121100769@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121110407;Morales;Solano;Luis Jafeth;21/3/2011;62649851;2;1;87902448;1;3;21;De la Escuela Juan Monge Guillen 1km al este, de la pulperia El Policia 50 m este casa porton negro.;;121110407@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121120294;Esquivel;Monge;Alissa Sofia;4/4/2011;61056073;1;1;63469266;1;3;21;800este balneario patarra;;121120294@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121120325;Tercero ;Cruz;Johan Saul;5/4/2011;60893818;2;1;70999293;1;3;21;Del bar el Escondite, 300 sur, 100 norte;;121120325@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121120429;URENA ;RODRUIGEZ ;ANGELIE DAYAN ;7/4/2011;61357805;1;1;;1;3;21;200MTS SURESTE DE LA FABRICA CEMEX ;;121120429@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121130823;Zamora;Pinto;Matias Josue;15/4/2011;84470921;2;1;;1;3;21;Super Tenorio 350 este, 100 sur mano izquierda casa dos plantas Calle La Gloriana;;121130823@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121130056;Chinchilla;Hernandez;Matias Caleb;16/4/2011;0;2;1;;1;3;21;Guatuso frente al Bar El Descanso;;121130056@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121120634;Rivera;Granja ;Jeremy ;20/4/2011;70582754;2;1;;1;3;21;Del Bar Uniespaña, 75 metros sur casa a mano izquierda roja. ;;121120634@est.mep.go.cr;;;;;true;false;;;true
+1;PR;2;55830268128;Artola;Aguilar;Jeremy Winder;20/4/2011;71607380;2;2;61162262;1;3;21;1 Km al sureste de la escuela Juan Monge.;;55830268128@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121140283;Chavez ;Diaz ;Yereston Gary ;23/4/2011;63353390;2;1;40804229;1;3;21;Patarra, Barrrio los Angeles ;;121140283@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121140781;Calderon;Ortiz;Yeicot;7/5/2011;61410195;2;1;;2;38;256;Alemda Guzman sector E casa 112 mano derecha;;121140781@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121140521;Venegas ;Masis;Adriel Samuel;9/5/2011;61007093;2;1;;2;38;256;Del cruce de calles de Linda Vista 325 m al sureste;;121140521@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121150548;Monge;Chinchilla;Jason Samuel;20/5/2011;61303212;2;1;;2;38;256;Quebradas calle Monge,casa color beige con porton negro a mano izquierda ;;121150548@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121150298;Chacon;Mesen;Tanisha Polette;24/5/2011;8968-1778;1;1;;1;18;101;Del Letrero Sherwin William 25 norte, 25 este, 400 norte, costado derecho Prenac;;121150298@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121160120;Perez;Mendoza;Mario Roberto;25/5/2011;70599304;2;1;;1;3;15;Barrio del JardÃ­n, 50 metros al norte del Salon Comunal;;121160120@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;605310466;Orozco;Borge;Deibis Isaias;2/6/2011;62279349;2;1;61050835;1;3;21;500 este de la entrada de barrio Cipreses, entrada Puertas y ventanas Hnos Navarro;;605310466@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121170382;Dinarte;Barquero ;Daniela de Jesus;15/6/2011;71204045;1;1;;1;3;21;25m este del cementerio de Patarra, casa a mano derecha ;;121170382@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121170878;Coto ;Arguedas ;Maripaz;20/6/2011;62198232;1;1;;1;3;21;Casa Color verde frente a la entrada del balneario Cascada de fuego ;;121170878@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121170667;Alvarez;Cisneros;Jeremy Santiago;21/6/2011;60467594;2;1;60295638;1;3;21;Barrio Guizaros contiguo al asado el Espino;;121170667@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121160124;Delgado;Umana;Jacob Isaac;26/6/2011;86187989;2;1;86361386;2;38;256;Rio Azul centro 175 sureste de la iglesia catolica, calle el Congo;;121160124@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121150981;Jimenez;Munoz;Valery Amanda;29/6/2011;88159818;1;1;89412591;1;3;21;urb maron ultima casa;;121150981@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121180937;Aguilera ;Cruz ;Ambar;1/7/2011;;1;1;;1;3;21;De la entrada del Sapo y Culebra 300 metros sur, 75 este y 100 norte, calle sin salida. ;;121180937@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121200191;Diaz;Garcia;Dylan Isaac;22/7/2011;64068852;2;1;;1;3;21;Guizaros, 100m sur, 100m oeste del super y licorera Munoz;;121200191@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121220237;Valverde ;Salazar;Jose Daniel ;13/8/2011;72562123;2;1;;1;3;21;Urbanizacion Maron;;121220237@est.mep.go.cr;1;;;;false;false;;;true
+1;PR;1;121230846;Lopez;Alfaro;Emiliano ;24/8/2011;63776464;2;1;86298282;1;3;21;300 este del super Lady River;;121230846@est.mep.go.cr;1;;;;true;false;;;true
+1;PR;1;209480757;Blanco;Cuadra;Gabriel;25/8/2011;61214669;2;1;88761847;1;3;21;Escuela Alemania 100 oeste mano derecha frente la parada de autobus;;209480757@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121230437;Gomez;Rodriguez;Wesley Matias;28/8/2011;60021567;2;1;83667866;1;3;21;De Cemex 1km al sureste, casa de 2 plantas a las derecha.;;121230437@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121230682;RODRIGUEZ; CASTILLO;VALERY MARIA;30/8/2011;63243837;1;1;61369221;1;3;21;CTP MAXIMO QUESADA 25 SUR ENTRADA MANO DERECHA SEXTA CASA;;121230682@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121240626;Leon ;Gomez;Jean Pierre ;8/9/2011;60210069;2;1;;1;3;21;FRente a terminal de buses de guatuso, casa celeste esquinera;;121240626@est.mep.go.cr;1;;;;true;false;;;true
+1;PR;1;121250304;Selva ;Silva;Paolo Alexander;8/9/2011;71854920;2;1;;1;3;21;Urbanizacion Maron, casa 78;;121250304@est.mep.go.cr;1;;;;true;false;;;true
+1;PR;2;C03644860;Hernandez;Lopez;Nathaly ;9/9/2011;72982576;1;2;;1;3;27;Del super Chen 250m al sur casa W44;;C03644860@est.mep.go.cr;;;;;true;false;;;true
+1;PR;2;155832780801;URROZ;AGUILAR;KEVIN ANTONIO;22/9/2011;62290062;2;2;60842326;1;3;21;ENTRADA CALLE LAUREL 50 METROS DEL ABASTECEDOR ESTIBALIZ;;155832780801@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121250642;Cordero;Matarrita;Keytel Riana;23/9/2011;62592734;1;1;63935059;1;3;21;De la escuela de Guatuso 200 sur frente a la pulperia Clarita casa color celeste;;121250642@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121250864;Maroto;Lorenzana;Mathias ;25/9/2011;63192039;2;1;;1;3;21;Guatuso, Guizaros 25m oeste de la licorera Muñoz ;;121250864@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121260571;Ruiz ;Diaz;Diana Itzamar;3/10/2011;61298436;1;1;;1;3;21;De la escuela Juan Monge Guillen, 1km al este Barrio Los Angeles;;121260571@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121270203;Acosta;Granados;Dylan Daniel;5/10/2011;64622056;2;1;;1;3;21;Guatuso, del ebais direccion hacia los Guido por el puente de Damas;;121270203@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121270016;Cordero;Chacon;Deyron Jabeth;10/10/2011;60737554;2;1;61281260;2;38;256;25 m este del comedor San Lorenzo, Quebradas;;121270016@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121270567;Paez;Valverde;Tiffany Mariam;10/10/2011;62847545;1;1;;2;38;256;Pulperia los gemelos 1, 25 norte y 25 este;;121270567@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121270641;Gutierrez;Gonzalez;Fabian Eduardo;15/10/2011;71189977;2;1;22700124;1;3;27;300m oeste del plantel de buses, frente a deposito madriz ;;121270641@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121280168;Ramos;Delgado;Maria Nazareth;19/10/2011;72643692;1;1;62824120;2;38;256;Linda Vista de Rio Azul 50 oeste de la pulperia Yerlin Casa Blanca ;;121280168@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121280168;Ramos ;Delgado;Maria Nazareth;19/10/2011;62824120;1;1;;2;38;256;Linda Vista de Rio Azul 50 oeste de la pulperia Yerlin ;;121280168@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121280183;Gongora;Chacon;Anderson Manuel;21/10/2011;60018517;2;1;;1;3;21;50 metros suroeste del la antigua Guardia Rural;;121280183@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121280567;Bermudez;Chamorro;Stephanny Sofia;23/10/2011;61800045;1;1;;1;3;21;Barrio Los Angeles, diagonal pulperia el Poli;;121280567@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121290778;Diaz ;Gutierrez ;Isaac Moises ;8/11/2011;71002763;2;1;;1;3;21;Barrio los Angeles contiguo a la pulperia Don Manuel ;;121290778@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121290916;Acuna;Munoz;Yendry Guiselle;10/11/2011;64851532;1;1;;1;3;21;50m del salon El Indio;;121290916@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121300847;Macis;Garcia;John;16/11/2011;71633773;2;1;;1;3;21;Del restaurante Atardecer 200 metros sur, casa blanca con apartamentos;;121300847@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121580990;Rivas;Loria;Joshua Andres;16/11/2011;83585472;2;1;83585472;1;3;21;Del Antiguo Ebais Quebrada Honda 25 E, portÃ³n beige. Apartamento 5;;121580990@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121310239;Davila;Yanes;David Marcelo;24/11/2011;72667473;2;1;70309713;1;3;21;Guatuso Continuo A Puertas y Ventanas;;121310239@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121310223;Quesada;Picado;Esmeralda;28/11/2011;70937774;1;1;;1;3;21;Barrio Cipreses de la fabrica de puertas y ventanas 800SE;;121310223@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121310185;Artiguet;Rojas;Santiago;29/11/2011;N/A;2;1;;1;3;21;250 este de la Escuela Juan Monge Guillen;;121310185@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121310660;Quesada;Arroliga;Nashly Milagro ;6/12/2011;NA;1;1;;1;3;21;De la entrada del balneario Cascada de Fuego, 50 metros norte, casa rosada, mano derecha;;121310660@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121310666;Rivera;Toruno;Joselyn Franciny ;6/12/2011;70945381;1;1;;1;3;21;600 suroeste de la ultima parada de Guatuso Patarra;;121310666@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121310898;Rodriguez;Perez;Ian Santiago;13/12/2011;62466201;2;1;86022860;1;3;21;200mts oeste escuela republica federal alemania ;;121310898@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121310899;Chaves;Moya;Kristel Valeria;13/12/2011;71556634;1;1;;1;3;21;Calle Picapiedra ;;121310899@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121330162;Mata ;Rios;Gabriel Isaac ;18/12/2011;70410708;2;1;;2;38;256;Del super La Estrella 125m sureste entrada calle el Progreso;;121330162@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121320937;Castillo;Escoto;Rider Gael;20/12/2011;72396217;2;1;;1;3;21;Del super la Calerita 150mts noreste, casa color marron;;121320937@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121330432;Mendez;Acuña;Diego Seanpaul;29/12/2011;72730249;2;1;;1;3;21;Maron Finca el Encanto;;121330432@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121330654;Monestel ;Moya;Sebastian Jesus;31/12/2011;83678918;2;1;;1;3;21;75 sureste de la iglesia Catolica de Guatuzo, mano derecha primera entrada al fondo porton negro.;;121330654@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121340220;Lopez;Acevedo;Daniela;8/1/2012;62338257;1;1;;1;3;21;Barrio Don Bosco, calle IMAA casa 14 Guatuso;;121340220@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121340322;Perez;Melendez ;Keidelyn Sofia ;8/1/2012;62714396;1;1;;1;3;21;De la Escuela de Guataso, 600 m este, 100 m sur y 75 m este. ;;121340322@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121330705;Paniagua;Tencio;Brittany Isabel;9/1/2012;64151632;1;1;;1;3;21;350 sur, 150 este de la escuela de Guatuso de  Patarra,Barrio Guizaros.;;121330705@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121350466;ALFARO;HIDALGO;HILLARY CHANTAL;19/1/2012;61992278;1;1;61302830;1;3;21;DE LA PLAZA DE PATARRA 50 METROS MANO DERECHA FRENTE A SODA;;121350466@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121360208;MASIS;CORDERO;MONSERRAT;27/1/2012;;1;1;60487318;1;3;21;CASCADA FUEGO 100 OESTE CASA COLOR TERRACOTA MANO DERECHA;;121360208@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121350775;MORGAN;CORDERO;JAMES EDWARD;31/1/2012;60613891;2;1;70897085;1;3;21;800 METROS ESTE DE LA ESCUELA DE GUATUSO Y 75 ESTE DEL SALON COMUNAL DE GUIZAROS;;121350775@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121350748;Cordero;Campos;Mitxi Joseany  ;3/2/2012;63092260;1;1;;1;3;21;1 Km 800 este de la Escuela de Guatuso. ;;121350748@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121360677;Bravo ;Garcia ;Luisa Yusleidy;3/2/2012;;1;1;;1;3;21;De la entrada de linda vista 800mts oeste ;;121360677@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;402960061;Madrigal;Zuniga;Mathias Josue;7/2/2012;85055650;2;1;40918111;1;3;21;Patarra Urbanizacion Maron casa 76c;;402960061@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121370742;Quesada;Cordero;Kiara Celeste ;20/2/2012;62787173;1;1;;1;3;21;700m este de la escuela de Guatuso Barrio Guizaros ;;121370742@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121370972;Lazo ;Mairena;Joshua;22/2/2012;87881050;2;1;40820562;1;3;21;De la escuela Juan Monge Guillen, 1 kilometro al este;;121370972@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121380184;Alfaro;Tellez;Dereck Josue;24/2/2012;63292489;2;1;60889781;2;38;256;25 metros oeste de pulperia los gemelos 1, casa B89;;121380184@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;402960264;BERMUDEZ;GARCIA;MAISON ANDREY;25/2/2012;;2;1;61092111;1;3;21;DE LA TERMINAL DE GUIZAROS 600 AL ESTE;;402960264@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121380886;Cespedes ;Guadanuz;Eidrian ;8/3/2012;71384655;2;1;;1;3;21;25 mts sur del puente don bosco;;121380886@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121400938;GUTIERREZ ;MURILLO;CAMILA ;30/3/2012;60334342;1;1;84489247;1;3;21;BAR EL ESCONDITE 300 OESTE 900 SUR CASA 101 URBANIZACION MARON;;121400938@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121410615;Madriz ;Bonilla;Adrian Andres;10/4/2012;;2;1;83085865;1;3;21;Urb Fincre Lote B7, Patarra Desamparados;;121410615@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121410680;Sanchez;Blanco;Rechel Cristina;13/4/2012;72100433;1;1;61205088;1;3;21;Del cementerio de Patarra, 200 este, casa color verde;;121410680@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121410703;Aguilar;Cerdas;Sebastian;17/4/2012;61950171;2;1;70692510;2;38;256;Linda vista pulperia los gemelos 1, 150 este, 100 sur, casa mano derecha;;121410703@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121410923;Garcia;Jimenez;Brenda;18/4/2012;8761-2499;1;1;;1;3;21;200 metro este de la escuela ed guatuso;;121410923@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121420294;Muñoz;Sandoval;Mari Paz;18/4/2012;63850910;1;1;;1;3;21;50 norte de la iglesia Catolica de Guatuzo;;121420294@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121430070;Segura;Serrano;Melissa Susana;20/4/2012;86142310;1;1;86019618;1;3;21;Barrio Los Angeles, de la escuela 1 km al este y 150 sur este, casa de alto con arcos.;;121430070@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121420942;ARGUEDAS;KEITH;LIA SAMANTHA;4/5/2012;63147296;1;1;85678128;1;3;21;150 OESTE DEL BAR EL DESCANSO MANO IZQUIERDA CASA COLOR ROSADO CORAL PORTON NEGRO GUATUSO;;121420942@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121440130;Garcia;Galeano;Luis Angel;15/5/2012;64764651;2;1;;1;3;21;Del cementerio de patarra 550 mts sur;;121440130@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121440392;Gonzalez;Mendez;Nainyell Fabricio;21/5/2012;NA;2;1;NA;1;3;21;Del CTP Maximo Quesada 600 metros suroeste;;121440392@est.mep.go.cr;1;;;;true;false;;;true
+1;PR;1;703680366;Torres;Reyes;Jordan Yariel;26/5/2012;;2;1;;1;3;21;De la escuela Juan Monge Guillen, 1 km al este;;703680366@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121440839;Barquero;Rosales;Sofia ;30/5/2012;;1;1;;1;3;21;Barrio Guizaros, de la ultima parada 125 O , casa 73;;121440839@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121450252;Cascante;Mendez;Jeiran Jose ;31/5/2012;71042384;2;1;71042384;1;3;21;De la iglesia Catolica de Guatuso, en la interseccion toma a mano derecha 400 m, porton verde a mano derecha;;121450252@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121460094;Centeno ;Mora;Gabriel;7/6/2012;;2;1;;1;3;21;De la iglesia catolica 150 sur 75 oeste casa porton negro;;121460094@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121450933;Orozco;Mendez;Cesar Joel;11/6/2012;60662970;2;1;22709445;1;3;21;Urbanizacion El Ocaso II, casa 5A muro terracota;;121450933@est.mep.go.cr;1;;;;false;false;;;true
+1;PR;1;121450934;Araya;Arias;DAniel Andres;11/6/2012;70584456;2;1;;1;3;21;Del cementerio 350 este  25 sur;;121450934@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121470021;Romero;Diaz;Mariam Sofia;22/6/2012;62233850;1;1;;1;3;21;50 metros suroeste de la terminal de buses de Guatuso, casa color Celeste;;121470021@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121470138;Rojas ;Fonseca;Aaron David;23/6/2012;;2;1;;1;3;21;100 metros este de la Escuela de Guatuso;;121470138@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121470521;Mendieta;Chavarria;Martin Isaac;1/7/2012;64008107;2;1;;1;3;21;Entrada contigua al bar El Escondite, casa 2 color papaya;;121470521@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121480585;Marin;Ortiz;Juan Pablo;8/7/2012;60719393;2;1;61770088;1;3;21;De la Escuela de Guatuso 300 Este sobre calle principal;;121480585@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121480614;Espinoza;Zuniga;Ixell;9/7/2012;60595152;1;1;63526840;1;3;21;del bar uniespaña 70mts este;;121480614@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121480616;Gamboa;Muñoz;Valerie Marina;10/7/2012;87749674;1;1;61462078;1;3;21;75 sur del EBAIS de Guatuso;;121480616@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121480543;MUNOZ;MOYA;MICHAEL GABRIEL;16/7/2012;86953420;2;1;87881789;1;3;21;URBANIZACIONMARO CASA 28;;121480543@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121500788;Vega;Hidalgo;Alexa;21/7/2012;70835776;1;1;70835776;1;3;35;del ins de san antonio entrada mano izquierda calle sin salida;;121500788@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121490663;Lizano ;Arauz;Jairo Enrique ;4/8/2012;72947388;2;1;;2;38;256;De la escuela publica de Linda Vista 200E, 200N;;121490663@est.mep.go.cr;1;;;;false;false;;;true
+1;PR;1;121500892;Lopez ;Guzman;Julian ;4/8/2012;62728937;2;1;62836003;1;3;21;del colegio maximo quesada 150mts sur este, 75 este apartamento color gris ;;121500892@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121490385;Lopez;Perez;Denisse;6/8/2012;86270292;1;1;no hay;1;3;21;Barrio Guizaros, de la terrminal 100E y 100 S;;121490385@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121500440;Mora;Cedeno;Amber Atzhiry;8/8/2012;61673539;1;1;;2;38;256;Linda Vista, casa numero 55 del IMAS;;121500440@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121480557;Azofeifa;Rojas ;Dylan Steven ;12/8/2012;64404452;2;1;;1;3;21;Del colegio Maximo Quesada 300 este porton negro;;121480557@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121500264;Campos;Aguilar;Sebastian ;15/8/2012;;2;1;;1;3;21;200 este de la escuela de guatuso;;121500264@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121510849;Bolaños;Salmeron;Elias Josue;24/8/2012;61317255;2;1;70624329;1;3;21;De la termina de gUATUSO COSTADO SUR PORTON BLANCO A MANO DERECHA, 125s;;121510849@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121510779;Rivas;Munoz;Jonathan Dario;27/8/2012;60767752;2;1;62386388;3;36;256;Del Cementerio de Patarra 300 norte, Calle Laurel, Casa porton negro;;121510779@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121520555;Trejos;Obando;Kenneth;2/9/2012;64472787;2;1;60794004;1;3;21;Quebrada Honda, 200 este de la Escuela, casa mano derecha color gris.;;121520555@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121520840;Obando;Urbina;Neithan Francisco ;9/9/2012;72694253;2;1;40803135;1;3;21;Barrio Los Angeles, de la pulperia el policia, 25 metros este;;121520840@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121540472;Calderon;Artavia;Isabella;20/9/2012;;1;1;83271479;1;3;21;Urbanizacion Maron, casa contiguo al segundo Play de dos plantas;;121540472@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121540617;NUNEZ;VULLALOBOS;BRADLEY ZAID;27/9/2012;62158524;2;1;88222780;1;3;21;800 METROS SURESTE DEL BAR EL ESCONDITE;;121540617@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;209630561;Ulate;Mena;Bianca Nahomy;3/10/2012;61358862;1;1;;1;3;21;De la ultima parada de Guizaros, 1,5 km al este en calle Picacho, porton verde, mano izquierda;;209630561@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121560104;Chacon  ;Flores;Samuel Alberto;16/10/2012;;2;1;;3;38;256;De la pulperia yerlin 25 norte,25 sur casa E184;;121560104@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121560162;Monge;Ulloa;Mariano;17/10/2012;63161775;2;1;89979361;1;3;21;Del Cementario de Patarra 150 E;;121560162@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;402990649;Lacayo ;Sirias;Michelle Argentina;18/10/2012;71973545;1;1;;1;3;21;1k este de la Escuela Juan Monge Guillen;;402990649@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121560138;Jimenez ;Corella;Emily Sofia ;19/10/2012;8979-5272;1;1;;1;3;21;Barrio los Angeles 1k este de la escuela Juan onge Giollen primera casa;;121560138@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121560147;Flores;Caldera;Keilyn Jimena;20/10/2012;62517615;1;1;;1;3;21;Del ebais de Guatuso, 50 metros al este, casa mano derecha;;121560147@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121560358;Esquivel;Monge;Thais;21/10/2012;63801166;1;1;63469266;1;3;21;800este del antiguo balneario de patarra;;121560358@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121560085;Barrantes ;Serrano;Jeremy Natanael;24/10/2012;63901017;2;1;;1;3;21;500 sur de la fabrica de Cemex ;;121560085@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121560421;FALLAS;BERMUDEZ;KIMBERLY NOEMY;24/10/2012;89941590;1;1;85422428;1;3;21;75 M OESTE CTP MAXIMO QUESADA;;121560421@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121570721;Venegas;Alvarado;Loreana;29/10/2012;;1;1;;1;3;21;500 noreste de bar El Escondite, apartamentos Villi;;121570721@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121570434;Bolanos ;Mena ;Jessica Tatiana;31/10/2012;64730625;1;1;62025457;1;3;21;De la ultima parada de Guatuso, 3.5 km suroeste.;;121570434@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121560928;Esquivel;Quiros;Maripaz;2/11/2012;72301504;1;1;72891919;1;3;21;Calle la UniÃ³n, apartamentos Lovel, frente al rancho Fallas.;;121560928@est.mep.go.cr;1;;;;false;false;;;true
+1;PR;1;121630651;Porras ;Piedra;Neythan Joel;10/1/2013;63949962;1;1;;1;3;21;Barrio Los Angeles, 100m este y 50m sur del Salon comunal;;121630651@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121620895;Mejia;Aguirre;Kevin David;12/1/2013;72229634;2;1;70579033;1;3;21;Una parada antes de la terminal de Guzaroz, iglesia Movimientro Mundial, condominio Montebello, casa 18.;;121620895@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121620740;Picado;Diaz;Ian Jesus;12/1/2013;87520221;2;1;;1;3;21;De la ultima Parada de guizaros 3.5 k este;;121620740@est.mep.go.cr;1;;;;true;false;;;true
+1;PR;1;121620733;Cedeño;Mendez;Jahary Linoy;13/1/2013;83183518;1;1;83183518;2;38;256;Linda Vista 25 oeste de la Escuela Cristiana;;121620733@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121640149;Porras ;Campos;Santiago Matias;17/1/2013;63630659;2;1;62927308;1;3;21;del bar la uniespaña 300mts este contiguo a la iglesia ;;121640149@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121640593;Bermudez;Lopez;Kristel;24/1/2013;61043830;1;1;61043830;1;3;21;300mts sur este escuela de guatuso;;121640593@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121640505;Alfaro;Ramirez;Anyel David  ;27/1/2013;60515150;2;1;60515150;1;3;21;Barrio Guizaros, de la ultima parada 200 sur 75 este;;121640505@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;209680847;Jimenez;Arias;Isabella de los Angeles;15/2/2013;87178672;1;1;87178672;1;3;21;De la escuela de Guatuso, 700 este y 100 sur, casa junto al salon comunal Guizaros.;;209680847@est.mep.go.cr;;;;;true;false;;;true
+1;PR;2;155850506205;Cuadra;Garcia;Angela Daniela;24/6/2013;;1;2;;1;3;21;De Puertas y Ventanas 300 metros sur, casa tope porton verde;;155850506205@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120370216;Herrera;Brenes;Brayner;14/9/2008;64107906;2;1;61173977;1;3;21;Quebrada Honda, costado de la Lucita.;;120370216@est.mep.go.cr;;00100132012400612468;4/12/2024;;true;false;;;true
+1;PR;1;120790454;Wright;Lopez;Shaiell;11/2/2010;;2;1;;1;3;21;25m oeste,25m norte del Bar el Esconfite;;120790454@est.mep.go.cr;;00100132012500001776;6/1/2025;;false;false;;;true
+1;PR;1;120280384;Cantillo;Perez;Nicole Michelle ;17/6/2008;63002665;2;1;22506534;1;3;35;Dela Plazaleta 500 metros este, 125 metros sur calle salitre ;;120280384@est.mep.go.cr;;00117ACI019835100;24/12/2024;;false;false;;;true
+1;PR;1;119970373;Monge;Perez;Adrian;15/6/2007;86201288;2;1;22702722;1;3;27;Sector 3, calle 1, casa 15-C;;119970373@est.mep.go.cr;;00119AC1009391700;1/1/2025;;false;false;;;true
+1;PR;1;120180279;Castillo;Lopez;Britany Dinorah ;18/2/2008;61256859;1;1;;3;38;256;Del Super Mega Max 3oo norte frente a la soda la Ventanita del Sabor;;120180279@est.mep.go.cr;;009351900;6/12/2024;;true;false;;;true
+1;PR;2;155851012314;Miranda;Estrada;Jeremiah Elias;11/2/2010;60321811;2;2;;2;38;256;DE ,la escuela pÃºblica Linda vista 200 este 100 sur sobre calle coris;;155851012314@est.mep.go.cr;;0101ACI217464300;6/11/2024;;false;false;;;true
+1;PR;1;121560708;Miranda;Estrada;Elvis Jadiel ;1/11/2012;72394409;2;1;72286543;2;38;256;de la Escuela Linda Vista 200 metros Norte y 100 metros Sur;;121560708@est.mep.go.cr;;0101ACI217464500;11/11/2024;;false;false;;;true
+1;PR;1;120100634;Castro;Mendez;Keyla;1/12/2007;71236535;1;1;;1;3;21;De la escuela Patarra 1km, 500m este Barrio Los Angeles.;;120100634@est.mep.go.cr;;0101ACI217498200;20/11/2024;;false;false;;;true
+1;PR;1;120930632;Solorzano;Machado;Yeimel ;14/8/2010;64555041;2;1;86139534;2;38;256;Barrio Linda Vista, calle Laurel 150 este de la pulperia Laurel;;120930632@est.mep.go.cr;2;0101ACI217515700;2/12/2024;;false;false;;;true
+1;PR;1;119700746;Reyes;Sacida;Mariam Rachel;5/8/2006;71525182;1;1;NA;1;3;21;De la Escuela Juan Monge Guillen, 300mts mano derecha al fondo, casa color azul;;119700746@est.mep.go.cr;;0101ACI217564000;2/12/2024;;false;false;;;true
+1;PR;1;305890500;Garcia;Rodriguez;William Jose;12/11/2009;71463200;2;1;72695226;1;3;21;Del CTP Maximo Quesada 2km;;305890500@est.mep.go.cr;;0101ACI217566700;2/12/2024;;true;false;;;true
+1;PR;1;120930498;Ponce;Sanchez;Daniel Elias;11/8/2010;70616043;2;1;71653134;3;38;256;De la escuela de Linda Vista 400  este y 300 a mano derecha sobre calle Coris;;120930498@est.mep.go.cr;;0101ACI217608600;4/12/2024;;true;false;;;true
+1;PR;1;120970567;Marin;Perez;Fabiana Solash;24/9/2010;71373260;1;1;;2;38;256;Del cruce de Linda Vista, 25 oeste, casa verde agua, mano izquierda;;120970567@est.mep.go.cr;;0101ACI217635100;3/12/2024;;false;false;;;true
+1;PR;1;120210084;Tellez;Castro;Brithany Fiorella;2/4/2008;70326783;1;1;;2;38;256;Linda Vista , 150 norte del abastecedor gemelos 1, 25  este,  casa b13;;120210084@est.mep.go.cr;;0103AC1026314800;15/10/2024;;false;false;;;true
+1;PR;1;121170530;Martinez ;Garcia;Daniels Matias;13/6/2011;61550547;2;1;;1;3;16;250m oeste terminal buses El Llano, entrada Piedades;;121170530@est.mep.go.cr;;0103ACI02641200;12/11/2024;;true;false;;;true
+1;PR;1;120770701;Retana;Valerio;Dylan Ivan;14/1/2010;61112529;2;1;40800237;2;38;256;Frente entrada norte del parque La Libertad;;120770701@est.mep.go.cr;;0103ACI026682500;30/11/2024;;true;false;;;true
+1;PR;1;120980615;Perez;Sanchez;Tyre Michelle;13/10/2010;70534376;1;1;;1;3;21;De la Iglesia catolica de Patarra, 200mts sur, 600 mts oeste y 25 norte;;120980615@est.mep.go.cr;;0103ACI026684100;30/11/2024;;true;false;;;true
+1;PR;1;120600613;Cruz;Campos;Jose Fabricio;16/7/2009;61842899;2;1;;2;38;249;50 metros al sur de la escuela asamblea de Dios de Linda Vista, casa E2;;120600613@est.mep.go.cr;;0103ACI026815700;6/12/2024;;false;false;;;true
+1;PR;1;120830002;Monge;Munoz;Yamil;30/3/2010;88639009;2;1;22741585;1;3;21;Costado Sureste de la Escuela de Guatuso;;120830002@est.mep.go.cr;;0103ACO26855900;3/12/2024;;true;false;;;true
+1;PR;1;901360065;Rodriguez;Valdivia;Eydi;14/7/2007;62570383;1;1;;1;3;27;Sector 3 calle 5, casa74;;901360065@est.mep.go.cr;;0109AC1017778700;4/12/2024;;true;false;;;true
+1;PR;1;120410580;Maradiaga;Zeledon;Francisco Alejandro;3/12/2008;71821529;2;1;70525545;1;3;27;Los guido sector 3 calle 5 casa 74;;120410580@est.mep.go.cr;;0109ACI017782100;4/12/2024;;true;false;;;true
+1;PR;1;120900145;Cruz ;Calvo;Sheryl;23/6/2010;60198658;1;1;;1;3;21;Del  Ins de fatima 200m sur;;120900145@est.mep.go.cr;;0110aci017850200;19/2/2025;;true;false;;;true
+1;PR;1;605320027;Leon ;Calvo;Fibileicy;21/7/2011;63380117;1;1;;1;3;256;Ultima Parada de Rio Azul Quebradas  200m para calle mesen;;605320027@est.mep.go.cr;1;0110ACI017850300;19/2/2025;;true;false;;;true
+1;PR;1;121050360;Leiton;Estrada;Amanda Sofia;11/1/2011;62357671;1;1;60826786;1;3;35;del KFC San Antonio 250 sur 50 oeste casa mano izquierda;;121050360@est.mep.go.cr;;0112ACI027457900;2/12/2024;;false;false;;;true
+1;PR;1;123120574;Baltodano;Cespedes;Xinia Rocio;13/9/2010;89601089;1;1;;1;3;35;UrbanizaciÃ³n la Constancia, casa 49I;;123120574@est.mep.go.cr;1;0112aci27370400;30/11/2024;;true;false;;;true
+1;PR;1;120190246;Mathiew;Quesada;Jelsyn Farid;28/2/2008;87988720;2;1;83042508;1;3;21;De la escuela Juan Monge Guillen uno punto tres  kilometros al este en barrio los angeles;;120190246@est.mep.go.cr;;0116AC1016479900;6/12/2024;;false;false;;;true
+1;PR;1;121080281;Arguedas;Vargas;Valentina;19/2/2011;62359821;1;1;22763303;2;38;256;De la terminal de autobus 300 este;;121080281@est.mep.go.cr;;0116acc003791906;1/7/2024;;true;false;;;true
+1;PR;1;120180958;Jimenez ;Gutierrez;Roberth Sebastian;2/3/2008;60293943;2;1;;2;38;256;Linda Vista del abastec3dor Gemelos 1, 150 E;;120180958@est.mep.go.cr;;0117AC019869700;4/12/2024;;true;false;;;true
+1;PR;1;402800516;Aguilera;Saborio;Krystal Carolina;2/8/2008;71720593;1;1;;1;3;27;Urb la Bretaña, ultima  alameda a mano izquierda, ultima casa a mano izquierda;;402800516@est.mep.go.cr;;0117AC019890500;1/1/2025;;false;false;;;true
+1;PR;2;155835607603;Blanco;Acosta;Karla del Carmen;13/3/2008;60408699;1;2;;1;3;21;Barrio los Angeles, frente la pulperia La cuesta;;155835607603@est.mep.go.cr;1;0117AC101971414300;1/12/2024;;true;false;;;true
+1;PR;1;121160332;Hernandez;Fallas;Nataly Nicole;22/5/2011;64394128;1;1;;1;3;21;50 metros oeste de la Escuela Republica Federal Alemana;;121160332@est.mep.go.cr;;0117AC1019787200;2/12/2024;;true;false;;;true
+1;PR;1;120970181;Munoz;Retana;Jose Pablo;15/9/2010;72135698;2;1;22016829;1;3;21;Guatuso, 1 kilometro noreste de licorera munoz;;120970181@est.mep.go.cr;;0117AC1019869500;4/12/2024;;false;false;;;true
+1;PR;1;121080582;Calvo ;Bonilla ;Santiago Jesus ;11/2/2011;71804743;2;1;;1;3;15;Calle Fallas, urb Monseñor Sanabria casa  numero 3. ;;121080582@est.mep.go.cr;;0117AC919758000;29/11/2024;;false;false;;;true
+1;PR;1;120020270;Ovares;Bermudez;Sharon de los Angeles;16/8/2007;60863265;1;1;;1;3;24;175 metros oeste y 300 sur del Parque la Libertad;;120020270@est.mep.go.cr;;0117ACI019567000;10/7/2024;;false;false;;;true
+1;PR;1;121080502;Soto;Palma;Santiago Daniel;12/2/2011;86282397;2;1;22764007;1;3;24;Urbanizacion Llanos de Monteverde;;121080502@est.mep.go.cr;;0117ACI019691600;15/11/2024;;false;false;;;true
+1;PR;1;120460569;Brenes;Marin;Josafat Gabriel;13/1/2009;64545106;2;1;;2;38;256;200 mtrs al este y 75 al norte de Abastecedor Los Gemelos numero 1, Linda Vista ;;120460569@est.mep.go.cr;;0117ACI019694200;18/11/2024;;false;false;;;true
+1;PR;1;120640882;Maradiaga;Arias;Paola Yelena;25/7/2009;63373414;1;1;;1;3;15;Guatuso, de la ultima parada el Indio 125 mts suroeste;;120640882@est.mep.go.cr;1;0117ACI019694500;18/11/2024;;true;false;;;true
+1;PR;1;121030264;Perez ;Duarte;Ana Maria;14/12/2010;63111235;1;1;;1;3;21;De la Escuela Republica federal Alemania 300m norte contiguo sala eventos La Sierra;;121030264@est.mep.go.cr;;0117ACI019698900;20/11/2024;;true;false;;;true
+1;PR;1;120660120;Picado;Vargas;Jafet;17/9/2009;86222308;2;1;22765126;1;3;21;200 mts noreste del puente los picapiedra, quebrada honda;;120660120@est.mep.go.cr;;0117ACI019701500;20/11/2024;;false;false;;;true
+1;PR;1;120150327;Rojas;Vargas;Sahir Emilio;11/2/2008;87521716;2;1;;1;3;21;Quebrada Honda, del puente Pica Piedra, 200 metros noreste;;120150327@est.mep.go.cr;;0117ACI019701600;20/11/2024;;false;false;;;true
+1;PR;1;120200828;Mora;Vargas;Kendall Josue;7/3/2008;62054036;2;1;;1;3;21;Quebrada Honda, del puente Pica Piedra, 200 metros noreste;;120200828@est.mep.go.cr;;0117ACI019701700;20/11/2024;;false;false;;;true
+1;PR;1;120360548;Brenes;Gomez;Raymond Daniel;21/9/2008;72401809;2;1;70338722;2;38;256;rio azul calle el progreso;;120360548@est.mep.go.cr;;0117ACI019707000;22/11/2024;;false;false;;;true
+1;PR;2;155830160932;Montiel ;Zambrana;Judith ;29/12/2006;64193372;1;2;;1;3;21;Escuela Juan Monge Guillen 1 kilometro este , barrio los Angeles ;;155830160932@est.mep.go.cr;;0117ACI019709000;25/11/2024;;false;false;;;true
+1;PR;1;120860568;Jimenez;Solano;Lizeth Carolina;12/5/2010;72348389;1;1;86156143;1;3;27;DetrÃ¡s de la Capilla Catolica, casa 157B, casa cuba.;;120860568@est.mep.go.cr;;0117ACI019709500;25/11/2024;;true;false;;;true
+1;PR;1;120280085;Cordero;Martinez;Alisson Mariana;10/6/2008;87701641;1;1;22741140;2;38;256;rio azul frente la iglesia monte de los olivos;;120280085@est.mep.go.cr;;0117ACI019715500;26/11/2024;;true;false;;;true
+1;PR;1;801570988;Garsia;Rayo;Meritzel Daniela;28/3/2009;72457826;1;1;70346420;1;3;21;De la Escuela de Guatuso 200 metros al este;;801570988@est.mep.go.cr;;0117ACI019744200;1/12/2024;;true;false;;;true
+1;PR;1;120840901;Gonzalez;Aguilar;Marcell Omar;23/4/2010;63988170;2;1;;1;3;21;25 mts sureste a la Cementera Cemex;;120840901@est.mep.go.cr;;0117ACI019744300;1/1/2025;;false;false;;;true
+1;PR;1;120920058;Lopez;Cerdas;Iam Karel;8/7/2010;89479149;2;1;88196419;1;3;21;del cementerio de Patarra 600 este y 300 sur;;120920058@est.mep.go.cr;;0117ACI019744600;28/11/2024;;true;false;;;true
+1;PR;1;120630370;Alfaro;Villatoro;Derek Santiago;1/8/2009;64052628;2;1;;1;3;24;Contiguo a la entrada del parque de la libertad 150 m este casa a mano derecha;;120630370@est.mep.go.cr;;0117ACI019753500;1/12/2024;;false;false;;;true
+1;PR;1;120580891;Rojas ;Fonseca;Dayna Maria;1/7/2009;63111278;1;1;No;1;3;21;250 metros suroeste del Colegio Maximo Quesada;;120580891@est.mep.go.cr;;0117ACI019772600;2/12/2024;;false;false;;;true
+1;PR;1;121230600;Contreras;Rojas;Diana Sofia;28/8/2011;87511734;1;1;;1;3;21;Quebrada Honda, puente Pica Piedra 100m norte porton verde;;121230600@est.mep.go.cr;1;0117ACI0197779900;2/12/2024;;true;false;;;true
+1;PR;1;119830566;Vega;Acuna;Daniel ;10/1/2007;61401364;2;1;;1;3;24;Barrio Fatima;;119830566@est.mep.go.cr;;0117ACI019782600;1/12/2024;;false;false;;;true
+1;PR;1;120960888;Mora;Gonzalez ;Elena ;1/10/2010;87421522;1;1;71394037;1;3;21;De la iglesia catolica de Guatuso 150 mts sur contiguo a asociacion de desarrollo subiendo la rampa casa al fondo porton verdes ;;120960888@est.mep.go.cr;;0117ACI019790700;2/12/2024;;true;false;;;true
+1;PR;1;121090399;Richmond;Quesada;Zaid Ismael;26/2/2011;70538607;2;1;No;2;38;256;100 metros este del Deposito Las Quebradas;;121090399@est.mep.go.cr;;0117ACI019804700;2/12/2024;;true;false;;;true
+1;PR;1;119800448;Moya;Herrera;Sebastian Daniel;27/11/2006;62327561;2;1;64711115;2;38;256;75 metros antes de la Escuela Cristiana en Linda Vista;;119800448@est.mep.go.cr;;0117ACI019804900;1/2/2025;;true;false;;;true
+1;PR;1;121230369;Quesada;Barrantes;Yaciel Alexander;30/8/2011;62377912;2;1;NO;2;38;256;200 metros este del Deposito Las Quebradas;;121230369@est.mep.go.cr;;0117ACI019805900;2/12/2024;;true;false;;;true
+1;PR;1;120070508;Lawrence;Mata;Britthany ;23/10/2007;72298887;1;1;;1;3;26;200 s y 150 e del polideportivo el porvenir;;120070508@est.mep.go.cr;;0117ACI019807000;2/12/2024;;false;false;;;true
+1;PR;1;120860187;Sibaja;Nunez;Yader Yariel;9/5/2010;71276667;2;1;63463236;2;38;256;Linda Vista, de la escuela Cristiana 75 sur;;120860187@est.mep.go.cr;;0117ACI019811900;2/12/2024;;true;false;;;true
+1;PR;1;119870660;Santana ;Guevara ;Danier Steve ;6/2/2007;70564399;2;1;;2;38;256;De la escuela cristiana 50 oeste casa  F 04 ;;119870660@est.mep.go.cr;;0117ACI019819300;3/12/2024;;false;false;;;true
+1;PR;1;119990455;Sosa;Masis;Sebastian;5/7/2007;87233165;2;1;;1;3;26;300 metros este del Polideportivo del Porvenir, casa gris;;119990455@est.mep.go.cr;;0117ACI019835200;16/12/2024;;true;false;;;true
+1;PR;1;119820547;Cantillo;Vindas;Michael ;16/12/2006;62381313;2;1;22506534;1;3;35;De la Â´Plazaleta  500 metros y 125 metros calle Salitre;;119820547@est.mep.go.cr;;0117ACI019835400;24/12/2024;;false;false;;;true
+1;PR;1;119440709;Porras;Martinez;Karla Noemi;1/9/2005;7111002;1;1;;1;3;21;300 mtrs del Colegio Maximo Quesada, calle del aguacate;;119440709@est.mep.go.cr;;0117ACI0198355300;3/12/2024;;false;false;;;true
+1;PR;1;120470190;Abarca;Masis;Santiago ;10/2/2010;87265231;2;1;87265231;1;3;26;Del polideportivo del Porvenir 300 mts este casa esquinera color gris ;;120470190@est.mep.go.cr;;0117ACI019835600;3/12/2024;;true;false;;;true
+1;PR;2;155836090405;Perez;Fernandez;Geiner Osmani;18/6/2009;63735806;2;2;;1;3;21;del Pali de patarra 350m al suroeste y 25m al norte a mano derecha casa blanca ;;155836090405@est.mep.go.cr;1;0117ACI01983700;3/12/2024;;true;false;;;true
+1;PR;1;120730466;Vargas ;Juarez;Kevin;26/11/2009;62306174;2;1;88744380;1;3;21;De la escuela de Guatuso 150 sureste casa color verde limon a mano izquierda ;;120730466@est.mep.go.cr;;0117ACI019844500;1/1/2025;;true;false;;;true
+1;PR;1;121000887;Parra;Alvarez;Marco Aaran;9/11/2010;;2;1;62583315;1;3;21;UrbanizaciÃ³n Maron, casa 66, casa dos plantas;;121000887@est.mep.go.cr;1;0117ACI019846800;1/1/2025;;true;false;;;true
+1;PR;1;120410647;Delgado;Torres;Michael ;20/11/2008;71371509;2;1;83377949;2;38;256;Linda Vista del cruce 50 mts al norte Pulperia Yerlin ;;120410647@est.mep.go.cr;;0117ACI019868700;4/12/2024;;true;false;;;true
+1;PR;1;119990198;Quiros;Gutierrez;Raquel Valeria;6/7/2007;71566573;1;1;;2;38;256;125 metros al este de la pulperia Los Gemelos 1 casa color verde a mano izquierda;;119990198@est.mep.go.cr;1;0117ACI019869300;4/12/2024;;false;false;;;true
+1;PR;1;120930617;Castro;Tenorio;Jimena Shantal;23/8/2010;71853807;1;1;0;1;3;21;Salitrillos de Patarra, diagonal al colegio Maximo Quesada;;120930617@est.mep.go.cr;;0117ACI019874600;4/12/2024;;true;false;;;true
+1;PR;1;120990899;BARRANTES;SOLIS;JOSUE;22/10/2010;;2;1;;1;3;21;RESIDENCIAL LLANOS DE MONTEVERDE;;120990899@est.mep.go.cr;;0117ACI019880400;4/12/2024;;true;false;;;true
+1;PR;1;120510599;Garcia;Villareal;Nathanael ;22/3/2009;83632040;2;1;22765737;1;3;21;600 metros sureste, 200 metros sur, de la escuela de Guatuso ;;120510599@est.mep.go.cr;;0117ACI019882400;3/2/2025;;false;false;;;true
+1;PR;1;120000090;Campos ;Segura;Angel Josue;17/7/2007;83788901;2;1;;1;3;21;75 e 50 n de la escuelka de Guatuso calle hacia la plaza de deportes;;120000090@est.mep.go.cr;;0117ACI019890300;4/12/2024;;true;false;;;true
+1;PR;1;120360917;Rojas;Segura;Keydilin Noemy;15/8/2008;87769758;1;1;22741294;1;3;21;De la Escuela de Guatuso 150 Este casa color blanco;;120360917@est.mep.go.cr;;0117ACI019904000;5/12/2024;;true;false;;;true
+1;PR;1;209060431;Blanco ;Cuadra;Alejandro ;18/7/2008;71733669;2;1;87475402;1;3;26;De la Guardia Rural 25 este, 25 sur ;;209060431@est.mep.go.cr;;0117ACI019914500;5/12/2024;;true;false;;;true
+1;PR;1;605040665;Navarro;Retana;Erick Johan ;21/3/2007;72994009;1;1;81214129;1;3;21;Patarra 1 km y medio de la escuela de guatuso ;;605040665@est.mep.go.cr;;0117ACI019918400;5/12/2024;;false;false;;;true
+1;PR;1;120180811;Navarro;Arroyo;Jimena ;25/2/2008;89877111;1;1;NA;2;38;256;Linda Vista;;120180811@est.mep.go.cr;;0117ACI019918500;1/1/2025;;false;false;;;true
+1;PR;1;119970264;Brenes;Aleman;Keylor Isacc;31/7/2007;70949808;2;1;;1;3;21;Del super suprema 75 sur casa L-52;;119970264@est.mep.go.cr;;0117ACI019920500;5/12/2024;;true;false;;;true
+1;PR;1;120380799;Cañas;Mora ;Santiago ;21/10/2008;71690811;2;1;70413239;1;18;104;La Ponderosa, alameda;;120380799@est.mep.go.cr;;0117ACI019925700;5/12/2024;;true;false;;;true
+1;PR;1;120030754;Valverde;Angulo;Axel Roberto ;14/9/2007;63989403;2;1;83996907;1;3;26;Condominio Hacienda de Oro casa 27;;120030754@est.mep.go.cr;;0117ACI019940900;6/12/2024;;false;false;;;true
+1;PR;1;119850477;Quesada;Vega;Gustavo Adolfo;13/1/2007;85218537;2;1;70594914;1;3;21;Guatuso 100mts antes de llegar a Cemex;;119850477@est.mep.go.cr;;0117ACI20043100;1/1/2025;;false;false;;;true
+1;PR;1;120620071;Zuniga;Lopez;Isaac Daniel;27/7/2009;62543755;2;1;;2;38;249;Del antiguo abastecedor La Central, 50 norte, 25 oeste, casa de verjas blancas, muro celeste;;120620071@est.mep.go.cr;;0117ACID19038000;6/12/2023;;true;false;;;true
+1;PR;1;120300340;Cerdas ;Calderon ;Jeremy Eli;20/7/2008;70125878;2;1;22741570;1;3;21;Guatus,125mtssureste de la iglesia catolica ;;120300340@est.mep.go.cr;;0117CI019821400;3/12/2024;;true;false;;;true
+1;PR;1;121130930;Lechado;Zamora;Noel David;27/4/2011;61073525;2;1;60961100;2;38;256;Quebradas Calle las Lizanias a la par de la pulperia 15 de setiembre;;121130930@est.mep.go.cr;;0119AC1009335900;3/12/2024;;true;false;;;true
+1;PR;2;155832808829;Oporta;Urbina;Yubelki Azucena;5/8/2008;64151248;1;2;;2;38;256;Barrio IMAS contiguo a Bazar Javi;;155832808829@est.mep.go.cr;;0119ACI009356300;3/12/2024;;false;false;;;true
+1;PR;1;120400341;Duarte;Coronado;Axcciry Michelle;22/10/2008;64751301;1;1;60332374;2;38;256;terminal de bus querabradas calle monge 250 noroeste casa de zinc;;120400341@est.mep.go.cr;;0119ACI009409500;5/12/2024;;true;false;;;true
+1;PR;1;119930536;Ramirez;Fuentes;Dylan ;23/5/2007;64749972;2;1;;1;3;21;de puertas y ventanas 800 o;;119930536@est.mep.go.cr;;0119ACI009431600;5/12/2024;;true;false;;;true
+1;PR;1;120370208;Quesada;Martinez;Britany Jimena;13/9/2008;64583360;1;1;62872136;2;38;256;Ultima parada de buses de quebrada, mano izquierda 50mts entrada privada.;;120370208@est.mep.go.cr;;0120ACI011154500;13/11/2024;;true;false;;;true
+1;PR;1;121200878;Mora;Quesada;Kristel Fabiola;21/7/2011;63446330;1;1;;2;38;256;75 este de la ultima parada de buses de Quebradas, casa color verde;;121200878@est.mep.go.cr;;0120ACI011154700;13/11/2024;;false;false;;;true
+1;PR;1;119470487;Venegas;Quesada;Julian David;13/10/2005;61899481;2;1;;2;38;256;60 al Norte de la ultima parada de Rio Azul, Quebradas;;119470487@est.mep.go.cr;;0120ACI011154900;13/11/2024;;false;false;;;true
+1;PR;1;120310602;Saenz ;Valverde;Luis Daniel ;26/7/2008;84995540;2;1;84995540;1;1;5;25 mts norte de condominios el Doral Barrio Moreno Canas;;120310602@est.mep.go.cr;;0120ACI011192500;29/11/2024;;true;false;;;true
+1;PR;1;120580634;Navarro ;Mora ;Rachel Jimena ;12/6/2009;63853727;1;1;;1;3;21;Barrio Cipreses, 300 mts de la principal, casa mano derecha, portones negro ;;120580634@est.mep.go.cr;;0120ACI011344200;4/12/2024;;false;false;;;true
+1;PR;1;119750193;Venegas;Quesada;Alexander Gabriel;4/10/2006;60909081;2;1;;2;38;256;60 al Norte de la ultima parada de Rio Azul Quebradas;;119750193@est.mep.go.cr;;0120ACI01154800;13/11/2024;;false;false;;;true
+1;PR;1;121370319;Brenes;Aguero;Sharon Nicole;19/2/2012;no;1;1;71413949;1;3;21;Barrio cipreses de Puertas y Ventanas 700 m este a la par de la fabrica de vasijas de Barro;;121370319@est.mep.go.cr;;0120ACI11214900;1/12/2024;;true;false;;;true
+1;PR;1;120730253;ELIZONDO ; LOPEZ;IAN GABRIEL ;2/12/2009;62993346;2;1;;1;3;26;DE LA FUERZA PUBLICA 50 METROS NORTE. CASA ESQUINERA;;120730253@est.mep.go.cr;;0121AC1018624500;3/12/2024;;false;false;;;true
+1;PR;1;120180753;Chamorro;Madrigal;Emanuel Joseth ;8/3/2008;61562552;2;1;NA;2;38;256;Linda vista;;120180753@est.mep.go.cr;;0121ACI01090901;9/12/2023;;false;false;;;true
+1;PR;1;120780857;Monge ;Diaz;Mila Dalaih;31/1/2010;70033878;1;1;;1;3;21;75 mts este del bar Escondite;;120780857@est.mep.go.cr;;0121ACI017548400;28/11/2024;;true;false;;;true
+1;PR;1;120470607;Astua;Segura;Cristhian JosuÌ€e;5/2/2009;60419617;2;1;;1;3;21;De la Escuela Guatuso, 300 E a mano derecha, verjas negras;;120470607@est.mep.go.cr;;0121ACI017658700;4/12/2024;;false;false;;;true
+1;PR;1;120650814;Bernard ;Mora;Jaslene Gabriela ;25/8/2009;89144072;1;1;;2;38;256;Linda Vista, de las bodegas, 50 m este y 100 m norte;;120650814@est.mep.go.cr;;0121ACI017687800;30/11/2024;;false;false;;;true
+1;PR;1;120520636;Castro;Montes;Ingrid Leticia;16/4/2009;87872950;1;1;;1;3;21;500m este de la escuela Guatuso, Barrio Los Guizaros;;120520636@est.mep.go.cr;;0121ACI019301200;2/1/2025;;true;false;;;true
+1;PR;1;119910383;Chaves;Delgado;Leydi Fiorella;9/3/2007;89430020;1;1;;1;3;27;Sector 2 Los Guido Calle 5 casa 51;;119910383@est.mep.go.cr;;0121ACI019323400;5/12/2024;;true;false;;;true
+1;PR;1;120770603;Corrales ;Amador;Andrew Gabriel;10/1/2010;64360553;2;1;88229286;2;38;256;Barrio Linda Vista, 50mts este y 50 sur de la pulperia Yerlyn;;120770603@est.mep.go.cr;1;0124aci0324893;2/12/0024;;false;false;;;true
+1;PR;1;120510357;Calvo;Castro;Jose Julian;12/3/2009;77993352;2;1;;2;38;256;Frente a Pulperia Katica, contiguo a calle Carvajal;;120510357@est.mep.go.cr;1;0124ACI0326719;2/12/2024;;true;false;;;true
+1;PR;1;120580393;Castillo;Rodriguez ;Ivannia;14/6/2009;89611860;1;1;22763573;1;3;21;Calle el Italiano;;120580393@est.mep.go.cr;;0124ACI0328879;3/12/2024;;true;false;;;true
+1;PR;1;120190486;Torres;Quintanilla ;Adriana Maria;25/3/2008;63850674;1;1;;2;38;256;Linda Vista, Pulperia Gemelo 1, 100m este,75m norte ;;120190486@est.mep.go.cr;;0124ACI0365453;10/2/2025;;true;false;;;true
+1;PR;1;119930416;Gamboa;Naranjo;Amsi Daniela;16/4/2007;71091256;1;1;;2;38;256;Frente a Escuela Cristiana Asambleas de Dios;;119930416@est.mep.go.cr;;0125 ACI0339320;16/12/2024;;false;false;;;true
+1;PR;1;120970542;Cascante;Jimenez;Alberto Josue;24/9/2010;61802282;2;1;60732923;1;3;21;Apartamentos de Alejandro Aguero a la par de oficinas de Cascada de Fuego;;120970542@est.mep.go.cr;;0125AC032806300;2/12/2024;;false;false;;;true
+1;PR;1;121570729;Alfaro;Orozco;Paula Lorena;30/10/2012;70841428;1;1;;1;3;21;300 este de la iglesia Catolica de Quebrada Honda;;121570729@est.mep.go.cr;;0125AC10315390;1/11/2024;;true;false;;;true
+1;PR;1;120600236;Retana;Alvarado;Kiara Tatiana;11/7/2009;64715426;1;1;;1;3;35;A la par multi outlet, sobre calle principal;;120600236@est.mep.go.cr;;0125AC10321258;30/11/2024;;true;false;;;true
+1;PR;1;121200531;Calderon;Garcia;Kristel Dayan;26/7/2011;63584090;1;1;64690308;2;38;256;Linda Vista de Escuela Cristiana 25 este 25 sur sexta casa porton negro;;121200531@est.mep.go.cr;;0125AC10328555;3/12/2024;;false;false;;;true
+1;PR;1;120150331;Umaña ;Barberrena;Fabiola ;11/1/2008;89734996;1;1;;1;1;5;de radio Omega 100 m Norte y 50 m este casa color blanco verjas negras;;120150331@est.mep.go.cr;;0125AC10335230;4/12/2024;;false;false;;;true
+1;PR;1;120710867;Pineda;Carvajal;Diana;11/11/2009;64696436;1;1;;1;3;21;Calle Linda Vista de la Esc. Cristiana 25N, casa ,mano derecha;;120710867@est.mep.go.cr;;0125AC10335781;4/12/2024;;true;false;;;true
+1;PR;1;120010942;Castro;Loaiza;Nicole ;26/8/2007;60023289;1;1;NA;1;3;21;Quebrada honda, condominio Quintas Veramont;;120010942@est.mep.go.cr;;0125AC10335990;1/4/2024;;false;false;;;true
+1;PR;1;121080351;Fonseca;Monge;Wilmer Josue;11/2/2011;87495509;2;1;;1;3;21;250m suroeste del colegio Maximo Quesada ;;121080351@est.mep.go.cr;;0125ACC002436400;2/12/2024;;false;false;;;true
+1;PR;1;120460480;Dinarte;Barquero ;Maria Del Milagro;26/2/2009;71209275;1;1;47037265;1;3;21;25m este del Cementerio de Patarra, Desamparados, casa a mano derecha ;;120460480@est.mep.go.cr;;0125ACC002440800;2/12/2024;;true;false;;;true
+1;PR;1;119970400;Bermudez;Sanchez;Dylan ;22/6/2007;62581809;2;1;;1;3;21;900 metros al este de la ultima parada de Guatuso calle el tirra;;119970400@est.mep.go.cr;;0125ACC004153700;6/2/2024;;false;false;;;true
+1;PR;1;120320406;Steller;Padilla;Dilan Mauricio;12/8/2008;84555609;2;1;NA;1;3;24;Calle la rotonda, Fatima, casa esquinera color blanco;;120320406@est.mep.go.cr;;0125ACG000023400;1/1/2024;;true;false;;;true
+1;PR;1;120630896;Arias  ;Leon;Amanda Sophia;9/9/2009;70302496;1;1;;1;3;21;1 km del super el Tenorio, Urb Maron casa color rosa ;;120630896@est.mep.go.cr;;0125ACI0234282;1/2/2024;;false;false;;;true
+1;PR;1;121090570;Murillo ;Arrieta;Mathias;4/3/2011;83221988;2;1;;1;3;35;Frente antiguo BCR de Plazoleta ;;121090570@est.mep.go.cr;;0125ACI0278254;27/2/2024;;true;false;;;true
+1;PR;1;121540890;Barquero;Mora;Geancarlo;26/9/2012;61859536;2;1;72546642;1;3;15;calle naranjo;;121540890@est.mep.go.cr;;0125ACI030701200;1/1/2025;;true;false;;;true
+1;PR;1;120120964;Rojas;Roman;Axel Livans ;3/12/2007;62621692;2;1;64264482;1;3;21;Calle la uniÃ³n salon  comunal 50 norte 300 oeste entrada mano derecha casa color gris;;120120964@est.mep.go.cr;;0125ACI030873;3/12/2024;;false;false;;;true
+1;PR;1;121470646;Romero ;Lopez ;Paula Andea ;30/6/2012;62150728;1;1;;1;3;21;Patarra, Calle la union 300mts este apartamento 2 ;;121470646@est.mep.go.cr;;0125ACI0316494;17/12/0024;;true;false;;;true
+1;PR;1;120070212;Brenes;Serrano;Kimberly;12/10/2007;60293729;1;1;;2;38;256;200 metros sur y 100 metros este de la escuela publica de Linda Vista casa 26;;120070212@est.mep.go.cr;;0125ACI0316669;19/11/2024;;false;false;;;true
+1;PR;1;121370379;Monge;Chaves;Amanda Valeria ;20/2/2012;63464926;1;1;;1;3;21;Guatuso, frente al kinder de la escuela;;121370379@est.mep.go.cr;;0125ACI0316837;20/11/2024;;true;false;;;true
+1;PR;1;120350991;Valverde;Barahona;Liam Andres;1/10/2008;72018284;2;1;;1;3;27;Sector 4 Calle 2 Casa D9;;120350991@est.mep.go.cr;;0125ACI0317033;21/11/2024;;false;false;;;true
+1;PR;1;120250058;Bonilla;Chacon;Jonathan Josue;12/5/2008;88053794;2;1;;1;3;21;300 e del bar Uniespaña ;;120250058@est.mep.go.cr;;0125ACI0317140;22/11/2024;;true;false;;;true
+1;PR;1;120110033;Cascante;Sojo;Damian;22/11/2007;87104128;2;1;85604330;2;38;256;300 mts este del cruce de Linda Vista Carretera a Quebradas, casa a mano izquierda;;120110033@est.mep.go.cr;;0125ACI0320191;29/11/2024;;true;false;;;true
+1;PR;1;120450466;Cespedes ;Salmeron ;Gialy Maria ;11/12/2008;71928318;1;1;;1;3;21;De la ultima parada de buses 200 mts este calle sin salida ;;120450466@est.mep.go.cr;;0125ACI0320310;29/12/2024;;false;false;;;true
+1;PR;1;121530266;Brenes;Salas;Tiffany Darila;16/9/2012;61804167;1;1;;1;3;21;1 km suroeste de la ultima parada de Guatuso;;121530266@est.mep.go.cr;;0125ACI0320523;29/11/2024;;true;false;;;true
+1;PR;1;121470020;Rivera ;Amador ;Yender Damian ;21/6/2012;;2;1;;1;3;21;Patarra centro, Contiguo a la plasa de deportes ;;121470020@est.mep.go.cr;1;0125ACI0321069;30/11/2024;;false;false;;;true
+1;PR;1;120140998;Brizuela;Amador;Lehitan ;6/1/2008;60747111;2;1;61997707;1;3;21;Patarra Centro contiguo a la plaza;;120140998@est.mep.go.cr;;0125ACI0321070;30/11/2024;;false;false;;;true
+1;PR;1;121120157;Murillo;Nunez;Eimy Maria;13/4/2011;85847323;1;1;;1;1;6;Barrio los Sauces, del pali 125m norte;;121120157@est.mep.go.cr;;0125ACI0321071;30/11/2024;;true;false;;;true
+1;PR;1;120800499;Chaves;Carmona;Horeb Franciny;1/3/2010;85833434;1;1;;1;3;21;600e, 150sur de la escuella de Guatuzo;;120800499@est.mep.go.cr;;0125ACI0322218;1/12/2024;;false;false;;;true
+1;PR;1;119870047;Potosme;Potosme;Heltid Antonio;20/2/2007;63135530;2;1;;1;3;21;25 metros norte de la plaza de Plaza de Patarra porton negro contiguo a la Iglesia;;119870047@est.mep.go.cr;;0125ACI03227132;2/12/2024;;true;false;;;true
+1;PR;1;119880783;Brizuela;Gonzalez;Fabian;18/2/2007;83296582;2;1;84436607;1;3;21;75 mts sur de la Escuela de Guatuso;;119880783@est.mep.go.cr;;0125ACI0322840;1/12/2024;;false;false;;;true
+1;PR;1;120700291;Calderon;Perez;Samantha;27/10/2009;72056645;1;1;84317429;1;3;21;Urbanizacion Fincre, frente al 2do poste de luz, casa celeste, porton blanco;;120700291@est.mep.go.cr;;0125ACI0323224;2/12/2024;;false;false;;;true
+1;PR;1;121360724;Artavia ;Valverde;Daniel ;5/2/2012;85278327;2;1;85278263;1;3;21;Guatuso, frente a terminal de buses, casa con verjas negras, tapia baldosa;;121360724@est.mep.go.cr;;0125ACI0323845;2/12/2024;;false;false;;;true
+1;PR;1;120010793;Alfaro ;Solano;Abraham Caleb;6/8/2007;83290727;2;1;;1;3;26;200 s 200 e de la clinica Marcial Fallas ap. Villa Maria;;120010793@est.mep.go.cr;;0125ACI0324008;21/2/2024;;false;false;;;true
+1;PR;1;121380973;Castillo ;Lizano;Hailey Camila;4/3/2012;62619953;1;1;61936067;1;3;21;75m este de la Panaderia Ricuras, segunda casa mano izquierda.;;121380973@est.mep.go.cr;;0125ACI0324040;2/12/2024;;false;false;;;true
+1;PR;1;120460891;Madrigal ;VAsquez;Emmanuel Jose;23/1/2009;71481969;2;1;;1;3;27;Sector 3 calle 2 casa 16;;120460891@est.mep.go.cr;;0125ACI0324086;2/12/2024;;false;false;;;true
+1;PR;1;121230862;Jalinas ;Jimenez;Priscilla Dayana;29/8/2011;60596545;1;1;;1;3;21;Barrio Guizaros casa porton negro;;121230862@est.mep.go.cr;;0125ACI0325160;2/12/2024;;false;false;;;true
+1;PR;1;121380774;Lizano ;Madrigal;Darian ;6/3/2012;62446196;2;1;62446196;1;3;21;de la escuela juan monge 75 este casa color terrcota;;121380774@est.mep.go.cr;;0125ACI0325218;2/12/2024;;false;false;;;true
+1;PR;1;120210965;Jimenez;Nuñez;Sahid;19/3/2008;60131586;2;1;60481596;1;3;21;150  mts este del bAr Uniespaña;;120210965@est.mep.go.cr;;0125ACI0325570;2/12/2024;;false;false;;;true
+1;PR;1;121210967;Hernandez;Martinez;Allison Sofia;10/8/2011;61467757;1;1;;2;38;256;Linda Vista, de la pulperia La Central 100 metros norte, 25 oeste 50 norte casa 39A;;121210967@est.mep.go.cr;;0125ACI032581821;2/12/2024;;false;false;;;true
+1;PR;1;119890420;Granja;Duarte;Allison ;21/3/2007;70110126;1;1;;1;3;21;De la entra del  escondite 950 metros  Noreste calle el Aguacate.;;119890420@est.mep.go.cr;;0125ACI032593900;2/12/2024;;true;false;;;true
+1;PR;1;121120591;Smith ;Zamora ;Shadrick Lebron ;30/3/2011;70549879;2;1;71246858;1;3;35;De la iglesia catolica de San Antonio, 50sur 200 oeste calle San Martin ;;121120591@est.mep.go.cr;;0125ACI0326224;;;false;false;;;true
+1;PR;1;119880772;Mora;Segura;Caleb Arturo;17/2/2007;86727732;2;1;89136766;1;3;21;Escuela Guatuso 100 norte 50 este de la plaza deportes;;119880772@est.mep.go.cr;;0125ACI0326451;2/12/2024;;false;false;;;true
+1;PR;1;121230427;Ovares;Bernudez;Ashley Nicole;28/8/2011;71962193;1;1;;1;3;24;175 oeste y 300 sur del Parque La Libertad;;121230427@est.mep.go.cr;;0125ACI032675500;2/12/2024;;false;false;;;true
+1;PR;1;120190052;Mora;Fallas;Maria Trinidad;14/2/2008;70859424;1;1;87310061;1;3;21;contiguo balderario Patarra;;120190052@est.mep.go.cr;;0125ACI032676500;2/12/2024;;false;false;;;true
+1;PR;1;121300250;Matarrita;Pena;Yeikell Yhael;14/11/2011;62282501;2;1;;2;38;256;Linda Vista, frente a la escuela cristiana Asambleas de Dios ;;121300250@est.mep.go.cr;;0125ACI0326930;2/12/2024;;false;false;;;true
+1;PR;1;121220572;Marin ;Jimenez ;Steven Eduardo;17/8/2011;60207983;2;1;;1;3;21;50m este de la escuela de Guatuso;;121220572@est.mep.go.cr;;0125ACI0326955;2/12/2024;;true;false;;;true
+1;PR;1;120350930;Jimenez ;Godinez;Mariam Zharit ;21/8/2008;62396013;1;1;;1;3;21;Guatuso de la cementera CEMPRO 800 sureste, casa mano derecho color terracota;;120350930@est.mep.go.cr;;0125ACI0326981;2/12/2024;;false;false;;;true
+1;PR;1;605150944;Chaves;Jimenez ;Nathaly Kristal;3/12/2008;64633173;1;1;;1;3;21;600 mts Este de la Escuela de Guatuso;;605150944@est.mep.go.cr;;0125ACI0327016;2/12/2024;;true;false;;;true
+1;PR;1;119970368;Zuniga;Urena;Bryan Raul;17/6/2007;83528500;2;1;47051245;1;3;16;25 m oeste de la entrada de urbanizacion La Paz;;119970368@est.mep.go.cr;;0125ACI0327131;2/12/2024;;false;false;;;true
+1;PR;1;120410023;Gonzalez ;Rivera;Keilyn;31/10/2008;7239999223;1;1;;1;3;27;Los Guido condominios Las Anas condominio 30 casa 1;;120410023@est.mep.go.cr;;0125ACI0327393;2/12/2024;;false;false;;;true
+1;PR;1;121060944;Gonzalez;Rivera;Nicole Lizeth;26/1/2011;64849856;1;1;;1;3;27;Los Guido condominio las Anas, condominio 30 casa 1;;121060944@est.mep.go.cr;;0125ACI0327414;2/12/2024;;false;false;;;true
+1;PR;1;119860043;Padilla ;Amador;Brenda Julissa ;19/1/2007;86864987;1;1;86533491;1;3;21;1 KM al este Escuela Monge Guillen  Barrio de los Angeles;;119860043@est.mep.go.cr;;0125ACI032750000;3/12/2024;;false;false;;;true
+1;PR;1;120840407;Enriquez;Rodriguez;Farid Miguel;16/4/2010;60316120;2;1;84586305;1;3;21;De la Iglesia CatÃ³lica de Guatuso 800mts este y 75 mts sur;;120840407@est.mep.go.cr;;0125ACI0327796;2/12/2024;;true;false;;;true
+1;PR;1;121120661;Mina;Jimenez;Nataly Sarai;12/4/2011;;1;1;60643058;2;38;256;175 al este del abastecedor la central, casa color block;;121120661@est.mep.go.cr;;0125ACI0327938;2/12/2024;;true;false;;;true
+1;PR;1;121060005;Rojas ;Morales ;Ximena ;18/1/2011;70194207;1;1;;1;3;21;Quebrada Honda, 800mts este del Puente Los Picapiedra;;121060005@est.mep.go.cr;;0125ACI0327987;2/12/2024;;true;false;;;true
+1;PR;1;119980447;Rojas;Morales;Jorge;5/7/2007;70250268;2;1;NA;1;3;21;Quebrada Honda 800mts este;;119980447@est.mep.go.cr;;0125ACI0327988;2/12/2024;;false;false;;;true
+1;PR;1;120830867;Padilla;Segura;Mariam Daniela;11/4/2010;71983449;1;1;;1;3;21;De la iglesia Catolica de Guatuso 600este, 100sur, 74 oeste, casa de verjas blancas;;120830867@est.mep.go.cr;;0125ACI0328009;2/12/2024;;true;false;;;true
+1;PR;1;121030263;Zambrana  ;Roman;Krisly Naomy;13/12/2010;62543068;1;1;61406235;1;3;21;Calle la Union, salon comunal 25 sur;;121030263@est.mep.go.cr;;0125ACI0328354;3/12/2024;;false;false;;;true
+1;PR;1;121080882;Gutierrez;Serrano;Britany Johana;18/2/2011;64275803;1;1;22766240;2;38;256;de la escuela cristiana San Juan de Dios, 150m norte casa 31 de IMAS color amarillo;;121080882@est.mep.go.cr;;0125ACI0328718;3/12/2024;;false;false;;;true
+1;PR;1;121180653;Roman ;Rodriguez ;Ariela ;3/7/2011;70543676;1;1;;1;3;21;Calle el italiano, de la entrada la segunda casa porton negro ;;121180653@est.mep.go.cr;;0125ACI0328833;3/12/2024;;true;false;;;true
+1;PR;1;120840464;Alvarado ;Soto;Isaac Daniel;16/4/2010;71391585;2;1;;1;3;27;Casa Cuba, sector 7 del supermercado El Castillo, 200 este, 50 norte y 25 oeste, color verde a mano derecha;;120840464@est.mep.go.cr;;0125ACI0328951;3/12/2024;;false;false;;;true
+1;PR;1;120130380;Hernandez ;Carvajal;Fiorella;3/12/2007;72236587;1;1;;2;38;250;calle mesen, calle la fabrica 3 casa;;120130380@est.mep.go.cr;;0125ACI0329076;3/12/2024;;true;false;;;true
+1;PR;1;121030913;Alvarado;Sanchez;Matias Alejandro;15/12/2010;88091651;2;1;22741605;1;3;21;Guatuso de la terminal de buses 50 metros sur 100 oeste contiguo al aserradero;;121030913@est.mep.go.cr;;0125ACI0329126;3/12/2024;;true;false;;;true
+1;PR;1;120730395;Rojas ;Ulloa;Saul Arturo;9/12/2009;70492853;2;1;22767937;1;3;21;Urbanizacion Los Naranjitos casa #49;;120730395@est.mep.go.cr;;0125ACI0329298;1/2/2025;;false;false;;;true
+1;PR;1;120620122;Jimenez;Mora;Ingrid Pamela;22/7/2009;72702220;2;1;;1;3;21;Urbanizacion Santa Fe, Patarra;;120620122@est.mep.go.cr;;0125ACI0330094;3/12/2024;;true;false;;;true
+1;PR;1;120990640;Urena;Sanchez;Estainer Alonso;20/10/2010;61136651;2;1;84589748;2;38;256;La de Iglesia Monte Sinai 150mts casa F123;;120990640@est.mep.go.cr;;0125ACI0330331;;;false;false;;;true
+1;PR;1;120690428;Espinoza;Cordero;Dylan Josue ;15/10/2009;89564503;2;1;22763117;1;3;21;600 metros este del cementerio de Patarra ;;120690428@est.mep.go.cr;;0125ACI0330332;3/12/2024;;true;false;;;true
+1;PR;1;120690731;Fonseca;Miranda;Uriel Matias ;1/11/2009;87972333;2;1;86597672;1;3;26;Urbanizacion Gravilias casa #17;;120690731@est.mep.go.cr;;0125ACI0330395;3/12/2024;;false;false;;;true
+1;PR;1;120010579;Vasquez;Piedra;Jeremy Andres;21/8/2007;64519008;2;1;;2;38;256;Del cruce de calles de Linda Vista 100 NE;;120010579@est.mep.go.cr;;0125ACI0330605;3/12/2024;;false;false;;;true
+1;PR;1;120890796;Steller ;Calderon ;Stacy ;25/6/2010;85713039;1;1;71208180;2;38;256;Linda Vista Calle Laurel 1 alameda casa E102 ;;120890796@est.mep.go.cr;;0125ACI0330964;3/12/2024;;false;false;;;true
+1;PR;1;119990749;Murillo ;Castro;Noelia ;19/7/2007;86373839;1;1;NA;2;38;256;Frente a la escuela francisco Gamboa Mora ;;119990749@est.mep.go.cr;;0125ACI0331100;3/12/2024;;false;false;;;true
+1;PR;1;120400003;Castro;Lopez;Kristel Juliana ;21/10/2008;85952523;1;1;85271327;1;3;21;Barrio Los Angeles, de la imagen de la virgen 300 hacia el este mano derecha de Dagoberto;;120400003@est.mep.go.cr;;0125ACI0331173;3/12/2024;;false;false;;;true
+1;PR;1;120110983;Peralta;Roman;Angel Ariadna;1/12/2007;63013808;1;1;;1;3;21;Urbanizacion Maron casa 84;;120110983@est.mep.go.cr;;0125ACI0332932;4/12/2024;;false;false;;;true
+1;PR;1;120970450;Peralta ;Roman;Jennifer Sofia ;16/9/2010;64537827;1;1;;1;3;21;Urb Maron, 3 play 2 entrada;;120970450@est.mep.go.cr;;0125ACI0332934;4/12/2024;;false;false;;;true
+1;PR;1;119910617;Segura;Serrano;Andres  Alexander;24/3/2007;84193398;2;1;;1;3;21;Barrio Los Angeles de la escuela 1Km al este y 150 al sur;;119910617@est.mep.go.cr;;0125ACI0332964;4/12/2024;;false;false;;;true
+1;PR;1;119930244;Umana;Lopez;Angely;4/4/2007;64579049;1;1;;1;3;21;50 metros este del antiguo Ebais de Quebrada Honda, apartamentos color Beige;;119930244@est.mep.go.cr;;0125ACI0332994;4/12/2024;;true;false;;;true
+1;PR;1;209270289;Abarca;Ballestero;Pricilla ;30/12/2009;72637323;1;1;72477026;1;3;21;500 este del bar Uni España, camino hacia quebrada Honda;;209270289@est.mep.go.cr;;0125ACI0333057;4/12/2024;;false;false;;;true
+1;PR;1;120630740;Gamboa;Calderon;Ashly Tatiana;22/8/2009;64002099;1;1;71970924;1;3;21;Guatuso,de la iglesia catolica 125 sur oeste;;120630740@est.mep.go.cr;;0125ACI0333741;4/12/2024;;true;false;;;true
+1;PR;1;120930412;Barboza;Mora;Mariangel ;5/8/2010;70579506;1;1;;1;3;21;Urbanizacion Maron casa 109 ;;120930412@est.mep.go.cr;;0125ACI0334043;4/12/2024;;false;false;;;true
+1;PR;1;120020898;Sanchez;Villalobos;Fiorella;23/8/2007;89926807;1;1;;1;3;21;Maroncasa c33 color verde musgo;;120020898@est.mep.go.cr;1;0125ACI0334649;4/12/2024;;false;false;;;true
+1;PR;1;120920196;Obando ;Montes;Sebastian ;29/7/2010;63479019;2;1;83819340;2;38;256;65 este de la iglesia catÃ³lica de RÃ­o Azul casa porton celeste mano izquierda;;120920196@est.mep.go.cr;;0125ACI0334719;4/12/2024;;true;false;;;true
+1;PR;1;120410819;Vargas;Poveda;Demian Emmanuel;30/11/2008;63638787;2;1;;1;3;16;Higuito urbanizacion Veracruz;;120410819@est.mep.go.cr;;0125ACI0334936;4/12/2024;;false;false;;;true
+1;PR;1;119830239;Mena;Lopez;Jeaustin Gabriel;17/12/2006;86062691;2;1;88429449;1;3;21;salitrillos del CTMQ 50 metros sur este;;119830239@est.mep.go.cr;;0125aci0335731;4/12/2024;;false;false;;;true
+1;PR;2;12220091183313;Castro;Yanes;Angelica Paola;5/11/2009;87767097;1;4;87767097;1;3;21;de la delegacion de linda vista 125 m al sur casa #125;;12220091183313@est.mep.go.cr;;0125ACI0335812;4/12/2024;;false;false;;;true
+1;PR;1;120460946;Artavia;Artavia;Jose Javier;30/1/2009;72727314;2;1;;1;3;21;Frente al CTP Maximo Quesada casa color blanco 2 plantas;;120460946@est.mep.go.cr;;0125ACI0335834;4/12/2024;;true;false;;;true
+1;PR;1;120160193;Jarquin;Ocana;Nelly Alejandra  ;16/1/2008;71792667;1;1;;2;38;256;Terminal de buses, Abastecedor Los Angeles 500 mts Sur Calle Lizanias ;;120160193@est.mep.go.cr;;0125ACI0335982;4/12/2024;;true;false;;;true
+1;PR;1;120630196;Castro;Loaiza;Fabian;10/8/2009;61085458;2;1;;1;3;21;Quebrada Honda, residencial Quintas Veramunt;;120630196@est.mep.go.cr;;0125ACI0336015;4/12/2024;;false;false;;;true
+1;PR;1;120340164;Cordero;Jimenez;Elberth Andrey;11/9/2008;70522475;2;1;;1;3;21;de la iglesia 200 s 500 oeste ultima casa a mano derecha;;120340164@est.mep.go.cr;;0125ACI0336055;4/12/2024;;false;false;;;true
+1;PR;1;120200351;Mora ;Ramirez;Norelle Paola;12/3/2008;84476867;1;1;;2;38;256;Linda Vista en la  pulperia Gemelos 1, 150 metros oeste y 50 metros norte y de 25 este casa B-4;;120200351@est.mep.go.cr;;0125ACI0336271;4/12/2024;;true;false;;;true
+1;PR;2;155833651326;Hopper;Gonzalez;Kener Antonio ;9/7/2008;64403241;2;2;;1;3;21;Terminal de los buses de Guatuso 600 m este;;155833651326@est.mep.go.cr;;0125ACI033633100;4/12/2024;;false;false;;;true
+1;PR;1;120080413;Arburola;Cerdas;Javier Andres;15/10/2007;72717366;2;1;22504353;1;3;26;Del polideportivo 75mts Sur, 100mts este, casa 287;;120080413@est.mep.go.cr;;0125ACI0336353;4/12/2024;;false;false;;;true
+1;PR;1;120260850;Acuna;Chavarria;Julian;14/6/2008;;2;1;63958515;1;3;27;Concominio las Anas, Ana Johana 27b, casas 1;;120260850@est.mep.go.cr;;0125ACI0336510;4/12/2024;;false;false;;;true
+1;PR;1;120230999;Obando;Gutierrez;Christopher;1/5/2008;70703061;2;1;;1;3;26;Subestacion del ICE en el Porvenir 25 metros sur y 50 metros oeste;;120230999@est.mep.go.cr;1;0125ACI0337240;5/12/2024;;false;false;;;true
+1;PR;1;120540170;Gallego;Hidalgo;Heybell Anthonella;1/4/2009;60222610;1;1;;2;38;256;Frente a la terminal de buses de Linda Vista, caso mano derecha naranja con gris.;;120540170@est.mep.go.cr;;0125ACI0338216;5/12/2024;;false;false;;;true
+1;PR;1;120340195;Umanzor;Palma;Jose Miguel;9/9/2008;;2;1;;1;3;21;De la Escuela de Guatuso 200 oeste casa color cafe a la derecha;;120340195@est.mep.go.cr;;0125ACI0338304;5/12/2024;;true;false;;;true
+1;PR;1;120300299;Perez;Chacon;Kendal Gabriel;22/8/2008;89184586;2;1;;1;3;21;Guizaros ;;120300299@est.mep.go.cr;;0125ACI033836800;5/12/2024;;true;false;;;true
+1;PR;1;121390602;Vazquez;Quesada;Jose Pablo;19/3/2012;63828360;2;1;40821562;2;38;256;Rio azul quebradas 25 metros sureste de la terminal de buses;;121390602@est.mep.go.cr;;0125ACI0338572;5/12/2024;;true;false;;;true
+1;PR;1;120080818;Segura;Ramirez;Leslie Massiel;31/10/2007;85276105;1;1;22764510;2;38;256;Linda vista abastecedor Los Gemelos No 1, 50m este, 50 m norte 25m oeste casa B4;;120080818@est.mep.go.cr;;0125ACI0338756;5/12/2024;;true;false;;;true
+1;PR;1;119980929;Soza;Ruiz;Gloria Daniela;11/7/2007;83878150;1;1;;1;3;21;Linda vista abastecedor Gemelos 150 e 150 n 75 o;;119980929@est.mep.go.cr;;0125ACI0338784;5/12/2024;;false;false;;;true
+1;PR;1;119840245;Obando;Montes;Joshua ;16/12/2006;83819340;2;1;22769457;2;38;256;65 metrs de la iglesia RÃ­o Azul, casa porton  celestes mano izquierda;;119840245@est.mep.go.cr;;0125ACI0338981;05/12/2024;;true;false;;;true
+1;PR;1;119880002;Ramirez ;Montoya;Yerika;13/2/2007;72516067;1;1;;2;38;256;125 metros al oeste de la iglesia catolica de RiO azul;;119880002@est.mep.go.cr;;0125ACI0339090;5/12/2024;;false;false;;;true
+1;PR;1;119910485;Azofeifa;Quiros ;Jared ;9/3/2007;62318760;2;1;0;2;38;256;De la Escuela Cristina75 sureste casa F65;;119910485@est.mep.go.cr;;0125ACI0339105;5/12/2024;;false;false;;;true
+1;PR;1;120350623;Valverde;Guerrero;Kendall ;21/9/2008;62974679;2;1;85206464;1;3;21;500 mts al este del Bar Escondite casa porton negro mano izquierda ;;120350623@est.mep.go.cr;;0125ACI0339281;5/12/2024;;false;false;;;true
+1;PR;1;120010863;Venegas;Araya;Michelle ;21/8/2007;85704531;1;1;87027344;2;38;256;Linda vista del cruce 100 mts este frente a las bodegas casa colo celeste porton negro ;;120010863@est.mep.go.cr;;0125ACI0339289;5/12/2024;;false;false;;;true
+1;PR;1;120970323;Sanchez;Cordero;Valery Jimena;19/9/2010;83670498;1;1;62742271;1;3;21;frente al CTPMaximo Quesada casa color terracota.;;120970323@est.mep.go.cr;;0125ACI033935;7/2/2025;;false;false;;;true
+1;PR;1;119930880;Solis;Rojas;Jose Alberto;12/4/2007;87557638;2;1;22260037;1;1;6;De la escuela Santa Marta 150 sur y 25 este segunda casa mano derecha, barrio los sauces;;119930880@est.mep.go.cr;;0125ACI0339367;5/12/2024;;false;false;;;true
+1;PR;1;119950691;Quesada ;Quesada;Madisson Aldahara;3/5/2007;7292133;1;1;;1;3;15;Calle fallas desmparados urbanizacion porosales;;119950691@est.mep.go.cr;;0125ACI0339482;5/12/2024;;false;false;;;true
+1;PR;1;119990030;Benavides;Villalobos;Emanuel ;7/7/2007;89287576;2;1;22506623;2;36;239;Terminal de Loma Larga, ultima casa a mano derecha, color blanco;;119990030@est.mep.go.cr;;0125ACI0339781;6/12/2024;;false;false;;;true
+1;PR;1;120270864;Rodriguez;Chavarria;Gabriel Alejandro;29/6/2008;63150985;2;1;;1;3;35;500m suroeste del abastecedor Plazoleta;;120270864@est.mep.go.cr;;0125ACI034033600;6/12/2024;;false;false;;;true
+1;PR;1;120010622;Rivera;Lopez;Marck Antonio;15/8/2007;60771507;2;1;60571202;2;38;256;Linda vista Rio Azul contiguo a la escuela Cristiana Linda Vista;;120010622@est.mep.go.cr;;0125ACI034052900;6/12/2024;;false;false;;;true
+1;PR;1;119940907;Leyton;Ruiz;Genesis;20/5/2007;62186054;1;1;;2;38;256;Ultima parada Calle Quebradas;;119940907@est.mep.go.cr;;0125ACI0340540;1/12/2024;;false;true;;;true
+1;PR;1;121050153;Jimenez;Garcia;Liam;18/12/2010;83036789;2;1;;1;3;26;25 este, 50 sur del antiguo colegio de gravilias;;121050153@est.mep.go.cr;;0125ACI0362474;5/2/2025;;false;false;;;true
+1;PR;1;120650787;Loria;Ortega;Marcos Jose;8/9/2009;60814189;2;1;;1;3;21;ultima parada de guizaros 50 n y 25 s;;120650787@est.mep.go.cr;;0125ACI10339117;5/12/2024;;true;false;;;true
+1;PR;1;120260007;Cordero;Jimenez;Jimena;1/6/2008;84746423;1;1;88264811;1;3;21;400 metros sur d el plaza de deportes y 25 suertes del supermercado;;120260007@est.mep.go.cr;;0125ACI318553;27/11/2024;;false;false;;;true
+1;PR;1;119820624;Gomez;Campos;Jose  Matias;14/12/2006;87957819;2;1;83569588;1;3;24;farmacia damas 25 sur 100 oeste;;119820624@est.mep.go.cr;;0125ACI325320;2/12/2024;;false;false;;;true
+1;PR;1;119900050;Gonzalez;Bonilla;Emily ;18/3/2007;86898360;1;1;;1;3;16;del cruce de Maxi Pali 300metros sur carretera a San Miguel , Resid, Casa de  Campo;;119900050@est.mep.go.cr;;012ACI019358100;6/12/2024;;false;false;;;true
+1;PR;1;120750087;Areas ;Quintanilla ;Leslie Cristina ;15/12/2009;72335602;1;1;;2;38;256;Barrio Linda vista del super los gemelos 1 150 este 75 norte casa 155B;;120750087@est.mep.go.cr;;121ACI019113200;4/12/2024;;true;false;;;true
+1;PR;1;119500487;Arauz;Valle;Erick Fernando;12/5/2005;61139365;2;1;64787452;2;38;256;terminal de rio azul 250 mestros sureste;;119500487@est.mep.go.cr;;125ACI0338506;5/12/2024;;true;false;;;true
+1;PR;1;120250132;Fallas;Espinoza;Alexa Georgina;29/4/2008;84749537;1;1;;1;3;26;Del restaurante Meyca, 100 sur, 100 este y 75 norte Alameda numero 9;;120250132@est.mep.go.cr;;2/12/2024;2/12/25;;false;false;;;true
+1;PR;1;120270015;Mora;Madrigal;Fergie Valeria;9/6/2008;72261197;1;1;;1;3;21;Urbanizacion Monte Bello Casa25;;120270015@est.mep.go.cr;;24672468;31/1/2025;;false;false;;;true
+1;PR;1;121400969;Mendoza;Castro;Gabriel Vinicio  ;5/4/2012;88449088;2;1;88952607;1;3;21;Del Ebais 150 metros norte.;;121400969@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;208610531;Porras ;Murillo;Luis  Diego;13/1/2005;60049106;2;1;63675931;1;3;21;Barrio Los Angeles, de la pulperia don Manuel 100 mts a la derecha, casa color cafe con celeste;;208610531@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;119890051;Monge ;Chinchilla;Nicole ;5/4/2007;62901535;1;1;22769189;2;38;256;Quebrada, calle Monge, casa color verde con porton negro, mano izquierda;;119890051@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;119980635;Soto;Murillo;Jahaleel Abdiel;24/6/2007;86654649;2;1;NA;1;3;21;Del CTP Maximo Quesada, 200mts Sur , 100 mts Este calle la Gloria;;119980635@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120010986;Retana;Picado;Luis Angel;16/8/2007;89775050;2;1;NA;1;3;16;higuito Encinales;;120010986@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120060577;Martinez;Ayerdis;Juliana;7/10/2007;63356557;1;1;NA;2;38;256;Linda vista de Patarra , calle italiano ;;120060577@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120210082;Villalobos ;Zumbado;Karen;1/4/2008;88083801;1;1;nr;1;3;35;Barrio Fatima, Llanos de Monteverde casa 73;;120210082@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120260986;Moya ;Ramirez;Monserrath;1/4/2008;87314516;1;1;NA;1;3;21;Del bar el Escondite 200mts este ;;120260986@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120290728;Munoz ;Perez;Andy Josue;29/6/2008;64118685;2;1;NA;1;3;27;25 mts este del plantel de buses de los Guido, casa esquinera blanca;;120290728@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120430250;Chan;Varela;Ethan;17/12/2008;60020973;2;1;87186048;1;3;21;Calle Laurel, tercer alameda casa 69B;;120430250@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;120760640;Urena ;chinchilla;Aaron;9/1/2010;NA;2;1;NA;2;38;256;Bodegas azules 200mts oeste 25mts sur;;120760640@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120460873;Jarquin ;Fuentes;Elian Antonio;26/1/2009;87818460;2;1;No;1;3;21;De la iglesia de Guatuso 600 metros este y 25 sur;;120460873@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120870578;Glaude;Perez;Gabriel David;4/6/2010;63193929;2;1;No;1;3;21;Del Pali de Patarra, 150 metros mano derecha casa blanca porton negro;;120870578@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120980445;Monge;Porras;Dimarco Emmanuel;6/10/2010;62858284;2;1;No;1;3;21;300 metros suroeste del bar Uniespaña;;120980445@est.mep.go.cr;1;;;;false;false;;;true
+1;PR;1;121170894;Lopez;Madrigal;Gabriel Alejandro;24/6/2011;71282573;2;1;22181164;1;3;26;Urbanizacion La fortuna casa 25G;;121170894@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;703630301;Umana;Rincon;Johns Esteban;8/10/2011;61286106;2;1;71238069;1;3;21;de las oficinas de Cascada de Fuego 75 metros sur a mano izquierda casa de dos plantas negra.;;703630301@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121260696;Vega;Porras;Jimena Samantha;9/10/2011;61039866;1;1;No;1;3;21;De la Iglesia catolica de Guatuso 75 metros sureste;;121260696@est.mep.go.cr;1;;;;true;false;;;true
+1;PR;1;121270642;Quiros;Diaz;Dereck Steven;15/10/2011;60397832;2;1;47078021;1;3;21;Terminal de buses de Guatuso, 250 metros este, contiguo al abastecedo rFanny;;121270642@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121300266;Villalobos;Alfaro;Marianne Luciana;13/11/2011;60778863;1;1;No;1;3;21;De la Escuela de Guatuso 50 metros este;;121300266@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121310215;Mendez ;Garay;Lindsay Tatiana;25/11/2011;62117547;1;1;No;2;38;256;Dela ultima parada de buses de Linda Vista 200 metros norte y 225 suroeste;;121310215@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121310217;Mendez ;Urcuyo;Mattias Alejandro ;26/11/2011;64226688;2;1;83097810;1;3;21;de la escuela de Guatuso 700 metros Este entrada mano izquierda segunda casa de alto;;121310217@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121380361;Carvajal;Avalos;Vaneshka Pamela  ;6/3/2012;70910400;1;1;86013580;1;3;21;de la Escuela Republica Federal de Alemania 75 metros oeste apartamentos don Alejandro, apartamento numero 2;;121380361@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121430229;Matarrita;Fonseca ;Andres Elias;25/4/2012;62212402;2;1;70503477;1;3;21;25 metros noroeste de la entrada principal del CTP Maximo Quesada;;121430229@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121090446;Cruz ;Jimenez;Tayra Sofia;23/2/2011;61549307;1;1;61549307;1;3;21;1km al este de la terminal de buses de Guatuso;;121090446@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121380185;Carvajal;Brenes;Denzer;24/2/2012;60734999;2;1;no hay;1;3;21;1 km al S entrada Cemex camino el Tirra;;121380185@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121040666;Ramos;Aguilar;Sebastian Alim ;21/12/2010;no tiene;2;1;70235985;1;3;21;Barrio Los Angeles de los Apartamentos Junkan 200 metros NE;;121040666@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121030331;Fuentes ;Solis ;Ailyn Jimena ;9/12/2010;83699692;1;1;83699692;1;3;21;Barrio los Guizaros, contigupo a la guarderia hogar feliz ;;121030331@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121200619;Ramirez ;Cruz ;Stefhanie Yaosca ;20/7/2011;0;1;1;6308069;1;3;21;Patarra, Desamparados, apartamentos Don ALejandro,75 mts oeste de la iglesia catolica de Quebradaonda. ;;121200619@est.mep.go.cr;;;;;false;false;;;true
+1;PR;2;122201406632;Beltran ;Perez ;Eduardo Vlentin ;19/9/2011;88067732;2;4;0;1;3;21;25mts noroeste del CTP Maximo Quesada ;;122201406632@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121350202;Rocha ;Balmaceda;Heder Michelle;15/1/2012;62629670;1;1;0;1;3;21;Del cemeterio de Patarra 600mts noreste ;;121350202@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121490629;Hernandez ;Loria ;Genesis Paulina ;24/7/2012;63834264;1;1;83082258;1;3;21;75 mts oeste de la iglesia catolica de quebrada onda ;;121490629@est.mep.go.cr;;;;;false;false;;;true
+1;PR;2;155840647934;Baca ;Martinez ;Cesar Juliesqui;1/11/2012;70378843;2;2;70198074;1;3;21;Barrio Guizaros,del salon comunal 25 oeste 50 mts sur, casa color verde ;;155840647934@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121310171;Muñoz ;Vega ;Cristhoper Roberto ;26/11/2011;85699988;2;1;0;1;3;21;25 mts sueeste de la qantigua delegacion de Guatuso, tercera casa a mano izquierda ;;121310171@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121410228;Vega ;Rojas ;Caleb ;6/4/2012;71594272;2;1;0;2;38;256;Del cementerio de Patarra 650 mts este,calla el Italiano ;;121410228@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;120940526;Quesada ;Martinez ;Josue Danilo;24/8/2010;63103965;2;1;;2;38;256;ultima parada de buses de quebrada honda en rio azul, entrada privada 50mts ;;120940526@est.mep.go.cr;;R20241114925637;13/11/2024;;true;false;;;true
+1;PR;1;120740459;Cedeno;Delgado;Irene Iveth;9/12/2009;64019778;1;1;;1;3;21;1k al oeste de la terminal de buses de guatuso frente a ACuaductos;;120740459@est.mep.go.cr;;R202411154934125;15/11/2024;;false;false;;;true
+1;PR;1;121630705;Villalobos ;Gamboa ;Franciny Maria ;17/1/2013;62393876;1;1;;1;3;21;Calle la union frente al pali de patarra 100mts sur 200 este y 75 norte calla lastre ;;121630705@est.mep.go.cr;;R202411204950720;20/11/2024;;false;false;;;true
+1;PR;1;120090952;Henrriquez;Arauz;Owen Yasir;24/11/2007;64436624;2;1;61590890;2;38;256;de la pulperia en Linda Vista gemelo No 1, 100 m este.;;120090952@est.mep.go.cr;;R202411294999077;29/11/2024;;false;false;;;true
+1;PR;1;305970851;Rodriguez ;Valdivia;Emily Valentina ;12/2/2011;61779982;1;1;70525545;1;3;27;Los Guido, sector 3, calle 5, casa 74;;305970851@est.mep.go.cr;;R202412025011431;2/12/2024;;false;false;;;true
+1;PR;1;120780498;Ugalde;Gutierrez;Andrey ;9/2/2010;70359302;2;1;61622965;2;38;256;Rio Azul Calle Lisanias 500 Sur, porton amarillo;;120780498@est.mep.go.cr;;R202412035024211;3/12/2024;;true;false;;;true
+1;PR;1;120010860;Ramirez ;Hernandez;April Jimena;20/8/2007;61479337;1;1;;1;3;21;De la entrada de urb Maron 100m oesre casa blanca verjas negras ;;120010860@est.mep.go.cr;;R202502035347798;3/2/2025;;false;false;;;true
+1;PR;1;121430970;Altamirano;Mora ;Naomy Fabiola;12/5/2012;60603602;1;1;60818121;2;38;256;Rio Azul de la Pulperia La Estrella 25 metros Este hacia calle Linda Vista ;;121430970@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;605270051;Matarrita ;Campos;Josafath Jornani;4/11/2012;64821216;2;1;;1;3;21;Condominio Brisas de la Montana casa n6;;605270051@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121580599;Artavia;Ruiz;Santiago;15/11/2012;63478834;2;1;;1;3;21;Del colegio Maximo Quesada 100m Este;;121580599@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121580952;OCAMPO;CAMPOS;MONSERRATH;17/11/2012;62997468;1;1;60479627;1;3;21;CALLE LOS CIPRESES 125 OESTE DEL FABRICA OUERTAS Y VENTANAS;;121580952@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121580928;Salazar ;Vargas;Amber de Jesus;20/11/2012;63449606;1;1;;1;3;21;Quebrada Honda frente a la entrada de sala de eventos la sierra;;121580928@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121590993;Mora ;Delgado;Dereck David ;21/11/2012;62187614;2;1;63894658;1;3;21;1km al sureste de la Terminal de Buses de Guatuso casa porton azul;;121590993@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121590077;Rangel ;Valesquez;Enrique;22/11/2012;70582837;2;1;;1;3;21;Barrio Los Angeles del la pulperia del polici 200 sur mano izquierda casa color celeste;;121590077@est.mep.go.cr;;;;;false;false;;;true
+1;PR;1;121590076;Rangel ;Velasquez;Orlando ;22/11/2012;70282873;2;1;;1;3;21;Barrio los Angeles de la pulperia del policia 200 sur casa color celeste;;121590076@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121310210;Martinez ;Condega ;Rey Alejandro ;26/11/2012;0;2;1;0;1;3;21;Barrio los Angeles, frente al salon comunal, casa esquinera color blanca ;;121310210@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121590431;Espino;Urbina;Valery Naomy;26/11/2012;72886476;1;1;;1;3;21;800 metros oeste del taller Puertas y Ventanas , final de la calle, Barrio Cipreses;;121590431@est.mep.go.cr;1;;;;true;false;;;true
+1;PR;1;121520668;Calderon ;Sanchez;Maria Jimena;6/12/2012;89885650;1;1;89885650;1;3;21;300 E de la Esc Republica Federal Alemana;;121520668@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121610054;Fallas;Almanzo;Matias Francisco;13/12/2012;63776094;2;1;62466528;1;3;21;guatuso de la terminal de buses 100mts norte;;121610054@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121610228;Bonilla ;Abarca;Abigail;17/12/2012;72065829;1;1;;1;3;21;50 este de la escuela Juan Monge Guillen;;121610228@est.mep.go.cr;;;;;true;false;;;true
+1;PR;2;155848993509;Jiron;Guzman;Cristian  Alexander;23/12/2012;63066993;2;2;64606255;1;3;21;75 O de la Iglesia >Catolica de  Quebrada Honda;;155848993509@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121620204;Hidalgo;Campos;Mariano  ;2/1/2013;71252090;2;1;no;1;3;15;100 metros norte y 25 este del Banco Nacional frente al Gimnasio Municipal;;121620204@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121620269;ORTIZ ;ACEVEDO;MARYPAZ ;3/1/2013;;1;1;83981276;1;3;21;URBANIZACION EL OCASO CASA A9;;121620269@est.mep.go.cr;;;;;true;false;;;true
+1;PR;1;121620157;Campos;Arroyo;Tomas  ;6/1/2013;63354483;2;1;89739119;1;3;15;100 norte, 25 este del Banco Nacional;;121620157@est.mep.go.cr;1;;;;false;false;;;true
+1;PR;1;120430734;Guerrero;Rodriguez;Camila;30/12/2008;87991503;1;1;;1;3;21;300 este 100 sur Barrio Guizaros;;120430734@est.mep.go.cr;;0125ACI0319868;29/9/2024;;false;true;alergia a cefalosporina;;true
+1;PR;1;121460343;Barboza;Nunez;Luna Camila;15/6/2012;71279350;1;1;71245936;1;3;21;150mts sur este del super la calerita;;121460343@est.mep.go.cr;;;;;false;true;Ansiedad;;true
+1;PR;1;120100105;Morales;Solano;Maura Jazmin;15/11/2007;87273995;1;1;87902448;1;3;21;escuela juan monge guille 1 km este de l apulperia el policia 50 me oeste porton negro cas en obra gris;;120100105@est.mep.go.cr;;;;;true;true;asma;;true
+1;PR;1;120830097;Mora;Chinchilla;Amanda Yamila;6/4/2010;61668583;1;1;60100011;1;3;21;Quebrada Honda ;;120830097@est.mep.go.cr;;;;;false;true;Asma;;true
+1;PR;1;120980209;Montoya;Calero;Allison Jimena;3/10/2010;;1;1;;1;3;21;Guatuso, Patarra, 600 metros suroeste de la terminal de buses;;120980209@est.mep.go.cr;;;;;true;true;Asma;;true
+1;PR;1;120840894;Jalinas;Aleman;Enyel Gabriel;24/4/2011;64360146;2;1;62647431;2;38;256;en el cruce de linda vista;;120840894@est.mep.go.cr;;;;;true;true;Asma;;true
+1;PR;1;113950944;Corrales;Mendez;Richard Moises;25/4/2011;61527483;2;1;84422512;1;3;21;Barrio Cipreses, de la entrada 400 metros este, entrada de adoquines, porton negro, al lado izquierdo;;113950944@est.mep.go.cr;;;;;true;true;Asma;;true
+1;PR;1;121480210;Alvarado;Brenes;Stacy ;7/7/2012;71333279;1;1;60212507;1;3;21;guatuso de la terminal, 1 kilometro sur este ;;121480210@est.mep.go.cr;;;;;true;true;asma;;true
+1;PR;1;120560878;Morales;Silva;Isaac Elias;8/5/2009;71584992;2;1;;1;3;21;Urbanizacion Maron, casa 78;;120560878@est.mep.go.cr;;0125ACI0331366;3/12/2024;;false;true;Asma;;true
+1;PR;1;120180798;Valverde;Carballo;Andrea de los Angeles;24/2/2008;89694575;1;1;88242546;1;3;21;25 norte de cementos progreso;;120180798@est.mep.go.cr;;0125ACI0332343;3/12/2024;;false;true;asma;;true
+1;PR;1;120320393;Calderon;Ortiz;Scarleth;6/8/2008;60384013;1;1;;2;38;256;Alemada Guzman Sector E casa 112 mano derecha;;120320393@est.mep.go.cr;;;;;false;false;Asma, Rinitis, Migrana cronica y gastritis;;true
+1;PR;1;120070978;Arce;Quesada;Eduardo Rafael;23/10/2007;72876091;2;1;;1;3;35;300 metros sur del cementerio de Antonio de desamparados ;;120070978@est.mep.go.cr;;;;;true;true;Asmatico;;true
+1;PR;1;119860385;Ponce;Sanchez;Michelle Adriana;11/2/2007;72464097;1;1;71653134;3;38;256;De la escuela de Linda Vista 200 este y 300  a mano derecha sobre calle Coris;;119860385@est.mep.go.cr;;0101ACI21t7608100;4/12/2024;;true;true;depresion;;true
+1;PR;1;120850653;Segura ;Fuentes;Tifanny Pamela;4/5/2010;62483378;1;1;64373470;1;3;21;De la escuela de Guatuso 800 mts oeste y 25mts sur, fente a la Asada Espino;;120850653@est.mep.go.cr;;;;;false;true;Depresiva;;true
+1;PR;1;121220439;Arceda;Castro;Pamela Cristal;14/8/2011;71491104;1;1;;1;3;21;De la antigua Policia 75 metros suroeste, casa color naranja;;121220439@est.mep.go.cr;;0125ACI0329936;3/12/2024;;true;true;Dermatitis;;true
+1;PR;1;120940403;Badilla;Serrano;Haku;25/8/2010;83470832;2;1;;1;3;35;Urb La Constancia, Casa 49 I;;120940403@est.mep.go.cr;;0112ACI027370600;30/11/2024;;true;true;Distrofia Muscular ;;true
+1;PR;1;120210961;Aguero;Murillo;Ariel;23/3/2008;70496792;2;1;62011719;1;3;26;de la escuela de Gravilias 500 sur y 25 este, Barrio Villa Nueva;;120210961@est.mep.go.cr;;0117ACI019926900;1/1/2025;;false;true;Esternosis Aortica;;true
+1;PR;1;119960149;Cordero;Calvo;Daniela Marcela;26/5/2007;84909672;2;1;;1;3;21;Barrio Los Angeles de la Escuela Juan Monge 1km al este;;119960149@est.mep.go.cr;;0125ACC002423800;1/1/2024;;true;true;Falta de un rinon;;true
+1;PR;1;121290821;DIAZ;CAMPOS;MIA RAYZA;12/11/2011;60737489;1;1;61000684;1;3;21;50 OESTE DEL BAR UNIESPANA CASA MANO DERECHA COLOR GRIS;;121290821@est.mep.go.cr;;;;;true;true;GASTRITIS;;true
+1;PR;1;119800930;Fonseca;Quiros;Luis Sebastian;8/12/2006;89717037;2;1;;1;3;27;Sector 3, calle 8, casa 21;;119800930@est.mep.go.cr;;0125ACI0326495;2/12/2024;;false;true;Intolerante a la lactosa, alergico a picaduras;;true
+1;PR;1;119340253;Cartilla ;Enriquez;Escarle;24/4/2005;64316348;1;1;;1;3;21;150m oeste de la plaza de Patarra;;119340253@est.mep.go.cr;;;;;true;true;La joven esta en periodo de Lactancia ;;true
+1;PR;1;120280216;Vargas;Hernadez;Lyam Arturo;11/6/2008;64555580;2;1;88890874;1;3;16;el llanp san miguel calle sabanillas urb la pradera encatada 75 sur e la panderia moli cada 7D;;120280216@est.mep.go.cr;;0125ACI0340019;6/12/2024;;false;true;migrala y asma cronica;;true
+1;PR;1;120900492;Vasconcelo;Azofeifa;Ricardo Gabriel;11/7/2010;72946168;2;1;87655809;1;3;21;Del bar Uniespana 200mts oeste;;120900492@est.mep.go.cr;;0125ACI0328824;3/12/2024;;true;true;Migraña y rinitis;;true
+1;PR;1;121650969;Segura ;Gamboa;Liam;7/2/2013;89059888;2;1;;1;3;21;Patarra 175m al oeste del pali, casa a mano derecha 2 plantas  porton negro;;121650969@est.mep.go.cr;2;;;;true;true;Pielectacia Renal bilateral (estudiante no puede aguantar para ir al baño);;true
+1;PR;1;305820233;Nuñez;Ledezma;Fiorela;20/12/2008;62583437;1;1;;1;3;21;Urbanizacion La Bretana  Los Guido casa 11;;305820233@est.mep.go.cr;;;;;false;true;problemas auditivos;;true
+1;PR;1;120460231;Velasquez ;Porras;Kevin Alexis;5/12/2008;87353207;2;1;86302913;1;3;27;Sector 3, calle 6, casa #48;;120460231@est.mep.go.cr;1;0117ACI019891400;4/12/2024;;false;true;Rinitis;;true
+1;PR;1;119870073;Gonzalez;Garay;Randy Caleb;20/2/2007;87644140;2;1;71089551;1;18;27;los guidos sector 4 condominio 32 casa 5;;119870073@est.mep.go.cr;;0125ACI032013800;29/11/2024;;false;true;rinitis;;true
+1;PR;1;120720755;Naranjo;Duran;Sharon;1/12/2009;62494146;1;1;62614235;2;38;256;Ultima parada Linda Vista detras del salon comunal 4 alameda 2 casa ;;120720755@est.mep.go.cr;;0125ACI0333120800;4/12/2024;;false;true;rinitis ;;true
+1;PR;1;119680335;Blandon;Salas;Dereck Judha;20/6/2006;71595833;2;1;;1;3;16;Urbanizacion Valladolid casa 9D;;119680335@est.mep.go.cr;;0125ACI0338982;5/12/2024;;false;true;Rinitis alergica;;true
+1;PR;1;120550542;Carmona ;Navarro;Santiago Josue;23/5/2009;62865052;2;1;;1;3;21;Del pali de Patarra 350m al este y 40m norte Barrio calle La Union ;;120550542@est.mep.go.cr;1;;;;false;true;Sindrome de ASPERGER ;;true
+1;PR;1;120460556;Blanco;Garcia;Betsabe Alexandra;31/1/2009;68995333;1;1;88840176;1;3;21;Urbanizacion Naranjitos #39;;120460556@est.mep.go.cr;;;;;true;true;Rinitis y escoliosis;-;true
+1;PR;1;120820075;Flores ;Somarribas;Oscar Antonio ;20/3/2010;71046910;2;1;84231769;1;3;21;Ultima Parada de Guatuso Casa color naranja con verde a mano izquierda ;;120820075@est.mep.go.cr;1;0117ACI019852900;1/1/2025;;true;true;Escoliosis ;Acetominofen ;true
+1;PR;1;120540384;Vargas;Muñoz;Camerun Yanina;3/5/2009;61753056;1;1;85547863;1;3;21;De la fabrica de cemento, 2km norte;;120540384@est.mep.go.cr;;;;;true;true;Taquicardia sinosal. Ansiedad depresiva, asma cronica;Alergica al Salbutamol. Beclometasona, Loratadina. Imipramina.;true
+1;PR;1;119960895;Reyes ;Quiros ;Isaac ;24/6/2007;87132892;2;1;22763305;1;3;35;50 mts sureste del bar el recreo en san antonio;;119960895@est.mep.go.cr;;;;;false;true;rinitis alergica ;antialergicos ;true
+1;PR;1;504930692;Diaz;Jarquin;Monserrath de los Angeles  ;3/1/2011;72741622;1;1;83434238;1;3;21;Del cementerio de Patarra, 600 norte, 100 oeste, casas de don Jesus;;504930692@est.mep.go.cr;;;;;false;true;Amigdalitis;Antibiotico ;true
+1;PR;1;402890756;MARIN;BERMUDEZ ;SANTHIAGO JESUS ;4/11/2010;64226970;2;1;;2;38;256;CONTIGUO A LAS BODEGAS DE LINDA VISTA CASA C25;;402890756@est.mep.go.cr;;;;;true;true;ASAMA Y ALERGUIAS ;BECLOMETASONA SALBUTAMOL LORATADINA CLOROFERAMINA ;true
+1;PR;1;120410935;Mayorga;Castillo;Joseph Emmanuel;23/11/2008;60963804;2;1;;1;3;21;1Km al este y 25 metros sur de la escuela Juan Monge Guillen;;120410935@est.mep.go.cr;;;;;false;true;Asma, Rinitis, AlegÃ­a Atopica, Soplo en corazÃ³n;Beclometasona, salbutamol;true
+1;PR;1;121060972;Chinchilla;Valdivia;Sergio Isai;23/1/2011;64550054;2;1;;1;3;21;quebrada honda patarra, 300m este de la escuela Republica Federal de Alemania, casa celeste con blanco;;121060972@est.mep.go.cr;;;;;false;true;Asma Cronica;Beclometasona, salbutamol, beclonazal,loratadina y clorferamina, crema de rosas (secuelas de quemadura);true
+1;PR;1;120310738;Jimenez;Valverde;Gabriel ;6/9/2008;85724665;2;1;88613042;1;3;15;Calle 72 A, La Uruca;;120310738@est.mep.go.cr;;0125ACI0325013;2/12/2024;;true;true;Rinitis Alergica;Beclometasona, Salbutamol, Cloratadina ;true
+1;PR;1;121300339;Padilla;Venegas ;Axel ;12/11/2011;;2;1;61970620;1;3;27;Los Guidos Sector 1, casa 127;;121300339@est.mep.go.cr;;;;;true;true;Rinitis alergica, debido a esto tiende a tener sangrado nasal.;Beclometasona,, Loratadina;true
+1;PR;1;119970082;Guido ;Campos;Yandel David;7/6/2007;86522332;2;1;86522332;1;3;21;800 mtrs norte del Colegio Maximo Quesada ;;119970082@est.mep.go.cr;;0125ACI0339647;6/12/2024;;false;true;Rinitis ;Benadril;true
+1;PR;1;121290073;Castillo;Camacho;Brandon Mathias ;29/10/2011;NA;2;1;60897291;1;3;21;Linda Vista Casa 188;;121290073@est.mep.go.cr;;;;;false;true;Asma;bomba de salbutamol;true
+1;PR;1;121200890;Gazo;Espinoza ;Alejandro Josue ;20/7/2011;71074040;1;1;22701007;1;3;16;De la iglesia catolica de higuito, urbanizacion el Lince lote  9;;121200890@est.mep.go.cr;;;;;true;true;Asma ;Bomba de salbutamol ;true
+1;PR;1;120780506;Jimenez;Valerio;Ferlli Tamara;13/2/2010;62203328;1;1;71762886;2;38;256;De la Escuela Cristiana bajando las gradas porton negro;;120780506@est.mep.go.cr;;;;;false;true;asma y alergia;bomba y pastillas;true
+1;PR;1;121450190;Sanchez ;Orellana ;Matthew Josue ;28/5/2012;63989201;2;1;0;1;3;21;De la iglesia de Guatuso 1.5 kmts al este,  casa muro cafe mano izquierda ;;121450190@est.mep.go.cr;;;;;true;true;Asma ;Bombas de salmutamol ;true
+1;PR;1;121640596;Guzman ;Waterhouse;Elias Bautista;26/1/2013;60174832;2;1;22743727;1;3;21;Del bar el Escondite 100 este y 100 sur, mano derecha Urb Maron, casa 113;;121640596@est.mep.go.cr;1;;;;true;true;Asma;Bombas para el asma;true
+1;PR;1;121100324;Gamboa ;Barboza;Sofia de los Angeles;18/3/2011;60873840;1;1;86199231;1;3;21;Maron del segundo parque a mano izquierda, casa color amarillo;;121100324@est.mep.go.cr;;0125ACI0325516;2/12/2024;;false;true;Asma;Bombas para el asma;true
+1;PR;1;121490821;Rostran ;Guevara ;Ailis Gaea ;24/7/2012;72912661;2;1;84784942;1;3;21;800 mtrs  este 25 sur de la escuela de Gustuso, segunda entrada a mano derecha 4 casa porton gris ;;121490821@est.mep.go.cr;;;;;false;true;Tabique Desviado( Rinitis) ;Bonba de salbutamol ;true
+1;PR;1;120340721;Wang;Ulloa;Tayra Dennise;1/9/2008;71112470;1;1;70155766;2;38;256;Linda Vista de la Escuela Cristiana, 100mts Oeste, 25 Norte. Casa de dos plantas, muro gris.;;120340721@est.mep.go.cr;;;;;true;true;Rinitis;Cloferamina;true
+1;PR;1;120610061;Avendaño;Garcia;Josef Samuel;9/7/2009;70432046;2;1;83113086;1;3;21;Urbanizacion Naranjanjitos, Porton negro;;120610061@est.mep.go.cr;1;0125ACI0322049;1/12/2024;;false;true;Asma;cloferamina y salbutamol;true
+1;PR;1;120270481;Monge;Gutierrez;Ricardo Jose;5/6/2008;88323185;2;1;22247238;1;1;11;Paso Ancho avenida 62 A, de la carniceria 3 estrellas 80 m suroeste casa mano derecha;;120270481@est.mep.go.cr;1;;;;false;true;Espectro autista y asmatico;Cloferamina, salbutamol;true
+1;PR;1;119930201;Aguilar ;Ramirez;Melanie Dayann;13/4/2007;88027493;1;1;22503474;1;3;26;El Porvenir del polideportivo 50 mts sur y 50 mts este casa color beige con vergas negras 310L;;119930201@est.mep.go.cr;;0125ACI0320530;29/11/2024;;false;true;rinitis;cloredefrinamina ;true
+1;PR;1;120130009;Sequeira;Obando;Kristel;28/7/2007;62029828;1;1;;1;3;21;Lomas de San Antonio de Joca 200 metros sur casa 3G;;120130009@est.mep.go.cr;;;;;false;true;Rinitis;Clorfedramina;true
+1;PR;1;120050416;Calderon;Ramirez;Jerick;20/9/2007;85969447;2;1;;1;3;21;Maron casa 141;;120050416@est.mep.go.cr;;;;;false;true;alergia rinitis;clorfenamina;true
+1;PR;1;121570410;Bermudez ;Nunez;Breily Caleb;25/10/2012;62484655;2;1;;1;3;21;De la fabrica de Cemex 250 sureste ;;121570410@est.mep.go.cr;;;;;false;true;Rinitis Cronica, Vitiligo ;Clorfenamina;true
+1;PR;1;120260282;Chinchilla ;Valdivia;Enyell ;26/5/2008;61992856;2;1;;1;3;21;Quebrada Honda, Patarra, 300 metros este de la escuela Republica Federal Alemania, casa color celeste ;;120260282@est.mep.go.cr;;;;;false;true;asma cronica ;clorfenamina, loratadina, beclometasona nasal y corriente y salbutamol;true
+1;PR;1;119880694;Castillo;Lizano;Yamna Charnell ;15/1/2007;87287821;1;1;;1;3;21;75 metros este de la panaderia Ricuras, segunda casa a mano izquierda;;119880694@est.mep.go.cr;;0125ACI0324041;2/12/2024;;false;true;Rinitis;Clorfeniramida, loratadina;true
+1;PR;1;121179463;Castillo ;Mora;Ashley Colette ;10/6/2011;70383125;1;1;;1;3;21;75 metros oeste del Puente Damas, casa numero 12. ;;121179463@est.mep.go.cr;;;;;true;true;Dermatitis ;clorfeniramina;true
+1;PR;1;120080415;Espinoza;Valerio;Jose Pablo;16/10/2007;71133666;2;1;;1;3;21;600 del cementario Patarra, calle Don Jesus, casa 134B;;120080415@est.mep.go.cr;;0125ACI0334727;4/12/2024;;false;true;Anemia, alergias;Clorferamina;true
+1;PR;1;121590874;Gonzalez;Solis;Christopher Daniel;1/12/2012;72420348;2;1;;1;3;21;100 mts sur de la escuela de guatuso;;121590874@est.mep.go.cr;;;;;false;true;Rinitis Cronica y Asma alergico;Clorferina Loratadina beglometasona y salbutamol;true
+1;PR;1;119920712;Castro;Lopez;Hillary Priscilla;8/5/2007;72439748;1;1;83382053;1;1;5;del minisuper 200 norte, Quesada Duran;;119920712@est.mep.go.cr;;0125ACU033007;3/12/2024;;false;true;rinitis;clorofaramina;true
+1;PR;1;121120310;Leon ;Navarro ;Tamara ;2/4/2011;60642442;1;1;;1;3;21;Guatuso, barrio Guizaros ;;121120310@est.mep.go.cr;;0125AC10321465;1/12/2024;;true;true;Rinitis ;Cloroferamina, loratadina ;true
+1;PR;1;120010993;Lanza ;Valverde;Juan Pablo;16/8/2007;71507523;2;1;64894473;1;3;21;del cementerio de patarra 200 mts este y 150 sur casa 54 urb los naranjitos ;;120010993@est.mep.go.cr;;0125ACI0320738;30/11/2024;;false;true;asma;clorofrinamina ;true
+1;PR;1;121210903;Jimenez;Hernandez;Fabio;28/7/2011;63123211;2;1;22701372;1;3;27;Los Guido, sector 2, de antigua terminal buses 300 sur, 300 este;;121210903@est.mep.go.cr;;;;;false;true;Tiene solo un riñon, se debe cuidar la parte derecha;Control medico;true
+1;PR;2;155830160718;Montiel;Zambrana;Heylin Dalila;19/11/2009;72522786;1;2;;1;3;21;Barrio los Angeles en Patarra ;;155830160718@est.mep.go.cr;;0117ACI019709100;25/11/2024;;false;true;Dermatitis atopica;Cremas;true
+1;PR;1;119570456;Segura ;Fallas ;Gabriel Andres;28/1/2006;64771621;2;1;NA;1;3;21;75mts este de la Sala de eventos Cascada de Fuego;;119570456@est.mep.go.cr;;;;;false;true;Asma, ansiedad, ataques de panico;depax;true
+1;PR;1;121120308;Valdivia;Montero ;Mathias;1/4/2011;86747277;2;1;;1;3;15;100 oeste del Juzgado de Familia, 50 mts sur csa porton cafe. ;;121120308@est.mep.go.cr;;;;;false;true;Rinitis ;diclofenaco,  Loratadina;true
+1;PR;1;120620004;Arroyo ;Delgado ;Eithan Josue;19/7/2009;60279798;2;1;;1;3;21;Contigua a las oficinas de Cascada de Fuego;;120620004@est.mep.go.cr;;;;;true;true;Alergias;Doratadina y clorfenamina;true
+1;PR;1;120110415;Sanchez ;Obando;Brittany ;23/11/2007;86969170;1;1;NA;2;38;256;Calle Laurel;;120110415@est.mep.go.cr;;;;;true;true;Colitis;en estudio;true
+1;PR;2;C03415404;Baltodano;Aguilar;Freddy Fabian;19/11/2009;71129769;2;2;70235985;1;3;21;Barrio Angeles, apartamento Junkan 200 metros noreste;;C03415404@est.mep.go.cr;;;;;false;true;Migrana;Enantyum;true
+1;PR;1;120160825;Parajeles;Carranza;Saymon Adrian;3/2/2008;88089111;2;1;;1;3;27;Sector 3 calle 4 casa 5;;120160825@est.mep.go.cr;;;;;false;true;gastritis;famotidina;true
+1;PR;1;120610734;Hernandez;Guerrero;Johan Manuel;20/7/2009;72597873;2;1;88218762;1;3;21;250 este del bar Uniespana carretera quebrada honda casa mano derecha muro amarillo;;120610734@est.mep.go.cr;;;;;true;true;Asma y depresivo;Floucetina;true
+1;PR;1;121150724;Quiros ;Cerdas;Gabriel;19/11/2011;60624861;2;1;;1;3;21;Frente al bar Uniespaña;;121150724@est.mep.go.cr;1;0125ACI0327000;2/12/2024;;false;true;Autismo nivel 1;Fluccetina, ritalinay respiridona o hidroxicina;true
+1;PR;1;120450402;Rojas;Serrano;Ashly Danisha;12/1/2009;64548511;1;1;;1;3;21;Calle Italiano, casa color verde, portÃ³n negro;;120450402@est.mep.go.cr;;;;;false;true;Ansiedad;Fluoxetina;true
+1;PR;1;119800668;Lopez ;Vindas;Yolanda Paulina;30/10/2006;86733347;1;1;84724060;1;3;21;De la ultima parada Guizaros 100 sur y 100 este ;;119800668@est.mep.go.cr;;0116ACI016248500;28/11/2024;;false;true;Ansiedad y depresiÃ³n mixta ;Fluoxetina;true
+1;PR;1;120560312;Pavon;Quesada;Keylor ALexander;26/5/2009;62843504;2;1;;1;3;21;Guatuso, Barrio Los Cipreses 700 mts al oeste del taller puertas y ventanas, porton blanco a manos derecha.;;120560312@est.mep.go.cr;;;;;false;true;Psicologia y psquiatria;Fluoxetina;true
+1;PR;1;119820127;Ibarra;Portilla;Sofia ;18/12/2006;85276990;1;1;63587036;1;3;24;Urb monte verde casa color  crema con vergas negras ;;119820127@est.mep.go.cr;;;;;true;true;ansiedad ;fluxetina y  hidroxexina;true
+1;PR;1;121090463;Perez;Hernandez;Fiorella;6/3/2011;87655889;1;1;;2;38;256;Frente calle Progreso, 150 metros al sur, casa porton negro a izquierda;;121090463@est.mep.go.cr;;;;;true;true;Blefaritis Seborreica mixta ;Gotas para los ojos y Loratadina;true
+1;PR;1;306110154;Alfaro;Venegas;Amber Ieen ;1/2/2013;61876965;1;1;61876965;1;3;21;Calle Zenaida, casa 10.;;306110154@est.mep.go.cr;;;;;true;true;Dermatitis cronica;Hidrocicina, loratadina, betametasona, crema hidratante.;true
+1;PR;1;119940274;Oviedo;Jimenez;Carlos ;26/4/2007;71337437;2;1;NA;1;3;15;200 mts oeste y 25 mts sur del maxi Pali;;119940274@est.mep.go.cr;;;;;false;true;hiperplasia suprerenal congenita;hidrocortisona, flourhidrocortisona;true
+1;PR;2;117002487930;Peña ;Valderrama;Luna Sofia;22/4/2007;63205674;1;2;;1;3;21;calle salitral frente al bar el escondite;;117002487930@est.mep.go.cr;;;;;false;true;Asma;Inaladores;true
+1;PR;1;120400855;Ureña;Duarte;Mariana ;29/8/2008;62974951;1;1;60759244;1;3;16;Calle Encinales 200 m. este de terminal de buses;;120400855@est.mep.go.cr;;;;;false;true;Asma;inhalador;true
+1;PR;1;120310368;Balmaceda;Velasquez;Derek Manuel;18/7/2008;62227914;2;1;;1;3;15;Detras del cementerio de Desamparados Urbanizacion Loto 2;;120310368@est.mep.go.cr;1;0120ACI011187400;28/11/2024;;true;true;Diabetes tipo1;Insulina;true
+1;PR;1;121130456;Araya;Rodriguez;Camila;26/4/2011;64618244;1;1;;1;3;21;Frente al hogar de ancianos de Patarra;;121130456@est.mep.go.cr;;;;;false;true;Diabetes;Inyeccion de insulina;true
+1;PR;1;120130208;Sequeira ;Perez;Eidan Randell ;16/12/2007;71483038;2;1;;1;3;35;Calle Batalla frente academia de natacion Swimming;;120130208@est.mep.go.cr;;;;;false;true;Asma, presion alta;liversatan, beclometasona;true
+1;PR;1;121080495;Hernandez;Fallas;Valery Natalia;15/2/2011;61877994;1;1;62124268;2;38;256;50 sureste de la pulperia la central;;121080495@est.mep.go.cr;;;;;false;true;Alergia a la vitamina C y Sulfas;llevarla a emergencias;true
+1;PR;1;120370352;Quesada;Madrigal;Gabriel Antonio;30/9/2008;63240156;2;1;;1;3;24;75 oeste de la farmacia de Fatima;;120370352@est.mep.go.cr;;;;;true;true;Alergia;Loratadina;true
+1;PR;1;120090527;Martinez ;Alvarez ;Oriana ;7/11/2007;62095960;1;1;;1;3;21;quebrada honda, del puente de los picapiedras a mano izquierda calle sin salida casa de portones negros (ante penultima casa);;120090527@est.mep.go.cr;;0117ACI019849200;3/12/2024;;false;true;Alergia;Loratadina;true
+1;PR;1;120470394;Mesen ;Porras;Emily;28/1/2009;71470890;1;1;;1;3;21;de la escuela de Guatuso 200 m este;;120470394@est.mep.go.cr;;;;;false;true;alergias;loratadina;true
+1;PR;1;120690889;Sequeira ;Rojas;Mathyas;27/10/2009;84875627;2;1;;1;3;21;Guatuzo, del bar el Escondite 600 m sur urb Maron casa 25;;120690889@est.mep.go.cr;1;0125ACI03366759;5/12/2024;;true;true;Alergias;Loratadina;true
+1;PR;1;120690195;Martinez ;Alvarez;Darianna;20/10/2009;62095960;1;1;;1;3;21;quebrada honda, por el puente de los picapiedras a mano izquierda, calle sin salida casa de rejas negras ;;120690195@est.mep.go.cr;;0117aci019849800;3/12/2024;;false;true;Alergias ;Loratadina;true
+1;PR;1;120410025;Siezar  ;Carcache;Stephanie ;30/10/2008;62702689;1;1;84030932;1;3;21;Guatuso, frente al bar el descanso;;120410025@est.mep.go.cr;;0125ACI0340356;6/12/2024;;false;true;Asma alergica ;Loratadina;true
+1;PR;1;119890988;Bogantes;Cespedes;Salma;16/3/2007;84858710;1;1;;1;3;21;50 N de la Iglesia Catolica de Guatuso;;119890988@est.mep.go.cr;;;;;false;true;Rinitis;Loratadina;true
+1;PR;1;504820885;Garro;Parra;Reiner Caleb;23/3/2009;70189378;2;1;;1;1;6;75 S George Angulo porton cafe oscuro mano izquierda;;504820885@est.mep.go.cr;;0101AC1217241100;16/7/2024;;true;true;Rinitis Cronica;Loratadina;true
+1;PR;1;120860466;VARELA ;CHACON ;ISMAEL ANDRES ;15/5/2010;71979154;2;1;;1;3;21;URBANIZACION MARON FRENTE A SUPER SAN PIO ;;120860466@est.mep.go.cr;;;;;true;true;ASMA Y RINITIS ;LORATADINA BECLOMETASONA ;true
+1;PR;1;119650534;Alvarado;Fonseca;Byron Alfonso;15/5/2006;61582429;2;1;;2;38;256;de la entrada de calle carvajal 50 o;;119650534@est.mep.go.cr;;0125ACI0328112;21/2/2024;;false;true;rinitis;loratadina cloferamina;true
+1;PR;1;120230895;Valverde;Fallas;Jeicott Alejandro;22/4/2008;86039711;2;1;;1;3;21;Quebrada Honda 75 m sur este de la escuela;;120230895@est.mep.go.cr;;0119ACI009268700;25/11/2024;;false;true;rinitis alergica;loratadina clorfenamina;true
+1;PR;1;102310363;Gamboa;Herra;Johel;11/8/2008;72075526;2;1;88052102;2;38;256;Frente a Escuela Cristiana contiguo a pulperia gemelos 3, casa F82;;102310363@est.mep.go.cr;;0125ACI0340066;6/12/2024;;false;true;Alergia utopica;Loratadina y clorefanamina;true
+1;PR;1;121570815;Castellon;Blandon;Royman Adonay;3/11/2012;71683411;2;1;85312367;1;3;21;DE la Esc, Juan Monge GUILLEN 1KM AL E, BARRIO LOS ANGELES cALLE MESAS;;121570815@est.mep.go.cr;1;;;;true;true;Sinusitis;loratadina y Clorferamina;true
+1;PR;1;504940914;Obregon;Ruiz;Tifanny Pamela;1/4/2011;63482728;1;1;;2;38;256;Calle Carvajal 100 metros oeste casa de dos plantas color turqueza;;504940914@est.mep.go.cr;2;;;;true;true;Rinitis;Loratadina y cloroferamina;true
+1;PR;1;605090090;Solorzano;Morales;Freylan;15/11/2007;87715662;2;1;;1;3;21;Barrio Los Guizaros, al frente del Bar el Atardecer;;605090090@est.mep.go.cr;;0125ACIo329316;3/12/2024;;false;true;Rinitis cronica;Loratadina y Diferenhidramina;true
+1;PR;1;120950017;Araya;Aguero;Allison Priscilla;27/8/2010;86865980;1;1;;1;3;15;De Cascada de Fuego 1K al este a mano izquierda cruzando el puente los Picapiedras;;120950017@est.mep.go.cr;1;;;;true;true;Acondroplacia;Loratadina y montelukas;true
+1;PR;1;119900125;Flores;Ilama;Keilyn Dalianna;1/4/2007;60413532;1;1;;1;3;16;Higuito, Encinales, barrio San Gerardo 125 metros suroeste del abastecedor Encinales;;119900125@est.mep.go.cr;;0121ACI018029900;17/12/2024;;true;true;Rinitis;Loratadina, beclometasona;true
+1;PR;1;121010349;Godinez;Retana ;Caleb David ;23/11/2010;84486591;2;1;;3;38;256;En Linda Vista, casa IMAS numero 12, verjas cafe, casa color rosada. ;;121010349@est.mep.go.cr;1;;;;false;true;Rinitis ;Loratadina, beclometasona, clorfeniramina;true
+1;PR;1;121310656;Herrera;Xiao;Sofia Ninoska ;6/12/2011;64744040;1;1;87266174;1;3;21;Residencial Vistas de Patarra, casa 3, mano izquierda. ;;121310656@est.mep.go.cr;;0117ACI019795400;1/2/2025;;false;true;Rinitis ;Loratadina, clorfenamina;true
+1;PR;1;120050139;Soto;Palma;Douglas Andrey ;2/10/2007;86282365;2;1;22764007;1;3;24;Urb. Llanos de monteverde segunda Etapa;;120050139@est.mep.go.cr;;0117ACI019691500;15/11/2024;;false;true;Alergias ;Loratadina, clorferamina;true
+1;PR;1;120970793;Corella;Diaz;Bryan Fabian ;28/10/2010;63478598;2;1;;1;3;21;100metros norte de la terminal de buses de Guatuso;;120970793@est.mep.go.cr;;;;;true;true;Rinitis y Migrana Cronica;Loratadina, cloroferamina;true
+1;PR;1;120760392;Segura;Fallas;Joan Alberto;30/12/2009;60807658;2;1;22741585;1;3;21;Costado sureste de la escuela de Guatuso;;120760392@est.mep.go.cr;;0121ACI015038500;5/5/2024;;false;true;Alergias;Loratadina, hidroxicina;true
+1;PR;1;121300615;Serrano;Monge;Juan Daniel;19/11/2011;62946990;2;1;62946990;1;3;21;Guatuso, Barrio don Bosco, casa color blanca a mano izquierda;;121300615@est.mep.go.cr;;;;;true;true;Asma;Loratadina, Salbutamol y Beclometasona;true
+1;PR;1;121170117;Tellez ;Urbina ;Thayra Maria ;2/6/2011;64829127;1;1;61378400;2;38;256;calle valderramos, rio azul;;121170117@est.mep.go.cr;;;;;false;true;Asma ;Loratadina,impramina, salbutamol, beclametasona,clorferamina;true
+1;PR;1;121320422;Segura;Lopez;Roldany Mauricio;3/12/2011;61373803;2;1;72187319;1;3;21;De la Terminal de Buses 75m oeste a mano derecha casa de color gris;;121320422@est.mep.go.cr;;;;;false;true;Asma;Loratanida Salbutamol;true
+1;PR;1;120270030;Solano;Quesada;Alexandro;31/5/2008;85472831;2;1;;1;3;16;calle tablazo higuito  un kilometro al este calle principal;;120270030@est.mep.go.cr;;0121ACI013572801;5/12/2024;;false;true;alergias y ansiedad;loratidina, flouxetina;true
+1;PR;1;121250185;Vega;Cano;Johan Alberto;9/9/2011;84000909;2;1;89353232;1;3;21;350 este del CTMQ 50 sur calle la gloria;;121250185@est.mep.go.cr;1;;;;false;true;dermatitis cronica;lorotadina manana, clorotrimeton tarde;true
+1;PR;1;120960898;HENRY;PORTILLA;DIANA CAROLINA;29/9/2010;71992464;1;1;;1;3;21;URBANIZACION MONTE VERDE ;;120960898@est.mep.go.cr;;;;;true;true;ANSIEDAD Y DEPRESION;LOXETINA Y DIFEDRAMINA;true
+1;PR;1;120790556;Pena;Gamboa;Santiagp;23/2/2010;89677260;2;1;22742921;1;3;21;Residencial Maron, casa esquinera, numero 56 frente al segundo play;;120790556@est.mep.go.cr;;0125aci0322437;1/12/2024;;true;true;TDAH, renitis alergica, alergia picadura a los insectos;metilfenidato clorhidrato, loratadina, clorfeniramina;true
+1;PR;1;120820500;Fernandez;Calderon;Norelle  ;25/3/2010;63461426;1;1;22191619;2;38;256;Linda Vista frente a la escuela Cristiana, casa F-74;;120820500@est.mep.go.cr;;;;;false;true;Asma cronica, ansiedad y ataques de panico;Montelucas, Salbutamol, Beclometasona, Fluoxetina, Pival;true
+1;PR;1;119870052;Mendez ;Lopez;Jordan ;2/1/2007;85510380;2;1;;1;3;256;Frente a la escuela linda Vista;;119870052@est.mep.go.cr;;;;;false;true;alergias;;true
+1;PR;1;120260207;Varela ;Gamboa;Kira Natalia;23/5/2008;87418907;1;1;;2;38;256;25 mts oeste de la iglesia catolica;;120260207@est.mep.go.cr;1;0125ACI0338906;05/12/2024;;true;true;Sordera y ansiedad;;true
+1;PR;1;120000926;Navarro ;Umana;Ahtziri ;28/7/2007;88173892;1;1;;1;3;27;sector 5 calle2 casaL8;;120000926@est.mep.go.cr;;0117ACI019709900;11/2/2024;;false;true;alergias a picaduras de insectos;;true
+1;PR;1;605110695;Perez;Barrantes;Alanna Sophia;3/6/2008;61279013;1;1;;1;3;21;Quebrada Honda Frente a la Escuela Rep. Federal de Alemania;;605110695@est.mep.go.cr;;;;;true;true;ansiedad;;true
+1;PR;2;155835018104;Mejia;Gonzalez;Emilio Gabriel;15/8/2011;60549818;2;2;;1;3;21;De la iglesia de Guatuzo,75 sureste, entrada a mano Derecha, porton Negro;;155835018104@est.mep.go.cr;;;;;true;true;Ansiedad y Nerviosos;;true
+1;PR;1;119970333;Berrocal;Vargas;Gabriel ;21/6/2007;86974004;2;1;;1;1;5;de pequeño mundo segunda entrada a mano derecha casa de dos pisos blanca ;;119970333@est.mep.go.cr;;;;;true;true;asma migrana;;true
+1;PR;1;120240878;Solano;Mora;Sofia;8/5/2008;70907406;1;1;70907406;1;3;16;Del Ebais de Higuito 300 mts, norte;;120240878@est.mep.go.cr;1;0117ACI097076;1/12/2024;;true;true;Encefalocele;;true
+1;PR;1;120040019;Jimenez ;Marin;Windell Yadir ;5/9/2007;72151013;2;1;;1;3;27;Urb. Gran Bretana ultima alameda casa 110E;;120040019@est.mep.go.cr;;0117ACI019575800;17/7/2024;;false;true;esta en estudio por soplo en el corazon;;true
+1;PR;1;120280863;Ortiz;Castillo;Valeria Jimena;23/6/2008;63334048;1;1;61583405;1;3;27;Sector cuatro condominio las anas casa numero 3;;120280863@est.mep.go.cr;;0125AC10332556;3/12/2024;;true;true;Poliposis multiple familiar    Padece del corazon sin definir nombre;;true
+1;PR;1;121600437;Cascante ;Gamboa;Allison ;10/12/2012;64647656;1;1;22741552;1;3;21;150 sureste de la Escuela de Guatuso;;121600437@est.mep.go.cr;;;;;false;true;PresiÃ³n baja;;true
+1;PR;1;120370332;Gonzaga;Baltodano;Nigel Leonardo;1/10/2008;62510375;2;1;62510375;2;38;256;De la ultima parada de bus quebrada Rio Azul 800mts sur;;120370332@est.mep.go.cr;;;;;false;true;Rinitis;;true
+1;PR;1;120800862;Chavez;Rojas;Gabriel Jesus;3/3/2010;72453271;2;1;;1;3;21;Frente al parque de pali, Patarra;;120800862@est.mep.go.cr;;;;;true;true;Rinitis, Alergico a picaduras de insectos;;true
+1;PR;1;121140019;Sibaja;Lizano;Athan Jesus;2/5/2011;63070936;2;1;60310282;1;3;21;125 m despues de la escuela de Guatuso. Casa color amarilla mano izquierdo.;;121140019@est.mep.go.cr;;;;;true;true;Alergia;;true
+1;PR;1;120770308;Segura;Ramirez;Hillay de los Angeles;24/1/2010;61932426;1;1;47040462;1;3;21;Guatuso Barrio Don Bosco 25 m de la entrada primer porton mano izquierda;;120770308@est.mep.go.cr;;0125ACI0327169;2/12/2024;;true;true;Alergia a Amoxicilina;;true
+1;PR;1;121580208;Hernandez ;Cedeno;Glen Eduardo;17/11/2012;85171616;2;1;86012414;1;3;21;300 metros este del cementerio de Patarra, setima casa a mano izquierda, porton verde.;;121580208@est.mep.go.cr;;;;;true;true;alergia a la amoxicilina;;true
+1;PR;1;121110624;Saenz;Ramirez;Joshua Geovanny;24/3/2011;89099152;2;1;;1;3;21;Urbanizacion Fincre del este sexta casa mano derecha;;121110624@est.mep.go.cr;;;;;true;true;Alergia mariscos;;true
+1;PR;1;121400745;Rivera;Azofeifa;Hellen Cristina ;2/4/2012;85174350;1;1;87250436;1;3;21;Del Colegio Tecnico Maximo Quesada 50 este casa con porton rojo;;121400745@est.mep.go.cr;;0125ACI0316799;20/11/2024;;true;true;Ansiedad;;true
+1;PR;1;120510367;Loria;Munoz;Jacob ;13/3/2009;62899805;2;1;61308833;1;3;21;Ì±Ì±Gutuao, frente a la ultima parada de bus, casa verde de madera;;120510367@est.mep.go.cr;;;;;false;true;Asma;;true
+1;PR;1;120920227;Perez;Villalobos;Gilary;2/8/2010;;1;1;;2;38;256;Rio Azul Quebradas ultima parada 25 este;;120920227@est.mep.go.cr;;;;;true;true;Asma;;true
+1;PR;1;121330297;Campos;Suarez;Anderson Gabriel;3/1/2012;70361131;2;1;71742258;1;3;21;200 m SO de la Escuela Guatuso, entrada a mano izq casa color crema, ;;121330297@est.mep.go.cr;;;;;true;true;Asma;;true
+1;PR;1;121360760;Cardenas;Rivera;Jayden Yair;12/2/2012;60736436;2;1;61685841;1;3;21;De la entrada de de barrio Cipreses 700 oeste.;;121360760@est.mep.go.cr;;;;;true;true;Asma;;true
+1;PR;1;120110905;Duarte;Calderon;Rachel Jacxiry;27/11/2007;60461188;1;1;;1;3;21;del bar Escondite 700 este y 400 sur;;120110905@est.mep.go.cr;;0117ACI019867400;4/12/2024;;false;true;Asma;;true
+1;PR;1;120910703;Cardenas;Rivera;Brayner Yariel  ;20/7/2010;60421747;2;1;61685841;1;3;21;De la entrada de barrio Cipreses 700 oeste;;120910703@est.mep.go.cr;;;;;true;true;Asma y rinitis alergica;;true
+1;PR;1;120350990;Baldi;Miranda;Kiany ;1/10/2008;84609133;1;1;88414170;1;3;21;Maron CASA 89;;120350990@est.mep.go.cr;;0117ACI19847700;3/12/2024;;true;true;Asma, alergia a todo;;true
+1;PR;1;121140293;Jimenez ;Rodriguez;Caleb Jesus;3/5/2011;60336923;2;1;85281063;2;38;256;Rio Azul calle Carvajal, casa 290;;121140293@est.mep.go.cr;;0125ACI0327263;2/12/2024;;true;true;Asma, crisis de ansiedad;;true
+1;PR;1;119830194;Fallas;Varela;Jeremy;2/12/2007;61818177;2;1;;1;3;21;Calle laurel tercera alameda E-69;;119830194@est.mep.go.cr;;0117ACI019727100;27/12/2024;;false;true;Asmatico;;true
+1;PR;1;120700727;Garcia;Rojas;Andres de Jesus;9/11/2009;87967111;2;1;87428233;1;3;35;Calle Salitre 4ta casa a mano derecha;;120700727@est.mep.go.cr;1;;;;true;true;Asperger;;true
+1;PR;1;121070984;Varela;Marin;Monserrath ;5/2/2011;NA;1;1;NA;1;3;21;Lind Vista, calle Laurel, tercer alameda, segunda casa E69;;121070984@est.mep.go.cr;;0121ACI018347500;3/12/2024;;true;true;Ataques de ansiedad;;true
+1;PR;1;121410924;Melendez;Nunez;Aiken Alexander;19/4/2012;62758791;2;1;70101765;1;3;21;Del Pali de Patarra,150 este  casa color azul;;121410924@est.mep.go.cr;1;;;;false;true;Autista;;true
+1;PR;1;209040923;CASTRO;GAMEZ;DERECK JOSUE;8/6/2008;60397773;2;1;;1;3;21;DE LA PLAZA DE  DEPORTES DE PATARRA 200 METROS NORTE;;209040923@est.mep.go.cr;3;0125AC10330519;3/12/2024;;false;true;BAJA VISION;;true
+1;PR;1;209300726;CASTRO;GAMEZ;MARIANA ;19/4/2010;;1;1;;1;3;21;DE LA PLAZA DE DEPORTES DE PATARRA 200 METROS NORESTE;;209300726@est.mep.go.cr;;0125AC1033518;3/12/2024;;false;true;BAJA VISION;;true
+1;PR;1;121390915;Salazar;Camacho;Ashley Naomi;20/3/2012;64274544;1;1;84279497;1;3;21;Guizaros, de la ultima parada 100 sur 50 este, cuarta casa a mano derecha, porton rojo;;121390915@est.mep.go.cr;;;;;true;true;Es solo un dato Hiperactividad;;true
+1;PR;1;120200557;Jimenez ;Madriz ;Emily Nohelia ;2/4/2008;89959597;1;1;;1;3;15;600 metros del cementerio de Desamparados;;120200557@est.mep.go.cr;;0117ACI09855500;3/12/2024;;true;true;escorosis;;true
+1;PR;1;120900198;CANO;RIVAS;DAYANNA GABRIELA;26/6/2010;70422385;1;1;0;1;3;21;150 ESTE DEL COLEGIO MAXIMO QUESADA CASA PORTON VINO;;120900198@est.mep.go.cr;;;;;false;true;MAREOS Y DESMAYOS;;true
+1;PR;1;120010178;Umana;Rosales;Taylor;17/8/2007;71333153;2;1;;1;3;21;Barrio los Angeles;;120010178@est.mep.go.cr;;;;;false;true;;;true
+1;PR;1;120570671;Marin;Jimenez;Carlos Andres;29/5/2009;64709122;2;1;89486869;1;3;21;25mts Este de la Escuela de Guatuso;;120570671@est.mep.go.cr;;0125ACI0327005;2/12/2025;;true;true;;;true
+1;PR;1;120020669;Acosta;Ortiz;Carlos;23/8/2007;60979866;2;1;;1;3;16;plaza de deportes de la capri 25 metros al oeste;;120020669@est.mep.go.cr;;;;;false;true;Polineurotapia miembros inferiores;;true
+1;PR;2;155836613603;Mojica;Garcia;Luis Antonio;3/9/2008;64339854;2;2;;1;3;21;Barrio Los Angeles;;155836613603@est.mep.go.cr;1;;;;true;true;Ritma Cardiaca;;true
+1;PR;1;120250165;Molina;Bermudez;Nicole Dayana ;15/5/2008;64544873;1;1;616349245;1;3;21;Escuela Republica Federal  de Alemania 200 metros sur y 100 metros mano  derecha ;;120250165@est.mep.go.cr;;0125AC103320;3/12/2024;;false;true;Ruinitis ;;true
+1;PR;1;120830013;Vega;Anchia;Trixel Valeria ;3/4/2010;63498319;1;1;;2;38;256;De la Comunidad Faro de Esperanza, 10 metros norte y 250 suroeste;;120830013@est.mep.go.cr;1;;;;false;true;Sangrado Nasal al realizar actividad fisica;;true
+1;PR;1;121530760;Alvarado;Centeno;Hanzel Leonardo;16/9/2012;64757196;2;1;;1;3;21;Barrio Guizaros del salon comunal 50 E y 100S, casa verde segundo piso;;121530760@est.mep.go.cr;;;;;false;true;Un testiculo en ascensor;;true
+1;PR;1;120520048;Martinez;Potoy;Michelle;28/3/2009;72587750;1;1;61500822;2;38;256;De la pulperia los Gemelos numero 1, 200mts Sur, casa color naranja.;;120520048@est.mep.go.cr;;;;;true;true;Asma;;true
+1;PR;1;120870264;Mendez ;Acuña ;Erick Joshua ;28/5/2010;72447814;2;1;;1;3;21;Urbanizacion Maron finca el encanto ;;120870264@est.mep.go.cr;;;;;true;true;Migrana ;;true
+1;PR;1;120750237;LIZANO;SALAS;KEILYN MARIA;27/12/2009;72258361;1;1;0;1;3;21;DEL CASCADA DE FUEGO 100 ESTE PRIMERA ENTRADA MANO DERECHA ;;120750237@est.mep.go.cr;;0117ACI019878600;4/12/2024;;false;true;MIGRANA Y ANSIEDAD;;true
+1;PR;1;120990959;Abarca;Cardenas;Eithan;30/10/2010;63068679;2;1;64652729;2;38;256;Linda Vista 150 este hacia Rio Azula casa a mano derecha color blanco ;;120990959@est.mep.go.cr;;0125ACI0321386;30/11/2024;;false;true;asma;;true
+1;PR;1;120320286;Cerdas ;Salas;Allison Camila;7/7/2008;71450610;1;1;;1;3;21;Frente al Colegio Maximo Quesada;;120320286@est.mep.go.cr;;;;;false;true;soliacis;;true
+1;PR;1;119700492;Quesada;Diaz;Dilan;9/7/2006;64811971;2;1;;1;3;21;100N de la terminal buses, casa 2 plantas, Guatuso;;119700492@est.mep.go.cr;;;;;false;true;Ansiedad;no toma medicamentos;true
+1;PR;1;120680523;Arias;Campos;Derek Josue;16/10/2009;70476280;2;1;70044267;1;3;21;De la escuela de Guatuso, 300 este, 200 sur, 75 este;;120680523@est.mep.go.cr;3;0117ACI019847800;3/12/2024;;true;true;Migrana, Miopia, Astigmatismo;Para la migrana;true
+1;PR;1;119960914;Vargas ;Vilchez;Raymond Andre;12/6/2007;86715180;2;1;22764357;1;3;256;700 mts sureste cementerio patarra;;119960914@est.mep.go.cr;;0117ACL019886900;;;false;true;Asma;Pastillas, salbutamol, beclometasona, beclonasal;true
+1;PR;1;120510876;Navarro ;Calderon;Hilary ;14/3/2009;83451099;1;1;;1;3;21;700 este de la iglesia catolica de guatuso;;120510876@est.mep.go.cr;;;;;false;true;depresion;pripax 5mm quetiapina;true
+1;PR;1;120340491;Lopez;Brenes;Dylan Alberto;28/8/2008;63597346;2;1;;1;3;21;400 n cementerio calle laurel casa e81;;120340491@est.mep.go.cr;;;;;false;true;ansiedad;rexitina amictotrilina;true
+1;PR;1;120740359;Alvarado;Zuniga;Jose Emiliano;12/12/2009;61447417;2;1;;1;3;21;Los Angeles, 2 cruce calle de cemento casa 496;;120740359@est.mep.go.cr;1;;;;true;true;Deficit de atencion e hiperactividad, trastorno de ansiedad generalizada ;Risperidona, amitriptilina;true
+1;PR;1;120520317;Granados ;Camacho ;Andres ;4/3/2009;87250882;2;1;47030461;1;3;21;De la escuella de Guatuso 100 norte 25 este ;;120520317@est.mep.go.cr;1;;;;false;true;ASMA ALERGIAS ;RITALINA LORATADINA ;true
+1;PR;1;121440543;MARTINEZ;MIRANDA;JOSHUA BENJAMIN;23/5/2012;;2;1;70789630;1;3;21;URB EL OCASO COSTADO DE LA FERRETERIA MADRIZ;;121440543@est.mep.go.cr;2;;;;false;true;TDHA, AUTISMO, RINITIS CRONICA;RITALINA, EPIVAL, TRATAMIENTO PARA LA RINITIS CRONICA;true
+1;PR;1;119780846;Centeno;Castro;Nicole;16/10/2006;64618804;1;1;;1;3;27;Cementerio, sector 2 calle 5;;119780846@est.mep.go.cr;;0125ACI0340005;6/12/2024;;false;true;Dermatitis atopica;rupax;true
+1;PR;1;120570325;Gonzalez;Sandi;Angelo;5/5/2009;72710686;2;1;84832477;1;3;21;Barrio Guizaros, del salon comunal 75mts Este, casa dos plantas, color verde, mano izq;;120570325@est.mep.go.cr;1;;;;false;true;Asma e Intolerable a todos los antibioticos;Sabutamol y Beclometasona;true
+1;PR;1;121610468;Mayorga ;Castillo;Kenneth Daniel ;16/12/2012;62481861;2;1;;1;3;21;De la escuela Juan Monge Guillen 1km al este y 25 oeste;;121610468@est.mep.go.cr;1;;;;false;true;Asma, Rinitis, estrenido cronico,soplo inocente en el corazon ,atopico, celiaco, reflujo grado 3;SALBOTAMOL,Beclametasona, moconosil,glucosa, aceite mineral.;true
+1;PR;1;120910452;Solis ;Peña;Nicole;15/7/2010;61490960;1;1;22742921;1;3;21;Del Bar el Escondite 300 mts este 200 sur urb maron casa 56 frente al segundo play ;;120910452@est.mep.go.cr;;;;;true;true;Asma, alergic, rinitis;Salbultamol, albuterol ;true
+1;PR;1;119910084;Cascante;Fonseca;Michael Aaron;24/3/2007;60317825;2;1;61944660;1;3;21;Calle el Aguacate casa color negro contigua a taller Guerrero;;119910084@est.mep.go.cr;;;;;true;true;Asma;Salburamol;true
+1;PR;1;119850437;Quesada;Monge;Kevin Arturo;2/2/2007;62623799;2;1;61943864;1;3;26;detras de la iglesia catolica, casa 540 portones negros;;119850437@est.mep.go.cr;;;;;false;true;ASma;Salbutamol;true
+1;PR;1;120380972;Cordero;Araya;Karla Gabriela;26/10/2008;61943422;1;1;22764575;1;3;21;Calle zeneida, primera casa a mano izquierda;;120380972@est.mep.go.cr;;;;;true;true;Asma;salbutamol;true
+1;PR;1;120490281;Fallas;Alvarado;Luciana;18/2/2009;63981507;1;1;83663744;1;3;24;50 mts norte de la Villa Olimpica ;;120490281@est.mep.go.cr;;;;;true;true;Asma;Salbutamol;true
+1;PR;1;120620184;Avalos;Gongora;Ambar Catalina;2/8/2009;85796554;1;1;25101947;1;3;27;Por la iglesia catolica casa 201;;120620184@est.mep.go.cr;;;;;true;true;Asma;Salbutamol;true
+1;PR;1;120720998;Alvarez;Lopez;Bryan Andres;30/11/2009;61490291;2;1;22742609;2;38;256;Linda Vista del antiguo puesto de salud 175mts oeste casa A109;;120720998@est.mep.go.cr;;;;;true;true;Asma;Salbutamol;true
+1;PR;1;120820343;Araya;Mendez;Alison Noemi;24/3/2010;63815293;1;1;85357482;2;38;256;Del cruce de Linda Vista 100mts suroeste sobre la calle de los buses.;;120820343@est.mep.go.cr;;;;;false;true;Asma;Salbutamol;true
+1;PR;2;122200754130;Martinez;Castillo;Maria Fernanda;29/9/2010;63546278;1;4;61028459;1;3;21;Bar El Escondite 200 mts este 400 sur Calle El Aguacate;;122200754130@est.mep.go.cr;;;;;true;true;Asma;Salbutamol;true
+1;PR;1;305960263;Vargas;Ramos;Joshua;23/11/2010;85105670;2;1;;1;3;21;Barrio Los Angeles, contiguo al tanque del AyA;;305960263@est.mep.go.cr;;;;;true;true;Asma;Salbutamol;true
+1;PR;1;121030405;Villalobos;Villalobos;Noa Keisha;5/12/2010;60034089;1;1;60010530;1;3;21;Guatuso, del Bar el Escondite, 75 oeste, calle Salitrillos;;121030405@est.mep.go.cr;;;;;false;true;Asma;Salbutamol;true
+1;PR;2;155835296424;Amador;;Josue David;25/12/2010;86048147;2;2;;2;38;256;Escuela de Linda Vista 200m este 100m norte;;155835296424@est.mep.go.cr;;;;;false;true;Asma;salbutamol;true
+1;PR;1;121210165;Villalta ;Brenes ;Sebastian Armando ;1/8/2011;72817199;2;1;44190672;1;3;15;Del Cementerio de Desamparados, 500 metros sur, 175 oeste. ;;121210165@est.mep.go.cr;;;;;true;true;Asma;Salbutamol;true
+1;PR;1;121330308;Flores ;Marin;Luz Marian;23/12/2011;71514597;1;1;;1;3;21;de la terminal de casa cuba,75 m norte, 25m sur casa color negra con fachaleta cafe ;;121330308@est.mep.go.cr;;;;;true;true;Asma;Salbutamol;true
+1;PR;1;121530711;Cruz ;Aguirre;Alvaro Isaac;17/9/2012;;2;1;;1;3;21;Calle Naranjo 74 mts suroeste de la entrada Cemex;;121530711@est.mep.go.cr;2;;;;true;true;Asma;Salbutamol;true
+1;PR;1;120620445;Fallas;Varela;Anthony David;10/8/2009;63822351;2;1;71222385;1;3;21;Calle Laurel tercera alameda casa E-69;;120620445@est.mep.go.cr;;0117ACI019727000;27/11/2024;;false;true;Asma;Salbutamol;true
+1;PR;1;110000213;Ramirez;Santamaria;Carlos ;19/7/2007;62162424;2;1;;1;3;21;Guatuzo, calle la gloria;;110000213@est.mep.go.cr;;0117ACI019773200;2/12/2024;;false;false;Asma;Salbutamol;true
+1;PR;1;120790272;Melendez;Cruz;Jordy Alejandro;6/7/2008;72341807;2;1;72842448;1;3;21;De la Escuela Juan Monge 1km al este;;120790272@est.mep.go.cr;;0117ACI019790900;2/12/2024;;true;true;Asma;Salbutamol;true
+1;PR;1;120510360;Chacon;Lopez;Jeaustin Josue;12/3/2009;71796264;2;1;61112680;2;38;256;125 mts este de la pulperia los gemelos 1 casa color verde mano izquierda;;120510360@est.mep.go.cr;;0117ACI019869200;4/12/2024;;false;true;Asma;Salbutamol;true
+1;PR;1;120760244;Mendez;Sandoval;Ian ;22/12/2009;84029335;2;1;89954562;1;3;21;1 km este de la escuela Juan Monge Guillen;;120760244@est.mep.go.cr;;0125ACI0318315;27/11/2024;;false;true;asma;Salbutamol;true
+1;PR;1;120450267;Lopez;Rojas;Steven Andrey;13/12/2008;86866288 mama;2;1;;1;3;21;Contigo al salon de eventos Rancho Fallas, cuesta la union;;120450267@est.mep.go.cr;;0125AC10322774;1/12/2024;;false;true;asma  alergias  rinitis;salbutamol;true
+1;PR;1;120120859;Rojas;Villalobos;Alex Mauricio;10/12/2007;60802349;2;1;;1;3;21;Calle Salitrillos urba Santa Fe;;120120859@est.mep.go.cr;1;;;;false;true;Asma;Salbutamol ;true
+1;PR;1;120730854;Orozco;Valdivia;Dayris Yinian;9/12/2009;72489796;1;1;61081799;1;3;21;Urb Maron, Casa 121, color blanco, verjas negras;;120730854@est.mep.go.cr;;;;;true;true;Asma;Salbutamol beclometasona;true
+1;PR;1;120810789;URBINA ;GARCIA ;MATIAS YANDRE ;6/3/2010;63832142;2;1;;1;3;24;DEL PALI DE FATIMA 200 MTS SUR Y 25 ESTE CALLE LA MISION ;;120810789@est.mep.go.cr;;0125ACI0333744;4/12/2024;;false;true;ASMA RINITIS ;SALBUTAMOL LORATADINA ;true
+1;PR;1;120700975;Ramirez;Muñoz;Samuel ;6/11/2009;86334992;2;1;;1;3;21;Guatuso Barrio Quizaros;;120700975@est.mep.go.cr;;;;;true;true;asma y problemas de tiroides;salbutamol ocasionalmente;true
+1;PR;2;155843094516;Baez;Chavarria ;Derik Andres;29/3/2010;70344008;2;2;;1;3;21;De la Terminal de Guizaros, 200 metros este , 2da entrada casa porton verde, calle Picacho.;;155843094516@est.mep.go.cr;;;;;true;true;Asma;salbutamol y beclometasona;true
+1;PR;1;119900188;Perez;Melendez;Maria Fernanda;14/3/2007;86200353;1;1;;1;3;21;Del Bar el Escondite 400 metros este 200 metros sur urbanizaciÃ³n Maron casa 132;;119900188@est.mep.go.cr;1;0117ACI019728100;27/11/2024;;true;true;Asma;Salbutamol y loratadina;true
+1;PR;1;120480661;Potosme;Mendieta;Devyn Johan;16/2/2009;64223052;2;1;84325203;1;3;21; Del Bar Uniespana  75 E, contiguo a Carbonera JYM;;120480661@est.mep.go.cr;;;;;false;true;Asma;Salbutamol y Loratadina, Montelucas;true
+1;PR;1;121300470;Chacon;Hernandez ;Taylor Jafeth;21/11/2011;62589672;2;1;;1;3;21;Barrio los cipreses 600m al este , casa a mano izquierda al final de la calle ;;121300470@est.mep.go.cr;;;;;true;true;Asma Cronica, Operado del ojo izquierdo ;salbutamol, beclametasona;true
+1;PR;1;120210609;Lopez ;Calderon;Yamna Elizabeth;29/3/2008;64036989;1;1;;2;38;256;Frente a ofibodegas San Antonio 25m norte ;;120210609@est.mep.go.cr;;;;;false;true;Asma ;Salbutamol, beclametasona ;true
+1;PR;1;121000238;Brenes ;Villagra;Camila Daniela ;27/10/2010;63563564;1;1;84045324;2;38;256;Linda Vista 50 este de la pulperia Yerlin, casa muro color naranja;;121000238@est.mep.go.cr;;0125ACI0324208;2/12/2024;;false;true;Colon irritable, soplo inocente, asma, alergica.;Salbutamol, Beclometamina.;true
+1;PR;1;119540792;Hunter;Abarca;Joshua Martin ;2/1/2006;62616326;2;1;;2;38;256;De la entrada Calle Laurel 125 metros este, casa E13;;119540792@est.mep.go.cr;;;;;true;true;Asma;Salbutamol, beclometasona;true
+1;PR;1;121130101;Hunter;Abarca;Melanie Yael;25/4/2011;64419439;1;1;;2;38;256;De la entrada de Calle Laurel, 125 metros este, casa E13;;121130101@est.mep.go.cr;;;;;true;true;Asma;Salbutamol, Beclometasona;true
+1;PR;1;121240141;Ortiz;Chacon;Diana Valezka;6/9/2011;64024253;1;1;NA;2;38;256;Linda Vista, de la terminal de buses, detrÃ¡s de Fundavida, casa F175;;121240141@est.mep.go.cr;;;;;false;true;Asma;Salbutamol, beclometasona;true
+1;PR;1;120830996;Perez ;Lopez;Erick Gabriel;12/4/2010;63608344;2;1;;2;38;256;Terminal de buses Quebrada Honda Rio Azul 400 noreste calle Lizanias ;;120830996@est.mep.go.cr;;0125ACI0320274;29/11/2024;;true;true;Asma;Salbutamol, Beclometasona;true
+1;PR;1;121030755;Chinchilla ;Vega;Axel Jose ;17/12/2010;87501627;2;1;;1;3;21;Frente antigua delegacion de Guatuz, casa de 2 plantas;;121030755@est.mep.go.cr;;;;;true;true;Asma y Renitis;Salbutamol, beclometasona, Clorferamina ;true
+1;PR;1;121130100;Hunter;Abarca;Ian Kaleb;25/4/2011;64014043;2;1;;2;38;256;De la entrada de calle Laurel, 125 metros este, casa E13;;121130100@est.mep.go.cr;1;;;;true;true;Asma, deficit atencional;Salbutamol, beclometasona, ritalina;true
+1;PR;1;120650405;Quesada;Diaz;Jadher Samuel;21/9/2009;60628718;2;1;;1;3;21;100 N de la terminal de buses, casa 2 plantas, Guatuso;;120650405@est.mep.go.cr;;;;;false;true;Asma;Salbutamol, Clorferamina y Beclometazona;true
+1;PR;1;119930440;Soto;Ruiz;Sebastian Andres;18/4/2007;70417692;2;1;;1;3;21;Del CTPMQ 100 E;;119930440@est.mep.go.cr;;;;;true;true;Asmatico y problema en la cadera;Salbutamol, loratadina e Ibuprofeno;true
+1;PR;1;120490596;Camacho;Sacasa;Kenneth Santiago ;21/2/2009;63347584;2;1;;1;3;21;De la entrada de Barrio los Ciprese 350m suroeste ;;120490596@est.mep.go.cr;1;;;;false;true;Asma, renitis,migraña;Salbutamol, Loratadina,;true
+1;PR;1;119890598;Diaz;Fallas;Alessandra;7/3/2007;60969624;1;1;;1;3;15;San Antonio, de la Pizza 100 N y 25 E, tercera casa a mano izquierda;;119890598@est.mep.go.cr;1;0117ACI019845500;1/1/2025;;false;true;Asma y lesion en la mano;Salbutamol, Loratadina, montelukÌ€as;true
+1;PR;1;121030756;Granja;Garcia;Johan Esteban;28/12/2010;89616676;2;1;;1;3;21;Del Bar El Escondite 900 m sureste;;121030756@est.mep.go.cr;;24553366;2/12/2024;;true;true;Asma y alergias ;Salbutamol,Clorferamina,Beclametasona;true
+1;PR;1;120810757;Fallas;Segura;Ashley Dayana;12/3/2010;62075929;1;1;;2;38;256;Quebradas,250m al este de la pulperia los Angels ;;120810757@est.mep.go.cr;;0117ACI018758100;30/11/2024;;false;true;Asma y dermatitis atopica ;Salbutamol,hidrocortizona,loratadina, fluxetina;true
+1;PR;1;120760083;Valerio ;Gamboa ;Liam ;4/1/2010;71081224;2;1;71461000;2;38;256;350 noroeste de la escuela francisco Gamboa Mora Frente al parque de la libertad ;;120760083@est.mep.go.cr;1;;;;true;true;asma;Salvultamol vecrobentasoma ;true
+1;PR;1;901280304;Ramirez;Perez;Katherine Andrea;2/9/2007;70536162;1;1;;1;3;21;100 e de la esc. de Guatuzo porton cafe entrada privada;;901280304@est.mep.go.cr;;;;;false;true;asma;salvutamol;true
+1;PR;1;121370381;Sanchez ;Serrano;Yohan Fabricio;17/2/2012;61438381;2;1;;1;3;21;Calle el Italiano porton blanco casa verde limon a mano derecha al final de la alameda;;121370381@est.mep.go.cr;;;;;false;true;asma;salvutamol;true
+1;PR;1;120680969;Acuna;Cubillo;Brittany;19/10/2009;84723851;1;1;;1;3;15;100 e de la iglesia catolica;;120680969@est.mep.go.cr;;;;;false;true;asma rinitis;salvutamol beclometasona loratadina;true
+1;PR;1;120320040;Ocampo;Morales;Jimena Lucia;10/8/2008;71660130;1;1;;1;3;21;urb los Naranjitos porton verde ;;120320040@est.mep.go.cr;;;;;true;true;asma;salvutamol loratadina;true
+1;PR;1;120550765;Parra;Tenorio;Chantal Milagro;13/5/2009;63702227;1;1;;1;3;21;Barrio Guizaros casa portÃ³n negro;;120550765@est.mep.go.cr;;;;;false;true;asmatica rinitica;salvutamol loratadina;true
+1;PR;1;121600757;Centeno;Gomez;Elizabeth;12/12/2012;70698748;1;1;85812341;1;3;21;de la escuela de patarra 1km este barrio lujan;;121600757@est.mep.go.cr;;;;;true;true;asma;sanbutamol;true
+1;PR;1;120880563;Machado ;Moya ;Stefany Sofia ;5/6/2010;63505696;1;1;62683411;2;38;256;De la Terminal de Buses de Quebrada de Rio Azul, 500 metros sureste, calle Lizanias, del segundo tanque de agua, a mano derecha, quinta casa. ;;120880563@est.mep.go.cr;1;;;;false;true;Depresion, ansiedad. ;Sertralina;true
+1;PR;1;121040139;Espinoza;Pizarro;Luz Mariana;30/12/2010;63854665;1;1;;1;3;21;Guatuso, barrio Guisaros;;121040139@est.mep.go.cr;;;;;true;true;la estudiante tiene una condicion psicologica y psiquiatrica y asma ;sertralina, salbutamol;true
+1;PR;1;120200056;Quiros;Vargas;Angelina ;23/3/2008;71005813;1;1;;1;3;21;Del cementerio de Patarra, 300 metros este residencial los naranjitos, casa 13;;120200056@est.mep.go.cr;1;;;;false;true;Ansiedad, control con psiquiatrÃ­a y psicologÃ­a ;Si toma, pero no recuerda cuales ;true
+1;PR;1;120630633;Murillo;Duarte;Arianna Camila ;23/8/2009;61858924;1;1;;1;3;21;Urbanizacion Maron casa# 59;;120630633@est.mep.go.cr;;0118ACI008558900;21/11/2024;;true;true;Asma;Solo en caso de crisis ;true
+1;PR;1;120990547;Salgado;Abarca;Junier Santiago;23/10/2010;87732511;2;1;86760680;2;38;256;Linda Vista, sector C casa #48, 50 este pulperia Yerlin;;120990547@est.mep.go.cr;;0125ACI0331788;1/2/2025;;true;true;asma;solo en crisis;true
+1;PR;1;121260601;Moya;Herrera;Gabriel Santiago;29/9/2011;62067896;2;1;64711115;2;38;256;75 metros antes de la Escuela Cristiana Linda Vista;;121260601@est.mep.go.cr;;0117ACI019804300;1/2/2025;;true;true;Asma, Lacteos, TDAH;Solo para el asma;true
+1;PR;1;120360928;Meneses;Azofeifa;Ixel Viviana;18/8/2008;71911284;1;1;;2;38;256;linda vista del abastecedor gemelos bajando las gradas casa color turquesa;;120360928@est.mep.go.cr;;0125AC033148000;3/12/2024;;false;true;Alergia a los Aines;solo puede tomar acetaminofen;true
+1;PR;1;120510919;Quesada;Monge;Sebastian Mauricio;9/3/2009;63579690;2;1;61943864;1;3;26;Detras de la iglesia catolica casa 540 portones negros;;120510919@est.mep.go.cr;;;;;false;true;Dermatitis Aguda;Tratamiento;true
+1;PR;1;120000003;Cordero;Garro;Thayra Saree;24/7/2007;60878174;1;1;85926128;1;3;21;50 metros del templo catolica de Guatuso;;120000003@est.mep.go.cr;1;0125ACI0332094;3/12/2024;;false;true;ansiedad, gasrtritis;tratamiento psicologico;true
+1;PR;1;112310676;Delgado;Guerrero;Juan Jose;9/8/2008;89616726;2;1;86494748;1;3;21;35 mts sur, 330 m este y 30 m sur del CTP Maximo Quesada ;;112310676@est.mep.go.cr;;0125ACI0340435;6/12/2024;;false;true;Alergia ;varios ;true
+1;PR;1;121160130;Zuniga ;Siles;Nohemy;18/5/2011;70374761;1;1;;2;38;256;25m sur de la ultima parada Linda Vista;;121160130@est.mep.go.cr;;;;;false;true;Asma;veclometazona, salbutamol, loratadina, clorfenidarmina;true
+1;PR;1;119700597;Segura ;Acuña;Keithel De Los Angeles ;16/7/2006;63549992;1;1;;1;3;21;75m sur del Ebais de Guatuso, mano derecha porton cafe ;;119700597@est.mep.go.cr;1;;;;false;true;Ataques de Ansiedad y Panico;Venfalexina;true
