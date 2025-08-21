@@ -7,6 +7,8 @@ JAZZMIN_SETTINGS = {
     "site_title": "School Smart",
     "site_header": "School Smart",
     "site_brand": "School Smart",
+    "site_logo": "sis_colegio/img/Logo-Peque-School-Smart.png",
+    "site_icon": "sis_colegio/img/Logo-Peque-School-Smart.png",
     
     "order_with_respect_to": [
         "core",
@@ -75,6 +77,18 @@ JAZZMIN_SETTINGS = {
     
     "show_ui_builder": False,
     "show_jazzmin_version": False,
+    
+    # Configuración del logo
+    "site_logo_classes": "img-fluid",
+    "brand_colour": False,
+    
+    # CSS personalizado para el logo
+    "custom_css": "sis_colegio/css/logo-custom.css",
+    
+    # Configuración adicional del logo
+    "welcome_sign": "Sistema Integral de Gestión Administrativa y Educativa",
+    "login_logo": "sis_colegio/img/Logo-School-Smart.png",
+    "login_logo_dark": "sis_colegio/img/Logo-School-Smart.png",
     
     "menu_title": "Menú Principal",
     

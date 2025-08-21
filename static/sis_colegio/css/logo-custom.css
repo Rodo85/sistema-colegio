@@ -1,0 +1,129 @@
+/* ================================
+   LOGOS SCHOOL SMART (GLOBAL)
+   ================================ */
+
+/* Logo pequeño en navbar y sidebar */
+img[src*="Logo-Peque-School-Smart"] {
+    max-height: 45px !important;
+    width: auto !important;
+    max-width: 200px !important;
+    object-fit: contain !important;
+    height: auto !important;
+}
+
+/* Navbar */
+.navbar img[src*="Logo-Peque-School-Smart"],
+.main-header img[src*="Logo-Peque-School-Smart"] {
+    max-height: 40px !important;
+    max-width: 180px !important;
+}
+
+/* Sidebar */
+.sidebar img[src*="Logo-Peque-School-Smart"],
+.main-sidebar img[src*="Logo-Peque"] {
+    max-height: 50px !important;
+    max-width: 220px !important;
+}
+
+/* Seguridad: logos globales responsivos */
+.navbar-brand img,
+.sidebar-brand img {
+    object-fit: contain !important;
+    height: auto !important;
+}
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0;
+}
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 0;
+}
+
+/* =========================================================
+   CORRECCIÓN DEL SIDEBAR - SOLO TEXTO Y ELEMENTOS INTERNOS
+   ========================================================= */
+
+/* Asegurar que el sidebar tenga el ancho correcto */
+.main-sidebar {
+    width: 280px !important; /* Aumentar el ancho para evitar texto cortado */
+}
+
+/* Ajustar el contenido del sidebar */
+.main-sidebar .sidebar {
+    width: 100% !important;
+    padding-right: 15px !important;
+}
+
+/* Corregir el texto cortado en los elementos del menú */
+.main-sidebar .nav-item,
+.main-sidebar .nav-link {
+    white-space: nowrap !important;
+    overflow: visible !important;
+    text-overflow: unset !important;
+    width: 100% !important;
+}
+
+/* Asegurar que los textos del menú no se corten */
+.main-sidebar .nav-link span,
+.main-sidebar .nav-item span,
+.main-sidebar .nav-link .nav-link-text {
+    white-space: nowrap !important;
+    overflow: visible !important;
+    text-overflow: unset !important;
+    display: inline-block !important;
+    width: auto !important;
+}
+
+/* Corregir el usuario y panel de control */
+.main-sidebar .user-panel,
+.main-sidebar .user-info {
+    white-space: nowrap !important;
+    overflow: visible !important;
+    padding-right: 15px !important;
+}
+
+/* Ajustar el ancho del contenido principal para compensar el sidebar más ancho */
+.content-wrapper {
+    margin-left: 280px !important;
+}
+
+.main-header {
+    margin-left: 280px !important;
+}
+
+/* =========================================================
+   LOGIN PAGE PERSONALIZADO - CLASE LOGIN-LOGO-SS
+   ========================================================= */
+
+/* Selector principal para la clase login-logo-ss */
+.login-logo-ss {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    margin: 0 auto !important;
+    object-fit: contain !important;
+    border-radius: 6px !important;
+    box-sizing: border-box !important;
+}
+
+/* Selector específico para el header del login */
+.login-header .login-logo-ss {
+    margin-bottom: 1rem !important;
+    max-height: 120px !important;
+}
+
+/* Selector de respaldo para cualquier contexto */
+img.login-logo-ss {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    margin: 0 auto !important;
+    object-fit: contain !important;
+    border-radius: 6px !important;
+}
