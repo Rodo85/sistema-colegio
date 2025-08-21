@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib import admin
 from django.utils.html import format_html
+from django.urls import reverse
+from django.utils.safestring import mark_safe
 
 from core.mixins import InstitucionScopedAdmin
 from .models import Estudiante, EncargadoEstudiante, PersonaContacto, MatriculaAcademica, PlantillaImpresionMatricula
@@ -8,6 +10,7 @@ from .models import Estudiante, EncargadoEstudiante, PersonaContacto, MatriculaA
 from catalogos.models import Provincia, Canton, Distrito
 from .forms import MatriculaAcademicaForm
 from .widgets import ImagePreviewWidget
+from core.models import Institucion
 
 # ─────────────────────────────  Formularios  ────────────────────────────
 class EstudianteForm(forms.ModelForm):
@@ -426,21 +429,35 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
 
 @admin.register(PlantillaImpresionMatricula)
 class PlantillaImpresionMatriculaAdmin(admin.ModelAdmin):
-    list_display = ("titulo",)
-    fields = ("titulo", "logo_mep", "encabezado", "pie_pagina")
-
-    def has_add_permission(self, request):
-        # Solo permitir agregar si no existe ninguna plantilla
-        if PlantillaImpresionMatricula.objects.exists():
-            return False
-        return super().has_add_permission(request)
-
-    def has_module_permission(self, request):
-        # Solo superusuarios pueden ver el módulo
-        return request.user.is_superuser
-
-    def has_change_permission(self, request, obj=None):
-        return request.user.is_superuser
-
-    def has_delete_permission(self, request, obj=None):
-        return request.user.is_superuser
+    list_display = ['institucion', 'titulo']
+    list_filter = ['institucion']
+    search_fields = ['institucion__nombre', 'titulo']
+    
+    fieldsets = (
+        ('Información de la Institución', {
+            'fields': ('institucion',)
+        }),
+        ('Contenido de la Plantilla', {
+            'fields': ('titulo', 'logo_mep', 'encabezado', 'pie_pagina')
+        }),
+    )
+    
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        else:
+            # Usuario normal: solo ver plantillas de su institución
+            institucion_id = getattr(request, 'institucion_activa_id', None)
+            if institucion_id:
+                return qs.filter(institucion_id=institucion_id)
+            return qs.none()
+    
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "institucion" and not request.user.is_superuser:
+            # Usuario normal: solo puede seleccionar su institución activa
+            institucion_id = getattr(request, 'institucion_activa_id', None)
+            if institucion_id:
+                kwargs["queryset"] = Institucion.objects.filter(id=institucion_id)
+                kwargs["initial"] = institucion_id
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)

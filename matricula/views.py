@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from config_institucional.models import Nivel
 from catalogos.models import CursoLectivo, Seccion, Subgrupo, Especialidad
 from core.models import Institucion
-from .models import Estudiante, MatriculaAcademica
+from .models import Estudiante, MatriculaAcademica, PlantillaImpresionMatricula
 from dal import autocomplete
 import json
 
@@ -27,6 +27,26 @@ def consulta_estudiante(request):
     instituciones = []
     if request.user.is_superuser:
         instituciones = Institucion.objects.all().order_by('nombre')
+    
+    # Obtener la plantilla de impresión específica de la institución
+    plantilla = None
+    if request.user.is_superuser:
+        # Superusuario: obtener plantilla según institución seleccionada
+        institucion_id = request.POST.get('institucion') if request.method == 'POST' else None
+        if institucion_id:
+            try:
+                institucion_temp = Institucion.objects.get(pk=institucion_id)
+                plantilla = PlantillaImpresionMatricula.objects.filter(institucion=institucion_temp).first()
+            except:
+                pass
+    else:
+        # Usuario normal: obtener plantilla de su institución activa
+        institucion_id = getattr(request, 'institucion_activa_id', None)
+        if institucion_id:
+            try:
+                plantilla = PlantillaImpresionMatricula.objects.filter(institucion_id=institucion_id).first()
+            except:
+                pass
     
     if request.method == 'POST':
         curso_lectivo_id = request.POST.get('curso_lectivo')
@@ -54,6 +74,7 @@ def consulta_estudiante(request):
                             'cursos_lectivos': cursos_lectivos,
                             'instituciones': instituciones,
                             'es_superusuario': request.user.is_superuser,
+                            'plantilla': plantilla,
                         })
                     institucion = Institucion.objects.get(pk=institucion_id)
                 
@@ -80,13 +101,21 @@ def consulta_estudiante(request):
                     if estudiante.fecha_nacimiento:
                         from datetime import date
                         today = date.today()
-                        edad_estudiante = today.year - estudiante.fecha_nacimiento.year - (
-                            (today.month, today.day) < (
-                                estudiante.fecha_nacimiento.month, 
-                                estudiante.fecha_nacimiento.day
-                            )
-                        )
-                        edad_estudiante = f"{edad_estudiante} años"
+                        years = today.year - estudiante.fecha_nacimiento.year
+                        months = today.month - estudiante.fecha_nacimiento.month
+                        
+                        # Ajustar si el mes actual es menor que el mes de nacimiento
+                        if months < 0:
+                            years -= 1
+                            months += 12
+                        
+                        # Formatear la edad
+                        if years == 0:
+                            edad_estudiante = f"{months} meses"
+                        elif months == 0:
+                            edad_estudiante = f"{years} años"
+                        else:
+                            edad_estudiante = f"{years} años y {months} meses"
                 else:
                     # No hay matrícula activa, mostrar error
                     estudiante = None
@@ -115,6 +144,7 @@ def consulta_estudiante(request):
         'cursos_lectivos': cursos_lectivos,
         'instituciones': instituciones,
         'es_superusuario': request.user.is_superuser,
+        'plantilla': plantilla,
     }
     
     return render(request, 'matricula/consulta_estudiante.html', context)

@@ -289,16 +289,27 @@ class MatriculaAcademica(models.Model):
         return Especialidad.objects.filter(id__in=especialidades_configuradas)
 
 class PlantillaImpresionMatricula(models.Model):
+    institucion = models.ForeignKey(
+        "core.Institucion", 
+        on_delete=models.CASCADE, 
+        verbose_name="Institución",
+        help_text="Institución a la que pertenece esta plantilla"
+    )
     titulo = models.CharField("Título principal", max_length=200)
     logo_mep = models.ImageField("Logo MEP", upload_to="plantillas/logos_mep/", null=False, blank=False)
     encabezado = models.TextField("Encabezado superior", help_text="Puedes usar variables como {{ institucion.nombre }}")
     pie_pagina = models.TextField("Pie de página", help_text="Puedes usar variables como {{ institucion.nombre }}")
 
     def save(self, *args, **kwargs):
-        if PlantillaImpresionMatricula.objects.exists() and not self.pk:
-            raise Exception("Solo puede existir una plantilla global de impresión de matrícula.")
+        # Verificar que no exista otra plantilla para la misma institución
+        if PlantillaImpresionMatricula.objects.filter(institucion=self.institucion).exists() and not self.pk:
+            raise Exception(f"Ya existe una plantilla para la institución {self.institucion.nombre}.")
         super().save(*args, **kwargs)
 
     class Meta:
-        verbose_name = "Plantilla global de impresión de matrícula"
-        verbose_name_plural = "Plantilla global de impresión de matrícula"
+        verbose_name = "Plantilla de impresión de matrícula"
+        verbose_name_plural = "Plantillas de impresión de matrícula"
+        unique_together = ['institucion']
+
+    def __str__(self):
+        return f"Plantilla - {self.institucion.nombre}"

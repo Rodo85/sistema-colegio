@@ -6,7 +6,7 @@
     /* Footer centrado SIEMPRE (pantalla y PDF) */
     .footer-institucional {
       text-align: center;
-      font-size: 1.15em;
+      font-size: 0.8em;
       margin-bottom: 0;
       color: #000;
       font-weight: 600;
@@ -210,6 +210,21 @@
       box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
       transform: translateY(-1px);
     }
+    
+    /* Asegurar que los campos de entrada sean funcionales */
+    .form-input,
+    .form-select {
+      pointer-events: auto !important;
+      user-select: auto !important;
+      -webkit-user-select: auto !important;
+      -moz-user-select: auto !important;
+      -ms-user-select: auto !important;
+      cursor: text !important;
+    }
+    
+    .form-select {
+      cursor: pointer !important;
+    }
 
     .form-select {
       cursor: pointer;
@@ -272,84 +287,170 @@
       }
     }
 
-    /* --- SOLO IMPRESIÓN (PDF) --- */
-    @media print {
-      html, body {
-        background: #fff !important;
-        color: #000 !important;
-        font-family: "Arial", sans-serif !important;
-        font-size: 15px !important;
-        margin: 0;
-        padding: 0;
-      }
-      .print-btn,
-      .noprint, .noprint *, .hide-on-print,
-      .copyright, .module-footer, .breadcrumbs, .user-tools, .module-header,
-      .module-title, .module-nav, .footer, .login-footer,
-      #header, #nav-sidebar, #footer, #branding, .submit-row, .changeform-tabs,
-      .object-tools, .object-tools li, .object-tools .addlink, .pagination,
-      .related-widget-wrapper, .messagelist, .navbar, .sidebar, .admin-autocomplete,
-      .results, .nav, .globalnav, .changelist-filter {
-        display: none !important;
-      }
-      .print-container {
-        box-shadow: none !important;
-        border: none !important;
-        max-width: 100% !important;
-        padding: 0.5em !important;
-        margin: 0 !important;
-      }
-      .columns {
-        flex-direction: row !important;
-        gap: 0.7em !important;
-      }
-      .col {
-        width: 50% !important;
-        box-sizing: border-box !important;
-      }
-      .header-institucional .logo-grande {
-        max-height: 110px !important;
-        max-width: 100px !important;
-      }
-      .header-logos-derecha img:first-child {
-        max-height: 120px !important;
-        max-width: 300px !important;
-      }
+    /* === SOLO IMPRESIÓN (PDF) — A4, columnas estables y cabecera alineada === */
+@media print {
+  :root { --gap: 6mm; }
 
-      .texto-encabezado {
-        font-size: 1.3em !important;
-      }
-      h1 { display: none !important; }
-      .header-foto img {
-        width: 180px !important;
-        height: 180px !important;
-        margin-left: 20px !important;
-      }
-      .cuerpo { margin-left: 1em !important; }
-      .datos-personales-list strong {
-        font-size: 1.6em !important;
-        color: #2c3e50 !important;
-        font-weight: bold !important;
-      }
-      h2 {
-        font-size: 1.4em !important;
-        font-weight: bold !important;
-        margin-bottom: 0.5em !important;
-      }
-      .datos-personales-list b {
-        font-size: 1.1em !important;
-      }
-      .encargado-block {
-        font-size: 1.1em !important;
-      }
-      .footer-institucional {
-        /* Mantener centrado y sin sobrescribir nada */
-        text-align: center !important;
-        width: 100% !important;
-        font-size: 1em !important;
-        margin-bottom: 0 !important;
-      }
-    }
+  /* Motor de impresión */
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  html, body {
+    background: #fff !important;
+    color: #000 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 10.5pt !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Página A4 y márgenes */
+  @page {
+    size: A4 portrait;
+    margin: 12mm 14mm 16mm 14mm !important;  /* sup, der, inf, izq */
+  }
+
+  /* Ocultar todo lo no imprimible */
+  .print-btn,
+  .noprint, .noprint *, .hide-on-print,
+  .copyright, .module-footer, .breadcrumbs, .user-tools, .module-header,
+  .module-title, .module-nav, .footer, .login-footer,
+  #header, #nav-sidebar, #footer, #branding, .submit-row, .changeform-tabs,
+  .object-tools, .object-tools li, .object-tools .addlink, .pagination,
+  .related-widget-wrapper, .messagelist, .navbar, .sidebar, .admin-autocomplete,
+  .results, .nav, .globalnav, .changelist-filter {
+    display: none !important;
+  }
+  
+  /* Asegurar que los elementos del formulario no se vean afectados por la impresión */
+  .consulta-container,
+  .consulta-form,
+  .form-group,
+  .form-label,
+  .form-input,
+  .form-select,
+  .btn-buscar {
+    display: none !important;
+  }
+
+  /* Contenedor principal sin bordes/sombras y ancho completo */
+  .print-container {
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* ---------- CABECERA ---------- */
+  .header-institucional {
+    display: grid !important;
+    grid-template-columns: 38mm 1fr 32mm; /* foto | texto | logos */
+    align-items: center !important;
+    gap: var(--gap) !important;
+    margin: 0 0 4mm 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    page-break-inside: avoid !important;
+  }
+
+  .header-foto img {
+    width: 35mm !important;
+    height: 35mm !important;
+    object-fit: cover !important;
+    border: 0.4pt solid #666 !important;
+    border-radius: 2mm !important;
+    margin: 0 !important;
+  }
+
+  .titulo-matricula {
+    font-size: 14pt !important;
+    font-weight: 800 !important;
+    letter-spacing: 1pt !important;
+    margin: 0 0 2mm 0 !important;
+  }
+
+  .texto-encabezado {
+    font-size: 10pt !important;
+    line-height: 1.25 !important;
+    margin: 0 !important;
+  }
+
+  .header-logos-derecha { align-items: center !important; gap: 2mm !important; }
+  .header-logos-derecha img { display: block !important; margin: 0 auto !important; }
+  .header-logos-derecha img:first-child { max-width: 40mm !important; max-height: 20mm !important; }
+  .header-logos-derecha .logo-grande  { max-width: 28mm !important; max-height: 28mm !important; }
+
+  hr {
+    border: 0 !important;
+    border-top: 0.6pt solid #000 !important;
+    margin: 3mm 0 !important;
+  }
+
+  /* ---------- CUERPO EN DOS COLUMNAS ESTABLES ---------- */
+  .columns {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: var(--gap) !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .col {
+    break-inside: avoid !important;   /* evita cortes incómodos */
+    page-break-inside: avoid !important;
+  }
+
+  h2 { font-size: 12pt !important; margin: 0 0 2mm 0 !important; }
+
+  .cuerpo { margin: 0 !important; padding: 0 !important; }
+
+  .datos-personales-list { margin: 0 !important; padding: 0 !important; font-size: 10pt !important; }
+  .datos-personales-list b {
+    display: inline !important;       /* evita desalineación por min-width */
+    min-width: 0 !important;
+    font-weight: 700 !important;
+  }
+
+  ul { margin: 0 0 0 4mm !important; padding: 0 !important; }
+  .encargado-block { margin: 0 0 2mm 0 !important; padding: 0 !important; }
+
+  .firma-linea {
+    width: 70mm !important;
+    border-bottom: 0.6pt solid #000 !important;
+    display: inline-block !important;
+    margin-bottom: 2mm !important;
+  }
+
+  /* ---------- PIE DE PÁGINA ---------- */
+  .footer-institucional {
+    position: fixed !important;       /* mantiene el footer abajo en cada página */
+    left: 0; right: 0; bottom: 10mm;
+    text-align: center !important;
+    width: 100% !important;
+    font-size: 9pt !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Limpiezas finales: sin transformaciones/posiciones raras */
+  .header-institucional, .columns, .col,
+  .datos-personales-list, .encargado-block,
+  .firma-block, .footer-institucional {
+    transform: none !important;
+    position: static !important;
+    float: none !important;
+    clear: both !important;
+  }
+  
+  /* Asegurar que solo se aplique a elementos de impresión */
+  .print-container * {
+    pointer-events: auto !important;
+    user-select: auto !important;
+  }
+}
+
   </style>
 {% endblock %}
 
@@ -390,7 +491,7 @@
       </div>
       {% if estudiante %}
         <div class="form-group">
-          <button class="btn-buscar" onclick="window.print()" style="background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);">
+          <button type="button" class="btn-buscar" onclick="imprimirFichaAislada()" style="background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);">
             <span style="font-size:1.2em;">🖨️</span> Imprimir ficha
           </button>
         </div>
@@ -401,7 +502,7 @@
 
 {% if estudiante %}
 
-  <div class="print-container">
+  <div id="ficha-impresion" class="print-container">
     <!-- Encabezado institucional con foto a la izquierda y logos a la derecha -->
     <div class="header-institucional">
       <!-- Foto del estudiante -->
@@ -473,6 +574,7 @@
             <b>Adecuación:</b> {{ estudiante.adecuacion }}<br>
             <b>Presenta enfermedad:</b> {{ estudiante.presenta_enfermedad|yesno:"Sí,No" }}<br>
             <b>Detalle enfermedad:</b> {{ estudiante.detalle_enfermedad }}<br>
+            <b>Medicamentos que consume:</b> {{ estudiante.medicamento_consume|default:"Ninguno" }}<br>
             <b>Autoriza derecho de imagen:</b> {{ estudiante.autoriza_derecho_imagen|yesno:"Sí,No" }}<br>
             <b>Número de póliza:</b> {{ estudiante.numero_poliza }}<br>
             <b>Rige póliza:</b> {{ estudiante.rige_poliza }}<br>
@@ -527,4 +629,83 @@
     {% endif %}
   </div>
 {% endif %}
+
+<script>
+function imprimirFichaAislada() {
+  const nodo = document.getElementById('ficha-impresion');
+  if (!nodo) return alert('No se encontró el contenido a imprimir.');
+
+  const html = nodo.outerHTML;
+
+  // CSS mínimo y aislado para A4 (sin interferencias globales)
+  const css = `
+    @page { size: A4 portrait; margin: 12mm 14mm 16mm 14mm; }
+    html, body {
+      background: #fff; color: #000; font-family: Arial, sans-serif; font-size: 10.5pt;
+      margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+    * { box-sizing: border-box; }
+    
+    .print-container {
+      box-shadow: none !important; border: none !important; border-radius: 0 !important;
+      max-width: 100% !important; width: 100% !important; margin: 0 !important; padding: 0 !important;
+    }
+    
+    .header-institucional {
+      display: grid !important; grid-template-columns: 38mm 1fr 32mm; align-items: center;
+      gap: 6mm; margin: 0 0 4mm 0; padding: 0; width: 100%; page-break-inside: avoid;
+    }
+    .header-foto img { width: 35mm; height: 35mm; object-fit: cover; border: 0.4pt solid #666; border-radius: 2mm; margin: 0; }
+    .titulo-matricula { font-size: 14pt; font-weight: 800; letter-spacing: 1pt; margin: 0 0 2mm 0; }
+    .texto-encabezado { font-size: 10pt; line-height: 1.25; margin: 0; }
+    .header-logos-derecha { display: flex; flex-direction: column; align-items: center; gap: 2mm; }
+    .header-logos-derecha img { display: block; margin: 0 auto; }
+    .header-logos-derecha img:first-child { max-width: 40mm; max-height: 20mm; }
+    .header-logos-derecha .logo-grande { max-width: 28mm; max-height: 28mm; }
+    
+    hr { border: 0; border-top: 0.6pt solid #000; margin: 6mm 0; }
+    
+    .columns {
+      display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 6mm;
+      width: 100%; margin: 0; padding: 0; margin-top: 4mm !important;
+    }
+    .col { break-inside: avoid; page-break-inside: avoid; }
+    
+    h2 { font-size: 12pt; margin: 0 0 4mm 0; padding-bottom: 2mm; border-bottom: 0.3pt solid #ccc; }
+    .cuerpo { margin: 0; padding: 0; }
+    
+    .datos-personales-list strong { display: block !important; margin-bottom: 1mm !important; font-size: 12pt !important; }
+    .datos-personales-list { margin: 0; padding: 0; font-size: 10pt; line-height: 1.6 !important; }
+    .datos-personales-list b { display: inline; min-width: 0; font-weight: 700; }
+    .datos-personales-list br { margin-bottom: 2mm !important; display: block !important; }
+    
+    ul { margin: 0 0 0 4mm; padding: 0; }
+    .encargado-block { margin: 0 0 4mm 0; padding: 0; line-height: 1.5 !important; }
+    .encargado-block br { margin-bottom: 1.5mm !important; display: block !important; }
+    
+    .firma-linea { width: 70mm; border-bottom: 0.6pt solid #000; display: inline-block; margin-bottom: 2mm; }
+    
+    .footer-institucional {
+      position: fixed; left: 0; right: 0; bottom: 10mm; text-align: center; width: 100%;
+      font-size: 9pt; margin: 0; padding: 0; page-break-inside: avoid;
+    }
+  `;
+
+  // Crear ventana nueva pero cerrarla automáticamente después de imprimir
+  const win = window.open('', '_blank', 'width=800,height=600');
+  win.document.write(`
+    <!doctype html>
+    <html><head><meta charset="utf-8"><title>Ficha del estudiante</title><style>${css}</style></head>
+    <body>${html}</body></html>
+  `);
+  win.document.close();
+  
+  // Imprimir y cerrar automáticamente
+  win.onload = function() {
+    win.print();
+    setTimeout(() => win.close(), 500);
+  };
+}
+</script>
+
 {% endblock %}
