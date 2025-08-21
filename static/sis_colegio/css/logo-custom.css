@@ -4,9 +4,9 @@
 
 /* Logo pequeño en navbar y sidebar */
 img[src*="Logo-Peque-School-Smart"] {
-    max-height: 45px !important;
+    max-height: 35px !important;
     width: auto !important;
-    max-width: 200px !important;
+    max-width: 160px !important;
     object-fit: contain !important;
     height: auto !important;
 }
@@ -14,15 +14,15 @@ img[src*="Logo-Peque-School-Smart"] {
 /* Navbar */
 .navbar img[src*="Logo-Peque-School-Smart"],
 .main-header img[src*="Logo-Peque-School-Smart"] {
-    max-height: 40px !important;
-    max-width: 180px !important;
+    max-height: 32px !important;
+    max-width: 140px !important;
 }
 
 /* Sidebar */
 .sidebar img[src*="Logo-Peque-School-Smart"],
 .main-sidebar img[src*="Logo-Peque"] {
-    max-height: 50px !important;
-    max-width: 220px !important;
+    max-height: 40px !important;
+    max-width: 180px !important;
 }
 
 /* Seguridad: logos globales responsivos */
@@ -96,6 +96,49 @@ img[src*="Logo-Peque-School-Smart"] {
 }
 
 /* =========================================================
+   ESTADO COLAPSADO DEL SIDEBAR
+   ========================================================= */
+
+/* Cuando el sidebar está colapsado */
+body.sidebar-collapse .main-sidebar {
+    width: 4.6rem !important; /* Ancho estándar de AdminLTE colapsado */
+}
+
+/* Ajustar el contenido principal cuando el sidebar está colapsado */
+body.sidebar-collapse .content-wrapper {
+    margin-left: 4.6rem !important;
+}
+
+body.sidebar-collapse .main-header {
+    margin-left: 4.6rem !important;
+}
+
+/* Ocultar texto cuando está colapsado */
+body.sidebar-collapse .main-sidebar .nav-link span,
+body.sidebar-collapse .main-sidebar .nav-item span,
+body.sidebar-collapse .main-sidebar .nav-link .nav-link-text {
+    display: none !important;
+}
+
+/* Ocultar usuario y panel de control cuando está colapsado */
+body.sidebar-collapse .main-sidebar .user-panel,
+body.sidebar-collapse .main-sidebar .user-info {
+    display: none !important;
+}
+
+/* Asegurar que el logo se mantenga visible cuando está colapsado */
+body.sidebar-collapse .main-sidebar .brand-link {
+    width: 4.6rem !important;
+    text-align: center !important;
+}
+
+/* Ajustar el logo pequeño cuando está colapsado */
+body.sidebar-collapse .main-sidebar .brand-link img {
+    max-width: 40px !important;
+    max-height: 40px !important;
+}
+
+/* =========================================================
    LOGIN PAGE PERSONALIZADO - CLASE LOGIN-LOGO-SS
    ========================================================= */
 
@@ -126,4 +169,29 @@ img.login-logo-ss {
     margin: 0 auto !important;
     object-fit: contain !important;
     border-radius: 6px !important;
+}
+
+/* =========================================================
+   AJUSTES ESPECÍFICOS DEL LOGIN
+   ========================================================= */
+
+/* Asegurar que el contenedor del login tenga suficiente ancho */
+.login-container {
+    max-width: 500px !important;
+    width: 100% !important;
+}
+
+/* Asegurar que el header del login tenga suficiente espacio */
+.login-header {
+    padding: 2rem !important;
+    min-width: 450px !important;
+}
+
+/* Asegurar que el texto del subtítulo se vea completamente */
+.login-header h6 {
+    white-space: nowrap !important;
+    overflow: visible !important;
+    text-overflow: unset !important;
+    width: 100% !important;
+    text-align: center !important;
 }
