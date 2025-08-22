@@ -155,7 +155,7 @@ class EspecialidadCursoLectivo(models.Model):
         ordering = ("curso_lectivo__anio", "especialidad__nombre")
 
     def __str__(self):
-        return f"{self.institucion} - {self.curso_lectivo} - {self.especialidad}"
+        return f"{self.especialidad.nombre}"
 
     def clean(self):
         from django.core.exceptions import ValidationError
@@ -193,7 +193,7 @@ class SeccionCursoLectivo(models.Model):
         verbose_name_plural = "Secciones por Curso Lectivo"
 
     def __str__(self):
-        return f"{self.institucion.nombre} - {self.curso_lectivo.nombre} - Sección {self.seccion.numero}"
+        return f"Sección {self.seccion.numero}"
 
     def clean(self):
         from django.core.exceptions import ValidationError
@@ -233,7 +233,7 @@ class SubgrupoCursoLectivo(models.Model):
         verbose_name_plural = "Subgrupos por Curso Lectivo"
 
     def __str__(self):
-        return f"{self.institucion.nombre} - {self.curso_lectivo.nombre} - {self.subgrupo.letra}"
+        return f"{self.subgrupo.letra}"
 
     def clean(self):
         from django.core.exceptions import ValidationError

@@ -202,19 +202,26 @@ class MatriculaAcademica(models.Model):
         (PROMOVIDO, 'Promovido'),
         (REPITENTE, 'Repitente'),
     ]
-    estudiante = models.ForeignKey('Estudiante', on_delete=models.CASCADE, related_name='matriculas_academicas')
+    estudiante = models.ForeignKey('Estudiante', on_delete=models.PROTECT, related_name='matriculas_academicas')
     nivel = models.ForeignKey(Nivel, on_delete=models.PROTECT)
     seccion = models.ForeignKey(Seccion, on_delete=models.PROTECT, null=True, blank=True, verbose_name="Sección")
     subgrupo = models.ForeignKey(Subgrupo, on_delete=models.PROTECT, null=True, blank=True, verbose_name="Subgrupo")
     curso_lectivo = models.ForeignKey('catalogos.CursoLectivo', on_delete=models.PROTECT, verbose_name="Curso Lectivo")
     fecha_asignacion = models.DateField(auto_now_add=True)
-    estado = models.CharField(max_length=15, choices=ESTADO_CHOICES, default=ACTIVO, null=True, blank=True)
-    especialidad = models.ForeignKey(Especialidad, on_delete=models.PROTECT, null=True, blank=True)
+    estado = models.CharField(max_length=15, choices=ESTADO_CHOICES, default=ACTIVO)
+    especialidad = models.ForeignKey('config_institucional.EspecialidadCursoLectivo', on_delete=models.PROTECT, null=True, blank=True, verbose_name="Especialidad del curso lectivo")
     
     class Meta:
         verbose_name = "Matrícula académica"
         verbose_name_plural = "Matrículas académicas"
-        unique_together = ("estudiante", "nivel", "seccion", "subgrupo", "curso_lectivo")
+        # Evita dos matrículas ACTIVAS en el mismo año
+        constraints = [
+            models.UniqueConstraint(
+                fields=['estudiante', 'curso_lectivo'],
+                condition=Q(estado='activo'),
+                name='uniq_matricula_activa_por_anio',
+            ),
+        ]
     
     def __str__(self):
         return f"{self.estudiante} - {self.nivel} {self.seccion or ''} {self.subgrupo or ''} ({self.curso_lectivo})"
@@ -226,13 +233,23 @@ class MatriculaAcademica(models.Model):
     def clean(self):
         from django.core.exceptions import ValidationError
         
-        # Validar especialidad para décimo, undécimo y duodécimo
-        if self.nivel and self.nivel.nombre in ['Décimo', 'Undécimo', 'Duodécimo']:
+        # 1) Especialidad obligatoria en 10-12 por número (más robusto que nombre)
+        if self.nivel and getattr(self.nivel, 'numero', None) in [10, 11, 12]:
             if not self.especialidad:
-                raise ValidationError("La especialidad es obligatoria para décimo, undécimo y duodécimo.")
-        
-        # Solo validar si el estudiante ya está guardado (tiene pk)
-        if self.estado == 'activo' and self.curso_lectivo and self.estudiante and getattr(self.estudiante, 'pk', None):
+                raise ValidationError("La especialidad es obligatoria para 10°, 11° y 12°.")
+
+        # 2) Coherencia ECL ↔ curso lectivo (y, si aplica, institución del estudiante)
+        if self.especialidad:
+            if self.especialidad.curso_lectivo_id != self.curso_lectivo_id:
+                raise ValidationError("La especialidad seleccionada no corresponde a este curso lectivo.")
+
+            # Si Estudiante tiene FK a Institución, valide también:
+            if hasattr(self.estudiante, 'institucion_id'):
+                if self.especialidad.institucion_id != self.estudiante.institucion_id:
+                    raise ValidationError("La especialidad no pertenece a la institución del estudiante.")
+
+        # 3) Salvaguarda adicional (evita dos activas por año aunque cambie sección/subgrupo)
+        if (self.estado == 'activo' and self.curso_lectivo_id and getattr(self.estudiante, 'pk', None)):
             existe = MatriculaAcademica.objects.filter(
                 estudiante=self.estudiante,
                 curso_lectivo=self.curso_lectivo,
@@ -240,6 +257,7 @@ class MatriculaAcademica(models.Model):
             ).exclude(pk=self.pk).exists()
             if existe:
                 raise ValidationError("Ya existe una matrícula activa para este curso lectivo.")
+
         super().clean()
 
     @classmethod
@@ -292,14 +310,12 @@ class MatriculaAcademica(models.Model):
         Solo retorna las especialidades que han sido configuradas como activas.
         """
         from config_institucional.models import EspecialidadCursoLectivo
-        
-        especialidades_configuradas = EspecialidadCursoLectivo.objects.filter(
-            institucion=institucion,
-            curso_lectivo=curso_lectivo,
-            activa=True
-        ).values_list('especialidad_id', flat=True)
-        
-        return Especialidad.objects.filter(id__in=especialidades_configuradas)
+        return (
+            EspecialidadCursoLectivo.objects
+            .filter(institucion=institucion, curso_lectivo=curso_lectivo, activa=True)
+            .select_related('especialidad', 'especialidad__modalidad')
+            .order_by('especialidad__nombre')
+        )
 
 class PlantillaImpresionMatricula(models.Model):
     institucion = models.ForeignKey(

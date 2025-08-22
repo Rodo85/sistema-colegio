@@ -1,0 +1,11 @@
+[
+  {"model": "config_institucional.especialidadcursolectivo", "pk": 1, "fields": {"activa": true, "curso_lectivo_id": 1, "especialidad_id": 1, "institucion_id": 1}},
+  {"model": "config_institucional.especialidadcursolectivo", "pk": 2, "fields": {"activa": true, "curso_lectivo_id": 1, "especialidad_id": 3, "institucion_id": 1}},
+  {"model": "config_institucional.especialidadcursolectivo", "pk": 3, "fields": {"activa": true, "curso_lectivo_id": 1, "especialidad_id": 4, "institucion_id": 1}},
+  {"model": "config_institucional.especialidadcursolectivo", "pk": 4, "fields": {"activa": true, "curso_lectivo_id": 1, "especialidad_id": 5, "institucion_id": 1}},
+  {"model": "config_institucional.especialidadcursolectivo", "pk": 5, "fields": {"activa": true, "curso_lectivo_id": 1, "especialidad_id": 6, "institucion_id": 1}},
+  {"model": "config_institucional.especialidadcursolectivo", "pk": 6, "fields": {"activa": true, "curso_lectivo_id": 1, "especialidad_id": 10, "institucion_id": 1}},
+  {"model": "config_institucional.especialidadcursolectivo", "pk": 7, "fields": {"activa": true, "curso_lectivo_id": 1, "especialidad_id": 12, "institucion_id": 1}},
+  {"model": "config_institucional.especialidadcursolectivo", "pk": 8, "fields": {"activa": true, "curso_lectivo_id": 1, "especialidad_id": 16, "institucion_id": 1}},
+  {"model": "config_institucional.especialidadcursolectivo", "pk": 9, "fields": {"activa": true, "curso_lectivo_id": 1, "especialidad_id": 9, "institucion_id": 1}}
+]

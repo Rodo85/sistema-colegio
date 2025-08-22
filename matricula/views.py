@@ -282,17 +282,14 @@ class EspecialidadAutocomplete(autocomplete.Select2QuerySetView):
                 print(f"✅ Nivel {nivel.numero} ({nivel.nombre}) requiere especialidad")
                 
                 # Obtener especialidades configuradas y activas para este curso lectivo
-                especialidades_configuradas = EspecialidadCursoLectivo.objects.filter(
+                qs = EspecialidadCursoLectivo.objects.filter(
                     institucion_id=institucion_id,
                     curso_lectivo=curso_lectivo,
                     activa=True
-                ).values_list('especialidad_id', flat=True)
+                ).select_related('especialidad', 'especialidad__modalidad')
                 
-                print(f"🎯 Especialidades configuradas IDs: {list(especialidades_configuradas)}")
-                
-                # Filtrar especialidades
-                qs = Especialidad.objects.filter(id__in=especialidades_configuradas)
-                print(f"📋 Especialidades encontradas: {[esp.nombre for esp in qs]}")
+                print(f"🎯 Especialidades configuradas encontradas: {[ecl.especialidad.nombre for ecl in qs]}")
+                print(f"📋 Especialidades encontradas: {[ecl.especialidad.nombre for ecl in qs]}")
                 
             except (CursoLectivo.DoesNotExist, Nivel.DoesNotExist, ValueError) as e:
                 print(f"❌ Error: {e}")
@@ -312,11 +309,11 @@ class EspecialidadAutocomplete(autocomplete.Select2QuerySetView):
         
         # Filtro por búsqueda
         if self.q:
-            qs = qs.filter(nombre__icontains=self.q)
-            print(f"🔍 Filtrado por búsqueda '{self.q}': {[esp.nombre for esp in qs]}")
+            qs = qs.filter(especialidad__nombre__icontains=self.q)
+            print(f"🔍 Filtrado por búsqueda '{self.q}': {[ecl.especialidad.nombre for ecl in qs]}")
         
-        final_qs = qs.order_by('nombre')
-        print(f"🎯 RESULTADO FINAL: {[esp.nombre for esp in final_qs]}")
+        final_qs = qs.order_by('especialidad__nombre')
+        print(f"🎯 RESULTADO FINAL: {[ecl.especialidad.nombre for ecl in final_qs]}")
         return final_qs
 
 

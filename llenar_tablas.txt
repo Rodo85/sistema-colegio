@@ -12,7 +12,12 @@ python manage.py loaddata catalogos/fixtures/modalidades.json
 python manage.py loaddata catalogos/fixtures/especialidades.json
 python manage.py loaddata catalogos/fixtures/secciones.json
 python manage.py loaddata catalogos/fixtures/subgrupos.json
+///  Necesita crear la institución
+//   crear el curso lectivo
 python manage.py loaddata catalogos/fixtures/seccion_curso_lectivo.json
+python manage.py loaddata catalogos/fixtures/especialidad_curso_lectivo.json
+python manage.py loaddata catalogos/fixtures/subgrupo_curso_lectivo.json
 python manage.py load_contactos
 python manage.py load_estudiantes
 python manage.py load_relacion_est_contacto
+python manage.py load_matricula_academica

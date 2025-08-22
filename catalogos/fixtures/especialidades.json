@@ -5,14 +5,14 @@
   {"model": "catalogos.especialidad", "pk": 4, "fields": {"modalidad": 1, "nombre": "Ejecutivo comercial y de servicio al cliente"}},
   {"model": "catalogos.especialidad", "pk": 5, "fields": {"modalidad": 1, "nombre": "Desarrollo web"}},
   {"model": "catalogos.especialidad", "pk": 6, "fields": {"modalidad": 1, "nombre": "Administración, Logística y Distribución"}},
-  {"model": "catalogos.especialidad", "pk": 8, "fields": {"modalidad": 1, "nombre": "Informática en Desarrollo de Software"}},
-  {"model": "catalogos.especialidad", "pk": 9, "fields": {"modalidad": 1, "nombre": "Ejecutivo para centros de servicio"}},
-  {"model": "catalogos.especialidad", "pk": 10, "fields": {"modalidad": 1, "nombre": "Banca y finanzas"}},
+  {"model": "catalogos.especialidad", "pk": 7, "fields": {"modalidad": 1, "nombre": "Informática en Desarrollo de Software"}},
+  {"model": "catalogos.especialidad", "pk": 8, "fields": {"modalidad": 1, "nombre": "Ejecutivo para centros de servicio"}},
+  {"model": "catalogos.especialidad", "pk": 9, "fields": {"modalidad": 1, "nombre": "Banca y finanzas"}},
+  {"model": "catalogos.especialidad", "pk": 10, "fields": {"modalidad": 1, "nombre": "Turismo en Alimentos y bebidas"}},
   {"model": "catalogos.especialidad", "pk": 11, "fields": {"modalidad": 2, "nombre": "Gestión de calidad"}},
-  {"model": "catalogos.especialidad", "pk": 12, "fields": {"modalidad": 2, "nombre": "Electrónica"}},,
+  {"model": "catalogos.especialidad", "pk": 12, "fields": {"modalidad": 2, "nombre": "Electrónica Industrial"}},
   {"model": "catalogos.especialidad", "pk": 13, "fields": {"modalidad": 2, "nombre": "Construcción Civil"}},
   {"model": "catalogos.especialidad", "pk": 14, "fields": {"modalidad": 2, "nombre": "Diseño publicitario"}},
   {"model": "catalogos.especialidad", "pk": 15, "fields": {"modalidad": 2, "nombre": "Diseño y construcción de muebles y estructuras"}},
-  {"model": "catalogos.especialidad", "pk": 16, "fields": {"modalidad": 2, "nombre": "Electrónica en telecumicaciones"}},
-  {"model": "catalogos.especialidad", "pk": 17, "fields": {"modalidad": 1, "nombre": "Turismo en Alimentos y bebidas"}}
+  {"model": "catalogos.especialidad", "pk": 16, "fields": {"modalidad": 2, "nombre": "Electrónica en telecomicaciones"}}
 ]

@@ -6,13 +6,22 @@ from config_institucional.models import Nivel
 from catalogos.models import CursoLectivo
 from dal import autocomplete
 
+class EspecialidadCursoLectivoWidget(autocomplete.ModelSelect2):
+    """Widget personalizado para mostrar solo el nombre de la especialidad"""
+    
+    def label_from_instance(self, obj):
+        """Muestra solo el nombre de la especialidad (ej: 'Ejecutivo comercial')"""
+        if hasattr(obj, 'especialidad') and hasattr(obj.especialidad, 'nombre'):
+            return obj.especialidad.nombre
+        return str(obj)
+
 class MatriculaAcademicaForm(forms.ModelForm):
     class Meta:
         model = MatriculaAcademica
         fields = '__all__'
         widgets = {
             # FLUJO DEPENDIENTE: Curso Lectivo → Especialidad, Sección, Subgrupo
-            'especialidad': autocomplete.ModelSelect2(
+            'especialidad': EspecialidadCursoLectivoWidget(
                 url='especialidad-autocomplete', 
                 forward=['curso_lectivo', 'nivel'],  # Especialidad depende de curso_lectivo y nivel
                 attrs={

@@ -337,7 +337,7 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
         )
     
 
-    list_display = ("identificacion_estudiante", "nombre_estudiante", "nivel", "seccion", "subgrupo", "curso_lectivo", "estado", "especialidad", "fecha_asignacion")
+    list_display = ("identificacion_estudiante", "nombre_estudiante", "nivel", "seccion", "subgrupo", "curso_lectivo", "estado", "especialidad_nombre", "fecha_asignacion")
     list_filter = ("nivel", "seccion", "subgrupo", "curso_lectivo", "estado", "especialidad")
     search_fields = ("estudiante__identificacion", "estudiante__primer_apellido", "estudiante__nombres")
     ordering = ("curso_lectivo__anio", "estudiante__primer_apellido", "estudiante__nombres")
@@ -365,6 +365,14 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
         return f"{obj.estudiante.primer_apellido} {obj.estudiante.nombres}"
     nombre_estudiante.short_description = "Nombre"
     nombre_estudiante.admin_order_field = 'estudiante__primer_apellido'
+
+    def especialidad_nombre(self, obj):
+        """Mostrar solo el nombre de la especialidad"""
+        if obj.especialidad and hasattr(obj.especialidad, 'especialidad'):
+            return obj.especialidad.especialidad.nombre
+        return "-"
+    especialidad_nombre.short_description = "Especialidad"
+    especialidad_nombre.admin_order_field = 'especialidad__especialidad__nombre'
 
     def get_form(self, request, obj=None, **kwargs):
         """Personalizar formulario para lógica inteligente de matrícula"""
