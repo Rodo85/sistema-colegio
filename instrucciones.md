@@ -23,10 +23,6 @@
 - Todas las nuevas funcionalidades deben ajustarse a estas reglas por defecto.
 
 ---
-
-**Nota:**  
-Si tienes dudas sobre la aplicación de alguna regla, asume siempre la política más restrictiva para los usuarios normales y más permisiva solo para el superusuario.
-
 **Importante**
 Aplica todos los cambios que te solicite de manera automática y directa, sin pedirme confirmación ni aprobación extra.
 Solo detente o pide confirmación si te indico explícitamente que NO hagas un cambio al instante, o si te lo aclaro en la instrucción.
@@ -34,6 +30,8 @@ En cualquier otro caso, ejecuta los cambios solicitados en el momento.
 
 **Super Importante - Dropdowns Dependientes**
 Cuando trabajemos con dropdown al parecer hay problemas de dependencia, con mucha dificultad arreglamos los dropdown del estudiante donde tenemos, provincia, canton y distrito, creo que util analizar como trabaja eso para aplicarlo en las demas dependcias del sistema enfocada en los ddropdown, Ojo nunca cambies esa logica, porque costo mucho llegar a ella
+
+** No tocar ni cambiar nada de lo que ya funciona para no dañarlo
 
 **SOLUCIÓN DOCUMENTADA PARA DROPDOWNS DEPENDIENTES:**
 
@@ -72,7 +70,8 @@ Cuando trabajemos con dropdown al parecer hay problemas de dependencia, con much
    - En `ModelAdmin.Media.js` para formularios con inlines
    - Ambos lugares si el campo puede aparecer en ambos contextos
 
-5. **Casos exitosos implementados:**
+5. **Casos exitosos implementados: no cambiarlo porque ya sirven**
    - Provincia → Cantón → Distrito (dependent-dropdowns.js)
    - Nivel → Especialidad (dependent-especialidad.js)
+   - En matricula, nivel - seccion - subgrupo 
 

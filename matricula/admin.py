@@ -12,6 +12,211 @@ from .forms import MatriculaAcademicaForm
 from .widgets import ImagePreviewWidget
 from core.models import Institucion
 
+# ─────────────────────────────  Filtros Personalizados  ────────────────────────────
+class InstitucionScopedFilter(admin.SimpleListFilter):
+    """Filtro base que se filtra por institución activa del usuario"""
+    
+    def queryset(self, request, queryset):
+        if request.user.is_superuser:
+            return queryset
+        institucion_id = getattr(request, 'institucion_activa_id', None)
+        if institucion_id:
+            return queryset.filter(institucion_id=institucion_id)
+        return queryset.none()
+
+class NivelInstitucionFilter(InstitucionScopedFilter):
+    title = 'Nivel'
+    parameter_name = 'nivel_institucion'
+    
+    def lookups(self, request, model_admin):
+        from config_institucional.models import NivelInstitucion
+        if request.user.is_superuser:
+            niveles = NivelInstitucion.objects.values_list('nivel__id', 'nivel__numero', 'nivel__nombre').distinct()
+            # Formatear como "7 (Séptimo)", "8 (Octavo)", etc.
+            return [(nivel[0], f"{nivel[1]} ({nivel[2]})") for nivel in niveles]
+        else:
+            institucion_id = getattr(request, 'institucion_activa_id', None)
+            if institucion_id:
+                niveles = NivelInstitucion.objects.filter(
+                    institucion_id=institucion_id
+                ).values_list('nivel__id', 'nivel__numero', 'nivel__nombre').distinct()
+                # Formatear como "7 (Séptimo)", "8 (Octavo)", etc.
+                return [(nivel[0], f"{nivel[1]} ({nivel[2]})") for nivel in niveles]
+            else:
+                return []
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(nivel_id=self.value())
+        return queryset
+
+class SeccionInstitucionFilter(InstitucionScopedFilter):
+    title = 'Sección'
+    parameter_name = 'seccion_institucion'
+    
+    def lookups(self, request, model_admin):
+        from config_institucional.models import SeccionCursoLectivo
+        from catalogos.models import CursoLectivo
+        import datetime
+        
+        # Obtener el curso lectivo seleccionado o el año actual por defecto
+        curso_lectivo_id = request.GET.get('curso_lectivo')
+        if not curso_lectivo_id:
+            curso_actual = CursoLectivo.objects.filter(anio=datetime.date.today().year).first()
+            curso_lectivo_id = curso_actual.id if curso_actual else None
+        
+        if not curso_lectivo_id:
+            return []
+        
+        if request.user.is_superuser:
+            secciones = SeccionCursoLectivo.objects.filter(
+                curso_lectivo_id=curso_lectivo_id
+            ).values_list('seccion__id', 'seccion__nivel__numero', 'seccion__numero').distinct()
+        else:
+            institucion_id = getattr(request, 'institucion_activa_id', None)
+            if institucion_id:
+                secciones = SeccionCursoLectivo.objects.filter(
+                    institucion_id=institucion_id,
+                    curso_lectivo_id=curso_lectivo_id
+                ).values_list('seccion__id', 'seccion__nivel__numero', 'seccion__numero').distinct()
+            else:
+                return []
+        
+        # Formatear como "7-1", "7-2", etc.
+        return [(seccion[0], f"{seccion[1]}-{seccion[2]}") for seccion in secciones]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(seccion_id=self.value())
+        return queryset
+
+class SubgrupoInstitucionFilter(InstitucionScopedFilter):
+    title = 'Subgrupo'
+    parameter_name = 'subgrupo_institucion'
+    
+    def lookups(self, request, model_admin):
+        from config_institucional.models import SubgrupoCursoLectivo
+        from catalogos.models import CursoLectivo
+        import datetime
+        
+        # Obtener el curso lectivo seleccionado o el año actual por defecto
+        curso_lectivo_id = request.GET.get('curso_lectivo')
+        if not curso_lectivo_id:
+            curso_actual = CursoLectivo.objects.filter(anio=datetime.date.today().year).first()
+            curso_lectivo_id = curso_actual.id if curso_actual else None
+        
+        if not curso_lectivo_id:
+            return []
+        
+        if request.user.is_superuser:
+            subgrupos = SubgrupoCursoLectivo.objects.filter(
+                curso_lectivo_id=curso_lectivo_id
+            ).values_list(
+                'subgrupo__id', 
+                'subgrupo__seccion__nivel__numero', 
+                'subgrupo__seccion__numero', 
+                'subgrupo__letra'
+            ).distinct()
+        else:
+            institucion_id = getattr(request, 'institucion_activa_id', None)
+            if institucion_id:
+                subgrupos = SubgrupoCursoLectivo.objects.filter(
+                    institucion_id=institucion_id,
+                    curso_lectivo_id=curso_lectivo_id
+                ).values_list(
+                    'subgrupo__id', 
+                    'subgrupo__seccion__nivel__numero', 
+                    'subgrupo__seccion__numero', 
+                    'subgrupo__letra'
+                ).distinct()
+            else:
+                return []
+        
+        # Formatear como "7-1A", "7-1B", etc.
+        return [(subgrupo[0], f"{subgrupo[1]}-{subgrupo[2]}{subgrupo[3]}") for subgrupo in subgrupos]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(subgrupo_id=self.value())
+        return queryset
+
+class EspecialidadInstitucionFilter(InstitucionScopedFilter):
+    title = 'Especialidad'
+    parameter_name = 'especialidad_institucion'
+    
+    def lookups(self, request, model_admin):
+        from config_institucional.models import EspecialidadCursoLectivo
+        from catalogos.models import CursoLectivo
+        import datetime
+        
+        # Obtener el curso lectivo seleccionado o el año actual por defecto
+        curso_lectivo_id = request.GET.get('curso_lectivo')
+        if not curso_lectivo_id:
+            curso_actual = CursoLectivo.objects.filter(anio=datetime.date.today().year).first()
+            curso_lectivo_id = curso_actual.id if curso_actual else None
+        
+        if not curso_lectivo_id:
+            return []
+        
+        if request.user.is_superuser:
+            especialidades = EspecialidadCursoLectivo.objects.filter(
+                curso_lectivo_id=curso_lectivo_id
+            ).values_list('especialidad__id', 'especialidad__nombre').distinct()
+        else:
+            institucion_id = getattr(request, 'institucion_activa_id', None)
+            if institucion_id:
+                especialidades = EspecialidadCursoLectivo.objects.filter(
+                    institucion_id=institucion_id,
+                    curso_lectivo_id=curso_lectivo_id
+                ).values_list('especialidad__id', 'especialidad__nombre').distinct()
+            else:
+                especialidades = []
+        return especialidades
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(especialidad_id=self.value())
+        return queryset
+
+class CursoLectivoFilter(admin.SimpleListFilter):
+    title = 'Curso Lectivo'
+    parameter_name = 'curso_lectivo'
+    
+    def lookups(self, request, model_admin):
+        from catalogos.models import CursoLectivo
+        import datetime
+        
+        # Obtener todos los cursos lectivos ordenados por año (más reciente primero)
+        cursos = CursoLectivo.objects.values_list('id', 'anio', 'nombre').order_by('-anio')
+        return [(curso[0], f"{curso[1]} - {curso[2]}") for curso in cursos]
+    
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(curso_lectivo_id=self.value())
+        else:
+            # Si no hay filtro seleccionado, filtrar por el año actual por defecto
+            from catalogos.models import CursoLectivo
+            import datetime
+            curso_actual = CursoLectivo.objects.filter(anio=datetime.date.today().year).first()
+            if curso_actual:
+                return queryset.filter(curso_lectivo_id=curso_actual.id)
+        return queryset
+    
+    def choices(self, changelist):
+        """Personalizar choices para tener seleccionado por defecto el año actual"""
+        from catalogos.models import CursoLectivo
+        import datetime
+        
+        # Obtener el curso lectivo del año actual
+        curso_actual = CursoLectivo.objects.filter(anio=datetime.date.today().year).first()
+        
+        # Si no hay un valor seleccionado y existe un curso para el año actual, seleccionarlo
+        if not self.value() and curso_actual:
+            # Modificar temporalmente el valor para que aparezca seleccionado
+            self.used_parameters[self.parameter_name] = str(curso_actual.id)
+        
+        return super().choices(changelist)
+
 # ─────────────────────────────  Formularios  ────────────────────────────
 class EstudianteForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -337,8 +542,8 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
         )
     
 
-    list_display = ("identificacion_estudiante", "nombre_estudiante", "nivel", "seccion", "subgrupo", "curso_lectivo", "estado", "especialidad_nombre", "fecha_asignacion")
-    list_filter = ("nivel", "seccion", "subgrupo", "curso_lectivo", "estado", "especialidad")
+    list_display = ("identificacion_estudiante", "apellido1_estudiante", "apellido2_estudiante", "nombre_estudiante", "nivel", "seccion", "subgrupo", "especialidad_nombre")
+    list_filter = (NivelInstitucionFilter, SeccionInstitucionFilter, SubgrupoInstitucionFilter, CursoLectivoFilter, "estado", EspecialidadInstitucionFilter)
     search_fields = ("estudiante__identificacion", "estudiante__primer_apellido", "estudiante__nombres")
     ordering = ("curso_lectivo__anio", "estudiante__primer_apellido", "estudiante__nombres")
     
@@ -360,11 +565,23 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
     identificacion_estudiante.short_description = "Identificación"
     identificacion_estudiante.admin_order_field = 'estudiante__identificacion'
 
+    def apellido1_estudiante(self, obj):
+        """Mostrar primer apellido del estudiante"""
+        return obj.estudiante.primer_apellido
+    apellido1_estudiante.short_description = "1er Apellido"
+    apellido1_estudiante.admin_order_field = 'estudiante__primer_apellido'
+
+    def apellido2_estudiante(self, obj):
+        """Mostrar segundo apellido del estudiante"""
+        return obj.estudiante.segundo_apellido
+    apellido2_estudiante.short_description = "2do Apellido"
+    apellido2_estudiante.admin_order_field = 'estudiante__segundo_apellido'
+
     def nombre_estudiante(self, obj):
-        """Mostrar nombre completo del estudiante"""
-        return f"{obj.estudiante.primer_apellido} {obj.estudiante.nombres}"
-    nombre_estudiante.short_description = "Nombre"
-    nombre_estudiante.admin_order_field = 'estudiante__primer_apellido'
+        """Mostrar solo los nombres del estudiante"""
+        return obj.estudiante.nombres
+    nombre_estudiante.short_description = "Nombres"
+    nombre_estudiante.admin_order_field = 'estudiante__nombres'
 
     def especialidad_nombre(self, obj):
         """Mostrar solo el nombre de la especialidad"""
@@ -435,8 +652,27 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
             field.widget.can_add_related = False
             field.widget.can_change_related = False
         
+        # Configurar límite de 44 elementos para evitar sobrecargar los selects
+        # Considerando que los grupos son máximo de 40 estudiantes
+        if db_field.name in ["seccion", "subgrupo"]:
+            # Limitar a máximo 44 elementos para secciones y subgrupos
+            if "queryset" not in kwargs:
+                kwargs["queryset"] = db_field.related_model.objects.all()
+            kwargs["queryset"] = kwargs["queryset"][:44]
+        
         # DAL maneja el filtrado de especialidad, seccion y subgrupo automáticamente
         return field
+
+    def get_search_results(self, request, queryset, search_term):
+        """Limitar resultados de búsqueda para evitar sobrecargar los selects"""
+        queryset, use_distinct = super().get_search_results(request, queryset, search_term)
+        
+        # Limitar a máximo 44 resultados para evitar sobrecargar la interfaz
+        # Considerando que los grupos son máximo de 40 estudiantes
+        if queryset.count() > 44:
+            queryset = queryset[:44]
+        
+        return queryset, use_distinct
 
 @admin.register(PlantillaImpresionMatricula)
 class PlantillaImpresionMatriculaAdmin(admin.ModelAdmin):
