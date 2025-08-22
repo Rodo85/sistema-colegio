@@ -113,7 +113,7 @@ class PeriodoLectivoAdmin(admin.ModelAdmin):
 
 @admin.register(EspecialidadCursoLectivo)
 class EspecialidadCursoLectivoAdmin(admin.ModelAdmin):
-    list_display = ('institucion', 'curso_lectivo', 'especialidad', 'activa')
+    list_display = ('id', 'institucion', 'curso_lectivo', 'especialidad', 'activa')
     list_filter = ('institucion', 'curso_lectivo__anio', 'especialidad__modalidad', 'activa')
     search_fields = ('institucion__nombre', 'curso_lectivo__nombre', 'especialidad__nombre')
     ordering = ('institucion__nombre', '-curso_lectivo__anio', 'especialidad__nombre')

@@ -9,8 +9,10 @@
   {"model": "catalogos.especialidad", "pk": 9, "fields": {"modalidad": 1, "nombre": "Ejecutivo para centros de servicio"}},
   {"model": "catalogos.especialidad", "pk": 10, "fields": {"modalidad": 1, "nombre": "Banca y finanzas"}},
   {"model": "catalogos.especialidad", "pk": 11, "fields": {"modalidad": 2, "nombre": "Gestión de calidad"}},
-  {"model": "catalogos.especialidad", "pk": 12, "fields": {"modalidad": 2, "nombre": "Electrónica"}},
+  {"model": "catalogos.especialidad", "pk": 12, "fields": {"modalidad": 2, "nombre": "Electrónica"}},,
   {"model": "catalogos.especialidad", "pk": 13, "fields": {"modalidad": 2, "nombre": "Construcción Civil"}},
   {"model": "catalogos.especialidad", "pk": 14, "fields": {"modalidad": 2, "nombre": "Diseño publicitario"}},
-  {"model": "catalogos.especialidad", "pk": 15, "fields": {"modalidad": 2, "nombre": "Diseño y construcción de muebles y estructuras"}}
+  {"model": "catalogos.especialidad", "pk": 15, "fields": {"modalidad": 2, "nombre": "Diseño y construcción de muebles y estructuras"}},
+  {"model": "catalogos.especialidad", "pk": 16, "fields": {"modalidad": 2, "nombre": "Electrónica en telecumicaciones"}},
+  {"model": "catalogos.especialidad", "pk": 17, "fields": {"modalidad": 1, "nombre": "Turismo en Alimentos y bebidas"}}
 ]
