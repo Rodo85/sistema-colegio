@@ -93,7 +93,11 @@ class MatriculaAcademicaForm(forms.ModelForm):
                             self.fields['especialidad'].queryset = especialidades_disponibles
                     except (CursoLectivo.DoesNotExist, ValueError, Estudiante.DoesNotExist):
                         pass
-        except Exception:
+        except Exception as e:
+            # Log del error para debugging
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.error(f"Error al filtrar especialidades: {e}")
             # Si hay algún error, no mostrar especialidades
             self.fields['especialidad'].queryset = self.fields['especialidad'].queryset.none()
 

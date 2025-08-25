@@ -130,7 +130,11 @@ def consulta_estudiante(request):
             except Estudiante.DoesNotExist:
                 error = f'No se encontró ningún estudiante con la identificación {identificacion} en la institución {institucion.nombre}.'
             except Exception as e:
-                error = f'Error inesperado: {str(e)}'
+                # Log del error para debugging
+                import logging
+                logger = logging.getLogger(__name__)
+                logger.error(f"Error inesperado en consulta_estudiante: {e}")
+                error = 'Error interno del sistema. Contacte al administrador.'
     
     context = {
         'estudiante': estudiante,
@@ -211,8 +215,14 @@ def get_especialidades_disponibles(request):
         
     except CursoLectivo.DoesNotExist:
         return JsonResponse({'success': False, 'error': 'Curso lectivo no encontrado'})
+    except Institucion.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Institución no encontrada'})
     except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)})
+        # Log del error para debugging
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.error(f"Error inesperado en get_especialidades_disponibles: {e}")
+        return JsonResponse({'success': False, 'error': 'Error interno del sistema'})
 
 
 # ════════════════════════════════════════════════════════════════

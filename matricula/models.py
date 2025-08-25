@@ -2,7 +2,6 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.db.models import Q
-from smart_selects.db_fields import ChainedForeignKey
 
 from core.models import Institucion, User
 from catalogos.models import (
