@@ -225,8 +225,21 @@ class MatriculaAcademica(models.Model):
     def __str__(self):
         return f"{self.estudiante} - {self.nivel} {self.seccion or ''} {self.subgrupo or ''} ({self.curso_lectivo})"
 
+    @property
+    def institucion(self):
+        """Obtiene la institución a través del estudiante"""
+        if hasattr(self, 'estudiante') and self.estudiante:
+            return getattr(self.estudiante, 'institucion', None)
+        return None
+
     def save(self, *args, **kwargs):
-        # No alterar "estado": debe coincidir con las keys de choices ('activo', 'retirado', ...)
+        # Validar que el estudiante tenga institución antes de guardar
+        if hasattr(self, 'estudiante') and self.estudiante:
+            if not hasattr(self.estudiante, 'institucion') or not self.estudiante.institucion:
+                from django.core.exceptions import ValidationError
+                raise ValidationError("El estudiante debe tener una institución asignada.")
+        
+        # No alterar "estado": debe coincidir con las keys of choices ('activo', 'retirado', ...)
         super().save(*args, **kwargs)
 
     def clean(self):

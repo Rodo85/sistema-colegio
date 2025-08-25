@@ -603,6 +603,24 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
         if institucion_id:
             return qs.filter(estudiante__institucion_id=institucion_id)
         return qs.none()
+
+    def save_model(self, request, obj, form, change):
+        """Asegurar que la matrícula se guarde correctamente"""
+        try:
+            # Verificar que el estudiante tenga institución
+            if hasattr(obj, 'estudiante') and obj.estudiante:
+                if not hasattr(obj.estudiante, 'institucion') or not obj.estudiante.institucion:
+                    from django.core.exceptions import ValidationError
+                    raise ValidationError("El estudiante debe tener una institución asignada.")
+            
+            super().save_model(request, obj, form, change)
+            
+        except Exception as e:
+            # Log del error
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.error(f"Error al guardar matrícula: {e}")
+            raise
     
     def identificacion_estudiante(self, obj):
         """Mostrar identificación del estudiante"""
