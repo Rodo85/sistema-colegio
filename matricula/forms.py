@@ -48,6 +48,7 @@ class MatriculaAcademicaForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
         super().__init__(*args, **kwargs)
         # Dejar que el JavaScript maneje la visibilidad, como con provincia/cantón/distrito
         # El campo siempre está presente pero se oculta/muestra dinámicamente
@@ -93,6 +94,26 @@ class MatriculaAcademicaForm(forms.ModelForm):
                             self.fields['especialidad'].queryset = especialidades_disponibles
                     except (CursoLectivo.DoesNotExist, ValueError, Estudiante.DoesNotExist):
                         pass
+                        
+            # Si no se pudo filtrar, mostrar todas las especialidades disponibles
+            if not hasattr(self, '_especialidades_filtradas') or not self._especialidades_filtradas:
+                try:
+                    from config_institucional.models import EspecialidadCursoLectivo
+                    # Mostrar especialidades activas de la institución del usuario
+                    if hasattr(self, 'request') and hasattr(self.request, 'institucion_activa_id'):
+                        institucion_id = self.request.institucion_activa_id
+                        if institucion_id:
+                            especialidades = EspecialidadCursoLectivo.objects.filter(
+                                institucion_id=institucion_id,
+                                activa=True
+                            ).select_related('especialidad')
+                            self.fields['especialidad'].queryset = especialidades
+                            self._especialidades_filtradas = True
+                except Exception as e:
+                    import logging
+                    logger = logging.getLogger(__name__)
+                    logger.error(f"Error al cargar especialidades de respaldo: {e}")
+                    
         except Exception as e:
             # Log del error para debugging
             import logging
@@ -110,24 +131,44 @@ class MatriculaAcademicaForm(forms.ModelForm):
         
         # Validar que la especialidad esté disponible para la institución y curso lectivo
         if especialidad and estudiante and curso_lectivo:
-            especialidades_disponibles = MatriculaAcademica.get_especialidades_disponibles(
-                institucion=estudiante.institucion,
-                curso_lectivo=curso_lectivo
-            )
-            if especialidad not in especialidades_disponibles:
-                self.add_error('especialidad', 'Esta especialidad no está disponible para el curso lectivo seleccionado.')
+            try:
+                especialidades_disponibles = MatriculaAcademica.get_especialidades_disponibles(
+                    institucion=estudiante.institucion,
+                    curso_lectivo=curso_lectivo
+                )
+                if especialidad not in especialidades_disponibles:
+                    # Log para debugging
+                    import logging
+                    logger = logging.getLogger(__name__)
+                    logger.warning(
+                        f"Especialidad {especialidad} no disponible para estudiante {estudiante} "
+                        f"en curso {curso_lectivo}. Disponibles: {list(especialidades_disponibles)}"
+                    )
+                    self.add_error('especialidad', 'Esta especialidad no está disponible para el curso lectivo seleccionado.')
+            except Exception as e:
+                import logging
+                logger = logging.getLogger(__name__)
+                logger.error(f"Error al validar especialidad: {e}")
+                self.add_error('especialidad', 'Error al validar la especialidad seleccionada.')
         
         # Décimo: especialidad obligatoria
-        if nivel and hasattr(nivel, 'nombre') and (str(nivel.nombre).strip() == '10' or str(nivel) == '10'):
+        if nivel and hasattr(nivel, 'numero') and nivel.numero == 10:
             if not especialidad:
                 self.add_error('especialidad', 'La especialidad es obligatoria para décimo.')
         # 11 y 12: si no hay especialidad previa, obligar a seleccionar
-        elif nivel and hasattr(nivel, 'nombre') and (str(nivel.nombre).strip() in ['11', '12'] or str(nivel) in ['11', '12']):
+        elif nivel and hasattr(nivel, 'numero') and nivel.numero in [11, 12]:
             especialidad_10 = None
             if estudiante:
-                matricula_10 = MatriculaAcademica.objects.filter(estudiante=estudiante, nivel__nombre='10').order_by('-id').first()
+                # Buscar matrícula de décimo del mismo estudiante
+                matricula_10 = MatriculaAcademica.objects.filter(
+                    estudiante=estudiante, 
+                    nivel__numero=10,
+                    estado='activo'
+                ).order_by('-id').first()
                 if matricula_10:
                     especialidad_10 = matricula_10.especialidad
+            
+            # Solo requerir especialidad si no hay una previa de décimo
             if not especialidad and not especialidad_10:
                 self.add_error('especialidad', 'Debe seleccionar la especialidad si no existe una asignada en décimo.')
         return cleaned_data

@@ -423,10 +423,21 @@ class EstudianteAdmin(InstitucionScopedAdmin):
     def acciones(self, obj):
         """Enlaces de acción para cada estudiante"""
         if obj.pk:
-            return format_html(
-                '<a class="button" href="{}">📚 Matrícula</a>',
-                f'/admin/matricula/matriculaacademica/add/?estudiante={obj.pk}'
-            )
+            # Obtener la URL del admin de matrícula
+            from django.urls import reverse
+            try:
+                url = reverse('admin:matricula_matriculaacademica_add')
+                url += f'?estudiante={obj.pk}'
+                return format_html(
+                    '<a class="button" href="{}" target="_blank">📚 Matrícula</a>',
+                    url
+                )
+            except Exception as e:
+                # Si hay error, mostrar enlace simple
+                return format_html(
+                    '<a class="button" href="/admin/matricula/matriculaacademica/add/?estudiante={}" target="_blank">📚 Matrícula</a>',
+                    obj.pk
+                )
         return ""
     acciones.short_description = "Acciones"
 
@@ -594,6 +605,10 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
     def get_form(self, request, obj=None, **kwargs):
         """Personalizar formulario para lógica inteligente de matrícula"""
         form = super().get_form(request, obj, **kwargs)
+        
+        # Pasar el request al formulario para que pueda acceder a la institución activa
+        if hasattr(form, 'request'):
+            form.request = request
         
         # Establecer estado por defecto para nuevas matrículas (valor de choice: 'activo')
         if not obj and 'estado' in form.base_fields:
