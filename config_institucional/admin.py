@@ -121,7 +121,7 @@ class PeriodoLectivoAdmin(admin.ModelAdmin):
         return qs.filter(institucion=request.institucion_activa_id)
 
 @admin.register(EspecialidadCursoLectivo)
-class EspecialidadCursoLectivoAdmin(admin.ModelAdmin):
+class EspecialidadCursoLectivoAdmin(InstitucionScopedAdmin):
     list_display = ('id', 'institucion', 'curso_lectivo', 'especialidad', 'activa')
     list_filter = ('institucion', 'curso_lectivo__anio', 'especialidad__modalidad', 'activa')
     search_fields = ('institucion__nombre', 'curso_lectivo__nombre', 'especialidad__nombre')
@@ -163,13 +163,6 @@ class EspecialidadCursoLectivoAdmin(admin.ModelAdmin):
     vista_masiva.short_description = "Vista Masiva"
     vista_masiva.allow_tags = True
     
-    def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        if request.user.is_superuser:
-            return qs
-        # Usuarios normales solo ven configuraciones de su institución
-        return qs.filter(institucion=request.institucion_activa_id)
-    
     def get_readonly_fields(self, request, obj=None):
         if request.user.is_superuser:
             return ()
@@ -178,7 +171,7 @@ class EspecialidadCursoLectivoAdmin(admin.ModelAdmin):
 
 
 @admin.register(SeccionCursoLectivo)
-class SeccionCursoLectivoAdmin(admin.ModelAdmin):
+class SeccionCursoLectivoAdmin(InstitucionScopedAdmin):
     """Admin para gestionar las secciones disponibles por curso lectivo."""
     
     list_display = ('institucion', 'curso_lectivo', 'seccion', 'activa')

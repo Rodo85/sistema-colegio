@@ -22,10 +22,45 @@ class InstitucionScopedAdmin(admin.ModelAdmin):
         
         return qs
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        """
+        Establece el valor inicial y filtra el queryset del campo institución
+        para usuarios no superusuarios.
+        """
+        if db_field.name == "institucion" and not request.user.is_superuser:
+            # Filtrar solo la institución activa del usuario
+            from core.models import Institucion
+            institucion_id = getattr(request, 'institucion_activa_id', None)
+            if institucion_id:
+                kwargs["queryset"] = Institucion.objects.filter(id=institucion_id)
+                # Establecer el valor inicial
+                kwargs["initial"] = institucion_id
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+    def get_form(self, request, obj=None, **kwargs):
+        """
+        Personaliza el formulario para asegurar que el campo institución
+        se establezca correctamente antes de la validación.
+        """
+        form = super().get_form(request, obj, **kwargs)
+        
+        # Si no es superusuario y el modelo tiene campo institución
+        if not request.user.is_superuser and hasattr(form.Meta.model, 'institucion_id'):
+            institucion_id = getattr(request, 'institucion_activa_id', None)
+            if institucion_id:
+                # Establecer el valor inicial en el formulario
+                form.base_fields['institucion'].initial = institucion_id
+                
+        return form
+
     def save_model(self, request, obj, form, change):
         # Si es creación y el modelo tiene campo 'institucion' directamente
         if not change and hasattr(obj, "institucion_id") and not obj.institucion_id:
             # Verificar que el campo realmente existe en el modelo
-            if hasattr(obj._meta, 'get_field') and obj._meta.get_field('institucion_id', raise_exception=False):
+            try:
+                obj._meta.get_field('institucion_id')
                 obj.institucion_id = request.institucion_activa_id
+            except:
+                # El campo no existe, no hacer nada
+                pass
         super().save_model(request, obj, form, change)

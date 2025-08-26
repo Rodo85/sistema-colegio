@@ -78,6 +78,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
+    # Nuestro middleware debe ir DESPUÉS de AuthenticationMiddleware
     "core.middleware.InstitucionMiddleware",
 ]
 

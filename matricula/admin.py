@@ -555,7 +555,10 @@ class PersonaContactoAdmin(InstitucionScopedAdmin):
     ordering = ("primer_apellido", "nombres")
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        # Primero llamar al mixin para establecer el valor inicial
         field = super().formfield_for_foreignkey(db_field, request, **kwargs)
+        
+        # Luego aplicar las restricciones específicas del admin
         bloqueados = {
             "institucion", "estado_civil", "escolaridad", "ocupacion",
         }
@@ -564,6 +567,12 @@ class PersonaContactoAdmin(InstitucionScopedAdmin):
             field.widget.can_change_related = False
             if db_field.name == "institucion":
                 field.disabled = True
+                
+                # Asegurar que el campo tenga el valor inicial correcto
+                institucion_id = getattr(request, 'institucion_activa_id', None)
+                if institucion_id and not field.initial:
+                    field.initial = institucion_id
+                    
         return field
 
 # Eliminar los admin de Nivel, Seccion, Subgrupo y Periodo (ya están en sus apps)
