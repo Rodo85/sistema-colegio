@@ -129,14 +129,13 @@ class Clase(models.Model):
         # Validar que la subárea esté habilitada para esta institución (si aplica)
         if self.subarea_id and self.institucion_id:
             from catalogos.models import SubAreaInstitucion
-            if hasattr(SubAreaInstitucion, 'objects'):
-                subarea_habilitada = SubAreaInstitucion.objects.filter(
-                    institucion=self.institucion,
-                    subarea=self.subarea,
-                    activa=True
-                ).exists()
-                if not subarea_habilitada:
-                    raise ValidationError("Esta subárea no está habilitada para esta institución.")
+            subarea_habilitada = SubAreaInstitucion.objects.filter(
+                institucion=self.institucion,
+                subarea=self.subarea,
+                activa=True
+            ).exists()
+            if not subarea_habilitada:
+                raise ValidationError("Esta subárea no está habilitada para esta institución.")
         
         super().clean()
 

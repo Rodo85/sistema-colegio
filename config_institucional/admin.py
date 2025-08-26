@@ -65,12 +65,13 @@ class ClaseAdmin(InstitucionScopedAdmin):
                     institucion_id=request.institucion_activa_id
                 )
             elif db_field.name == "subgrupo":
-                kwargs["queryset"] = Subgrupo.objects.filter(
-                    seccion__nivel__institucion_id=request.institucion_activa_id
-                )
+                # Por ahora mostrar todos los subgrupos, ya que nivel no tiene institución
+                kwargs["queryset"] = Subgrupo.objects.all()
             elif db_field.name == "subarea":
+                # Filtrar subáreas habilitadas para esta institución
                 kwargs["queryset"] = SubArea.objects.filter(
-                    subareainstitucion__institucion_id=request.institucion_activa_id
+                    subareainstitucion__institucion_id=request.institucion_activa_id,
+                    subareainstitucion__activa=True
                 ).distinct()
             elif db_field.name == "institucion":
                 kwargs["queryset"] = Institucion.objects.filter(

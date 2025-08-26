@@ -7,7 +7,7 @@ from .models import (
     Nivel, TipoIdentificacion, Nacionalidad, Adecuacion,
     Modalidad, Especialidad, SubArea, Sexo,
     EstadoCivil, Parentesco, Escolaridad, Ocupacion,
-    Seccion, Subgrupo, CursoLectivo
+    Seccion, Subgrupo, CursoLectivo, SubAreaInstitucion
 )
 
 # ── Registrar modelos de ubicación con búsqueda para autocomplete_fields ──
@@ -157,3 +157,12 @@ class CursoLectivoAdmin(admin.ModelAdmin):
     ordering = ('-anio',)
     
     fields = ('anio', 'nombre', 'fecha_inicio', 'fecha_fin', 'activo')
+
+
+@admin.register(SubAreaInstitucion)
+class SubAreaInstitucionAdmin(admin.ModelAdmin):
+    list_display = ('institucion', 'subarea', 'activa')
+    list_filter = ('institucion', 'subarea__especialidad__modalidad', 'activa')
+    search_fields = ('institucion__nombre', 'subarea__nombre')
+    ordering = ('institucion__nombre', 'subarea__nombre')
+    autocomplete_fields = ('institucion', 'subarea')
