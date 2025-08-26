@@ -31,7 +31,7 @@ class NivelInstitucion(models.Model):
 
 # docentes/models.py
 class Profesor(models.Model):
-    institucion      = models.ForeignKey(
+    institucion = models.ForeignKey(
         Institucion,
         on_delete=models.PROTECT,
         verbose_name="Institución"
@@ -44,8 +44,7 @@ class Profesor(models.Model):
     identificacion = models.CharField(
         "Identificación",
         max_length=20,
-        unique=True,
-        db_index=True 
+        db_index=True
     )
     telefono         = models.CharField("Teléfono", max_length=20, blank=True)
 
@@ -53,9 +52,11 @@ class Profesor(models.Model):
         verbose_name = "Profesor"
         verbose_name_plural = "Docentes"
         ordering = ("usuario__last_name", "usuario__second_last_name", "usuario__first_name")
+        # Un profesor puede trabajar en múltiples instituciones, pero con identificación única por institución
+        unique_together = ("institucion", "identificacion")
 
     def __str__(self):
-        return self.usuario.full_name()
+        return f"{self.usuario.full_name()} - {self.institucion}"
 
     def save(self, *args, **kwargs):
         for campo in ("identificacion", "telefono"):
@@ -66,6 +67,7 @@ class Profesor(models.Model):
 
 class Clase(models.Model):
     institucion = models.ForeignKey("core.Institucion", on_delete=models.PROTECT)
+    curso_lectivo = models.ForeignKey("catalogos.CursoLectivo", on_delete=models.PROTECT, verbose_name="Curso Lectivo")
     profesor = models.ForeignKey(
         "config_institucional.Profesor",
         on_delete=models.PROTECT,
@@ -90,7 +92,8 @@ class Clase(models.Model):
     class Meta:
         verbose_name = "Clase"
         verbose_name_plural = "Clases"
-        unique_together = ("subarea", "subgrupo", "periodo")
+        # Unicidad scoped por institución para evitar colisiones entre tenants
+        unique_together = ("institucion", "curso_lectivo", "subarea", "subgrupo", "periodo")
         ordering = (
             "subgrupo__seccion__nivel__numero",
             "subgrupo__seccion__numero",
@@ -101,9 +104,44 @@ class Clase(models.Model):
     def __str__(self) -> str:
         # si subarea llega a ser None, evitamos AttributeError
         nombre_subarea = self.subarea.nombre if self.subarea else "—"
-        return f"{nombre_subarea} – {self.subgrupo.codigo} – {self.profesor.usuario.full_name()}"
+        return f"{self.institucion} - {nombre_subarea} – {self.subgrupo.codigo} – {self.profesor.usuario.full_name()} ({self.curso_lectivo})"
+
+    def clean(self):
+        from django.core.exceptions import ValidationError
+        
+        # Validar que el profesor pertenezca a la misma institución
+        if self.profesor_id and self.institucion_id:
+            if self.profesor.institucion_id != self.institucion_id:
+                raise ValidationError("El profesor debe pertenecer a la misma institución.")
+        
+        # Validar que el subgrupo esté habilitado para esta institución en este curso lectivo
+        if self.subgrupo_id and self.institucion_id and self.curso_lectivo_id:
+            from .models import SubgrupoCursoLectivo
+            subgrupo_habilitado = SubgrupoCursoLectivo.objects.filter(
+                institucion=self.institucion,
+                curso_lectivo=self.curso_lectivo,
+                subgrupo=self.subgrupo,
+                activa=True
+            ).exists()
+            if not subgrupo_habilitado:
+                raise ValidationError("Este subgrupo no está habilitado para esta institución en este curso lectivo.")
+        
+        # Validar que la subárea esté habilitada para esta institución (si aplica)
+        if self.subarea_id and self.institucion_id:
+            from catalogos.models import SubAreaInstitucion
+            if hasattr(SubAreaInstitucion, 'objects'):
+                subarea_habilitada = SubAreaInstitucion.objects.filter(
+                    institucion=self.institucion,
+                    subarea=self.subarea,
+                    activa=True
+                ).exists()
+                if not subarea_habilitada:
+                    raise ValidationError("Esta subárea no está habilitada para esta institución.")
+        
+        super().clean()
 
     def save(self, *args, **kwargs):
+        self.full_clean()
         for campo in ("periodo",):
             valor = getattr(self, campo, None)
             if isinstance(valor, str):
@@ -130,6 +168,13 @@ class PeriodoLectivo(models.Model):
         # Normalizar nombre
         if self.nombre:
             self.nombre = self.nombre.strip().upper()
+        
+        # Validar que fecha_fin sea posterior a fecha_inicio
+        if self.fecha_inicio and self.fecha_fin:
+            if self.fecha_fin <= self.fecha_inicio:
+                from django.core.exceptions import ValidationError
+                raise ValidationError("La fecha de fin debe ser posterior a la fecha de inicio.")
+        
         super().clean()
 
     def save(self, *args, **kwargs):

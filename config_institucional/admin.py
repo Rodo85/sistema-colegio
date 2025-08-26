@@ -12,7 +12,8 @@ from catalogos.models import SubArea, CursoLectivo, Seccion, Subgrupo
 class ClaseInline(admin.TabularInline):
     model = Clase
     extra = 0
-    autocomplete_fields = ("subarea", "subgrupo")
+    fields = ("curso_lectivo", "subarea", "subgrupo", "profesor", "periodo")
+    autocomplete_fields = ("curso_lectivo", "subarea", "subgrupo", "profesor")
 
 @admin.register(Profesor)
 class ProfesorAdmin(InstitucionScopedAdmin):
@@ -45,13 +46,15 @@ class ProfesorAdmin(InstitucionScopedAdmin):
 
 @admin.register(Clase)
 class ClaseAdmin(InstitucionScopedAdmin):
-    list_display = ("subarea", "subgrupo", "profesor", "periodo")
+    list_display = ("institucion", "curso_lectivo", "subarea", "subgrupo", "profesor", "periodo")
     list_filter  = (
+        "institucion",
+        "curso_lectivo",
         "periodo",
         "subarea__especialidad__modalidad__nombre",
         ("subgrupo", RelatedOnlyFieldListFilter),
     )
-    autocomplete_fields = ("profesor", "subarea", "subgrupo")
+    autocomplete_fields = ("profesor", "subarea", "subgrupo", "curso_lectivo")
 
     # ---------- Filtrar combos y ajustar etiqueta de Subárea ----------
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
@@ -73,6 +76,12 @@ class ClaseAdmin(InstitucionScopedAdmin):
                 kwargs["queryset"] = Institucion.objects.filter(
                     id=request.institucion_activa_id
                 )
+            elif db_field.name == "curso_lectivo":
+                # Solo mostrar cursos lectivos que tengan configuraciones activas para esta institución
+                kwargs["queryset"] = CursoLectivo.objects.filter(
+                    subgrupocursolectivo__institucion_id=request.institucion_activa_id,
+                    subgrupocursolectivo__activa=True
+                ).distinct()
 
         # ❷ Obtener el form-field original
         formfield = super().formfield_for_foreignkey(db_field, request, **kwargs)

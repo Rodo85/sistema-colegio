@@ -2,7 +2,6 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.db.models import Q
-from smart_selects.db_fields import ChainedForeignKey
 
 from core.models import Institucion, User
 from catalogos.models import (
@@ -113,12 +112,12 @@ class Estudiante(models.Model):
     direccion_exacta  = models.TextField(blank=True, null=True)
 
     foto              = models.ImageField("Foto", upload_to='estudiantes/fotos/%Y/%m/', blank=True, null=True)
-    ed_religiosa      = models.BooleanField("Recibe Ed. Religiosa", blank=True, null=True)
+    ed_religiosa      = models.BooleanField("Recibe Ed. Religiosa", default=False)
     rige_poliza       = models.DateField("Rige Póliza", blank=True, null=True)
     vence_poliza      = models.DateField("Vence Póliza", blank=True, null=True)
-    presenta_enfermedad = models.BooleanField("Presenta alguna enfermedad", blank=True, null=True)
+    presenta_enfermedad = models.BooleanField("Presenta alguna enfermedad", default=False)
     detalle_enfermedad  = models.CharField("Nombre de la(s) enfermedad(es)", max_length=255, blank=True, null=True)
-    autoriza_derecho_imagen = models.BooleanField("Autoriza derecho de imagen", blank=True, null=True)
+    autoriza_derecho_imagen = models.BooleanField("Autoriza derecho de imagen", default=False)
     numero_poliza     = models.CharField("Número de póliza", max_length=50, blank=True, null=True)
     adecuacion        = models.ForeignKey(Adecuacion, on_delete=models.PROTECT, blank=True, null=True)
     medicamento_consume = models.TextField("Medicamentos que consume", blank=True, null=True)
@@ -150,6 +149,21 @@ class Estudiante(models.Model):
             self.correo = f"{self.identificacion.strip()}@est.mep.go.cr".lower()
         elif isinstance(self.correo, str):
             self.correo = self.correo.strip().lower()
+
+        # Auto-completar "Vence Póliza" un año después de "Rige Póliza"
+        if self.rige_poliza and not self.vence_poliza:
+            from datetime import date
+            # Calcular un año después
+            vence_anio = self.rige_poliza.year + 1
+            vence_mes = self.rige_poliza.month
+            vence_dia = self.rige_poliza.day
+            
+            # Manejar años bisiestos (29 de febrero)
+            try:
+                self.vence_poliza = date(vence_anio, vence_mes, vence_dia)
+            except ValueError:
+                # Si es 29 de febrero en año no bisiesto, usar 28 de febrero
+                self.vence_poliza = date(vence_anio, vence_mes, 28)
 
         super().save(*args, **kwargs)
 
@@ -203,6 +217,7 @@ class MatriculaAcademica(models.Model):
         (REPITENTE, 'Repitente'),
     ]
     estudiante = models.ForeignKey('Estudiante', on_delete=models.PROTECT, related_name='matriculas_academicas')
+    institucion = models.ForeignKey(Institucion, on_delete=models.PROTECT, verbose_name="Institución")
     nivel = models.ForeignKey(Nivel, on_delete=models.PROTECT)
     seccion = models.ForeignKey(Seccion, on_delete=models.PROTECT, null=True, blank=True, verbose_name="Sección")
     subgrupo = models.ForeignKey(Subgrupo, on_delete=models.PROTECT, null=True, blank=True, verbose_name="Subgrupo")
@@ -227,28 +242,49 @@ class MatriculaAcademica(models.Model):
         return f"{self.estudiante} - {self.nivel} {self.seccion or ''} {self.subgrupo or ''} ({self.curso_lectivo})"
 
     def save(self, *args, **kwargs):
+        # Asignar automáticamente la institución del estudiante si no está establecida
+        if not self.institucion_id and self.estudiante_id:
+            self.institucion = self.estudiante.institucion
+        
         # No alterar "estado": debe coincidir con las keys de choices ('activo', 'retirado', ...)
         super().save(*args, **kwargs)
 
     def clean(self):
         from django.core.exceptions import ValidationError
         
-        # 1) Especialidad obligatoria en 10-12 por número (más robusto que nombre)
-        if self.nivel and getattr(self.nivel, 'numero', None) in [10, 11, 12]:
+        # 1) Especialidad obligatoria solo para décimo (10)
+        if self.nivel and getattr(self.nivel, 'numero', None) == 10:
             if not self.especialidad:
-                raise ValidationError("La especialidad es obligatoria para 10°, 11° y 12°.")
+                raise ValidationError("La especialidad es obligatoria para décimo (10°).")
+        
+        # 2) Para niveles 11 y 12, verificar si hay especialidad previa de décimo
+        elif self.nivel and getattr(self.nivel, 'numero', None) in [11, 12]:
+            if not self.especialidad:
+                # Buscar si hay matrícula de décimo con especialidad
+                matricula_10 = MatriculaAcademica.objects.filter(
+                    estudiante=self.estudiante,
+                    nivel__numero=10,
+                    estado='activo'
+                ).first()
+                if not matricula_10 or not matricula_10.especialidad:
+                    raise ValidationError("Para 11° y 12° debe seleccionar una especialidad si no existe una asignada en décimo.")
 
-        # 2) Coherencia ECL ↔ curso lectivo (y, si aplica, institución del estudiante)
+        # 3) Coherencia ECL ↔ curso lectivo y institución del estudiante
         if self.especialidad:
             if self.especialidad.curso_lectivo_id != self.curso_lectivo_id:
                 raise ValidationError("La especialidad seleccionada no corresponde a este curso lectivo.")
 
-            # Si Estudiante tiene FK a Institución, valide también:
-            if hasattr(self.estudiante, 'institucion_id'):
+            # Validar que la especialidad pertenece a la institución del estudiante
+            if self.estudiante and self.estudiante.institucion_id:
                 if self.especialidad.institucion_id != self.estudiante.institucion_id:
                     raise ValidationError("La especialidad no pertenece a la institución del estudiante.")
+        
+        # 4) Validar que la institución coincida con la del estudiante
+        if self.estudiante and self.estudiante.institucion_id and self.institucion_id:
+            if self.institucion_id != self.estudiante.institucion_id:
+                raise ValidationError("La institución de la matrícula debe coincidir con la del estudiante.")
 
-        # 3) Salvaguarda adicional (evita dos activas por año aunque cambie sección/subgrupo)
+        # 4) Salvaguarda adicional (evita dos activas por año aunque cambie sección/subgrupo)
         if (self.estado == 'activo' and self.curso_lectivo_id and getattr(self.estudiante, 'pk', None)):
             existe = MatriculaAcademica.objects.filter(
                 estudiante=self.estudiante,
@@ -300,6 +336,24 @@ class MatriculaAcademica(models.Model):
         # Para niveles 10→11 y 11→12, mantener la especialidad
         if nivel_actual.numero in [10, 11]:
             siguiente_data['especialidad'] = matricula_actual.especialidad
+        
+        # Verificar que la especialidad siga siendo válida para el siguiente curso lectivo
+        if siguiente_data['especialidad']:
+            try:
+                from config_institucional.models import EspecialidadCursoLectivo
+                especialidad_valida = EspecialidadCursoLectivo.objects.filter(
+                    institucion=estudiante.institucion,
+                    curso_lectivo=siguiente_curso,
+                    especialidad=siguiente_data['especialidad'].especialidad,
+                    activa=True
+                ).first()
+                
+                if not especialidad_valida:
+                    # La especialidad no está disponible en el siguiente curso, no asignarla
+                    siguiente_data['especialidad'] = None
+            except Exception:
+                # Si hay error, no asignar especialidad
+                siguiente_data['especialidad'] = None
         
         return siguiente_data
 

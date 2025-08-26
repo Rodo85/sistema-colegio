@@ -71,3 +71,23 @@ class UserAdmin(DjangoUserAdmin):
     list_display = ("email", "first_name", "last_name","second_last_name","is_staff", "is_superuser")
     search_fields = ("email", "first_name", "last_name")
     ordering = ("email",)
+    
+    def clean_email(self, email):
+        """Validar que el email no esté duplicado"""
+        from django.core.exceptions import ValidationError
+        
+        if User.objects.filter(email=email).exists():
+            raise ValidationError(f"Ya existe un usuario con el email '{email}'")
+        return email
+    
+    def save_model(self, request, obj, form, change):
+        """Validar email antes de guardar"""
+        if not change:  # Solo para usuarios nuevos
+            try:
+                self.clean_email(obj.email)
+            except ValidationError as e:
+                from django.contrib import messages
+                messages.error(request, str(e))
+                return
+        
+        super().save_model(request, obj, form, change)

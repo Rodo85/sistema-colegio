@@ -76,3 +76,9 @@ Cuando trabajemos con dropdown al parecer hay problemas de dependencia, con much
    - Provincia → Cantón → Distrito (dependent-dropdowns.js)
    - Nivel → Especialidad (dependent-especialidad.js)
 
+**Ultra importante**
+Mi sistema, múltiples inquilinos
+
+Base de datos compartida, esquema compartido: Todos los tenants usan la misma base de datos y el mismo esquema. El aislamiento se logra añadiendo una columna (como tenant_id) a cada tabla para identificar a qué cliente pertenece cada registro. Es el enfoque más común y rentable.
+
+Mi sistema siempre tiene que ser así 

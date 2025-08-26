@@ -33,10 +33,14 @@ def marcar_ingreso(request):
         return JsonResponse({"ok": False, "error": "Estudiante no encontrado"}, status=404)
 
     # Determinar si el último registro fue entrada o salida
-    ultimo = RegistroIngreso.objects.filter(identificacion=identificacion).order_by("-fecha_hora").first()
+    ultimo = RegistroIngreso.objects.filter(
+        institucion=estudiante.institucion,
+        identificacion=identificacion
+    ).order_by("-fecha_hora").first()
     es_entrada = True if not ultimo else not ultimo.es_entrada
 
     registro = RegistroIngreso.objects.create(
+        institucion=estudiante.institucion,
         identificacion=identificacion,
         fecha_hora=timezone.now(),
         es_entrada=es_entrada,
