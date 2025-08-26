@@ -48,8 +48,20 @@ class InstitucionScopedAdmin(admin.ModelAdmin):
         if not request.user.is_superuser and hasattr(form.Meta.model, 'institucion_id'):
             institucion_id = getattr(request, 'institucion_activa_id', None)
             if institucion_id:
-                # Establecer el valor inicial en el formulario
-                form.base_fields['institucion'].initial = institucion_id
+                # Verificar que el campo 'institucion' existe en el formulario
+                if 'institucion' in form.base_fields:
+                    form.base_fields['institucion'].initial = institucion_id
+                # Si el campo no está en el formulario, agregarlo como campo oculto
+                elif hasattr(form.Meta.model, 'institucion_id'):
+                    from django import forms
+                    from core.models import Institucion
+                    # Crear un campo ForeignKey oculto
+                    form.base_fields['institucion'] = forms.ModelChoiceField(
+                        queryset=Institucion.objects.filter(id=institucion_id),
+                        initial=institucion_id,
+                        widget=forms.HiddenInput(),
+                        required=True
+                    )
                 
         return form
 
@@ -59,7 +71,9 @@ class InstitucionScopedAdmin(admin.ModelAdmin):
             # Verificar que el campo realmente existe en el modelo
             try:
                 obj._meta.get_field('institucion_id')
-                obj.institucion_id = request.institucion_activa_id
+                institucion_id = getattr(request, 'institucion_activa_id', None)
+                if institucion_id:
+                    obj.institucion_id = institucion_id
             except:
                 # El campo no existe, no hacer nada
                 pass

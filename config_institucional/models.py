@@ -129,14 +129,13 @@ class Clase(models.Model):
         # Validar que la subárea esté habilitada para esta institución (si aplica)
         if self.subarea_id and self.institucion_id:
             from catalogos.models import SubAreaInstitucion
-            if hasattr(SubAreaInstitucion, 'objects'):
-                subarea_habilitada = SubAreaInstitucion.objects.filter(
-                    institucion=self.institucion,
-                    subarea=self.subarea,
-                    activa=True
-                ).exists()
-                if not subarea_habilitada:
-                    raise ValidationError("Esta subárea no está habilitada para esta institución.")
+            subarea_habilitada = SubAreaInstitucion.objects.filter(
+                institucion=self.institucion,
+                subarea=self.subarea,
+                activa=True
+            ).exists()
+            if not subarea_habilitada:
+                raise ValidationError("Esta subárea no está habilitada para esta institución.")
         
         super().clean()
 
@@ -207,10 +206,10 @@ class EspecialidadCursoLectivo(models.Model):
         
         # Validación: El curso lectivo es global, no pertenece a una institución específica
         # Solo validamos que la institución y curso lectivo estén seleccionados
-        if not self.curso_lectivo:
+        if not self.curso_lectivo_id:
             raise ValidationError("Debe seleccionar un curso lectivo.")
         
-        if not self.institucion:
+        if not self.institucion_id:
             raise ValidationError("Debe seleccionar una institución.")
         
         super().clean()
@@ -245,10 +244,10 @@ class SeccionCursoLectivo(models.Model):
         
         # Validación: El curso lectivo es global, no pertenece a una institución específica
         # Solo validamos que la institución y curso lectivo estén seleccionados
-        if not self.curso_lectivo:
+        if not self.curso_lectivo_id:
             raise ValidationError("Debe seleccionar un curso lectivo.")
         
-        if not self.institucion:
+        if not self.institucion_id:
             raise ValidationError("Debe seleccionar una institución.")
         
         # Validación: Las secciones son globales, no hay restricción por institución
@@ -285,10 +284,10 @@ class SubgrupoCursoLectivo(models.Model):
         
         # Validación: El curso lectivo es global, no pertenece a una institución específica
         # Solo validamos que la institución y curso lectivo estén seleccionados
-        if not self.curso_lectivo:
+        if not self.curso_lectivo_id:
             raise ValidationError("Debe seleccionar un curso lectivo.")
         
-        if not self.institucion:
+        if not self.institucion_id:
             raise ValidationError("Debe seleccionar una institución.")
         
         # Validación: Los subgrupos son globales, no hay restricción por institución

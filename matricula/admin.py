@@ -250,6 +250,9 @@ class EstudianteForm(forms.ModelForm):
             primera_provincia = Provincia.objects.first()
             if primera_provincia:
                 self.fields['provincia'].initial = primera_provincia.id
+        # Permitir que el modelo autogenere el correo si no se ingresa
+        if 'correo' in self.fields:
+            self.fields['correo'].required = False
 
     def clean(self):
         cleaned_data = super().clean()
@@ -295,7 +298,8 @@ class EstudianteForm(forms.ModelForm):
 
     class Meta:
         model = Estudiante
-        fields = "__all__"
+        # Excluir institucion para que no dependa del POST
+        exclude = ('institucion',)
         widgets = {
             'provincia': forms.Select(attrs={'id': 'id_provincia'}),
             'canton': forms.Select(attrs={'id': 'id_canton'}),
@@ -402,7 +406,7 @@ class EstudianteAdmin(InstitucionScopedAdmin):
                     'classes': ('collapse',)
                 })
             )
-        # Datos Personales (incluye tipo_estudiante y los de contacto al final)
+        # Usuarios normales: no incluir campo institucion en el formulario
         fieldsets.append(
             ('Datos Personales', {
                 'fields': (
@@ -485,6 +489,60 @@ class EstudianteAdmin(InstitucionScopedAdmin):
             '<span style="color: #999; font-style: italic;">Sin foto</span>'
         )
     foto_preview.short_description = "Foto"
+    
+    def get_readonly_fields(self, request, obj=None):
+        # No exponer 'institucion' a usuarios normales
+        if request.user.is_superuser:
+            return ()
+        return ()
+    
+    def get_form(self, request, obj=None, **kwargs):
+        """Personalizar el formulario según el usuario y forzar institución."""
+        Form = super().get_form(request, obj, **kwargs)
+        institucion_id = getattr(request, 'institucion_activa_id', None)
+        is_super = request.user.is_superuser
+
+        class FormWithInst(Form):
+            def __init__(self, *args, **kw):
+                super().__init__(*args, **kw)
+                # Etiqueta
+                if self.base_fields.get('sexo'):
+                    self.base_fields['sexo'].label = "Género"
+
+                if is_super or not institucion_id:
+                    return
+
+                # Campo oculto (aunque no esté en fieldsets)
+                from core.models import Institucion
+                if 'institucion' not in self.fields:
+                    self.fields['institucion'] = forms.ModelChoiceField(
+                        queryset=Institucion.objects.filter(id=institucion_id),
+                        initial=institucion_id,
+                        widget=forms.HiddenInput(),
+                        required=True,
+                    )
+                else:
+                    self.fields['institucion'].widget = forms.HiddenInput()
+                    self.fields['institucion'].required = True
+                    self.fields['institucion'].initial = institucion_id
+
+                # Inyectar en POST si falta
+                if self.is_bound:
+                    data = self.data.copy()
+                    key = self.add_prefix('institucion')
+                    if not data.get(key):
+                        data[key] = str(institucion_id)
+                        self.data = data
+
+                # Fijar en la instancia antes de validaciones del modelo
+                self.instance.institucion_id = institucion_id
+
+            def clean(self):
+                if not is_super and institucion_id:
+                    self.instance.institucion_id = institucion_id
+                return super().clean()
+
+        return FormWithInst
 
     # Búsqueda por identificación y nombre
     search_fields = ("identificacion", "primer_apellido", "segundo_apellido", "nombres")
@@ -500,13 +558,6 @@ class EstudianteAdmin(InstitucionScopedAdmin):
             queryset = queryset[:20]
         return queryset, use_distinct
 
-    def get_form(self, request, obj=None, **kwargs):
-        """Personalizar etiquetas de campos"""
-        form = super().get_form(request, obj, **kwargs)
-        if form.base_fields.get('sexo'):
-            form.base_fields['sexo'].label = "Género"
-        return form
-
     def change_view(self, request, object_id, form_url='', extra_context=None):
         """Agregar botón de nueva matrícula en la vista de edición"""
         extra_context = extra_context or {}
@@ -517,15 +568,29 @@ class EstudianteAdmin(InstitucionScopedAdmin):
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         field = super().formfield_for_foreignkey(db_field, request, **kwargs)
         bloqueados = {
-            "institucion", "tipo_identificacion", "sexo", "nacionalidad",
+            "tipo_identificacion", "sexo", "nacionalidad",
             "provincia", "canton", "distrito",
         }
         if db_field.name in bloqueados and not request.user.is_superuser:
             field.widget.can_add_related = False
             field.widget.can_change_related = False
-            if db_field.name == "institucion":
-                field.disabled = True
+        
+        # Manejar el campo institución de manera especial
+        if db_field.name == "institucion" and not request.user.is_superuser:
+            institucion_id = getattr(request, 'institucion_activa_id', None)
+            if institucion_id:
+                field.initial = institucion_id
+                field.widget.can_add_related = False
+                field.widget.can_change_related = False
+        
         return field
+    
+    def save_model(self, request, obj, form, change):
+        # Forzar institución desde el contexto activo, ignorando el formulario
+        institucion_id = getattr(request, 'institucion_activa_id', None)
+        if not request.user.is_superuser and institucion_id:
+            obj.institucion_id = institucion_id
+        super().save_model(request, obj, form, change)
 
 # ───────────────────────  Persona-Contacto admin  ───────────────────────
 @admin.register(PersonaContacto)

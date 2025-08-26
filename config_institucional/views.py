@@ -12,6 +12,7 @@ from django.db.models import Q
 from .models import SeccionCursoLectivo, EspecialidadCursoLectivo, SubgrupoCursoLectivo
 from catalogos.models import CursoLectivo, Seccion, Especialidad, Subgrupo
 from core.models import Institucion
+from core.decorators import ensure_institucion_activa
 
 
 def obtener_curso_lectivo_activo():
@@ -33,6 +34,7 @@ def obtener_curso_lectivo_activo():
     return curso_lectivo
 
 @staff_member_required
+@ensure_institucion_activa
 def gestionar_secciones_curso_lectivo(request):
     """
     Vista para gestionar secciones por curso lectivo de forma masiva.
@@ -49,7 +51,13 @@ def gestionar_secciones_curso_lectivo(request):
             institucion = Institucion.objects.first()
     else:
         # Usuario normal solo puede ver su institución
-        institucion = request.institucion_activa
+        if hasattr(request, 'institucion_activa_id') and request.institucion_activa_id:
+            try:
+                institucion = Institucion.objects.get(pk=request.institucion_activa_id)
+            except Institucion.DoesNotExist:
+                institucion = None
+        else:
+            institucion = None
     
     # Obtener curso lectivo seleccionado
     curso_lectivo_id = request.GET.get('curso_lectivo')
@@ -188,6 +196,7 @@ def actualizar_secciones_curso_lectivo(request):
         return JsonResponse({'success': False, 'message': f'Error: {str(e)}'})
 
 @staff_member_required
+@ensure_institucion_activa
 def gestionar_especialidades_curso_lectivo(request):
     """
     Vista para gestionar especialidades por curso lectivo de forma masiva.
@@ -201,7 +210,13 @@ def gestionar_especialidades_curso_lectivo(request):
         else:
             institucion = Institucion.objects.first()
     else:
-        institucion = request.institucion_activa
+        if hasattr(request, 'institucion_activa_id') and request.institucion_activa_id:
+            try:
+                institucion = Institucion.objects.get(pk=request.institucion_activa_id)
+            except Institucion.DoesNotExist:
+                institucion = None
+        else:
+            institucion = None
     
     # Obtener curso lectivo seleccionado
     curso_lectivo_id = request.GET.get('curso_lectivo')
@@ -339,6 +354,7 @@ def actualizar_especialidades_curso_lectivo(request):
         return JsonResponse({'success': False, 'message': f'Error: {str(e)}'})
 
 @staff_member_required
+@ensure_institucion_activa
 def gestionar_subgrupos_curso_lectivo(request):
     """
     Vista para gestionar subgrupos por curso lectivo de forma masiva.
@@ -355,7 +371,13 @@ def gestionar_subgrupos_curso_lectivo(request):
             institucion = Institucion.objects.first()
     else:
         # Usuario normal solo puede ver su institución
-        institucion = request.institucion_activa
+        if hasattr(request, 'institucion_activa_id') and request.institucion_activa_id:
+            try:
+                institucion = Institucion.objects.get(pk=request.institucion_activa_id)
+            except Institucion.DoesNotExist:
+                institucion = None
+        else:
+            institucion = None
     
     # Obtener curso lectivo seleccionado
     curso_lectivo_id = request.GET.get('curso_lectivo')

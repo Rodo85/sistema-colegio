@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django import forms
 from django.contrib.admin import RelatedOnlyFieldListFilter
 from django.utils.html import format_html
 from django.urls import reverse
@@ -65,12 +66,13 @@ class ClaseAdmin(InstitucionScopedAdmin):
                     institucion_id=request.institucion_activa_id
                 )
             elif db_field.name == "subgrupo":
-                kwargs["queryset"] = Subgrupo.objects.filter(
-                    seccion__nivel__institucion_id=request.institucion_activa_id
-                )
+                # Por ahora mostrar todos los subgrupos, ya que nivel no tiene institución
+                kwargs["queryset"] = Subgrupo.objects.all()
             elif db_field.name == "subarea":
+                # Filtrar subáreas habilitadas para esta institución
                 kwargs["queryset"] = SubArea.objects.filter(
-                    subareainstitucion__institucion_id=request.institucion_activa_id
+                    subareainstitucion__institucion_id=request.institucion_activa_id,
+                    subareainstitucion__activa=True
                 ).distinct()
             elif db_field.name == "institucion":
                 kwargs["queryset"] = Institucion.objects.filter(
@@ -128,6 +130,18 @@ class EspecialidadCursoLectivoAdmin(InstitucionScopedAdmin):
     ordering = ('institucion__nombre', '-curso_lectivo__anio', 'especialidad__nombre')
     autocomplete_fields = ('institucion', 'curso_lectivo', 'especialidad')
     
+    def get_fields(self, request, obj=None):
+        """Personalizar campos según el tipo de usuario"""
+        if request.user.is_superuser:
+            return ('institucion', 'curso_lectivo', 'especialidad', 'activa')
+        else:
+            # Incluir 'institucion' para que el formulario la procese (se ocultará en get_form)
+            return ('institucion', 'curso_lectivo', 'especialidad', 'activa')
+    
+    def get_readonly_fields(self, request, obj=None):
+        # No marcar 'institucion' como solo lectura para permitir que el formulario lo envíe (aunque esté oculto)
+        return () if request.user.is_superuser else ()
+    
     def changelist_view(self, request, extra_context=None):
         """Personalizar la vista de lista para agregar botón de vista masiva"""
         extra_context = extra_context or {}
@@ -144,11 +158,67 @@ class EspecialidadCursoLectivoAdmin(InstitucionScopedAdmin):
         
         return super().changelist_view(request, extra_context)
     
-    fieldsets = (
-        ('Información General', {
-            'fields': ('institucion', 'curso_lectivo', 'especialidad', 'activa')
-        }),
-    )
+    def get_fieldsets(self, request, obj=None):
+        if request.user.is_superuser:
+            return (
+                ('Información General', {
+                    'fields': ('institucion', 'curso_lectivo', 'especialidad', 'activa')
+                }),
+            )
+        # Usuarios normales: incluir institución (se ocultará por widget)
+        return (
+            ('Información General', {
+                'fields': ('institucion', 'curso_lectivo', 'especialidad', 'activa')
+            }),
+        )
+
+    def get_form(self, request, obj=None, **kwargs):
+        Form = super().get_form(request, obj, **kwargs)
+        institucion_id = getattr(request, 'institucion_activa_id', None)
+        is_super = request.user.is_superuser
+
+        class FormWithInst(Form):
+            def __init__(self, *args, **kw):
+                super().__init__(*args, **kw)
+                if not is_super and institucion_id and 'institucion' in self.fields:
+                    # ocultar y forzar valor
+                    self.fields['institucion'].widget = forms.HiddenInput()
+                    self.fields['institucion'].required = True
+                    if self.is_bound:
+                        data = self.data.copy()
+                        key = self.add_prefix('institucion')
+                        if not data.get(key):
+                            data[key] = str(institucion_id)
+                            self.data = data
+                    else:
+                        self.initial['institucion'] = institucion_id
+                # Asegurar que el modelo tenga institucion antes de clean()
+                if not is_super and institucion_id:
+                    self.instance.institucion_id = institucion_id
+
+            def clean(self):
+                # Refuerzo: establecer institucion_id en la instancia antes de validaciones del modelo
+                if not is_super and institucion_id:
+                    self.instance.institucion_id = institucion_id
+                return super().clean()
+
+        return FormWithInst
+
+    def save_model(self, request, obj, form, change):
+        if not request.user.is_superuser:
+            institucion_id = getattr(request, 'institucion_activa_id', None)
+            if institucion_id:
+                obj.institucion_id = institucion_id
+        super().save_model(request, obj, form, change)
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'institucion' and not request.user.is_superuser:
+            from core.models import Institucion
+            inst_id = getattr(request, 'institucion_activa_id', None)
+            if inst_id:
+                kwargs['queryset'] = Institucion.objects.filter(id=inst_id)
+                kwargs['initial'] = inst_id
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
     
     def vista_masiva(self, obj):
         """Enlace a la vista masiva para gestionar especialidades."""
@@ -164,10 +234,8 @@ class EspecialidadCursoLectivoAdmin(InstitucionScopedAdmin):
     vista_masiva.allow_tags = True
     
     def get_readonly_fields(self, request, obj=None):
-        if request.user.is_superuser:
-            return ()
-        # Usuarios normales no pueden cambiar la institución
-        return ('institucion',)
+        # No marcar 'institucion' como solo lectura
+        return () if request.user.is_superuser else ()
 
 
 @admin.register(SeccionCursoLectivo)
@@ -179,6 +247,14 @@ class SeccionCursoLectivoAdmin(InstitucionScopedAdmin):
     search_fields = ('institucion__nombre', 'curso_lectivo__nombre', 'seccion__numero')
     ordering = ('institucion__nombre', '-curso_lectivo__anio', 'seccion__nivel__numero', 'seccion__numero')
     autocomplete_fields = ('institucion', 'curso_lectivo', 'seccion')
+    
+    def get_fields(self, request, obj=None):
+        """Personalizar campos según el tipo de usuario"""
+        if request.user.is_superuser:
+            return ('institucion', 'curso_lectivo', 'seccion', 'activa')
+        else:
+            # Incluir 'institucion' para que el formulario la procese (se ocultará en get_form)
+            return ('institucion', 'curso_lectivo', 'seccion', 'activa')
     
     # ⚡ ACCIONES MASIVAS PARA FACILITAR GESTIÓN
     actions = ['agregar_todas_secciones', 'copiar_del_año_anterior', 'activar_seleccionadas', 'desactivar_seleccionadas']
@@ -199,11 +275,63 @@ class SeccionCursoLectivoAdmin(InstitucionScopedAdmin):
         
         return super().changelist_view(request, extra_context)
     
-    fieldsets = (
-        (None, {
-            'fields': ('institucion', 'curso_lectivo', 'seccion', 'activa')
-        }),
-    )
+    def get_fieldsets(self, request, obj=None):
+        if request.user.is_superuser:
+            return (
+                (None, {
+                    'fields': ('institucion', 'curso_lectivo', 'seccion', 'activa')
+                }),
+            )
+        return (
+            (None, {
+                'fields': ('institucion', 'curso_lectivo', 'seccion', 'activa')
+            }),
+        )
+
+    def get_form(self, request, obj=None, **kwargs):
+        Form = super().get_form(request, obj, **kwargs)
+        institucion_id = getattr(request, 'institucion_activa_id', None)
+        is_super = request.user.is_superuser
+
+        class FormWithInst(Form):
+            def __init__(self, *args, **kw):
+                super().__init__(*args, **kw)
+                if not is_super and institucion_id and 'institucion' in self.fields:
+                    self.fields['institucion'].widget = forms.HiddenInput()
+                    self.fields['institucion'].required = True
+                    if self.is_bound:
+                        data = self.data.copy()
+                        key = self.add_prefix('institucion')
+                        if not data.get(key):
+                            data[key] = str(institucion_id)
+                            self.data = data
+                    else:
+                        self.initial['institucion'] = institucion_id
+                if not is_super and institucion_id:
+                    self.instance.institucion_id = institucion_id
+
+            def clean(self):
+                if not is_super and institucion_id:
+                    self.instance.institucion_id = institucion_id
+                return super().clean()
+
+        return FormWithInst
+
+    def save_model(self, request, obj, form, change):
+        if not request.user.is_superuser:
+            institucion_id = getattr(request, 'institucion_activa_id', None)
+            if institucion_id:
+                obj.institucion_id = institucion_id
+        super().save_model(request, obj, form, change)
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'institucion' and not request.user.is_superuser:
+            from core.models import Institucion
+            inst_id = getattr(request, 'institucion_activa_id', None)
+            if inst_id:
+                kwargs['queryset'] = Institucion.objects.filter(id=inst_id)
+                kwargs['initial'] = inst_id
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
     
     def vista_masiva(self, obj):
         """Enlace a la vista masiva para gestionar secciones."""
@@ -225,9 +353,7 @@ class SeccionCursoLectivoAdmin(InstitucionScopedAdmin):
         return qs.filter(institucion=request.institucion_activa_id)
     
     def get_readonly_fields(self, request, obj=None):
-        if request.user.is_superuser:
-            return ()
-        return ('institucion',)
+        return () if request.user.is_superuser else ()
     
     def agregar_todas_secciones(self, request, queryset):
         """Agregar todas las secciones disponibles de la institución a un curso lectivo específico."""
@@ -324,7 +450,7 @@ class SeccionCursoLectivoAdmin(InstitucionScopedAdmin):
 
 
 @admin.register(SubgrupoCursoLectivo)
-class SubgrupoCursoLectivoAdmin(admin.ModelAdmin):
+class SubgrupoCursoLectivoAdmin(InstitucionScopedAdmin):
     """Admin para gestionar los subgrupos disponibles por curso lectivo."""
     
     list_display = ('institucion', 'curso_lectivo', 'subgrupo', 'activa')
@@ -332,6 +458,14 @@ class SubgrupoCursoLectivoAdmin(admin.ModelAdmin):
     search_fields = ('institucion__nombre', 'curso_lectivo__nombre', 'subgrupo__letra')
     ordering = ('institucion__nombre', '-curso_lectivo__anio', 'subgrupo__seccion__nivel__numero', 'subgrupo__letra')
     autocomplete_fields = ('institucion', 'curso_lectivo', 'subgrupo')
+    
+    def get_fields(self, request, obj=None):
+        """Personalizar campos según el tipo de usuario"""
+        if request.user.is_superuser:
+            return ('institucion', 'curso_lectivo', 'subgrupo', 'activa')
+        else:
+            # Incluir 'institucion' para que el formulario la procese (se ocultará en get_form)
+            return ('institucion', 'curso_lectivo', 'subgrupo', 'activa')
     
     # ⚡ ACCIONES MASIVAS PARA FACILITAR GESTIÓN
     actions = ['agregar_todos_subgrupos', 'copiar_del_año_anterior', 'activar_seleccionadas', 'desactivar_seleccionadas']
@@ -352,11 +486,47 @@ class SubgrupoCursoLectivoAdmin(admin.ModelAdmin):
         
         return super().changelist_view(request, extra_context)
     
-    fieldsets = (
-        (None, {
-            'fields': ('institucion', 'curso_lectivo', 'subgrupo', 'activa')
-        }),
-    )
+    def get_fieldsets(self, request, obj=None):
+        if request.user.is_superuser:
+            return (
+                (None, {
+                    'fields': ('institucion', 'curso_lectivo', 'subgrupo', 'activa')
+                }),
+            )
+        return (
+            (None, {
+                'fields': ('institucion', 'curso_lectivo', 'subgrupo', 'activa')
+            }),
+        )
+
+    def get_form(self, request, obj=None, **kwargs):
+        Form = super().get_form(request, obj, **kwargs)
+        institucion_id = getattr(request, 'institucion_activa_id', None)
+        is_super = request.user.is_superuser
+
+        class FormWithInst(Form):
+            def __init__(self, *args, **kw):
+                super().__init__(*args, **kw)
+                if not is_super and institucion_id and 'institucion' in self.fields:
+                    self.fields['institucion'].widget = forms.HiddenInput()
+                    self.fields['institucion'].required = True
+                    if self.is_bound:
+                        data = self.data.copy()
+                        key = self.add_prefix('institucion')
+                        if not data.get(key):
+                            data[key] = str(institucion_id)
+                            self.data = data
+                    else:
+                        self.initial['institucion'] = institucion_id
+                if not is_super and institucion_id:
+                    self.instance.institucion_id = institucion_id
+
+            def clean(self):
+                if not is_super and institucion_id:
+                    self.instance.institucion_id = institucion_id
+                return super().clean()
+
+        return FormWithInst
     
     def vista_masiva(self, obj):
         """Enlace a la vista masiva para gestionar subgrupos."""
@@ -376,11 +546,25 @@ class SubgrupoCursoLectivoAdmin(admin.ModelAdmin):
         if request.user.is_superuser:
             return qs
         return qs.filter(institucion=request.institucion_activa_id)
+
+    def save_model(self, request, obj, form, change):
+        if not request.user.is_superuser:
+            institucion_id = getattr(request, 'institucion_activa_id', None)
+            if institucion_id:
+                obj.institucion_id = institucion_id
+        super().save_model(request, obj, form, change)
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'institucion' and not request.user.is_superuser:
+            from core.models import Institucion
+            inst_id = getattr(request, 'institucion_activa_id', None)
+            if inst_id:
+                kwargs['queryset'] = Institucion.objects.filter(id=inst_id)
+                kwargs['initial'] = inst_id
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
     
     def get_readonly_fields(self, request, obj=None):
-        if request.user.is_superuser:
-            return ()
-        return ('institucion',)
+        return () if request.user.is_superuser else ()
     
     def agregar_todos_subgrupos(self, request, queryset):
         """Agregar todos los subgrupos disponibles de la institución a un curso lectivo específico."""

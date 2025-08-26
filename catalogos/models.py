@@ -302,3 +302,37 @@ class CursoLectivo(models.Model):
     def save(self, *args, **kwargs):
         self.full_clean()
         super().save(*args, **kwargs)
+
+
+class SubAreaInstitucion(models.Model):
+    """
+    Tabla intermedia para vincular SubÁreas con Instituciones.
+    Permite que cada institución configure qué subáreas estarán disponibles.
+    """
+    institucion = models.ForeignKey('core.Institucion', on_delete=models.CASCADE, verbose_name="Institución")
+    subarea = models.ForeignKey(SubArea, on_delete=models.PROTECT, verbose_name="Subárea")
+    activa = models.BooleanField(default=True, verbose_name="Subárea activa para esta institución")
+
+    class Meta:
+        verbose_name = "Subárea por institución"
+        verbose_name_plural = "Subáreas por institución"
+        unique_together = ("institucion", "subarea")
+        ordering = ("subarea__nombre",)
+
+    def __str__(self):
+        return f"{self.subarea.nombre} - {self.institucion.nombre}"
+
+    def clean(self):
+        from django.core.exceptions import ValidationError
+        
+        if not self.subarea:
+            raise ValidationError("Debe seleccionar una subárea.")
+        
+        if not self.institucion:
+            raise ValidationError("Debe seleccionar una institución.")
+        
+        super().clean()
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)

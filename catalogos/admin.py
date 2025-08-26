@@ -7,7 +7,7 @@ from .models import (
     Nivel, TipoIdentificacion, Nacionalidad, Adecuacion,
     Modalidad, Especialidad, SubArea, Sexo,
     EstadoCivil, Parentesco, Escolaridad, Ocupacion,
-    Seccion, Subgrupo, CursoLectivo
+    Seccion, Subgrupo, CursoLectivo, SubAreaInstitucion
 )
 
 # ── Registrar modelos de ubicación con búsqueda para autocomplete_fields ──
@@ -157,3 +157,33 @@ class CursoLectivoAdmin(admin.ModelAdmin):
     ordering = ('-anio',)
     
     fields = ('anio', 'nombre', 'fecha_inicio', 'fecha_fin', 'activo')
+
+
+@admin.register(SubAreaInstitucion)
+class SubAreaInstitucionAdmin(admin.ModelAdmin):
+    list_display = ('institucion', 'subarea', 'activa')
+    list_filter = ('institucion', 'subarea__especialidad__modalidad', 'activa')
+    search_fields = ('institucion__nombre', 'subarea__nombre')
+    ordering = ('institucion__nombre', 'subarea__nombre')
+    autocomplete_fields = ('institucion', 'subarea')
+
+    def get_fields(self, request, obj=None):
+        if request.user.is_superuser:
+            return ('institucion', 'subarea', 'activa')
+        return ('subarea', 'activa')
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'institucion' and not request.user.is_superuser:
+            from core.models import Institucion
+            institucion_id = getattr(request, 'institucion_activa_id', None)
+            if institucion_id:
+                kwargs['queryset'] = Institucion.objects.filter(id=institucion_id)
+                kwargs['initial'] = institucion_id
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if not request.user.is_superuser:
+            institucion_id = getattr(request, 'institucion_activa_id', None)
+            if institucion_id:
+                obj.institucion_id = institucion_id
+        super().save_model(request, obj, form, change)
