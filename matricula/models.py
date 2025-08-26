@@ -2,7 +2,6 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.db.models import Q
-from smart_selects.db_fields import ChainedForeignKey
 
 from core.models import Institucion, User
 from catalogos.models import (
@@ -226,19 +225,44 @@ class MatriculaAcademica(models.Model):
     def __str__(self):
         return f"{self.estudiante} - {self.nivel} {self.seccion or ''} {self.subgrupo or ''} ({self.curso_lectivo})"
 
+    @property
+    def institucion(self):
+        """Obtiene la institución a través del estudiante"""
+        if hasattr(self, 'estudiante') and self.estudiante:
+            return getattr(self.estudiante, 'institucion', None)
+        return None
+
     def save(self, *args, **kwargs):
-        # No alterar "estado": debe coincidir con las keys de choices ('activo', 'retirado', ...)
+        # Validar que el estudiante tenga institución antes de guardar
+        if hasattr(self, 'estudiante') and self.estudiante:
+            if not hasattr(self.estudiante, 'institucion') or not self.estudiante.institucion:
+                from django.core.exceptions import ValidationError
+                raise ValidationError("El estudiante debe tener una institución asignada.")
+        
+        # No alterar "estado": debe coincidir con las keys of choices ('activo', 'retirado', ...)
         super().save(*args, **kwargs)
 
     def clean(self):
         from django.core.exceptions import ValidationError
         
-        # 1) Especialidad obligatoria en 10-12 por número (más robusto que nombre)
-        if self.nivel and getattr(self.nivel, 'numero', None) in [10, 11, 12]:
+        # 1) Especialidad obligatoria solo para décimo (10)
+        if self.nivel and getattr(self.nivel, 'numero', None) == 10:
             if not self.especialidad:
-                raise ValidationError("La especialidad es obligatoria para 10°, 11° y 12°.")
+                raise ValidationError("La especialidad es obligatoria para décimo (10°).")
+        
+        # 2) Para niveles 11 y 12, verificar si hay especialidad previa de décimo
+        elif self.nivel and getattr(self.nivel, 'numero', None) in [11, 12]:
+            if not self.especialidad:
+                # Buscar si hay matrícula de décimo con especialidad
+                matricula_10 = MatriculaAcademica.objects.filter(
+                    estudiante=self.estudiante,
+                    nivel__numero=10,
+                    estado='activo'
+                ).first()
+                if not matricula_10 or not matricula_10.especialidad:
+                    raise ValidationError("Para 11° y 12° debe seleccionar una especialidad si no existe una asignada en décimo.")
 
-        # 2) Coherencia ECL ↔ curso lectivo (y, si aplica, institución del estudiante)
+        # 3) Coherencia ECL ↔ curso lectivo (y, si aplica, institución del estudiante)
         if self.especialidad:
             if self.especialidad.curso_lectivo_id != self.curso_lectivo_id:
                 raise ValidationError("La especialidad seleccionada no corresponde a este curso lectivo.")
@@ -248,7 +272,7 @@ class MatriculaAcademica(models.Model):
                 if self.especialidad.institucion_id != self.estudiante.institucion_id:
                     raise ValidationError("La especialidad no pertenece a la institución del estudiante.")
 
-        # 3) Salvaguarda adicional (evita dos activas por año aunque cambie sección/subgrupo)
+        # 4) Salvaguarda adicional (evita dos activas por año aunque cambie sección/subgrupo)
         if (self.estado == 'activo' and self.curso_lectivo_id and getattr(self.estudiante, 'pk', None)):
             existe = MatriculaAcademica.objects.filter(
                 estudiante=self.estudiante,
@@ -300,6 +324,24 @@ class MatriculaAcademica(models.Model):
         # Para niveles 10→11 y 11→12, mantener la especialidad
         if nivel_actual.numero in [10, 11]:
             siguiente_data['especialidad'] = matricula_actual.especialidad
+        
+        # Verificar que la especialidad siga siendo válida para el siguiente curso lectivo
+        if siguiente_data['especialidad']:
+            try:
+                from config_institucional.models import EspecialidadCursoLectivo
+                especialidad_valida = EspecialidadCursoLectivo.objects.filter(
+                    institucion=estudiante.institucion,
+                    curso_lectivo=siguiente_curso,
+                    especialidad=siguiente_data['especialidad'].especialidad,
+                    activa=True
+                ).first()
+                
+                if not especialidad_valida:
+                    # La especialidad no está disponible en el siguiente curso, no asignarla
+                    siguiente_data['especialidad'] = None
+            except Exception:
+                # Si hay error, no asignar especialidad
+                siguiente_data['especialidad'] = None
         
         return siguiente_data
 

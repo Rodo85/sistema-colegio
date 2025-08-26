@@ -90,6 +90,32 @@ class SeccionInstitucionFilter(InstitucionScopedFilter):
             return queryset.filter(seccion_id=self.value())
         return queryset
 
+class InstitucionMatriculaFilter(admin.SimpleListFilter):
+    """Filtro de institución para matrículas (solo superusuarios)"""
+    title = 'Institución'
+    parameter_name = 'institucion_matricula'
+    
+    def lookups(self, request, model_admin):
+        if not request.user.is_superuser:
+            return []
+        
+        from core.models import Institucion
+        from django.utils import timezone
+        
+        # Filtrar instituciones activas (fecha_fin >= hoy)
+        instituciones = Institucion.objects.filter(
+            fecha_fin__gte=timezone.now().date()
+        ).order_by('nombre')
+        return [(inst.id, inst.nombre) for inst in instituciones]
+    
+    def queryset(self, request, queryset):
+        if not request.user.is_superuser:
+            return queryset
+        
+        if self.value():
+            return queryset.filter(estudiante__institucion_id=self.value())
+        return queryset
+
 class SubgrupoInstitucionFilter(InstitucionScopedFilter):
     title = 'Subgrupo'
     parameter_name = 'subgrupo_institucion'
@@ -423,10 +449,21 @@ class EstudianteAdmin(InstitucionScopedAdmin):
     def acciones(self, obj):
         """Enlaces de acción para cada estudiante"""
         if obj.pk:
-            return format_html(
-                '<a class="button" href="{}">📚 Matrícula</a>',
-                f'/admin/matricula/matriculaacademica/add/?estudiante={obj.pk}'
-            )
+            # Obtener la URL del admin de matrícula
+            from django.urls import reverse
+            try:
+                url = reverse('admin:matricula_matriculaacademica_add')
+                url += f'?estudiante={obj.pk}'
+                return format_html(
+                    '<a class="button" href="{}" target="_blank">📚 Matrícula</a>',
+                    url
+                )
+            except Exception as e:
+                # Si hay error, mostrar enlace simple
+                return format_html(
+                    '<a class="button" href="/admin/matricula/matriculaacademica/add/?estudiante={}" target="_blank">📚 Matrícula</a>',
+                    obj.pk
+                )
         return ""
     acciones.short_description = "Acciones"
 
@@ -542,8 +579,18 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
         )
     
 
-    list_display = ("identificacion_estudiante", "apellido1_estudiante", "apellido2_estudiante", "nombre_estudiante", "nivel", "seccion", "subgrupo", "especialidad_nombre")
-    list_filter = (NivelInstitucionFilter, SeccionInstitucionFilter, SubgrupoInstitucionFilter, CursoLectivoFilter, "estado", EspecialidadInstitucionFilter)
+    def get_list_display(self, request):
+        """Mostrar institución solo para superusuarios"""
+        base_display = ("identificacion_estudiante", "apellido1_estudiante", "apellido2_estudiante", "nombre_estudiante", "nivel", "seccion", "subgrupo", "especialidad_nombre")
+        if request.user.is_superuser:
+            return base_display + ("institucion_estudiante",)
+        return base_display
+    def get_list_filter(self, request):
+        """Mostrar filtro de institución solo para superusuarios"""
+        base_filters = (NivelInstitucionFilter, SeccionInstitucionFilter, SubgrupoInstitucionFilter, CursoLectivoFilter, "estado", EspecialidadInstitucionFilter)
+        if request.user.is_superuser:
+            return base_filters + (InstitucionMatriculaFilter,)
+        return base_filters
     search_fields = ("estudiante__identificacion", "estudiante__primer_apellido", "estudiante__nombres")
     ordering = ("curso_lectivo__anio", "estudiante__primer_apellido", "estudiante__nombres")
     
@@ -557,7 +604,28 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
         if request.user.is_superuser:
             return qs
         # Usuarios normales solo ven matrículas de su institución
-        return qs.filter(estudiante__institucion=request.institucion_activa_id)
+        institucion_id = getattr(request, 'institucion_activa_id', None)
+        if institucion_id:
+            return qs.filter(estudiante__institucion_id=institucion_id)
+        return qs.none()
+
+    def save_model(self, request, obj, form, change):
+        """Asegurar que la matrícula se guarde correctamente"""
+        try:
+            # Verificar que el estudiante tenga institución
+            if hasattr(obj, 'estudiante') and obj.estudiante:
+                if not hasattr(obj.estudiante, 'institucion') or not obj.estudiante.institucion:
+                    from django.core.exceptions import ValidationError
+                    raise ValidationError("El estudiante debe tener una institución asignada.")
+            
+            super().save_model(request, obj, form, change)
+            
+        except Exception as e:
+            # Log del error
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.error(f"Error al guardar matrícula: {e}")
+            raise
     
     def identificacion_estudiante(self, obj):
         """Mostrar identificación del estudiante"""
@@ -591,9 +659,21 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
     especialidad_nombre.short_description = "Especialidad"
     especialidad_nombre.admin_order_field = 'especialidad__especialidad__nombre'
 
+    def institucion_estudiante(self, obj):
+        """Mostrar la institución del estudiante"""
+        if obj.estudiante and hasattr(obj.estudiante, 'institucion'):
+            return obj.estudiante.institucion.nombre
+        return "-"
+    institucion_estudiante.short_description = "Institución"
+    institucion_estudiante.admin_order_field = 'estudiante__institucion__nombre'
+
     def get_form(self, request, obj=None, **kwargs):
         """Personalizar formulario para lógica inteligente de matrícula"""
         form = super().get_form(request, obj, **kwargs)
+        
+        # Pasar el request al formulario para que pueda acceder a la institución activa
+        if hasattr(form, 'request'):
+            form.request = request
         
         # Establecer estado por defecto para nuevas matrículas (valor de choice: 'activo')
         if not obj and 'estado' in form.base_fields:
