@@ -24,7 +24,7 @@ class InstitucionMiddleware(MiddlewareMixin):
 
                 if inst_id:                                              # ya había elegido
                     inst = Institucion.objects.filter(pk=inst_id).first()
-                    if inst and inst.activa:
+                    if inst and inst.activa:  # activa es una propiedad, no un campo
                         request.institucion_activa_id = inst_id
                     else:                                                # licencia expirada
                         request.session.pop("institucion_id", None)
@@ -37,7 +37,7 @@ class InstitucionMiddleware(MiddlewareMixin):
                     # 2a. Solo 1 colegio → lo asigna automáticamente
                     if membresias.count() == 1:
                         inst = membresias.first().institucion
-                        if inst.activa:
+                        if inst.activa:  # activa es una propiedad, no un campo
                             request.session["institucion_id"] = inst.pk
                             request.institucion_activa_id = inst.pk
 

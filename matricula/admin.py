@@ -100,7 +100,12 @@ class InstitucionMatriculaFilter(admin.SimpleListFilter):
             return []
         
         from core.models import Institucion
-        instituciones = Institucion.objects.filter(activa=True).order_by('nombre')
+        from django.utils import timezone
+        
+        # Filtrar instituciones activas (fecha_fin >= hoy)
+        instituciones = Institucion.objects.filter(
+            fecha_fin__gte=timezone.now().date()
+        ).order_by('nombre')
         return [(inst.id, inst.nombre) for inst in instituciones]
     
     def queryset(self, request, queryset):
