@@ -7356,3 +7356,1050 @@ INFO 2025-08-27 10:21:51,247 basehttp 47408 68080 "GET /media/instituciones/logo
 INFO 2025-08-27 10:21:51,320 basehttp 47408 64812 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-07-05_183218.png HTTP/1.1" 200 86797
 INFO 2025-08-27 10:22:13,912 basehttp 47408 68184 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 46304
 INFO 2025-08-27 10:22:14,114 basehttp 47408 68184 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 10:29:20,242 autoreload 76112 65332 Watching for file changes with StatReloader
+INFO 2025-08-27 10:29:21,824 basehttp 76112 60824 "GET / HTTP/1.1" 302 0
+INFO 2025-08-27 10:29:21,828 basehttp 76112 60824 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:29:21,838 basehttp 76112 60824 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 5518
+INFO 2025-08-27 10:29:21,893 basehttp 76112 60824 "GET /static/sis_colegio/img/Logo-School-Smart.png HTTP/1.1" 304 0
+WARNING 2025-08-27 10:29:21,984 log 76112 60824 Not Found: /favicon.ico
+WARNING 2025-08-27 10:29:21,986 basehttp 76112 60824 "GET /favicon.ico HTTP/1.1" 404 3331
+INFO 2025-08-27 10:30:46,355 basehttp 76112 47600 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:30:46,489 basehttp 76112 47600 "GET /admin/ HTTP/1.1" 200 75942
+INFO 2025-08-27 10:31:53,849 basehttp 76112 78492 "GET /admin/core/institucion/ HTTP/1.1" 200 37483
+INFO 2025-08-27 10:31:53,999 basehttp 76112 78492 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 10:31:58,131 basehttp 76112 78492 "GET /admin/core/institucion/add/ HTTP/1.1" 200 46229
+INFO 2025-08-27 10:31:58,244 basehttp 76112 78492 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 10:35:09,775 basehttp 76112 81868 "POST /admin/core/institucion/add/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:35:09,910 basehttp 76112 81868 "GET /admin/core/institucion/ HTTP/1.1" 200 43599
+INFO 2025-08-27 10:35:10,028 basehttp 76112 81868 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 10:36:18,789 basehttp 76112 81868 "GET /admin/core/institucion/add/ HTTP/1.1" 200 46229
+INFO 2025-08-27 10:36:18,876 basehttp 76112 81868 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 10:37:07,724 basehttp 76112 81868 "POST /admin/core/institucion/add/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:37:07,841 basehttp 76112 81868 "GET /admin/core/institucion/ HTTP/1.1" 200 44333
+INFO 2025-08-27 10:37:07,963 basehttp 76112 81868 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 10:37:12,810 basehttp 76112 81868 "GET /admin/core/user/ HTTP/1.1" 200 42905
+INFO 2025-08-27 10:37:12,913 basehttp 76112 81868 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 10:37:15,247 basehttp 76112 81868 "GET /admin/core/user/add/ HTTP/1.1" 200 39012
+INFO 2025-08-27 10:37:15,361 basehttp 76112 81868 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 10:37:33,587 basehttp 76112 81868 "POST /admin/core/user/add/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:37:33,809 basehttp 76112 81868 "GET /admin/core/user/52d1c9e2-06cc-4ae7-9133-5f2075cfaad8/change/ HTTP/1.1" 200 65766
+INFO 2025-08-27 10:37:33,894 basehttp 76112 81868 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 10:38:44,869 basehttp 76112 81868 "POST /admin/core/user/52d1c9e2-06cc-4ae7-9133-5f2075cfaad8/change/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:38:44,980 basehttp 76112 81868 "GET /admin/core/user/ HTTP/1.1" 200 44281
+INFO 2025-08-27 10:38:45,085 basehttp 76112 81868 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 10:38:46,922 basehttp 76112 81868 "GET /admin/core/user/add/ HTTP/1.1" 200 39012
+INFO 2025-08-27 10:38:47,029 basehttp 76112 81868 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 10:39:05,563 basehttp 76112 81868 "POST /admin/core/user/add/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:39:05,717 basehttp 76112 81868 "GET /admin/core/user/0d240d51-d814-4327-b829-ddf93e175257/change/ HTTP/1.1" 200 65766
+INFO 2025-08-27 10:39:05,798 basehttp 76112 81868 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 10:39:23,054 basehttp 76112 81868 "POST /admin/core/user/0d240d51-d814-4327-b829-ddf93e175257/change/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:39:23,145 basehttp 76112 81868 "GET /admin/core/user/ HTTP/1.1" 200 45046
+INFO 2025-08-27 10:39:23,245 basehttp 76112 81868 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 10:39:31,832 basehttp 76112 81868 "GET /admin/catalogos/cursolectivo/ HTTP/1.1" 200 38498
+INFO 2025-08-27 10:39:31,942 basehttp 76112 81868 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 10:39:34,203 basehttp 76112 81868 "GET /admin/catalogos/cursolectivo/add/ HTTP/1.1" 200 41068
+INFO 2025-08-27 10:39:34,281 basehttp 76112 81868 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 10:40:32,183 basehttp 76112 81868 "POST /admin/catalogos/cursolectivo/add/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:40:32,272 basehttp 76112 81868 "GET /admin/catalogos/cursolectivo/add/ HTTP/1.1" 200 41707
+INFO 2025-08-27 10:40:32,361 basehttp 76112 81868 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 10:41:00,580 basehttp 76112 81868 "POST /admin/catalogos/cursolectivo/add/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:41:00,682 basehttp 76112 81868 "GET /admin/catalogos/cursolectivo/ HTTP/1.1" 200 44473
+INFO 2025-08-27 10:41:00,776 basehttp 76112 81868 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 10:43:18,628 autoreload 81680 62876 Watching for file changes with StatReloader
+INFO 2025-08-27 10:43:20,130 basehttp 81680 71640 - Broken pipe from ('127.0.0.1', 62735)
+INFO 2025-08-27 10:43:20,169 basehttp 81680 75524 "GET /admin/ HTTP/1.1" 200 84040
+INFO 2025-08-27 10:43:26,339 basehttp 81680 76236 "POST /admin/logout/ HTTP/1.1" 200 2409
+INFO 2025-08-27 10:43:27,570 basehttp 81680 76236 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:43:27,613 basehttp 81680 76236 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 5518
+INFO 2025-08-27 10:43:36,557 signals 81680 80584 Signal user_logged_in ejecutándose para usuario: directormaximo@gmail.com
+WARNING 2025-08-27 10:43:36,562 signals 81680 80584 Usuario directormaximo@gmail.com no tiene membresías
+INFO 2025-08-27 10:43:36,565 basehttp 81680 80584 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:43:36,639 middleware 81680 80584 Redirigiendo a selección de institución
+INFO 2025-08-27 10:43:36,640 basehttp 81680 80584 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:43:36,747 basehttp 81680 80584 "GET /seleccionar-institucion/ HTTP/1.1" 200 14090
+INFO 2025-08-27 10:43:42,410 middleware 81680 64444 Redirigiendo a selección de institución
+INFO 2025-08-27 10:43:42,411 basehttp 81680 64444 "POST /admin/logout/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:43:42,508 basehttp 81680 64444 "GET /seleccionar-institucion/ HTTP/1.1" 200 14090
+INFO 2025-08-27 10:43:46,587 middleware 81680 64444 Redirigiendo a selección de institución
+INFO 2025-08-27 10:43:46,588 basehttp 81680 64444 "POST /admin/logout/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:43:46,682 basehttp 81680 64444 "GET /seleccionar-institucion/ HTTP/1.1" 200 14090
+INFO 2025-08-27 10:43:49,289 basehttp 81680 64444 "GET /seleccionar-institucion/ HTTP/1.1" 200 14090
+INFO 2025-08-27 10:43:57,169 middleware 81680 71996 Redirigiendo a selección de institución
+INFO 2025-08-27 10:43:57,170 basehttp 81680 71996 "POST /admin/logout/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:43:57,255 basehttp 81680 71996 "GET /seleccionar-institucion/ HTTP/1.1" 200 14090
+INFO 2025-08-27 10:44:02,297 middleware 81680 61632 Redirigiendo a selección de institución
+INFO 2025-08-27 10:44:02,298 basehttp 81680 61632 "GET / HTTP/1.1" 302 0
+INFO 2025-08-27 10:44:02,400 basehttp 81680 61632 "GET /seleccionar-institucion/ HTTP/1.1" 200 14090
+INFO 2025-08-27 10:44:07,930 middleware 81680 56904 Redirigiendo a selección de institución
+INFO 2025-08-27 10:44:07,931 basehttp 81680 56904 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:44:08,034 basehttp 81680 56904 "GET /seleccionar-institucion/ HTTP/1.1" 200 14090
+INFO 2025-08-27 10:44:14,296 middleware 81680 47944 Redirigiendo a selección de institución
+INFO 2025-08-27 10:44:14,297 basehttp 81680 47944 "GET / HTTP/1.1" 302 0
+INFO 2025-08-27 10:44:14,402 basehttp 81680 47944 "GET /seleccionar-institucion/ HTTP/1.1" 200 14090
+INFO 2025-08-27 10:44:15,280 middleware 81680 47944 Redirigiendo a selección de institución
+INFO 2025-08-27 10:44:15,281 basehttp 81680 47944 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:44:15,372 basehttp 81680 47944 "GET /seleccionar-institucion/ HTTP/1.1" 200 14090
+INFO 2025-08-27 10:44:18,711 middleware 81680 47944 Redirigiendo a selección de institución
+INFO 2025-08-27 10:44:18,712 basehttp 81680 47944 "POST /admin/logout/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:44:18,812 basehttp 81680 47944 "GET /seleccionar-institucion/ HTTP/1.1" 200 14090
+INFO 2025-08-27 10:44:39,873 middleware 81680 78300 Redirigiendo a selección de institución
+INFO 2025-08-27 10:44:39,873 basehttp 81680 78300 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:44:39,973 basehttp 81680 78300 "GET /seleccionar-institucion/ HTTP/1.1" 200 14090
+INFO 2025-08-27 10:44:45,047 middleware 81680 67632 Redirigiendo a selección de institución
+INFO 2025-08-27 10:44:45,047 basehttp 81680 67632 "POST /admin/logout/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:44:45,220 basehttp 81680 67632 "GET /seleccionar-institucion/ HTTP/1.1" 200 14090
+INFO 2025-08-27 10:45:59,695 basehttp 81680 78804 "GET / HTTP/1.1" 302 0
+INFO 2025-08-27 10:45:59,699 basehttp 81680 78804 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:45:59,711 basehttp 81680 78804 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 5518
+INFO 2025-08-27 10:45:59,852 basehttp 81680 78804 "GET /static/sis_colegio/css/logo-custom.css HTTP/1.1" 200 5704
+INFO 2025-08-27 10:46:00,136 basehttp 81680 77084 "GET /static/sis_colegio/img/Logo-School-Smart.png HTTP/1.1" 200 287001
+INFO 2025-08-27 10:46:05,405 basehttp 81680 73216 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:46:05,570 basehttp 81680 73216 "GET /admin/ HTTP/1.1" 200 84040
+INFO 2025-08-27 10:46:05,631 basehttp 81680 66196 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 10:46:05,632 basehttp 81680 61764 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-08-27 10:46:05,632 basehttp 81680 73216 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-08-27 10:46:05,637 basehttp 81680 71756 "GET /static/vendor/bootswatch/cosmo/bootstrap.min.css HTTP/1.1" 200 154456
+INFO 2025-08-27 10:46:05,652 basehttp 81680 77372 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-08-27 10:46:05,669 basehttp 81680 73216 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-08-27 10:46:05,682 basehttp 81680 61764 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-08-27 10:46:05,697 basehttp 81680 66196 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-08-27 10:46:05,711 basehttp 81680 70188 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-08-27 10:46:06,162 basehttp 81680 70188 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-08-27 10:46:06,166 basehttp 81680 66196 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-08-27 10:46:10,906 basehttp 81680 77340 "GET /admin/core/miembro/ HTTP/1.1" 200 36660
+INFO 2025-08-27 10:46:10,955 basehttp 81680 77340 "GET /static/vendor/select2/css/select2.min.css HTTP/1.1" 200 16264
+INFO 2025-08-27 10:46:10,973 basehttp 81680 46592 "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+INFO 2025-08-27 10:46:10,985 basehttp 81680 77340 "GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+INFO 2025-08-27 10:46:10,988 basehttp 81680 69888 "GET /static/admin/js/core.js HTTP/1.1" 200 6208
+INFO 2025-08-27 10:46:10,991 basehttp 81680 79464 "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 9777
+INFO 2025-08-27 10:46:11,001 basehttp 81680 46592 "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+INFO 2025-08-27 10:46:11,003 basehttp 81680 72660 "GET /static/admin/js/actions.js HTTP/1.1" 200 8076
+INFO 2025-08-27 10:46:11,053 basehttp 81680 77388 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 10:46:11,055 basehttp 81680 79464 "GET /static/jazzmin/js/change_list.js HTTP/1.1" 200 2252
+INFO 2025-08-27 10:46:11,065 basehttp 81680 69888 "GET /static/vendor/select2/js/select2.min.js HTTP/1.1" 200 73170
+INFO 2025-08-27 10:46:11,119 basehttp 81680 77340 "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 325171
+INFO 2025-08-27 10:46:12,678 basehttp 81680 77340 "GET /admin/core/miembro/add/ HTTP/1.1" 200 41078
+INFO 2025-08-27 10:46:12,749 basehttp 81680 69888 "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+INFO 2025-08-27 10:46:12,757 basehttp 81680 79464 "GET /static/admin/js/change_form.js HTTP/1.1" 200 606
+INFO 2025-08-27 10:46:12,757 basehttp 81680 77388 "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 200 586
+INFO 2025-08-27 10:46:12,792 basehttp 81680 77388 "GET /static/jazzmin/js/change_form.js HTTP/1.1" 200 6052
+INFO 2025-08-27 10:46:12,812 basehttp 81680 77388 "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+INFO 2025-08-27 10:46:12,826 basehttp 81680 77340 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 10:46:12,841 basehttp 81680 77388 "GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 200 581
+INFO 2025-08-27 10:46:24,883 basehttp 81680 78240 "POST /admin/core/miembro/add/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:46:25,043 basehttp 81680 78240 "GET /admin/core/miembro/ HTTP/1.1" 200 40680
+INFO 2025-08-27 10:46:25,188 basehttp 81680 78240 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 10:46:26,497 basehttp 81680 78240 "GET /admin/core/miembro/add/ HTTP/1.1" 200 41078
+INFO 2025-08-27 10:46:26,635 basehttp 81680 78240 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 10:46:31,314 basehttp 81680 68036 "POST /admin/logout/ HTTP/1.1" 200 2409
+INFO 2025-08-27 10:46:32,807 basehttp 81680 68036 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:46:32,821 basehttp 81680 68036 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 5518
+INFO 2025-08-27 10:46:37,990 signals 81680 68036 Signal user_logged_in ejecutándose para usuario: directormaximo@gmail.com
+INFO 2025-08-27 10:46:38,001 signals 81680 68036 Asignando automáticamente institución única: CTP. MÁXIMO QUESADA
+INFO 2025-08-27 10:46:38,005 basehttp 81680 68036 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:46:38,135 basehttp 81680 68036 "GET /admin/ HTTP/1.1" 200 75936
+INFO 2025-08-27 10:46:40,669 basehttp 81680 69188 "POST /admin/logout/ HTTP/1.1" 200 2409
+INFO 2025-08-27 10:46:41,863 basehttp 81680 69188 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:46:41,885 basehttp 81680 69188 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 5518
+INFO 2025-08-27 10:46:46,549 signals 81680 69188 Signal user_logged_in ejecutándose para usuario: directoraserri@gmail.com
+WARNING 2025-08-27 10:46:46,554 signals 81680 69188 Usuario directoraserri@gmail.com no tiene membresías
+INFO 2025-08-27 10:46:46,559 basehttp 81680 69188 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:46:46,647 middleware 81680 69188 Redirigiendo a selección de institución
+INFO 2025-08-27 10:46:46,648 basehttp 81680 69188 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:46:46,828 basehttp 81680 69188 "GET /seleccionar-institucion/ HTTP/1.1" 200 14090
+INFO 2025-08-27 10:46:51,877 middleware 81680 58792 Redirigiendo a selección de institución
+INFO 2025-08-27 10:46:51,877 basehttp 81680 58792 "POST /admin/logout/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:46:51,981 basehttp 81680 58792 "GET /seleccionar-institucion/ HTTP/1.1" 200 14090
+INFO 2025-08-27 10:46:54,348 autoreload 81680 62876 D:\Proyecto Colegio\sistema_colegio\core\middleware.py changed, reloading.
+INFO 2025-08-27 10:46:55,442 autoreload 72396 20200 Watching for file changes with StatReloader
+INFO 2025-08-27 10:46:57,879 basehttp 72396 75528 "GET /seleccionar-institucion/ HTTP/1.1" 200 14090
+INFO 2025-08-27 10:47:06,908 autoreload 72396 20200 D:\Proyecto Colegio\sistema_colegio\core\middleware.py changed, reloading.
+INFO 2025-08-27 10:47:07,809 autoreload 79936 80164 Watching for file changes with StatReloader
+INFO 2025-08-27 10:47:09,809 basehttp 79936 77980 "POST /admin/logout/ HTTP/1.1" 200 2409
+INFO 2025-08-27 10:47:11,018 basehttp 79936 77980 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:47:11,030 basehttp 79936 77980 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 5518
+INFO 2025-08-27 10:47:13,983 signals 79936 77980 Signal user_logged_in ejecutándose para usuario: directoraserri@gmail.com
+WARNING 2025-08-27 10:47:13,988 signals 79936 77980 Usuario directoraserri@gmail.com no tiene membresías
+INFO 2025-08-27 10:47:13,992 basehttp 79936 77980 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:47:15,260 middleware 79936 72628 Redirigiendo a selección de institución
+INFO 2025-08-27 10:47:15,261 basehttp 79936 72628 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:47:15,392 basehttp 79936 72628 "GET /seleccionar-institucion/ HTTP/1.1" 200 14090
+INFO 2025-08-27 10:47:17,627 basehttp 79936 72628 "POST /admin/logout/ HTTP/1.1" 200 2409
+INFO 2025-08-27 10:47:18,889 basehttp 79936 72628 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:47:18,895 basehttp 79936 72628 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 5518
+INFO 2025-08-27 10:50:01,702 signals 79936 69984 Signal user_logged_in ejecutándose para usuario: directormaximo@gmail.com
+INFO 2025-08-27 10:50:01,712 signals 79936 69984 Asignando automáticamente institución única: CTP. MÁXIMO QUESADA
+INFO 2025-08-27 10:50:01,717 basehttp 79936 69984 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 10:50:01,838 basehttp 79936 69984 "GET /admin/ HTTP/1.1" 200 75936
+INFO 2025-08-27 10:50:08,545 basehttp 79936 69984 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 61678
+INFO 2025-08-27 10:50:08,773 basehttp 79936 69984 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 10:50:14,799 basehttp 79936 69984 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 98556
+INFO 2025-08-27 10:50:14,957 basehttp 79936 69984 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 10:50:15,018 basehttp 79936 51052 "GET /static/matricula/js/clear-dependent-fields.js HTTP/1.1" 200 5225
+INFO 2025-08-27 10:50:15,019 basehttp 79936 61060 "GET /static/matricula/js/dependent-especialidad.js HTTP/1.1" 200 20733
+ERROR 2025-08-27 10:50:15,636 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:50:15,636 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:50:16,185 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:50:16,186 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:50:17,147 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:50:17,148 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:50:18,672 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:50:18,673 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 10:50:52,749 basehttp 79936 61060 "GET /admin/matricula/matriculaacademica/?curso_lectivo=1&especialidad_institucion=6&q= HTTP/1.1" 200 73630
+INFO 2025-08-27 10:50:52,862 basehttp 79936 61060 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 10:50:53,491 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:50:53,491 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:50:53,992 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:50:53,992 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:50:55,006 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:50:55,007 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:50:56,534 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:50:56,534 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 10:51:19,113 basehttp 79936 61060 "GET /admin/matricula/matriculaacademica/?seccion_institucion=33&curso_lectivo=1&especialidad_institucion=6&q= HTTP/1.1" 200 55113
+INFO 2025-08-27 10:51:19,209 basehttp 79936 61060 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 10:51:19,832 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:51:19,833 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:51:20,351 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:51:20,352 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:51:21,358 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:51:21,358 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:51:22,853 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:51:22,854 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 10:51:27,253 basehttp 79936 61060 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 61678
+INFO 2025-08-27 10:51:27,337 basehttp 79936 61060 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 10:51:31,950 basehttp 79936 61060 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 98556
+INFO 2025-08-27 10:51:32,073 basehttp 79936 61060 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 10:51:32,733 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:51:32,734 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:51:33,225 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:51:33,226 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:51:34,216 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:51:34,217 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:51:35,763 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:51:35,763 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 10:51:42,661 basehttp 79936 61060 "GET /admin/matricula/matriculaacademica/?curso_lectivo=1&especialidad_institucion=1&q= HTTP/1.1" 200 103005
+INFO 2025-08-27 10:51:42,766 basehttp 79936 61060 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 10:51:43,410 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:51:43,410 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:51:43,914 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:51:43,915 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:51:44,902 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:51:44,902 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:51:46,409 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:51:46,410 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 10:52:13,649 basehttp 79936 61060 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 98556
+INFO 2025-08-27 10:52:13,741 basehttp 79936 61060 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 10:52:14,397 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:52:14,397 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:52:15,030 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:52:15,031 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:52:15,896 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:52:15,897 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:52:17,395 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:52:17,396 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 10:52:52,277 basehttp 79936 61060 "GET /admin/matricula/matriculaacademica/?curso_lectivo=1&especialidad_institucion=9&q= HTTP/1.1" 200 75290
+INFO 2025-08-27 10:52:52,375 basehttp 79936 61060 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 10:52:53,002 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:52:53,003 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:52:53,536 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:52:53,537 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:52:54,491 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:52:54,492 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:52:56,019 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:52:56,020 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 10:53:32,013 basehttp 79936 61060 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 98556
+INFO 2025-08-27 10:53:32,121 basehttp 79936 61060 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 10:53:32,793 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:53:32,793 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:53:33,267 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:53:33,268 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:53:34,281 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:53:34,282 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:53:35,767 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:53:35,767 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 10:53:50,876 basehttp 79936 61060 "GET /admin/matricula/matriculaacademica/?curso_lectivo=1&especialidad_institucion=9&q= HTTP/1.1" 200 75290
+INFO 2025-08-27 10:53:50,971 basehttp 79936 61060 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 10:53:51,612 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:53:51,613 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:53:52,143 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:53:52,144 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:53:53,197 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:53:53,197 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:53:54,640 views 79936 61060 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:53:54,641 basehttp 79936 61060 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 10:55:45,509 autoreload 79936 80164 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-27 10:55:46,407 autoreload 10236 80060 Watching for file changes with StatReloader
+INFO 2025-08-27 10:55:59,735 autoreload 10236 80060 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-27 10:56:00,588 autoreload 37348 47944 Watching for file changes with StatReloader
+INFO 2025-08-27 10:56:15,046 autoreload 37348 47944 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-27 10:56:15,908 autoreload 77608 65556 Watching for file changes with StatReloader
+INFO 2025-08-27 10:56:48,928 basehttp 77608 78644 "GET /admin/matricula/matriculaacademica/?curso_lectivo=1&especialidad_institucion=9&q= HTTP/1.1" 200 75290
+INFO 2025-08-27 10:56:49,043 basehttp 77608 78644 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 10:56:49,718 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:56:49,719 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:56:50,214 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:56:50,215 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:56:51,180 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:56:51,180 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:56:52,688 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:56:52,689 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 10:56:55,146 basehttp 77608 78644 "GET /admin/matricula/matriculaacademica/?curso_lectivo=1&especialidad_institucion=9&q= HTTP/1.1" 200 75290
+INFO 2025-08-27 10:56:55,346 basehttp 77608 78644 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 10:56:55,974 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:56:55,974 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:56:56,499 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:56:56,500 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:56:57,462 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:56:57,463 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 10:56:58,360 basehttp 77608 78644 "GET /admin/ HTTP/1.1" 200 75936
+INFO 2025-08-27 10:56:59,350 basehttp 77608 78644 "GET /admin/ HTTP/1.1" 200 75936
+INFO 2025-08-27 10:57:01,305 basehttp 77608 78644 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 98556
+INFO 2025-08-27 10:57:01,404 basehttp 77608 78644 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 10:57:02,060 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:57:02,060 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:57:02,589 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:57:02,590 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:57:03,542 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:57:03,542 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:57:05,027 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:57:05,027 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 10:57:08,244 basehttp 77608 78644 "GET /admin/matricula/matriculaacademica/?curso_lectivo=1&especialidad_institucion=9&q= HTTP/1.1" 200 75290
+INFO 2025-08-27 10:57:08,360 basehttp 77608 78644 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 10:57:08,996 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:57:08,997 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:57:09,513 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:57:09,514 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:57:10,500 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:57:10,500 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:57:12,009 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:57:12,010 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 10:57:51,054 basehttp 77608 78644 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 98556
+INFO 2025-08-27 10:57:51,164 basehttp 77608 78644 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 10:57:51,871 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:57:51,871 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:57:52,371 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:57:52,371 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:57:53,366 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:57:53,367 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:57:54,888 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:57:54,889 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 10:58:15,531 basehttp 77608 78644 "GET /admin/matricula/matriculaacademica/?seccion_institucion=2&curso_lectivo=1&q= HTTP/1.1" 200 90603
+INFO 2025-08-27 10:58:15,643 basehttp 77608 78644 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 10:58:16,311 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:58:16,312 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:58:16,798 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:58:16,799 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:58:17,776 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:58:17,777 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:58:19,324 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:58:19,324 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 10:58:21,347 basehttp 77608 78644 "GET /admin/matricula/matriculaacademica/?seccion_institucion=2&curso_lectivo=1&q= HTTP/1.1" 200 90603
+INFO 2025-08-27 10:58:21,437 basehttp 77608 78644 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 10:58:22,089 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:58:22,090 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:58:22,610 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:58:22,611 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:58:23,559 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:58:23,560 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:58:25,089 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:58:25,090 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 10:58:26,429 basehttp 77608 78644 "GET /admin/matricula/matriculaacademica/?seccion_institucion=32&curso_lectivo=1&q= HTTP/1.1" 200 93833
+INFO 2025-08-27 10:58:26,516 basehttp 77608 78644 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 10:58:27,143 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:58:27,144 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:58:27,790 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:58:27,791 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:58:28,667 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:58:28,668 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:58:30,135 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:58:30,135 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 10:58:46,574 basehttp 77608 78644 "GET /admin/matricula/matriculaacademica/?seccion_institucion=32&subgrupo_institucion=64&curso_lectivo=1&q= HTTP/1.1" 200 75260
+INFO 2025-08-27 10:58:46,668 basehttp 77608 78644 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 10:58:47,283 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:58:47,284 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:58:47,790 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:58:47,790 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:58:48,821 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:58:48,822 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:58:50,334 views 77608 78644 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:58:50,335 basehttp 77608 78644 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 10:58:55,784 basehttp 77608 78644 "GET /admin/matricula/matriculaacademica/?seccion_institucion=32&subgrupo_institucion=64&curso_lectivo=2&q= HTTP/1.1" 200 39200
+INFO 2025-08-27 10:58:55,876 basehttp 77608 78644 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 10:58:56,503 views 77608 79604 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:58:56,503 basehttp 77608 79604 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:58:56,992 views 77608 79604 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:58:56,992 basehttp 77608 79604 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:58:57,980 views 77608 79604 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:58:57,981 basehttp 77608 79604 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:58:59,484 views 77608 79604 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:58:59,484 basehttp 77608 79604 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 10:59:02,798 basehttp 77608 79604 "GET /admin/matricula/matriculaacademica/?curso_lectivo=1&q=&seccion_institucion=32&subgrupo_institucion=64 HTTP/1.1" 200 75260
+INFO 2025-08-27 10:59:03,001 basehttp 77608 79604 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 10:59:03,637 views 77608 79604 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:59:03,638 basehttp 77608 79604 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:59:04,128 views 77608 79604 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:59:04,129 basehttp 77608 79604 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:59:05,259 views 77608 79604 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:59:05,260 basehttp 77608 79604 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:59:06,633 views 77608 79604 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:59:06,634 basehttp 77608 79604 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 10:59:08,214 basehttp 77608 79604 "GET /admin/matricula/matriculaacademica/?seccion_institucion=32&subgrupo_institucion=64&curso_lectivo=1&especialidad_institucion=6&q= HTTP/1.1" 200 62660
+INFO 2025-08-27 10:59:08,306 basehttp 77608 79604 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 10:59:08,935 views 77608 79604 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:59:08,935 basehttp 77608 79604 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:59:09,459 views 77608 79604 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:59:09,461 basehttp 77608 79604 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:59:10,445 views 77608 79604 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:59:10,446 basehttp 77608 79604 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:59:11,969 views 77608 79604 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:59:11,970 basehttp 77608 79604 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 10:59:34,825 basehttp 77608 79604 "GET /admin/matricula/matriculaacademica/?seccion_institucion=32&subgrupo_institucion=63&curso_lectivo=1&especialidad_institucion=6&q= HTTP/1.1" 200 55150
+INFO 2025-08-27 10:59:34,919 basehttp 77608 79604 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 10:59:35,568 views 77608 79604 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:59:35,568 basehttp 77608 79604 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:59:36,239 views 77608 79604 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:59:36,240 basehttp 77608 79604 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:59:37,080 views 77608 79604 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:59:37,081 basehttp 77608 79604 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:59:38,562 views 77608 79604 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:59:38,562 basehttp 77608 79604 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 10:59:40,461 basehttp 77608 79604 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 61678
+INFO 2025-08-27 10:59:40,565 basehttp 77608 79604 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 10:59:42,105 basehttp 77608 79604 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 98556
+INFO 2025-08-27 10:59:42,226 basehttp 77608 79604 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 10:59:42,846 views 77608 79604 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:59:42,847 basehttp 77608 79604 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:59:43,347 views 77608 79604 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:59:43,347 basehttp 77608 79604 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:59:44,371 views 77608 79604 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:59:44,372 basehttp 77608 79604 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:59:45,864 views 77608 79604 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:59:45,864 basehttp 77608 79604 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 10:59:49,696 basehttp 77608 79604 "GET /admin/matricula/matriculaacademica/?curso_lectivo=1&especialidad_institucion=6&q= HTTP/1.1" 200 104399
+INFO 2025-08-27 10:59:49,793 basehttp 77608 79604 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 10:59:50,431 views 77608 79604 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:59:50,432 basehttp 77608 79604 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:59:50,933 views 77608 79604 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:59:50,934 basehttp 77608 79604 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:59:51,927 views 77608 79604 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:59:51,928 basehttp 77608 79604 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 10:59:53,414 views 77608 79604 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 10:59:53,415 basehttp 77608 79604 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:01:26,004 basehttp 77608 79604 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 61678
+INFO 2025-08-27 11:01:26,099 basehttp 77608 79604 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 11:01:27,284 basehttp 77608 79604 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 98556
+INFO 2025-08-27 11:01:27,395 basehttp 77608 79604 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 11:01:28,035 views 77608 79604 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:01:28,036 basehttp 77608 79604 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:01:28,537 views 77608 79604 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:01:28,538 basehttp 77608 79604 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:01:29,549 views 77608 79604 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:01:29,550 basehttp 77608 79604 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:01:31,036 views 77608 79604 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:01:31,037 basehttp 77608 79604 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:07:44,790 autoreload 77608 65556 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-27 11:07:45,827 autoreload 21264 79600 Watching for file changes with StatReloader
+INFO 2025-08-27 11:07:52,839 autoreload 21264 79600 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-27 11:07:53,681 autoreload 65580 72864 Watching for file changes with StatReloader
+INFO 2025-08-27 11:08:11,445 autoreload 65580 72864 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-27 11:08:12,390 autoreload 61604 69596 Watching for file changes with StatReloader
+INFO 2025-08-27 11:11:05,373 basehttp 61604 66292 "GET /admin/ HTTP/1.1" 200 75936
+INFO 2025-08-27 11:11:07,491 basehttp 61604 66292 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 98556
+INFO 2025-08-27 11:11:07,602 basehttp 61604 66292 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 11:11:08,243 views 61604 66292 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:11:08,244 basehttp 61604 66292 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:11:08,724 views 61604 66292 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:11:08,725 basehttp 61604 66292 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:11:09,737 views 61604 66292 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:11:09,737 basehttp 61604 66292 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:11:11,290 views 61604 66292 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:11:11,291 basehttp 61604 66292 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:11:20,424 basehttp 61604 66292 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 98556
+INFO 2025-08-27 11:11:20,538 basehttp 61604 66292 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 11:11:21,181 views 61604 66292 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:11:21,182 basehttp 61604 66292 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:11:21,675 views 61604 66292 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:11:21,675 basehttp 61604 66292 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:11:22,677 views 61604 66292 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:11:22,678 basehttp 61604 66292 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:11:24,200 views 61604 66292 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:11:24,200 basehttp 61604 66292 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:11:28,530 basehttp 61604 66292 "GET /admin/matricula/matriculaacademica/?curso_lectivo=1&especialidad_institucion=1&q= HTTP/1.1" 200 103005
+INFO 2025-08-27 11:11:28,619 basehttp 61604 66292 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 11:11:29,279 views 61604 66292 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:11:29,280 basehttp 61604 66292 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:11:29,781 views 61604 66292 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:11:29,782 basehttp 61604 66292 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:11:30,758 views 61604 66292 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:11:30,759 basehttp 61604 66292 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:11:32,293 views 61604 66292 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:11:32,293 basehttp 61604 66292 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:12:47,554 autoreload 61604 69596 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-27 11:12:48,446 autoreload 63084 69904 Watching for file changes with StatReloader
+INFO 2025-08-27 11:12:59,797 autoreload 63084 69904 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-27 11:13:00,565 autoreload 72652 70104 Watching for file changes with StatReloader
+INFO 2025-08-27 11:14:47,191 basehttp 72652 77652 "GET /admin/ HTTP/1.1" 200 75936
+INFO 2025-08-27 11:14:49,653 basehttp 72652 77652 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 100055
+INFO 2025-08-27 11:14:49,756 basehttp 72652 77652 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 11:14:50,386 views 72652 77652 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:14:50,387 basehttp 72652 77652 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:14:50,902 views 72652 77652 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:14:50,903 basehttp 72652 77652 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:14:51,912 views 72652 77652 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:14:51,912 basehttp 72652 77652 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:14:53,409 views 72652 77652 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:14:53,409 basehttp 72652 77652 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:15:35,348 basehttp 72652 77652 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 61694
+INFO 2025-08-27 11:15:35,569 basehttp 72652 77652 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 11:15:36,901 basehttp 72652 77652 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 100071
+INFO 2025-08-27 11:15:37,126 basehttp 72652 77652 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 11:15:37,771 views 72652 77652 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:15:37,772 basehttp 72652 77652 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:15:38,283 views 72652 77652 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:15:38,284 basehttp 72652 77652 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:15:39,284 views 72652 77652 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:15:39,285 basehttp 72652 77652 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:15:40,795 views 72652 77652 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:15:40,796 basehttp 72652 77652 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:15:42,687 basehttp 72652 77652 "GET /admin/matricula/matriculaacademica/?curso_lectivo=1&especialidad__especialidad__id__exact=3&q= HTTP/1.1" 200 92248
+INFO 2025-08-27 11:15:42,792 basehttp 72652 77652 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 11:15:43,446 views 72652 77652 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:15:43,447 basehttp 72652 77652 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:15:43,956 views 72652 77652 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:15:43,956 basehttp 72652 77652 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:15:45,056 views 72652 77652 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:15:45,057 basehttp 72652 77652 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:15:46,433 views 72652 77652 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:15:46,434 basehttp 72652 77652 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:15:56,950 autoreload 72652 70104 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-27 11:15:57,826 autoreload 65152 80020 Watching for file changes with StatReloader
+INFO 2025-08-27 11:16:03,610 autoreload 65152 80020 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-27 11:16:04,413 autoreload 66912 66692 Watching for file changes with StatReloader
+INFO 2025-08-27 11:16:12,340 autoreload 66912 66692 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-27 11:16:13,323 autoreload 76028 81456 Watching for file changes with StatReloader
+INFO 2025-08-27 11:16:29,798 autoreload 76028 81456 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-27 11:16:30,680 autoreload 78232 64448 Watching for file changes with StatReloader
+INFO 2025-08-27 11:17:47,193 basehttp 78232 78272 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 61694
+INFO 2025-08-27 11:17:47,290 basehttp 78232 78272 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 11:17:49,019 basehttp 78232 78272 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 61694
+INFO 2025-08-27 11:17:49,316 basehttp 78232 78272 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-08-27 11:17:49,325 basehttp 78232 66844 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-08-27 11:17:49,329 basehttp 78232 66520 "GET /static/vendor/bootswatch/cosmo/bootstrap.min.css HTTP/1.1" 200 154456
+INFO 2025-08-27 11:17:49,332 basehttp 78232 66844 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-08-27 11:17:49,334 basehttp 78232 80292 "GET /static/vendor/select2/css/select2.min.css HTTP/1.1" 200 16264
+INFO 2025-08-27 11:17:49,335 basehttp 78232 66520 "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+INFO 2025-08-27 11:17:49,338 basehttp 78232 19548 "GET /static/sis_colegio/css/logo-custom.css HTTP/1.1" 200 5704
+INFO 2025-08-27 11:17:49,348 basehttp 78232 19548 "GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+INFO 2025-08-27 11:17:49,349 basehttp 78232 66520 "GET /static/admin/js/actions.js HTTP/1.1" 200 8076
+INFO 2025-08-27 11:17:49,349 basehttp 78232 66844 "GET /static/admin/js/core.js HTTP/1.1" 200 6208
+INFO 2025-08-27 11:17:49,349 basehttp 78232 80292 "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 9777
+INFO 2025-08-27 11:17:49,354 basehttp 78232 19548 "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+INFO 2025-08-27 11:17:49,361 basehttp 78232 66844 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-08-27 11:17:49,363 basehttp 78232 80292 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 11:17:49,364 basehttp 78232 66520 "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 325171
+INFO 2025-08-27 11:17:49,374 basehttp 78232 80292 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-08-27 11:17:49,375 basehttp 78232 66520 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-08-27 11:17:49,376 basehttp 78232 77356 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-08-27 11:17:49,383 basehttp 78232 77356 "GET /static/vendor/select2/js/select2.min.js HTTP/1.1" 200 73170
+INFO 2025-08-27 11:17:49,400 basehttp 78232 77356 "GET /static/jazzmin/js/change_list.js HTTP/1.1" 200 2252
+INFO 2025-08-27 11:17:49,412 basehttp 78232 78272 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 11:17:49,523 basehttp 78232 77356 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-08-27 11:17:49,525 basehttp 78232 78272 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-08-27 11:17:49,726 basehttp 78232 78272 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 11:17:52,270 basehttp 78232 78272 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 98572
+INFO 2025-08-27 11:17:52,393 basehttp 78232 78272 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 11:17:53,051 views 78232 78272 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:17:53,051 basehttp 78232 78272 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:17:53,564 views 78232 78272 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:17:53,564 basehttp 78232 78272 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:17:54,602 views 78232 78272 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:17:54,603 basehttp 78232 78272 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:17:56,054 views 78232 78272 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:17:56,054 basehttp 78232 78272 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:17:57,932 basehttp 78232 78272 "GET /admin/matricula/matriculaacademica/?curso_lectivo=1&especialidad_institucion=9&q= HTTP/1.1" 200 75306
+INFO 2025-08-27 11:17:58,041 basehttp 78232 78272 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 11:17:58,671 views 78232 78272 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:17:58,671 basehttp 78232 78272 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:17:59,200 views 78232 78272 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:17:59,201 basehttp 78232 78272 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:18:00,174 views 78232 78272 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:18:00,174 basehttp 78232 78272 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:18:01,707 views 78232 78272 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:18:01,707 basehttp 78232 78272 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:18:35,892 autoreload 78232 64448 D:\Proyecto Colegio\sistema_colegio\sis_colegio\settings.py changed, reloading.
+INFO 2025-08-27 11:18:36,806 autoreload 64840 15092 Watching for file changes with StatReloader
+INFO 2025-08-27 11:18:38,982 basehttp 64840 77352 "GET /admin/matricula/matriculaacademica/?curso_lectivo=1&especialidad_institucion=9&q= HTTP/1.1" 200 57040
+INFO 2025-08-27 11:18:39,010 basehttp 64840 69628 "GET /static/admin/css/changelists.css HTTP/1.1" 304 0
+INFO 2025-08-27 11:18:39,019 basehttp 64840 60744 "GET /static/admin/img/search.svg HTTP/1.1" 304 0
+INFO 2025-08-27 11:18:39,028 basehttp 64840 60744 "GET /static/admin/js/filters.js HTTP/1.1" 304 0
+INFO 2025-08-27 11:18:39,096 basehttp 64840 77352 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 11:18:39,117 basehttp 64840 77352 "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 304 0
+INFO 2025-08-27 11:18:39,214 basehttp 64840 60744 "GET /static/admin/img/sorting-icons.svg HTTP/1.1" 200 1097
+WARNING 2025-08-27 11:18:39,318 log 64840 60744 Not Found: /favicon.ico
+WARNING 2025-08-27 11:18:39,319 basehttp 64840 60744 "GET /favicon.ico HTTP/1.1" 404 3331
+INFO 2025-08-27 11:18:49,502 basehttp 64840 60744 "GET /admin/matricula/matriculaacademica/?curso_lectivo=1&especialidad_institucion=9&q= HTTP/1.1" 200 57040
+INFO 2025-08-27 11:18:49,582 basehttp 64840 60744 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 11:18:57,534 basehttp 64840 60744 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 71113
+INFO 2025-08-27 11:18:57,628 basehttp 64840 60744 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 11:19:15,695 basehttp 64840 60744 "GET /admin/matricula/matriculaacademica/?especialidad_institucion=6 HTTP/1.1" 200 78636
+INFO 2025-08-27 11:19:15,910 basehttp 64840 60744 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 11:19:31,378 basehttp 64840 60744 "GET /admin/matricula/matriculaacademica/?especialidad_institucion=1 HTTP/1.1" 200 77242
+INFO 2025-08-27 11:19:31,481 basehttp 64840 60744 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 11:19:39,548 basehttp 64840 60744 "GET /admin/matricula/matriculaacademica/?especialidad_institucion=16 HTTP/1.1" 200 54605
+INFO 2025-08-27 11:19:39,647 basehttp 64840 60744 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 11:19:45,187 basehttp 64840 60744 "GET /admin/matricula/matriculaacademica/?especialidad_institucion=10 HTTP/1.1" 200 52069
+INFO 2025-08-27 11:19:45,283 basehttp 64840 60744 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 11:20:13,809 autoreload 64840 15092 D:\Proyecto Colegio\sistema_colegio\sis_colegio\settings.py changed, reloading.
+INFO 2025-08-27 11:20:14,918 autoreload 77396 62180 Watching for file changes with StatReloader
+INFO 2025-08-27 11:20:16,839 basehttp 77396 63480 "GET /admin/matricula/matriculaacademica/?especialidad_institucion=10 HTTP/1.1" 200 72958
+INFO 2025-08-27 11:20:17,001 basehttp 77396 63480 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 11:20:17,646 views 77396 63480 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:20:17,646 basehttp 77396 63480 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:20:18,194 views 77396 63480 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:20:18,195 basehttp 77396 63480 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:20:19,141 views 77396 63480 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:20:19,142 basehttp 77396 63480 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:20:20,534 basehttp 77396 63480 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 98572
+INFO 2025-08-27 11:20:20,633 basehttp 77396 63480 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 11:20:21,286 views 77396 63480 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:20:21,286 basehttp 77396 63480 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:20:21,780 views 77396 63480 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:20:21,781 basehttp 77396 63480 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:20:22,794 views 77396 63480 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:20:22,795 basehttp 77396 63480 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:20:24,300 views 77396 63480 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:20:24,301 basehttp 77396 63480 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:20:30,589 basehttp 77396 63480 "GET /admin/matricula/matriculaacademica/?curso_lectivo=1&especialidad_institucion=12&q= HTTP/1.1" 200 103598
+INFO 2025-08-27 11:20:30,710 basehttp 77396 63480 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 11:20:31,381 views 77396 63480 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:20:31,382 basehttp 77396 63480 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:20:31,892 views 77396 63480 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:20:31,893 basehttp 77396 63480 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:20:32,890 views 77396 63480 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:20:32,890 basehttp 77396 63480 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:20:34,410 views 77396 63480 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:20:34,411 basehttp 77396 63480 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:20:40,613 basehttp 77396 63480 "GET /admin/matricula/matriculaacademica/?curso_lectivo=1&especialidad_institucion=12&q= HTTP/1.1" 200 103598
+INFO 2025-08-27 11:20:40,746 basehttp 77396 63480 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 11:20:41,411 views 77396 63480 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:20:41,412 basehttp 77396 63480 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:20:41,914 views 77396 63480 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:20:41,915 basehttp 77396 63480 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:20:42,918 views 77396 63480 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:20:42,919 basehttp 77396 63480 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:20:44,420 views 77396 63480 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:20:44,421 basehttp 77396 63480 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:20:59,407 autoreload 77396 62180 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-27 11:21:00,315 autoreload 76028 65648 Watching for file changes with StatReloader
+INFO 2025-08-27 11:21:07,233 autoreload 76028 65648 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-27 11:21:08,198 autoreload 65192 81448 Watching for file changes with StatReloader
+INFO 2025-08-27 11:21:33,326 autoreload 65192 81448 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-27 11:21:34,252 autoreload 59572 69428 Watching for file changes with StatReloader
+INFO 2025-08-27 11:21:58,663 basehttp 59572 60008 "GET /admin/ HTTP/1.1" 200 75952
+INFO 2025-08-27 11:22:00,513 basehttp 59572 60008 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 98642
+INFO 2025-08-27 11:22:00,637 basehttp 59572 23236 "GET /static/matricula/js/persist-admin-filters.js HTTP/1.1" 200 1583
+INFO 2025-08-27 11:22:00,737 basehttp 59572 60008 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 11:22:01,383 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:22:01,384 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:22:01,883 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:22:01,884 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:22:02,913 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:22:02,913 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:22:04,403 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:22:04,404 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:22:05,836 basehttp 59572 60008 "GET /admin/matricula/matriculaacademica/?curso_lectivo=1&q= HTTP/1.1" 200 101002
+INFO 2025-08-27 11:22:05,865 basehttp 59572 23236 "GET /static/matricula/js/persist-admin-filters.js HTTP/1.1" 304 0
+INFO 2025-08-27 11:22:05,936 basehttp 59572 60008 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 11:22:06,581 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:22:06,581 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:22:07,099 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:22:07,100 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:22:08,075 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:22:08,076 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:22:09,602 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:22:09,602 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:22:11,864 basehttp 59572 60008 "GET /admin/matricula/matriculaacademica/?curso_lectivo=1&especialidad_institucion=9&q= HTTP/1.1" 200 75376
+INFO 2025-08-27 11:22:11,883 basehttp 59572 23236 "GET /static/matricula/js/persist-admin-filters.js HTTP/1.1" 304 0
+INFO 2025-08-27 11:22:11,954 basehttp 59572 60008 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 11:22:12,587 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:22:12,588 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:22:13,085 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:22:13,086 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:22:14,078 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:22:14,079 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:22:15,580 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:22:15,581 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:22:38,020 basehttp 59572 60008 "GET /admin/matricula/matriculaacademica/?seccion_institucion=2&curso_lectivo=1&especialidad_institucion=9&q= HTTP/1.1" 200 55198
+INFO 2025-08-27 11:22:38,047 basehttp 59572 23236 "GET /static/matricula/js/persist-admin-filters.js HTTP/1.1" 304 0
+INFO 2025-08-27 11:22:38,110 basehttp 59572 60008 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 11:22:38,752 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:22:38,753 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:22:39,230 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:22:39,231 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:22:40,259 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:22:40,259 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:22:41,728 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:22:41,729 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:22:43,885 basehttp 59572 60008 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 61694
+INFO 2025-08-27 11:22:43,972 basehttp 59572 60008 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 11:22:49,140 basehttp 59572 60008 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 98642
+INFO 2025-08-27 11:22:49,181 basehttp 59572 23236 "GET /static/matricula/js/persist-admin-filters.js HTTP/1.1" 304 0
+INFO 2025-08-27 11:22:49,250 basehttp 59572 60008 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 11:22:49,862 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:22:49,862 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:22:50,376 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:22:50,377 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:22:51,370 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:22:51,371 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:22:52,187 basehttp 59572 60008 "GET /admin/matricula/matriculaacademica/?seccion_institucion=2&curso_lectivo=1&q= HTTP/1.1" 200 90689
+INFO 2025-08-27 11:22:52,295 basehttp 59572 60008 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 11:22:52,944 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:22:52,945 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:22:53,419 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:22:53,420 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:22:54,436 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:22:54,437 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:22:55,934 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:22:55,934 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:24:06,273 basehttp 59572 60008 "GET /admin/matricula/matriculaacademica/?seccion_institucion=2&curso_lectivo=1&especialidad_institucion=9&q= HTTP/1.1" 200 55198
+INFO 2025-08-27 11:24:06,309 basehttp 59572 23236 "GET /static/matricula/js/persist-admin-filters.js HTTP/1.1" 304 0
+INFO 2025-08-27 11:24:06,386 basehttp 59572 60008 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 11:24:07,003 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:24:07,003 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:24:07,490 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:24:07,491 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:24:08,497 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:24:08,497 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:24:10,013 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:24:10,013 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:24:17,694 basehttp 59572 60008 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 61694
+INFO 2025-08-27 11:24:17,782 basehttp 59572 60008 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 11:24:19,280 basehttp 59572 60008 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 98642
+INFO 2025-08-27 11:24:19,388 basehttp 59572 60008 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 11:24:20,008 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:24:20,009 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:24:20,525 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:24:20,525 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:24:21,550 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:24:21,550 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:24:23,058 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:24:23,059 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:24:41,919 basehttp 59572 60008 "GET /admin/matricula/matriculaacademica/?curso_lectivo=1&especialidad_institucion=9&q= HTTP/1.1" 200 75376
+INFO 2025-08-27 11:24:41,947 basehttp 59572 23236 "GET /static/matricula/js/persist-admin-filters.js HTTP/1.1" 304 0
+INFO 2025-08-27 11:24:42,014 basehttp 59572 60008 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 11:24:42,658 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:24:42,658 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:24:43,173 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:24:43,174 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:24:44,141 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:24:44,142 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:24:45,641 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:24:45,642 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:25:56,058 basehttp 59572 60008 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 61694
+INFO 2025-08-27 11:25:56,177 basehttp 59572 60008 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 11:25:57,893 basehttp 59572 60008 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 98642
+INFO 2025-08-27 11:25:57,974 basehttp 59572 23236 "GET /static/matricula/js/persist-admin-filters.js HTTP/1.1" 304 0
+INFO 2025-08-27 11:25:58,049 basehttp 59572 60008 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 11:25:58,725 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:25:58,726 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:25:59,207 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:25:59,208 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:26:00,277 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:26:00,278 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:26:01,743 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:26:01,743 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:26:21,751 basehttp 59572 60008 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 98642
+INFO 2025-08-27 11:26:21,862 basehttp 59572 60008 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 11:26:22,555 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:26:22,556 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:26:23,043 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:26:23,044 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:26:24,028 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:26:24,029 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:26:25,525 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:26:25,525 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:26:37,238 basehttp 59572 60008 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 98642
+INFO 2025-08-27 11:26:37,269 basehttp 59572 23236 "GET /static/matricula/js/persist-admin-filters.js HTTP/1.1" 304 0
+INFO 2025-08-27 11:26:37,345 basehttp 59572 60008 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 11:26:38,018 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:26:38,019 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:26:38,489 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:26:38,490 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:26:39,512 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:26:39,513 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:26:41,010 views 59572 60008 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:26:41,011 basehttp 59572 60008 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:26:43,551 autoreload 59572 69428 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-27 11:26:44,568 autoreload 33744 63220 Watching for file changes with StatReloader
+INFO 2025-08-27 11:26:59,104 autoreload 33744 63220 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-27 11:27:00,087 autoreload 73440 2764 Watching for file changes with StatReloader
+INFO 2025-08-27 11:27:22,949 basehttp 73440 72552 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 149874
+INFO 2025-08-27 11:27:23,015 basehttp 73440 80316 "GET /static/matricula/js/persist-admin-filters.js HTTP/1.1" 304 0
+INFO 2025-08-27 11:27:23,090 basehttp 73440 72552 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 11:27:23,811 views 73440 72552 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:27:23,811 basehttp 73440 72552 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:27:24,284 views 73440 72552 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:27:24,285 basehttp 73440 72552 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:27:25,308 views 73440 72552 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:27:25,309 basehttp 73440 72552 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:27:26,780 views 73440 72552 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:27:26,781 basehttp 73440 72552 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:27:34,988 basehttp 73440 72552 "GET /admin/matricula/matriculaacademica/?curso_lectivo=1&especialidad_institucion=9&q= HTTP/1.1" 200 75376
+INFO 2025-08-27 11:27:35,084 basehttp 73440 72552 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 11:27:35,730 views 73440 72552 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:27:35,731 basehttp 73440 72552 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:27:36,214 views 73440 72552 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:27:36,214 basehttp 73440 72552 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:27:37,229 views 73440 72552 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:27:37,230 basehttp 73440 72552 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:27:38,759 views 73440 72552 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:27:38,759 basehttp 73440 72552 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:27:41,377 basehttp 73440 72552 "GET /admin/matricula/matriculaacademica/?curso_lectivo=1&especialidad_institucion=9&q= HTTP/1.1" 200 75376
+INFO 2025-08-27 11:27:41,478 basehttp 73440 72552 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 11:27:42,129 views 73440 72552 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:27:42,130 basehttp 73440 72552 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:27:42,647 views 73440 72552 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:27:42,648 basehttp 73440 72552 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:27:43,615 views 73440 72552 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:27:43,616 basehttp 73440 72552 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:27:45,101 views 73440 72552 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:27:45,101 basehttp 73440 72552 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:27:46,261 basehttp 73440 72552 "GET /admin/matricula/matriculaacademica/?curso_lectivo=1&especialidad_institucion=9&q= HTTP/1.1" 200 75376
+INFO 2025-08-27 11:27:46,348 basehttp 73440 72552 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 11:27:46,970 views 73440 72552 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:27:46,971 basehttp 73440 72552 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:27:47,468 views 73440 72552 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:27:47,468 basehttp 73440 72552 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:27:48,618 views 73440 72552 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:27:48,618 basehttp 73440 72552 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:27:50,035 views 73440 72552 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:27:50,036 basehttp 73440 72552 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:28:32,871 basehttp 73440 72552 "GET /admin/matricula/matriculaacademica/?curso_lectivo=1&especialidad_institucion=9&q= HTTP/1.1" 200 75376
+INFO 2025-08-27 11:28:33,195 basehttp 73440 72552 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-08-27 11:28:33,199 basehttp 73440 59240 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-08-27 11:28:33,206 basehttp 73440 59240 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-08-27 11:28:33,210 basehttp 73440 59240 "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+INFO 2025-08-27 11:28:33,211 basehttp 73440 76072 "GET /static/sis_colegio/css/logo-custom.css HTTP/1.1" 200 5704
+INFO 2025-08-27 11:28:33,213 basehttp 73440 77400 "GET /static/vendor/select2/css/select2.min.css HTTP/1.1" 200 16264
+INFO 2025-08-27 11:28:33,221 basehttp 73440 59240 "GET /static/admin/js/core.js HTTP/1.1" 200 6208
+INFO 2025-08-27 11:28:33,222 basehttp 73440 76072 "GET /static/matricula/js/dependent-especialidad.js HTTP/1.1" 200 20733
+INFO 2025-08-27 11:28:33,223 basehttp 73440 77400 "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 9777
+INFO 2025-08-27 11:28:33,223 basehttp 73440 70616 "GET /static/vendor/bootswatch/cosmo/bootstrap.min.css HTTP/1.1" 200 154456
+INFO 2025-08-27 11:28:33,230 basehttp 73440 76072 "GET /static/matricula/js/clear-dependent-fields.js HTTP/1.1" 200 5225
+INFO 2025-08-27 11:28:33,231 basehttp 73440 77400 "GET /static/matricula/js/persist-admin-filters.js HTTP/1.1" 200 1583
+INFO 2025-08-27 11:28:33,231 basehttp 73440 70616 "GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+INFO 2025-08-27 11:28:33,233 basehttp 73440 59240 "GET /static/admin/js/actions.js HTTP/1.1" 200 8076
+INFO 2025-08-27 11:28:33,237 basehttp 73440 76072 "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+INFO 2025-08-27 11:28:33,239 basehttp 73440 80316 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-08-27 11:28:33,244 basehttp 73440 77400 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-08-27 11:28:33,244 basehttp 73440 59240 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 11:28:33,246 basehttp 73440 70616 "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 325171
+INFO 2025-08-27 11:28:33,272 basehttp 73440 59240 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-08-27 11:28:33,272 basehttp 73440 70616 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-08-27 11:28:33,280 basehttp 73440 59240 "GET /static/jazzmin/js/change_list.js HTTP/1.1" 200 2252
+INFO 2025-08-27 11:28:33,282 basehttp 73440 70616 "GET /static/vendor/select2/js/select2.min.js HTTP/1.1" 200 73170
+INFO 2025-08-27 11:28:33,292 basehttp 73440 72552 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 11:28:33,484 basehttp 73440 70616 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-08-27 11:28:33,488 basehttp 73440 72552 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-08-27 11:28:33,703 basehttp 73440 72552 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+ERROR 2025-08-27 11:28:34,133 views 73440 72552 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:28:34,134 basehttp 73440 72552 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:28:34,613 views 73440 72552 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:28:34,614 basehttp 73440 72552 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:28:35,644 views 73440 72552 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:28:35,644 basehttp 73440 72552 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:28:36,687 basehttp 73440 72552 "GET /admin/matricula/personacontacto/ HTTP/1.1" 200 65538
+INFO 2025-08-27 11:28:36,781 basehttp 73440 72552 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 11:28:38,788 basehttp 73440 72552 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 149874
+INFO 2025-08-27 11:28:38,903 basehttp 73440 72552 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 11:28:39,604 views 73440 72552 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:28:39,605 basehttp 73440 72552 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:28:40,172 views 73440 72552 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:28:40,172 basehttp 73440 72552 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:28:41,063 views 73440 72552 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:28:41,064 basehttp 73440 72552 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:28:42,592 views 73440 72552 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:28:42,592 basehttp 73440 72552 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:28:53,235 basehttp 73440 72552 "GET /admin/matricula/matriculaacademica/?curso_lectivo=1&especialidad_institucion=1&q= HTTP/1.1" 200 137400
+INFO 2025-08-27 11:28:53,317 basehttp 73440 72552 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 11:28:53,969 views 73440 72552 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:28:53,970 basehttp 73440 72552 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:28:54,483 views 73440 72552 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:28:54,484 basehttp 73440 72552 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:28:55,446 views 73440 72552 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:28:55,447 basehttp 73440 72552 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:28:57,016 views 73440 78392 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:28:57,017 basehttp 73440 78392 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:29:45,178 autoreload 73440 2764 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-27 11:29:46,126 autoreload 81424 72764 Watching for file changes with StatReloader
+INFO 2025-08-27 11:29:59,550 autoreload 81424 72764 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-27 11:30:00,413 autoreload 72236 22136 Watching for file changes with StatReloader
+INFO 2025-08-27 11:30:09,260 basehttp 72236 10216 "GET /admin/matricula/personacontacto/ HTTP/1.1" 200 65538
+INFO 2025-08-27 11:30:09,354 basehttp 72236 10216 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 11:30:14,313 basehttp 72236 10216 "GET /admin/matricula/personacontacto/ HTTP/1.1" 200 65538
+INFO 2025-08-27 11:30:14,644 basehttp 72236 65720 "GET /static/vendor/select2/css/select2.min.css HTTP/1.1" 200 16264
+INFO 2025-08-27 11:30:14,649 basehttp 72236 78536 "GET /static/sis_colegio/css/logo-custom.css HTTP/1.1" 200 5704
+INFO 2025-08-27 11:30:14,650 basehttp 72236 10216 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-08-27 11:30:14,657 basehttp 72236 10216 "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+INFO 2025-08-27 11:30:14,658 basehttp 72236 78216 "GET /static/vendor/bootswatch/cosmo/bootstrap.min.css HTTP/1.1" 200 154456
+INFO 2025-08-27 11:30:14,665 basehttp 72236 78216 "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 9777
+INFO 2025-08-27 11:30:14,665 basehttp 72236 10216 "GET /static/admin/js/core.js HTTP/1.1" 200 6208
+INFO 2025-08-27 11:30:14,666 basehttp 72236 66332 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-08-27 11:30:14,667 basehttp 72236 78536 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-08-27 11:30:14,679 basehttp 72236 66332 "GET /static/admin/js/actions.js HTTP/1.1" 200 8076
+INFO 2025-08-27 11:30:14,680 basehttp 72236 78216 "GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+INFO 2025-08-27 11:30:14,680 basehttp 72236 10216 "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+INFO 2025-08-27 11:30:14,688 basehttp 72236 78536 "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 325171
+INFO 2025-08-27 11:30:14,691 basehttp 72236 10216 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-08-27 11:30:14,692 basehttp 72236 78216 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 11:30:14,696 basehttp 72236 69232 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-08-27 11:30:14,704 basehttp 72236 10216 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-08-27 11:30:14,707 basehttp 72236 78216 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-08-27 11:30:14,731 basehttp 72236 10216 "GET /static/jazzmin/js/change_list.js HTTP/1.1" 200 2252
+INFO 2025-08-27 11:30:14,733 basehttp 72236 78216 "GET /static/vendor/select2/js/select2.min.js HTTP/1.1" 200 73170
+INFO 2025-08-27 11:30:14,747 basehttp 72236 65720 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 11:30:14,852 basehttp 72236 78216 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-08-27 11:30:14,854 basehttp 72236 65720 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-08-27 11:30:15,074 basehttp 72236 65720 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 11:30:17,950 basehttp 72236 65720 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 149874
+INFO 2025-08-27 11:30:18,000 basehttp 72236 78216 "GET /static/matricula/js/persist-admin-filters.js HTTP/1.1" 304 0
+INFO 2025-08-27 11:30:18,077 basehttp 72236 65720 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 11:30:18,768 views 72236 65720 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:30:18,769 basehttp 72236 65720 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:30:19,246 views 72236 65720 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:30:19,246 basehttp 72236 65720 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:30:20,238 views 72236 65720 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:30:20,238 basehttp 72236 65720 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 11:30:21,761 views 72236 65720 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 11:30:21,762 basehttp 72236 65720 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 11:30:53,285 basehttp 72236 65720 "POST /admin/logout/ HTTP/1.1" 200 2409
+INFO 2025-08-27 11:30:54,490 basehttp 72236 65720 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 11:30:54,504 basehttp 72236 65720 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 5518
+WARNING 2025-08-27 11:30:54,605 log 72236 65720 Not Found: /favicon.ico
+WARNING 2025-08-27 11:30:54,606 basehttp 72236 65720 "GET /favicon.ico HTTP/1.1" 404 3331
+INFO 2025-08-27 11:30:59,711 basehttp 72236 65720 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 11:30:59,830 basehttp 72236 65720 "GET /admin/ HTTP/1.1" 200 84112
+INFO 2025-08-27 11:31:07,452 basehttp 72236 65720 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 157521
+INFO 2025-08-27 11:31:07,574 basehttp 72236 65720 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 11:31:08,243 basehttp 72236 65720 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 11:31:08,752 basehttp 72236 65720 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 11:31:09,763 basehttp 72236 65720 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 11:31:11,236 basehttp 72236 65720 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 11:31:15,168 basehttp 72236 65720 "GET /admin/matricula/matriculaacademica/?curso_lectivo=1&especialidad_institucion=9&institucion_matricula=1&q= HTTP/1.1" 200 78264
+INFO 2025-08-27 11:31:15,200 basehttp 72236 78216 "GET /static/matricula/js/persist-admin-filters.js HTTP/1.1" 304 0
+INFO 2025-08-27 11:31:15,265 basehttp 72236 65720 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 11:31:15,881 basehttp 72236 65720 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 11:31:16,371 basehttp 72236 65720 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 11:31:17,506 basehttp 72236 65720 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 11:31:18,903 basehttp 72236 65720 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 11:32:45,975 autoreload 72236 22136 D:\Proyecto Colegio\sistema_colegio\matricula\views.py changed, reloading.
+INFO 2025-08-27 11:32:46,914 autoreload 65660 80536 Watching for file changes with StatReloader
+INFO 2025-08-27 11:33:04,568 autoreload 65660 80536 D:\Proyecto Colegio\sistema_colegio\matricula\views.py changed, reloading.
+INFO 2025-08-27 11:33:05,394 autoreload 77916 59704 Watching for file changes with StatReloader
+INFO 2025-08-27 11:33:11,083 basehttp 77916 70176 "GET /admin/matricula/personacontacto/ HTTP/1.1" 200 65544
+INFO 2025-08-27 11:33:11,184 basehttp 77916 70176 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 11:33:13,216 basehttp 77916 70176 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 157521
+INFO 2025-08-27 11:33:13,258 basehttp 77916 78160 "GET /static/matricula/js/persist-admin-filters.js HTTP/1.1" 304 0
+INFO 2025-08-27 11:33:13,328 basehttp 77916 70176 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 11:33:14,102 basehttp 77916 70176 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 11:33:14,516 basehttp 77916 70176 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 11:33:15,508 basehttp 77916 70176 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 11:33:17,098 basehttp 77916 70176 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 11:33:20,016 basehttp 77916 70176 "GET /admin/matricula/matriculaacademica/?curso_lectivo=1&especialidad_institucion=9&institucion_matricula=1&q= HTTP/1.1" 200 78264
+INFO 2025-08-27 11:33:20,106 basehttp 77916 70176 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 11:33:20,717 basehttp 77916 70176 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 11:33:21,224 basehttp 77916 70176 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 11:33:22,323 basehttp 77916 70176 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 11:33:23,724 basehttp 77916 70176 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 12:14:36,912 basehttp 77916 83764 "GET /admin/matricula/matriculaacademica/?curso_lectivo=1&especialidad_institucion=9&institucion_matricula=1&q= HTTP/1.1" 200 78264
+INFO 2025-08-27 12:14:37,198 basehttp 77916 83764 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-08-27 12:14:37,219 basehttp 77916 69320 "GET /static/vendor/select2/css/select2.min.css HTTP/1.1" 200 16264
+INFO 2025-08-27 12:14:37,225 basehttp 77916 69320 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-08-27 12:14:37,229 basehttp 77916 76288 "GET /static/sis_colegio/css/logo-custom.css HTTP/1.1" 200 5704
+INFO 2025-08-27 12:14:37,229 basehttp 77916 69320 "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+INFO 2025-08-27 12:14:37,234 basehttp 77916 82892 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-08-27 12:14:37,236 basehttp 77916 69320 "GET /static/admin/js/core.js HTTP/1.1" 200 6208
+INFO 2025-08-27 12:14:37,236 basehttp 77916 76288 "GET /static/matricula/js/dependent-especialidad.js HTTP/1.1" 200 20733
+INFO 2025-08-27 12:14:37,241 basehttp 77916 82892 "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 9777
+INFO 2025-08-27 12:14:37,242 basehttp 77916 66664 "GET /static/vendor/bootswatch/cosmo/bootstrap.min.css HTTP/1.1" 200 154456
+INFO 2025-08-27 12:14:37,244 basehttp 77916 76288 "GET /static/matricula/js/clear-dependent-fields.js HTTP/1.1" 200 5225
+INFO 2025-08-27 12:14:37,250 basehttp 77916 66664 "GET /static/matricula/js/persist-admin-filters.js HTTP/1.1" 200 1583
+INFO 2025-08-27 12:14:37,251 basehttp 77916 69320 "GET /static/admin/js/actions.js HTTP/1.1" 200 8076
+INFO 2025-08-27 12:14:37,253 basehttp 77916 82892 "GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+INFO 2025-08-27 12:14:37,254 basehttp 77916 76288 "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+INFO 2025-08-27 12:14:37,259 basehttp 77916 66664 "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 325171
+INFO 2025-08-27 12:14:37,267 basehttp 77916 82936 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-08-27 12:14:37,286 basehttp 77916 83764 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 12:14:37,291 basehttp 77916 82936 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-08-27 12:14:37,292 basehttp 77916 83764 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 12:14:37,300 basehttp 77916 82936 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-08-27 12:14:37,300 basehttp 77916 83764 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-08-27 12:14:37,305 basehttp 77916 82936 "GET /static/jazzmin/js/change_list.js HTTP/1.1" 200 2252
+INFO 2025-08-27 12:14:37,306 basehttp 77916 83764 "GET /static/vendor/select2/js/select2.min.js HTTP/1.1" 200 73170
+INFO 2025-08-27 12:14:39,932 basehttp 77916 82936 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-08-27 12:14:39,933 basehttp 77916 83764 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-08-27 12:14:40,551 basehttp 77916 83764 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 12:14:40,988 basehttp 77916 82936 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 12:14:41,057 basehttp 77916 83764 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 12:14:42,154 basehttp 77916 82936 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 12:14:42,394 basehttp 77916 83764 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 157521
+INFO 2025-08-27 12:14:42,579 basehttp 77916 83764 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 12:14:43,222 basehttp 77916 83764 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 12:14:43,713 basehttp 77916 83764 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 12:14:44,723 basehttp 77916 83764 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 12:14:46,226 basehttp 77916 83764 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 12:21:11,812 basehttp 77916 10216 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 157521
+INFO 2025-08-27 12:21:11,868 basehttp 77916 10216 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-08-27 12:21:11,875 basehttp 77916 76152 "GET /static/sis_colegio/css/logo-custom.css HTTP/1.1" 200 5704
+INFO 2025-08-27 12:21:11,880 basehttp 77916 65660 "GET /static/vendor/select2/css/select2.min.css HTTP/1.1" 200 16264
+INFO 2025-08-27 12:21:11,882 basehttp 77916 79452 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-08-27 12:21:11,887 basehttp 77916 66984 "GET /static/vendor/bootswatch/cosmo/bootstrap.min.css HTTP/1.1" 200 154456
+INFO 2025-08-27 12:21:11,893 basehttp 77916 65660 "GET /static/admin/js/core.js HTTP/1.1" 200 6208
+INFO 2025-08-27 12:21:11,894 basehttp 77916 76152 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-08-27 12:21:11,895 basehttp 77916 66984 "GET /static/matricula/js/dependent-especialidad.js HTTP/1.1" 200 21228
+INFO 2025-08-27 12:21:11,897 basehttp 77916 79452 "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+INFO 2025-08-27 12:21:11,912 basehttp 77916 83456 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-08-27 12:21:11,912 basehttp 77916 65660 "GET /static/matricula/js/clear-dependent-fields.js HTTP/1.1" 200 5225
+INFO 2025-08-27 12:21:11,914 basehttp 77916 76152 "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 9777
+INFO 2025-08-27 12:21:11,914 basehttp 77916 66984 "GET /static/admin/js/actions.js HTTP/1.1" 200 8076
+INFO 2025-08-27 12:21:11,916 basehttp 77916 79452 "GET /static/matricula/js/persist-admin-filters.js HTTP/1.1" 200 1583
+INFO 2025-08-27 12:21:11,923 basehttp 77916 83456 "GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+INFO 2025-08-27 12:21:11,930 basehttp 77916 65660 "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+INFO 2025-08-27 12:21:11,933 basehttp 77916 76152 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 12:21:11,935 basehttp 77916 79452 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-08-27 12:21:11,940 basehttp 77916 66984 "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 325171
+INFO 2025-08-27 12:21:11,960 basehttp 77916 79452 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-08-27 12:21:11,961 basehttp 77916 66984 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-08-27 12:21:11,972 basehttp 77916 66984 "GET /static/vendor/select2/js/select2.min.js HTTP/1.1" 200 73170
+INFO 2025-08-27 12:21:11,976 basehttp 77916 79452 "GET /static/jazzmin/js/change_list.js HTTP/1.1" 200 2252
+INFO 2025-08-27 12:21:11,994 basehttp 77916 10216 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 12:21:12,068 basehttp 77916 79452 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-08-27 12:21:12,069 basehttp 77916 10216 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-08-27 12:21:12,317 basehttp 77916 10216 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 12:21:14,996 basehttp 77916 10216 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 157521
+INFO 2025-08-27 12:21:15,089 basehttp 77916 10216 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 12:21:21,509 basehttp 77916 10216 "GET /admin/matricula/matriculaacademica/?curso_lectivo=1&especialidad_institucion=9&q= HTTP/1.1" 200 77471
+INFO 2025-08-27 12:21:21,600 basehttp 77916 10216 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 12:21:31,824 basehttp 77916 10216 "GET /admin/matricula/matriculaacademica/?curso_lectivo=1&especialidad_institucion=6&q= HTTP/1.1" 200 130657
+INFO 2025-08-27 12:21:31,849 basehttp 77916 79452 "GET /static/matricula/js/dependent-especialidad.js HTTP/1.1" 304 0
+INFO 2025-08-27 12:21:31,914 basehttp 77916 10216 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 12:43:43,858 autoreload 15556 82708 Watching for file changes with StatReloader
+INFO 2025-08-27 12:43:44,752 basehttp 15556 62036 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 61320
+INFO 2025-08-27 12:43:44,872 basehttp 15556 62036 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 12:43:54,182 basehttp 15556 62036 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 156355
+INFO 2025-08-27 12:43:54,220 basehttp 15556 64656 "GET /static/matricula/js/dependent-especialidad.js HTTP/1.1" 304 0
+INFO 2025-08-27 12:43:54,220 basehttp 15556 82136 "GET /static/matricula/js/persist-admin-filters.js HTTP/1.1" 304 0
+INFO 2025-08-27 12:43:54,300 basehttp 15556 62036 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:00:01,973 basehttp 15556 82084 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 81156
+INFO 2025-08-27 13:00:02,204 basehttp 15556 45188 "GET /static/admin/img/icon-yes.svg HTTP/1.1" 200 436
+INFO 2025-08-27 13:00:02,223 basehttp 15556 82084 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:00:58,043 basehttp 15556 45188 "GET /admin/config_institucional/subgrupocursolectivo/add/ HTTP/1.1" 200 44272
+INFO 2025-08-27 13:00:58,221 basehttp 15556 45188 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:00:58,379 basehttp 15556 82084 "GET /static/admin/css/vendor/select2/select2.css HTTP/1.1" 200 17358
+INFO 2025-08-27 13:00:58,387 basehttp 15556 65376 "GET /static/admin/css/autocomplete.css HTTP/1.1" 200 9185
+INFO 2025-08-27 13:00:58,429 basehttp 15556 83496 "GET /static/admin/js/autocomplete.js HTTP/1.1" 200 1060
+INFO 2025-08-27 13:00:58,444 basehttp 15556 55424 "GET /static/admin/js/vendor/select2/i18n/es.js HTTP/1.1" 200 922
+INFO 2025-08-27 13:00:58,480 basehttp 15556 55424 "GET /static/admin/img/icon-deletelink.svg HTTP/1.1" 200 392
+INFO 2025-08-27 13:00:58,551 basehttp 15556 80756 "GET /static/admin/js/vendor/select2/select2.full.js HTTP/1.1" 200 173566
+INFO 2025-08-27 13:01:02,623 basehttp 15556 80756 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=subgrupo HTTP/1.1" 200 634
+INFO 2025-08-27 13:01:05,216 basehttp 15556 80756 "GET /admin/autocomplete/?page=2&app_label=config_institucional&model_name=subgrupocursolectivo&field_name=subgrupo HTTP/1.1" 200 647

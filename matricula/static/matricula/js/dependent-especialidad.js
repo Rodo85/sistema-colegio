@@ -6,6 +6,14 @@
     }
     
     $(function() {
+        // Evitar interferir con la lista de admin (filtros de Jazzmin)
+        try {
+            var bodyClass = document && document.body ? document.body.className : '';
+            if (bodyClass && bodyClass.indexOf('change-list') !== -1) {
+                console.log('dependent-especialidad: detectada changelist; no aplicar lógica de ocultar/mostrar');
+                return; // no correr en la lista para no ocultar el filtro "Especialidad"
+            }
+        } catch (e) {}
         console.log("=== ESPECIALIDAD DEPENDIENTE (CAPTURA AUTOCOMPLETE) ===");
         console.log("jQuery version:", $.fn.jquery);
         

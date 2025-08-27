@@ -5,6 +5,12 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+ALLOWED_PATH_PREFIXES = (
+    "/seleccionar-institucion/",
+    "/admin/logout",   # permitir salir aunque no haya institución
+)
+
+
 class InstitucionMiddleware(MiddlewareMixin):
 
     def process_view(self, request, view_func, view_args, view_kwargs):
@@ -26,7 +32,11 @@ class InstitucionMiddleware(MiddlewareMixin):
         if hasattr(request, 'institucion_activa_id') and request.institucion_activa_id:
             return None
         
-        # Si ya está en la pantalla de selección de institución, no hacer nada
+        # Permitir rutas que no deben exigir institución (logout, selector, etc.)
+        for prefijo in ALLOWED_PATH_PREFIXES:
+            if request.path.startswith(prefijo):
+                return None
+        # Si ya está en la pantalla de selección de institución, no hacer nada (cubierto por prefijos)
         if request.path == "/seleccionar-institucion/":
             return None
         
@@ -93,6 +103,12 @@ class InstitucionMiddleware(MiddlewareMixin):
         if hasattr(request, 'institucion_activa_id') and request.institucion_activa_id:
             return None
         
+        # Verificar si ya hay institución en sesión
+        # Permitir rutas de salida/selector antes de imponer institución
+        for prefijo in ALLOWED_PATH_PREFIXES:
+            if request.path.startswith(prefijo):
+                return None
+
         # Verificar si ya hay institución en sesión
         inst_id = request.session.get("institucion_id")
         if inst_id:

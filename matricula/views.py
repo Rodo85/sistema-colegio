@@ -172,9 +172,9 @@ def get_especialidades_disponibles(request):
         if not institucion_id:
             return JsonResponse({'success': False, 'error': 'No se pudo determinar la institución'})
         
-        # Obtener el curso lectivo y la institución
+        # Obtener curso lectivo (es GLOBAL, no tiene institucion_id)
         from core.models import Institucion
-        curso_lectivo = CursoLectivo.objects.get(id=curso_lectivo_id, institucion_id=institucion_id)
+        curso_lectivo = CursoLectivo.objects.get(id=curso_lectivo_id)
         institucion = Institucion.objects.get(id=institucion_id)
         
         # Obtener especialidades disponibles
@@ -185,12 +185,14 @@ def get_especialidades_disponibles(request):
         
         # Preparar datos para JSON
         especialidades_data = []
-        for esp in especialidades_disponibles:
-            especialidades_data.append({
-                'id': esp.id,
-                'nombre': esp.nombre,
-                'modalidad': esp.modalidad.nombre
-            })
+        for ecl in especialidades_disponibles:
+            # ecl es EspecialidadCursoLectivo; extraer la especialidad real
+            if hasattr(ecl, 'especialidad') and ecl.especialidad:
+                especialidades_data.append({
+                    'id': ecl.especialidad.id,
+                    'nombre': ecl.especialidad.nombre,
+                    'modalidad': getattr(getattr(ecl.especialidad, 'modalidad', None), 'nombre', '')
+                })
         
         # Debug: verificar configuraciones existentes
         from config_institucional.models import EspecialidadCursoLectivo

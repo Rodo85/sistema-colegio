@@ -169,38 +169,63 @@ class EspecialidadInstitucionFilter(InstitucionScopedFilter):
     title = 'Especialidad'
     parameter_name = 'especialidad_institucion'
     
+    # Forzar a que el filtro siempre se muestre en la UI (Jazzmin respeta has_output)
+    def has_output(self):
+        return True
+
     def lookups(self, request, model_admin):
         from config_institucional.models import EspecialidadCursoLectivo
         from catalogos.models import CursoLectivo
         import datetime
         
-        # Obtener el curso lectivo seleccionado o el año actual por defecto
+        # Determinar curso lectivo de contexto
         curso_lectivo_id = request.GET.get('curso_lectivo')
         if not curso_lectivo_id:
-            curso_actual = CursoLectivo.objects.filter(anio=datetime.date.today().year).first()
+            curso_actual = CursoLectivo.objects.filter(
+                anio=datetime.date.today().year
+            ).first()
             curso_lectivo_id = curso_actual.id if curso_actual else None
         
         if not curso_lectivo_id:
-            return []
+            # Si no hay curso lectivo determinable, mantener el filtro visible
+            # pero sin opciones (evita que desaparezca en Jazzmin)
+            return [(-1, '—')]
         
         if request.user.is_superuser:
-            especialidades = EspecialidadCursoLectivo.objects.filter(
+            qs = EspecialidadCursoLectivo.objects.filter(
                 curso_lectivo_id=curso_lectivo_id
-            ).values_list('especialidad__id', 'especialidad__nombre').distinct()
+            )
         else:
             institucion_id = getattr(request, 'institucion_activa_id', None)
-            if institucion_id:
-                especialidades = EspecialidadCursoLectivo.objects.filter(
-                    institucion_id=institucion_id,
-                    curso_lectivo_id=curso_lectivo_id
-                ).values_list('especialidad__id', 'especialidad__nombre').distinct()
-            else:
-                especialidades = []
-        return especialidades
+            if not institucion_id:
+                return [(-1, '—')]
+            qs = EspecialidadCursoLectivo.objects.filter(
+                institucion_id=institucion_id,
+                curso_lectivo_id=curso_lectivo_id
+            )
+        opciones = list(qs.values_list('especialidad__id', 'especialidad__nombre').distinct())
+        # Garantizar que el valor actualmente seleccionado siga disponible
+        seleccionado = request.GET.get(self.parameter_name)
+        if seleccionado and str(seleccionado).isdigit():
+            seleccionado = int(seleccionado)
+            ids_presentes = {oid for (oid, _nombre) in opciones}
+            if seleccionado not in ids_presentes:
+                try:
+                    from catalogos.models import Especialidad
+                    esp = Especialidad.objects.get(id=seleccionado)
+                    opciones.append((esp.id, esp.nombre))
+                except Exception:
+                    pass
+        # Asegurar al menos una opción para que el filtro no se oculte
+        if not opciones:
+            return [(-1, '—')]
+        return opciones
 
     def queryset(self, request, queryset):
-        if self.value():
-            return queryset.filter(especialidad_id=self.value())
+        valor = self.value()
+        if valor and str(valor).isdigit() and int(valor) > 0:
+            # Filtrar por la especialidad REAL (catalogos.Especialidad) a través del ECL
+            return queryset.filter(especialidad__especialidad_id=valor)
         return queryset
 
 class CursoLectivoFilter(admin.SimpleListFilter):
@@ -689,6 +714,7 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
             'admin/js/jquery.init.js',
             'matricula/js/dependent-especialidad.js',  # Forzar el JS correcto
             'matricula/js/clear-dependent-fields.js',  # Limpieza automática de campos dependientes
+            'matricula/js/persist-admin-filters.js',   # Fix visual Jazzmin: no ocultar selects
         )
     
 
@@ -700,7 +726,16 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
         return base_display
     def get_list_filter(self, request):
         """Mostrar filtro de institución solo para superusuarios"""
-        base_filters = (NivelInstitucionFilter, SeccionInstitucionFilter, SubgrupoInstitucionFilter, CursoLectivoFilter, "estado", EspecialidadInstitucionFilter)
+        # Usar nuestro filtro personalizado que no depende del queryset
+        # (evita que el dropdown desaparezca cuando el queryset resulta vacío)
+        base_filters = (
+            NivelInstitucionFilter,
+            SeccionInstitucionFilter,
+            SubgrupoInstitucionFilter,
+            CursoLectivoFilter,
+            "estado",
+            EspecialidadInstitucionFilter,
+        )
         if request.user.is_superuser:
             return base_filters + (InstitucionMatriculaFilter,)
         return base_filters
@@ -845,13 +880,10 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
             field.widget.can_add_related = False
             field.widget.can_change_related = False
         
-        # Configurar límite de 44 elementos para evitar sobrecargar los selects
-        # Considerando que los grupos son máximo de 40 estudiantes
-        if db_field.name in ["seccion", "subgrupo"]:
-            # Limitar a máximo 44 elementos para secciones y subgrupos
-            if "queryset" not in kwargs:
-                kwargs["queryset"] = db_field.related_model.objects.all()
-            kwargs["queryset"] = kwargs["queryset"][:44]
+        # Quitar límite artificial de 44 para no afectar filtros/selecciones
+        # (DAL y filtros se encargan de paginar/cargar eficientemente)
+        if db_field.name in ["seccion", "subgrupo"] and "queryset" not in kwargs:
+            kwargs["queryset"] = db_field.related_model.objects.all()
         
         # DAL maneja el filtrado de especialidad, seccion y subgrupo automáticamente
         return field
@@ -860,10 +892,7 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
         """Limitar resultados de búsqueda para evitar sobrecargar los selects"""
         queryset, use_distinct = super().get_search_results(request, queryset, search_term)
         
-        # Limitar a máximo 44 resultados para evitar sobrecargar la interfaz
-        # Considerando que los grupos son máximo de 40 estudiantes
-        if queryset.count() > 44:
-            queryset = queryset[:44]
+        # Quitar recorte de resultados; el admin ya pagina y Jazzmin maneja UI
         
         return queryset, use_distinct
 
