@@ -180,9 +180,12 @@ class Command(BaseCommand):
             # Procesar datos de matrícula
             matricula_data = self.procesar_datos_matricula(row, curso_lectivo, institucion)
             
+            tipo_estudiante_str = str(row['tipo_estudiante']).strip().upper() if not pd.isna(row['tipo_estudiante']) else 'PR'
+            es_plan_nacional = tipo_estudiante_str in ['PN', 'PE', 'PLAN NACIONAL', 'PLAN NACION']
+            
             estudiante_data = {
                 'identificacion': identificacion,
-                'tipo_estudiante': str(row['tipo_estudiante']).strip(),
+                'tipo_estudiante': tipo_estudiante_str if tipo_estudiante_str in ['PR', 'PN'] else ('PN' if es_plan_nacional else 'PR'),
                 'nombres': str(row['nombres']).strip().upper(),
                 'primer_apellido': str(row['primer_apellido']).strip().upper(),
                 'segundo_apellido': str(row['segundo_apellido']).strip().upper() if not pd.isna(row['segundo_apellido']) else '',
@@ -508,7 +511,6 @@ class Command(BaseCommand):
         try:
             estudiante = Estudiante.objects.create(
                 identificacion=estudiante_data['identificacion'],
-                tipo_estudiante=estudiante_data['tipo_estudiante'],
                 nombres=estudiante_data['nombres'],
                 primer_apellido=estudiante_data['primer_apellido'],
                 segundo_apellido=estudiante_data['segundo_apellido'],

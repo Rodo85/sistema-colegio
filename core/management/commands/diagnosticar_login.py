@@ -126,3 +126,5 @@ class Command(BaseCommand):
         except Exception as e:
             self.stdout.write(f'❌ Error durante el diagnóstico: {e}')
 
+
+

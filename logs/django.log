@@ -5928,3 +5928,674 @@ ERROR 2025-08-26 11:56:02,132 views 11452 32696 Error inesperado en get_especial
 INFO 2025-08-26 11:56:02,133 basehttp 11452 32696 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
 INFO 2025-08-26 11:57:25,438 basehttp 11452 32696 "GET /admin/config_institucional/especialidadcursolectivo/ HTTP/1.1" 200 44658
 INFO 2025-08-26 11:57:25,538 basehttp 11452 32696 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 11:59:17,755 basehttp 72024 77928 "GET /config/gestionar-especialidades-curso-lectivo/?institucion=2 HTTP/1.1" 200 38042
+INFO 2025-08-26 11:59:23,910 basehttp 72024 77928 "GET /config/gestionar-especialidades-curso-lectivo/?curso_lectivo=2&modalidad= HTTP/1.1" 200 37764
+INFO 2025-08-26 11:59:28,485 basehttp 72024 77928 "POST /config/actualizar-especialidades-curso-lectivo/ HTTP/1.1" 200 98
+INFO 2025-08-26 11:59:30,617 basehttp 72024 77928 "GET /config/gestionar-especialidades-curso-lectivo/?curso_lectivo=2&modalidad= HTTP/1.1" 200 38042
+INFO 2025-08-26 11:59:32,705 basehttp 72024 77928 "GET /admin/config_institucional/especialidadcursolectivo/ HTTP/1.1" 200 46079
+INFO 2025-08-26 11:59:32,798 basehttp 72024 77928 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 11:59:39,515 basehttp 72024 77928 "GET /config/gestionar-especialidades-curso-lectivo/?institucion=2 HTTP/1.1" 200 38042
+INFO 2025-08-26 11:59:48,652 basehttp 72024 77928 "GET /admin/config_institucional/seccioncursolectivo/ HTTP/1.1" 200 52224
+INFO 2025-08-26 11:59:48,738 basehttp 72024 77928 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 11:59:50,484 basehttp 72024 77928 "GET /config/gestionar-secciones-curso-lectivo/?institucion=2 HTTP/1.1" 200 50401
+INFO 2025-08-26 11:59:53,259 basehttp 72024 77928 "GET /config/gestionar-secciones-curso-lectivo/?curso_lectivo=2&nivel= HTTP/1.1" 200 50317
+INFO 2025-08-26 12:00:11,929 basehttp 72024 77928 "POST /config/actualizar-secciones-curso-lectivo/ HTTP/1.1" 200 98
+INFO 2025-08-26 12:00:13,310 basehttp 72024 77928 "GET /config/gestionar-secciones-curso-lectivo/?curso_lectivo=2&nivel= HTTP/1.1" 200 50345
+INFO 2025-08-26 12:00:16,734 basehttp 72024 77928 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 52284
+INFO 2025-08-26 12:00:16,823 basehttp 72024 77928 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 12:00:18,062 basehttp 72024 77928 "GET /config/gestionar-subgrupos-curso-lectivo/?institucion=2 HTTP/1.1" 200 75986
+INFO 2025-08-26 12:00:19,757 basehttp 72024 77928 "GET /config/gestionar-subgrupos-curso-lectivo/?curso_lectivo=2&nivel= HTTP/1.1" 200 75902
+INFO 2025-08-26 12:00:35,525 basehttp 72024 77928 "POST /config/actualizar-subgrupos-curso-lectivo/ HTTP/1.1" 200 98
+INFO 2025-08-26 12:00:36,958 basehttp 72024 77928 "GET /config/gestionar-subgrupos-curso-lectivo/?curso_lectivo=2&nivel= HTTP/1.1" 200 75958
+INFO 2025-08-26 12:02:11,501 basehttp 72024 77928 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 57100
+INFO 2025-08-26 12:02:11,623 basehttp 72024 77928 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 15:06:53,906 autoreload 16532 23036 Watching for file changes with StatReloader
+INFO 2025-08-26 15:15:25,048 autoreload 16532 23036 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-08-26 15:15:26,111 autoreload 6208 26640 Watching for file changes with StatReloader
+INFO 2025-08-26 15:16:22,513 autoreload 6208 26640 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-08-26 15:16:23,339 autoreload 5724 24752 Watching for file changes with StatReloader
+INFO 2025-08-26 15:16:30,335 autoreload 5724 24752 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-26 15:16:31,187 autoreload 26108 21132 Watching for file changes with StatReloader
+INFO 2025-08-26 15:24:07,491 autoreload 16584 7428 Watching for file changes with StatReloader
+INFO 2025-08-26 15:24:10,077 basehttp 16584 27084 "GET / HTTP/1.1" 302 0
+INFO 2025-08-26 15:24:10,080 basehttp 16584 27084 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-26 15:24:10,141 basehttp 16584 27084 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 5518
+INFO 2025-08-26 15:24:10,159 basehttp 16584 27084 "GET /static/sis_colegio/img/Logo-School-Smart.png HTTP/1.1" 304 0
+WARNING 2025-08-26 15:24:10,674 log 16584 27084 Not Found: /favicon.ico
+WARNING 2025-08-26 15:24:10,676 basehttp 16584 27084 "GET /favicon.ico HTTP/1.1" 404 3331
+INFO 2025-08-26 15:24:18,001 basehttp 16584 27084 "POST /admin/login/?next=/admin/ HTTP/1.1" 200 5749
+INFO 2025-08-26 15:24:24,825 basehttp 16584 27084 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-08-26 15:24:25,107 basehttp 16584 27084 "GET /admin/ HTTP/1.1" 200 75942
+INFO 2025-08-26 15:24:29,590 basehttp 16584 27084 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 36615
+INFO 2025-08-26 15:24:29,757 basehttp 16584 27084 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-26 15:24:32,155 log 16584 27084 Internal Server Error: /admin/matricula/estudiante/add/
+Traceback (most recent call last):
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\forms\forms.py", line 183, in __getitem__
+    field = self.fields[name]
+            ~~~~~~~~~~~^^^^^^
+KeyError: 'institucion'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 210, in render
+    return template.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 173, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\defaulttags.py", line 243, in render
+    nodelist.append(node.render_annotated(context))
+                    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\defaulttags.py", line 327, in render
+    return nodelist.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 210, in render
+    return template.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 173, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\defaulttags.py", line 243, in render
+    nodelist.append(node.render_annotated(context))
+                    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\defaulttags.py", line 198, in render
+    values = list(values)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\helpers.py", line 158, in __iter__
+    yield AdminField(self.form, field, is_first=(i == 0))
+          ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\helpers.py", line 172, in __init__
+    self.field = form[field]  # A django.forms.BoundField instance
+                 ~~~~^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\forms\forms.py", line 185, in __getitem__
+    raise KeyError(
+    ...<6 lines>...
+    )
+KeyError: "Key 'institucion' not found in 'FormWithInst'. Choices are: adecuacion, apoyo_cual, autoriza_derecho_imagen, canton, celular, control_cual, correo, detalle_enfermedad, direccion_exacta, distrito, ed_religiosa, fecha_nacimiento, foto, identificacion, medicamento_consume, medicamento_dosis, nacionalidad, nombres, numero_poliza, orden_alejamiento, orden_alejamiento_nombre, posee_carnet_conapdis, posee_control, posee_valvula_drenaje_lcr, presenta_enfermedad, primer_apellido, provincia, rige_poliza, segundo_apellido, sexo, telefono_casa, tipo_condicion_diagnosticada, tipo_condicion_otro, tipo_estudiante, tipo_identificacion, toma_medicamento, usa_apoyo, vence_poliza."
+ERROR 2025-08-26 15:24:32,168 basehttp 16584 27084 "GET /admin/matricula/estudiante/add/ HTTP/1.1" 500 648713
+INFO 2025-08-26 15:24:36,802 basehttp 16584 27084 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 36615
+INFO 2025-08-26 15:24:36,890 basehttp 16584 27084 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 15:24:43,527 autoreload 16584 7428 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-08-26 15:24:44,427 autoreload 4476 20932 Watching for file changes with StatReloader
+INFO 2025-08-26 15:24:50,388 basehttp 4476 19236 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 36615
+INFO 2025-08-26 15:24:50,466 basehttp 4476 19236 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 17:25:10,463 autoreload 33420 32908 Watching for file changes with StatReloader
+INFO 2025-08-26 17:25:19,057 basehttp 33420 33768 "GET / HTTP/1.1" 302 0
+INFO 2025-08-26 17:25:19,192 basehttp 33420 33768 "GET /admin/ HTTP/1.1" 200 75942
+INFO 2025-08-26 17:25:21,691 basehttp 33420 33768 "GET /admin/core/institucion/ HTTP/1.1" 200 37483
+INFO 2025-08-26 17:25:21,800 basehttp 33420 33768 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 17:25:23,625 basehttp 33420 33768 "GET /admin/core/institucion/add/ HTTP/1.1" 200 46229
+INFO 2025-08-26 17:25:23,719 basehttp 33420 33768 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 17:25:51,265 basehttp 33420 33768 "POST /admin/core/institucion/add/ HTTP/1.1" 302 0
+INFO 2025-08-26 17:25:51,645 basehttp 33420 33768 "GET /admin/core/institucion/ HTTP/1.1" 200 43601
+INFO 2025-08-26 17:25:51,753 basehttp 33420 33768 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 17:25:53,179 basehttp 33420 33768 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 39634
+INFO 2025-08-26 17:25:53,293 basehttp 33420 33768 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-26 17:25:55,812 log 33420 33768 Internal Server Error: /admin/matricula/estudiante/add/
+Traceback (most recent call last):
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\forms\forms.py", line 183, in __getitem__
+    field = self.fields[name]
+            ~~~~~~~~~~~^^^^^^
+KeyError: 'institucion'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 210, in render
+    return template.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 173, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\defaulttags.py", line 243, in render
+    nodelist.append(node.render_annotated(context))
+                    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\defaulttags.py", line 327, in render
+    return nodelist.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 210, in render
+    return template.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 173, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\defaulttags.py", line 243, in render
+    nodelist.append(node.render_annotated(context))
+                    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\defaulttags.py", line 198, in render
+    values = list(values)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\helpers.py", line 158, in __iter__
+    yield AdminField(self.form, field, is_first=(i == 0))
+          ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\helpers.py", line 172, in __init__
+    self.field = form[field]  # A django.forms.BoundField instance
+                 ~~~~^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\forms\forms.py", line 185, in __getitem__
+    raise KeyError(
+    ...<6 lines>...
+    )
+KeyError: "Key 'institucion' not found in 'FormWithInst'. Choices are: adecuacion, apoyo_cual, autoriza_derecho_imagen, canton, celular, control_cual, correo, detalle_enfermedad, direccion_exacta, distrito, ed_religiosa, fecha_nacimiento, foto, identificacion, medicamento_consume, medicamento_dosis, nacionalidad, nombres, numero_poliza, orden_alejamiento, orden_alejamiento_nombre, posee_carnet_conapdis, posee_control, posee_valvula_drenaje_lcr, presenta_enfermedad, primer_apellido, provincia, rige_poliza, segundo_apellido, sexo, telefono_casa, tipo_condicion_diagnosticada, tipo_condicion_otro, tipo_estudiante, tipo_identificacion, toma_medicamento, usa_apoyo, vence_poliza."
+ERROR 2025-08-26 17:25:55,823 basehttp 33420 33768 "GET /admin/matricula/estudiante/add/ HTTP/1.1" 500 648713
+INFO 2025-08-26 17:27:09,453 autoreload 33420 32908 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-26 17:27:10,488 autoreload 32968 27700 Watching for file changes with StatReloader
+INFO 2025-08-26 17:27:19,640 autoreload 32968 27700 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-26 17:27:20,550 autoreload 4364 33548 Watching for file changes with StatReloader
+INFO 2025-08-26 17:27:32,724 basehttp 4364 32448 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 39634
+INFO 2025-08-26 17:27:32,839 basehttp 4364 32448 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 17:27:35,661 basehttp 4364 32448 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 39634
+INFO 2025-08-26 17:27:35,742 basehttp 4364 32448 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 17:27:38,246 basehttp 4364 32448 "GET /admin/matricula/estudiante/add/ HTTP/1.1" 200 136381
+INFO 2025-08-26 17:27:38,345 basehttp 4364 32448 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 17:27:38,382 basehttp 4364 31584 "GET /static/matricula/js/plannacional-toggle.js HTTP/1.1" 200 1123
+INFO 2025-08-26 17:27:38,896 views 4364 31584 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 17:27:38,897 basehttp 4364 31584 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 17:27:39,042 views 4364 31584 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 17:27:39,042 basehttp 4364 31584 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 17:27:39,610 views 4364 31584 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 17:27:39,611 basehttp 4364 31584 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 17:27:40,036 views 4364 31584 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 17:27:40,037 basehttp 4364 31584 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 17:27:40,588 views 4364 31584 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 17:27:40,589 basehttp 4364 31584 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 17:27:41,046 views 4364 31584 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 17:27:41,047 basehttp 4364 31584 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 17:27:42,041 views 4364 31584 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 17:27:42,042 basehttp 4364 31584 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 17:29:44,595 autoreload 4364 33548 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-26 17:29:45,536 autoreload 3096 27292 Watching for file changes with StatReloader
+INFO 2025-08-26 17:29:53,548 autoreload 3096 27292 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-26 17:29:54,357 autoreload 32500 25496 Watching for file changes with StatReloader
+INFO 2025-08-26 17:31:00,377 basehttp 32500 28776 "GET /admin/matricula/estudiante/add/ HTTP/1.1" 200 135697
+INFO 2025-08-26 17:31:00,497 basehttp 32500 28776 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 17:31:00,994 views 32500 28776 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 17:31:00,995 basehttp 32500 28776 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 17:31:01,134 views 32500 28776 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 17:31:01,135 basehttp 32500 28776 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 17:31:01,689 views 32500 28776 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 17:31:01,690 basehttp 32500 28776 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 17:31:02,184 views 32500 28776 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 17:31:02,185 basehttp 32500 28776 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 17:31:02,705 views 32500 28776 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 17:31:02,705 basehttp 32500 28776 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 17:31:03,135 views 32500 28776 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 17:31:03,136 basehttp 32500 28776 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 17:31:04,147 views 32500 28776 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 17:31:04,148 basehttp 32500 28776 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 18:04:38,831 basehttp 32500 34600 "GET /admin/matricula/estudiante/add/ HTTP/1.1" 200 135697
+INFO 2025-08-26 18:04:38,865 basehttp 32500 28808 "GET /static/matricula/js/plannacional-toggle.js HTTP/1.1" 304 0
+INFO 2025-08-26 18:04:38,947 basehttp 32500 34600 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 18:04:39,488 views 32500 34600 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 18:04:39,489 basehttp 32500 34600 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 18:04:39,639 views 32500 34600 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 18:04:39,640 basehttp 32500 34600 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 18:04:40,180 views 32500 34600 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 18:04:40,181 basehttp 32500 34600 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 18:04:40,644 views 32500 34600 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 18:04:40,644 basehttp 32500 34600 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 18:04:41,186 views 32500 34600 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 18:04:41,187 basehttp 32500 34600 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 18:04:41,627 views 32500 34600 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 18:04:41,627 basehttp 32500 34600 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 18:04:42,625 views 32500 34600 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 18:04:42,625 basehttp 32500 34600 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 18:05:57,688 autoreload 32500 25496 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-26 18:05:58,632 autoreload 33428 32748 Watching for file changes with StatReloader
+INFO 2025-08-26 18:06:17,385 autoreload 33428 32748 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-26 18:06:18,294 autoreload 34428 33928 Watching for file changes with StatReloader
+INFO 2025-08-26 18:21:45,472 basehttp 34428 25736 "GET /admin/matricula/estudiante/add/ HTTP/1.1" 200 135687
+INFO 2025-08-26 18:21:45,567 basehttp 34428 25736 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 18:21:45,580 basehttp 34428 28312 "GET /static/matricula/js/plannacional-toggle.js HTTP/1.1" 200 1420
+INFO 2025-08-26 18:21:46,174 views 34428 28312 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 18:21:46,175 basehttp 34428 28312 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 18:21:46,241 views 34428 25736 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 18:21:46,242 basehttp 34428 25736 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 18:21:46,768 views 34428 25736 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 18:21:46,768 basehttp 34428 25736 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 18:21:47,217 views 34428 25736 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 18:21:47,217 basehttp 34428 25736 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 18:21:47,872 views 34428 25736 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 18:21:47,873 basehttp 34428 25736 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 18:21:48,243 views 34428 25736 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 18:21:48,244 basehttp 34428 25736 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 18:21:49,208 views 34428 25736 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 18:21:49,209 basehttp 34428 25736 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:02:22,729 basehttp 34428 33016 "GET /admin/matricula/estudiante/add/ HTTP/1.1" 200 135687
+INFO 2025-08-26 19:02:22,766 basehttp 34428 37760 "GET /static/sis_colegio/css/logo-custom.css HTTP/1.1" 200 5704
+INFO 2025-08-26 19:02:22,829 basehttp 34428 37760 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 19:02:23,046 basehttp 34428 9924 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-08-26 19:02:23,047 basehttp 34428 33016 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-08-26 19:02:23,050 basehttp 34428 36960 "GET /static/vendor/select2/css/select2.min.css HTTP/1.1" 200 16264
+INFO 2025-08-26 19:02:23,067 basehttp 34428 34908 "GET /static/vendor/bootswatch/cosmo/bootstrap.min.css HTTP/1.1" 200 154456
+INFO 2025-08-26 19:02:23,087 basehttp 34428 36960 "GET /static/admin/js/admin/DateTimeShortcuts.js HTTP/1.1" 200 19319
+INFO 2025-08-26 19:02:23,090 basehttp 34428 36960 "GET /static/matricula/js/dependent-dropdowns.js HTTP/1.1" 200 17518
+INFO 2025-08-26 19:02:23,095 basehttp 34428 33016 "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+INFO 2025-08-26 19:02:23,126 basehttp 34428 12980 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-08-26 19:02:23,130 basehttp 34428 12980 "GET /static/matricula/js/plannacional-toggle.js HTTP/1.1" 200 1420
+INFO 2025-08-26 19:02:23,141 basehttp 34428 34908 "GET /static/admin/js/core.js HTTP/1.1" 200 6208
+INFO 2025-08-26 19:02:23,141 basehttp 34428 9924 "GET /static/admin/js/calendar.js HTTP/1.1" 200 9141
+INFO 2025-08-26 19:02:23,142 basehttp 34428 36960 "GET /static/admin/js/inlines.js HTTP/1.1" 200 15628
+INFO 2025-08-26 19:02:23,151 basehttp 34428 33016 "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 9777
+INFO 2025-08-26 19:02:23,154 basehttp 34428 36960 "GET /static/matricula/js/autocomplete-correo.js HTTP/1.1" 200 987
+INFO 2025-08-26 19:02:23,161 basehttp 34428 36960 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-26 19:02:23,175 basehttp 34428 12980 "GET /static/admin/js/actions.js HTTP/1.1" 200 8076
+INFO 2025-08-26 19:02:23,179 basehttp 34428 34908 "GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+INFO 2025-08-26 19:02:23,187 basehttp 34428 9924 "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+INFO 2025-08-26 19:02:23,192 basehttp 34428 36960 "GET /static/admin/js/change_form.js HTTP/1.1" 200 606
+INFO 2025-08-26 19:02:23,204 basehttp 34428 12980 "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 200 586
+INFO 2025-08-26 19:02:23,205 basehttp 34428 37760 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-08-26 19:02:23,267 basehttp 34428 37760 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-08-26 19:02:23,277 basehttp 34428 36960 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-08-26 19:02:23,307 basehttp 34428 37760 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-08-26 19:02:23,341 basehttp 34428 33016 "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 325171
+INFO 2025-08-26 19:02:23,344 basehttp 34428 37760 "GET /static/jazzmin/js/change_form.js HTTP/1.1" 200 6052
+INFO 2025-08-26 19:02:23,366 basehttp 34428 36960 "GET /static/vendor/select2/js/select2.min.js HTTP/1.1" 200 73170
+INFO 2025-08-26 19:02:23,377 basehttp 34428 37760 "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+INFO 2025-08-26 19:02:23,380 basehttp 34428 9924 "GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 200 581
+INFO 2025-08-26 19:02:23,380 basehttp 34428 33016 "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+INFO 2025-08-26 19:02:23,380 basehttp 34428 12980 "GET /static/admin/img/icon-deletelink.svg HTTP/1.1" 200 392
+INFO 2025-08-26 19:02:23,430 basehttp 34428 33016 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-08-26 19:02:23,457 basehttp 34428 12980 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-08-26 19:02:23,642 basehttp 34428 12980 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-26 19:02:24,008 views 34428 12980 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:02:24,009 basehttp 34428 12980 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:02:24,151 views 34428 12980 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:02:24,152 basehttp 34428 12980 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:02:24,699 views 34428 12980 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:02:24,700 basehttp 34428 12980 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:02:25,193 views 34428 12980 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:02:25,194 basehttp 34428 12980 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:02:25,718 views 34428 12980 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:02:25,719 basehttp 34428 12980 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:02:25,921 basehttp 34428 12980 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 39634
+INFO 2025-08-26 19:02:26,004 basehttp 34428 12980 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 19:02:28,322 basehttp 34428 12980 "GET /admin/matricula/estudiante/add/ HTTP/1.1" 200 135687
+INFO 2025-08-26 19:02:28,406 basehttp 34428 12980 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 19:02:28,896 views 34428 12980 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:02:28,896 basehttp 34428 12980 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:02:29,040 views 34428 12980 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:02:29,041 basehttp 34428 12980 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:02:29,586 views 34428 12980 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:02:29,587 basehttp 34428 12980 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:02:30,060 views 34428 12980 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:02:30,061 basehttp 34428 12980 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:02:30,581 views 34428 12980 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:02:30,582 basehttp 34428 12980 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:02:31,142 views 34428 12980 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:02:31,142 basehttp 34428 12980 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:02:32,047 views 34428 12980 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:02:32,048 basehttp 34428 12980 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:03:29,897 autoreload 34428 33928 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-26 19:03:30,870 autoreload 37520 33556 Watching for file changes with StatReloader
+INFO 2025-08-26 19:03:34,589 basehttp 37520 19184 "GET /admin/matricula/estudiante/add/ HTTP/1.1" 200 135619
+INFO 2025-08-26 19:03:34,707 basehttp 37520 19184 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 19:03:35,372 views 37520 19184 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:03:35,373 basehttp 37520 19184 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:03:35,456 views 37520 34124 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:03:35,457 basehttp 37520 34124 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:03:35,735 autoreload 37520 33556 D:\Proyecto Colegio\sistema_colegio\matricula\forms.py changed, reloading.
+INFO 2025-08-26 19:03:36,749 autoreload 36912 10836 Watching for file changes with StatReloader
+INFO 2025-08-26 19:03:37,226 views 36912 33152 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:03:37,228 basehttp 36912 33152 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:03:37,293 views 36912 33152 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:03:37,294 basehttp 36912 33152 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:03:37,362 views 36912 35572 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:03:37,363 basehttp 36912 35572 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:03:37,435 views 36912 33152 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:03:37,436 basehttp 36912 33152 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:03:38,368 views 36912 33152 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:03:38,369 basehttp 36912 33152 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:03:48,191 autoreload 36912 10836 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-26 19:03:49,008 autoreload 37184 28948 Watching for file changes with StatReloader
+INFO 2025-08-26 19:06:51,661 autoreload 37184 28948 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-08-26 19:06:52,637 autoreload 28776 25948 Watching for file changes with StatReloader
+INFO 2025-08-26 19:06:56,417 autoreload 28776 25948 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-26 19:06:57,382 autoreload 37592 35572 Watching for file changes with StatReloader
+INFO 2025-08-26 19:09:02,964 autoreload 37592 35572 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-08-26 19:09:03,996 autoreload 34400 32924 Watching for file changes with StatReloader
+INFO 2025-08-26 19:09:06,110 basehttp 34400 35888 "GET /admin/ HTTP/1.1" 200 77301
+INFO 2025-08-26 19:09:09,353 basehttp 34400 35888 "GET /admin/ HTTP/1.1" 200 77301
+INFO 2025-08-26 19:09:09,646 basehttp 34400 35888 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-08-26 19:09:09,650 basehttp 34400 35888 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-26 19:09:09,655 basehttp 34400 35888 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-08-26 19:09:09,660 basehttp 34400 35888 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-08-26 19:09:09,663 basehttp 34400 34464 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-08-26 19:09:09,666 basehttp 34400 35888 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-08-26 19:09:09,677 basehttp 34400 35736 "GET /static/sis_colegio/css/logo-custom.css HTTP/1.1" 200 5704
+INFO 2025-08-26 19:09:09,679 basehttp 34400 24852 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-08-26 19:09:09,680 basehttp 34400 2592 "GET /static/vendor/bootswatch/cosmo/bootstrap.min.css HTTP/1.1" 200 154456
+INFO 2025-08-26 19:09:09,685 basehttp 34400 37104 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-08-26 19:09:09,782 basehttp 34400 2592 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-08-26 19:09:09,784 basehttp 34400 37104 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-08-26 19:09:09,921 basehttp 34400 37104 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-26 19:09:12,628 basehttp 34400 37104 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 39613
+INFO 2025-08-26 19:09:12,728 basehttp 34400 37104 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 19:09:15,227 basehttp 34400 37104 "GET /admin/matricula/estudiante/add/ HTTP/1.1" 200 135455
+INFO 2025-08-26 19:09:15,317 basehttp 34400 37104 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 19:09:15,911 views 34400 37104 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:09:15,912 basehttp 34400 37104 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:09:15,987 views 34400 37104 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:09:15,988 basehttp 34400 37104 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:09:16,522 views 34400 37104 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:09:16,523 basehttp 34400 37104 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:09:16,993 views 34400 37104 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:09:16,993 basehttp 34400 37104 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:09:17,517 views 34400 37104 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:09:17,518 basehttp 34400 37104 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:09:18,081 views 34400 37104 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:09:18,082 basehttp 34400 37104 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:09:18,990 views 34400 37104 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:09:18,991 basehttp 34400 37104 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:12:17,677 autoreload 34400 32924 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-08-26 19:12:18,556 autoreload 38268 39664 Watching for file changes with StatReloader
+INFO 2025-08-26 19:12:31,872 autoreload 38268 39664 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-26 19:12:33,061 autoreload 36764 33948 Watching for file changes with StatReloader
+INFO 2025-08-26 19:13:08,233 autoreload 36764 33948 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-08-26 19:13:09,104 autoreload 33244 34580 Watching for file changes with StatReloader
+INFO 2025-08-26 19:15:11,967 autoreload 33244 34580 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-08-26 19:15:12,806 autoreload 5084 38124 Watching for file changes with StatReloader
+INFO 2025-08-26 19:15:15,453 autoreload 5084 38124 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-26 19:15:16,376 autoreload 39368 37848 Watching for file changes with StatReloader
+INFO 2025-08-26 19:16:10,432 autoreload 39368 37848 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-08-26 19:16:11,286 autoreload 39472 36324 Watching for file changes with StatReloader
+INFO 2025-08-26 19:16:15,103 basehttp 39472 34456 "GET /admin/matricula/estudiante/add/ HTTP/1.1" 200 133708
+INFO 2025-08-26 19:16:15,188 basehttp 39472 34456 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 19:16:15,684 views 39472 34456 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:16:15,685 basehttp 39472 34456 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:16:15,818 views 39472 34456 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:16:15,818 basehttp 39472 34456 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:16:16,386 views 39472 34456 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:16:16,387 basehttp 39472 34456 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:16:16,804 views 39472 34456 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:16:16,804 basehttp 39472 34456 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:16:17,390 views 39472 34456 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:16:17,390 basehttp 39472 34456 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:16:17,841 views 39472 34456 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:16:17,842 basehttp 39472 34456 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:16:18,833 views 39472 38560 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:16:18,850 basehttp 39472 38560 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:16:18,857 basehttp 39472 34456 "GET /admin/ HTTP/1.1" 200 77301
+INFO 2025-08-26 19:16:20,250 basehttp 39472 34456 "GET /admin/ HTTP/1.1" 200 77301
+INFO 2025-08-26 19:16:20,565 basehttp 39472 34456 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-08-26 19:16:20,570 basehttp 39472 34456 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-26 19:16:20,574 basehttp 39472 32752 "GET /static/sis_colegio/css/logo-custom.css HTTP/1.1" 200 5704
+INFO 2025-08-26 19:16:20,576 basehttp 39472 38560 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-08-26 19:16:20,576 basehttp 39472 34456 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-08-26 19:16:20,585 basehttp 39472 34456 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-08-26 19:16:20,586 basehttp 39472 38560 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-08-26 19:16:20,587 basehttp 39472 33084 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-08-26 19:16:20,589 basehttp 39472 39124 "GET /static/vendor/bootswatch/cosmo/bootstrap.min.css HTTP/1.1" 200 154456
+INFO 2025-08-26 19:16:20,591 basehttp 39472 37608 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-08-26 19:16:20,729 basehttp 39472 39124 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-08-26 19:16:20,731 basehttp 39472 37608 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-08-26 19:16:20,862 basehttp 39472 37608 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-26 19:16:27,005 basehttp 39472 37608 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 39634
+INFO 2025-08-26 19:16:27,111 basehttp 39472 37608 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 19:16:31,317 basehttp 39472 37608 "GET /admin/matricula/estudiante/add/ HTTP/1.1" 200 133708
+INFO 2025-08-26 19:16:31,422 basehttp 39472 37608 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 19:16:31,914 views 39472 37608 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:16:31,915 basehttp 39472 37608 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:16:32,158 views 39472 37608 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:16:32,158 basehttp 39472 37608 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:16:32,604 views 39472 37608 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:16:32,604 basehttp 39472 37608 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:16:33,052 views 39472 37608 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:16:33,052 basehttp 39472 37608 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:16:33,615 views 39472 37608 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:16:33,616 basehttp 39472 37608 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:16:34,057 views 39472 37608 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:16:34,057 basehttp 39472 37608 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:16:35,052 views 39472 37608 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:16:35,052 basehttp 39472 37608 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:18:50,607 autoreload 39472 36324 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-08-26 19:18:51,522 autoreload 34720 29572 Watching for file changes with StatReloader
+INFO 2025-08-26 19:19:40,224 autoreload 34720 29572 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-08-26 19:19:41,266 autoreload 28096 33936 Watching for file changes with StatReloader
+INFO 2025-08-26 19:19:41,820 basehttp 28096 34920 "GET /admin/ HTTP/1.1" 200 77301
+INFO 2025-08-26 19:19:43,737 basehttp 28096 34920 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 39634
+INFO 2025-08-26 19:19:43,821 basehttp 28096 34920 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 19:19:48,263 basehttp 28096 34920 "GET /admin/matricula/estudiante/add/ HTTP/1.1" 200 133204
+INFO 2025-08-26 19:19:48,472 basehttp 28096 34920 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 19:19:48,929 views 28096 34920 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:19:48,930 basehttp 28096 34920 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:19:49,086 views 28096 34920 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:19:49,086 basehttp 28096 34920 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:19:49,617 views 28096 34920 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:19:49,618 basehttp 28096 34920 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:19:50,103 views 28096 34920 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:19:50,103 basehttp 28096 34920 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:19:50,618 views 28096 34920 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:19:50,618 basehttp 28096 34920 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:19:51,083 views 28096 34920 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:19:51,084 basehttp 28096 34920 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:19:52,104 views 28096 34920 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:19:52,105 basehttp 28096 34920 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746

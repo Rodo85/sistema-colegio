@@ -180,3 +180,13 @@ class MatriculaAcademicaForm(forms.ModelForm):
             'matricula/js/dependent-especialidad.js',  # Usar el archivo que funciona
             'matricula/js/clear-dependent-fields.js',  # Limpieza automática de campos dependientes
         )
+
+# Incluir JS para Estudiante (pestaña Plan Nacional)
+class EstudianteForm(forms.ModelForm):
+    class Meta:
+        model = Estudiante
+        fields = '__all__'
+    class Media:
+        js = (
+            'admin/js/jquery.init.js',
+        )

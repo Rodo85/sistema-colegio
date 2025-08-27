@@ -115,12 +115,36 @@ class Estudiante(models.Model):
     ed_religiosa      = models.BooleanField("Recibe Ed. Religiosa", default=False)
     rige_poliza       = models.DateField("Rige Póliza", blank=True, null=True)
     vence_poliza      = models.DateField("Vence Póliza", blank=True, null=True)
-    presenta_enfermedad = models.BooleanField("Presenta alguna enfermedad", default=False)
+    presenta_enfermedad = models.BooleanField("Presenta alguna enfermedad", null=True, blank=True)
     detalle_enfermedad  = models.CharField("Nombre de la(s) enfermedad(es)", max_length=255, blank=True, null=True)
     autoriza_derecho_imagen = models.BooleanField("Autoriza derecho de imagen", default=False)
     numero_poliza     = models.CharField("Número de póliza", max_length=50, blank=True, null=True)
     adecuacion        = models.ForeignKey(Adecuacion, on_delete=models.PROTECT, blank=True, null=True)
     medicamento_consume = models.TextField("Medicamentos que consume", blank=True, null=True)
+
+    # ======== Campos opcionales (formulario en papel) ========
+    posee_carnet_conapdis     = models.BooleanField("Posee carnet de CONAPDIS", default=False)
+    posee_valvula_drenaje_lcr = models.BooleanField("Posee válvula de drenaje LCR", default=False)
+    
+    usa_apoyo                 = models.BooleanField("Usa algún tipo de apoyo", default=False)
+    apoyo_cual                = models.CharField("¿Cuál apoyo?", max_length=255, blank=True, null=True)
+    TIPO_CONDICION_CHOICES = [
+        ("EA", "Espectro Autista"),
+        ("SD", "Síndrome de Down"),
+        ("OT", "Otro"),
+    ]
+    tipo_condicion_diagnosticada = models.CharField(
+        "Tipo de condición diagnosticada",
+        max_length=2,
+        choices=TIPO_CONDICION_CHOICES,
+        blank=True,
+        null=True,
+    )
+    tipo_condicion_otro       = models.CharField("Otro (especifique condición)", max_length=255, blank=True, null=True)
+    posee_control             = models.BooleanField("Posee algún tipo de control", default=False)
+    control_cual              = models.CharField("¿Cuál control?", max_length=255, blank=True, null=True)
+    orden_alejamiento         = models.BooleanField("Existe persona con orden de alejamiento", null=True, blank=True)
+    orden_alejamiento_nombre  = models.CharField("Nombre de la persona con orden", max_length=255, blank=True, null=True)
 
     class Meta:
         verbose_name = "Estudiante"

@@ -111,7 +111,7 @@ class Command(BaseCommand):
                             institucion=institucion,
                             identificacion=identificacion,
                             defaults={
-                                'tipo_estudiante': row['tipo_estudiante'],
+                                'tipo_estudiante': (lambda s: 'PN' if s in ['PN','PE','PLAN NACIONAL','PLAN NACION'] else 'PR')(str(row['tipo_estudiante']).strip().upper()) if row.get('tipo_estudiante') else 'PR',
                                 'tipo_identificacion': tipo_identificacion,
                                 'primer_apellido': primer_apellido,
                                 'segundo_apellido': segundo_apellido,

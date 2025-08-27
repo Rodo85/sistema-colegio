@@ -298,8 +298,9 @@ class EstudianteForm(forms.ModelForm):
 
     class Meta:
         model = Estudiante
-        # Excluir institucion para que no dependa del POST
-        exclude = ('institucion',)
+        # Incluir todos los campos; la lógica de ocultar/forzar institución
+        # para usuarios no superusuarios se maneja en get_form
+        fields = '__all__'
         widgets = {
             'provincia': forms.Select(attrs={'id': 'id_provincia'}),
             'canton': forms.Select(attrs={'id': 'id_canton'}),
@@ -438,6 +439,21 @@ class EstudianteAdmin(InstitucionScopedAdmin):
                     'presenta_enfermedad', 'detalle_enfermedad', 'medicamento_consume',
                     'autoriza_derecho_imagen',
                 ),
+            })
+        )
+
+        # Plan Nacional (se muestra solo cuando tipo_estudiante = PN)
+        fieldsets.append(
+            ('Plan Nacional', {
+                'fields': (
+                    'posee_carnet_conapdis',
+                    'posee_valvula_drenaje_lcr',
+                    'usa_apoyo', 'apoyo_cual',
+                    'tipo_condicion_diagnosticada', 'tipo_condicion_otro',
+                    'posee_control', 'control_cual',
+                    'orden_alejamiento', 'orden_alejamiento_nombre',
+                ),
+                'classes': ('plannacional-section',)
             })
         )
         return fieldsets

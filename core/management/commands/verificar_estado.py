@@ -88,3 +88,5 @@ class Command(BaseCommand):
         else:
             self.stdout.write(f'  ❌ Orden incorrecto: InstitucionMiddleware debe ir después de AuthenticationMiddleware')
 
+
+

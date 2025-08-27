@@ -52,3 +52,5 @@ def asignar_institucion_automaticamente(sender, user, request, **kwargs):
     except Exception as e:
         logger.error(f"Error en signal asignar_institucion_automaticamente: {e}", exc_info=True)
 
+
+
