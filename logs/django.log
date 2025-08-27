@@ -8403,3 +8403,760 @@ INFO 2025-08-27 13:00:58,480 basehttp 15556 55424 "GET /static/admin/img/icon-de
 INFO 2025-08-27 13:00:58,551 basehttp 15556 80756 "GET /static/admin/js/vendor/select2/select2.full.js HTTP/1.1" 200 173566
 INFO 2025-08-27 13:01:02,623 basehttp 15556 80756 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=subgrupo HTTP/1.1" 200 634
 INFO 2025-08-27 13:01:05,216 basehttp 15556 80756 "GET /admin/autocomplete/?page=2&app_label=config_institucional&model_name=subgrupocursolectivo&field_name=subgrupo HTTP/1.1" 200 647
+INFO 2025-08-27 13:11:00,398 autoreload 75524 83088 Watching for file changes with StatReloader
+INFO 2025-08-27 13:11:08,721 basehttp 75524 69056 "GET /admin/ HTTP/1.1" 200 84156
+INFO 2025-08-27 13:11:12,397 basehttp 75524 69056 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 86640
+INFO 2025-08-27 13:11:12,547 basehttp 75524 69056 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:11:39,667 basehttp 75524 69056 "GET /config/gestionar-subgrupos-curso-lectivo/ HTTP/1.1" 200 76640
+INFO 2025-08-27 13:13:01,746 basehttp 75524 69056 "GET /admin/config_institucional/subgrupocursolectivo/35/change/ HTTP/1.1" 200 45121
+INFO 2025-08-27 13:13:01,994 basehttp 75524 69056 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:14:01,444 basehttp 75524 81724 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 86640
+INFO 2025-08-27 13:14:01,628 basehttp 75524 81724 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:14:41,799 basehttp 75524 81724 "GET /admin/config_institucional/subgrupocursolectivo/41/change/ HTTP/1.1" 200 45121
+INFO 2025-08-27 13:14:41,943 basehttp 75524 81724 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:15:12,442 basehttp 75524 81724 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 86640
+INFO 2025-08-27 13:15:12,569 basehttp 75524 81724 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:16:49,803 basehttp 75524 81724 "POST /admin/logout/ HTTP/1.1" 200 2409
+INFO 2025-08-27 13:16:50,908 basehttp 75524 81724 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 13:16:50,949 basehttp 75524 81724 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 5518
+WARNING 2025-08-27 13:16:51,093 log 75524 81724 Not Found: /favicon.ico
+WARNING 2025-08-27 13:16:51,105 basehttp 75524 81724 "GET /favicon.ico HTTP/1.1" 404 3331
+INFO 2025-08-27 13:16:55,830 signals 75524 81724 Signal user_logged_in ejecutándose para usuario: directormaximo@gmail.com
+INFO 2025-08-27 13:16:55,841 signals 75524 81724 Asignando automáticamente institución única: CTP. MÁXIMO QUESADA
+INFO 2025-08-27 13:16:55,848 basehttp 75524 81724 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 13:16:56,016 basehttp 75524 81724 "GET /admin/ HTTP/1.1" 200 75936
+INFO 2025-08-27 13:16:58,291 basehttp 75524 81724 "GET /admin/core/institucion/ HTTP/1.1" 200 43741
+INFO 2025-08-27 13:16:58,429 basehttp 75524 81724 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:16:59,879 basehttp 75524 81724 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 86648
+INFO 2025-08-27 13:16:59,999 basehttp 75524 81724 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:17:57,793 autoreload 75524 83088 D:\Proyecto Colegio\sistema_colegio\config_institucional\admin.py changed, reloading.
+INFO 2025-08-27 13:17:59,281 autoreload 65176 63412 Watching for file changes with StatReloader
+INFO 2025-08-27 13:18:20,642 autoreload 65176 63412 D:\Proyecto Colegio\sistema_colegio\config_institucional\admin.py changed, reloading.
+INFO 2025-08-27 13:18:22,015 autoreload 80556 83044 Watching for file changes with StatReloader
+INFO 2025-08-27 13:19:02,355 basehttp 80556 82192 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 82024
+INFO 2025-08-27 13:19:02,503 basehttp 80556 82192 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:19:07,833 basehttp 80556 82192 "POST /admin/logout/ HTTP/1.1" 200 2409
+INFO 2025-08-27 13:19:09,185 basehttp 80556 82192 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 13:19:09,196 basehttp 80556 82192 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 5518
+INFO 2025-08-27 13:19:13,794 basehttp 80556 82192 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 13:19:13,939 basehttp 80556 82192 "GET /admin/ HTTP/1.1" 200 84156
+INFO 2025-08-27 13:19:17,215 basehttp 80556 82192 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 86640
+INFO 2025-08-27 13:19:17,334 basehttp 80556 82192 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:19:24,319 basehttp 80556 82192 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 86640
+INFO 2025-08-27 13:19:24,423 basehttp 80556 82192 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:19:29,222 basehttp 80556 82192 "POST /admin/logout/ HTTP/1.1" 200 2409
+INFO 2025-08-27 13:19:30,465 basehttp 80556 82192 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 13:19:30,474 basehttp 80556 82192 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 5518
+INFO 2025-08-27 13:19:35,752 signals 80556 82192 Signal user_logged_in ejecutándose para usuario: directormaximo@gmail.com
+INFO 2025-08-27 13:19:35,764 signals 80556 82192 Asignando automáticamente institución única: CTP. MÁXIMO QUESADA
+INFO 2025-08-27 13:19:35,770 basehttp 80556 82192 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 13:19:35,916 basehttp 80556 82192 "GET /admin/ HTTP/1.1" 200 75936
+INFO 2025-08-27 13:19:39,797 basehttp 80556 82192 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 82024
+INFO 2025-08-27 13:19:39,930 basehttp 80556 82192 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:20:20,646 basehttp 80556 82192 "GET /admin/config_institucional/subgrupocursolectivo/25/change/ HTTP/1.1" 200 43704
+INFO 2025-08-27 13:20:20,838 basehttp 80556 82192 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:20:27,905 basehttp 80556 82192 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 82024
+INFO 2025-08-27 13:20:28,059 basehttp 80556 82192 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:20:33,167 basehttp 80556 82192 "GET /admin/config_institucional/subgrupocursolectivo/35/change/ HTTP/1.1" 200 43705
+INFO 2025-08-27 13:20:33,325 basehttp 80556 82192 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:23:03,830 autoreload 80556 83044 D:\Proyecto Colegio\sistema_colegio\config_institucional\admin.py changed, reloading.
+INFO 2025-08-27 13:23:05,326 autoreload 75748 78456 Watching for file changes with StatReloader
+INFO 2025-08-27 13:23:22,361 basehttp 75748 63760 "GET /admin/ HTTP/1.1" 200 75936
+INFO 2025-08-27 13:23:24,719 basehttp 75748 63760 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 82112
+INFO 2025-08-27 13:23:24,849 basehttp 75748 63760 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:23:24,869 basehttp 75748 72920 "GET /static/config_institucional/js/toggle-especialidad-subgrupo.js HTTP/1.1" 200 1668
+INFO 2025-08-27 13:23:26,614 basehttp 75748 72920 "GET /admin/config_institucional/subgrupocursolectivo/5/change/ HTTP/1.1" 200 43789
+INFO 2025-08-27 13:23:26,658 basehttp 75748 63760 "GET /static/config_institucional/js/toggle-especialidad-subgrupo.js HTTP/1.1" 304 0
+INFO 2025-08-27 13:23:26,766 basehttp 75748 72920 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:23:29,156 basehttp 75748 72920 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 82112
+INFO 2025-08-27 13:23:29,328 basehttp 75748 72920 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:23:39,881 autoreload 75748 78456 D:\Proyecto Colegio\sistema_colegio\config_institucional\admin.py changed, reloading.
+INFO 2025-08-27 13:23:41,021 autoreload 71712 64576 Watching for file changes with StatReloader
+INFO 2025-08-27 13:23:42,384 basehttp 71712 60244 "GET /admin/ HTTP/1.1" 200 75936
+INFO 2025-08-27 13:23:46,105 basehttp 71712 60244 "GET /admin/ HTTP/1.1" 200 75936
+INFO 2025-08-27 13:23:46,503 basehttp 71712 79300 "GET /static/sis_colegio/css/logo-custom.css HTTP/1.1" 200 5704
+INFO 2025-08-27 13:23:46,503 basehttp 71712 82892 "GET /static/vendor/bootswatch/cosmo/bootstrap.min.css HTTP/1.1" 200 154456
+INFO 2025-08-27 13:23:46,513 basehttp 71712 67932 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-08-27 13:23:46,513 basehttp 71712 60244 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-08-27 13:23:46,515 basehttp 71712 82892 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-08-27 13:23:46,518 basehttp 71712 79300 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-08-27 13:23:46,519 basehttp 71712 70060 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 13:23:46,524 basehttp 71712 82892 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-08-27 13:23:46,525 basehttp 71712 60244 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-08-27 13:23:46,532 basehttp 71712 78580 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-08-27 13:23:46,692 basehttp 71712 82892 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-08-27 13:23:46,694 basehttp 71712 78580 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-08-27 13:23:46,939 basehttp 71712 78580 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 13:23:49,118 basehttp 71712 78580 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 82112
+INFO 2025-08-27 13:23:49,156 basehttp 71712 82892 "GET /static/config_institucional/js/toggle-especialidad-subgrupo.js HTTP/1.1" 200 1668
+INFO 2025-08-27 13:23:49,249 basehttp 71712 78580 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:23:56,172 basehttp 71712 78580 "GET /admin/config_institucional/subgrupocursolectivo/9/change/ HTTP/1.1" 200 43789
+INFO 2025-08-27 13:23:56,219 basehttp 71712 82892 "GET /static/config_institucional/js/toggle-especialidad-subgrupo.js HTTP/1.1" 304 0
+INFO 2025-08-27 13:23:56,319 basehttp 71712 78580 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:23:58,350 basehttp 71712 78580 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 82112
+INFO 2025-08-27 13:23:58,505 basehttp 71712 78580 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:24:03,177 basehttp 71712 78580 "GET /admin/config_institucional/subgrupocursolectivo/35/change/ HTTP/1.1" 200 43793
+INFO 2025-08-27 13:24:03,218 basehttp 71712 82892 "GET /static/config_institucional/js/toggle-especialidad-subgrupo.js HTTP/1.1" 304 0
+INFO 2025-08-27 13:24:03,304 basehttp 71712 78580 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:24:05,072 basehttp 71712 78580 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=subgrupo HTTP/1.1" 200 634
+INFO 2025-08-27 13:24:08,427 basehttp 71712 78580 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 82112
+INFO 2025-08-27 13:24:08,460 basehttp 71712 82892 "GET /static/config_institucional/js/toggle-especialidad-subgrupo.js HTTP/1.1" 304 0
+INFO 2025-08-27 13:24:08,543 basehttp 71712 78580 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:24:16,303 basehttp 71712 78580 "GET /admin/config_institucional/subgrupocursolectivo/add/ HTTP/1.1" 200 43004
+INFO 2025-08-27 13:24:16,359 basehttp 71712 82892 "GET /static/config_institucional/js/toggle-especialidad-subgrupo.js HTTP/1.1" 304 0
+INFO 2025-08-27 13:24:16,433 basehttp 71712 78580 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:24:34,957 basehttp 71712 78580 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 82112
+INFO 2025-08-27 13:24:35,003 basehttp 71712 82892 "GET /static/config_institucional/js/toggle-especialidad-subgrupo.js HTTP/1.1" 304 0
+INFO 2025-08-27 13:24:35,095 basehttp 71712 78580 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:24:38,135 basehttp 71712 78580 "GET /admin/config_institucional/subgrupocursolectivo/21/change/ HTTP/1.1" 200 43792
+INFO 2025-08-27 13:24:38,259 basehttp 71712 78580 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:24:40,343 basehttp 71712 78580 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=subgrupo HTTP/1.1" 200 634
+INFO 2025-08-27 13:24:42,774 basehttp 71712 78580 "GET /admin/autocomplete/?page=2&app_label=config_institucional&model_name=subgrupocursolectivo&field_name=subgrupo HTTP/1.1" 200 647
+INFO 2025-08-27 13:24:44,008 basehttp 71712 78580 "GET /admin/autocomplete/?page=3&app_label=config_institucional&model_name=subgrupocursolectivo&field_name=subgrupo HTTP/1.1" 200 663
+INFO 2025-08-27 13:25:03,082 basehttp 71712 78580 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 82112
+INFO 2025-08-27 13:25:03,113 basehttp 71712 82892 "GET /static/config_institucional/js/toggle-especialidad-subgrupo.js HTTP/1.1" 304 0
+INFO 2025-08-27 13:25:03,209 basehttp 71712 78580 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:25:06,721 basehttp 71712 78580 "GET /admin/config_institucional/subgrupocursolectivo/52/change/ HTTP/1.1" 200 43793
+INFO 2025-08-27 13:25:06,847 basehttp 71712 78580 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:25:11,414 basehttp 71712 78580 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 82112
+INFO 2025-08-27 13:25:11,455 basehttp 71712 82892 "GET /static/config_institucional/js/toggle-especialidad-subgrupo.js HTTP/1.1" 304 0
+INFO 2025-08-27 13:25:11,568 basehttp 71712 78580 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:25:16,713 basehttp 71712 78580 "GET /admin/config_institucional/subgrupocursolectivo/35/change/ HTTP/1.1" 200 43793
+INFO 2025-08-27 13:25:16,839 basehttp 71712 78580 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:27:12,264 basehttp 71712 78580 "GET /admin/ HTTP/1.1" 200 75936
+INFO 2025-08-27 13:27:14,488 basehttp 71712 78580 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 82112
+INFO 2025-08-27 13:27:14,522 basehttp 71712 82892 "GET /static/config_institucional/js/toggle-especialidad-subgrupo.js HTTP/1.1" 200 1677
+INFO 2025-08-27 13:27:14,606 basehttp 71712 78580 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:27:18,870 basehttp 71712 78580 "GET /admin/config_institucional/subgrupocursolectivo/35/change/ HTTP/1.1" 200 43793
+INFO 2025-08-27 13:27:18,924 basehttp 71712 82892 "GET /static/config_institucional/js/toggle-especialidad-subgrupo.js HTTP/1.1" 304 0
+INFO 2025-08-27 13:27:19,073 basehttp 71712 78580 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:27:20,802 basehttp 71712 78580 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=subgrupo HTTP/1.1" 200 634
+INFO 2025-08-27 13:27:49,674 basehttp 71712 78580 "GET /admin/config_institucional/seccioncursolectivo/ HTTP/1.1" 200 63490
+INFO 2025-08-27 13:27:49,872 basehttp 71712 78580 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:27:51,943 basehttp 71712 78580 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 82112
+INFO 2025-08-27 13:27:51,983 basehttp 71712 82892 "GET /static/config_institucional/js/toggle-especialidad-subgrupo.js HTTP/1.1" 304 0
+INFO 2025-08-27 13:27:52,073 basehttp 71712 78580 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:27:53,895 basehttp 71712 78580 "GET /admin/config_institucional/subgrupocursolectivo/9/change/ HTTP/1.1" 200 43789
+INFO 2025-08-27 13:27:54,029 basehttp 71712 78580 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:27:58,220 basehttp 71712 78580 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=subgrupo HTTP/1.1" 200 634
+INFO 2025-08-27 13:28:01,423 basehttp 71712 78580 "POST /admin/logout/ HTTP/1.1" 200 2409
+INFO 2025-08-27 13:28:02,935 basehttp 71712 78580 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 13:28:02,950 basehttp 71712 78580 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 5518
+WARNING 2025-08-27 13:28:03,071 log 71712 78580 Not Found: /favicon.ico
+WARNING 2025-08-27 13:28:03,074 basehttp 71712 78580 "GET /favicon.ico HTTP/1.1" 404 3331
+INFO 2025-08-27 13:28:08,086 basehttp 71712 78580 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 13:28:08,248 basehttp 71712 78580 "GET /admin/ HTTP/1.1" 200 84156
+INFO 2025-08-27 13:28:13,722 basehttp 71712 78580 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 86728
+INFO 2025-08-27 13:28:13,766 basehttp 71712 82892 "GET /static/config_institucional/js/toggle-especialidad-subgrupo.js HTTP/1.1" 304 0
+INFO 2025-08-27 13:28:13,852 basehttp 71712 78580 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:28:26,679 basehttp 71712 78580 "GET /admin/config_institucional/subgrupocursolectivo/9/change/ HTTP/1.1" 200 45205
+INFO 2025-08-27 13:28:26,718 basehttp 71712 82892 "GET /static/config_institucional/js/toggle-especialidad-subgrupo.js HTTP/1.1" 304 0
+INFO 2025-08-27 13:28:26,808 basehttp 71712 78580 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:28:33,629 basehttp 71712 78580 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 86728
+INFO 2025-08-27 13:28:33,741 basehttp 71712 78580 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:29:10,261 basehttp 71712 78580 "GET /admin/config_institucional/subgrupocursolectivo/add/ HTTP/1.1" 200 44360
+INFO 2025-08-27 13:29:10,302 basehttp 71712 82892 "GET /static/config_institucional/js/toggle-especialidad-subgrupo.js HTTP/1.1" 304 0
+INFO 2025-08-27 13:29:10,388 basehttp 71712 78580 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:30:55,876 autoreload 71712 64576 D:\Proyecto Colegio\sistema_colegio\config_institucional\admin.py changed, reloading.
+INFO 2025-08-27 13:30:57,449 autoreload 70336 82460 Watching for file changes with StatReloader
+INFO 2025-08-27 13:31:15,522 autoreload 70336 82460 D:\Proyecto Colegio\sistema_colegio\config_institucional\admin.py changed, reloading.
+INFO 2025-08-27 13:31:16,646 autoreload 83756 75120 Watching for file changes with StatReloader
+INFO 2025-08-27 13:32:18,248 basehttp 83756 83292 "GET /admin/ HTTP/1.1" 200 84156
+INFO 2025-08-27 13:32:22,110 basehttp 83756 83292 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 86640
+INFO 2025-08-27 13:32:22,232 basehttp 83756 83292 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:32:24,354 basehttp 83756 83292 "GET /admin/config_institucional/subgrupocursolectivo/add/ HTTP/1.1" 200 44272
+INFO 2025-08-27 13:32:24,468 basehttp 83756 83292 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:32:26,866 basehttp 83756 83292 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 86640
+INFO 2025-08-27 13:32:27,088 basehttp 83756 83292 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:32:28,907 basehttp 83756 83292 "GET /admin/config_institucional/subgrupocursolectivo/9/change/ HTTP/1.1" 200 45117
+INFO 2025-08-27 13:32:29,044 basehttp 83756 83292 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:32:41,604 basehttp 83756 83292 "GET /admin/config_institucional/subgrupocursolectivo/9/change/ HTTP/1.1" 200 45117
+INFO 2025-08-27 13:32:41,709 basehttp 83756 83292 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:32:44,244 basehttp 83756 83292 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 86640
+INFO 2025-08-27 13:32:44,367 basehttp 83756 83292 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:33:26,733 basehttp 83756 83292 "GET /admin/config_institucional/subgrupocursolectivo/add/ HTTP/1.1" 200 44272
+INFO 2025-08-27 13:33:26,871 basehttp 83756 83292 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:33:29,443 basehttp 83756 83292 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 86640
+INFO 2025-08-27 13:33:29,566 basehttp 83756 83292 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:33:42,285 basehttp 83756 83292 "GET /admin/config_institucional/seccioncursolectivo/ HTTP/1.1" 200 63482
+INFO 2025-08-27 13:33:42,399 basehttp 83756 83292 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:33:45,658 basehttp 83756 83292 "GET /admin/config_institucional/seccioncursolectivo/1/change/ HTTP/1.1" 200 45102
+INFO 2025-08-27 13:33:45,772 basehttp 83756 83292 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:33:48,633 basehttp 83756 83292 "GET /admin/config_institucional/seccioncursolectivo/ HTTP/1.1" 200 63482
+INFO 2025-08-27 13:33:48,845 basehttp 83756 83292 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:33:55,435 basehttp 83756 83292 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 86640
+INFO 2025-08-27 13:33:55,662 basehttp 83756 83292 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:37:18,386 autoreload 83756 75120 D:\Proyecto Colegio\sistema_colegio\config_institucional\admin.py changed, reloading.
+INFO 2025-08-27 13:37:19,850 autoreload 66344 83060 Watching for file changes with StatReloader
+INFO 2025-08-27 13:37:24,882 basehttp 66344 73112 "GET /admin/config_institucional/subgrupocursolectivo/add/ HTTP/1.1" 200 47389
+INFO 2025-08-27 13:37:25,024 basehttp 66344 73112 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:37:28,479 autoreload 66344 83060 D:\Proyecto Colegio\sistema_colegio\config_institucional\admin.py changed, reloading.
+INFO 2025-08-27 13:37:29,695 autoreload 80248 72620 Watching for file changes with StatReloader
+INFO 2025-08-27 13:37:30,658 basehttp 80248 80324 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+INFO 2025-08-27 13:37:36,547 basehttp 80248 80324 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+INFO 2025-08-27 13:37:37,342 autoreload 80248 72620 D:\Proyecto Colegio\sistema_colegio\config_institucional\admin.py changed, reloading.
+INFO 2025-08-27 13:37:38,768 autoreload 76468 82208 Watching for file changes with StatReloader
+INFO 2025-08-27 13:38:00,720 basehttp 76468 75324 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 156339
+INFO 2025-08-27 13:38:00,763 basehttp 76468 66016 "GET /static/matricula/js/dependent-especialidad.js HTTP/1.1" 304 0
+INFO 2025-08-27 13:38:00,765 basehttp 76468 80352 "GET /static/matricula/js/persist-admin-filters.js HTTP/1.1" 304 0
+INFO 2025-08-27 13:38:00,886 basehttp 76468 75324 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:38:12,344 basehttp 76468 75324 "GET /admin/matricula/matriculaacademica/1246/change/ HTTP/1.1" 200 57098
+INFO 2025-08-27 13:38:12,488 basehttp 76468 75324 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:38:12,715 basehttp 76468 80352 "GET /static/autocomplete_light/select2.css HTTP/1.1" 200 2765
+INFO 2025-08-27 13:38:12,720 basehttp 76468 15192 "GET /static/autocomplete_light/select2.js HTTP/1.1" 200 4937
+INFO 2025-08-27 13:38:12,730 basehttp 76468 69104 "GET /static/autocomplete_light/i18n/es.js HTTP/1.1" 200 990
+INFO 2025-08-27 13:38:12,754 basehttp 76468 66016 "GET /static/autocomplete_light/autocomplete_light.js HTTP/1.1" 200 18263
+INFO 2025-08-27 13:38:13,123 basehttp 76468 66016 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 13:38:13,502 basehttp 76468 66016 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 13:38:14,014 basehttp 76468 66016 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 13:38:15,011 basehttp 76468 66016 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 13:38:16,530 basehttp 76468 66016 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 13:38:17,554 basehttp 76468 66016 "GET /admin/autocomplete/?app_label=matricula&model_name=matriculaacademica&field_name=nivel HTTP/1.1" 200 497
+INFO 2025-08-27 13:38:19,436 basehttp 76468 66016 "GET /matricula/especialidad-autocomplete/?forward=%7B%22curso_lectivo%22%3A%221%22%2C%22nivel%22%3A%2210%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 13:38:23,035 basehttp 76468 66016 "GET /matricula/especialidad-autocomplete/?forward=%7B%22curso_lectivo%22%3A%222%22%2C%22nivel%22%3A%2210%22%7D HTTP/1.1" 200 46
+INFO 2025-08-27 13:41:07,263 autoreload 76468 82208 D:\Proyecto Colegio\sistema_colegio\config_institucional\admin.py changed, reloading.
+INFO 2025-08-27 13:41:10,959 autoreload 11676 81032 Watching for file changes with StatReloader
+INFO 2025-08-27 13:41:20,126 autoreload 11676 81032 D:\Proyecto Colegio\sistema_colegio\config_institucional\admin.py changed, reloading.
+INFO 2025-08-27 13:41:21,601 autoreload 66016 83536 Watching for file changes with StatReloader
+INFO 2025-08-27 13:41:23,279 basehttp 66016 64176 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 86640
+INFO 2025-08-27 13:41:23,388 basehttp 66016 64176 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:41:24,868 basehttp 66016 64176 "GET /admin/config_institucional/subgrupocursolectivo/add/ HTTP/1.1" 200 47148
+INFO 2025-08-27 13:41:24,980 basehttp 66016 64176 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:41:27,702 basehttp 66016 64176 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+INFO 2025-08-27 13:41:32,288 basehttp 66016 64176 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=especialidad_curso HTTP/1.1" 200 539
+INFO 2025-08-27 13:41:35,178 basehttp 66016 64176 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+INFO 2025-08-27 13:41:36,513 basehttp 66016 64176 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=especialidad_curso HTTP/1.1" 200 539
+INFO 2025-08-27 13:41:38,138 basehttp 66016 64176 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=especialidad_curso HTTP/1.1" 200 539
+INFO 2025-08-27 13:42:50,566 basehttp 66016 64176 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 61304
+INFO 2025-08-27 13:42:50,681 basehttp 66016 64176 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:42:52,480 basehttp 66016 64176 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 156339
+INFO 2025-08-27 13:42:52,646 basehttp 66016 64176 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:42:55,108 basehttp 66016 64176 "GET /admin/matricula/matriculaacademica/1246/change/ HTTP/1.1" 200 57098
+INFO 2025-08-27 13:42:55,230 basehttp 66016 64176 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:42:55,401 basehttp 66016 64176 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 13:42:56,067 basehttp 66016 64176 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 13:42:56,430 basehttp 66016 64176 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 13:42:57,396 basehttp 66016 64176 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 13:42:58,911 basehttp 66016 64176 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 13:43:44,203 basehttp 66016 75256 "GET /admin/config_institucional/seccioncursolectivo/ HTTP/1.1" 200 63482
+INFO 2025-08-27 13:43:44,370 basehttp 66016 75256 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:43:54,098 basehttp 66016 75256 "GET /admin/config_institucional/seccioncursolectivo/add/ HTTP/1.1" 200 44250
+INFO 2025-08-27 13:43:54,219 basehttp 66016 75256 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:43:58,108 basehttp 66016 75256 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 86640
+INFO 2025-08-27 13:43:58,260 basehttp 66016 75256 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:43:59,176 basehttp 66016 75256 "GET /admin/config_institucional/subgrupocursolectivo/add/ HTTP/1.1" 200 47148
+INFO 2025-08-27 13:43:59,342 basehttp 66016 75256 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:44:14,740 autoreload 66016 83536 D:\Proyecto Colegio\sistema_colegio\config_institucional\admin.py changed, reloading.
+INFO 2025-08-27 13:44:15,985 autoreload 57160 81720 Watching for file changes with StatReloader
+INFO 2025-08-27 13:44:26,611 autoreload 57160 81720 D:\Proyecto Colegio\sistema_colegio\config_institucional\admin.py changed, reloading.
+INFO 2025-08-27 13:44:28,005 autoreload 77016 82440 Watching for file changes with StatReloader
+INFO 2025-08-27 13:44:40,647 autoreload 77016 82440 D:\Proyecto Colegio\sistema_colegio\config_institucional\admin.py changed, reloading.
+INFO 2025-08-27 13:44:41,967 autoreload 65376 68988 Watching for file changes with StatReloader
+INFO 2025-08-27 13:45:31,481 basehttp 65376 84932 "GET /admin/config_institucional/subgrupocursolectivo/add/ HTTP/1.1" 200 47243
+INFO 2025-08-27 13:45:31,612 basehttp 65376 84932 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:45:31,645 basehttp 65376 84928 "GET /static/config_institucional/js/filter-especialidades-curso-lectivo.js HTTP/1.1" 200 3932
+INFO 2025-08-27 13:45:34,161 basehttp 65376 84928 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=especialidad_curso HTTP/1.1" 200 539
+INFO 2025-08-27 13:45:35,818 basehttp 65376 84928 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+INFO 2025-08-27 13:45:38,126 basehttp 65376 84928 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=especialidad_curso HTTP/1.1" 200 539
+INFO 2025-08-27 13:45:40,133 basehttp 65376 84928 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+INFO 2025-08-27 13:45:41,763 basehttp 65376 84928 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=especialidad_curso HTTP/1.1" 200 539
+INFO 2025-08-27 13:45:46,301 basehttp 65376 84928 "GET /admin/config_institucional/especialidadcursolectivo/ HTTP/1.1" 200 50261
+INFO 2025-08-27 13:45:46,402 basehttp 65376 84928 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:45:58,505 basehttp 65376 84928 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 86735
+INFO 2025-08-27 13:45:58,536 basehttp 65376 84932 "GET /static/config_institucional/js/filter-especialidades-curso-lectivo.js HTTP/1.1" 304 0
+INFO 2025-08-27 13:45:58,727 basehttp 65376 84928 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:46:03,040 basehttp 65376 84928 "GET /admin/config_institucional/subgrupocursolectivo/9/change/ HTTP/1.1" 200 48088
+INFO 2025-08-27 13:46:03,161 basehttp 65376 84928 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:46:04,996 basehttp 65376 84928 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=especialidad_curso HTTP/1.1" 200 539
+INFO 2025-08-27 13:46:08,835 basehttp 65376 84928 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 86735
+INFO 2025-08-27 13:46:08,999 basehttp 65376 84928 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:46:21,626 basehttp 65376 84928 "GET /admin/config_institucional/subgrupocursolectivo/add/ HTTP/1.1" 200 47243
+INFO 2025-08-27 13:46:21,653 basehttp 65376 84932 "GET /static/config_institucional/js/filter-especialidades-curso-lectivo.js HTTP/1.1" 304 0
+INFO 2025-08-27 13:46:21,727 basehttp 65376 84928 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:50:26,894 autoreload 65376 68988 D:\Proyecto Colegio\sistema_colegio\config_institucional\admin.py changed, reloading.
+INFO 2025-08-27 13:50:28,217 autoreload 69664 61360 Watching for file changes with StatReloader
+INFO 2025-08-27 13:50:40,827 autoreload 69664 61360 D:\Proyecto Colegio\sistema_colegio\config_institucional\admin.py changed, reloading.
+INFO 2025-08-27 13:50:42,105 autoreload 68044 80888 Watching for file changes with StatReloader
+INFO 2025-08-27 13:51:07,838 basehttp 68044 83980 "GET /admin/ HTTP/1.1" 200 84155
+INFO 2025-08-27 13:51:10,277 basehttp 68044 83980 "GET /admin/ HTTP/1.1" 200 84155
+INFO 2025-08-27 13:51:10,628 basehttp 68044 83980 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-08-27 13:51:10,633 basehttp 68044 83980 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 13:51:10,639 basehttp 68044 83980 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-08-27 13:51:10,647 basehttp 68044 83980 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-08-27 13:51:10,655 basehttp 68044 83980 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-08-27 13:51:10,658 basehttp 68044 69616 "GET /static/sis_colegio/css/logo-custom.css HTTP/1.1" 200 5704
+INFO 2025-08-27 13:51:10,659 basehttp 68044 80192 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-08-27 13:51:10,662 basehttp 68044 83488 "GET /static/vendor/bootswatch/cosmo/bootstrap.min.css HTTP/1.1" 200 154456
+INFO 2025-08-27 13:51:10,662 basehttp 68044 60704 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-08-27 13:51:10,666 basehttp 68044 74344 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-08-27 13:51:10,873 basehttp 68044 83488 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-08-27 13:51:10,874 basehttp 68044 74344 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-08-27 13:51:11,153 basehttp 68044 74344 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 13:51:14,057 basehttp 68044 74344 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 86730
+INFO 2025-08-27 13:51:14,091 basehttp 68044 83488 "GET /static/config_institucional/js/filter-especialidades-subgrupo.js HTTP/1.1" 200 11580
+INFO 2025-08-27 13:51:14,180 basehttp 68044 74344 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:51:16,266 basehttp 68044 74344 "GET /admin/config_institucional/subgrupocursolectivo/add/ HTTP/1.1" 200 47238
+INFO 2025-08-27 13:51:16,433 basehttp 68044 74344 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:51:19,722 basehttp 68044 74344 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=institucion HTTP/1.1" 200 142
+INFO 2025-08-27 13:51:23,219 basehttp 68044 74344 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+INFO 2025-08-27 13:51:26,334 basehttp 68044 74344 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=subgrupo HTTP/1.1" 200 634
+INFO 2025-08-27 13:51:29,043 basehttp 68044 74344 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=especialidad_curso HTTP/1.1" 200 539
+INFO 2025-08-27 13:51:31,795 basehttp 68044 74344 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+INFO 2025-08-27 13:51:33,793 basehttp 68044 74344 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=especialidad_curso HTTP/1.1" 200 539
+INFO 2025-08-27 13:51:41,834 basehttp 68044 74344 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=institucion HTTP/1.1" 200 142
+INFO 2025-08-27 13:51:44,206 basehttp 68044 74344 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+INFO 2025-08-27 13:51:46,275 basehttp 68044 74344 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=subgrupo HTTP/1.1" 200 634
+INFO 2025-08-27 13:51:48,493 basehttp 68044 74344 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=especialidad_curso HTTP/1.1" 200 539
+INFO 2025-08-27 13:56:58,219 autoreload 2660 67440 Watching for file changes with StatReloader
+INFO 2025-08-27 13:56:58,824 basehttp 2660 68484 "GET /admin/catalogos/subgrupo/ HTTP/1.1" 200 67994
+INFO 2025-08-27 13:56:58,971 basehttp 2660 68484 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:57:01,192 basehttp 2660 68484 "GET /admin/catalogos/subgrupo/add/ HTTP/1.1" 200 40224
+INFO 2025-08-27 13:57:01,353 basehttp 2660 68484 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:57:05,951 basehttp 2660 68484 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 86730
+INFO 2025-08-27 13:57:06,053 basehttp 2660 68484 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 13:57:06,078 basehttp 2660 56520 "GET /static/config_institucional/js/filter-especialidades-subgrupo.js HTTP/1.1" 200 11582
+INFO 2025-08-27 13:57:07,358 basehttp 2660 56520 "GET /admin/config_institucional/subgrupocursolectivo/add/ HTTP/1.1" 200 47238
+INFO 2025-08-27 13:57:07,465 basehttp 2660 56520 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 14:01:49,074 autoreload 2660 67440 D:\Proyecto Colegio\sistema_colegio\matricula\views.py changed, reloading.
+INFO 2025-08-27 14:01:51,221 autoreload 85136 69628 Watching for file changes with StatReloader
+INFO 2025-08-27 14:01:59,728 autoreload 85136 69628 D:\Proyecto Colegio\sistema_colegio\matricula\urls.py changed, reloading.
+INFO 2025-08-27 14:02:02,093 autoreload 64912 66740 Watching for file changes with StatReloader
+INFO 2025-08-27 14:02:14,155 autoreload 64912 66740 D:\Proyecto Colegio\sistema_colegio\matricula\urls.py changed, reloading.
+INFO 2025-08-27 14:02:16,287 autoreload 67072 75620 Watching for file changes with StatReloader
+INFO 2025-08-27 14:02:29,874 autoreload 67072 75620 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-08-27 14:02:31,608 autoreload 60704 85008 Watching for file changes with StatReloader
+INFO 2025-08-27 14:02:39,178 autoreload 60704 85008 D:\Proyecto Colegio\sistema_colegio\matricula\views.py changed, reloading.
+INFO 2025-08-27 14:02:41,356 autoreload 85872 85716 Watching for file changes with StatReloader
+INFO 2025-08-27 14:03:10,899 autoreload 85872 85716 D:\Proyecto Colegio\sistema_colegio\matricula\views.py changed, reloading.
+INFO 2025-08-27 14:03:13,945 autoreload 62116 69624 Watching for file changes with StatReloader
+INFO 2025-08-27 14:03:19,449 autoreload 62116 69624 D:\Proyecto Colegio\sistema_colegio\matricula\urls.py changed, reloading.
+INFO 2025-08-27 14:03:21,830 autoreload 84492 84820 Watching for file changes with StatReloader
+INFO 2025-08-27 14:03:29,933 autoreload 84492 84820 D:\Proyecto Colegio\sistema_colegio\matricula\urls.py changed, reloading.
+INFO 2025-08-27 14:03:31,618 autoreload 67920 69664 Watching for file changes with StatReloader
+INFO 2025-08-27 14:03:36,895 autoreload 67920 69664 D:\Proyecto Colegio\sistema_colegio\matricula\urls.py changed, reloading.
+INFO 2025-08-27 14:03:38,724 autoreload 71964 73224 Watching for file changes with StatReloader
+INFO 2025-08-27 14:04:23,374 autoreload 71964 73224 D:\Proyecto Colegio\sistema_colegio\matricula\urls.py changed, reloading.
+INFO 2025-08-27 14:04:24,659 autoreload 70356 67568 Watching for file changes with StatReloader
+INFO 2025-08-27 14:04:25,820 basehttp 70356 86404 "GET /admin/ HTTP/1.1" 200 84156
+INFO 2025-08-27 14:04:29,021 basehttp 70356 86404 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 86730
+INFO 2025-08-27 14:04:29,061 basehttp 70356 75636 "GET /static/config_institucional/js/filter-especialidades-subgrupo.js HTTP/1.1" 304 0
+INFO 2025-08-27 14:04:29,138 basehttp 70356 86404 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 14:04:30,768 basehttp 70356 86404 "GET /admin/config_institucional/subgrupocursolectivo/add/ HTTP/1.1" 200 47238
+INFO 2025-08-27 14:04:30,875 basehttp 70356 86404 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 14:04:32,797 basehttp 70356 86404 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=especialidad_curso HTTP/1.1" 200 539
+INFO 2025-08-27 14:04:37,149 basehttp 70356 86404 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=institucion HTTP/1.1" 200 142
+INFO 2025-08-27 14:04:38,392 basehttp 70356 86404 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+INFO 2025-08-27 14:04:39,928 basehttp 70356 86404 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=subgrupo HTTP/1.1" 200 634
+INFO 2025-08-27 14:04:42,257 basehttp 70356 86404 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=especialidad_curso HTTP/1.1" 200 539
+INFO 2025-08-27 14:06:36,115 basehttp 70356 86404 "GET /admin/config_institucional/subgrupocursolectivo/add/ HTTP/1.1" 200 47238
+INFO 2025-08-27 14:06:36,146 basehttp 70356 75636 "GET /static/config_institucional/js/filter-especialidades-subgrupo.js HTTP/1.1" 304 0
+INFO 2025-08-27 14:06:36,233 basehttp 70356 86404 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 14:06:38,310 basehttp 70356 86404 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=especialidad_curso HTTP/1.1" 200 539
+INFO 2025-08-27 14:06:40,110 basehttp 70356 86404 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=institucion HTTP/1.1" 200 142
+INFO 2025-08-27 14:06:41,603 basehttp 70356 86404 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+INFO 2025-08-27 14:06:44,135 basehttp 70356 86404 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=especialidad_curso HTTP/1.1" 200 539
+INFO 2025-08-27 14:06:46,005 basehttp 70356 86404 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+INFO 2025-08-27 14:06:47,402 basehttp 70356 86404 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=especialidad_curso HTTP/1.1" 200 539
+INFO 2025-08-27 14:06:52,227 basehttp 70356 86404 "GET /admin/config_institucional/subgrupocursolectivo/add/ HTTP/1.1" 200 47238
+INFO 2025-08-27 14:06:52,328 basehttp 70356 86404 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 14:07:07,683 autoreload 70356 67568 D:\Proyecto Colegio\sistema_colegio\config_institucional\views.py changed, reloading.
+INFO 2025-08-27 14:07:08,806 autoreload 87960 86392 Watching for file changes with StatReloader
+INFO 2025-08-27 14:07:14,578 autoreload 87960 86392 D:\Proyecto Colegio\sistema_colegio\config_institucional\urls.py changed, reloading.
+INFO 2025-08-27 14:07:15,486 autoreload 86172 85816 Watching for file changes with StatReloader
+INFO 2025-08-27 14:07:21,458 autoreload 86172 85816 D:\Proyecto Colegio\sistema_colegio\config_institucional\urls.py changed, reloading.
+INFO 2025-08-27 14:07:22,505 autoreload 85008 62660 Watching for file changes with StatReloader
+INFO 2025-08-27 14:07:33,728 autoreload 85008 62660 D:\Proyecto Colegio\sistema_colegio\config_institucional\admin.py changed, reloading.
+INFO 2025-08-27 14:07:34,919 autoreload 83488 66004 Watching for file changes with StatReloader
+INFO 2025-08-27 14:07:52,515 autoreload 83488 66004 D:\Proyecto Colegio\sistema_colegio\config_institucional\admin.py changed, reloading.
+INFO 2025-08-27 14:07:53,397 autoreload 79400 86428 Watching for file changes with StatReloader
+INFO 2025-08-27 14:09:01,372 basehttp 79400 12536 "GET /admin/config_institucional/subgrupocursolectivo/add/ HTTP/1.1" 200 47479
+INFO 2025-08-27 14:09:01,495 basehttp 79400 12536 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 14:09:01,516 basehttp 79400 59704 "GET /static/config_institucional/js/filter-especialidades-subgrupo.js HTTP/1.1" 200 11578
+INFO 2025-08-27 14:09:05,545 basehttp 79400 59704 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=institucion HTTP/1.1" 200 142
+INFO 2025-08-27 14:09:06,900 basehttp 79400 59704 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+INFO 2025-08-27 14:09:08,582 basehttp 79400 59704 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=subgrupo HTTP/1.1" 200 634
+INFO 2025-08-27 14:09:13,225 basehttp 79400 59704 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+INFO 2025-08-27 14:09:37,943 autoreload 79400 86428 D:\Proyecto Colegio\sistema_colegio\matricula\views.py changed, reloading.
+INFO 2025-08-27 14:09:38,965 autoreload 84048 87824 Watching for file changes with StatReloader
+INFO 2025-08-27 14:09:43,796 autoreload 84048 87824 D:\Proyecto Colegio\sistema_colegio\matricula\urls.py changed, reloading.
+INFO 2025-08-27 14:09:44,770 autoreload 85832 69072 Watching for file changes with StatReloader
+INFO 2025-08-27 14:09:49,548 autoreload 85832 69072 D:\Proyecto Colegio\sistema_colegio\matricula\urls.py changed, reloading.
+INFO 2025-08-27 14:09:50,526 autoreload 85756 85684 Watching for file changes with StatReloader
+INFO 2025-08-27 14:09:56,470 autoreload 85756 85684 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-08-27 14:09:57,539 autoreload 70768 84076 Watching for file changes with StatReloader
+INFO 2025-08-27 14:10:14,247 autoreload 70768 84076 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-08-27 14:10:15,162 autoreload 8472 87732 Watching for file changes with StatReloader
+INFO 2025-08-27 14:10:48,020 basehttp 8472 82676 "GET /admin/ HTTP/1.1" 200 84156
+INFO 2025-08-27 14:10:50,745 basehttp 8472 82676 "GET /admin/ HTTP/1.1" 200 84156
+INFO 2025-08-27 14:10:51,045 basehttp 8472 82676 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-08-27 14:10:51,065 basehttp 8472 56388 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-08-27 14:10:51,067 basehttp 8472 81496 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-08-27 14:10:51,070 basehttp 8472 87004 "GET /static/vendor/bootswatch/cosmo/bootstrap.min.css HTTP/1.1" 200 154456
+INFO 2025-08-27 14:10:51,073 basehttp 8472 69568 "GET /static/sis_colegio/css/logo-custom.css HTTP/1.1" 200 5704
+INFO 2025-08-27 14:10:51,075 basehttp 8472 86616 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-08-27 14:10:51,078 basehttp 8472 81496 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-08-27 14:10:51,084 basehttp 8472 87004 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 14:10:51,084 basehttp 8472 69568 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-08-27 14:10:51,085 basehttp 8472 86616 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-08-27 14:10:51,244 basehttp 8472 69568 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-08-27 14:10:51,246 basehttp 8472 86616 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-08-27 14:10:51,495 basehttp 8472 86616 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 14:10:53,394 basehttp 8472 86616 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 86730
+INFO 2025-08-27 14:10:53,419 basehttp 8472 69568 "GET /static/config_institucional/js/filter-especialidades-subgrupo.js HTTP/1.1" 200 11578
+INFO 2025-08-27 14:10:53,592 basehttp 8472 86616 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 14:10:54,622 basehttp 8472 86616 "GET /admin/config_institucional/subgrupocursolectivo/add/ HTTP/1.1" 200 47479
+INFO 2025-08-27 14:10:54,728 basehttp 8472 86616 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 14:10:56,512 basehttp 8472 86616 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+INFO 2025-08-27 14:10:58,002 basehttp 8472 86616 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=institucion HTTP/1.1" 200 142
+INFO 2025-08-27 14:11:02,584 basehttp 8472 86616 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+INFO 2025-08-27 14:15:03,822 basehttp 8472 84408 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+INFO 2025-08-27 14:15:09,808 basehttp 8472 84408 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+INFO 2025-08-27 14:15:12,178 basehttp 8472 84408 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=institucion HTTP/1.1" 200 142
+INFO 2025-08-27 14:15:13,640 basehttp 8472 84408 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=institucion HTTP/1.1" 200 142
+INFO 2025-08-27 14:32:59,289 basehttp 8472 69696 "GET /admin/config_institucional/subgrupocursolectivo/add/ HTTP/1.1" 200 47479
+INFO 2025-08-27 14:32:59,309 basehttp 8472 89744 "GET /static/config_institucional/js/filter-especialidades-subgrupo.js HTTP/1.1" 200 12021
+INFO 2025-08-27 14:32:59,371 basehttp 8472 69696 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 14:33:03,744 basehttp 8472 69696 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+INFO 2025-08-27 14:33:13,990 basehttp 8472 69696 "POST /admin/logout/ HTTP/1.1" 200 2409
+INFO 2025-08-27 14:33:15,157 basehttp 8472 69696 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 14:33:15,168 basehttp 8472 69696 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 5518
+WARNING 2025-08-27 14:33:15,223 log 8472 69696 Not Found: /favicon.ico
+WARNING 2025-08-27 14:33:15,224 basehttp 8472 69696 "GET /favicon.ico HTTP/1.1" 404 3331
+INFO 2025-08-27 14:34:25,055 basehttp 8472 69696 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 14:34:25,173 basehttp 8472 69696 "GET /admin/ HTTP/1.1" 200 84156
+INFO 2025-08-27 14:34:28,659 basehttp 8472 69696 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 86730
+INFO 2025-08-27 14:34:28,693 basehttp 8472 89744 "GET /static/config_institucional/js/filter-especialidades-subgrupo.js HTTP/1.1" 304 0
+INFO 2025-08-27 14:34:28,752 basehttp 8472 69696 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 14:34:30,833 basehttp 8472 69696 "GET /admin/config_institucional/subgrupocursolectivo/add/ HTTP/1.1" 200 47479
+INFO 2025-08-27 14:34:30,914 basehttp 8472 69696 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 14:34:33,272 basehttp 8472 69696 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+INFO 2025-08-27 14:34:39,640 basehttp 8472 69696 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=institucion HTTP/1.1" 200 142
+INFO 2025-08-27 14:34:41,987 basehttp 8472 69696 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=subgrupo HTTP/1.1" 200 634
+INFO 2025-08-27 14:34:43,877 basehttp 8472 69696 "GET /admin/autocomplete/?page=2&app_label=config_institucional&model_name=subgrupocursolectivo&field_name=subgrupo HTTP/1.1" 200 647
+WARNING 2025-08-27 14:35:02,209 log 8472 69696 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-27 14:35:02,210 basehttp 8472 69696 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 3442
+INFO 2025-08-27 14:35:02,645 basehttp 8472 89744 "GET /static/vendor/adminlte/js/adminlte.min.js.map HTTP/1.1" 200 129651
+INFO 2025-08-27 14:35:02,645 basehttp 8472 69696 "GET /static/vendor/bootstrap/js/bootstrap.min.js.map HTTP/1.1" 200 187646
+INFO 2025-08-27 14:35:02,680 basehttp 8472 86076 "GET /static/vendor/adminlte/css/adminlte.min.css.map HTTP/1.1" 200 3783134
+INFO 2025-08-27 14:36:16,479 autoreload 89292 87504 Watching for file changes with StatReloader
+INFO 2025-08-27 14:37:37,267 basehttp 8472 81964 "GET /admin/ HTTP/1.1" 200 84156
+INFO 2025-08-27 14:37:37,311 basehttp 8472 81964 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-08-27 14:37:37,319 basehttp 8472 21716 "GET /static/sis_colegio/css/logo-custom.css HTTP/1.1" 200 5704
+INFO 2025-08-27 14:37:37,325 basehttp 8472 83268 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 14:37:37,346 basehttp 8472 81964 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-08-27 14:37:37,348 basehttp 8472 83268 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-08-27 14:37:37,351 basehttp 8472 90708 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-08-27 14:37:37,355 basehttp 8472 81964 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-08-27 14:37:37,357 basehttp 8472 68116 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-08-27 14:37:37,374 basehttp 8472 90708 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-08-27 14:37:37,423 basehttp 8472 90252 "GET /static/vendor/bootswatch/cosmo/bootstrap.min.css HTTP/1.1" 200 154456
+WARNING 2025-08-27 14:37:37,508 log 8472 21716 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-27 14:37:37,509 basehttp 8472 21716 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 3442
+INFO 2025-08-27 14:37:37,553 basehttp 8472 90252 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-08-27 14:37:37,554 basehttp 8472 21716 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-08-27 14:37:37,667 basehttp 8472 21716 "GET /static/vendor/adminlte/css/adminlte.min.css.map HTTP/1.1" 200 3783134
+INFO 2025-08-27 14:37:37,736 basehttp 8472 90252 "GET /static/vendor/adminlte/js/adminlte.min.js.map HTTP/1.1" 200 129651
+INFO 2025-08-27 14:37:37,736 basehttp 8472 21716 "GET /static/vendor/bootstrap/js/bootstrap.min.js.map HTTP/1.1" 200 187646
+INFO 2025-08-27 14:37:39,759 basehttp 8472 21716 "GET /admin/ HTTP/1.1" 200 84156
+INFO 2025-08-27 14:37:39,790 basehttp 8472 90252 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-08-27 14:37:39,807 basehttp 8472 83268 "GET /static/sis_colegio/css/logo-custom.css HTTP/1.1" 200 5704
+INFO 2025-08-27 14:37:39,807 basehttp 8472 81964 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-08-27 14:37:39,811 basehttp 8472 68116 "GET /static/vendor/bootswatch/cosmo/bootstrap.min.css HTTP/1.1" 200 154456
+INFO 2025-08-27 14:37:39,821 basehttp 8472 90252 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-08-27 14:37:39,829 basehttp 8472 83268 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 14:37:39,838 basehttp 8472 81964 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-08-27 14:37:39,839 basehttp 8472 68116 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-08-27 14:37:39,844 basehttp 8472 90252 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-08-27 14:37:39,856 basehttp 8472 90708 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+WARNING 2025-08-27 14:37:39,916 log 8472 21716 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-27 14:37:39,917 basehttp 8472 21716 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 3442
+INFO 2025-08-27 14:37:39,958 basehttp 8472 90708 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-08-27 14:37:39,960 basehttp 8472 21716 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-08-27 14:37:40,103 basehttp 8472 21716 "GET /static/vendor/adminlte/css/adminlte.min.css.map HTTP/1.1" 200 3783134
+INFO 2025-08-27 14:37:40,143 basehttp 8472 90708 "GET /static/vendor/adminlte/js/adminlte.min.js.map HTTP/1.1" 200 129651
+INFO 2025-08-27 14:37:40,144 basehttp 8472 21716 "GET /static/vendor/bootstrap/js/bootstrap.min.js.map HTTP/1.1" 200 187646
+INFO 2025-08-27 14:37:40,186 basehttp 8472 21716 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 14:37:40,203 basehttp 8472 21716 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 14:37:42,197 basehttp 8472 21716 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 86730
+INFO 2025-08-27 14:37:42,250 basehttp 8472 83268 "GET /static/sis_colegio/css/logo-custom.css HTTP/1.1" 200 5704
+INFO 2025-08-27 14:37:42,253 basehttp 8472 68116 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-08-27 14:37:42,255 basehttp 8472 83268 "GET /static/vendor/select2/css/select2.min.css HTTP/1.1" 200 16264
+INFO 2025-08-27 14:37:42,257 basehttp 8472 90708 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-08-27 14:37:42,257 basehttp 8472 81964 "GET /static/vendor/bootswatch/cosmo/bootstrap.min.css HTTP/1.1" 200 154456
+INFO 2025-08-27 14:37:42,269 basehttp 8472 83268 "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+INFO 2025-08-27 14:37:42,269 basehttp 8472 81964 "GET /static/admin/js/core.js HTTP/1.1" 200 6208
+INFO 2025-08-27 14:37:42,278 basehttp 8472 83268 "GET /static/config_institucional/js/filter-especialidades-subgrupo.js HTTP/1.1" 200 14876
+INFO 2025-08-27 14:37:42,278 basehttp 8472 90708 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-08-27 14:37:42,280 basehttp 8472 81964 "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 9777
+INFO 2025-08-27 14:37:42,284 basehttp 8472 90708 "GET /static/admin/js/actions.js HTTP/1.1" 200 8076
+INFO 2025-08-27 14:37:42,289 basehttp 8472 83268 "GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+INFO 2025-08-27 14:37:42,293 basehttp 8472 81964 "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+INFO 2025-08-27 14:37:42,305 basehttp 8472 83268 "GET /static/admin/img/icon-yes.svg HTTP/1.1" 200 436
+INFO 2025-08-27 14:37:42,307 basehttp 8472 81964 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 14:37:42,308 basehttp 8472 90252 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-08-27 14:37:42,310 basehttp 8472 90708 "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 325171
+INFO 2025-08-27 14:37:42,327 basehttp 8472 81964 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-08-27 14:37:42,327 basehttp 8472 90708 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-08-27 14:37:42,340 basehttp 8472 81964 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-08-27 14:37:42,342 basehttp 8472 90708 "GET /static/vendor/select2/js/select2.min.js HTTP/1.1" 200 73170
+INFO 2025-08-27 14:37:42,348 basehttp 8472 90708 "GET /static/jazzmin/js/change_list.js HTTP/1.1" 200 2252
+WARNING 2025-08-27 14:37:42,378 log 8472 21716 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-27 14:37:42,379 basehttp 8472 21716 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 3442
+INFO 2025-08-27 14:37:42,390 basehttp 8472 68116 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 14:37:42,717 basehttp 8472 68116 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-08-27 14:37:42,718 basehttp 8472 90252 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-08-27 14:37:42,820 basehttp 8472 21716 "GET /static/vendor/adminlte/js/adminlte.min.js.map HTTP/1.1" 200 129651
+INFO 2025-08-27 14:37:42,821 basehttp 8472 68116 "GET /static/vendor/bootstrap/js/bootstrap.min.js.map HTTP/1.1" 200 187646
+INFO 2025-08-27 14:37:42,843 basehttp 8472 90252 "GET /static/vendor/adminlte/css/adminlte.min.css.map HTTP/1.1" 200 3783134
+INFO 2025-08-27 14:37:46,103 basehttp 8472 90252 "GET /admin/config_institucional/subgrupocursolectivo/add/ HTTP/1.1" 200 47479
+INFO 2025-08-27 14:37:46,170 basehttp 8472 83268 "GET /static/sis_colegio/css/logo-custom.css HTTP/1.1" 200 5704
+INFO 2025-08-27 14:37:46,171 basehttp 8472 68116 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-08-27 14:37:46,171 basehttp 8472 81964 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-08-27 14:37:46,174 basehttp 8472 90708 "GET /static/vendor/bootswatch/cosmo/bootstrap.min.css HTTP/1.1" 200 154456
+INFO 2025-08-27 14:37:46,184 basehttp 8472 83268 "GET /static/vendor/select2/css/select2.min.css HTTP/1.1" 200 16264
+INFO 2025-08-27 14:37:46,185 basehttp 8472 81964 "GET /static/admin/css/autocomplete.css HTTP/1.1" 200 9185
+INFO 2025-08-27 14:37:46,185 basehttp 8472 68116 "GET /static/admin/css/vendor/select2/select2.css HTTP/1.1" 200 17358
+INFO 2025-08-27 14:37:46,198 basehttp 8472 83268 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-08-27 14:37:46,200 basehttp 8472 68116 "GET /static/admin/js/vendor/select2/select2.full.js HTTP/1.1" 200 173566
+INFO 2025-08-27 14:37:46,200 basehttp 8472 81964 "GET /static/admin/js/vendor/select2/i18n/es.js HTTP/1.1" 200 922
+INFO 2025-08-27 14:37:46,208 basehttp 8472 68116 "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+INFO 2025-08-27 14:37:46,214 basehttp 8472 81964 "GET /static/admin/js/core.js HTTP/1.1" 200 6208
+INFO 2025-08-27 14:37:46,219 basehttp 8472 83268 "GET /static/config_institucional/js/filter-especialidades-subgrupo.js HTTP/1.1" 200 14876
+INFO 2025-08-27 14:37:46,219 basehttp 8472 68116 "GET /static/admin/js/autocomplete.js HTTP/1.1" 200 1060
+INFO 2025-08-27 14:37:46,219 basehttp 8472 21716 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-08-27 14:37:46,226 basehttp 8472 81964 "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 9777
+INFO 2025-08-27 14:37:46,233 basehttp 8472 21716 "GET /static/admin/js/actions.js HTTP/1.1" 200 8076
+INFO 2025-08-27 14:37:46,234 basehttp 8472 83268 "GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+INFO 2025-08-27 14:37:46,234 basehttp 8472 68116 "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+INFO 2025-08-27 14:37:46,243 basehttp 8472 83268 "GET /static/admin/js/change_form.js HTTP/1.1" 200 606
+INFO 2025-08-27 14:37:46,248 basehttp 8472 81964 "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 325171
+INFO 2025-08-27 14:37:46,249 basehttp 8472 21716 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 14:37:46,275 basehttp 8472 81964 "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 200 586
+INFO 2025-08-27 14:37:46,280 basehttp 8472 21716 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-08-27 14:37:46,285 basehttp 8472 81964 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-08-27 14:37:46,298 basehttp 8472 81964 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-08-27 14:37:46,300 basehttp 8472 21716 "GET /static/vendor/select2/js/select2.min.js HTTP/1.1" 200 73170
+WARNING 2025-08-27 14:37:46,310 log 8472 90252 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-27 14:37:46,312 basehttp 8472 90252 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 3442
+INFO 2025-08-27 14:37:46,314 basehttp 8472 21716 "GET /static/jazzmin/js/change_form.js HTTP/1.1" 200 6052
+INFO 2025-08-27 14:37:46,320 basehttp 8472 21716 "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+INFO 2025-08-27 14:37:46,330 basehttp 8472 90708 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 14:37:46,331 basehttp 8472 21716 "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+INFO 2025-08-27 14:37:46,338 basehttp 8472 21716 "GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 200 581
+INFO 2025-08-27 14:37:46,343 basehttp 8472 90708 "GET /static/admin/img/icon-deletelink.svg HTTP/1.1" 200 392
+INFO 2025-08-27 14:37:46,478 basehttp 8472 90252 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-08-27 14:37:46,480 basehttp 8472 21716 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-08-27 14:37:46,507 basehttp 8472 90708 "GET /static/vendor/adminlte/css/adminlte.min.css.map HTTP/1.1" 200 3783134
+INFO 2025-08-27 14:37:46,557 basehttp 8472 21716 "GET /static/vendor/adminlte/js/adminlte.min.js.map HTTP/1.1" 200 129651
+INFO 2025-08-27 14:37:46,558 basehttp 8472 90708 "GET /static/vendor/bootstrap/js/bootstrap.min.js.map HTTP/1.1" 200 187646
+INFO 2025-08-27 14:38:40,001 basehttp 8472 90708 "GET /admin/config_institucional/subgrupocursolectivo/add/ HTTP/1.1" 200 47479
+INFO 2025-08-27 14:38:40,027 basehttp 8472 90708 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-08-27 14:38:40,045 basehttp 8472 81964 "GET /static/sis_colegio/css/logo-custom.css HTTP/1.1" 200 5704
+INFO 2025-08-27 14:38:40,046 basehttp 8472 83268 "GET /static/vendor/select2/css/select2.min.css HTTP/1.1" 200 16264
+INFO 2025-08-27 14:38:40,046 basehttp 8472 90252 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-08-27 14:38:40,052 basehttp 8472 21716 "GET /static/vendor/bootswatch/cosmo/bootstrap.min.css HTTP/1.1" 200 154456
+INFO 2025-08-27 14:38:40,053 basehttp 8472 81964 "GET /static/admin/css/vendor/select2/select2.css HTTP/1.1" 200 17358
+INFO 2025-08-27 14:38:40,057 basehttp 8472 90252 "GET /static/admin/css/autocomplete.css HTTP/1.1" 200 9185
+INFO 2025-08-27 14:38:40,063 basehttp 8472 81964 "GET /static/admin/js/vendor/select2/i18n/es.js HTTP/1.1" 200 922
+INFO 2025-08-27 14:38:40,064 basehttp 8472 21716 "GET /static/admin/js/vendor/select2/select2.full.js HTTP/1.1" 200 173566
+INFO 2025-08-27 14:38:40,064 basehttp 8472 83268 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-08-27 14:38:40,072 basehttp 8472 90252 "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+INFO 2025-08-27 14:38:40,075 basehttp 8472 81964 "GET /static/admin/js/core.js HTTP/1.1" 200 6208
+INFO 2025-08-27 14:38:40,076 basehttp 8472 83268 "GET /static/config_institucional/js/filter-especialidades-subgrupo.js HTTP/1.1" 200 14946
+INFO 2025-08-27 14:38:40,076 basehttp 8472 21716 "GET /static/admin/js/autocomplete.js HTTP/1.1" 200 1060
+INFO 2025-08-27 14:38:40,081 basehttp 8472 90252 "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 9777
+INFO 2025-08-27 14:38:40,092 basehttp 8472 81964 "GET /static/admin/js/actions.js HTTP/1.1" 200 8076
+INFO 2025-08-27 14:38:40,093 basehttp 8472 83268 "GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+INFO 2025-08-27 14:38:40,093 basehttp 8472 21716 "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+INFO 2025-08-27 14:38:40,095 basehttp 8472 90708 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-08-27 14:38:40,100 basehttp 8472 90252 "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 325171
+INFO 2025-08-27 14:38:40,109 basehttp 8472 83268 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 14:38:40,110 basehttp 8472 90708 "GET /static/admin/js/change_form.js HTTP/1.1" 200 606
+INFO 2025-08-27 14:38:40,148 basehttp 8472 90708 "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 200 586
+INFO 2025-08-27 14:38:40,154 basehttp 8472 83268 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-08-27 14:38:40,165 basehttp 8472 83268 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-08-27 14:38:40,177 basehttp 8472 90708 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-08-27 14:38:40,187 basehttp 8472 68116 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 14:38:40,199 basehttp 8472 68116 "GET /static/vendor/select2/js/select2.min.js HTTP/1.1" 200 73170
+WARNING 2025-08-27 14:38:40,247 log 8472 81964 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-27 14:38:40,251 basehttp 8472 81964 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 3442
+INFO 2025-08-27 14:38:40,281 basehttp 8472 81964 "GET /static/jazzmin/js/change_form.js HTTP/1.1" 200 6052
+INFO 2025-08-27 14:38:40,288 basehttp 8472 68116 "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+INFO 2025-08-27 14:38:40,289 basehttp 8472 83268 "GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 200 581
+INFO 2025-08-27 14:38:40,289 basehttp 8472 90252 "GET /static/admin/img/icon-deletelink.svg HTTP/1.1" 200 392
+INFO 2025-08-27 14:38:40,289 basehttp 8472 90708 "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+INFO 2025-08-27 14:38:40,417 basehttp 8472 83268 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-08-27 14:38:40,419 basehttp 8472 90708 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-08-27 14:38:40,444 basehttp 8472 90252 "GET /static/vendor/adminlte/css/adminlte.min.css.map HTTP/1.1" 200 3783134
+INFO 2025-08-27 14:38:40,515 basehttp 8472 90252 "GET /static/vendor/bootstrap/js/bootstrap.min.js.map HTTP/1.1" 200 187646
+INFO 2025-08-27 14:38:40,527 basehttp 8472 90252 "GET /static/vendor/adminlte/js/adminlte.min.js.map HTTP/1.1" 200 129651
+INFO 2025-08-27 14:38:40,772 basehttp 8472 90252 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 14:38:40,782 basehttp 8472 90252 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 14:38:46,896 basehttp 8472 90252 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=institucion HTTP/1.1" 200 142
+INFO 2025-08-27 14:38:48,079 basehttp 8472 90252 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+WARNING 2025-08-27 14:38:48,986 log 8472 90252 Not Found: /config_institucional/especialidad-curso-lectivo-autocomplete/
+WARNING 2025-08-27 14:38:48,987 basehttp 8472 90252 "GET /config_institucional/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 404 3561
+WARNING 2025-08-27 14:38:49,196 log 8472 90252 Not Found: /config_institucional/especialidad-curso-lectivo-autocomplete/
+WARNING 2025-08-27 14:38:49,202 log 8472 90708 Not Found: /config_institucional/especialidad-curso-lectivo-autocomplete/
+WARNING 2025-08-27 14:38:49,203 basehttp 8472 90252 "GET /config_institucional/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 404 3561
+WARNING 2025-08-27 14:38:49,210 log 8472 83268 Not Found: /config_institucional/especialidad-curso-lectivo-autocomplete/
+WARNING 2025-08-27 14:38:49,211 basehttp 8472 90708 "GET /config_institucional/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 404 3561
+WARNING 2025-08-27 14:38:49,211 basehttp 8472 83268 "GET /config_institucional/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 404 3561
+INFO 2025-08-27 14:38:49,472 basehttp 8472 83268 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=subgrupo HTTP/1.1" 200 634
+INFO 2025-08-27 14:38:57,408 basehttp 8472 83268 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+WARNING 2025-08-27 14:38:58,362 log 8472 83268 Not Found: /config_institucional/especialidad-curso-lectivo-autocomplete/
+WARNING 2025-08-27 14:38:58,362 basehttp 8472 83268 "GET /config_institucional/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%222%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 404 3561
+WARNING 2025-08-27 14:38:58,549 log 8472 83268 Not Found: /config_institucional/especialidad-curso-lectivo-autocomplete/
+WARNING 2025-08-27 14:38:58,551 basehttp 8472 83268 "GET /config_institucional/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%222%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 404 3561
+WARNING 2025-08-27 14:38:58,559 log 8472 90708 Not Found: /config_institucional/especialidad-curso-lectivo-autocomplete/
+WARNING 2025-08-27 14:38:58,560 basehttp 8472 90708 "GET /config_institucional/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%222%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 404 3561
+WARNING 2025-08-27 14:38:58,574 log 8472 90252 Not Found: /config_institucional/especialidad-curso-lectivo-autocomplete/
+WARNING 2025-08-27 14:38:58,575 basehttp 8472 90252 "GET /config_institucional/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%222%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 404 3561
+INFO 2025-08-27 14:39:00,983 basehttp 8472 90252 "GET /admin/config_institucional/subgrupocursolectivo/add/ HTTP/1.1" 200 47479
+INFO 2025-08-27 14:39:01,012 basehttp 8472 90252 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-08-27 14:39:01,023 basehttp 8472 81964 "GET /static/sis_colegio/css/logo-custom.css HTTP/1.1" 200 5704
+INFO 2025-08-27 14:39:01,026 basehttp 8472 68116 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-08-27 14:39:01,026 basehttp 8472 21716 "GET /static/vendor/select2/css/select2.min.css HTTP/1.1" 200 16264
+INFO 2025-08-27 14:39:01,027 basehttp 8472 90252 "GET /static/admin/css/vendor/select2/select2.css HTTP/1.1" 200 17358
+INFO 2025-08-27 14:39:01,032 basehttp 8472 81964 "GET /static/admin/css/autocomplete.css HTTP/1.1" 200 9185
+INFO 2025-08-27 14:39:01,037 basehttp 8472 83268 "GET /static/vendor/bootswatch/cosmo/bootstrap.min.css HTTP/1.1" 200 154456
+INFO 2025-08-27 14:39:01,038 basehttp 8472 81964 "GET /static/admin/js/vendor/select2/i18n/es.js HTTP/1.1" 200 922
+INFO 2025-08-27 14:39:01,043 basehttp 8472 90252 "GET /static/admin/js/vendor/select2/select2.full.js HTTP/1.1" 200 173566
+INFO 2025-08-27 14:39:01,043 basehttp 8472 83268 "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+INFO 2025-08-27 14:39:01,048 basehttp 8472 21716 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-08-27 14:39:01,049 basehttp 8472 81964 "GET /static/admin/js/core.js HTTP/1.1" 200 6208
+INFO 2025-08-27 14:39:01,051 basehttp 8472 90252 "GET /static/config_institucional/js/filter-especialidades-subgrupo.js HTTP/1.1" 200 14946
+INFO 2025-08-27 14:39:01,056 basehttp 8472 83268 "GET /static/admin/js/autocomplete.js HTTP/1.1" 200 1060
+INFO 2025-08-27 14:39:01,058 basehttp 8472 21716 "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 9777
+INFO 2025-08-27 14:39:01,071 basehttp 8472 83268 "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+INFO 2025-08-27 14:39:01,072 basehttp 8472 81964 "GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+INFO 2025-08-27 14:39:01,074 basehttp 8472 90252 "GET /static/admin/js/actions.js HTTP/1.1" 200 8076
+INFO 2025-08-27 14:39:01,086 basehttp 8472 81964 "GET /static/admin/js/change_form.js HTTP/1.1" 200 606
+INFO 2025-08-27 14:39:01,088 basehttp 8472 21716 "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 325171
+INFO 2025-08-27 14:39:01,089 basehttp 8472 90252 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 14:39:01,091 basehttp 8472 90708 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-08-27 14:39:01,144 basehttp 8472 68116 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 14:39:01,166 basehttp 8472 68116 "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 200 586
+INFO 2025-08-27 14:39:01,172 basehttp 8472 90252 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+WARNING 2025-08-27 14:39:01,183 log 8472 83268 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-27 14:39:01,184 basehttp 8472 83268 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 3442
+INFO 2025-08-27 14:39:01,225 basehttp 8472 90252 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-08-27 14:39:01,228 basehttp 8472 83268 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-08-27 14:39:01,229 basehttp 8472 81964 "GET /static/jazzmin/js/change_form.js HTTP/1.1" 200 6052
+INFO 2025-08-27 14:39:01,231 basehttp 8472 90708 "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+INFO 2025-08-27 14:39:01,231 basehttp 8472 68116 "GET /static/vendor/select2/js/select2.min.js HTTP/1.1" 200 73170
+INFO 2025-08-27 14:39:01,232 basehttp 8472 21716 "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+INFO 2025-08-27 14:39:01,234 basehttp 8472 90252 "GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 200 581
+INFO 2025-08-27 14:39:01,237 basehttp 8472 81964 "GET /static/admin/img/icon-deletelink.svg HTTP/1.1" 200 392
+INFO 2025-08-27 14:39:01,317 basehttp 8472 21716 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-08-27 14:39:01,319 basehttp 8472 90252 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-08-27 14:39:01,342 basehttp 8472 81964 "GET /static/vendor/adminlte/css/adminlte.min.css.map HTTP/1.1" 200 3783134
+INFO 2025-08-27 14:39:01,413 basehttp 8472 90252 "GET /static/vendor/adminlte/js/adminlte.min.js.map HTTP/1.1" 200 129651
+INFO 2025-08-27 14:39:01,414 basehttp 8472 81964 "GET /static/vendor/bootstrap/js/bootstrap.min.js.map HTTP/1.1" 200 187646
+INFO 2025-08-27 14:39:01,598 basehttp 8472 81964 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 14:39:01,610 basehttp 8472 81964 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 14:39:03,096 basehttp 8472 81964 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=institucion HTTP/1.1" 200 142
+INFO 2025-08-27 14:39:05,656 basehttp 8472 81964 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+WARNING 2025-08-27 14:39:07,767 log 8472 81964 Not Found: /config_institucional/especialidad-curso-lectivo-autocomplete/
+WARNING 2025-08-27 14:39:07,767 basehttp 8472 81964 "GET /config_institucional/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 404 3561
+WARNING 2025-08-27 14:39:08,027 log 8472 81964 Not Found: /config_institucional/especialidad-curso-lectivo-autocomplete/
+WARNING 2025-08-27 14:39:08,034 log 8472 21716 Not Found: /config_institucional/especialidad-curso-lectivo-autocomplete/
+WARNING 2025-08-27 14:39:08,036 basehttp 8472 81964 "GET /config_institucional/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 404 3561
+WARNING 2025-08-27 14:39:08,043 log 8472 90252 Not Found: /config_institucional/especialidad-curso-lectivo-autocomplete/
+WARNING 2025-08-27 14:39:08,043 basehttp 8472 21716 "GET /config_institucional/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 404 3561
+WARNING 2025-08-27 14:39:08,044 basehttp 8472 90252 "GET /config_institucional/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 404 3561
+INFO 2025-08-27 14:40:32,413 basehttp 8472 90252 "GET /admin/config_institucional/subgrupocursolectivo/add/ HTTP/1.1" 200 47479
+INFO 2025-08-27 14:40:32,449 basehttp 8472 90252 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-08-27 14:40:32,459 basehttp 8472 68116 "GET /static/sis_colegio/css/logo-custom.css HTTP/1.1" 200 5704
+INFO 2025-08-27 14:40:32,461 basehttp 8472 90708 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-08-27 14:40:32,463 basehttp 8472 83268 "GET /static/vendor/select2/css/select2.min.css HTTP/1.1" 200 16264
+INFO 2025-08-27 14:40:32,468 basehttp 8472 90252 "GET /static/admin/css/vendor/select2/select2.css HTTP/1.1" 200 17358
+INFO 2025-08-27 14:40:32,470 basehttp 8472 68116 "GET /static/admin/css/autocomplete.css HTTP/1.1" 200 9185
+INFO 2025-08-27 14:40:32,474 basehttp 8472 81964 "GET /static/vendor/bootswatch/cosmo/bootstrap.min.css HTTP/1.1" 200 154456
+INFO 2025-08-27 14:40:32,478 basehttp 8472 68116 "GET /static/admin/js/vendor/select2/i18n/es.js HTTP/1.1" 200 922
+INFO 2025-08-27 14:40:32,479 basehttp 8472 81964 "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+INFO 2025-08-27 14:40:32,481 basehttp 8472 90252 "GET /static/admin/js/vendor/select2/select2.full.js HTTP/1.1" 200 173566
+INFO 2025-08-27 14:40:32,485 basehttp 8472 83268 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-08-27 14:40:32,490 basehttp 8472 68116 "GET /static/admin/js/core.js HTTP/1.1" 200 6208
+INFO 2025-08-27 14:40:32,491 basehttp 8472 90252 "GET /static/config_institucional/js/filter-especialidades-subgrupo.js HTTP/1.1" 200 14918
+INFO 2025-08-27 14:40:32,493 basehttp 8472 81964 "GET /static/admin/js/autocomplete.js HTTP/1.1" 200 1060
+INFO 2025-08-27 14:40:32,495 basehttp 8472 83268 "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 9777
+INFO 2025-08-27 14:40:32,511 basehttp 8472 90252 "GET /static/admin/js/actions.js HTTP/1.1" 200 8076
+INFO 2025-08-27 14:40:32,517 basehttp 8472 68116 "GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+INFO 2025-08-27 14:40:32,517 basehttp 8472 81964 "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+INFO 2025-08-27 14:40:32,525 basehttp 8472 21716 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-08-27 14:40:32,526 basehttp 8472 83268 "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 325171
+INFO 2025-08-27 14:40:32,530 basehttp 8472 81964 "GET /static/admin/js/change_form.js HTTP/1.1" 200 606
+INFO 2025-08-27 14:40:32,530 basehttp 8472 68116 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 14:40:32,600 basehttp 8472 81964 "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 200 586
+INFO 2025-08-27 14:40:32,606 basehttp 8472 68116 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-08-27 14:40:32,616 basehttp 8472 68116 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-08-27 14:40:32,623 basehttp 8472 81964 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-08-27 14:40:32,626 basehttp 8472 90708 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 14:40:32,633 basehttp 8472 90708 "GET /static/vendor/select2/js/select2.min.js HTTP/1.1" 200 73170
+WARNING 2025-08-27 14:40:32,646 log 8472 90252 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-27 14:40:32,647 basehttp 8472 90252 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 3442
+INFO 2025-08-27 14:40:32,708 basehttp 8472 90252 "GET /static/jazzmin/js/change_form.js HTTP/1.1" 200 6052
+INFO 2025-08-27 14:40:32,708 basehttp 8472 81964 "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+INFO 2025-08-27 14:40:32,708 basehttp 8472 90708 "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+INFO 2025-08-27 14:40:32,709 basehttp 8472 83268 "GET /static/admin/img/icon-deletelink.svg HTTP/1.1" 200 392
+INFO 2025-08-27 14:40:32,709 basehttp 8472 68116 "GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 200 581
+INFO 2025-08-27 14:40:32,841 basehttp 8472 68116 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-08-27 14:40:32,844 basehttp 8472 90708 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-08-27 14:40:32,862 basehttp 8472 83268 "GET /static/vendor/adminlte/css/adminlte.min.css.map HTTP/1.1" 200 3783134
+INFO 2025-08-27 14:40:32,935 basehttp 8472 90708 "GET /static/vendor/adminlte/js/adminlte.min.js.map HTTP/1.1" 200 129651
+INFO 2025-08-27 14:40:32,936 basehttp 8472 83268 "GET /static/vendor/bootstrap/js/bootstrap.min.js.map HTTP/1.1" 200 187646
+INFO 2025-08-27 14:40:33,140 basehttp 8472 83268 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 14:40:33,153 basehttp 8472 83268 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 14:40:34,455 basehttp 8472 83268 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=institucion HTTP/1.1" 200 142
+INFO 2025-08-27 14:40:37,928 basehttp 8472 83268 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+INFO 2025-08-27 14:40:39,087 basehttp 8472 83268 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 14:40:39,276 basehttp 8472 83268 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 14:40:39,287 basehttp 8472 90708 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 14:40:39,290 basehttp 8472 68116 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 14:40:44,267 basehttp 8472 68116 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+INFO 2025-08-27 14:40:45,038 basehttp 8472 68116 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%222%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 46
+INFO 2025-08-27 14:40:45,244 basehttp 8472 68116 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%222%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 46
+INFO 2025-08-27 14:40:45,252 basehttp 8472 90708 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%222%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 46
+INFO 2025-08-27 14:40:45,262 basehttp 8472 83268 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%222%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 46
+INFO 2025-08-27 14:40:52,003 basehttp 8472 83268 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+INFO 2025-08-27 14:40:52,709 basehttp 8472 83268 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 14:40:52,900 basehttp 8472 83268 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 14:40:52,979 basehttp 8472 90708 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 14:40:53,052 basehttp 8472 83268 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 14:40:57,006 basehttp 8472 83268 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+INFO 2025-08-27 14:40:57,601 basehttp 8472 83268 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%222%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 46
+INFO 2025-08-27 14:40:57,822 basehttp 8472 83268 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%222%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 46
+INFO 2025-08-27 14:40:57,919 basehttp 8472 83268 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%222%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 46
+INFO 2025-08-27 14:40:58,015 basehttp 8472 90708 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%222%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 46
+INFO 2025-08-27 14:41:01,056 basehttp 8472 90708 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=institucion HTTP/1.1" 200 142
+INFO 2025-08-27 14:41:01,838 basehttp 8472 90708 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%222%22%2C%22institucion_id%22%3A%222%22%7D HTTP/1.1" 200 46
+INFO 2025-08-27 14:41:02,266 basehttp 8472 90708 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+INFO 2025-08-27 14:41:03,130 basehttp 8472 90708 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%222%22%7D HTTP/1.1" 200 46
+INFO 2025-08-27 14:41:03,327 basehttp 8472 90708 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%222%22%7D HTTP/1.1" 200 46
+INFO 2025-08-27 14:41:03,407 basehttp 8472 83268 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%222%22%7D HTTP/1.1" 200 46
+INFO 2025-08-27 14:41:03,487 basehttp 8472 90708 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%222%22%7D HTTP/1.1" 200 46
+INFO 2025-08-27 14:41:11,490 basehttp 8472 90708 "POST /admin/logout/ HTTP/1.1" 200 2409
+INFO 2025-08-27 14:41:14,049 basehttp 8472 90708 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 14:41:14,057 basehttp 8472 90708 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 5518
+WARNING 2025-08-27 14:41:14,131 log 8472 90708 Not Found: /favicon.ico
+WARNING 2025-08-27 14:41:14,132 basehttp 8472 90708 "GET /favicon.ico HTTP/1.1" 404 3331
+INFO 2025-08-27 14:41:18,542 signals 8472 90708 Signal user_logged_in ejecutándose para usuario: directormaximo@gmail.com
+INFO 2025-08-27 14:41:18,553 signals 8472 90708 Asignando automáticamente institución única: CTP. MÁXIMO QUESADA
+INFO 2025-08-27 14:41:18,559 basehttp 8472 90708 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 14:41:18,773 basehttp 8472 90708 "GET /admin/ HTTP/1.1" 200 75936
+INFO 2025-08-27 14:41:22,354 basehttp 8472 90708 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 82114
+INFO 2025-08-27 14:41:22,386 basehttp 8472 83268 "GET /static/config_institucional/js/filter-especialidades-subgrupo.js HTTP/1.1" 304 0
+INFO 2025-08-27 14:41:22,450 basehttp 8472 90708 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 14:41:26,860 basehttp 8472 90708 "GET /admin/config_institucional/subgrupocursolectivo/add/ HTTP/1.1" 200 46123
+INFO 2025-08-27 14:41:26,944 basehttp 8472 90708 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 14:41:29,878 basehttp 8472 90708 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+INFO 2025-08-27 14:41:31,176 basehttp 8472 90708 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 14:41:31,375 basehttp 8472 90708 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 14:41:31,504 basehttp 8472 83268 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 14:41:31,588 basehttp 8472 90708 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 14:41:32,934 basehttp 8472 90708 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+INFO 2025-08-27 14:41:33,733 basehttp 8472 90708 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%222%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 46
+INFO 2025-08-27 14:41:33,946 basehttp 8472 90708 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%222%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 46
+INFO 2025-08-27 14:41:34,027 basehttp 8472 90708 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%222%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 46
+INFO 2025-08-27 14:41:34,103 basehttp 8472 90708 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%222%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 46

@@ -6,6 +6,7 @@ from django.urls import reverse
 from core.mixins import InstitucionScopedAdmin
 from core.models import Institucion
 from .models import NivelInstitucion, Profesor, Clase, PeriodoLectivo, EspecialidadCursoLectivo, SeccionCursoLectivo, SubgrupoCursoLectivo
+from django.utils.safestring import mark_safe
 from catalogos.models import SubArea, CursoLectivo, Seccion, Subgrupo
 
 # NOTA: SubgrupoInline eliminado - ahora se maneja desde catalogos.admin
@@ -453,19 +454,106 @@ class SeccionCursoLectivoAdmin(InstitucionScopedAdmin):
 class SubgrupoCursoLectivoAdmin(InstitucionScopedAdmin):
     """Admin para gestionar los subgrupos disponibles por curso lectivo."""
     
-    list_display = ('institucion', 'curso_lectivo', 'subgrupo', 'activa')
-    list_filter = ('institucion', 'curso_lectivo__anio', 'subgrupo__seccion__nivel', 'activa')
+    list_display = ('institucion', 'curso_lectivo', 'subgrupo', 'especialidad_curso', 'activa')
+    list_filter = ('institucion', 'curso_lectivo__anio', 'subgrupo__seccion__nivel', 'activa', 'especialidad_curso')
     search_fields = ('institucion__nombre', 'curso_lectivo__nombre', 'subgrupo__letra')
     ordering = ('institucion__nombre', '-curso_lectivo__anio', 'subgrupo__seccion__nivel__numero', 'subgrupo__letra')
-    autocomplete_fields = ('institucion', 'curso_lectivo', 'subgrupo')
+    autocomplete_fields = ('institucion', 'curso_lectivo', 'subgrupo')  # especialidad_curso usa autocomplete personalizado
+
+    class Media:
+        js = (
+            'admin/js/jquery.init.js',
+            'config_institucional/js/filter-especialidades-subgrupo.js',
+        )
     
     def get_fields(self, request, obj=None):
         """Personalizar campos según el tipo de usuario"""
         if request.user.is_superuser:
-            return ('institucion', 'curso_lectivo', 'subgrupo', 'activa')
+            return ('institucion', 'curso_lectivo', 'subgrupo', 'especialidad_curso', 'activa')
         else:
             # Incluir 'institucion' para que el formulario la procese (se ocultará en get_form)
-            return ('institucion', 'curso_lectivo', 'subgrupo', 'activa')
+            return ('institucion', 'curso_lectivo', 'subgrupo', 'especialidad_curso', 'activa')
+
+    def get_list_display(self, request):
+        """Mostrar 'Subgrupo' primero; ocultar 'Institución' para usuarios no superusuarios"""
+        base = ('subgrupo', 'curso_lectivo', 'especialidad_curso', 'activa')
+        if request.user.is_superuser:
+            return ('institucion',) + base
+        return base
+
+    def get_list_filter(self, request):
+        """Ocultar filtro de institución para usuarios no superusuarios"""
+        base = ('curso_lectivo__anio', 'subgrupo__seccion__nivel', 'activa', 'especialidad_curso')
+        if request.user.is_superuser:
+            return ('institucion',) + base
+        return base
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        """Configurar autocomplete personalizado para especialidad_curso"""
+        if db_field.name == 'especialidad_curso':
+            from django import forms
+            from dal import autocomplete
+            
+            # Configurar widget de autocomplete personalizado
+            kwargs['widget'] = autocomplete.ModelSelect2(
+                url='config_institucional:especialidad_curso_lectivo_autocomplete',
+                forward=['institucion', 'curso_lectivo'],
+                attrs={
+                    'data-placeholder': 'Seleccionar especialidad...',
+                    'data-minimum-input-length': 0,
+                }
+            )
+            
+        elif db_field.name == 'institucion' and not request.user.is_superuser:
+            # Para usuarios no superusuarios, filtrar por su institución
+            from core.models import Institucion
+            inst_id = getattr(request, 'institucion_activa_id', None)
+            if inst_id:
+                kwargs['queryset'] = Institucion.objects.filter(id=inst_id)
+                kwargs['initial'] = inst_id
+                
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+    def get_form(self, request, obj=None, **kwargs):
+        """Personalizar formulario para usuarios no superusuarios"""
+        Form = super().get_form(request, obj, **kwargs)
+        institucion_id = getattr(request, 'institucion_activa_id', None)
+        is_super = request.user.is_superuser
+
+        class FormWithInst(Form):
+            def __init__(self, *args, **kw):
+                super().__init__(*args, **kw)
+                if not is_super and institucion_id and 'institucion' in self.fields:
+                    # ocultar y forzar valor
+                    self.fields['institucion'].widget = forms.HiddenInput()
+                    self.fields['institucion'].required = True
+                    if self.is_bound:
+                        data = self.data.copy()
+                        key = self.add_prefix('institucion')
+                        if not data.get(key):
+                            data[key] = str(institucion_id)
+                            self.data = data
+                    else:
+                        self.initial['institucion'] = institucion_id
+                # Asegurar que el modelo tenga institucion antes de clean()
+                if not is_super and institucion_id:
+                    self.instance.institucion_id = institucion_id
+
+            def clean(self):
+                # Refuerzo: establecer institucion_id en la instancia antes de validaciones del modelo
+                if not is_super and institucion_id:
+                    self.instance.institucion_id = institucion_id
+                return super().clean()
+
+        return FormWithInst
+
+    def save_model(self, request, obj, form, change):
+        """Asegurar que se asigne la institución correcta para usuarios no superusuarios"""
+        if not request.user.is_superuser:
+            institucion_id = getattr(request, 'institucion_activa_id', None)
+            if institucion_id:
+                obj.institucion_id = institucion_id
+        super().save_model(request, obj, form, change)
     
     # ⚡ ACCIONES MASIVAS PARA FACILITAR GESTIÓN
     actions = ['agregar_todos_subgrupos', 'copiar_del_año_anterior', 'activar_seleccionadas', 'desactivar_seleccionadas']
@@ -490,12 +578,12 @@ class SubgrupoCursoLectivoAdmin(InstitucionScopedAdmin):
         if request.user.is_superuser:
             return (
                 (None, {
-                    'fields': ('institucion', 'curso_lectivo', 'subgrupo', 'activa')
+                    'fields': ('institucion', 'curso_lectivo', 'subgrupo', 'especialidad_curso', 'activa')
                 }),
             )
         return (
             (None, {
-                'fields': ('institucion', 'curso_lectivo', 'subgrupo', 'activa')
+                'fields': ('institucion', 'curso_lectivo', 'subgrupo', 'especialidad_curso', 'activa')
             }),
         )
 

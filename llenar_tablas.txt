@@ -21,3 +21,4 @@ python manage.py load_contactos
 python manage.py load_estudiantes
 python manage.py load_relacion_est_contacto
 python manage.py load_matricula_academica
+python manage.py load_matricula_academica_sin_grupos

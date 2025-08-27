@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .views import EspecialidadCursoLectivoAutocomplete
 
 app_name = 'config_institucional'
 
@@ -33,4 +34,9 @@ urlpatterns = [
     path('actualizar-subgrupos-curso-lectivo/', 
          views.actualizar_subgrupos_curso_lectivo, 
          name='actualizar_subgrupos_curso_lectivo'),
+    
+    # Autocomplete para EspecialidadCursoLectivo
+    path('especialidad-curso-lectivo-autocomplete/', 
+         EspecialidadCursoLectivoAutocomplete.as_view(), 
+         name='especialidad_curso_lectivo_autocomplete'),
 ]

@@ -270,6 +270,15 @@ class SubgrupoCursoLectivo(models.Model):
     subgrupo = models.ForeignKey(Subgrupo, on_delete=models.PROTECT, verbose_name="Subgrupo")
     activa = models.BooleanField(default=True, verbose_name="Subgrupo activo para este curso")
 
+    # Nueva relación opcional para niveles con especialidad (10, 11, 12)
+    especialidad_curso = models.ForeignKey(
+        'config_institucional.EspecialidadCursoLectivo',
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        verbose_name="Especialidad (solo 10°, 11°, 12°)"
+    )
+
     class Meta:
         unique_together = ("institucion", "curso_lectivo", "subgrupo")
         ordering = ("curso_lectivo__anio", "subgrupo__seccion__nivel__numero", "subgrupo__letra")
@@ -290,8 +299,28 @@ class SubgrupoCursoLectivo(models.Model):
         if not self.institucion_id:
             raise ValidationError("Debe seleccionar una institución.")
         
-        # Validación: Los subgrupos son globales, no hay restricción por institución
-        
+        # Validaciones de especialidad ligada a niveles 10-12
+        try:
+            nivel_numero = self.subgrupo.seccion.nivel.numero if self.subgrupo_id else None
+        except Exception:
+            nivel_numero = None
+
+        # Si el nivel es 10, 11 o 12, la especialidad es obligatoria
+        if nivel_numero in [10, 11, 12]:
+            if not self.especialidad_curso_id:
+                raise ValidationError("Para subgrupos de 10°, 11° o 12° debe asignar una especialidad (ECL).")
+        else:
+            # Para otros niveles, no debe haber especialidad
+            if self.especialidad_curso_id:
+                raise ValidationError("Solo niveles 10°, 11° o 12° pueden tener especialidad asignada.")
+
+        # Coherencia: si hay especialidad, debe pertenecer a la misma institución y curso lectivo
+        if self.especialidad_curso_id:
+            if self.especialidad_curso.institucion_id != self.institucion_id:
+                raise ValidationError("La especialidad seleccionada no pertenece a esta institución.")
+            if self.especialidad_curso.curso_lectivo_id != self.curso_lectivo_id:
+                raise ValidationError("La especialidad seleccionada no corresponde a este curso lectivo.")
+
         super().clean()
 
     def save(self, *args, **kwargs):

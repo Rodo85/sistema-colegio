@@ -227,6 +227,7 @@ def get_especialidades_disponibles(request):
         return JsonResponse({'success': False, 'error': 'Error interno del sistema'})
 
 
+
 # ════════════════════════════════════════════════════════════════
 #                    DJANGO AUTOCOMPLETE LIGHT (DAL)
 # ════════════════════════════════════════════════════════════════

@@ -395,6 +395,7 @@ class MatriculaAcademica(models.Model):
             .order_by('especialidad__nombre')
         )
 
+
 class PlantillaImpresionMatricula(models.Model):
     institucion = models.ForeignKey(
         "core.Institucion", 

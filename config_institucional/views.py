@@ -514,3 +514,91 @@ def actualizar_subgrupos_curso_lectivo(request):
             
     except Exception as e:
         return JsonResponse({'success': False, 'message': f'Error: {str(e)}'})
+
+
+# ════════════════════════════════════════════════════════════════
+#                    DJANGO AUTOCOMPLETE LIGHT (DAL)
+# ════════════════════════════════════════════════════════════════
+
+from dal import autocomplete
+
+class EspecialidadCursoLectivoAutocomplete(autocomplete.Select2QuerySetView):
+    """
+    Autocomplete para EspecialidadCursoLectivo que filtra por institución y curso lectivo.
+    Se usa en el admin de SubgrupoCursoLectivo para el campo especialidad_curso.
+    """
+    
+    def get_queryset(self):
+        print("🔥 EspecialidadCursoLectivoAutocomplete.get_queryset() llamado")
+        
+        if not self.request.user.is_authenticated:
+            print("❌ Usuario no autenticado")
+            return EspecialidadCursoLectivo.objects.none()
+        
+        print(f"👤 Usuario: {self.request.user.email} (superuser: {self.request.user.is_superuser})")
+        
+        # Obtener institución del usuario
+        institucion_id = getattr(self.request, 'institucion_activa_id', None)
+        print(f"🏢 Institución activa ID: {institucion_id}")
+        
+        if not institucion_id:
+            # Para superusuario, usar institución del forward si está disponible
+            if self.request.user.is_superuser:
+                institucion_forward = self.forwarded.get('institucion_id', None)
+                if institucion_forward:
+                    institucion_id = institucion_forward
+                    print(f"👑 Superusuario - usando institución del forward: {institucion_id}")
+                else:
+                    print("❌ Superusuario sin institución en forward")
+                    return EspecialidadCursoLectivo.objects.none()
+            else:
+                print("❌ No hay institución activa")
+                return EspecialidadCursoLectivo.objects.none()
+        
+        # FILTRO POR CURSO LECTIVO (forward)
+        curso_lectivo_id = self.forwarded.get('curso_lectivo_id', None)
+        print(f"📅 Curso lectivo ID del forward: {curso_lectivo_id}")
+        print(f"📅 Forwarded completo: {self.forwarded}")
+        
+        # Inicializar queryset
+        qs = EspecialidadCursoLectivo.objects.none()
+        
+        # REQUIERE tanto institución como curso lectivo
+        if curso_lectivo_id and institucion_id:
+            try:
+                # Obtener especialidades configuradas y activas para esta institución y curso lectivo
+                qs = EspecialidadCursoLectivo.objects.filter(
+                    institucion_id=institucion_id,
+                    curso_lectivo_id=curso_lectivo_id,
+                    activa=True
+                ).select_related('especialidad', 'especialidad__modalidad')
+                
+                print(f"🎯 Especialidades configuradas encontradas: {[ecl.especialidad.nombre for ecl in qs]}")
+                
+            except (ValueError, Exception) as e:
+                print(f"❌ Error: {e}")
+                return EspecialidadCursoLectivo.objects.none()
+        else:
+            # Sin curso lectivo o institución, no mostrar especialidades
+            if not curso_lectivo_id:
+                print("❌ No hay curso lectivo seleccionado")
+            if not institucion_id:
+                print("❌ No hay institución")
+            return EspecialidadCursoLectivo.objects.none()
+        
+        # Filtro por búsqueda
+        if self.q:
+            qs = qs.filter(especialidad__nombre__icontains=self.q)
+            print(f"🔍 Filtrado por búsqueda '{self.q}': {[ecl.especialidad.nombre for ecl in qs]}")
+        
+        final_qs = qs.order_by('especialidad__nombre')
+        print(f"🎯 RESULTADO FINAL: {[ecl.especialidad.nombre for ecl in final_qs]}")
+        return final_qs
+    
+    def get_result_label(self, result):
+        """Personalizar la etiqueta mostrada en el resultado"""
+        return f"{result.especialidad.nombre}"
+    
+    def get_result_value(self, result):
+        """Valor que se almacena cuando se selecciona el resultado"""
+        return str(result.id)
