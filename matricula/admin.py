@@ -254,6 +254,21 @@ class EstudianteForm(forms.ModelForm):
         if 'correo' in self.fields:
             self.fields['correo'].required = False
 
+        # Forzar checkbox en campos tri-estado (evitar NullBoolean select)
+        for nombre in ('presenta_enfermedad', 'orden_alejamiento'):
+            if nombre in self.fields:
+                etiqueta = self.fields[nombre].label
+                valor_inicial = False
+                if getattr(self.instance, 'pk', None) is not None:
+                    valor = getattr(self.instance, nombre, None)
+                    valor_inicial = bool(valor) if valor is not None else False
+                self.fields[nombre] = forms.BooleanField(
+                    required=False,
+                    label=etiqueta,
+                    initial=valor_inicial,
+                    widget=forms.CheckboxInput()
+                )
+
     def clean(self):
         cleaned_data = super().clean()
         tipo_identificacion = cleaned_data.get('tipo_identificacion')
@@ -294,6 +309,10 @@ class EstudianteForm(forms.ModelForm):
             if hasattr(foto, 'content_type') and foto.content_type not in allowed_types:
                 self.add_error('foto', 'Solo se permiten archivos de imagen (JPG, PNG, GIF).')
         
+        # Normalizar los booleanos tri-estado para que nunca queden en None
+        for nombre in ('presenta_enfermedad', 'orden_alejamiento'):
+            cleaned_data[nombre] = bool(cleaned_data.get(nombre, False))
+
         return cleaned_data
 
     class Meta:
@@ -411,8 +430,8 @@ class EstudianteAdmin(InstitucionScopedAdmin):
         fieldsets.append(
             ('Datos Personales', {
                 'fields': (
-                    'tipo_estudiante',
                     'tipo_identificacion', 'identificacion',
+                    'tipo_estudiante',
                     'primer_apellido', 'segundo_apellido', 'nombres',
                     'fecha_nacimiento', 'sexo', 'nacionalidad',
                     'celular', 'telefono_casa', 'correo',
@@ -621,9 +640,10 @@ class PersonaContactoAdmin(InstitucionScopedAdmin):
         }),
         ('Datos de la Persona de Contacto', {
             'fields': (
-                'identificacion', 'primer_apellido', 'segundo_apellido', 'nombres',
+                'tipo_identificacion', 'identificacion',
+                'primer_apellido', 'segundo_apellido', 'nombres',
                 'celular_avisos', 'correo',
-                'tipo_identificacion', 'estado_civil', 'escolaridad', 'ocupacion',
+                'estado_civil', 'escolaridad', 'ocupacion',
                 'lugar_trabajo', 'telefono_trabajo',
             ),
         }),

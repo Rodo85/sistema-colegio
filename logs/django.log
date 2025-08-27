@@ -6599,3 +6599,760 @@ INFO 2025-08-26 19:19:51,083 views 28096 34920 Cantones para provincia 1 (San Jo
 INFO 2025-08-26 19:19:51,084 basehttp 28096 34920 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
 INFO 2025-08-26 19:19:52,104 views 28096 34920 Cantones para provincia 1 (San José): 20 encontrados
 INFO 2025-08-26 19:19:52,105 basehttp 28096 34920 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:21:26,437 autoreload 38424 39872 Watching for file changes with StatReloader
+INFO 2025-08-26 19:21:28,124 basehttp 38424 37056 "GET /admin/matricula/estudiante/add/ HTTP/1.1" 200 133204
+INFO 2025-08-26 19:21:28,281 basehttp 38424 37056 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 19:21:28,868 views 38424 37056 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:21:28,868 basehttp 38424 37056 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:21:28,997 views 38424 37056 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:21:28,998 basehttp 38424 37056 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:21:29,670 views 38424 37056 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:21:29,671 basehttp 38424 37056 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:21:29,998 views 38424 37056 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:21:29,999 basehttp 38424 37056 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:21:30,587 views 38424 37056 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:21:30,587 basehttp 38424 37056 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:21:31,038 views 38424 37056 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:21:31,039 basehttp 38424 37056 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:21:32,013 views 38424 25732 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:21:32,014 basehttp 38424 25732 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:21:32,024 basehttp 38424 37056 "GET /admin/matricula/personacontacto/ HTTP/1.1" 200 41987
+INFO 2025-08-26 19:21:32,113 basehttp 38424 37056 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 19:21:33,632 basehttp 38424 37056 "GET /admin/matricula/personacontacto/add/ HTTP/1.1" 200 57750
+INFO 2025-08-26 19:21:33,736 basehttp 38424 37056 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 19:22:34,405 basehttp 38424 37056 "POST /admin/matricula/personacontacto/add/ HTTP/1.1" 302 0
+INFO 2025-08-26 19:22:34,636 basehttp 38424 37056 "GET /admin/matricula/personacontacto/ HTTP/1.1" 200 48090
+INFO 2025-08-26 19:22:34,753 basehttp 38424 37056 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 19:22:37,116 basehttp 38424 37056 "GET /admin/matricula/personacontacto/add/ HTTP/1.1" 200 57750
+INFO 2025-08-26 19:22:37,213 basehttp 38424 37056 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 19:24:32,727 basehttp 38424 37056 "GET /admin/matricula/personacontacto/add/ HTTP/1.1" 200 57750
+INFO 2025-08-26 19:24:32,835 basehttp 38424 37056 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 19:24:34,982 autoreload 38424 39872 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-26 19:24:35,931 autoreload 28132 20228 Watching for file changes with StatReloader
+INFO 2025-08-26 19:24:53,597 basehttp 28132 38732 "GET /admin/matricula/personacontacto/add/ HTTP/1.1" 200 57750
+INFO 2025-08-26 19:24:53,711 basehttp 28132 38732 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 19:24:53,968 autoreload 28132 20228 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-26 19:24:54,977 autoreload 37956 30348 Watching for file changes with StatReloader
+INFO 2025-08-26 19:26:18,689 basehttp 37956 38340 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 39634
+INFO 2025-08-26 19:26:18,779 basehttp 37956 38340 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 19:26:21,529 basehttp 37956 38340 "GET /admin/matricula/estudiante/add/ HTTP/1.1" 200 133249
+INFO 2025-08-26 19:26:21,639 basehttp 37956 38340 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 19:26:22,126 views 37956 38340 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:26:22,126 basehttp 37956 38340 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:26:22,262 views 37956 38340 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:26:22,262 basehttp 37956 38340 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:26:22,823 views 37956 38340 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:26:22,823 basehttp 37956 38340 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:26:23,271 views 37956 38340 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:26:23,271 basehttp 37956 38340 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:26:23,834 views 37956 38340 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:26:23,834 basehttp 37956 38340 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:26:24,281 views 37956 38340 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:26:24,282 basehttp 37956 38340 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:26:25,287 views 37956 38340 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:26:25,288 basehttp 37956 38340 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:27:02,779 views 37956 38340 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-26 19:27:02,780 basehttp 37956 38340 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-26 19:27:52,654 basehttp 37956 38340 "POST /admin/matricula/estudiante/add/ HTTP/1.1" 200 140991
+INFO 2025-08-26 19:27:52,743 basehttp 37956 38340 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 19:27:53,253 views 37956 38340 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:27:53,254 basehttp 37956 38340 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:27:53,329 views 37956 38340 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-26 19:27:53,329 basehttp 37956 38340 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-26 19:27:53,379 views 37956 37324 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:27:53,379 basehttp 37956 37324 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:27:53,454 views 37956 37324 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-26 19:27:53,454 basehttp 37956 37324 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-26 19:27:53,960 views 37956 37324 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:27:53,961 basehttp 37956 37324 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:27:54,053 views 37956 37324 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-26 19:27:54,054 basehttp 37956 37324 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-26 19:27:54,382 views 37956 37324 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:27:54,383 basehttp 37956 37324 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:27:54,448 views 37956 37324 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-26 19:27:54,449 basehttp 37956 37324 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-26 19:27:54,965 views 37956 37324 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:27:54,965 basehttp 37956 37324 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:27:55,026 views 37956 37324 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-26 19:27:55,027 basehttp 37956 37324 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-26 19:27:55,376 views 37956 37324 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:27:55,377 basehttp 37956 37324 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:27:55,449 views 37956 37324 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-26 19:27:55,450 basehttp 37956 37324 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-26 19:27:56,400 views 37956 37324 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-26 19:27:56,401 basehttp 37956 37324 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-26 19:27:56,469 views 37956 37324 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-26 19:27:56,470 basehttp 37956 37324 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-26 19:28:00,539 basehttp 37956 37324 "POST /admin/matricula/estudiante/add/ HTTP/1.1" 302 0
+INFO 2025-08-26 19:28:00,647 basehttp 37956 37324 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 45881
+INFO 2025-08-26 19:28:00,838 basehttp 37956 37324 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-26 19:28:07,304 basehttp 37956 37324 "GET /matricula/consulta-estudiante/ HTTP/1.1" 200 30441
+INFO 2025-08-27 01:06:32,283 basehttp 37956 52084 "GET /admin/catalogos/cursolectivo/ HTTP/1.1" 200 38498
+INFO 2025-08-27 01:06:32,419 basehttp 37956 52084 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:06:34,213 basehttp 37956 52084 "GET /admin/catalogos/cursolectivo/add/ HTTP/1.1" 200 41068
+INFO 2025-08-27 01:06:34,307 basehttp 37956 52084 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:07:07,672 basehttp 37956 52084 "POST /admin/catalogos/cursolectivo/add/ HTTP/1.1" 302 0
+INFO 2025-08-27 01:07:07,784 basehttp 37956 52084 "GET /admin/catalogos/cursolectivo/add/ HTTP/1.1" 200 41707
+INFO 2025-08-27 01:07:07,883 basehttp 37956 52084 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:07:29,372 basehttp 37956 52084 "POST /admin/catalogos/cursolectivo/add/ HTTP/1.1" 302 0
+INFO 2025-08-27 01:07:29,473 basehttp 37956 52084 "GET /admin/catalogos/cursolectivo/ HTTP/1.1" 200 44472
+INFO 2025-08-27 01:07:29,574 basehttp 37956 52084 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:07:31,917 basehttp 37956 52084 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 45302
+INFO 2025-08-27 01:07:32,013 basehttp 37956 52084 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:07:37,518 basehttp 37956 52084 "GET /admin/matricula/matriculaacademica/add/?estudiante=1 HTTP/1.1" 200 56408
+INFO 2025-08-27 01:07:37,563 basehttp 37956 53680 "GET /static/autocomplete_light/select2.css HTTP/1.1" 304 0
+INFO 2025-08-27 01:07:37,567 basehttp 37956 51468 "GET /static/autocomplete_light/autocomplete_light.js HTTP/1.1" 304 0
+INFO 2025-08-27 01:07:37,582 basehttp 37956 53536 "GET /static/autocomplete_light/select2.js HTTP/1.1" 304 0
+INFO 2025-08-27 01:07:37,582 basehttp 37956 44812 "GET /static/matricula/js/dependent-especialidad.js HTTP/1.1" 304 0
+INFO 2025-08-27 01:07:37,649 basehttp 37956 52084 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:07:37,860 basehttp 37956 16648 "GET /static/autocomplete_light/i18n/es.js HTTP/1.1" 304 0
+INFO 2025-08-27 01:07:42,287 basehttp 37956 16648 "GET /admin/autocomplete/?app_label=matricula&model_name=matriculaacademica&field_name=nivel HTTP/1.1" 200 497
+INFO 2025-08-27 01:07:49,556 basehttp 37956 16648 "GET /admin/config_institucional/especialidadcursolectivo/ HTTP/1.1" 200 39714
+INFO 2025-08-27 01:07:49,642 basehttp 37956 16648 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:07:53,173 basehttp 37956 16648 "GET /config/gestionar-especialidades-curso-lectivo/ HTTP/1.1" 200 38342
+INFO 2025-08-27 01:07:57,556 basehttp 37956 16648 "POST /config/actualizar-especialidades-curso-lectivo/ HTTP/1.1" 200 98
+INFO 2025-08-27 01:07:59,686 basehttp 37956 16648 "GET /config/gestionar-especialidades-curso-lectivo/ HTTP/1.1" 200 39593
+INFO 2025-08-27 01:08:05,595 basehttp 37956 16648 "GET /admin/config_institucional/seccioncursolectivo/ HTTP/1.1" 200 41302
+INFO 2025-08-27 01:08:05,685 basehttp 37956 16648 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:08:07,166 basehttp 37956 16648 "GET /config/gestionar-secciones-curso-lectivo/ HTTP/1.1" 200 50921
+INFO 2025-08-27 01:08:12,411 basehttp 37956 16648 "POST /config/actualizar-secciones-curso-lectivo/ HTTP/1.1" 200 99
+INFO 2025-08-27 01:08:13,778 basehttp 37956 16648 "GET /config/gestionar-secciones-curso-lectivo/ HTTP/1.1" 200 51124
+INFO 2025-08-27 01:08:17,587 basehttp 37956 16648 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 41434
+INFO 2025-08-27 01:08:17,678 basehttp 37956 16648 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:08:19,196 basehttp 37956 16648 "GET /config/gestionar-subgrupos-curso-lectivo/ HTTP/1.1" 200 76542
+INFO 2025-08-27 01:09:02,088 basehttp 37956 16648 "POST /config/actualizar-subgrupos-curso-lectivo/ HTTP/1.1" 200 99
+INFO 2025-08-27 01:09:03,550 basehttp 37956 16648 "GET /config/gestionar-subgrupos-curso-lectivo/ HTTP/1.1" 200 76955
+INFO 2025-08-27 01:09:07,583 basehttp 37956 16648 "POST /admin/logout/ HTTP/1.1" 200 2409
+INFO 2025-08-27 01:09:26,359 basehttp 37956 16648 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 01:09:26,403 basehttp 37956 16648 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 5518
+WARNING 2025-08-27 01:09:26,509 log 37956 16648 Not Found: /favicon.ico
+WARNING 2025-08-27 01:09:26,510 basehttp 37956 16648 "GET /favicon.ico HTTP/1.1" 404 3331
+INFO 2025-08-27 01:09:28,974 basehttp 37956 16648 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 01:09:29,093 basehttp 37956 16648 "GET /admin/ HTTP/1.1" 200 82010
+INFO 2025-08-27 01:21:50,569 basehttp 37956 54968 "GET /admin/core/institucion/ HTTP/1.1" 200 43015
+INFO 2025-08-27 01:21:50,684 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:21:52,614 basehttp 37956 54968 "GET /admin/core/institucion/add/ HTTP/1.1" 200 46229
+INFO 2025-08-27 01:21:52,715 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:23:31,171 basehttp 37956 54968 "POST /admin/core/institucion/add/ HTTP/1.1" 302 0
+INFO 2025-08-27 01:23:31,290 basehttp 37956 54968 "GET /admin/core/institucion/ HTTP/1.1" 200 44308
+INFO 2025-08-27 01:23:31,407 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:23:35,958 basehttp 37956 54968 "GET /admin/core/user/ HTTP/1.1" 200 42905
+INFO 2025-08-27 01:23:36,048 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:23:38,719 basehttp 37956 54968 "GET /admin/core/user/add/ HTTP/1.1" 200 39012
+INFO 2025-08-27 01:23:38,804 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:23:56,167 basehttp 37956 54968 "POST /admin/core/user/add/ HTTP/1.1" 302 0
+INFO 2025-08-27 01:23:56,326 basehttp 37956 54968 "GET /admin/core/user/4be63087-692d-41d5-9cb7-bbc474314456/change/ HTTP/1.1" 200 65299
+INFO 2025-08-27 01:23:56,414 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:24:19,208 basehttp 37956 54968 "POST /admin/core/user/4be63087-692d-41d5-9cb7-bbc474314456/change/ HTTP/1.1" 302 0
+INFO 2025-08-27 01:24:19,313 basehttp 37956 54968 "GET /admin/core/user/ HTTP/1.1" 200 44281
+INFO 2025-08-27 01:24:19,410 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:24:22,070 basehttp 37956 54968 "GET /admin/core/user/add/ HTTP/1.1" 200 39012
+INFO 2025-08-27 01:24:22,265 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:24:38,635 basehttp 37956 54968 "POST /admin/core/user/add/ HTTP/1.1" 302 0
+INFO 2025-08-27 01:24:38,762 basehttp 37956 54968 "GET /admin/core/user/d34d5436-57d8-490c-a5bf-cbd0e0f5024a/change/ HTTP/1.1" 200 65299
+INFO 2025-08-27 01:24:38,857 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:24:53,959 basehttp 37956 54968 "POST /admin/core/user/d34d5436-57d8-490c-a5bf-cbd0e0f5024a/change/ HTTP/1.1" 302 0
+INFO 2025-08-27 01:24:54,088 basehttp 37956 54968 "GET /admin/core/user/ HTTP/1.1" 200 45041
+INFO 2025-08-27 01:24:54,203 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:24:56,238 basehttp 37956 54968 "GET /admin/core/miembro/ HTTP/1.1" 200 36660
+INFO 2025-08-27 01:24:56,336 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:24:57,687 basehttp 37956 54968 "GET /admin/core/miembro/add/ HTTP/1.1" 200 41069
+INFO 2025-08-27 01:24:57,796 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:25:06,196 basehttp 37956 54968 "POST /admin/core/miembro/add/ HTTP/1.1" 302 0
+INFO 2025-08-27 01:25:06,335 basehttp 37956 54968 "GET /admin/core/miembro/add/ HTTP/1.1" 200 41724
+INFO 2025-08-27 01:25:06,443 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:25:13,393 basehttp 37956 54968 "POST /admin/core/miembro/add/ HTTP/1.1" 302 0
+INFO 2025-08-27 01:25:13,505 basehttp 37956 54968 "GET /admin/core/miembro/ HTTP/1.1" 200 41220
+INFO 2025-08-27 01:25:13,601 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:28:52,605 basehttp 37956 54968 "POST /admin/logout/ HTTP/1.1" 200 2409
+INFO 2025-08-27 01:28:55,152 basehttp 37956 54968 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 01:28:55,161 basehttp 37956 54968 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 5518
+INFO 2025-08-27 01:29:11,348 signals 37956 54968 Signal user_logged_in ejecutándose para usuario: directormaximo@gmail.com
+INFO 2025-08-27 01:29:11,359 signals 37956 54968 Asignando automáticamente institución única: CTP. MÁXIMO QUESADA
+INFO 2025-08-27 01:29:11,363 basehttp 37956 54968 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 01:29:11,481 basehttp 37956 54968 "GET /admin/ HTTP/1.1" 200 73560
+INFO 2025-08-27 01:29:16,226 basehttp 37956 54968 "GET /admin/config_institucional/especialidadcursolectivo/ HTTP/1.1" 200 49596
+INFO 2025-08-27 01:29:16,342 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:29:21,889 basehttp 37956 54968 "GET /admin/config_institucional/seccioncursolectivo/ HTTP/1.1" 200 62817
+INFO 2025-08-27 01:29:22,004 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:29:27,438 basehttp 37956 54968 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 81103
+INFO 2025-08-27 01:29:27,537 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:29:48,874 basehttp 37956 54968 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 44651
+INFO 2025-08-27 01:29:48,990 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:29:57,603 basehttp 37956 54968 "GET /admin/matricula/matriculaacademica/add/?estudiante=1&_institucion=1 HTTP/1.1" 200 55699
+INFO 2025-08-27 01:29:57,713 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:30:02,873 basehttp 37956 54968 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 53322
+INFO 2025-08-27 01:30:02,964 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 01:30:03,578 views 37956 54968 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 01:30:03,578 basehttp 37956 54968 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 01:30:04,094 views 37956 54968 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 01:30:04,095 basehttp 37956 54968 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 01:30:05,063 views 37956 54968 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 01:30:05,063 basehttp 37956 54968 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 01:30:05,348 basehttp 37956 54968 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 44651
+INFO 2025-08-27 01:30:05,447 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:30:10,478 basehttp 37956 54968 "GET /admin/matricula/estudiante/1/change/ HTTP/1.1" 200 138261
+INFO 2025-08-27 01:30:10,586 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:30:11,099 views 37956 54968 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 01:30:11,100 basehttp 37956 54968 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 01:30:11,182 views 37956 54968 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 01:30:11,182 basehttp 37956 54968 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 01:30:11,258 views 37956 8572 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 01:30:11,259 basehttp 37956 8572 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 01:30:11,339 views 37956 8572 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 01:30:11,340 basehttp 37956 8572 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 01:30:11,824 views 37956 8572 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 01:30:11,825 basehttp 37956 8572 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 01:30:11,911 views 37956 8572 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 01:30:11,912 basehttp 37956 8572 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 01:30:12,251 views 37956 8572 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 01:30:12,252 basehttp 37956 8572 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 01:30:12,324 views 37956 8572 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 01:30:12,325 basehttp 37956 8572 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 01:30:12,816 views 37956 8572 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 01:30:12,816 basehttp 37956 8572 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 01:30:12,922 views 37956 8572 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 01:30:12,923 basehttp 37956 8572 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 01:30:13,270 views 37956 8572 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 01:30:13,270 basehttp 37956 8572 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 01:30:13,355 views 37956 8572 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 01:30:13,356 basehttp 37956 8572 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 01:30:14,259 views 37956 8572 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 01:30:14,260 basehttp 37956 8572 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 01:30:14,357 views 37956 8572 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 01:30:14,358 basehttp 37956 8572 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 01:30:26,311 basehttp 37956 8572 "GET /admin/matricula/matriculaacademica/add/?estudiante=1 HTTP/1.1" 200 55699
+INFO 2025-08-27 01:30:26,398 basehttp 37956 8572 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:30:31,485 basehttp 37956 8572 "GET /admin/autocomplete/?app_label=matricula&model_name=matriculaacademica&field_name=nivel HTTP/1.1" 200 497
+INFO 2025-08-27 01:30:34,862 basehttp 37956 8572 "GET /matricula/seccion-autocomplete/?forward=%7B%22curso_lectivo%22%3A%221%22%2C%22nivel%22%3A%229%22%7D HTTP/1.1" 200 362
+INFO 2025-08-27 01:30:36,077 basehttp 37956 8572 "GET /matricula/subgrupo-autocomplete/?forward=%7B%22curso_lectivo%22%3A%221%22%2C%22seccion%22%3A%2213%22%7D HTTP/1.1" 200 154
+INFO 2025-08-27 01:30:38,908 basehttp 37956 8572 "POST /admin/matricula/matriculaacademica/add/?estudiante=1 HTTP/1.1" 302 0
+INFO 2025-08-27 01:30:39,113 basehttp 37956 8572 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 60843
+INFO 2025-08-27 01:30:39,217 basehttp 37956 8572 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 01:30:39,837 views 37956 8572 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 01:30:39,838 basehttp 37956 8572 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 01:30:40,355 views 37956 8572 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 01:30:40,355 basehttp 37956 8572 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 01:30:41,368 views 37956 8572 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 01:30:41,369 basehttp 37956 8572 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 01:30:42,838 views 37956 8572 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 01:30:42,838 basehttp 37956 8572 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 01:30:44,198 basehttp 37956 8572 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 44651
+INFO 2025-08-27 01:30:44,285 basehttp 37956 8572 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:30:46,613 basehttp 37956 8572 "GET /admin/matricula/estudiante/1/change/ HTTP/1.1" 200 138261
+INFO 2025-08-27 01:30:46,728 basehttp 37956 8572 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:30:47,285 views 37956 8572 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 01:30:47,286 basehttp 37956 8572 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 01:30:47,370 views 37956 8572 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 01:30:47,370 basehttp 37956 8572 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 01:30:47,422 views 37956 54968 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 01:30:47,423 basehttp 37956 54968 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 01:30:47,513 views 37956 54968 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 01:30:47,513 basehttp 37956 54968 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 01:30:47,939 views 37956 54968 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 01:30:47,939 basehttp 37956 54968 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 01:30:48,027 views 37956 54968 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 01:30:48,028 basehttp 37956 54968 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 01:30:48,414 views 37956 54968 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 01:30:48,416 basehttp 37956 54968 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 01:30:48,528 views 37956 54968 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 01:30:48,529 basehttp 37956 54968 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 01:30:48,609 basehttp 37956 8572 "GET /admin/matricula/matriculaacademica/add/?estudiante=1 HTTP/1.1" 200 56006
+INFO 2025-08-27 01:30:48,700 basehttp 37956 8572 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 01:30:48,858 views 37956 8572 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 01:30:48,859 basehttp 37956 8572 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 01:30:49,342 views 37956 8572 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 01:30:49,343 basehttp 37956 8572 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 01:30:49,836 views 37956 8572 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 01:30:49,837 basehttp 37956 8572 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 01:30:50,824 views 37956 8572 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 01:30:50,825 basehttp 37956 8572 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 01:30:51,346 basehttp 37956 8572 "GET /matricula/especialidad-autocomplete/?forward=%7B%22curso_lectivo%22%3A%222%22%2C%22nivel%22%3A%2210%22%7D HTTP/1.1" 200 46
+ERROR 2025-08-27 01:30:52,347 views 37956 8572 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 01:30:52,348 basehttp 37956 8572 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 01:30:53,647 basehttp 37956 8572 "GET /admin/autocomplete/?app_label=matricula&model_name=matriculaacademica&field_name=nivel HTTP/1.1" 200 497
+INFO 2025-08-27 01:30:55,109 basehttp 37956 8572 "GET /matricula/especialidad-autocomplete/?forward=%7B%22curso_lectivo%22%3A%222%22%2C%22nivel%22%3A%2210%22%7D HTTP/1.1" 200 46
+INFO 2025-08-27 01:30:58,590 basehttp 37956 8572 "GET /admin/config_institucional/especialidadcursolectivo/ HTTP/1.1" 200 49596
+INFO 2025-08-27 01:30:58,675 basehttp 37956 8572 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:31:00,027 basehttp 37956 8572 "GET /admin/config_institucional/especialidadcursolectivo/add/ HTTP/1.1" 200 43019
+INFO 2025-08-27 01:31:00,132 basehttp 37956 8572 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:31:01,273 basehttp 37956 8572 "GET /admin/autocomplete/?app_label=config_institucional&model_name=especialidadcursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+INFO 2025-08-27 01:31:03,010 basehttp 37956 8572 "GET /admin/autocomplete/?app_label=config_institucional&model_name=especialidadcursolectivo&field_name=especialidad HTTP/1.1" 200 945
+INFO 2025-08-27 01:31:05,332 basehttp 37956 8572 "POST /admin/config_institucional/especialidadcursolectivo/add/ HTTP/1.1" 302 0
+INFO 2025-08-27 01:31:05,497 basehttp 37956 8572 "GET /admin/config_institucional/especialidadcursolectivo/ HTTP/1.1" 200 50920
+INFO 2025-08-27 01:31:05,596 basehttp 37956 8572 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:31:08,900 basehttp 37956 8572 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 44651
+INFO 2025-08-27 01:31:09,008 basehttp 37956 8572 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:31:11,051 basehttp 37956 8572 "GET /admin/matricula/estudiante/1/change/ HTTP/1.1" 200 138261
+INFO 2025-08-27 01:31:11,159 basehttp 37956 8572 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:31:11,713 views 37956 8572 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 01:31:11,714 basehttp 37956 8572 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 01:31:11,797 views 37956 8572 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 01:31:11,798 basehttp 37956 8572 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 01:31:11,827 views 37956 54968 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 01:31:11,828 basehttp 37956 54968 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 01:31:11,905 views 37956 54968 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 01:31:11,906 basehttp 37956 54968 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 01:31:12,381 views 37956 54968 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 01:31:12,382 basehttp 37956 54968 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 01:31:12,498 views 37956 54968 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 01:31:12,498 basehttp 37956 54968 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 01:31:12,811 views 37956 54968 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 01:31:12,812 basehttp 37956 54968 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 01:31:12,902 views 37956 54968 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 01:31:12,903 basehttp 37956 54968 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 01:31:13,364 views 37956 54968 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 01:31:13,365 basehttp 37956 54968 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 01:31:13,439 views 37956 54968 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 01:31:13,440 basehttp 37956 54968 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 01:31:13,853 views 37956 54968 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 01:31:13,853 basehttp 37956 54968 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 01:31:13,942 views 37956 54968 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 01:31:13,943 basehttp 37956 54968 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 01:31:14,827 views 37956 54968 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 01:31:14,828 basehttp 37956 54968 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 01:31:14,914 views 37956 54968 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 01:31:14,915 basehttp 37956 54968 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 01:31:16,316 basehttp 37956 54968 "GET /admin/matricula/matriculaacademica/add/?estudiante=1 HTTP/1.1" 200 56006
+INFO 2025-08-27 01:31:16,410 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 01:31:16,556 views 37956 54968 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 01:31:16,557 basehttp 37956 54968 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 01:31:17,044 views 37956 54968 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 01:31:17,044 basehttp 37956 54968 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 01:31:17,567 views 37956 54968 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 01:31:17,568 basehttp 37956 54968 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 01:31:18,060 basehttp 37956 54968 "GET /matricula/especialidad-autocomplete/?forward=%7B%22curso_lectivo%22%3A%222%22%2C%22nivel%22%3A%2210%22%7D HTTP/1.1" 200 135
+ERROR 2025-08-27 01:31:18,544 views 37956 54968 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 01:31:18,544 basehttp 37956 54968 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 01:31:20,046 views 37956 54968 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 01:31:20,046 basehttp 37956 54968 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 01:31:20,219 basehttp 37956 54968 "GET /matricula/seccion-autocomplete/?forward=%7B%22curso_lectivo%22%3A%222%22%2C%22nivel%22%3A%2210%22%7D HTTP/1.1" 200 46
+INFO 2025-08-27 01:31:25,017 basehttp 37956 54968 "GET /admin/config_institucional/seccioncursolectivo/ HTTP/1.1" 200 62817
+INFO 2025-08-27 01:31:25,103 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:31:26,657 basehttp 37956 54968 "GET /admin/config_institucional/seccioncursolectivo/add/ HTTP/1.1" 200 42231
+INFO 2025-08-27 01:31:26,867 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:31:28,019 basehttp 37956 54968 "GET /admin/autocomplete/?app_label=config_institucional&model_name=seccioncursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+INFO 2025-08-27 01:31:30,160 basehttp 37956 54968 "GET /admin/autocomplete/?app_label=config_institucional&model_name=seccioncursolectivo&field_name=seccion HTTP/1.1" 200 616
+INFO 2025-08-27 01:31:31,642 basehttp 37956 54968 "GET /admin/autocomplete/?page=2&app_label=config_institucional&model_name=seccioncursolectivo&field_name=seccion HTTP/1.1" 200 524
+INFO 2025-08-27 01:31:33,962 basehttp 37956 54968 "POST /admin/config_institucional/seccioncursolectivo/add/ HTTP/1.1" 302 0
+INFO 2025-08-27 01:31:34,130 basehttp 37956 54968 "GET /admin/config_institucional/seccioncursolectivo/ HTTP/1.1" 200 64049
+INFO 2025-08-27 01:31:34,217 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:31:36,217 basehttp 37956 54968 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 81103
+INFO 2025-08-27 01:31:36,323 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:31:37,524 basehttp 37956 54968 "GET /admin/config_institucional/subgrupocursolectivo/add/ HTTP/1.1" 200 42252
+INFO 2025-08-27 01:31:37,633 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:31:38,364 basehttp 37956 54968 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+INFO 2025-08-27 01:31:39,674 basehttp 37956 54968 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=subgrupo HTTP/1.1" 200 634
+INFO 2025-08-27 01:31:41,111 basehttp 37956 54968 "GET /admin/autocomplete/?page=2&app_label=config_institucional&model_name=subgrupocursolectivo&field_name=subgrupo HTTP/1.1" 200 647
+INFO 2025-08-27 01:31:42,594 basehttp 37956 54968 "GET /admin/autocomplete/?page=3&app_label=config_institucional&model_name=subgrupocursolectivo&field_name=subgrupo HTTP/1.1" 200 663
+INFO 2025-08-27 01:31:55,931 basehttp 37956 54968 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=subgrupo HTTP/1.1" 200 634
+INFO 2025-08-27 01:31:56,050 basehttp 37956 54968 "GET /admin/autocomplete/?page=2&app_label=config_institucional&model_name=subgrupocursolectivo&field_name=subgrupo HTTP/1.1" 200 647
+INFO 2025-08-27 01:31:57,967 basehttp 37956 54968 "GET /admin/autocomplete/?page=3&app_label=config_institucional&model_name=subgrupocursolectivo&field_name=subgrupo HTTP/1.1" 200 663
+INFO 2025-08-27 01:32:00,677 basehttp 37956 54968 "POST /admin/config_institucional/subgrupocursolectivo/add/ HTTP/1.1" 200 42930
+INFO 2025-08-27 01:32:00,760 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:32:03,050 basehttp 37956 54968 "GET /admin/autocomplete/?app_label=config_institucional&model_name=subgrupocursolectivo&field_name=curso_lectivo HTTP/1.1" 200 130
+INFO 2025-08-27 01:32:05,369 basehttp 37956 54968 "POST /admin/config_institucional/subgrupocursolectivo/add/ HTTP/1.1" 302 0
+INFO 2025-08-27 01:32:05,551 basehttp 37956 54968 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 82321
+INFO 2025-08-27 01:32:05,643 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:32:07,826 basehttp 37956 54968 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 44651
+INFO 2025-08-27 01:32:07,938 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:32:10,086 basehttp 37956 54968 "GET /admin/matricula/matriculaacademica/add/?estudiante=1&_institucion=1 HTTP/1.1" 200 56006
+INFO 2025-08-27 01:32:10,187 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 01:32:10,355 views 37956 54968 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 01:32:10,356 basehttp 37956 54968 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 01:32:10,822 views 37956 54968 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 01:32:10,822 basehttp 37956 54968 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 01:32:11,339 views 37956 54968 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 01:32:11,340 basehttp 37956 54968 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 01:32:11,667 basehttp 37956 54968 "GET /matricula/especialidad-autocomplete/?forward=%7B%22curso_lectivo%22%3A%222%22%2C%22nivel%22%3A%2210%22%7D HTTP/1.1" 200 135
+ERROR 2025-08-27 01:32:12,365 views 37956 54968 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 01:32:12,365 basehttp 37956 54968 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 01:32:13,134 basehttp 37956 54968 "GET /matricula/seccion-autocomplete/?forward=%7B%22curso_lectivo%22%3A%222%22%2C%22nivel%22%3A%2210%22%7D HTTP/1.1" 200 99
+ERROR 2025-08-27 01:32:13,854 views 37956 54968 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 01:32:13,855 basehttp 37956 54968 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 01:32:14,402 basehttp 37956 54968 "GET /matricula/subgrupo-autocomplete/?forward=%7B%22curso_lectivo%22%3A%222%22%2C%22seccion%22%3A%2219%22%7D HTTP/1.1" 200 101
+INFO 2025-08-27 01:32:18,939 basehttp 37956 54968 "POST /admin/matricula/matriculaacademica/add/?estudiante=1&_institucion=1 HTTP/1.1" 302 0
+INFO 2025-08-27 01:32:19,116 basehttp 37956 54968 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 61141
+INFO 2025-08-27 01:32:19,202 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 01:32:19,808 views 37956 54968 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 01:32:19,809 basehttp 37956 54968 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 01:32:20,317 views 37956 54968 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 01:32:20,318 basehttp 37956 54968 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 01:32:21,337 views 37956 54968 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 01:32:21,338 basehttp 37956 54968 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 01:32:22,812 views 37956 54968 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 01:32:22,813 basehttp 37956 54968 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 01:32:31,295 basehttp 37956 54968 "GET /admin/matricula/plantillaimpresionmatricula/ HTTP/1.1" 200 36097
+INFO 2025-08-27 01:32:31,386 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:32:34,294 basehttp 37956 54968 "GET /admin/matricula/plantillaimpresionmatricula/ HTTP/1.1" 200 36097
+INFO 2025-08-27 01:32:34,391 basehttp 37956 54968 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:32:35,056 basehttp 37956 54968 "GET /matricula/consulta-estudiante/ HTTP/1.1" 200 30202
+INFO 2025-08-27 01:32:37,895 basehttp 37956 52552 "GET /admin/matricula/plantillaimpresionmatricula/ HTTP/1.1" 200 36097
+INFO 2025-08-27 01:32:38,004 basehttp 37956 52552 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:32:40,819 basehttp 37956 52552 "GET /admin/matricula/plantillaimpresionmatricula/ HTTP/1.1" 200 36097
+INFO 2025-08-27 01:32:41,021 basehttp 37956 52552 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:32:42,632 basehttp 37956 52552 "GET /admin/matricula/plantillaimpresionmatricula/add/ HTTP/1.1" 200 42838
+INFO 2025-08-27 01:32:42,731 basehttp 37956 52552 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:34:23,971 basehttp 37956 52552 "POST /admin/matricula/plantillaimpresionmatricula/add/ HTTP/1.1" 302 0
+INFO 2025-08-27 01:34:24,084 basehttp 37956 52552 "GET /admin/matricula/plantillaimpresionmatricula/ HTTP/1.1" 200 39752
+INFO 2025-08-27 01:34:24,188 basehttp 37956 52552 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:34:26,258 basehttp 37956 52552 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 44651
+INFO 2025-08-27 01:34:26,348 basehttp 37956 52552 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:34:30,897 basehttp 37956 52552 "GET /admin/matricula/estudiante/1/change/ HTTP/1.1" 200 138261
+INFO 2025-08-27 01:34:30,988 basehttp 37956 52552 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:34:31,501 views 37956 52552 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 01:34:31,502 basehttp 37956 52552 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 01:34:31,582 views 37956 52552 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 01:34:31,582 basehttp 37956 52552 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 01:34:31,714 views 37956 54836 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 01:34:31,715 basehttp 37956 54836 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 01:34:31,793 views 37956 54836 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 01:34:31,794 basehttp 37956 54836 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 01:34:32,183 views 37956 54836 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 01:34:32,184 basehttp 37956 54836 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 01:34:32,252 views 37956 54836 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 01:34:32,253 basehttp 37956 54836 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 01:34:32,644 views 37956 54836 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 01:34:32,644 basehttp 37956 54836 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 01:34:32,734 views 37956 54836 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 01:34:32,735 basehttp 37956 54836 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 01:34:33,176 views 37956 54836 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 01:34:33,177 basehttp 37956 54836 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 01:34:33,251 views 37956 54836 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 01:34:33,251 basehttp 37956 54836 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 01:34:33,635 views 37956 54836 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 01:34:33,636 basehttp 37956 54836 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 01:34:33,746 views 37956 54836 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 01:34:33,747 basehttp 37956 54836 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 01:34:34,652 views 37956 54836 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 01:34:34,653 basehttp 37956 54836 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 01:34:34,734 views 37956 54836 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 01:34:34,735 basehttp 37956 54836 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 01:34:43,094 basehttp 37956 54836 "POST /admin/matricula/estudiante/1/change/ HTTP/1.1" 302 0
+INFO 2025-08-27 01:34:43,231 basehttp 37956 54836 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 45228
+INFO 2025-08-27 01:34:43,318 basehttp 37956 54836 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:34:49,116 basehttp 37956 54836 "GET /matricula/consulta-estudiante/ HTTP/1.1" 200 30202
+INFO 2025-08-27 01:34:55,046 basehttp 37956 54836 "POST /matricula/consulta-estudiante/ HTTP/1.1" 200 34670
+INFO 2025-08-27 01:34:55,243 basehttp 37956 54836 "GET /media/estudiantes/fotos/2025/08/mascota_dunO1d1.png HTTP/1.1" 200 98245
+INFO 2025-08-27 01:34:55,263 basehttp 37956 52552 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 01:36:30,165 autoreload 37956 30348 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-27 01:36:32,546 autoreload 55936 56156 Watching for file changes with StatReloader
+INFO 2025-08-27 01:39:36,578 basehttp 55936 45860 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 44651
+INFO 2025-08-27 01:39:36,683 basehttp 55936 45860 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:39:40,275 basehttp 55936 45860 "GET /admin/matricula/estudiante/add/ HTTP/1.1" 200 129565
+INFO 2025-08-27 01:39:40,374 basehttp 55936 45860 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:39:40,878 views 55936 45860 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 01:39:40,879 basehttp 55936 45860 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 01:39:41,035 views 55936 45860 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 01:39:41,036 basehttp 55936 45860 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 01:39:41,569 views 55936 45860 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 01:39:41,570 basehttp 55936 45860 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 01:39:42,030 views 55936 45860 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 01:39:42,030 basehttp 55936 45860 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 01:39:42,556 views 55936 45860 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 01:39:42,556 basehttp 55936 45860 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 01:39:43,005 views 55936 45860 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 01:39:43,005 basehttp 55936 45860 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 01:39:44,008 views 55936 45860 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 01:39:44,009 basehttp 55936 45860 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 01:40:37,924 views 55936 45860 Distritos para cantón 17 (Dota): 3 encontrados
+INFO 2025-08-27 01:40:37,925 basehttp 55936 45860 "GET /catalogos/api/distritos/17/ HTTP/1.1" 200 111
+INFO 2025-08-27 01:42:58,306 basehttp 55936 45860 "POST /admin/matricula/estudiante/add/ HTTP/1.1" 302 0
+INFO 2025-08-27 01:42:58,431 basehttp 55936 45860 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 46052
+INFO 2025-08-27 01:42:58,536 basehttp 55936 45860 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:43:03,129 basehttp 55936 45860 "GET /admin/matricula/matriculaacademica/add/?estudiante=2&_institucion=1 HTTP/1.1" 200 55698
+INFO 2025-08-27 01:43:03,213 basehttp 55936 45860 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:43:06,020 basehttp 55936 45860 "GET /admin/autocomplete/?app_label=matricula&model_name=matriculaacademica&field_name=nivel HTTP/1.1" 200 497
+ERROR 2025-08-27 01:43:06,850 views 55936 45860 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 01:43:06,851 basehttp 55936 45860 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 01:43:09,888 basehttp 55936 45860 "GET /matricula/seccion-autocomplete/?forward=%7B%22curso_lectivo%22%3A%221%22%2C%22nivel%22%3A%228%22%7D HTTP/1.1" 200 359
+INFO 2025-08-27 01:43:11,388 basehttp 55936 45860 "GET /matricula/subgrupo-autocomplete/?forward=%7B%22curso_lectivo%22%3A%221%22%2C%22seccion%22%3A%228%22%7D HTTP/1.1" 200 154
+INFO 2025-08-27 01:43:13,309 basehttp 55936 45860 "POST /admin/matricula/matriculaacademica/add/?estudiante=2&_institucion=1 HTTP/1.1" 302 0
+INFO 2025-08-27 01:43:13,507 basehttp 55936 45860 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 61973
+INFO 2025-08-27 01:43:13,610 basehttp 55936 45860 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 01:43:14,271 views 55936 45860 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 01:43:14,271 basehttp 55936 45860 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 01:43:14,788 views 55936 45860 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 01:43:14,789 basehttp 55936 45860 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 01:43:15,784 views 55936 45860 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 01:43:15,784 basehttp 55936 45860 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 01:43:17,269 views 55936 45860 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 01:43:17,269 basehttp 55936 45860 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 01:43:49,235 basehttp 55936 45860 "GET /matricula/consulta-estudiante/ HTTP/1.1" 200 30202
+INFO 2025-08-27 01:43:55,091 basehttp 55936 45860 "POST /matricula/consulta-estudiante/ HTTP/1.1" 200 36076
+INFO 2025-08-27 01:43:55,316 basehttp 55936 55948 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 01:43:55,323 basehttp 55936 45860 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-06-20_123011_x1VnAVD.png HTTP/1.1" 200 115857
+INFO 2025-08-27 01:44:55,712 basehttp 55936 45860 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-06-20_123011_x1VnAVD.png HTTP/1.1" 200 115857
+INFO 2025-08-27 01:44:55,717 basehttp 55936 55948 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 01:45:49,051 basehttp 55936 55948 "POST /matricula/consulta-estudiante/ HTTP/1.1" 200 36072
+INFO 2025-08-27 01:45:49,192 basehttp 55936 45860 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 01:45:49,273 basehttp 55936 55948 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-06-20_123011_x1VnAVD.png HTTP/1.1" 200 115857
+INFO 2025-08-27 01:46:07,025 basehttp 55936 55948 "POST /matricula/consulta-estudiante/ HTTP/1.1" 200 36055
+INFO 2025-08-27 01:46:07,171 basehttp 55936 45860 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 01:46:07,259 basehttp 55936 55948 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-06-20_123011_x1VnAVD.png HTTP/1.1" 200 115857
+INFO 2025-08-27 01:46:56,234 basehttp 55936 55948 "GET /admin/core/institucion/ HTTP/1.1" 200 43061
+INFO 2025-08-27 01:46:56,345 basehttp 55936 55948 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:46:59,123 basehttp 55936 55948 "GET /admin/core/institucion/1/change/ HTTP/1.1" 200 46354
+INFO 2025-08-27 01:46:59,323 basehttp 55936 55948 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:47:22,884 basehttp 55936 55948 "POST /admin/core/institucion/1/change/ HTTP/1.1" 302 0
+INFO 2025-08-27 01:47:23,011 basehttp 55936 55948 "GET /admin/core/institucion/ HTTP/1.1" 200 43645
+INFO 2025-08-27 01:47:23,119 basehttp 55936 55948 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:47:27,928 basehttp 55936 55948 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 45474
+INFO 2025-08-27 01:47:28,027 basehttp 55936 55948 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 01:47:33,096 basehttp 55936 55948 "GET /matricula/consulta-estudiante/ HTTP/1.1" 200 30202
+INFO 2025-08-27 01:47:36,837 basehttp 55936 55948 "POST /matricula/consulta-estudiante/ HTTP/1.1" 200 36195
+INFO 2025-08-27 01:47:36,967 basehttp 55936 55948 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-06-20_123011_x1VnAVD.png HTTP/1.1" 200 115857
+INFO 2025-08-27 01:47:36,982 basehttp 55936 45860 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 01:47:36,994 basehttp 55936 43468 "GET /media/instituciones/logos/logoMaximo_32LM12E.png HTTP/1.1" 200 43809
+INFO 2025-08-27 01:47:43,207 basehttp 55936 43468 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-06-20_123011_x1VnAVD.png HTTP/1.1" 200 115857
+INFO 2025-08-27 01:47:43,209 basehttp 55936 45860 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 01:47:43,219 basehttp 55936 55948 "GET /media/instituciones/logos/logoMaximo_32LM12E.png HTTP/1.1" 200 43809
+INFO 2025-08-27 01:50:05,534 basehttp 55936 55948 "POST /matricula/consulta-estudiante/ HTTP/1.1" 200 36479
+INFO 2025-08-27 01:50:05,650 basehttp 55936 55948 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-06-20_123011_x1VnAVD.png HTTP/1.1" 200 115857
+INFO 2025-08-27 01:50:05,661 basehttp 55936 45860 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 01:50:05,664 basehttp 55936 43468 "GET /media/instituciones/logos/logoMaximo_32LM12E.png HTTP/1.1" 200 43809
+INFO 2025-08-27 01:50:14,631 basehttp 55936 43468 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-06-20_123011_x1VnAVD.png HTTP/1.1" 200 115857
+INFO 2025-08-27 01:50:14,633 basehttp 55936 45860 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 01:50:14,637 basehttp 55936 55948 "GET /media/instituciones/logos/logoMaximo_32LM12E.png HTTP/1.1" 200 43809
+INFO 2025-08-27 01:55:35,550 basehttp 55936 36888 "POST /matricula/consulta-estudiante/ HTTP/1.1" 200 36678
+INFO 2025-08-27 01:55:35,698 basehttp 55936 54984 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 01:55:35,701 basehttp 55936 36888 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-06-20_123011_x1VnAVD.png HTTP/1.1" 200 115857
+INFO 2025-08-27 01:55:35,704 basehttp 55936 48668 "GET /media/instituciones/logos/logoMaximo_32LM12E.png HTTP/1.1" 200 43809
+INFO 2025-08-27 01:55:39,084 basehttp 55936 48668 "POST /matricula/consulta-estudiante/ HTTP/1.1" 200 36678
+INFO 2025-08-27 01:55:39,209 basehttp 55936 48668 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-06-20_123011_x1VnAVD.png HTTP/1.1" 200 115857
+INFO 2025-08-27 01:55:39,220 basehttp 55936 36888 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 01:55:39,220 basehttp 55936 54984 "GET /media/instituciones/logos/logoMaximo_32LM12E.png HTTP/1.1" 200 43809
+INFO 2025-08-27 01:56:04,486 basehttp 55936 54984 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-06-20_123011_x1VnAVD.png HTTP/1.1" 200 115857
+INFO 2025-08-27 01:56:04,490 basehttp 55936 36888 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 01:56:04,503 basehttp 55936 48668 "GET /media/instituciones/logos/logoMaximo_32LM12E.png HTTP/1.1" 200 43809
+INFO 2025-08-27 08:35:31,259 autoreload 64072 73508 Watching for file changes with StatReloader
+INFO 2025-08-27 08:35:34,736 basehttp 64072 74400 "GET /admin/ HTTP/1.1" 200 81654
+INFO 2025-08-27 08:35:40,250 basehttp 64072 74400 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 45474
+INFO 2025-08-27 08:35:40,385 basehttp 64072 74400 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 08:35:45,364 basehttp 64072 74400 "GET /matricula/consulta-estudiante/ HTTP/1.1" 200 30685
+INFO 2025-08-27 08:35:48,761 basehttp 64072 74400 "POST /matricula/consulta-estudiante/ HTTP/1.1" 200 36678
+INFO 2025-08-27 08:35:49,036 basehttp 64072 70832 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 08:35:49,037 basehttp 64072 74400 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-06-20_123011_x1VnAVD.png HTTP/1.1" 200 115857
+INFO 2025-08-27 08:35:49,039 basehttp 64072 76088 "GET /media/instituciones/logos/logoMaximo_32LM12E.png HTTP/1.1" 200 43809
+INFO 2025-08-27 08:36:13,642 basehttp 64072 76088 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 45474
+INFO 2025-08-27 08:36:13,735 basehttp 64072 76088 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 08:36:19,403 basehttp 64072 76088 "GET /matricula/consulta-estudiante/ HTTP/1.1" 200 30685
+INFO 2025-08-27 08:36:22,558 basehttp 64072 76088 "POST /matricula/consulta-estudiante/ HTTP/1.1" 200 35304
+INFO 2025-08-27 08:36:22,685 basehttp 64072 70832 "GET /media/instituciones/logos/logoMaximo_32LM12E.png HTTP/1.1" 200 43809
+INFO 2025-08-27 08:36:22,685 basehttp 64072 74400 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 08:36:22,687 basehttp 64072 76088 "GET /media/estudiantes/fotos/2025/08/mascota_dunO1d1.png HTTP/1.1" 200 98245
+INFO 2025-08-27 08:36:28,658 basehttp 64072 74400 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 08:36:28,660 basehttp 64072 76088 "GET /media/estudiantes/fotos/2025/08/mascota_dunO1d1.png HTTP/1.1" 200 98245
+INFO 2025-08-27 08:36:28,676 basehttp 64072 70832 "GET /media/instituciones/logos/logoMaximo_32LM12E.png HTTP/1.1" 200 43809
+INFO 2025-08-27 08:39:25,011 basehttp 64072 70832 "GET /media/estudiantes/fotos/2025/08/mascota_dunO1d1.png HTTP/1.1" 200 98245
+INFO 2025-08-27 08:39:25,019 basehttp 64072 76088 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 08:39:25,024 basehttp 64072 74400 "GET /media/instituciones/logos/logoMaximo_32LM12E.png HTTP/1.1" 200 43809
+INFO 2025-08-27 08:40:29,157 basehttp 64072 74400 "POST /matricula/consulta-estudiante/ HTTP/1.1" 200 35298
+INFO 2025-08-27 08:40:29,313 basehttp 64072 76088 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 08:40:29,314 basehttp 64072 74400 "GET /media/estudiantes/fotos/2025/08/mascota_dunO1d1.png HTTP/1.1" 200 98245
+INFO 2025-08-27 08:40:29,317 basehttp 64072 70832 "GET /media/instituciones/logos/logoMaximo_32LM12E.png HTTP/1.1" 200 43809
+INFO 2025-08-27 08:40:34,534 basehttp 64072 74400 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 08:40:34,535 basehttp 64072 70832 "GET /media/estudiantes/fotos/2025/08/mascota_dunO1d1.png HTTP/1.1" 200 98245
+INFO 2025-08-27 08:40:34,550 basehttp 64072 76088 "GET /media/instituciones/logos/logoMaximo_32LM12E.png HTTP/1.1" 200 43809
+INFO 2025-08-27 08:40:59,840 basehttp 64072 76088 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 45474
+INFO 2025-08-27 08:40:59,947 basehttp 64072 76088 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 08:41:04,011 basehttp 64072 76088 "GET /matricula/consulta-estudiante/ HTTP/1.1" 200 30685
+INFO 2025-08-27 08:41:06,714 basehttp 64072 76088 "POST /matricula/consulta-estudiante/ HTTP/1.1" 200 36672
+INFO 2025-08-27 08:41:06,826 basehttp 64072 76088 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-06-20_123011_x1VnAVD.png HTTP/1.1" 200 115857
+INFO 2025-08-27 08:41:06,828 basehttp 64072 70832 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 08:41:06,835 basehttp 64072 74400 "GET /media/instituciones/logos/logoMaximo_32LM12E.png HTTP/1.1" 200 43809
+INFO 2025-08-27 08:41:10,476 basehttp 64072 70832 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 08:41:10,482 basehttp 64072 76088 "GET /media/instituciones/logos/logoMaximo_32LM12E.png HTTP/1.1" 200 43809
+INFO 2025-08-27 08:41:10,483 basehttp 64072 74400 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-06-20_123011_x1VnAVD.png HTTP/1.1" 200 115857
+INFO 2025-08-27 08:44:25,150 basehttp 64072 76088 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 08:44:25,151 basehttp 64072 74400 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-06-20_123011_x1VnAVD.png HTTP/1.1" 200 115857
+INFO 2025-08-27 08:44:25,355 basehttp 64072 70832 "GET /media/instituciones/logos/logoMaximo_32LM12E.png HTTP/1.1" 200 43809
+INFO 2025-08-27 08:44:35,953 basehttp 64072 70832 "GET /admin/ HTTP/1.1" 200 81665
+INFO 2025-08-27 08:44:38,958 basehttp 64072 70832 "GET /matricula/consulta-estudiante/ HTTP/1.1" 200 31226
+INFO 2025-08-27 08:44:44,492 basehttp 64072 70832 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 45474
+INFO 2025-08-27 08:44:44,595 basehttp 64072 70832 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 08:44:51,768 basehttp 64072 70832 "GET /matricula/consulta-estudiante/ HTTP/1.1" 200 31226
+INFO 2025-08-27 08:44:55,935 basehttp 64072 70832 "POST /matricula/consulta-estudiante/ HTTP/1.1" 200 37213
+INFO 2025-08-27 08:44:56,067 basehttp 64072 70832 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-06-20_123011_x1VnAVD.png HTTP/1.1" 200 115857
+INFO 2025-08-27 08:44:56,068 basehttp 64072 74400 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 08:44:56,081 basehttp 64072 76088 "GET /media/instituciones/logos/logoMaximo_32LM12E.png HTTP/1.1" 200 43809
+INFO 2025-08-27 08:45:02,806 basehttp 64072 76088 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-06-20_123011_x1VnAVD.png HTTP/1.1" 200 115857
+INFO 2025-08-27 08:45:02,813 basehttp 64072 70832 "GET /media/instituciones/logos/logoMaximo_32LM12E.png HTTP/1.1" 200 43809
+INFO 2025-08-27 08:45:02,822 basehttp 64072 74400 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 08:45:49,880 basehttp 64072 74400 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-06-20_123011_x1VnAVD.png HTTP/1.1" 200 115857
+INFO 2025-08-27 08:45:49,883 basehttp 64072 70832 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 08:45:49,887 basehttp 64072 76088 "GET /media/instituciones/logos/logoMaximo_32LM12E.png HTTP/1.1" 200 43809
+INFO 2025-08-27 08:46:01,656 basehttp 64072 76088 "POST /matricula/consulta-estudiante/ HTTP/1.1" 200 37217
+INFO 2025-08-27 08:46:01,765 basehttp 64072 76088 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-06-20_123011_x1VnAVD.png HTTP/1.1" 200 115857
+INFO 2025-08-27 08:46:01,772 basehttp 64072 70832 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 08:46:01,773 basehttp 64072 74400 "GET /media/instituciones/logos/logoMaximo_32LM12E.png HTTP/1.1" 200 43809
+INFO 2025-08-27 08:46:16,122 basehttp 64072 74400 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-06-20_123011_x1VnAVD.png HTTP/1.1" 200 115857
+INFO 2025-08-27 08:46:16,150 basehttp 64072 70832 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 08:46:16,151 basehttp 64072 76088 "GET /media/instituciones/logos/logoMaximo_32LM12E.png HTTP/1.1" 200 43809
+INFO 2025-08-27 08:49:03,508 basehttp 64072 76088 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-06-20_123011_x1VnAVD.png HTTP/1.1" 200 115857
+INFO 2025-08-27 08:49:03,524 basehttp 64072 70832 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 08:49:03,527 basehttp 64072 74400 "GET /media/instituciones/logos/logoMaximo_32LM12E.png HTTP/1.1" 200 43809
+INFO 2025-08-27 08:51:03,129 basehttp 64072 74400 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-06-20_123011_x1VnAVD.png HTTP/1.1" 200 115857
+INFO 2025-08-27 08:51:03,148 basehttp 64072 70832 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 08:51:03,149 basehttp 64072 76088 "GET /media/instituciones/logos/logoMaximo_32LM12E.png HTTP/1.1" 200 43809
+INFO 2025-08-27 08:53:23,147 basehttp 64072 70832 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 45474
+INFO 2025-08-27 08:53:23,273 basehttp 64072 70832 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 08:53:27,075 basehttp 64072 70832 "GET /admin/matricula/estudiante/add/ HTTP/1.1" 200 129565
+INFO 2025-08-27 08:53:27,228 basehttp 64072 70832 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 08:53:27,744 views 64072 70832 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 08:53:27,745 basehttp 64072 70832 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 08:53:27,895 views 64072 70832 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 08:53:27,896 basehttp 64072 70832 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 08:53:28,460 views 64072 70832 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 08:53:28,461 basehttp 64072 70832 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 08:53:28,893 views 64072 70832 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 08:53:28,894 basehttp 64072 70832 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 08:53:29,445 views 64072 70832 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 08:53:29,446 basehttp 64072 70832 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 08:53:29,909 views 64072 70832 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 08:53:29,910 basehttp 64072 70832 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 08:53:30,894 views 64072 70832 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 08:53:30,895 basehttp 64072 70832 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 08:54:40,530 views 64072 70832 Distritos para cantón 2 (Escazú): 3 encontrados
+INFO 2025-08-27 08:54:40,531 basehttp 64072 70832 "GET /catalogos/api/distritos/2/ HTTP/1.1" 200 110
+INFO 2025-08-27 08:55:48,618 basehttp 64072 70832 "POST /admin/matricula/estudiante/add/ HTTP/1.1" 302 0
+INFO 2025-08-27 08:55:48,800 basehttp 64072 70832 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 46885
+INFO 2025-08-27 08:55:48,902 basehttp 64072 70832 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 08:55:56,194 basehttp 64072 70832 "GET /matricula/consulta-estudiante/ HTTP/1.1" 200 31881
+INFO 2025-08-27 08:55:58,850 basehttp 64072 70832 "POST /matricula/consulta-estudiante/ HTTP/1.1" 200 32047
+INFO 2025-08-27 08:56:01,916 basehttp 64072 70832 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 46304
+INFO 2025-08-27 08:56:02,042 basehttp 64072 70832 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 08:56:05,256 basehttp 64072 70832 "GET /admin/matricula/matriculaacademica/add/?estudiante=3&_institucion=1 HTTP/1.1" 200 55701
+INFO 2025-08-27 08:56:05,290 basehttp 64072 76328 "GET /static/matricula/js/clear-dependent-fields.js HTTP/1.1" 304 0
+INFO 2025-08-27 08:56:05,356 basehttp 64072 70832 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 08:56:08,248 basehttp 64072 70832 "GET /admin/autocomplete/?app_label=matricula&model_name=matriculaacademica&field_name=nivel HTTP/1.1" 200 497
+ERROR 2025-08-27 08:56:08,990 views 64072 70832 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 08:56:08,990 basehttp 64072 70832 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 08:56:13,778 basehttp 64072 70832 "GET /matricula/especialidad-autocomplete/?forward=%7B%22curso_lectivo%22%3A%221%22%2C%22nivel%22%3A%2210%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 08:56:15,498 basehttp 64072 70832 "GET /matricula/especialidad-autocomplete/?forward=%7B%22curso_lectivo%22%3A%221%22%2C%22nivel%22%3A%2210%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 08:56:17,114 basehttp 64072 70832 "GET /matricula/seccion-autocomplete/?forward=%7B%22curso_lectivo%22%3A%221%22%2C%22nivel%22%3A%2210%22%7D HTTP/1.1" 200 264
+INFO 2025-08-27 08:56:18,271 basehttp 64072 70832 "GET /matricula/subgrupo-autocomplete/?forward=%7B%22curso_lectivo%22%3A%221%22%2C%22seccion%22%3A%2220%22%7D HTTP/1.1" 200 158
+INFO 2025-08-27 08:56:20,356 basehttp 64072 70832 "POST /admin/matricula/matriculaacademica/add/?estudiante=3&_institucion=1 HTTP/1.1" 302 0
+INFO 2025-08-27 08:56:20,542 basehttp 64072 70832 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 62872
+INFO 2025-08-27 08:56:20,625 basehttp 64072 70832 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-08-27 08:56:21,256 views 64072 70832 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 08:56:21,257 basehttp 64072 70832 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 08:56:21,744 views 64072 70832 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 08:56:21,745 basehttp 64072 70832 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+ERROR 2025-08-27 08:56:22,738 views 64072 70832 Error inesperado en get_especialidades_disponibles: Cannot resolve keyword 'institucion_id' into field. Choices are: activo, anio, clase, especialidadcursolectivo, fecha_fin, fecha_inicio, id, matriculaacademica, nombre, periodolectivo, seccioncursolectivo, subgrupocursolectivo
+INFO 2025-08-27 08:56:22,738 basehttp 64072 70832 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 56
+INFO 2025-08-27 08:56:23,601 basehttp 64072 70832 "GET /matricula/consulta-estudiante/ HTTP/1.1" 200 31881
+INFO 2025-08-27 08:56:26,612 basehttp 64072 70832 "POST /matricula/consulta-estudiante/ HTTP/1.1" 200 38265
+INFO 2025-08-27 08:56:26,735 basehttp 64072 76328 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 08:56:26,745 basehttp 64072 68456 "GET /media/instituciones/logos/logoMaximo_32LM12E.png HTTP/1.1" 200 43809
+INFO 2025-08-27 08:56:26,747 basehttp 64072 70832 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-07-05_183218.png HTTP/1.1" 200 86797
+INFO 2025-08-27 08:56:49,401 basehttp 64072 70832 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-07-05_183218.png HTTP/1.1" 200 86797
+INFO 2025-08-27 08:56:49,412 basehttp 64072 68456 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 08:56:49,413 basehttp 64072 76328 "GET /media/instituciones/logos/logoMaximo_32LM12E.png HTTP/1.1" 200 43809
+INFO 2025-08-27 08:59:25,391 basehttp 64072 76328 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 46304
+INFO 2025-08-27 08:59:25,591 basehttp 64072 76328 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 08:59:28,679 basehttp 64072 76328 "GET /admin/matricula/estudiante/3/change/ HTTP/1.1" 200 153144
+INFO 2025-08-27 08:59:28,791 basehttp 64072 68456 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-07-05_183218.png HTTP/1.1" 200 86797
+INFO 2025-08-27 08:59:28,890 basehttp 64072 76328 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 08:59:29,392 views 64072 76328 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 08:59:29,392 basehttp 64072 76328 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 08:59:29,486 views 64072 76328 Distritos para cantón 2 (Escazú): 3 encontrados
+INFO 2025-08-27 08:59:29,487 basehttp 64072 76328 "GET /catalogos/api/distritos/2/ HTTP/1.1" 200 110
+INFO 2025-08-27 08:59:29,537 views 64072 68456 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 08:59:29,538 basehttp 64072 68456 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 08:59:29,736 views 64072 68456 Distritos para cantón 2 (Escazú): 3 encontrados
+INFO 2025-08-27 08:59:29,737 basehttp 64072 68456 "GET /catalogos/api/distritos/2/ HTTP/1.1" 200 110
+INFO 2025-08-27 08:59:30,098 views 64072 68456 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 08:59:30,099 basehttp 64072 68456 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 08:59:30,173 views 64072 68456 Distritos para cantón 2 (Escazú): 3 encontrados
+INFO 2025-08-27 08:59:30,174 basehttp 64072 68456 "GET /catalogos/api/distritos/2/ HTTP/1.1" 200 110
+INFO 2025-08-27 08:59:30,545 views 64072 68456 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 08:59:30,546 basehttp 64072 68456 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 08:59:30,633 views 64072 68456 Distritos para cantón 2 (Escazú): 3 encontrados
+INFO 2025-08-27 08:59:30,634 basehttp 64072 68456 "GET /catalogos/api/distritos/2/ HTTP/1.1" 200 110
+INFO 2025-08-27 08:59:31,090 views 64072 68456 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 08:59:31,091 basehttp 64072 68456 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 08:59:31,167 views 64072 68456 Distritos para cantón 2 (Escazú): 3 encontrados
+INFO 2025-08-27 08:59:31,168 basehttp 64072 68456 "GET /catalogos/api/distritos/2/ HTTP/1.1" 200 110
+INFO 2025-08-27 08:59:31,558 views 64072 68456 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 08:59:31,559 basehttp 64072 68456 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 08:59:31,784 views 64072 68456 Distritos para cantón 2 (Escazú): 3 encontrados
+INFO 2025-08-27 08:59:31,784 basehttp 64072 68456 "GET /catalogos/api/distritos/2/ HTTP/1.1" 200 110
+INFO 2025-08-27 08:59:32,535 views 64072 68456 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 08:59:32,536 basehttp 64072 68456 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 08:59:32,619 views 64072 68456 Distritos para cantón 2 (Escazú): 3 encontrados
+INFO 2025-08-27 08:59:32,620 basehttp 64072 68456 "GET /catalogos/api/distritos/2/ HTTP/1.1" 200 110
+INFO 2025-08-27 09:02:35,834 basehttp 64072 68456 "GET /matricula/consulta-estudiante/ HTTP/1.1" 200 31881
+INFO 2025-08-27 09:02:40,100 basehttp 64072 68456 "POST /matricula/consulta-estudiante/ HTTP/1.1" 200 38265
+INFO 2025-08-27 09:02:40,267 basehttp 64072 68456 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-07-05_183218.png HTTP/1.1" 200 86797
+INFO 2025-08-27 09:02:40,288 basehttp 64072 76328 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 09:02:40,299 basehttp 64072 52676 "GET /media/instituciones/logos/logoMaximo_32LM12E.png HTTP/1.1" 200 43809
+INFO 2025-08-27 09:02:40,880 basehttp 64072 52676 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-07-05_183218.png HTTP/1.1" 200 86797
+INFO 2025-08-27 09:02:40,892 basehttp 64072 76328 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 09:02:40,898 basehttp 64072 68456 "GET /media/instituciones/logos/logoMaximo_32LM12E.png HTTP/1.1" 200 43809
+INFO 2025-08-27 09:07:21,988 basehttp 64072 76604 "POST /matricula/consulta-estudiante/ HTTP/1.1" 200 38371
+INFO 2025-08-27 09:07:22,148 basehttp 64072 76604 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-07-05_183218.png HTTP/1.1" 200 86797
+INFO 2025-08-27 09:07:22,159 basehttp 64072 68260 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 09:07:22,159 basehttp 64072 64156 "GET /media/instituciones/logos/logoMaximo_32LM12E.png HTTP/1.1" 200 43809
+INFO 2025-08-27 09:07:32,623 basehttp 64072 64156 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-07-05_183218.png HTTP/1.1" 200 86797
+INFO 2025-08-27 09:07:32,627 basehttp 64072 68260 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 09:07:32,627 basehttp 64072 76604 "GET /media/instituciones/logos/logoMaximo_32LM12E.png HTTP/1.1" 200 43809
+INFO 2025-08-27 09:07:48,787 basehttp 64072 68260 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 46304
+INFO 2025-08-27 09:07:48,916 basehttp 64072 68260 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 09:07:51,273 autoreload 64072 73508 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-27 09:07:52,441 autoreload 59768 75864 Watching for file changes with StatReloader
+INFO 2025-08-27 09:07:54,351 basehttp 59768 61604 "GET /admin/matricula/estudiante/3/change/ HTTP/1.1" 200 152892
+INFO 2025-08-27 09:07:54,482 basehttp 59768 61604 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 09:07:54,605 basehttp 59768 73312 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-07-05_183218.png HTTP/1.1" 200 86797
+INFO 2025-08-27 09:07:54,932 views 59768 73312 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 09:07:54,932 basehttp 59768 73312 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 09:07:55,015 views 59768 73312 Distritos para cantón 2 (Escazú): 3 encontrados
+INFO 2025-08-27 09:07:55,016 basehttp 59768 73312 "GET /catalogos/api/distritos/2/ HTTP/1.1" 200 110
+INFO 2025-08-27 09:07:55,020 views 59768 61604 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 09:07:55,021 basehttp 59768 61604 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 09:07:55,099 views 59768 61604 Distritos para cantón 2 (Escazú): 3 encontrados
+INFO 2025-08-27 09:07:55,100 basehttp 59768 61604 "GET /catalogos/api/distritos/2/ HTTP/1.1" 200 110
+INFO 2025-08-27 09:07:55,145 views 59768 73312 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 09:07:55,146 basehttp 59768 73312 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 09:07:55,226 views 59768 73312 Distritos para cantón 2 (Escazú): 3 encontrados
+INFO 2025-08-27 09:07:55,227 basehttp 59768 73312 "GET /catalogos/api/distritos/2/ HTTP/1.1" 200 110
+INFO 2025-08-27 09:07:55,759 views 59768 73312 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 09:07:55,759 basehttp 59768 73312 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 09:07:55,861 views 59768 73312 Distritos para cantón 2 (Escazú): 3 encontrados
+INFO 2025-08-27 09:07:55,862 basehttp 59768 73312 "GET /catalogos/api/distritos/2/ HTTP/1.1" 200 110
+INFO 2025-08-27 09:07:56,159 views 59768 73312 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 09:07:56,160 basehttp 59768 73312 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 09:07:56,246 views 59768 73312 Distritos para cantón 2 (Escazú): 3 encontrados
+INFO 2025-08-27 09:07:56,247 basehttp 59768 73312 "GET /catalogos/api/distritos/2/ HTTP/1.1" 200 110
+INFO 2025-08-27 09:07:56,723 views 59768 73312 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 09:07:56,723 basehttp 59768 73312 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 09:07:56,800 views 59768 73312 Distritos para cantón 2 (Escazú): 3 encontrados
+INFO 2025-08-27 09:07:56,801 basehttp 59768 73312 "GET /catalogos/api/distritos/2/ HTTP/1.1" 200 110
+INFO 2025-08-27 09:07:57,152 views 59768 73312 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 09:07:57,153 basehttp 59768 73312 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 09:07:57,230 views 59768 73312 Distritos para cantón 2 (Escazú): 3 encontrados
+INFO 2025-08-27 09:07:57,231 basehttp 59768 73312 "GET /catalogos/api/distritos/2/ HTTP/1.1" 200 110
+INFO 2025-08-27 09:07:58,162 views 59768 73312 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 09:07:58,163 basehttp 59768 73312 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 09:07:58,262 views 59768 73312 Distritos para cantón 2 (Escazú): 3 encontrados
+INFO 2025-08-27 09:07:58,263 basehttp 59768 73312 "GET /catalogos/api/distritos/2/ HTTP/1.1" 200 110
+INFO 2025-08-27 09:08:06,499 autoreload 59768 75864 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-27 09:08:07,520 autoreload 47408 71440 Watching for file changes with StatReloader
+INFO 2025-08-27 10:16:13,418 basehttp 47408 80668 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 46304
+INFO 2025-08-27 10:16:13,476 basehttp 47408 81884 "GET /static/sis_colegio/css/logo-custom.css HTTP/1.1" 304 0
+INFO 2025-08-27 10:16:13,476 basehttp 47408 81696 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 304 0
+INFO 2025-08-27 10:16:13,560 basehttp 47408 80668 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 10:16:18,210 basehttp 47408 80668 "GET /matricula/consulta-estudiante/ HTTP/1.1" 200 31989
+INFO 2025-08-27 10:16:21,472 basehttp 47408 80668 "POST /matricula/consulta-estudiante/ HTTP/1.1" 200 38371
+INFO 2025-08-27 10:16:21,755 basehttp 47408 80668 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-07-05_183218.png HTTP/1.1" 200 86797
+INFO 2025-08-27 10:16:21,757 basehttp 47408 81696 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 10:16:21,762 basehttp 47408 81884 "GET /media/instituciones/logos/logoMaximo_32LM12E.png HTTP/1.1" 200 43809
+INFO 2025-08-27 10:17:02,281 basehttp 47408 79884 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 10:17:02,282 basehttp 47408 80028 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-07-05_183218.png HTTP/1.1" 200 86797
+INFO 2025-08-27 10:17:02,289 basehttp 47408 79960 "GET /media/instituciones/logos/logoMaximo_32LM12E.png HTTP/1.1" 200 43809
+INFO 2025-08-27 10:21:51,086 basehttp 47408 64812 "POST /matricula/consulta-estudiante/ HTTP/1.1" 200 38273
+INFO 2025-08-27 10:21:51,236 basehttp 47408 60724 "GET /media/plantillas/logos_mep/logoMep_oRWzJD0.png HTTP/1.1" 200 15748
+INFO 2025-08-27 10:21:51,247 basehttp 47408 68080 "GET /media/instituciones/logos/logoMaximo_32LM12E.png HTTP/1.1" 200 43809
+INFO 2025-08-27 10:21:51,320 basehttp 47408 64812 "GET /media/estudiantes/fotos/2025/08/Captura_de_pantalla_2025-07-05_183218.png HTTP/1.1" 200 86797
+INFO 2025-08-27 10:22:13,912 basehttp 47408 68184 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 46304
+INFO 2025-08-27 10:22:14,114 basehttp 47408 68184 "GET /admin/jsi18n/ HTTP/1.1" 200 8691

@@ -3,14 +3,16 @@
 {% block extrahead %}
   {{ block.super }}
   <style>
-    /* Footer centrado SIEMPRE (pantalla y PDF) */
+    /* Footer en PANTALLA (no fijo). Para PDF se redefine en @media print */
     .footer-institucional {
       text-align: center;
       font-size: 0.8em;
-      margin-bottom: 0;
+      margin: 16px 0 0 0;
       color: #000;
       font-weight: 600;
       width: 100%;
+      position: static;      /* que NO sea fijo en pantalla */
+      padding-top: 8px;      /* un poco más abajo el texto */
     }
 
     /* Botón imprimir */
@@ -44,6 +46,7 @@
       border: 1px solid #aaa;
       border-radius: 12px;
       padding: 1.5em;
+      padding-bottom: 32px;   /* espacio inferior estándar; el footer ya no es fijo */
       margin: 0 auto 2em auto;
       background: #fff;
       max-width: 1000px;
@@ -69,35 +72,34 @@
       align-items: center;
       justify-content: space-between;
       gap: 0.8em;
-      margin-bottom: 1em;
+      margin: 0.5em 0 0.5em 0;  /* reducir espacio superior e inferior */
       text-align: center;
     }
     .header-foto {
       flex: 0 0 auto;
     }
     .header-foto img {
-      width: 180px;
-      height: 180px;
+      width: 140px;   /* reducir tamaño de foto */
+      height: 140px;
       object-fit: cover;
       border-radius: 8px;
       border: 1px solid #999;
-      margin-left: 3em;
+      margin-left: 2em;
     }
     .header-texto {
       flex: 1 1 auto;
       margin-left: -0.5em;
     }
     .titulo-matricula {
-      font-size: 25px;
+      font-size: 22px;  /* reducir ligeramente */
       font-weight: 800;
       letter-spacing: 2px;
-      margin-bottom: 0.2em;
-      margin-top: 0.3em;
+      margin: 0.2em 0;
     }
     .texto-encabezado {
-      font-size: 16px;
+      font-size: 14px;  /* más compacto */
       color: #222;
-      margin-bottom: 1em;
+      margin-bottom: 0.4em;
       font-weight: 500;
       line-height: 1.2em;
     }
@@ -109,12 +111,12 @@
       gap: 0.8em;
     }
     .header-logos-derecha .logo-grande {
-      max-height: 80px;
-      max-width: 70px;
+      max-height: 64px;   /* logos más pequeños */
+      max-width: 56px;
     }
     .header-logos-derecha img:first-child {
-      max-height: 100px;
-      max-width: 250px;
+      max-height: 80px;  /* logo superior más compacto */
+      max-width: 200px;
     }
 
     /* Firma */
@@ -305,7 +307,7 @@
   /* Página A4 y márgenes */
   @page {
     size: A4 portrait;
-    margin: 12mm 14mm 16mm 14mm !important;  /* sup, der, inf, izq */
+    margin: 10mm 12mm 10mm 12mm !important;  /* sup, der, inf, izq (más compacto) */
   }
 
   /* Ocultar todo lo no imprimible */
@@ -354,6 +356,13 @@
     page-break-inside: avoid !important;
   }
 
+  /* Centrar título y texto del encabezado en PDF y eliminar márgenes residuales */
+  .header-texto {
+    text-align: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
   .header-foto img {
     width: 35mm !important;
     height: 35mm !important;
@@ -391,7 +400,7 @@
   .columns {
     display: grid !important;
     grid-template-columns: 1fr 1fr !important;
-    gap: var(--gap) !important;
+    gap: 5mm !important;        /* reducir espacio entre columnas */
     width: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -412,8 +421,11 @@
     font-weight: 700 !important;
   }
 
+  /* Reducir espacios verticales innecesarios */
+  .datos-personales-list br { margin-bottom: 0.8mm !important; display: block !important; }
   ul { margin: 0 0 0 4mm !important; padding: 0 !important; }
   .encargado-block { margin: 0 0 2mm 0 !important; padding: 0 !important; }
+  .encargado-block br { margin-bottom: 0.8mm !important; display: block !important; }
 
   .firma-linea {
     width: 70mm !important;
@@ -424,13 +436,13 @@
 
   /* ---------- PIE DE PÁGINA ---------- */
   .footer-institucional {
-    position: fixed !important;       /* mantiene el footer abajo en cada página */
+    position: fixed !important;       /* mantiene el footer abajo en cada página impresa */
     left: 0; right: 0; bottom: 10mm;
     text-align: center !important;
     width: 100% !important;
     font-size: 9pt !important;
     margin: 0 !important;
-    padding: 0 !important;
+    padding: 4mm 0 0 0 !important;  /* más espacio superior */
     page-break-inside: avoid !important;
   }
 
@@ -540,45 +552,69 @@
         
       </div>
     </div>
-
     <hr>
-
     <div class="columns cuerpo">
       <!-- Columna de Datos del Estudiante -->
       <div class="col">
         <h2>Datos del Estudiante</h2>
         <div style="display:flex;gap:1em;align-items:flex-start;">
           <div class="datos-personales-list">
-            <strong style="font-size: 1.4em; color: #2c3e50;">{{ estudiante.primer_apellido }} {{ estudiante.segundo_apellido }}
-                    {{ estudiante.nombres }}</strong><br>
-            <strong style="font-size: 20px; color: #2c3e50;">{{ estudiante.identificacion }}</strong><br>
-            <b>Tipo identificación:</b> {{ estudiante.tipo_identificacion }}<br>        
-            <b>Tipo estudiante:</b> {{ estudiante.get_tipo_estudiante_display }}<br>
-            <b>Nivel:</b> {{ matricula.nivel }}<br>
+            <strong style="font-size: 1.4em; color: #2c3e50;">{{ estudiante.primer_apellido|default:"---" }} {{ estudiante.segundo_apellido|default:"---" }}
+                    {{ estudiante.nombres|default:"---" }}</strong><br>
+            <strong style="font-size: 20px; color: #2c3e50;">{{ estudiante.identificacion|default:"---" }}</strong><br>
+            <b>Tipo identificación:</b> {{ estudiante.tipo_identificacion|default:"---" }}<br>        
+            <b>Tipo estudiante:</b> {{ estudiante.get_tipo_estudiante_display|default:"---" }}<br>
+            <b>Nivel:</b> {{ matricula.nivel|default:"---" }}<br>
             {% if matricula.especialidad %}
               {% if matricula.nivel.nombre == 'Décimo' or matricula.nivel.nombre == 'Undécimo' or matricula.nivel.nombre == 'Duodécimo' %}
                 <b>Especialidad:</b> {{ matricula.especialidad }}<br>
               {% endif %}
             {% endif %}
-            <b>Fecha nacimiento:</b> {{ estudiante.fecha_nacimiento }}<br>
-            <b>Edad:</b> {{ edad_estudiante }}<br>
-            <b>Género:</b> {{ estudiante.sexo }}<br>
-            <b>Nacionalidad:</b> {{ estudiante.nacionalidad }}<br>
-            <b>Celular:</b> {{ estudiante.celular }}<br>
-            <b>Teléfono casa:</b> {{ estudiante.telefono_casa }}<br>
-            <b>Correo:</b> {{ estudiante.correo }}<br>
-            <b>Domicilio:</b> {{ estudiante.provincia }}, {{ estudiante.canton }},
-                                 {{ estudiante.distrito }}<br>
-            <b>Dirección exacta:</b> {{ estudiante.direccion_exacta }}<br>
+            <b>Fecha nacimiento:</b> {{ estudiante.fecha_nacimiento|default:"---" }}<br>
+            <b>Edad:</b> {{ edad_estudiante|default:"---" }}<br>
+            <b>Género:</b> {{ estudiante.sexo|default:"---" }}<br>
+            <b>Nacionalidad:</b> {{ estudiante.nacionalidad|default:"---" }}<br>
+            <b>Celular:</b> {{ estudiante.celular|default:"---" }}<br>
+            <b>Teléfono casa:</b> {{ estudiante.telefono_casa|default:"---" }}<br>
+            <b>Correo:</b> {{ estudiante.correo|default:"---" }}<br>
+            <b>Domicilio:</b> {{ estudiante.provincia|default:"---" }}, {{ estudiante.canton|default:"---" }},
+                                 {{ estudiante.distrito|default:"---" }}<br>
+            <b>Dirección exacta:</b> {{ estudiante.direccion_exacta|default:"---" }}<br>
             <b>Recibe Ed. Religiosa:</b> {{ estudiante.ed_religiosa|yesno:"Sí,No" }}<br>
-            <b>Adecuación:</b> {{ estudiante.adecuacion }}<br>
-            <b>Presenta enfermedad:</b> {{ estudiante.presenta_enfermedad|yesno:"Sí,No" }}<br>
-            <b>Detalle enfermedad:</b> {{ estudiante.detalle_enfermedad }}<br>
-            <b>Medicamentos que consume:</b> {{ estudiante.medicamento_consume|default:"Ninguno" }}<br>
+            <b>Adecuación:</b> {{ estudiante.adecuacion|default:"---" }}<br>
+            <b>Presenta enfermedad:</b> {{ estudiante.presenta_enfermedad|yesno:"Sí,No,---" }}<br>
+            <b>Detalle enfermedad:</b> {{ estudiante.detalle_enfermedad|default:"---" }}<br>
+            <b>Medicamentos que consume:</b> {{ estudiante.medicamento_consume|default:"Ninguno" }}
+
+            {% if estudiante.tipo_estudiante == 'PN' %}
+            <br>
+            <b>Posee carnet de CONAPDIS:</b> {{ estudiante.posee_carnet_conapdis|yesno:"Sí,No" }}<br>
+            <b>Posee válvula de drenaje LCR:</b> {{ estudiante.posee_valvula_drenaje_lcr|yesno:"Sí,No" }}<br>
+            <b>Usa algún tipo de apoyo:</b> {{ estudiante.usa_apoyo|yesno:"Sí,No" }}<br>
+            {% if estudiante.usa_apoyo %}
+              <b>¿Cuál apoyo?</b> {{ estudiante.apoyo_cual|default:"---" }}<br>
+            {% endif %}
+            <b>Tipo de condición diagnosticada:</b>
+              {% if estudiante.tipo_condicion_diagnosticada %}
+                {{ estudiante.get_tipo_condicion_diagnosticada_display }}
+              {% else %} --- {% endif %}<br>
+            {% if estudiante.tipo_condicion_diagnosticada == 'OT' %}
+              <b>Otro (especifique condición):</b> {{ estudiante.tipo_condicion_otro|default:"---" }}<br>
+            {% endif %}
+            <b>Posee algún tipo de control:</b> {{ estudiante.posee_control|yesno:"Sí,No" }}<br>
+            {% if estudiante.posee_control %}
+              <b>¿Cuál control?</b> {{ estudiante.control_cual|default:"---" }}<br>
+            {% endif %}
+            <b>Existe persona con orden de alejamiento:</b> {{ estudiante.orden_alejamiento|yesno:"Sí,No,---" }}<br>
+            {% if estudiante.orden_alejamiento %}
+              <b>Nombre de la persona con orden:</b> {{ estudiante.orden_alejamiento_nombre|default:"---" }}<br>
+            {% endif %}
+            {% endif %}
+
             <b>Autoriza derecho de imagen:</b> {{ estudiante.autoriza_derecho_imagen|yesno:"Sí,No" }}<br>
-            <b>Número de póliza:</b> {{ estudiante.numero_poliza }}<br>
-            <b>Rige póliza:</b> {{ estudiante.rige_poliza }}<br>
-            <b>Vence póliza:</b> {{ estudiante.vence_poliza }}<br> 
+            <b>Número de póliza:</b> {{ estudiante.numero_poliza|default:"---" }}<br>
+            <b>Rige póliza:</b> {{ estudiante.rige_poliza|default:"---" }}<br>
+            <b>Vence póliza:</b> {{ estudiante.vence_poliza|default:"---" }}<br> 
               
           </div>
         </div>
@@ -591,14 +627,14 @@
             {% for enc in encargados %}
               <li class="encargado-block">
                 <b>{{ enc.persona_contacto }}</b> ({{ enc.parentesco }})<br>
-                <b>Identificación:</b> {{ enc.persona_contacto.identificacion }}<br>
-                <b>Celular:</b> {{ enc.persona_contacto.celular_avisos }}<br>
-                <b>Correo:</b> {{ enc.persona_contacto.correo }}<br>
-                <b>Lugar de trabajo:</b> {{ enc.persona_contacto.lugar_trabajo }}<br>
-                <b>Teléfono trabajo:</b> {{ enc.persona_contacto.telefono_trabajo }}<br>
-                <b>Estado civil:</b> {{ enc.persona_contacto.estado_civil }}<br>
-                <b>Escolaridad:</b> {{ enc.persona_contacto.escolaridad }}<br>
-                <b>Ocupación:</b> {{ enc.persona_contacto.ocupacion }}<br>
+                <b>Identificación:</b> {{ enc.persona_contacto.identificacion|default:"---" }}<br>
+                <b>Celular:</b> {{ enc.persona_contacto.celular_avisos|default:"---" }}<br>
+                <b>Correo:</b> {{ enc.persona_contacto.correo|default:"---" }}<br>
+                <b>Lugar de trabajo:</b> {{ enc.persona_contacto.lugar_trabajo|default:"---" }}<br>
+                <b>Teléfono trabajo:</b> {{ enc.persona_contacto.telefono_trabajo|default:"---" }}<br>
+                <b>Estado civil:</b> {{ enc.persona_contacto.estado_civil|default:"---" }}<br>
+                <b>Escolaridad:</b> {{ enc.persona_contacto.escolaridad|default:"---" }}<br>
+                <b>Ocupación:</b> {{ enc.persona_contacto.ocupacion|default:"---" }}<br>
                 <b>Convive con el estudiante:</b> {{ enc.convivencia|yesno:"Sí,No" }}<br>
               </li>
             {% endfor %}
@@ -610,7 +646,7 @@
         <!-- Firma responsable -->
           <div class="firma-block">
             <br>
-            <b>Fecha asignación:</b> {{ matricula.fecha_asignacion }}<br><br><br>
+            <b>Fecha asignación:</b> {{ matricula.fecha_asignacion|default:"---" }}<br><br><br>
             <span>Firma responsable:</span><br><br>
             <span class="firma-linea"></span><br>
             <span>Cédula:</span><br><br>
@@ -618,9 +654,7 @@
           </div>
       </div>
     </div>
-
     
-
     <!-- Pie de página institucional -->
     {% if plantilla and plantilla.pie_pagina %}
       <div class="footer-institucional">
@@ -639,7 +673,7 @@ function imprimirFichaAislada() {
 
   // CSS mínimo y aislado para A4 (sin interferencias globales)
   const css = `
-    @page { size: A4 portrait; margin: 12mm 14mm 16mm 14mm; }
+    @page { size: A4 portrait; margin: 10mm 12mm 10mm 12mm; }
     html, body {
       background: #fff; color: #000; font-family: Arial, sans-serif; font-size: 10.5pt;
       margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact;
@@ -655,6 +689,7 @@ function imprimirFichaAislada() {
       display: grid !important; grid-template-columns: 38mm 1fr 32mm; align-items: center;
       gap: 6mm; margin: 0 0 4mm 0; padding: 0; width: 100%; page-break-inside: avoid;
     }
+    .header-texto { text-align: center !important; margin: 0 !important; padding: 0 !important; }
     .header-foto img { width: 35mm; height: 35mm; object-fit: cover; border: 0.4pt solid #666; border-radius: 2mm; margin: 0; }
     .titulo-matricula { font-size: 14pt; font-weight: 800; letter-spacing: 1pt; margin: 0 0 2mm 0; }
     .texto-encabezado { font-size: 10pt; line-height: 1.25; margin: 0; }
@@ -675,35 +710,51 @@ function imprimirFichaAislada() {
     .cuerpo { margin: 0; padding: 0; }
     
     .datos-personales-list strong { display: block !important; margin-bottom: 1mm !important; font-size: 12pt !important; }
-    .datos-personales-list { margin: 0; padding: 0; font-size: 10pt; line-height: 1.6 !important; }
+    .datos-personales-list { margin: 0; padding: 0; font-size: 10pt; line-height: 1.5 !important; }
     .datos-personales-list b { display: inline; min-width: 0; font-weight: 700; }
-    .datos-personales-list br { margin-bottom: 2mm !important; display: block !important; }
+    .datos-personales-list br { margin-bottom: 0.8mm !important; display: block !important; }
     
     ul { margin: 0 0 0 4mm; padding: 0; }
-    .encargado-block { margin: 0 0 4mm 0; padding: 0; line-height: 1.5 !important; }
-    .encargado-block br { margin-bottom: 1.5mm !important; display: block !important; }
+    .encargado-block { margin: 0 0 2mm 0; padding: 0; line-height: 1.45 !important; }
+    .encargado-block br { margin-bottom: 0.8mm !important; display: block !important; }
     
     .firma-linea { width: 70mm; border-bottom: 0.6pt solid #000; display: inline-block; margin-bottom: 2mm; }
     
     .footer-institucional {
       position: fixed; left: 0; right: 0; bottom: 10mm; text-align: center; width: 100%;
-      font-size: 9pt; margin: 0; padding: 0; page-break-inside: avoid;
+      font-size: 9pt; margin: 0; padding: 4mm 0 0 0; page-break-inside: avoid;
     }
   `;
 
-  // Crear ventana nueva pero cerrarla automáticamente después de imprimir
-  const win = window.open('', '_blank', 'width=800,height=600');
-  win.document.write(`
-    <!doctype html>
-    <html><head><meta charset="utf-8"><title>Ficha del estudiante</title><style>${css}</style></head>
-    <body>${html}</body></html>
-  `);
-  win.document.close();
-  
-  // Imprimir y cerrar automáticamente
-  win.onload = function() {
-    win.print();
-    setTimeout(() => win.close(), 500);
+  // Imprimir en un iframe oculto (sin abrir ventanas/pestañas)
+  const iframe = document.createElement('iframe');
+  iframe.style.position = 'fixed';
+  iframe.style.right = '-10000px';
+  iframe.style.bottom = '0';
+  iframe.style.width = '0';
+  iframe.style.height = '0';
+  iframe.style.opacity = '0';
+  iframe.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(iframe);
+
+  const doc = iframe.contentWindow.document;
+  doc.open();
+  doc.write(`<!doctype html><html><head><meta charset="utf-8"><title>Ficha del estudiante</title><style>${css}</style></head><body>${html}</body></html>`);
+  doc.close();
+
+  iframe.onload = function() {
+    const iw = iframe.contentWindow;
+    const waitForImages = () => {
+      const imgs = iw.document.images;
+      for (let i = 0; i < imgs.length; i++) {
+        if (!imgs[i].complete) { setTimeout(waitForImages, 60); return; }
+      }
+      iw.focus();
+      iw.print();
+      iw.onafterprint = () => { try { document.body.removeChild(iframe); } catch (e) {} };
+      setTimeout(() => { try { document.body.removeChild(iframe); } catch (e) {} }, 1200);
+    };
+    waitForImages();
   };
 }
 </script>
