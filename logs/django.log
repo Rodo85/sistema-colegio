@@ -9160,3 +9160,1223 @@ INFO 2025-08-27 14:41:33,733 basehttp 8472 90708 "GET /config/especialidad-curso
 INFO 2025-08-27 14:41:33,946 basehttp 8472 90708 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%222%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 46
 INFO 2025-08-27 14:41:34,027 basehttp 8472 90708 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%222%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 46
 INFO 2025-08-27 14:41:34,103 basehttp 8472 90708 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%222%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 46
+INFO 2025-08-27 14:51:43,505 autoreload 8472 87732 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-08-27 14:51:44,516 autoreload 78860 63336 Watching for file changes with StatReloader
+INFO 2025-08-27 14:53:22,728 autoreload 78860 63336 D:\Proyecto Colegio\sistema_colegio\matricula\views.py changed, reloading.
+INFO 2025-08-27 14:53:23,660 autoreload 87212 56848 Watching for file changes with StatReloader
+INFO 2025-08-27 14:55:30,756 autoreload 87212 56848 D:\Proyecto Colegio\sistema_colegio\matricula\views.py changed, reloading.
+INFO 2025-08-27 14:55:31,670 autoreload 80820 89920 Watching for file changes with StatReloader
+INFO 2025-08-27 14:56:45,118 autoreload 80820 89920 D:\Proyecto Colegio\sistema_colegio\matricula\urls.py changed, reloading.
+INFO 2025-08-27 14:56:46,128 autoreload 75256 90872 Watching for file changes with StatReloader
+INFO 2025-08-27 14:56:59,599 autoreload 75256 90872 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-27 14:57:00,600 autoreload 65164 90900 Watching for file changes with StatReloader
+INFO 2025-08-27 14:57:17,216 autoreload 65164 90900 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-27 14:57:18,064 autoreload 87220 88760 Watching for file changes with StatReloader
+INFO 2025-08-27 14:57:21,677 autoreload 87220 88760 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-08-27 14:57:22,637 autoreload 87208 88200 Watching for file changes with StatReloader
+INFO 2025-08-27 14:58:17,779 autoreload 87208 88200 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-08-27 14:58:18,868 autoreload 76228 87584 Watching for file changes with StatReloader
+INFO 2025-08-27 14:58:37,489 autoreload 76228 87584 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-08-27 14:58:38,587 autoreload 67180 86324 Watching for file changes with StatReloader
+INFO 2025-08-27 14:59:15,021 autoreload 82156 87300 Watching for file changes with StatReloader
+INFO 2025-08-27 14:59:23,299 autoreload 67180 86324 D:\Proyecto Colegio\sistema_colegio\matricula\views.py changed, reloading.
+INFO 2025-08-27 14:59:23,356 autoreload 82156 87300 D:\Proyecto Colegio\sistema_colegio\matricula\urls.py changed, reloading.
+INFO 2025-08-27 14:59:24,339 autoreload 86780 90352 Watching for file changes with StatReloader
+INFO 2025-08-27 14:59:24,352 autoreload 66772 85180 Watching for file changes with StatReloader
+INFO 2025-08-27 15:00:01,640 basehttp 86780 87744 "POST /admin/logout/ HTTP/1.1" 200 2409
+INFO 2025-08-27 15:00:03,408 basehttp 86780 87744 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 15:00:03,418 basehttp 86780 87744 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 5518
+INFO 2025-08-27 15:03:06,519 basehttp 86780 87744 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+WARNING 2025-08-27 15:03:06,637 utils 86780 87744 Couldnt reverse consulta_estudiante
+WARNING 2025-08-27 15:03:06,640 utils 86780 87744 Couldnt reverse consulta_estudiante
+INFO 2025-08-27 15:03:06,659 basehttp 86780 87744 "GET /admin/ HTTP/1.1" 200 85743
+WARNING 2025-08-27 15:03:09,857 utils 86780 87744 Couldnt reverse consulta_estudiante
+INFO 2025-08-27 15:03:09,877 basehttp 86780 87744 "GET /admin/matricula/asignaciongrupos/ HTTP/1.1" 200 44494
+INFO 2025-08-27 15:03:09,972 basehttp 86780 87744 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+WARNING 2025-08-27 15:03:18,173 utils 86780 87744 Couldnt reverse consulta_estudiante
+INFO 2025-08-27 15:03:18,188 basehttp 86780 87744 "GET /matricula/asignacion-grupos/ HTTP/1.1" 200 29906
+INFO 2025-08-27 15:03:35,486 basehttp 86780 87744 "POST /matricula/ejecutar-asignacion-grupos/ HTTP/1.1" 200 929
+INFO 2025-08-27 15:03:43,805 basehttp 86780 87744 "POST /admin/logout/ HTTP/1.1" 200 2409
+INFO 2025-08-27 15:03:44,933 basehttp 86780 87744 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 15:03:44,940 basehttp 86780 87744 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 5518
+INFO 2025-08-27 15:07:02,581 basehttp 86780 95000 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+WARNING 2025-08-27 15:07:02,718 utils 86780 95000 Couldnt reverse consulta_estudiante
+WARNING 2025-08-27 15:07:02,723 utils 86780 95000 Couldnt reverse consulta_estudiante
+INFO 2025-08-27 15:07:02,748 basehttp 86780 95000 "GET /admin/ HTTP/1.1" 200 85743
+WARNING 2025-08-27 15:07:23,866 utils 86780 91192 Couldnt reverse consulta_estudiante
+INFO 2025-08-27 15:07:23,922 basehttp 86780 91192 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 61961
+INFO 2025-08-27 15:07:24,073 basehttp 86780 91192 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+WARNING 2025-08-27 15:07:51,927 utils 86780 91192 Couldnt reverse consulta_estudiante
+INFO 2025-08-27 15:07:53,365 basehttp 86780 91192 "GET /admin/matricula/estudiante/add/ HTTP/1.1" 200 174408
+INFO 2025-08-27 15:07:53,549 basehttp 86780 91192 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 15:07:53,975 basehttp 86780 63960 "GET /static/matricula/js/dependent-dropdowns.js HTTP/1.1" 200 17518
+INFO 2025-08-27 15:07:53,986 basehttp 86780 78552 "GET /static/matricula/js/autocomplete-correo.js HTTP/1.1" 200 987
+INFO 2025-08-27 15:07:54,014 basehttp 86780 60260 "GET /static/admin/js/admin/DateTimeShortcuts.js HTTP/1.1" 200 19319
+INFO 2025-08-27 15:07:54,022 basehttp 86780 89964 "GET /static/admin/js/calendar.js HTTP/1.1" 200 9141
+INFO 2025-08-27 15:07:54,022 basehttp 86780 63680 "GET /static/admin/js/inlines.js HTTP/1.1" 200 15628
+INFO 2025-08-27 15:07:54,836 views 86780 63680 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 15:07:54,838 basehttp 86780 63680 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 15:07:55,091 views 86780 89964 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 15:07:55,094 basehttp 86780 89964 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 15:07:55,471 views 86780 89964 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 15:07:55,473 basehttp 86780 89964 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 15:07:55,904 views 86780 89964 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 15:07:55,905 basehttp 86780 89964 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 15:07:56,460 views 86780 89964 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 15:07:56,462 basehttp 86780 89964 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 15:07:56,788 views 86780 89964 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 15:07:56,789 basehttp 86780 89964 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 15:07:57,859 views 86780 89964 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 15:07:57,862 basehttp 86780 89964 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 15:09:00,109 basehttp 86780 89964 "GET /static/jazzmin/img/calendar-icons.svg HTTP/1.1" 200 1094
+INFO 2025-08-27 15:10:11,516 views 86780 89964 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 15:10:11,517 basehttp 86780 89964 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 15:12:33,161 basehttp 86780 89964 "GET /admin/matricula/personacontacto/add/?_to_field=id&_popup=1 HTTP/1.1" 200 27350
+INFO 2025-08-27 15:12:33,461 basehttp 86780 89964 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 15:14:13,630 basehttp 86780 21732 "POST /admin/matricula/personacontacto/add/?_to_field=id&_popup=1 HTTP/1.1" 200 27935
+INFO 2025-08-27 15:14:13,909 basehttp 86780 21732 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 15:14:20,581 basehttp 86780 21732 "POST /admin/matricula/personacontacto/add/?_to_field=id&_popup=1 HTTP/1.1" 200 397
+INFO 2025-08-27 15:14:20,999 basehttp 86780 21732 "GET /static/admin/js/popup_response.js HTTP/1.1" 200 1535
+INFO 2025-08-27 15:14:40,457 basehttp 86780 21732 "POST /admin/matricula/estudiante/add/ HTTP/1.1" 302 0
+WARNING 2025-08-27 15:14:40,701 utils 86780 21732 Couldnt reverse consulta_estudiante
+INFO 2025-08-27 15:14:40,740 basehttp 86780 21732 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 62544
+INFO 2025-08-27 15:14:40,975 basehttp 86780 21732 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+WARNING 2025-08-27 15:15:00,940 utils 86780 21732 Couldnt reverse consulta_estudiante
+INFO 2025-08-27 15:15:00,970 basehttp 86780 21732 "GET /admin/matricula/estudiante/?q=112630272 HTTP/1.1" 200 46494
+INFO 2025-08-27 15:15:01,212 basehttp 86780 21732 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+WARNING 2025-08-27 15:15:05,039 utils 86780 21732 Couldnt reverse consulta_estudiante
+ERROR 2025-08-27 15:15:06,347 log 86780 21732 Internal Server Error: /admin/matricula/matriculaacademica/add/
+Traceback (most recent call last):
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 210, in render
+    return template.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 173, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\defaulttags.py", line 243, in render
+    nodelist.append(node.render_annotated(context))
+                    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\defaulttags.py", line 327, in render
+    return nodelist.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 210, in render
+    return template.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 173, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\defaulttags.py", line 243, in render
+    nodelist.append(node.render_annotated(context))
+                    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\defaulttags.py", line 243, in render
+    nodelist.append(node.render_annotated(context))
+                    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\defaulttags.py", line 327, in render
+    return nodelist.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1081, in render
+    return render_value_in_context(output, context)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1058, in render_value_in_context
+    value = str(value)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\forms\utils.py", line 79, in __str__
+    return self.as_widget()
+           ~~~~~~~~~~~~~~^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\forms\boundfield.py", line 108, in as_widget
+    return widget.render(
+           ~~~~~~~~~~~~~^
+        name=self.html_initial_name if only_initial else self.html_name,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        renderer=self.form.renderer,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\forms\widgets.py", line 329, in render
+    context = self.get_context(name, value, attrs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\widgets.py", line 329, in get_context
+    "rendered_widget": self.widget.render(name, value, attrs),
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\dal\widgets.py", line 149, in render
+    widget = super(WidgetMixin, self).render(name, value, attrs, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\forms\widgets.py", line 329, in render
+    context = self.get_context(name, value, attrs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\forms\widgets.py", line 830, in get_context
+    context = super().get_context(name, value, attrs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\forms\widgets.py", line 780, in get_context
+    context = super().get_context(name, value, attrs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\forms\widgets.py", line 322, in get_context
+    "attrs": self.build_attrs(self.attrs, attrs),
+             ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\dal\widgets.py", line 58, in build_attrs
+    if self.url is not None:
+       ^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\dal\widgets.py", line 164, in _get_url
+    return reverse(self._url)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'especialidad-autocomplete' not found. 'especialidad-autocomplete' is not a valid view function or pattern name.
+ERROR 2025-08-27 15:15:06,399 basehttp 86780 21732 "GET /admin/matricula/matriculaacademica/add/?estudiante=942 HTTP/1.1" 500 712726
+WARNING 2025-08-27 15:15:10,452 utils 86780 21732 Couldnt reverse consulta_estudiante
+INFO 2025-08-27 15:15:10,505 basehttp 86780 21732 "GET /admin/matricula/estudiante/?q=112630272 HTTP/1.1" 200 46494
+INFO 2025-08-27 15:15:10,761 basehttp 86780 21732 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+WARNING 2025-08-27 15:15:55,906 utils 86780 21732 Couldnt reverse consulta_estudiante
+INFO 2025-08-27 15:15:56,003 basehttp 86780 21732 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 61961
+INFO 2025-08-27 15:15:56,217 basehttp 86780 21732 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+WARNING 2025-08-27 15:16:26,956 utils 86780 69036 Couldnt reverse consulta_estudiante
+INFO 2025-08-27 15:16:27,003 basehttp 86780 69036 "GET /admin/matricula/estudiante/?q=112630272 HTTP/1.1" 200 46494
+INFO 2025-08-27 15:16:27,261 basehttp 86780 69036 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+WARNING 2025-08-27 15:16:31,925 utils 86780 93992 Couldnt reverse consulta_estudiante
+INFO 2025-08-27 15:16:36,352 basehttp 86780 93992 "GET /admin/matricula/estudiante/942/change/?_changelist_filters=q%3D112630272 HTTP/1.1" 200 224266
+INFO 2025-08-27 15:16:36,694 basehttp 86780 93992 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 15:16:36,753 basehttp 86780 22372 "GET /media/estudiantes/fotos/2025/08/mascota.png HTTP/1.1" 200 98245
+INFO 2025-08-27 15:16:39,641 views 86780 90860 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 15:16:39,642 basehttp 86780 90860 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 15:16:39,841 views 86780 90860 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 15:16:39,843 basehttp 86780 90860 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 15:16:39,857 views 86780 65972 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 15:16:39,859 basehttp 86780 65972 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 15:16:40,030 views 86780 90860 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 15:16:40,031 basehttp 86780 90860 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 15:16:40,046 views 86780 65972 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 15:16:40,048 basehttp 86780 65972 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 15:16:40,156 views 86780 90860 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 15:16:40,157 basehttp 86780 90860 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 15:16:40,178 views 86780 65972 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 15:16:40,179 basehttp 86780 65972 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 15:16:40,293 views 86780 90860 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 15:16:40,295 basehttp 86780 90860 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 15:16:40,325 views 86780 65972 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 15:16:40,328 basehttp 86780 65972 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 15:16:40,449 views 86780 20976 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 15:16:40,450 basehttp 86780 20976 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 15:16:40,471 views 86780 65972 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 15:16:40,472 basehttp 86780 65972 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 15:16:40,606 views 86780 20976 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 15:16:40,608 basehttp 86780 20976 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 15:16:40,726 views 86780 20976 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 15:16:40,727 basehttp 86780 20976 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 15:16:40,914 views 86780 20976 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 15:16:40,917 basehttp 86780 20976 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+WARNING 2025-08-27 15:18:21,492 utils 86780 91924 Couldnt reverse consulta_estudiante
+ERROR 2025-08-27 15:18:22,205 log 86780 91924 Internal Server Error: /admin/matricula/matriculaacademica/add/
+Traceback (most recent call last):
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 210, in render
+    return template.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 173, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\defaulttags.py", line 243, in render
+    nodelist.append(node.render_annotated(context))
+                    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\defaulttags.py", line 327, in render
+    return nodelist.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 210, in render
+    return template.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 173, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\defaulttags.py", line 243, in render
+    nodelist.append(node.render_annotated(context))
+                    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\defaulttags.py", line 243, in render
+    nodelist.append(node.render_annotated(context))
+                    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\defaulttags.py", line 327, in render
+    return nodelist.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1081, in render
+    return render_value_in_context(output, context)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1058, in render_value_in_context
+    value = str(value)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\forms\utils.py", line 79, in __str__
+    return self.as_widget()
+           ~~~~~~~~~~~~~~^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\forms\boundfield.py", line 108, in as_widget
+    return widget.render(
+           ~~~~~~~~~~~~~^
+        name=self.html_initial_name if only_initial else self.html_name,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        renderer=self.form.renderer,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\forms\widgets.py", line 329, in render
+    context = self.get_context(name, value, attrs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\widgets.py", line 329, in get_context
+    "rendered_widget": self.widget.render(name, value, attrs),
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\dal\widgets.py", line 149, in render
+    widget = super(WidgetMixin, self).render(name, value, attrs, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\forms\widgets.py", line 329, in render
+    context = self.get_context(name, value, attrs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\forms\widgets.py", line 830, in get_context
+    context = super().get_context(name, value, attrs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\forms\widgets.py", line 780, in get_context
+    context = super().get_context(name, value, attrs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\forms\widgets.py", line 322, in get_context
+    "attrs": self.build_attrs(self.attrs, attrs),
+             ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\dal\widgets.py", line 58, in build_attrs
+    if self.url is not None:
+       ^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\dal\widgets.py", line 164, in _get_url
+    return reverse(self._url)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'especialidad-autocomplete' not found. 'especialidad-autocomplete' is not a valid view function or pattern name.
+ERROR 2025-08-27 15:18:22,245 basehttp 86780 91924 "GET /admin/matricula/matriculaacademica/add/?estudiante=942 HTTP/1.1" 500 712759
+WARNING 2025-08-27 15:18:31,648 utils 86780 71568 Couldnt reverse consulta_estudiante
+INFO 2025-08-27 15:18:35,834 basehttp 86780 71568 "GET /admin/matricula/estudiante/942/change/?_changelist_filters=q%3D112630272 HTTP/1.1" 200 224266
+INFO 2025-08-27 15:18:36,049 basehttp 86780 71568 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 15:18:37,155 views 86780 71568 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 15:18:37,158 basehttp 86780 71568 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 15:18:37,319 views 86780 84380 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 15:18:37,322 basehttp 86780 84380 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 15:18:37,337 views 86780 71568 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 15:18:37,339 basehttp 86780 71568 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 15:18:37,443 views 86780 84380 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 15:18:37,444 basehttp 86780 84380 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 15:18:37,547 views 86780 84380 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 15:18:37,548 basehttp 86780 84380 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 15:18:37,757 views 86780 84380 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 15:18:37,759 basehttp 86780 84380 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 15:18:38,046 views 86780 84380 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 15:18:38,047 basehttp 86780 84380 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 15:18:40,126 views 86780 93468 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 15:18:40,126 views 86780 91548 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 15:18:40,128 basehttp 86780 93468 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 15:18:40,128 basehttp 86780 91548 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 15:18:40,279 views 86780 91548 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 15:18:40,280 views 86780 93468 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 15:18:40,281 basehttp 86780 91548 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 15:18:40,282 basehttp 86780 93468 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 15:18:40,433 views 86780 91548 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 15:18:40,434 basehttp 86780 91548 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 15:18:40,549 views 86780 93468 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 15:18:40,550 basehttp 86780 93468 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 15:18:40,705 views 86780 91548 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 15:18:40,707 basehttp 86780 91548 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+WARNING 2025-08-27 15:21:25,207 utils 86780 87376 Couldnt reverse consulta_estudiante
+ERROR 2025-08-27 15:21:25,750 log 86780 87376 Internal Server Error: /admin/matricula/matriculaacademica/add/
+Traceback (most recent call last):
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 210, in render
+    return template.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 173, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\defaulttags.py", line 243, in render
+    nodelist.append(node.render_annotated(context))
+                    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\defaulttags.py", line 327, in render
+    return nodelist.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\loader_tags.py", line 210, in render
+    return template.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 173, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\defaulttags.py", line 243, in render
+    nodelist.append(node.render_annotated(context))
+                    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\defaulttags.py", line 243, in render
+    nodelist.append(node.render_annotated(context))
+                    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\defaulttags.py", line 327, in render
+    return nodelist.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1081, in render
+    return render_value_in_context(output, context)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\template\base.py", line 1058, in render_value_in_context
+    value = str(value)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\forms\utils.py", line 79, in __str__
+    return self.as_widget()
+           ~~~~~~~~~~~~~~^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\forms\boundfield.py", line 108, in as_widget
+    return widget.render(
+           ~~~~~~~~~~~~~^
+        name=self.html_initial_name if only_initial else self.html_name,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        renderer=self.form.renderer,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\forms\widgets.py", line 329, in render
+    context = self.get_context(name, value, attrs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\widgets.py", line 329, in get_context
+    "rendered_widget": self.widget.render(name, value, attrs),
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\dal\widgets.py", line 149, in render
+    widget = super(WidgetMixin, self).render(name, value, attrs, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\forms\widgets.py", line 329, in render
+    context = self.get_context(name, value, attrs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\forms\widgets.py", line 830, in get_context
+    context = super().get_context(name, value, attrs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\forms\widgets.py", line 780, in get_context
+    context = super().get_context(name, value, attrs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\forms\widgets.py", line 322, in get_context
+    "attrs": self.build_attrs(self.attrs, attrs),
+             ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\dal\widgets.py", line 58, in build_attrs
+    if self.url is not None:
+       ^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\dal\widgets.py", line 164, in _get_url
+    return reverse(self._url)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'especialidad-autocomplete' not found. 'especialidad-autocomplete' is not a valid view function or pattern name.
+ERROR 2025-08-27 15:21:25,770 basehttp 86780 87376 "GET /admin/matricula/matriculaacademica/add/?estudiante=942 HTTP/1.1" 500 712759
+INFO 2025-08-27 15:22:08,839 autoreload 66772 85180 D:\Proyecto Colegio\sistema_colegio\matricula\forms.py changed, reloading.
+INFO 2025-08-27 15:22:08,925 autoreload 86780 90352 D:\Proyecto Colegio\sistema_colegio\matricula\forms.py changed, reloading.
+INFO 2025-08-27 15:22:11,343 autoreload 87744 93160 Watching for file changes with StatReloader
+INFO 2025-08-27 15:22:11,462 autoreload 70452 92908 Watching for file changes with StatReloader
+WARNING 2025-08-27 15:22:20,726 utils 87744 81464 Couldnt reverse consulta_estudiante
+INFO 2025-08-27 15:22:25,159 basehttp 87744 81464 "GET /admin/matricula/estudiante/942/change/?_changelist_filters=q%3D112630272 HTTP/1.1" 200 224266
+INFO 2025-08-27 15:22:25,482 basehttp 87744 81464 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 15:22:25,780 basehttp 87744 94052 "GET /media/estudiantes/fotos/2025/08/mascota.png HTTP/1.1" 200 98245
+INFO 2025-08-27 15:22:26,634 views 87744 94052 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 15:22:26,636 basehttp 87744 94052 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 15:22:26,829 views 87744 81464 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 15:22:26,831 basehttp 87744 81464 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 15:22:26,835 views 87744 94052 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 15:22:26,836 basehttp 87744 94052 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 15:22:27,013 views 87744 81464 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 15:22:27,016 basehttp 87744 81464 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 15:22:27,142 views 87744 94052 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 15:22:27,145 basehttp 87744 94052 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 15:22:27,324 views 87744 94052 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 15:22:27,326 basehttp 87744 94052 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 15:22:27,557 views 87744 94052 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 15:22:27,559 basehttp 87744 94052 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 15:22:27,748 views 87744 94052 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 15:22:27,750 basehttp 87744 94052 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 15:22:28,158 views 87744 94052 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 15:22:28,160 basehttp 87744 94052 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 15:22:28,465 views 87744 94052 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 15:22:28,470 basehttp 87744 94052 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 15:22:28,610 views 87744 81464 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 15:22:28,612 basehttp 87744 81464 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 15:22:28,789 views 87744 81464 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 15:22:28,790 basehttp 87744 81464 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-08-27 15:22:29,648 views 87744 81464 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 15:22:29,651 basehttp 87744 81464 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 15:22:29,813 views 87744 81464 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-08-27 15:22:29,815 basehttp 87744 81464 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+WARNING 2025-08-27 15:22:30,684 utils 87744 81464 Couldnt reverse consulta_estudiante
+INFO 2025-08-27 15:22:30,868 basehttp 87744 81464 "GET /admin/matricula/matriculaacademica/add/?estudiante=942 HTTP/1.1" 200 57190
+INFO 2025-08-27 15:22:30,967 basehttp 87744 94052 "GET /static/matricula/js/dependent-especialidad.js HTTP/1.1" 304 0
+INFO 2025-08-27 15:22:30,968 basehttp 87744 80428 "GET /static/matricula/js/persist-admin-filters.js HTTP/1.1" 304 0
+INFO 2025-08-27 15:22:31,088 basehttp 87744 81464 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 15:22:34,972 basehttp 87744 81464 "POST /matricula/get-especialidades-disponibles/ HTTP/1.1" 200 72
+INFO 2025-08-27 15:22:35,507 basehttp 87744 81464 "GET /admin/autocomplete/?app_label=matricula&model_name=matriculaacademica&field_name=nivel HTTP/1.1" 200 497
+INFO 2025-08-27 15:22:37,593 autoreload 70452 92908 D:\Proyecto Colegio\sistema_colegio\matricula\forms.py changed, reloading.
+INFO 2025-08-27 15:22:37,594 autoreload 87744 93160 D:\Proyecto Colegio\sistema_colegio\matricula\forms.py changed, reloading.
+INFO 2025-08-27 15:22:39,710 autoreload 91876 86780 Watching for file changes with StatReloader
+INFO 2025-08-27 15:22:39,749 autoreload 85320 91204 Watching for file changes with StatReloader
+INFO 2025-08-27 15:22:40,553 basehttp 91876 88192 "GET /matricula/seccion-autocomplete/?forward=%7B%22curso_lectivo%22%3A%221%22%2C%22nivel%22%3A%228%22%7D HTTP/1.1" 200 359
+INFO 2025-08-27 15:22:42,844 basehttp 91876 88192 "GET /matricula/subgrupo-autocomplete/?forward=%7B%22curso_lectivo%22%3A%221%22%2C%22seccion%22%3A%228%22%7D HTTP/1.1" 200 154
+INFO 2025-08-27 15:22:46,174 basehttp 91876 88192 "GET /admin/autocomplete/?app_label=matricula&model_name=matriculaacademica&field_name=nivel HTTP/1.1" 200 497
+INFO 2025-08-27 15:22:48,044 basehttp 91876 88192 "GET /matricula/especialidad-autocomplete/?forward=%7B%22curso_lectivo%22%3A%221%22%2C%22nivel%22%3A%2210%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 15:22:49,559 basehttp 91876 88192 "GET /matricula/seccion-autocomplete/?forward=%7B%22curso_lectivo%22%3A%221%22%2C%22nivel%22%3A%2210%22%7D HTTP/1.1" 200 264
+INFO 2025-08-27 15:22:51,728 basehttp 91876 88192 "GET /admin/autocomplete/?app_label=matricula&model_name=matriculaacademica&field_name=nivel HTTP/1.1" 200 497
+INFO 2025-08-27 15:22:54,209 basehttp 91876 88192 "GET /matricula/especialidad-autocomplete/?forward=%7B%22curso_lectivo%22%3A%222%22%2C%22nivel%22%3A%2210%22%7D HTTP/1.1" 200 46
+WARNING 2025-08-27 15:23:01,004 utils 91876 88192 Couldnt reverse consulta_estudiante
+INFO 2025-08-27 15:23:01,211 basehttp 91876 88192 "GET /admin/matricula/matriculaacademica/add/?estudiante=942 HTTP/1.1" 200 57190
+INFO 2025-08-27 15:23:01,466 basehttp 91876 88192 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+WARNING 2025-08-27 15:23:06,030 utils 91876 88192 Couldnt reverse consulta_estudiante
+INFO 2025-08-27 15:23:06,124 basehttp 91876 88192 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 61961
+INFO 2025-08-27 15:23:06,491 basehttp 91876 88192 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 15:41:08,700 autoreload 5988 13152 Watching for file changes with StatReloader
+WARNING 2025-08-27 15:41:20,960 utils 5988 8204 Couldnt reverse consulta_estudiante
+WARNING 2025-08-27 15:41:20,976 utils 5988 8204 Couldnt reverse consulta_estudiante
+INFO 2025-08-27 15:41:21,080 basehttp 5988 8204 "GET /admin/ HTTP/1.1" 200 85249
+INFO 2025-08-27 15:41:26,323 basehttp 5988 21944 "POST /admin/logout/ HTTP/1.1" 200 2409
+INFO 2025-08-27 15:41:27,732 basehttp 5988 21944 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 15:41:27,750 basehttp 5988 21944 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 5518
+WARNING 2025-08-27 15:41:27,969 log 5988 21944 Not Found: /favicon.ico
+WARNING 2025-08-27 15:41:27,970 basehttp 5988 21944 "GET /favicon.ico HTTP/1.1" 404 3331
+INFO 2025-08-27 15:41:37,956 basehttp 5988 21944 "GET /admin HTTP/1.1" 301 0
+INFO 2025-08-27 15:41:37,963 basehttp 5988 17624 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 15:41:37,973 basehttp 5988 17624 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 5518
+INFO 2025-08-27 15:41:48,131 basehttp 5988 17624 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+WARNING 2025-08-27 15:41:48,365 utils 5988 17624 Couldnt reverse consulta_estudiante
+WARNING 2025-08-27 15:41:48,374 utils 5988 17624 Couldnt reverse consulta_estudiante
+INFO 2025-08-27 15:41:48,423 basehttp 5988 17624 "GET /admin/ HTTP/1.1" 200 85261
+WARNING 2025-08-27 15:55:28,647 utils 5988 14420 Couldnt reverse consulta_estudiante
+INFO 2025-08-27 15:55:28,997 basehttp 5988 14420 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 61961
+INFO 2025-08-27 15:55:29,403 basehttp 5988 14420 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+WARNING 2025-08-27 15:55:37,398 utils 5988 14420 Couldnt reverse consulta_estudiante
+INFO 2025-08-27 15:55:37,420 basehttp 5988 14420 "GET /admin/matricula/estudiante/?q=112630272 HTTP/1.1" 200 46494
+INFO 2025-08-27 15:55:37,618 basehttp 5988 14420 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+WARNING 2025-08-27 15:55:41,797 utils 5988 14420 Couldnt reverse consulta_estudiante
+INFO 2025-08-27 15:55:42,043 basehttp 5988 14420 "GET /admin/matricula/matriculaacademica/add/?estudiante=942 HTTP/1.1" 200 57190
+INFO 2025-08-27 15:55:42,117 basehttp 5988 13472 "GET /static/matricula/js/persist-admin-filters.js HTTP/1.1" 304 0
+INFO 2025-08-27 15:55:42,121 basehttp 5988 16904 "GET /static/matricula/js/dependent-especialidad.js HTTP/1.1" 304 0
+INFO 2025-08-27 15:55:42,248 basehttp 5988 14420 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 15:55:58,413 basehttp 5988 14420 "GET /admin/autocomplete/?app_label=matricula&model_name=matriculaacademica&field_name=nivel HTTP/1.1" 200 497
+INFO 2025-08-27 15:56:07,908 basehttp 5988 14420 "GET /matricula/seccion-autocomplete/?forward=%7B%22curso_lectivo%22%3A%221%22%2C%22nivel%22%3A%227%22%7D HTTP/1.1" 200 304
+INFO 2025-08-27 15:56:21,273 basehttp 5988 14420 "GET /matricula/subgrupo-autocomplete/?forward=%7B%22curso_lectivo%22%3A%221%22%2C%22seccion%22%3A%221%22%7D HTTP/1.1" 200 152
+INFO 2025-08-27 15:56:51,612 basehttp 5988 14420 "GET /admin/autocomplete/?app_label=matricula&model_name=matriculaacademica&field_name=nivel HTTP/1.1" 200 497
+INFO 2025-08-27 15:56:55,152 basehttp 5988 14420 "GET /admin/autocomplete/?app_label=matricula&model_name=matriculaacademica&field_name=nivel HTTP/1.1" 200 497
+INFO 2025-08-27 15:56:59,034 basehttp 5988 14420 "GET /admin/autocomplete/?app_label=matricula&model_name=matriculaacademica&field_name=nivel HTTP/1.1" 200 497
+INFO 2025-08-27 15:57:01,698 basehttp 5988 14420 "GET /matricula/especialidad-autocomplete/?forward=%7B%22curso_lectivo%22%3A%221%22%2C%22nivel%22%3A%2210%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 15:57:10,834 basehttp 5988 14420 "GET /matricula/especialidad-autocomplete/?forward=%7B%22curso_lectivo%22%3A%222%22%2C%22nivel%22%3A%2210%22%7D HTTP/1.1" 200 46
+INFO 2025-08-27 15:57:12,533 basehttp 5988 14420 "GET /matricula/especialidad-autocomplete/?forward=%7B%22curso_lectivo%22%3A%222%22%2C%22nivel%22%3A%2210%22%7D HTTP/1.1" 200 46
+INFO 2025-08-27 15:57:15,016 basehttp 5988 14420 "GET /matricula/especialidad-autocomplete/?forward=%7B%22curso_lectivo%22%3A%221%22%2C%22nivel%22%3A%2210%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 15:57:17,910 basehttp 5988 14420 "GET /admin/autocomplete/?app_label=matricula&model_name=matriculaacademica&field_name=nivel HTTP/1.1" 200 497
+INFO 2025-08-27 15:57:20,637 basehttp 5988 14420 "GET /matricula/especialidad-autocomplete/?forward=%7B%22curso_lectivo%22%3A%221%22%2C%22nivel%22%3A%2211%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 15:57:35,831 basehttp 5988 14420 "GET /matricula/especialidad-autocomplete/?forward=%7B%22curso_lectivo%22%3A%221%22%2C%22nivel%22%3A%2211%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 15:57:38,390 basehttp 5988 14420 "GET /admin/autocomplete/?app_label=matricula&model_name=matriculaacademica&field_name=nivel HTTP/1.1" 200 497
+INFO 2025-08-27 15:57:40,878 basehttp 5988 14420 "GET /matricula/seccion-autocomplete/?forward=%7B%22curso_lectivo%22%3A%221%22%2C%22nivel%22%3A%227%22%7D HTTP/1.1" 200 304
+INFO 2025-08-27 15:57:42,272 basehttp 5988 14420 "GET /matricula/seccion-autocomplete/?forward=%7B%22curso_lectivo%22%3A%221%22%2C%22nivel%22%3A%227%22%7D HTTP/1.1" 200 304
+INFO 2025-08-27 15:57:44,822 basehttp 5988 14420 "GET /matricula/subgrupo-autocomplete/?forward=%7B%22curso_lectivo%22%3A%221%22%2C%22seccion%22%3A%221%22%7D HTTP/1.1" 200 152
+INFO 2025-08-27 15:57:48,577 basehttp 5988 14420 "POST /admin/matricula/matriculaacademica/add/?estudiante=942 HTTP/1.1" 302 0
+WARNING 2025-08-27 15:57:49,097 utils 5988 14420 Couldnt reverse consulta_estudiante
+INFO 2025-08-27 15:57:49,748 basehttp 5988 14420 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 157643
+INFO 2025-08-27 15:57:49,979 basehttp 5988 14420 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+WARNING 2025-08-27 15:58:15,061 utils 5988 14420 Couldnt reverse consulta_estudiante
+INFO 2025-08-27 15:58:15,075 basehttp 5988 14420 "GET /admin/matricula/asignaciongrupos/ HTTP/1.1" 200 44494
+INFO 2025-08-27 15:58:15,231 basehttp 5988 14420 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+WARNING 2025-08-27 16:02:47,386 utils 5988 14420 Couldnt reverse consulta_estudiante
+WARNING 2025-08-27 16:02:47,391 utils 5988 14420 Couldnt reverse consulta_estudiante
+INFO 2025-08-27 16:02:47,417 basehttp 5988 14420 "GET /admin/ HTTP/1.1" 200 84956
+WARNING 2025-08-27 16:02:52,631 utils 5988 14420 Couldnt reverse consulta_estudiante
+INFO 2025-08-27 16:02:52,645 basehttp 5988 14420 "GET /admin/matricula/plantillaimpresionmatricula/ HTTP/1.1" 200 37433
+INFO 2025-08-27 16:02:52,801 basehttp 5988 14420 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+WARNING 2025-08-27 16:02:56,744 utils 5988 14420 Couldnt reverse consulta_estudiante
+INFO 2025-08-27 16:02:56,968 basehttp 5988 14420 "GET /admin/matricula/plantillaimpresionmatricula/add/ HTTP/1.1" 200 44255
+INFO 2025-08-27 16:02:57,206 basehttp 5988 14420 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 16:03:59,496 basehttp 5988 14420 "POST /admin/matricula/plantillaimpresionmatricula/add/ HTTP/1.1" 302 0
+WARNING 2025-08-27 16:03:59,801 utils 5988 14420 Couldnt reverse consulta_estudiante
+INFO 2025-08-27 16:03:59,821 basehttp 5988 14420 "GET /admin/matricula/plantillaimpresionmatricula/ HTTP/1.1" 200 41088
+INFO 2025-08-27 16:03:59,997 basehttp 5988 14420 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 16:04:11,710 autoreload 5988 13152 D:\Proyecto Colegio\sistema_colegio\sis_colegio\jazzmin_config.py changed, reloading.
+INFO 2025-08-27 16:04:15,285 autoreload 23956 23572 Watching for file changes with StatReloader
+INFO 2025-08-27 16:04:22,319 basehttp 23956 1300 "GET /admin/matricula/plantillaimpresionmatricula/ HTTP/1.1" 200 40455
+INFO 2025-08-27 16:04:22,565 basehttp 23956 1300 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 16:04:24,228 basehttp 23956 1300 "GET /matricula/consulta-estudiante/ HTTP/1.1" 200 32504
+INFO 2025-08-27 16:04:26,648 autoreload 23956 23572 D:\Proyecto Colegio\sistema_colegio\sis_colegio\jazzmin_config.py changed, reloading.
+INFO 2025-08-27 16:04:28,454 autoreload 23700 16484 Watching for file changes with StatReloader
+INFO 2025-08-27 16:04:30,457 basehttp 23700 12448 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 157007
+INFO 2025-08-27 16:04:30,642 basehttp 23700 12448 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 16:04:35,998 basehttp 23700 12448 "GET /matricula/consulta-estudiante/ HTTP/1.1" 200 32504
+INFO 2025-08-27 16:04:40,059 basehttp 23700 12448 "POST /matricula/consulta-estudiante/ HTTP/1.1" 200 37432
+INFO 2025-08-27 16:04:40,603 basehttp 23700 12448 "GET /media/plantillas/logos_mep/logoMep.png HTTP/1.1" 200 15748
+INFO 2025-08-27 16:04:40,607 basehttp 23700 3048 "GET /media/instituciones/logos/logoMaximo.png HTTP/1.1" 200 43809
+INFO 2025-08-27 16:04:45,090 basehttp 23700 3048 "GET /media/plantillas/logos_mep/logoMep.png HTTP/1.1" 200 15748
+INFO 2025-08-27 16:04:45,229 basehttp 23700 12448 "GET /media/instituciones/logos/logoMaximo.png HTTP/1.1" 200 43809
+INFO 2025-08-27 16:04:53,129 basehttp 23700 12448 "GET /admin/ HTTP/1.1" 200 85021
+INFO 2025-08-27 16:05:07,712 basehttp 23700 12448 "GET /admin/ HTTP/1.1" 200 85020
+INFO 2025-08-27 16:05:09,175 basehttp 23700 12448 "GET /admin/ HTTP/1.1" 200 85020
+INFO 2025-08-27 16:05:10,929 basehttp 23700 12448 "GET /matricula/consulta-estudiante/ HTTP/1.1" 200 32504
+INFO 2025-08-27 16:05:20,075 basehttp 23700 12448 "POST /matricula/consulta-estudiante/ HTTP/1.1" 200 37648
+INFO 2025-08-27 16:05:20,251 basehttp 23700 3048 "GET /media/plantillas/logos_mep/logoMep.png HTTP/1.1" 200 15748
+INFO 2025-08-27 16:05:20,252 basehttp 23700 12448 "GET /media/estudiantes/fotos/2025/08/mascota.png HTTP/1.1" 200 98245
+INFO 2025-08-27 16:05:20,255 basehttp 23700 23780 "GET /media/instituciones/logos/logoMaximo.png HTTP/1.1" 200 43809
+INFO 2025-08-27 16:06:24,500 basehttp 23700 23780 "GET /media/estudiantes/fotos/2025/08/mascota.png HTTP/1.1" 200 98245
+INFO 2025-08-27 16:06:24,520 basehttp 23700 12448 "GET /media/plantillas/logos_mep/logoMep.png HTTP/1.1" 200 15748
+INFO 2025-08-27 16:06:24,523 basehttp 23700 3048 "GET /media/instituciones/logos/logoMaximo.png HTTP/1.1" 200 43809
+INFO 2025-08-27 16:07:06,981 basehttp 23700 3048 "GET /media/estudiantes/fotos/2025/08/mascota.png HTTP/1.1" 200 98245
+INFO 2025-08-27 16:07:06,986 basehttp 23700 12448 "GET /media/plantillas/logos_mep/logoMep.png HTTP/1.1" 200 15748
+INFO 2025-08-27 16:07:06,992 basehttp 23700 23780 "GET /media/instituciones/logos/logoMaximo.png HTTP/1.1" 200 43809
+INFO 2025-08-27 16:09:11,505 basehttp 23700 5148 "GET /admin/ HTTP/1.1" 200 85022
+INFO 2025-08-27 16:09:27,476 basehttp 23700 13408 "GET /admin/config_institucional/especialidadcursolectivo/ HTTP/1.1" 200 50929
+INFO 2025-08-27 16:09:27,644 basehttp 23700 13408 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 16:09:30,387 basehttp 23700 13408 "GET /admin/config_institucional/especialidadcursolectivo/add/ HTTP/1.1" 200 45711
+INFO 2025-08-27 16:09:30,582 basehttp 23700 13408 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 16:09:33,656 basehttp 23700 13408 "GET /admin/config_institucional/especialidadcursolectivo/ HTTP/1.1" 200 50929
+INFO 2025-08-27 16:09:33,800 basehttp 23700 13408 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 16:09:35,210 basehttp 23700 13408 "GET /config/gestionar-especialidades-curso-lectivo/ HTTP/1.1" 200 38626
+INFO 2025-08-27 16:09:38,577 basehttp 23700 13408 "GET /config/gestionar-especialidades-curso-lectivo/?institucion=1&curso_lectivo=1&modalidad= HTTP/1.1" 200 39877
+INFO 2025-08-27 16:09:47,556 basehttp 23700 13408 "GET /admin/config_institucional/seccioncursolectivo/ HTTP/1.1" 200 64150
+INFO 2025-08-27 16:09:47,696 basehttp 23700 13408 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 16:09:51,862 basehttp 23700 13408 "GET /config/gestionar-secciones-curso-lectivo/ HTTP/1.1" 200 51175
+INFO 2025-08-27 16:11:05,649 basehttp 23700 13408 "POST /admin/logout/ HTTP/1.1" 200 2409
+INFO 2025-08-27 16:11:06,563 basehttp 23700 13408 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 16:11:06,576 basehttp 23700 13408 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 5518
+WARNING 2025-08-27 16:11:06,672 log 23700 13408 Not Found: /favicon.ico
+WARNING 2025-08-27 16:11:06,673 basehttp 23700 13408 "GET /favicon.ico HTTP/1.1" 404 3331
+INFO 2025-08-27 16:11:11,899 signals 23700 13408 Signal user_logged_in ejecutándose para usuario: directormaximo@gmail.com
+INFO 2025-08-27 16:11:11,939 signals 23700 13408 Asignando automáticamente institución única: CTP. MÁXIMO QUESADA
+INFO 2025-08-27 16:11:11,952 basehttp 23700 13408 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 16:11:12,253 basehttp 23700 13408 "GET /admin/ HTTP/1.1" 200 77392
+INFO 2025-08-27 16:11:17,417 basehttp 23700 13408 "GET /admin/config_institucional/especialidadcursolectivo/ HTTP/1.1" 200 50773
+INFO 2025-08-27 16:11:17,558 basehttp 23700 13408 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 16:11:21,105 basehttp 23700 13408 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 62182
+INFO 2025-08-27 16:11:21,436 basehttp 23700 13408 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 16:11:26,658 basehttp 23700 13408 "GET /admin/matricula/estudiante/add/ HTTP/1.1" 200 171230
+INFO 2025-08-27 16:11:26,846 basehttp 23700 13408 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 16:11:27,620 views 23700 13408 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 16:11:27,621 basehttp 23700 13408 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 16:11:27,746 views 23700 23308 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 16:11:27,747 basehttp 23700 23308 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 16:11:28,201 views 23700 23308 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 16:11:28,203 basehttp 23700 23308 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 16:11:28,746 views 23700 23308 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 16:11:28,749 basehttp 23700 23308 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 16:11:29,314 views 23700 23308 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 16:11:29,318 basehttp 23700 23308 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 16:11:29,616 views 23700 23308 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 16:11:29,617 basehttp 23700 23308 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 16:11:30,688 views 23700 23308 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-08-27 16:11:30,690 basehttp 23700 23308 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-08-27 18:40:14,928 autoreload 25300 13328 Watching for file changes with StatReloader
+INFO 2025-08-27 18:40:38,689 basehttp 25300 10420 "GET / HTTP/1.1" 302 0
+INFO 2025-08-27 18:40:39,049 basehttp 25300 10420 "GET /admin/ HTTP/1.1" 200 77392
+INFO 2025-08-27 18:40:43,278 basehttp 25300 10420 "GET /matricula/consulta-estudiante/ HTTP/1.1" 200 31893
+INFO 2025-08-27 18:40:46,977 basehttp 25300 10420 "POST /admin/logout/ HTTP/1.1" 200 2409
+INFO 2025-08-27 18:40:48,033 basehttp 25300 10420 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 18:40:48,075 basehttp 25300 10420 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 5518
+WARNING 2025-08-27 18:40:48,165 log 25300 10420 Not Found: /favicon.ico
+WARNING 2025-08-27 18:40:48,166 basehttp 25300 10420 "GET /favicon.ico HTTP/1.1" 404 3331
+INFO 2025-08-27 18:40:52,211 basehttp 25300 10420 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 18:40:52,333 basehttp 25300 10420 "GET /admin/ HTTP/1.1" 200 85063
+INFO 2025-08-27 18:40:54,433 basehttp 25300 10420 "GET /matricula/consulta-estudiante/ HTTP/1.1" 200 32504
+INFO 2025-08-27 18:50:04,476 basehttp 25300 18288 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 87398
+INFO 2025-08-27 18:50:04,538 basehttp 25300 1488 "GET /static/config_institucional/js/filter-especialidades-subgrupo.js HTTP/1.1" 304 0
+INFO 2025-08-27 18:50:04,680 basehttp 25300 18288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:50:17,114 basehttp 25300 18288 "POST /admin/logout/ HTTP/1.1" 200 2409
+INFO 2025-08-27 18:50:18,438 basehttp 25300 18288 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 18:50:18,448 basehttp 25300 18288 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 5518
+INFO 2025-08-27 18:50:28,389 signals 25300 18288 Signal user_logged_in ejecutándose para usuario: directormaximo@gmail.com
+INFO 2025-08-27 18:50:28,412 signals 25300 18288 Asignando automáticamente institución única: CTP. MÁXIMO QUESADA
+INFO 2025-08-27 18:50:28,419 basehttp 25300 18288 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 18:50:28,538 basehttp 25300 18288 "GET /admin/ HTTP/1.1" 200 77392
+INFO 2025-08-27 18:50:35,381 basehttp 25300 18288 "GET /admin/config_institucional/subgrupocursolectivo/ HTTP/1.1" 200 82618
+INFO 2025-08-27 18:50:35,476 basehttp 25300 18288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:50:40,825 basehttp 25300 18288 "GET /admin/config_institucional/subgrupocursolectivo/?subgrupo__seccion__nivel__id__exact=10&q= HTTP/1.1" 200 53847
+INFO 2025-08-27 18:50:40,920 basehttp 25300 18288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:50:46,912 basehttp 25300 18288 "GET /admin/config_institucional/subgrupocursolectivo/35/change/?_changelist_filters=subgrupo__seccion__nivel__id__exact%3D10%26q%3D HTTP/1.1" 200 47620
+INFO 2025-08-27 18:50:47,085 basehttp 25300 18288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:50:47,301 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:50:47,394 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:50:48,300 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:50:49,313 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:50:55,359 basehttp 25300 1488 "POST /admin/config_institucional/subgrupocursolectivo/35/change/?_changelist_filters=subgrupo__seccion__nivel__id__exact%3D10%26q%3D HTTP/1.1" 302 0
+INFO 2025-08-27 18:50:55,532 basehttp 25300 1488 "GET /admin/config_institucional/subgrupocursolectivo/?subgrupo__seccion__nivel__id__exact=10 HTTP/1.1" 200 54366
+INFO 2025-08-27 18:50:55,724 basehttp 25300 1488 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:51:05,121 basehttp 25300 1488 "GET /admin/config_institucional/subgrupocursolectivo/36/change/?_changelist_filters=subgrupo__seccion__nivel__id__exact%3D10 HTTP/1.1" 200 47599
+INFO 2025-08-27 18:51:05,277 basehttp 25300 1488 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:51:05,456 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:51:05,541 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:51:07,301 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:51:08,276 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:51:15,324 basehttp 25300 18288 "POST /admin/config_institucional/subgrupocursolectivo/36/change/?_changelist_filters=subgrupo__seccion__nivel__id__exact%3D10 HTTP/1.1" 302 0
+INFO 2025-08-27 18:51:15,481 basehttp 25300 18288 "GET /admin/config_institucional/subgrupocursolectivo/?subgrupo__seccion__nivel__id__exact=10 HTTP/1.1" 200 54381
+INFO 2025-08-27 18:51:15,560 basehttp 25300 18288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:51:25,175 basehttp 25300 18288 "GET /admin/config_institucional/subgrupocursolectivo/37/change/?_changelist_filters=subgrupo__seccion__nivel__id__exact%3D10 HTTP/1.1" 200 47599
+INFO 2025-08-27 18:51:25,353 basehttp 25300 18288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:51:25,584 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:51:25,698 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:51:26,579 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:51:27,566 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:51:30,061 basehttp 25300 18288 "POST /admin/config_institucional/subgrupocursolectivo/37/change/?_changelist_filters=subgrupo__seccion__nivel__id__exact%3D10 HTTP/1.1" 302 0
+INFO 2025-08-27 18:51:30,279 basehttp 25300 18288 "GET /admin/config_institucional/subgrupocursolectivo/?subgrupo__seccion__nivel__id__exact=10 HTTP/1.1" 200 54392
+INFO 2025-08-27 18:51:30,382 basehttp 25300 18288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:52:29,925 basehttp 25300 18288 "GET /admin/config_institucional/subgrupocursolectivo/38/change/?_changelist_filters=subgrupo__seccion__nivel__id__exact%3D10 HTTP/1.1" 200 47599
+INFO 2025-08-27 18:52:30,038 basehttp 25300 18288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:52:30,176 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:52:30,266 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:52:31,157 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:52:32,190 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:52:39,013 basehttp 25300 1488 "POST /admin/config_institucional/subgrupocursolectivo/38/change/?_changelist_filters=subgrupo__seccion__nivel__id__exact%3D10 HTTP/1.1" 302 0
+INFO 2025-08-27 18:52:39,189 basehttp 25300 1488 "GET /admin/config_institucional/subgrupocursolectivo/?subgrupo__seccion__nivel__id__exact=10 HTTP/1.1" 200 54423
+INFO 2025-08-27 18:52:39,284 basehttp 25300 1488 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:52:49,055 basehttp 25300 1488 "GET /admin/config_institucional/subgrupocursolectivo/39/change/?_changelist_filters=subgrupo__seccion__nivel__id__exact%3D10 HTTP/1.1" 200 47599
+INFO 2025-08-27 18:52:49,148 basehttp 25300 1488 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:52:49,282 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:52:49,371 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:52:50,269 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:52:51,284 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:52:55,743 basehttp 25300 18288 "POST /admin/config_institucional/subgrupocursolectivo/39/change/?_changelist_filters=subgrupo__seccion__nivel__id__exact%3D10 HTTP/1.1" 302 0
+INFO 2025-08-27 18:52:55,920 basehttp 25300 18288 "GET /admin/config_institucional/subgrupocursolectivo/?subgrupo__seccion__nivel__id__exact=10 HTTP/1.1" 200 54465
+INFO 2025-08-27 18:52:56,003 basehttp 25300 18288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:53:02,711 basehttp 25300 18288 "GET /admin/config_institucional/subgrupocursolectivo/40/change/?_changelist_filters=subgrupo__seccion__nivel__id__exact%3D10 HTTP/1.1" 200 47599
+INFO 2025-08-27 18:53:02,799 basehttp 25300 18288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:53:02,938 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:53:03,029 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:53:03,929 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:53:04,930 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:53:09,465 basehttp 25300 1488 "POST /admin/config_institucional/subgrupocursolectivo/40/change/?_changelist_filters=subgrupo__seccion__nivel__id__exact%3D10 HTTP/1.1" 302 0
+INFO 2025-08-27 18:53:09,754 basehttp 25300 1488 "GET /admin/config_institucional/subgrupocursolectivo/?subgrupo__seccion__nivel__id__exact=10 HTTP/1.1" 200 54508
+INFO 2025-08-27 18:53:09,860 basehttp 25300 1488 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:53:16,171 basehttp 25300 1488 "GET /admin/config_institucional/subgrupocursolectivo/41/change/?_changelist_filters=subgrupo__seccion__nivel__id__exact%3D10 HTTP/1.1" 200 47599
+INFO 2025-08-27 18:53:16,264 basehttp 25300 1488 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:53:16,401 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:53:16,498 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:53:17,387 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:53:18,417 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:53:23,329 basehttp 25300 18288 "POST /admin/config_institucional/subgrupocursolectivo/41/change/?_changelist_filters=subgrupo__seccion__nivel__id__exact%3D10 HTTP/1.1" 302 0
+INFO 2025-08-27 18:53:23,507 basehttp 25300 18288 "GET /admin/config_institucional/subgrupocursolectivo/?subgrupo__seccion__nivel__id__exact=10 HTTP/1.1" 200 54519
+INFO 2025-08-27 18:53:23,701 basehttp 25300 18288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:53:28,310 basehttp 25300 18288 "GET /admin/config_institucional/subgrupocursolectivo/42/change/?_changelist_filters=subgrupo__seccion__nivel__id__exact%3D10 HTTP/1.1" 200 47599
+INFO 2025-08-27 18:53:28,404 basehttp 25300 18288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:53:28,558 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:53:28,658 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:53:29,566 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:53:30,560 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:53:36,277 basehttp 25300 1488 "POST /admin/config_institucional/subgrupocursolectivo/42/change/?_changelist_filters=subgrupo__seccion__nivel__id__exact%3D10 HTTP/1.1" 302 0
+INFO 2025-08-27 18:53:36,458 basehttp 25300 1488 "GET /admin/config_institucional/subgrupocursolectivo/?subgrupo__seccion__nivel__id__exact=10 HTTP/1.1" 200 54532
+INFO 2025-08-27 18:53:36,551 basehttp 25300 1488 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:53:48,759 basehttp 25300 1488 "GET /admin/config_institucional/subgrupocursolectivo/?subgrupo__seccion__nivel__id__exact=11&q= HTTP/1.1" 200 53847
+INFO 2025-08-27 18:53:48,847 basehttp 25300 1488 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:54:05,120 basehttp 25300 1488 "GET /admin/config_institucional/subgrupocursolectivo/43/change/?_changelist_filters=subgrupo__seccion__nivel__id__exact%3D11%26q%3D HTTP/1.1" 200 47620
+INFO 2025-08-27 18:54:05,225 basehttp 25300 1488 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:54:05,375 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:54:05,474 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:54:06,351 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:54:07,351 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:54:14,753 basehttp 25300 18288 "POST /admin/config_institucional/subgrupocursolectivo/43/change/?_changelist_filters=subgrupo__seccion__nivel__id__exact%3D11%26q%3D HTTP/1.1" 302 0
+INFO 2025-08-27 18:54:14,900 basehttp 25300 18288 "GET /admin/config_institucional/subgrupocursolectivo/?subgrupo__seccion__nivel__id__exact=11 HTTP/1.1" 200 54345
+INFO 2025-08-27 18:54:14,981 basehttp 25300 18288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:54:18,542 basehttp 25300 18288 "GET /admin/config_institucional/subgrupocursolectivo/?o=1&subgrupo__seccion__nivel__id__exact=11 HTTP/1.1" 200 54359
+INFO 2025-08-27 18:54:18,628 basehttp 25300 18288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:54:20,701 basehttp 25300 18288 "GET /admin/config_institucional/subgrupocursolectivo/44/change/?_changelist_filters=o%3D1%26subgrupo__seccion__nivel__id__exact%3D11 HTTP/1.1" 200 47623
+INFO 2025-08-27 18:54:20,801 basehttp 25300 18288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:54:20,942 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:54:21,025 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:54:21,961 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:54:22,928 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:54:31,296 basehttp 25300 1488 "POST /admin/config_institucional/subgrupocursolectivo/44/change/?_changelist_filters=o%3D1%26subgrupo__seccion__nivel__id__exact%3D11 HTTP/1.1" 302 0
+INFO 2025-08-27 18:54:31,520 basehttp 25300 1488 "GET /admin/config_institucional/subgrupocursolectivo/?o=1&subgrupo__seccion__nivel__id__exact=11 HTTP/1.1" 200 55007
+INFO 2025-08-27 18:54:31,614 basehttp 25300 1488 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:54:36,598 basehttp 25300 1488 "GET /admin/config_institucional/subgrupocursolectivo/45/change/?_changelist_filters=o%3D1%26subgrupo__seccion__nivel__id__exact%3D11 HTTP/1.1" 200 47623
+INFO 2025-08-27 18:54:36,699 basehttp 25300 1488 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:54:36,937 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:54:37,022 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:54:37,823 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:54:38,865 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:54:42,489 basehttp 25300 18288 "POST /admin/config_institucional/subgrupocursolectivo/45/change/?_changelist_filters=o%3D1%26subgrupo__seccion__nivel__id__exact%3D11 HTTP/1.1" 302 0
+INFO 2025-08-27 18:54:42,659 basehttp 25300 18288 "GET /admin/config_institucional/subgrupocursolectivo/?o=1&subgrupo__seccion__nivel__id__exact=11 HTTP/1.1" 200 55018
+INFO 2025-08-27 18:54:42,741 basehttp 25300 18288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:54:45,367 basehttp 25300 18288 "GET /admin/config_institucional/subgrupocursolectivo/46/change/?_changelist_filters=o%3D1%26subgrupo__seccion__nivel__id__exact%3D11 HTTP/1.1" 200 47623
+INFO 2025-08-27 18:54:45,458 basehttp 25300 18288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:54:45,576 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:54:45,675 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:54:46,570 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:54:47,570 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:54:52,416 basehttp 25300 1488 "POST /admin/config_institucional/subgrupocursolectivo/46/change/?_changelist_filters=o%3D1%26subgrupo__seccion__nivel__id__exact%3D11 HTTP/1.1" 302 0
+INFO 2025-08-27 18:54:52,578 basehttp 25300 1488 "GET /admin/config_institucional/subgrupocursolectivo/?o=1&subgrupo__seccion__nivel__id__exact=11 HTTP/1.1" 200 55049
+INFO 2025-08-27 18:54:52,663 basehttp 25300 1488 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:54:56,213 basehttp 25300 1488 "GET /admin/config_institucional/subgrupocursolectivo/47/change/?_changelist_filters=o%3D1%26subgrupo__seccion__nivel__id__exact%3D11 HTTP/1.1" 200 47623
+INFO 2025-08-27 18:54:56,299 basehttp 25300 1488 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:54:56,423 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:54:56,510 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:54:57,412 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:54:58,402 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:55:02,983 basehttp 25300 18288 "POST /admin/config_institucional/subgrupocursolectivo/47/change/?_changelist_filters=o%3D1%26subgrupo__seccion__nivel__id__exact%3D11 HTTP/1.1" 302 0
+INFO 2025-08-27 18:55:03,151 basehttp 25300 18288 "GET /admin/config_institucional/subgrupocursolectivo/?o=1&subgrupo__seccion__nivel__id__exact=11 HTTP/1.1" 200 55062
+INFO 2025-08-27 18:55:03,234 basehttp 25300 18288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:55:04,907 basehttp 25300 18288 "GET /admin/config_institucional/subgrupocursolectivo/47/change/?_changelist_filters=o%3D1%26subgrupo__seccion__nivel__id__exact%3D11 HTTP/1.1" 200 47623
+INFO 2025-08-27 18:55:05,000 basehttp 25300 18288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:55:05,132 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:55:05,230 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:55:06,130 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:55:07,137 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:55:08,455 basehttp 25300 1488 "POST /admin/config_institucional/subgrupocursolectivo/47/change/?_changelist_filters=o%3D1%26subgrupo__seccion__nivel__id__exact%3D11 HTTP/1.1" 302 0
+INFO 2025-08-27 18:55:08,611 basehttp 25300 1488 "GET /admin/config_institucional/subgrupocursolectivo/?o=1&subgrupo__seccion__nivel__id__exact=11 HTTP/1.1" 200 55062
+INFO 2025-08-27 18:55:08,814 basehttp 25300 1488 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:55:10,385 basehttp 25300 1488 "GET /admin/config_institucional/subgrupocursolectivo/48/change/?_changelist_filters=o%3D1%26subgrupo__seccion__nivel__id__exact%3D11 HTTP/1.1" 200 47623
+INFO 2025-08-27 18:55:10,475 basehttp 25300 1488 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:55:10,619 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:55:10,711 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:55:11,629 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:55:12,604 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:55:16,189 basehttp 25300 18288 "POST /admin/config_institucional/subgrupocursolectivo/48/change/?_changelist_filters=o%3D1%26subgrupo__seccion__nivel__id__exact%3D11 HTTP/1.1" 302 0
+INFO 2025-08-27 18:55:16,351 basehttp 25300 18288 "GET /admin/config_institucional/subgrupocursolectivo/?o=1&subgrupo__seccion__nivel__id__exact=11 HTTP/1.1" 200 55104
+INFO 2025-08-27 18:55:16,437 basehttp 25300 18288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:55:18,971 basehttp 25300 18288 "GET /admin/config_institucional/subgrupocursolectivo/49/change/?_changelist_filters=o%3D1%26subgrupo__seccion__nivel__id__exact%3D11 HTTP/1.1" 200 47623
+INFO 2025-08-27 18:55:19,067 basehttp 25300 18288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:55:19,190 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:55:19,279 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:55:20,216 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:55:21,175 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:55:25,398 basehttp 25300 1488 "POST /admin/config_institucional/subgrupocursolectivo/49/change/?_changelist_filters=o%3D1%26subgrupo__seccion__nivel__id__exact%3D11 HTTP/1.1" 302 0
+INFO 2025-08-27 18:55:25,562 basehttp 25300 1488 "GET /admin/config_institucional/subgrupocursolectivo/?o=1&subgrupo__seccion__nivel__id__exact=11 HTTP/1.1" 200 55115
+INFO 2025-08-27 18:55:25,643 basehttp 25300 1488 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:55:27,010 basehttp 25300 1488 "GET /admin/config_institucional/subgrupocursolectivo/50/change/?_changelist_filters=o%3D1%26subgrupo__seccion__nivel__id__exact%3D11 HTTP/1.1" 200 47623
+INFO 2025-08-27 18:55:27,108 basehttp 25300 1488 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:55:27,244 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:55:27,330 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:55:28,245 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:55:29,235 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:55:33,668 basehttp 25300 18288 "POST /admin/config_institucional/subgrupocursolectivo/50/change/?_changelist_filters=o%3D1%26subgrupo__seccion__nivel__id__exact%3D11 HTTP/1.1" 302 0
+INFO 2025-08-27 18:55:33,818 basehttp 25300 18288 "GET /admin/config_institucional/subgrupocursolectivo/?o=1&subgrupo__seccion__nivel__id__exact=11 HTTP/1.1" 200 55157
+INFO 2025-08-27 18:55:34,043 basehttp 25300 18288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:56:16,430 basehttp 25300 18288 "GET /admin/config_institucional/subgrupocursolectivo/?subgrupo__seccion__nivel__id__exact=12&q=&o=1 HTTP/1.1" 200 54473
+INFO 2025-08-27 18:56:16,629 basehttp 25300 18288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:56:18,441 basehttp 25300 18288 "GET /admin/config_institucional/subgrupocursolectivo/?o=-1&q=&subgrupo__seccion__nivel__id__exact=12 HTTP/1.1" 200 54479
+INFO 2025-08-27 18:56:18,540 basehttp 25300 18288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:56:19,884 basehttp 25300 18288 "GET /admin/config_institucional/subgrupocursolectivo/?o=1&q=&subgrupo__seccion__nivel__id__exact=12 HTTP/1.1" 200 54473
+INFO 2025-08-27 18:56:19,979 basehttp 25300 18288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:56:22,029 basehttp 25300 18288 "GET /admin/config_institucional/subgrupocursolectivo/51/change/?_changelist_filters=o%3D1%26q%3D%26subgrupo__seccion__nivel__id__exact%3D12 HTTP/1.1" 200 47644
+INFO 2025-08-27 18:56:22,126 basehttp 25300 18288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:56:22,247 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:56:22,456 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:56:23,263 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:56:24,303 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:56:49,523 basehttp 25300 1488 "POST /admin/config_institucional/subgrupocursolectivo/51/change/?_changelist_filters=o%3D1%26q%3D%26subgrupo__seccion__nivel__id__exact%3D12 HTTP/1.1" 302 0
+INFO 2025-08-27 18:56:49,691 basehttp 25300 1488 "GET /admin/config_institucional/subgrupocursolectivo/?o=1&subgrupo__seccion__nivel__id__exact=12 HTTP/1.1" 200 54985
+INFO 2025-08-27 18:56:49,789 basehttp 25300 1488 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:56:51,739 basehttp 25300 1488 "GET /admin/config_institucional/subgrupocursolectivo/52/change/?_changelist_filters=o%3D1%26subgrupo__seccion__nivel__id__exact%3D12 HTTP/1.1" 200 47623
+INFO 2025-08-27 18:56:51,836 basehttp 25300 1488 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:56:51,976 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:56:52,069 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:56:52,955 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:56:53,958 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:57:00,887 basehttp 25300 18288 "POST /admin/config_institucional/subgrupocursolectivo/52/change/?_changelist_filters=o%3D1%26subgrupo__seccion__nivel__id__exact%3D12 HTTP/1.1" 302 0
+INFO 2025-08-27 18:57:01,048 basehttp 25300 18288 "GET /admin/config_institucional/subgrupocursolectivo/?o=1&subgrupo__seccion__nivel__id__exact=12 HTTP/1.1" 200 55016
+INFO 2025-08-27 18:57:01,130 basehttp 25300 18288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:57:03,687 basehttp 25300 18288 "GET /admin/config_institucional/subgrupocursolectivo/53/change/?_changelist_filters=o%3D1%26subgrupo__seccion__nivel__id__exact%3D12 HTTP/1.1" 200 47623
+INFO 2025-08-27 18:57:03,889 basehttp 25300 18288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:57:04,043 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:57:04,143 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:57:05,046 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:57:06,061 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:57:12,072 basehttp 25300 1488 "POST /admin/config_institucional/subgrupocursolectivo/53/change/?_changelist_filters=o%3D1%26subgrupo__seccion__nivel__id__exact%3D12 HTTP/1.1" 302 0
+INFO 2025-08-27 18:57:12,260 basehttp 25300 1488 "GET /admin/config_institucional/subgrupocursolectivo/?o=1&subgrupo__seccion__nivel__id__exact=12 HTTP/1.1" 200 55038
+INFO 2025-08-27 18:57:12,340 basehttp 25300 1488 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:57:13,704 basehttp 25300 1488 "GET /admin/config_institucional/subgrupocursolectivo/54/change/?_changelist_filters=o%3D1%26subgrupo__seccion__nivel__id__exact%3D12 HTTP/1.1" 200 47623
+INFO 2025-08-27 18:57:13,908 basehttp 25300 1488 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:57:14,059 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:57:14,143 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:57:15,046 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:57:16,034 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:57:20,627 basehttp 25300 18288 "POST /admin/config_institucional/subgrupocursolectivo/54/change/?_changelist_filters=o%3D1%26subgrupo__seccion__nivel__id__exact%3D12 HTTP/1.1" 302 0
+INFO 2025-08-27 18:57:20,786 basehttp 25300 18288 "GET /admin/config_institucional/subgrupocursolectivo/?o=1&subgrupo__seccion__nivel__id__exact=12 HTTP/1.1" 200 55067
+INFO 2025-08-27 18:57:20,883 basehttp 25300 18288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:57:30,252 basehttp 25300 18288 "GET /admin/config_institucional/subgrupocursolectivo/55/change/?_changelist_filters=o%3D1%26subgrupo__seccion__nivel__id__exact%3D12 HTTP/1.1" 200 47623
+INFO 2025-08-27 18:57:30,337 basehttp 25300 18288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:57:30,450 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:57:30,536 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:57:31,456 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:57:32,453 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:57:38,980 basehttp 25300 1488 "POST /admin/config_institucional/subgrupocursolectivo/55/change/?_changelist_filters=o%3D1%26subgrupo__seccion__nivel__id__exact%3D12 HTTP/1.1" 302 0
+INFO 2025-08-27 18:57:39,261 basehttp 25300 1488 "GET /admin/config_institucional/subgrupocursolectivo/?o=1&subgrupo__seccion__nivel__id__exact=12 HTTP/1.1" 200 55110
+INFO 2025-08-27 18:57:39,361 basehttp 25300 1488 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:57:41,061 basehttp 25300 1488 "GET /admin/config_institucional/subgrupocursolectivo/56/change/?_changelist_filters=o%3D1%26subgrupo__seccion__nivel__id__exact%3D12 HTTP/1.1" 200 47623
+INFO 2025-08-27 18:57:41,149 basehttp 25300 1488 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:57:41,393 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:57:41,487 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:57:42,289 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:57:43,274 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:57:58,155 basehttp 25300 1488 "POST /admin/config_institucional/subgrupocursolectivo/56/change/?_changelist_filters=o%3D1%26subgrupo__seccion__nivel__id__exact%3D12 HTTP/1.1" 302 0
+INFO 2025-08-27 18:57:58,328 basehttp 25300 1488 "GET /admin/config_institucional/subgrupocursolectivo/?o=1&subgrupo__seccion__nivel__id__exact=12 HTTP/1.1" 200 55132
+INFO 2025-08-27 18:57:58,512 basehttp 25300 1488 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:58:01,809 basehttp 25300 1488 "GET /admin/config_institucional/subgrupocursolectivo/57/change/?_changelist_filters=o%3D1%26subgrupo__seccion__nivel__id__exact%3D12 HTTP/1.1" 200 47623
+INFO 2025-08-27 18:58:01,910 basehttp 25300 1488 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:58:02,069 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:58:02,176 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:58:03,031 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:58:04,059 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:58:08,987 basehttp 25300 18288 "POST /admin/config_institucional/subgrupocursolectivo/57/change/?_changelist_filters=o%3D1%26subgrupo__seccion__nivel__id__exact%3D12 HTTP/1.1" 302 0
+INFO 2025-08-27 18:58:09,149 basehttp 25300 18288 "GET /admin/config_institucional/subgrupocursolectivo/?o=1&subgrupo__seccion__nivel__id__exact=12 HTTP/1.1" 200 55143
+INFO 2025-08-27 18:58:09,228 basehttp 25300 18288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:58:10,779 basehttp 25300 18288 "GET /admin/config_institucional/subgrupocursolectivo/58/change/?_changelist_filters=o%3D1%26subgrupo__seccion__nivel__id__exact%3D12 HTTP/1.1" 200 47623
+INFO 2025-08-27 18:58:10,877 basehttp 25300 18288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:58:11,023 basehttp 25300 18288 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:58:11,120 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:58:12,023 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:58:13,016 basehttp 25300 1488 "GET /config/especialidad-curso-lectivo-autocomplete/?forward=%7B%22curso_lectivo_id%22%3A%221%22%2C%22institucion_id%22%3A%221%22%7D HTTP/1.1" 200 998
+INFO 2025-08-27 18:58:16,918 basehttp 25300 1488 "POST /admin/config_institucional/subgrupocursolectivo/58/change/?_changelist_filters=o%3D1%26subgrupo__seccion__nivel__id__exact%3D12 HTTP/1.1" 302 0
+INFO 2025-08-27 18:58:17,069 basehttp 25300 1488 "GET /admin/config_institucional/subgrupocursolectivo/?o=1&subgrupo__seccion__nivel__id__exact=12 HTTP/1.1" 200 55185
+INFO 2025-08-27 18:58:17,289 basehttp 25300 1488 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:58:20,499 basehttp 25300 1488 "POST /admin/logout/ HTTP/1.1" 200 2409
+INFO 2025-08-27 18:58:21,853 basehttp 25300 1488 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 18:58:21,859 basehttp 25300 1488 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 5518
+INFO 2025-08-27 18:58:27,115 basehttp 25300 1488 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-08-27 18:58:27,216 basehttp 25300 1488 "GET /admin/ HTTP/1.1" 200 85050
+INFO 2025-08-27 18:58:36,462 basehttp 25300 1488 "GET /admin/matricula/asignaciongrupos/ HTTP/1.1" 200 44505
+INFO 2025-08-27 18:58:36,543 basehttp 25300 1488 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-08-27 18:59:03,317 basehttp 25300 1488 "GET /matricula/asignacion-grupos/ HTTP/1.1" 200 29906
+INFO 2025-08-27 18:59:14,472 basehttp 25300 1488 "POST /matricula/ejecutar-asignacion-grupos/ HTTP/1.1" 200 929
+INFO 2025-08-27 18:59:58,701 basehttp 25300 1488 "GET /matricula/asignacion-grupos/ HTTP/1.1" 200 29906
+INFO 2025-08-27 18:59:58,988 basehttp 25300 19552 "GET /static/sis_colegio/css/logo-custom.css HTTP/1.1" 200 5704
+INFO 2025-08-27 18:59:59,035 basehttp 25300 8528 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-08-27 18:59:59,048 basehttp 25300 1488 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-08-27 18:59:59,072 basehttp 25300 16436 "GET /static/vendor/bootswatch/cosmo/bootstrap.min.css HTTP/1.1" 200 154456
+INFO 2025-08-27 18:59:59,106 basehttp 25300 8528 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-08-27 18:59:59,110 basehttp 25300 1488 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-08-27 18:59:59,143 basehttp 25300 16436 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-08-27 18:59:59,148 basehttp 25300 18288 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-08-27 18:59:59,148 basehttp 25300 12424 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 18:59:59,222 basehttp 25300 18288 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-08-27 18:59:59,243 basehttp 25300 19552 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-08-27 18:59:59,262 basehttp 25300 12424 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-08-27 18:59:59,326 basehttp 25300 19552 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 18:59:59,416 basehttp 25300 12424 "GET /matricula/asignacion-grupos/ HTTP/1.1" 200 29906
+INFO 2025-08-27 18:59:59,444 basehttp 25300 1488 "GET /static/sis_colegio/css/logo-custom.css HTTP/1.1" 200 5704
+INFO 2025-08-27 18:59:59,445 basehttp 25300 16436 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-08-27 18:59:59,448 basehttp 25300 12424 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-08-27 18:59:59,452 basehttp 25300 18288 "GET /static/vendor/bootswatch/cosmo/bootstrap.min.css HTTP/1.1" 200 154456
+INFO 2025-08-27 18:59:59,453 basehttp 25300 8528 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 18:59:59,456 basehttp 25300 16436 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-08-27 18:59:59,458 basehttp 25300 1488 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-08-27 18:59:59,460 basehttp 25300 12424 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-08-27 18:59:59,466 basehttp 25300 16436 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-08-27 18:59:59,472 basehttp 25300 19552 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-08-27 18:59:59,574 basehttp 25300 16436 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-08-27 18:59:59,575 basehttp 25300 19552 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-08-27 19:00:00,133 basehttp 25300 19552 "GET /matricula/asignacion-grupos/ HTTP/1.1" 200 29906
+INFO 2025-08-27 19:00:00,154 basehttp 25300 8528 "GET /static/sis_colegio/css/logo-custom.css HTTP/1.1" 200 5704
+INFO 2025-08-27 19:00:00,156 basehttp 25300 1488 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-08-27 19:00:00,160 basehttp 25300 19552 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-08-27 19:00:00,160 basehttp 25300 18288 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 19:00:00,162 basehttp 25300 12424 "GET /static/vendor/bootswatch/cosmo/bootstrap.min.css HTTP/1.1" 200 154456
+INFO 2025-08-27 19:00:00,164 basehttp 25300 1488 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-08-27 19:00:00,165 basehttp 25300 8528 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-08-27 19:00:00,171 basehttp 25300 18288 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-08-27 19:00:00,172 basehttp 25300 12424 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-08-27 19:00:00,177 basehttp 25300 16436 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-08-27 19:00:00,266 basehttp 25300 18288 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-08-27 19:00:00,271 basehttp 25300 16436 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-08-27 19:00:00,360 basehttp 25300 16436 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-08-27 19:00:09,329 basehttp 25300 16436 "POST /matricula/ejecutar-asignacion-grupos/ HTTP/1.1" 200 929

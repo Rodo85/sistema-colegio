@@ -22,7 +22,7 @@ class MatriculaAcademicaForm(forms.ModelForm):
         widgets = {
             # FLUJO DEPENDIENTE: Curso Lectivo → Especialidad, Sección, Subgrupo
             'especialidad': EspecialidadCursoLectivoWidget(
-                url='especialidad-autocomplete', 
+                url='matricula:especialidad-autocomplete', 
                 forward=['curso_lectivo', 'nivel'],  # Especialidad depende de curso_lectivo y nivel
                 attrs={
                     'data-placeholder': 'Seleccione primero un curso lectivo y un nivel...',
@@ -30,7 +30,7 @@ class MatriculaAcademicaForm(forms.ModelForm):
                 }
             ),
             'seccion': autocomplete.ModelSelect2(
-                url='seccion-autocomplete',
+                url='matricula:seccion-autocomplete',
                 forward=['curso_lectivo', 'nivel'],  # Sección depende de curso_lectivo y nivel
                 attrs={
                     'data-placeholder': 'Seleccione primero un curso lectivo y un nivel...',
@@ -38,7 +38,7 @@ class MatriculaAcademicaForm(forms.ModelForm):
                 }
             ),
             'subgrupo': autocomplete.ModelSelect2(
-                url='subgrupo-autocomplete',
+                url='matricula:subgrupo-autocomplete',
                 forward=['curso_lectivo', 'seccion'],  # Subgrupo depende de curso_lectivo y seccion
                 attrs={
                     'data-placeholder': 'Seleccione primero un curso lectivo y una sección...',

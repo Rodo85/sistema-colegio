@@ -68,7 +68,7 @@ JAZZMIN_SETTINGS = {
         "matricula": [
             {
                 "name": "Consulta de Estudiante",
-                "url": "consulta_estudiante",
+                "url": "matricula:consulta_estudiante",
                 "icon": "fas fa-search",
                 "permissions": ["matricula.view_estudiante"],
             },

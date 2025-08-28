@@ -1,5 +1,11 @@
 from django.urls import path
-from .views import consulta_estudiante, get_especialidades_disponibles, EspecialidadAutocomplete, SeccionAutocomplete, SubgrupoAutocomplete
+from .views import (
+    consulta_estudiante, get_especialidades_disponibles, 
+    EspecialidadAutocomplete, SeccionAutocomplete, SubgrupoAutocomplete,
+    asignacion_grupos, ejecutar_asignacion_grupos
+)
+
+app_name = 'matricula'
 
 urlpatterns = [
     path('consulta-estudiante/', consulta_estudiante, name='consulta_estudiante'),
@@ -9,4 +15,8 @@ urlpatterns = [
     path('especialidad-autocomplete/', EspecialidadAutocomplete.as_view(), name='especialidad-autocomplete'),
     path('seccion-autocomplete/', SeccionAutocomplete.as_view(), name='seccion-autocomplete'),
     path('subgrupo-autocomplete/', SubgrupoAutocomplete.as_view(), name='subgrupo-autocomplete'),
+    
+    # Asignación automática de grupos
+    path('asignacion-grupos/', asignacion_grupos, name='asignacion_grupos'),
+    path('ejecutar-asignacion-grupos/', ejecutar_asignacion_grupos, name='ejecutar_asignacion_grupos'),
 ]

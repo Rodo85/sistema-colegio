@@ -1,0 +1,488 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block title %}Asignación Automática de Grupos{% endblock %}
+
+{% block extrastyle %}
+    <style>
+        .asignacion-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .form-group {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .form-group select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .btn-primary {
+            background: #417690;
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+        }
+        
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .alert {
+            padding: 12px 16px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .alert-error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .alert-warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .stat-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+            border-left: 4px solid #417690;
+        }
+        
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #417690;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #417690;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .detalle-asignaciones {
+            margin-top: 20px;
+        }
+        
+        .detalle-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .detalle-item:last-child {
+            border-bottom: none;
+        }
+        
+        .detalle-nombre {
+            font-weight: bold;
+        }
+        
+        .detalle-stats {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .historial-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        .historial-table th,
+        .historial-table td {
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .historial-table th {
+            background: #f8f9fa;
+            font-weight: bold;
+        }
+        
+        .historial-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="asignacion-container">
+    <!-- Título principal -->
+    <h1>🎯 Asignación Automática de Grupos</h1>
+    <p class="help-text">
+        Distribuye automáticamente los estudiantes matriculados en secciones y subgrupos siguiendo criterios de equilibrio por género, orden alfabético y agrupación de hermanos.
+    </p>
+
+    <!-- Formulario de selección -->
+    <div class="card">
+        <h2>📋 Configuración de Asignación</h2>
+        
+        <form id="asignacion-form">
+            {% csrf_token %}
+            
+            <div class="form-row">
+                {% if es_superusuario %}
+                <div class="form-group">
+                    <label for="institucion">Institución *</label>
+                    <select id="institucion" name="institucion" required>
+                        <option value="">Seleccionar institución...</option>
+                        {% for institucion in instituciones %}
+                            <option value="{{ institucion.id }}">{{ institucion.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                {% endif %}
+                
+                <div class="form-group">
+                    <label for="curso_lectivo">Curso Lectivo *</label>
+                    <select id="curso_lectivo" name="curso_lectivo" required>
+                        <option value="">Seleccionar curso lectivo...</option>
+                        {% for curso in cursos_lectivos %}
+                            <option value="{{ curso.id }}">{{ curso.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="nivel">Nivel (Opcional)</label>
+                    <select id="nivel" name="nivel">
+                        <option value="">Todos los niveles</option>
+                        {% for nivel in niveles %}
+                            <option value="{{ nivel.id }}">{{ nivel.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <button type="button" id="btn-simular" class="btn btn-secondary">
+                    🔍 Simular Asignación
+                </button>
+                <button type="button" id="btn-ejecutar" class="btn btn-primary">
+                    ✅ Ejecutar Asignación
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Área de resultados -->
+    <div id="resultados-container" style="display: none;">
+        <div class="card">
+            <h2>📊 Resultados de la Asignación</h2>
+            
+            <!-- Mensaje principal -->
+            <div id="mensaje-resultado" class="alert"></div>
+            
+            <!-- Estadísticas -->
+            <div id="estadisticas-container" class="stats-grid"></div>
+            
+            <!-- Detalle de asignaciones -->
+            <div id="detalle-container" class="detalle-asignaciones" style="display: none;">
+                <h3>📝 Detalle de Asignaciones</h3>
+                <div id="detalle-lista"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Historial de asignaciones -->
+    {% if asignaciones_recientes %}
+    <div class="card">
+        <h2>📅 Historial Reciente</h2>
+        <table class="historial-table">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Curso Lectivo</th>
+                    <th>Nivel</th>
+                    <th>Estudiantes</th>
+                    <th>Secciones</th>
+                    <th>Subgrupos</th>
+                    <th>Usuario</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for asignacion in asignaciones_recientes %}
+                <tr>
+                    <td>{{ asignacion.fecha_asignacion|date:"d/m/Y H:i" }}</td>
+                    <td>{{ asignacion.curso_lectivo.nombre }}</td>
+                    <td>{{ asignacion.nivel.nombre|default:"Todos" }}</td>
+                    <td>{{ asignacion.total_estudiantes }}</td>
+                    <td>{{ asignacion.secciones_utilizadas }}</td>
+                    <td>{{ asignacion.subgrupos_utilizados }}</td>
+                    <td>{{ asignacion.usuario_asignacion.first_name }} {{ asignacion.usuario_asignacion.last_name }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('asignacion-form');
+    const btnSimular = document.getElementById('btn-simular');
+    const btnEjecutar = document.getElementById('btn-ejecutar');
+    const resultadosContainer = document.getElementById('resultados-container');
+    const mensajeResultado = document.getElementById('mensaje-resultado');
+    const estadisticasContainer = document.getElementById('estadisticas-container');
+    const detalleContainer = document.getElementById('detalle-container');
+    const detalleLista = document.getElementById('detalle-lista');
+    
+    // Función para mostrar loading
+    function mostrarLoading(btn, texto) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="loading-spinner"></span>' + texto;
+    }
+    
+    // Función para ocultar loading
+    function ocultarLoading(btn, textoOriginal) {
+        btn.disabled = false;
+        btn.innerHTML = textoOriginal;
+    }
+    
+    // Función para ejecutar asignación
+    function ejecutarAsignacion(simular = false) {
+        const formData = new FormData(form);
+        
+        // Validar campos requeridos
+        const cursoLectivo = document.getElementById('curso_lectivo').value;
+        {% if es_superusuario %}
+        const institucion = document.getElementById('institucion').value;
+        if (!institucion) {
+            alert('Por favor seleccione una institución');
+            return;
+        }
+        formData.append('institucion_id', institucion);
+        {% endif %}
+        
+        if (!cursoLectivo) {
+            alert('Por favor seleccione un curso lectivo');
+            return;
+        }
+        
+        formData.append('curso_lectivo_id', cursoLectivo);
+        formData.append('nivel_id', document.getElementById('nivel').value);
+        formData.append('simular', simular ? 'true' : 'false');
+        
+        const btn = simular ? btnSimular : btnEjecutar;
+        const textoOriginal = simular ? '🔍 Simular Asignación' : '✅ Ejecutar Asignación';
+        const textoLoading = simular ? 'Simulando...' : 'Ejecutando...';
+        
+        mostrarLoading(btn, textoLoading);
+        
+        fetch('{% url "matricula:ejecutar_asignacion_grupos" %}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            mostrarResultados(data, simular);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            mostrarError('Error de conexión. Por favor intente nuevamente.');
+        })
+        .finally(() => {
+            ocultarLoading(btn, textoOriginal);
+        });
+    }
+    
+    // Función para mostrar resultados
+    function mostrarResultados(data, esSimulacion) {
+        resultadosContainer.style.display = 'block';
+        
+        if (data.success) {
+            mensajeResultado.className = 'alert alert-success';
+            mensajeResultado.innerHTML = (esSimulacion ? '🔍 ' : '✅ ') + data.mensaje;
+            
+            // Mostrar estadísticas
+            if (data.estadisticas) {
+                estadisticasContainer.innerHTML = generarEstadisticas(data.estadisticas);
+            }
+            
+            // Mostrar detalle si existe
+            if (data.detalle_asignaciones && data.detalle_asignaciones.length > 0) {
+                detalleContainer.style.display = 'block';
+                detalleLista.innerHTML = generarDetalle(data.detalle_asignaciones);
+            } else {
+                detalleContainer.style.display = 'none';
+            }
+            
+        } else {
+            mensajeResultado.className = 'alert alert-error';
+            mensajeResultado.innerHTML = '❌ ' + (data.error || 'Error desconocido');
+            estadisticasContainer.innerHTML = '';
+            detalleContainer.style.display = 'none';
+        }
+        
+        // Scroll hacia los resultados
+        resultadosContainer.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // Función para mostrar error
+    function mostrarError(mensaje) {
+        resultadosContainer.style.display = 'block';
+        mensajeResultado.className = 'alert alert-error';
+        mensajeResultado.innerHTML = '❌ ' + mensaje;
+        estadisticasContainer.innerHTML = '';
+        detalleContainer.style.display = 'none';
+    }
+    
+    // Función para generar HTML de estadísticas
+    function generarEstadisticas(stats) {
+        return `
+            <div class="stat-box">
+                <div class="stat-number">${stats.total_estudiantes || 0}</div>
+                <div class="stat-label">Total Estudiantes</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">${stats.total_asignados || 0}</div>
+                <div class="stat-label">Asignados</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">${stats.secciones_utilizadas || 0}</div>
+                <div class="stat-label">Secciones</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">${stats.subgrupos_utilizados || 0}</div>
+                <div class="stat-label">Subgrupos</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">${stats.estudiantes_sin_especialidad || 0}</div>
+                <div class="stat-label">Sin Especialidad</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">${stats.estudiantes_con_especialidad || 0}</div>
+                <div class="stat-label">Con Especialidad</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">${stats.hermanos_agrupados || 0}</div>
+                <div class="stat-label">Hermanos Agrupados</div>
+            </div>
+        `;
+    }
+    
+    // Función para generar HTML de detalle
+    function generarDetalle(detalles) {
+        return detalles.map(detalle => `
+            <div class="detalle-item">
+                <div class="detalle-nombre">
+                    ${detalle.tipo === 'seccion' ? '📚' : '📂'} ${detalle.nombre}
+                </div>
+                <div class="detalle-stats">
+                    Total: ${detalle.total} | 
+                    ♀️ ${detalle.mujeres} | 
+                    ♂️ ${detalle.hombres} | 
+                    ⚪ ${detalle.otros}
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    // Event listeners
+    btnSimular.addEventListener('click', () => ejecutarAsignacion(true));
+    btnEjecutar.addEventListener('click', () => {
+        if (confirm('¿Está seguro de ejecutar la asignación? Esta acción modificará las matrículas de los estudiantes.')) {
+            ejecutarAsignacion(false);
+        }
+    });
+});
+</script>
+{% endblock %}
+
+

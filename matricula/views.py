@@ -494,3 +494,83 @@ class SubgrupoAutocomplete(autocomplete.Select2QuerySetView):
         final_qs = qs.order_by('seccion__nivel__numero', 'seccion__numero', 'letra')
         print(f"🎯 RESULTADO FINAL: {[f'{s.letra} - Sección {s.seccion.numero}' for s in final_qs]}")
         return final_qs
+
+
+# ════════════════════════════════════════════════════════════════
+#                    ASIGNACIÓN AUTOMÁTICA DE GRUPOS
+# ════════════════════════════════════════════════════════════════
+
+@login_required
+def asignacion_grupos(request):
+    """
+    Vista principal para la asignación automática de grupos.
+    """
+    from catalogos.models import CursoLectivo, Nivel
+    from core.models import Institucion
+    from .models import AsignacionGrupos
+    
+    context = {
+        'instituciones': Institucion.objects.all().order_by('nombre') if request.user.is_superuser else [],
+        'cursos_lectivos': CursoLectivo.objects.all().order_by('-anio'),
+        'niveles': Nivel.objects.all().order_by('numero'),
+        'es_superusuario': request.user.is_superuser,
+        'asignaciones_recientes': AsignacionGrupos.objects.filter(
+            institucion_id=getattr(request, 'institucion_activa_id', None) if not request.user.is_superuser else None
+        ).order_by('-fecha_asignacion')[:10]
+    }
+    
+    return render(request, 'matricula/asignacion_grupos.html', context)
+
+
+@login_required
+def ejecutar_asignacion_grupos(request):
+    """
+    Vista AJAX que ejecuta el algoritmo de asignación automática de grupos.
+    """
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'error': 'Método no permitido'})
+    
+    try:
+        # Obtener parámetros
+        curso_lectivo_id = request.POST.get('curso_lectivo_id')
+        nivel_id = request.POST.get('nivel_id')
+        simular = request.POST.get('simular', 'false').lower() == 'true'
+        
+        # Validar parámetros requeridos
+        if not curso_lectivo_id:
+            return JsonResponse({'success': False, 'error': 'Curso lectivo es requerido'})
+        
+        # Obtener institución
+        if request.user.is_superuser:
+            institucion_id = request.POST.get('institucion_id')
+            if not institucion_id:
+                return JsonResponse({'success': False, 'error': 'Institución es requerida para superusuarios'})
+            institucion = Institucion.objects.get(id=institucion_id)
+        else:
+            institucion_id = getattr(request, 'institucion_activa_id', None)
+            if not institucion_id:
+                return JsonResponse({'success': False, 'error': 'No se pudo determinar la institución activa'})
+            institucion = Institucion.objects.get(id=institucion_id)
+        
+        # Obtener objetos
+        from catalogos.models import CursoLectivo, Nivel
+        curso_lectivo = CursoLectivo.objects.get(id=curso_lectivo_id)
+        nivel = Nivel.objects.get(id=nivel_id) if nivel_id else None
+        
+        # Ejecutar algoritmo
+        from .asignacion_algoritmo import ejecutar_asignacion_completa
+        resultado = ejecutar_asignacion_completa(
+            institucion=institucion,
+            curso_lectivo=curso_lectivo,
+            nivel=nivel,
+            usuario=request.user,
+            simular=simular
+        )
+        
+        return JsonResponse(resultado)
+        
+    except Exception as e:
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.error(f"Error en ejecutar_asignacion_grupos: {str(e)}")
+        return JsonResponse({'success': False, 'error': f'Error interno: {str(e)}'})

@@ -396,6 +396,43 @@ class MatriculaAcademica(models.Model):
         )
 
 
+class AsignacionGrupos(models.Model):
+    """
+    Modelo para registrar las asignaciones automáticas de grupos realizadas.
+    Permite llevar un historial de las asignaciones masivas.
+    """
+    institucion = models.ForeignKey('core.Institucion', on_delete=models.CASCADE, verbose_name="Institución")
+    curso_lectivo = models.ForeignKey('catalogos.CursoLectivo', on_delete=models.CASCADE, verbose_name="Curso Lectivo")
+    nivel = models.ForeignKey('catalogos.Nivel', on_delete=models.CASCADE, verbose_name="Nivel", null=True, blank=True)
+    
+    fecha_asignacion = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de Asignación")
+    usuario_asignacion = models.ForeignKey('core.User', on_delete=models.PROTECT, verbose_name="Usuario que realizó la asignación")
+    
+    # Estadísticas de la asignación
+    total_estudiantes = models.PositiveIntegerField(verbose_name="Total de Estudiantes Asignados")
+    total_mujeres = models.PositiveIntegerField(verbose_name="Total Mujeres")
+    total_hombres = models.PositiveIntegerField(verbose_name="Total Hombres") 
+    total_otros = models.PositiveIntegerField(verbose_name="Total Otros")
+    
+    secciones_utilizadas = models.PositiveIntegerField(verbose_name="Secciones Utilizadas")
+    subgrupos_utilizados = models.PositiveIntegerField(verbose_name="Subgrupos Utilizados")
+    
+    # Detalle del algoritmo
+    hermanos_agrupados = models.PositiveIntegerField(default=0, verbose_name="Hermanos Agrupados Juntos")
+    algoritmo_version = models.CharField(max_length=20, default="v1.0", verbose_name="Versión del Algoritmo")
+    
+    observaciones = models.TextField(blank=True, verbose_name="Observaciones")
+    
+    class Meta:
+        verbose_name = "Asignación de Grupos"
+        verbose_name_plural = "Asignaciones de Grupos"
+        ordering = ['-fecha_asignacion']
+        
+    def __str__(self):
+        nivel_str = f" - {self.nivel.nombre}" if self.nivel else ""
+        return f"{self.institucion.nombre} - {self.curso_lectivo.nombre}{nivel_str} ({self.fecha_asignacion.strftime('%d/%m/%Y %H:%M')})"
+
+
 class PlantillaImpresionMatricula(models.Model):
     institucion = models.ForeignKey(
         "core.Institucion", 

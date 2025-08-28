@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 
 from core.mixins import InstitucionScopedAdmin
-from .models import Estudiante, EncargadoEstudiante, PersonaContacto, MatriculaAcademica, PlantillaImpresionMatricula
+from .models import Estudiante, EncargadoEstudiante, PersonaContacto, MatriculaAcademica, PlantillaImpresionMatricula, AsignacionGrupos
 
 from catalogos.models import Provincia, Canton, Distrito
 from .forms import MatriculaAcademicaForm
@@ -930,3 +930,72 @@ class PlantillaImpresionMatriculaAdmin(admin.ModelAdmin):
                 kwargs["queryset"] = Institucion.objects.filter(id=institucion_id)
                 kwargs["initial"] = institucion_id
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+
+@admin.register(AsignacionGrupos)
+class AsignacionGruposAdmin(InstitucionScopedAdmin):
+    """
+    Admin para AsignacionGrupos con funcionalidad adicional para abrir la interfaz de asignación.
+    """
+    list_display = (
+        'fecha_asignacion', 'curso_lectivo', 'nivel_nombre', 'total_estudiantes', 
+        'secciones_utilizadas', 'subgrupos_utilizados', 'hermanos_agrupados', 'usuario_asignacion'
+    )
+    list_filter = ('curso_lectivo', 'nivel', 'fecha_asignacion', 'usuario_asignacion')
+    search_fields = ('institucion__nombre', 'curso_lectivo__nombre', 'nivel__nombre', 'observaciones')
+    ordering = ('-fecha_asignacion',)
+    readonly_fields = (
+        'fecha_asignacion', 'usuario_asignacion', 'total_estudiantes', 'total_mujeres', 
+        'total_hombres', 'total_otros', 'secciones_utilizadas', 'subgrupos_utilizados', 
+        'hermanos_agrupados', 'algoritmo_version'
+    )
+    
+    fieldsets = (
+        ('Información Básica', {
+            'fields': ('institucion', 'curso_lectivo', 'nivel', 'fecha_asignacion', 'usuario_asignacion')
+        }),
+        ('Estadísticas de Asignación', {
+            'fields': (
+                'total_estudiantes', 'total_mujeres', 'total_hombres', 'total_otros',
+                'secciones_utilizadas', 'subgrupos_utilizadas', 'hermanos_agrupados'
+            )
+        }),
+        ('Detalles Técnicos', {
+            'fields': ('algoritmo_version', 'observaciones'),
+            'classes': ('collapse',)
+        })
+    )
+    
+    def nivel_nombre(self, obj):
+        """Mostrar nombre del nivel o 'Todos los niveles'"""
+        return obj.nivel.nombre if obj.nivel else 'Todos los niveles'
+    nivel_nombre.short_description = 'Nivel'
+    nivel_nombre.admin_order_field = 'nivel__nombre'
+    
+    def has_add_permission(self, request):
+        """Deshabilitar creación manual - solo vía interfaz de asignación"""
+        return False
+    
+    def has_change_permission(self, request, obj=None):
+        """Solo lectura para los registros"""
+        return True
+    
+    def has_delete_permission(self, request, obj=None):
+        """Permitir eliminación solo a superusuarios"""
+        return request.user.is_superuser
+    
+    def changelist_view(self, request, extra_context=None):
+        """Agregar botón para ir a la interfaz de asignación"""
+        extra_context = extra_context or {}
+        extra_context['asignacion_grupos_url'] = '/matricula/asignacion-grupos/'
+        return super().changelist_view(request, extra_context)
+    
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        # Usuarios normales solo ven asignaciones de su institución
+        institucion_id = getattr(request, 'institucion_activa_id', None)
+        if institucion_id:
+            return qs.filter(institucion_id=institucion_id)
+        return qs.none()

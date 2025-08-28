@@ -1,0 +1,115 @@
+{% extends "admin/change_list.html" %}
+{% load admin_urls static %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <style>
+        .asignacion-grupos-header {
+            background: linear-gradient(135deg, #417690, #5a8aa0);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .btn-asignacion {
+            background: #28a745;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-asignacion:hover {
+            background: #1e7e34;
+            color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .stats-info {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .stats-info h3 {
+            margin-top: 0;
+            color: #495057;
+        }
+        
+        .stats-info ul {
+            margin-bottom: 0;
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .stats-info li {
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .stats-info li:last-child {
+            border-bottom: none;
+        }
+    </style>
+{% endblock %}
+
+{% block content_title %}
+    <div class="asignacion-grupos-header">
+        <h1>🎯 Asignación Automática de Grupos</h1>
+        <p>Historial de asignaciones realizadas y acceso a la herramienta de asignación masiva</p>
+        <a href="{% url 'matricula:asignacion_grupos' %}" class="btn-asignacion">
+            ✨ Nueva Asignación Automática
+        </a>
+    </div>
+{% endblock %}
+
+{% block result_list %}
+    {% if cl.result_count == 0 %}
+        <div class="stats-info">
+            <h3>📋 Información sobre Asignación de Grupos</h3>
+            <p><strong>¿Qué hace la asignación automática?</strong></p>
+            <ul>
+                <li>🎯 <strong>Distribución equitativa:</strong> Reparte estudiantes equilibradamente entre secciones y subgrupos</li>
+                <li>👥 <strong>Equilibrio por género:</strong> Mantiene proporción similar de hombres, mujeres y otros en cada grupo</li>
+                <li>📝 <strong>Orden alfabético:</strong> Distribución alfabética por primer apellido</li>
+                <li>👨‍👩‍👧‍👦 <strong>Hermanos juntos:</strong> Estudiantes con mismo apellido van al mismo grupo</li>
+                <li>🎓 <strong>Especialidades:</strong> Estudiantes con especialidad van a subgrupos correspondientes</li>
+                <li>🏫 <strong>Multi-institución:</strong> Respeta el contexto institucional</li>
+            </ul>
+            <p><strong>Para comenzar:</strong> Haz clic en "Nueva Asignación Automática" arriba.</p>
+        </div>
+    {% else %}
+        <div class="stats-info">
+            <h3>📊 Resumen del Historial</h3>
+            <p>Se encontraron <strong>{{ cl.result_count }}</strong> asignaciones realizadas.</p>
+        </div>
+    {% endif %}
+    
+    {{ block.super }}
+{% endblock %}
+
+{% block pagination %}
+    {{ block.super }}
+    
+    {% if cl.result_count > 0 %}
+        <div style="margin-top: 20px; text-align: center;">
+            <a href="{% url 'matricula:asignacion_grupos' %}" class="btn-asignacion">
+                ➕ Realizar Nueva Asignación
+            </a>
+        </div>
+    {% endif %}
+{% endblock %}
+
+
