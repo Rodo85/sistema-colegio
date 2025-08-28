@@ -730,6 +730,7 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
         # (evita que el dropdown desaparezca cuando el queryset resulta vacío)
         base_filters = (
             NivelInstitucionFilter,
+            'nivel',
             SeccionInstitucionFilter,
             SubgrupoInstitucionFilter,
             CursoLectivoFilter,

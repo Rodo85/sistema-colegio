@@ -566,7 +566,14 @@ def ejecutar_asignacion_grupos(request):
             usuario=request.user,
             simular=simular
         )
-        
+        # Normalizar respuesta de error para el frontend
+        if not resultado.get('success'):
+            mensaje_error = (
+                resultado.get('mensaje')
+                or (resultado.get('errores')[0] if resultado.get('errores') else None)
+                or 'Error desconocido'
+            )
+            resultado['error'] = mensaje_error
         return JsonResponse(resultado)
         
     except Exception as e:

@@ -55,7 +55,7 @@ def ejecutar_asignacion_completa(institucion, curso_lectivo, nivel, usuario, sim
         
         matriculas = list(MatriculaAcademica.objects.filter(**filtros).select_related(
             'estudiante', 'nivel', 'especialidad'
-        ).order_by('estudiante__primer_apellido', 'estudiante__segundo_apellido', 'estudiante__primer_nombre'))
+        ).order_by('estudiante__primer_apellido', 'estudiante__segundo_apellido', 'estudiante__nombres'))
         
         if not matriculas:
             resultado['mensaje'] = 'No hay estudiantes elegibles para asignar'
@@ -118,6 +118,23 @@ def ejecutar_asignacion_completa(institucion, curso_lectivo, nivel, usuario, sim
                 estudiantes_con_especialidad,
                 subgrupos_disponibles
             )
+
+        # 5.1 DIVIDIR SUBGRUPOS PARA ESTUDIANTES SIN ESPECIALIDAD SEGÚN SU SECCIÓN (p. ej. 7-1 → 7-1A, 7-1B)
+        # Para niveles sin especialidad (p. ej. 7º), si existen subgrupos configurados (sin especialidad) por sección,
+        # repartir equitativamente los alumnos ya asignados a esa sección entre dichos subgrupos
+        if asignaciones_secciones and subgrupos_disponibles:
+            for seccion_id, matriculas_asignadas in asignaciones_secciones.items():
+                # Subgrupos activos de esta sección y sin especialidad (niveles distintos a 10-12)
+                subgrupos_seccion = [
+                    s for s in subgrupos_disponibles
+                    if getattr(s, 'especialidad_curso_id', None) in (None,)
+                    and s.subgrupo.seccion.id == seccion_id
+                ]
+                if not subgrupos_seccion:
+                    continue
+                distribucion = dividir_matriculas_en_subgrupos(matriculas_asignadas, subgrupos_seccion)
+                for sub_conf, mats in distribucion.items():
+                    asignaciones_subgrupos.setdefault(sub_conf.subgrupo.id, []).extend(mats)
         
         # 6. APLICAR ASIGNACIONES (solo si no es simulación)
         total_asignados = 0
@@ -131,12 +148,14 @@ def ejecutar_asignacion_completa(institucion, curso_lectivo, nivel, usuario, sim
                         matricula.save(update_fields=['seccion'])
                         total_asignados += 1
                 
-                # Asignar subgrupos
+                # Asignar subgrupos (y su sección correspondiente)
                 for subgrupo_id, matriculas_asignadas in asignaciones_subgrupos.items():
                     subgrupo = Subgrupo.objects.get(id=subgrupo_id)
                     for matricula in matriculas_asignadas:
                         matricula.subgrupo = subgrupo
-                        matricula.save(update_fields=['subgrupo'])
+                        # Asegurar coherencia: sección del subgrupo
+                        matricula.seccion = subgrupo.seccion
+                        matricula.save(update_fields=['subgrupo', 'seccion'])
                         total_asignados += 1
                 
                 # Crear registro de asignación
@@ -234,39 +253,39 @@ def procesar_estudiantes_con_especialidad(estudiantes_por_especialidad, subgrupo
     asignaciones_finales = defaultdict(list)
     total_hermanos = 0
     
-    for especialidad_id, estudiantes in estudiantes_por_especialidad.items():
+    for especialidad_ecl_id, estudiantes in estudiantes_por_especialidad.items():
         # Encontrar subgrupos que manejen esta especialidad
         subgrupos_especialidad = [
             s for s in subgrupos_disponibles 
-            if s.especialidad_curso and s.especialidad_curso.especialidad_id == especialidad_id
+            # IMPORTANTE: comparar por ID de EspecialidadCursoLectivo (ECL), no por Especialidad
+            if s.especialidad_curso and s.especialidad_curso_id == especialidad_ecl_id
         ]
         
         if not subgrupos_especialidad:
             continue
         
-        # Agrupar por nivel
+        # Agrupar por nivel (10, 11, 12) y distribuir primero por subgrupos de la especialidad
         estudiantes_por_nivel = defaultdict(list)
         for matricula in estudiantes:
             estudiantes_por_nivel[matricula.nivel.id].append(matricula)
-        
+
         for nivel_id, estudiantes_nivel in estudiantes_por_nivel.items():
             # Subgrupos de este nivel y especialidad
             subgrupos_nivel = [s for s in subgrupos_especialidad if s.subgrupo.seccion.nivel_id == nivel_id]
-            
             if not subgrupos_nivel:
                 continue
-            
-            # Aplicar algoritmo de distribución
+
+            # Distribuir equitativamente por subgrupo (con nuestra lógica por género/apellidos)
             asignaciones_nivel, hermanos_nivel = distribuir_estudiantes_equitativamente(
-                estudiantes_nivel, 
-                subgrupos_nivel, 
+                estudiantes_nivel,
+                subgrupos_nivel,
                 'subgrupo'
             )
-            
-            # Agregar al resultado
+
+            # Agregar al resultado con subgrupo → y luego sección se coloca al aplicar (subgrupo.seccion)
             for subgrupo_config, matriculas in asignaciones_nivel.items():
                 asignaciones_finales[subgrupo_config.subgrupo.id].extend(matriculas)
-            
+
             total_hermanos += hermanos_nivel
     
     return dict(asignaciones_finales), total_hermanos
@@ -301,53 +320,85 @@ def distribuir_estudiantes_equitativamente(estudiantes, grupos_disponibles, tipo
     objetivos_hombres = distribuir_objetivo(hombres, num_grupos) 
     objetivos_otros = distribuir_objetivo(otros, num_grupos)
     
-    # 2. AGRUPAR POR APELLIDOS (HERMANOS)
+    # 2. OBJETIVO DE TAMAÑO POR GRUPO (equidistribución y tope 32)
+    objetivos_tamano = distribuir_objetivo(total_estudiantes, num_grupos)
+    # Verificación de capacidad máxima por grupo (32) — si es inviable, se permitirá overflow mínimo
+    capacidad_maxima = [min(32, objetivo) if total_estudiantes <= num_grupos * 32 else 32 for objetivo in objetivos_tamano]
+
+    # 3. AGRUPAR POR APELLIDOS (HERMANOS) Y PREPARAR LISTAS POR GÉNERO
     clusters_hermanos = defaultdict(list)
     for matricula in estudiantes:
         clave_hermanos = generar_clave_hermanos(matricula.estudiante)
         clusters_hermanos[clave_hermanos].append(matricula)
-    
-    # 3. ORDENAR CLUSTERS ALFABÉTICAMENTE
-    clusters_ordenados = sorted(clusters_hermanos.items(), key=lambda x: x[0])
-    
-    # 4. INICIALIZAR ASIGNACIONES
+
+    # Listas por género, ordenadas alfabéticamente por apellidos (clave del cluster)
+    mujeres = []
+    hombres = []
+    otros = []
+    for clave, cluster in clusters_hermanos.items():
+        # ordenar cluster internamente por nombres para estabilidad
+        cluster_ordenado = sorted(cluster, key=lambda m: (m.estudiante.nombres or '').upper())
+        for m in cluster_ordenado:
+            genero_key = determinar_genero_key(m.estudiante)
+            if genero_key == 'F':
+                mujeres.append((clave, m))
+            elif genero_key == 'M':
+                hombres.append((clave, m))
+            else:
+                otros.append((clave, m))
+
+    mujeres.sort(key=lambda x: (x[0][0], x[0][1]))
+    hombres.sort(key=lambda x: (x[0][0], x[0][1]))
+    otros.sort(key=lambda x: (x[0][0], x[0][1]))
+
+    # 4. INICIALIZAR ASIGNACIONES Y CONTADORES
     asignaciones = {grupo: [] for grupo in grupos_disponibles}
-    contadores_genero = {
-        grupo: {'F': 0, 'M': 0, 'O': 0} 
-        for grupo in grupos_disponibles
-    }
-    
-    # 5. ASIGNAR CLUSTERS USANDO ROUND-ROBIN PONDERADO
-    hermanos_count = 0
-    for (apellidos, cluster) in clusters_ordenados:
-        # Contar hermanos (clusters con más de 1 estudiante)
-        if len(cluster) > 1:
-            hermanos_count += len(cluster)
-        
-        # Determinar composición del cluster por género
-        composicion_cluster = Counter()
-        for matricula in cluster:
-            genero_key = determinar_genero_key(matricula.estudiante)
-            composicion_cluster[genero_key] += 1
-        
-        # Encontrar el mejor grupo para este cluster
-        mejor_grupo = encontrar_mejor_grupo_para_cluster(
-            grupos_disponibles,
-            contadores_genero,
-            asignaciones,
-            composicion_cluster,
-            objetivos_mujeres,
-            objetivos_hombres,
-            objetivos_otros
-        )
-        
-        # Asignar cluster al mejor grupo
-        if mejor_grupo:
-            asignaciones[mejor_grupo].extend(cluster)
-            for matricula in cluster:
-                genero_key = determinar_genero_key(matricula.estudiante)
-                contadores_genero[mejor_grupo][genero_key] += 1
-    
+    contadores_genero = {grupo: {'F': 0, 'M': 0, 'O': 0} for grupo in grupos_disponibles}
+    cluster_objetivo = {}  # mapa de clave_hermanos -> grupo elegido
+    rr_idx = 0  # round-robin index
+
+    def elegir_grupo_para_primero_de_cluster(tamano_cluster):
+        nonlocal rr_idx
+        # Preferir grupo bajo objetivo de tamaño
+        for paso in (0, 1):
+            # paso 0: <= objetivo; paso 1: <= capacidad máxima
+            limite_lista = objetivos_tamano if paso == 0 else capacidad_maxima
+            for intento in range(num_grupos):
+                i = (rr_idx + intento) % num_grupos
+                grupo = grupos_disponibles[i]
+                if len(asignaciones[grupo]) + tamano_cluster <= limite_lista[i]:
+                    rr_idx = (i + 1) % num_grupos
+                    return grupo
+        # Si no hay espacio bajo límites, seleccionar el grupo con menor carga actual
+        i_min = min(range(num_grupos), key=lambda j: len(asignaciones[grupos_disponibles[j]]))
+        grupo = grupos_disponibles[i_min]
+        rr_idx = (i_min + 1) % num_grupos
+        return grupo
+
+    def asignar_estudiante(clave, matricula):
+        # Forzar el grupo del cluster si ya existe
+        if clave in cluster_objetivo:
+            grupo = cluster_objetivo[clave]
+        else:
+            # Elegir grupo para el primer miembro del cluster
+            tamano_cluster = len(clusters_hermanos.get(clave, [matricula]))
+            grupo = elegir_grupo_para_primero_de_cluster(tamano_cluster)
+            cluster_objetivo[clave] = grupo
+        asignaciones[grupo].append(matricula)
+        genero_key = determinar_genero_key(matricula.estudiante)
+        contadores_genero[grupo][genero_key] += 1
+
+    # 5. ASIGNAR EN ORDEN: MUJERES → HOMBRES → OTROS (round-robin al elegir primer miembro de cada cluster)
+    for clave, m in mujeres:
+        asignar_estudiante(clave, m)
+    for clave, m in hombres:
+        asignar_estudiante(clave, m)
+    for clave, m in otros:
+        asignar_estudiante(clave, m)
+
+    # 6. Calcular hermanos_count (cantidad de integrantes en clusters con tamaño > 1)
+    hermanos_count = sum(len(cluster) for cluster in clusters_hermanos.values() if len(cluster) > 1)
+
     return asignaciones, hermanos_count
 
 
@@ -385,14 +436,25 @@ def determinar_genero_key(estudiante):
 
 
 def encontrar_mejor_grupo_para_cluster(grupos_disponibles, contadores_genero, asignaciones, 
-                                     composicion_cluster, obj_f, obj_m, obj_o):
+                                     composicion_cluster, obj_f, obj_m, obj_o, objetivos_tamano, capacidad_maxima):
     """
     Encuentra el mejor grupo para asignar un cluster de hermanos.
     """
     mejor_grupo = None
     mejor_score = float('inf')
     
-    for i, grupo in enumerate(grupos_disponibles):
+    # Primer intento: respetar estrictamente objetivos de tamaño (no pasar del objetivo)
+    indices_evaluacion = list(range(len(grupos_disponibles)))
+
+    # Preferir grupos con espacio real respecto al objetivo de tamaño
+    grupos_con_espacio = [i for i in indices_evaluacion if (len(asignaciones[grupos_disponibles[i]]) + sum(composicion_cluster.values())) <= objetivos_tamano[i]]
+    candidatos = grupos_con_espacio if grupos_con_espacio else indices_evaluacion
+
+    for i in candidatos:
+        grupo = grupos_disponibles[i]
+        # No exceder capacidad máxima dura (32) salvo que sea inviable; si todos exceden, se evaluará de todas formas
+        if grupos_con_espacio and (len(asignaciones[grupo]) + sum(composicion_cluster.values())) > capacidad_maxima[i]:
+            continue
         # Calcular score si asignáramos este cluster aquí
         score = calcular_score_asignacion(
             contadores_genero[grupo],
@@ -401,7 +463,8 @@ def encontrar_mejor_grupo_para_cluster(grupos_disponibles, contadores_genero, as
             obj_m[i], 
             obj_o[i],
             len(asignaciones[grupo]),
-            i  # índice del grupo para desempate
+            i,  # índice del grupo para desempate
+            objetivos_tamano[i]
         )
         
         if score < mejor_score:
@@ -411,7 +474,7 @@ def encontrar_mejor_grupo_para_cluster(grupos_disponibles, contadores_genero, as
     return mejor_grupo
 
 
-def calcular_score_asignacion(contador_actual, composicion_cluster, obj_f, obj_m, obj_o, total_actual, indice_grupo):
+def calcular_score_asignacion(contador_actual, composicion_cluster, obj_f, obj_m, obj_o, total_actual, indice_grupo, objetivo_tamano):
     """
     Calcula un score para determinar qué tan buena sería una asignación.
     Score más bajo = mejor asignación.
@@ -426,12 +489,13 @@ def calcular_score_asignacion(contador_actual, composicion_cluster, obj_f, obj_m
     desv_f = abs(nuevo_f - obj_f)
     desv_m = abs(nuevo_m - obj_m)
     desv_o = abs(nuevo_o - obj_o)
+    desv_tamano = abs(nuevo_total - objetivo_tamano)
     
     # Score combinado con pesos
     # 1000: equilibrio de género (máxima prioridad)
-    # 10: total de estudiantes por grupo
+    # 200: cercanía al objetivo de tamaño (evita sobrecupo o subcupo)
     # 1: índice de grupo (desempate determinístico)
-    score = (desv_f * 1000) + (desv_m * 1000) + (desv_o * 1000) + (nuevo_total * 10) + indice_grupo
+    score = (desv_f * 1000) + (desv_m * 1000) + (desv_o * 1000) + (desv_tamano * 200) + indice_grupo
     
     return score
 
@@ -493,3 +557,32 @@ def generar_detalle_asignaciones(asignaciones_secciones, asignaciones_subgrupos)
             continue
     
     return sorted(detalles, key=lambda x: x['nombre'])
+
+
+def dividir_matriculas_en_subgrupos(matriculas, subgrupos_config):
+    """Divide una lista de matrículas en los subgrupos dados de forma equitativa y estable.
+    - Ordena subgrupos por letra (A, B, C, ...)
+    - Ordena matrículas alfabéticamente por apellidos y nombres
+    - Asigna por bloques consecutivos según objetivos (p. ej. primeros 16 a A, siguientes 16 a B)
+    """
+    if not subgrupos_config:
+        return {}
+    subgrupos_ordenados = sorted(subgrupos_config, key=lambda s: (s.subgrupo.seccion.nivel.numero, s.subgrupo.seccion.numero, s.subgrupo.letra))
+    objetivos = distribuir_objetivo(len(matriculas), len(subgrupos_ordenados))
+    # Orden alfabético de estudiantes dentro de la sección
+    matriculas_ordenadas = sorted(
+        matriculas,
+        key=lambda m: (
+            (m.estudiante.primer_apellido or '').upper(),
+            (m.estudiante.segundo_apellido or '').upper(),
+            (m.estudiante.nombres or '').upper(),
+        )
+    )
+    asignaciones = {sub: [] for sub in subgrupos_ordenados}
+    start = 0
+    for i, sub in enumerate(subgrupos_ordenados):
+        end = start + objetivos[i]
+        if start < len(matriculas_ordenadas):
+            asignaciones[sub].extend(matriculas_ordenadas[start:end])
+        start = end
+    return asignaciones
