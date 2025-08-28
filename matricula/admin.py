@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 from django.urls import reverse
 from django.utils.safestring import mark_safe
+from django.forms.models import BaseInlineFormSet
 
 from core.mixins import InstitucionScopedAdmin
 from .models import Estudiante, EncargadoEstudiante, PersonaContacto, MatriculaAcademica, PlantillaImpresionMatricula, AsignacionGrupos
@@ -413,11 +414,26 @@ class PersonaContactoForm(forms.ModelForm):
         )
 
 # ────────────────────────────  Inline  ──────────────────────────────────
+class EncargadoInlineFormSet(BaseInlineFormSet):
+    def clean(self):
+        super().clean()
+        principal_count = 0
+        for form in self.forms:
+            if not hasattr(form, 'cleaned_data'):
+                continue
+            if form.cleaned_data.get('DELETE'):
+                continue
+            if form.cleaned_data.get('principal'):
+                principal_count += 1
+        if principal_count > 1:
+            raise forms.ValidationError('Solo puede haber un encargado principal por estudiante.')
+
 class EncargadoInline(admin.TabularInline):
     model = EncargadoEstudiante
     extra = 0
     fields = ("persona_contacto", "parentesco", "convivencia", "principal")
     readonly_fields = ()
+    formset = EncargadoInlineFormSet
 
 class MatriculaAcademicaInline(admin.StackedInline):  # Cambiado a StackedInline para vista vertical
     model = MatriculaAcademica

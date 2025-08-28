@@ -243,6 +243,18 @@
                         {% endfor %}
                     </select>
                 </div>
+                <div class="form-group">
+                    <label for="seccion_export">Sección (para exportar)</label>
+                    <select id="seccion_export" name="seccion_export">
+                        <option value="">Todas</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="subgrupo_export">Subgrupo (para exportar)</label>
+                    <select id="subgrupo_export" name="subgrupo_export">
+                        <option value="">Todos</option>
+                    </select>
+                </div>
             </div>
             
             <div class="form-actions">
@@ -251,6 +263,9 @@
                 </button>
                 <button type="button" id="btn-ejecutar" class="btn btn-primary">
                     ✅ Ejecutar Asignación
+                </button>
+                <button type="button" id="btn-exportar" class="btn btn-success" title="Exportar listas a Excel">
+                    📤 Exportar Listas (Excel)
                 </button>
             </div>
         </form>
@@ -319,6 +334,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const estadisticasContainer = document.getElementById('estadisticas-container');
     const detalleContainer = document.getElementById('detalle-container');
     const detalleLista = document.getElementById('detalle-lista');
+    const btnExportar = document.getElementById('btn-exportar');
+    const selectNivel = document.getElementById('nivel');
+    const selectSeccion = document.getElementById('seccion_export');
+    const selectSubgrupo = document.getElementById('subgrupo_export');
     
     // Función para mostrar loading
     function mostrarLoading(btn, texto) {
@@ -481,6 +500,91 @@ document.addEventListener('DOMContentLoaded', function() {
             ejecutarAsignacion(false);
         }
     });
+
+    // Exportar a Excel
+    btnExportar.addEventListener('click', () => {
+        const cursoLectivo = document.getElementById('curso_lectivo').value;
+        const nivel = document.getElementById('nivel').value;
+        {% if es_superusuario %}
+        const institucion = document.getElementById('institucion').value;
+        if (!institucion) {
+            alert('Por favor seleccione una institución');
+            return;
+        }
+        {% endif %}
+        if (!cursoLectivo) {
+            alert('Por favor seleccione un curso lectivo');
+            return;
+        }
+        // Determinar alcance más específico disponible
+        const params = new URLSearchParams();
+        params.set('curso_lectivo_id', cursoLectivo);
+        if (selectSubgrupo.value) {
+            params.set('alcance', 'subgrupo');
+            params.set('subgrupo_id', selectSubgrupo.value);
+        } else if (selectSeccion.value) {
+            params.set('alcance', 'seccion');
+            params.set('seccion_id', selectSeccion.value);
+        } else if (nivel) {
+            params.set('alcance', 'nivel');
+            params.set('nivel_id', nivel);
+        } else {
+            params.set('alcance', 'all');
+        }
+        const url = '{% url "matricula:exportar_listas_clase_excel" %}?'+params.toString();
+        window.location.href = url;
+    });
+
+    // Poblar secciones al cambiar curso o nivel
+    function cargarSecciones() {
+        const cursoLectivo = document.getElementById('curso_lectivo').value;
+        const nivel = selectNivel.value;
+        selectSeccion.innerHTML = '<option value="">Todas</option>';
+        selectSubgrupo.innerHTML = '<option value="">Todos</option>';
+        if (!cursoLectivo || !nivel) return;
+        const params = new URLSearchParams();
+        params.set('curso_lectivo_id', cursoLectivo);
+        params.set('nivel_id', nivel);
+        fetch('{% url "matricula:api_secciones_por_curso_nivel" %}?'+params.toString())
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    data.secciones.forEach(s => {
+                        const opt = document.createElement('option');
+                        opt.value = s.id;
+                        opt.textContent = s.nombre;
+                        selectSeccion.appendChild(opt);
+                    });
+                }
+            });
+    }
+
+    // Poblar subgrupos al cambiar sección
+    function cargarSubgrupos() {
+        const cursoLectivo = document.getElementById('curso_lectivo').value;
+        const seccionId = selectSeccion.value;
+        selectSubgrupo.innerHTML = '<option value="">Todos</option>';
+        if (!cursoLectivo || !seccionId) return;
+        const params = new URLSearchParams();
+        params.set('curso_lectivo_id', cursoLectivo);
+        params.set('seccion_id', seccionId);
+        fetch('{% url "matricula:api_subgrupos_por_curso_seccion" %}?'+params.toString())
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    data.subgrupos.forEach(sg => {
+                        const opt = document.createElement('option');
+                        opt.value = sg.id;
+                        opt.textContent = sg.nombre;
+                        selectSubgrupo.appendChild(opt);
+                    });
+                }
+            });
+    }
+
+    document.getElementById('curso_lectivo').addEventListener('change', cargarSecciones);
+    selectNivel.addEventListener('change', cargarSecciones);
+    selectSeccion.addEventListener('change', cargarSubgrupos);
 });
 </script>
 {% endblock %}

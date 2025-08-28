@@ -2,166 +2,203 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}Iniciar Sesión | Sistema Colegio{% endblock %}</title>
-    
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <!-- CSS personalizado -->
-    <link rel="stylesheet" href="{% static 'sis_colegio/css/logo-custom.css' %}">
-    
-    <style>
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        .login-container {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            width: 100%;
-            max-width: 500px;
-        }
-        
-        .login-header {
-            background: #f8f9fa;
-            padding: 2rem;
-            text-align: center;
-            border-bottom: 1px solid #e9ecef;
-        }
-        
-        .login-body {
-            padding: 2rem;
-        }
-        
-        .form-control {
-            border-radius: 8px;
-            border: 2px solid #e9ecef;
-            padding: 12px 15px;
-            transition: all 0.3s ease;
-        }
-        
-        .form-control:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
-        }
-        
-        .btn-login {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            border-radius: 8px;
-            padding: 12px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-        
-        .error-message {
-            background: #f8d7da;
-            border: 1px solid #f5c6cb;
-            color: #721c24;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 1rem;
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Iniciar Sesión | Sistema Colegio{% endblock %}</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Lato (opcional, para que combine con la navbar brand que configuraste) -->
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- Logo CSS -->
+  <link rel="stylesheet" href="{% static 'sis_colegio/css/logo-custom.css' %}">
+
+  <style>
+    /* Paleta igual a la app */
+    :root{
+      --bg:#0F2537;                 /* fondo app */
+      --card:#3a4650;               /* tarjetas/oscuros */
+      --card-2:#4E5A65;             /* variante */
+      --text:#ffffff;               /* texto claro */
+      --muted:#b8c2cc;              /* texto secundario */
+      --brand:#DF6919;              /* naranja navbar */
+      --brand-dark:#c55a14;         /* hover */
+    }
+
+    html,body{height:100%}
+    body{
+      background: var(--bg);
+      font-family: "Lato","Segoe UI",Roboto,Arial,sans-serif;
+      display:flex;align-items:center;justify-content:center;
+      color:var(--text);
+      padding:24px;
+    }
+
+    .login-container{
+      width:100%;max-width: 520px;
+      background: linear-gradient(180deg, var(--card) 0%, var(--card-2) 100%);
+      border: 1px solid rgba(255,255,255,0.08);
+      color:var(--text);
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0,0,0,.25);
+      overflow:hidden;
+    }
+
+    .login-header{
+      background: var(--brand);
+      color:#fff;
+      padding: 28px 28px 22px;
+      text-align:center;
+    }
+    .login-header h6{margin:12px 0 0;color:#fff;opacity:.9;font-weight:600}
+
+    .login-body{ padding: 26px 26px 28px; }
+
+    /* Labels */
+    .form-label{
+      color: var(--text);
+      font-weight: 600;
+      margin-bottom: .35rem;
+    }
+
+    /* Inputs blancos para contraste */
+    .form-control{
+      background:#fff;border:1px solid #ced4da;color:#212529;
+      border-radius:10px;padding:12px 14px;
+      transition: all .25s ease;
+    }
+    .form-control::placeholder{color:#8b949e}
+    .form-control:focus{
+      background:#fff;color:#212529;
+      border-color: var(--brand);
+      box-shadow: 0 0 0 .25rem rgba(223,105,25,.25);
+    }
+
+    /* Botón principal naranja */
+    .btn-login{
+      background: var(--brand);
+      border: 1px solid var(--brand);
+      color:#fff;
+      border-radius: 10px;
+      padding: 12px;
+      font-weight: 700;
+      letter-spacing:.2px;
+      transition: transform .15s ease, box-shadow .2s ease, background-color .15s ease;
+    }
+    .btn-login:hover{
+      background: var(--brand-dark);
+      border-color: var(--brand-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(0,0,0,.25);
+    }
+
+    /* Mensaje de error con esquema del tema */
+    .error-message{
+      background: rgba(220,53,69,.12);
+      border: 1px solid rgba(220,53,69,.55);
+      color: #ffb3b8;
+      padding: 10px 12px;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+    }
+
+    .login-footer{
+      padding: 0 26px 24px;
+      color: var(--muted);
+      text-align:center;
+      font-size:.875rem;
+    }
+    .login-footer a{ color:#fff; text-decoration:underline; }
+    .text-muted{ color: #fdfdfd; opacity: .9 !important; }
+
+    /* Logo responsive */
+    .login-logo-ss{
+      max-width: 220px; height:auto;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,.25));
+    }
+
+    /* Accesibilidad foco en el botón usando teclado */
+    .btn-login:focus{
+      box-shadow: 0 0 0 .25rem rgba(223,105,25,.35);
+      outline: none;
+    }
+  </style>
 </head>
+
 <body>
-    <div class="login-container">
-        <div class="login-header">
-            <img class="login-logo-ss" src="{% static 'sis_colegio/img/Logo-School-Smart.png' %}" alt="School Smart">
-            <h6 class="mt-3 mb-0 text-muted">Sistema Integral de Gestión Administrativa y Educativa</h6>
-        </div>
-        
-        <div class="login-body">
-            {% if form.errors %}
-                <div class="error-message">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    Usuario o contraseña incorrectos. Por favor, inténtelo de nuevo.
-                </div>
-            {% endif %}
-            
-            <form method="post" id="login-form">
-                {% csrf_token %}
-                
-                <div class="mb-3">
-                    <label for="id_username" class="form-label">
-                        <i class="fas fa-user"></i> Usuario
-                    </label>
-                    <input type="text" 
-                           class="form-control" 
-                           id="id_username" 
-                           name="username" 
-                           placeholder="Ingrese su usuario"
-                           required>
-                </div>
-                
-                <div class="mb-3">
-                    <label for="id_password" class="form-label">
-                        <i class="fas fa-lock"></i> Contraseña
-                    </label>
-                    <input type="password" 
-                           class="form-control" 
-                           id="id_password" 
-                           name="password" 
-                           placeholder="Ingrese su contraseña"
-                           required>
-                </div>
-                
-                <div class="mb-3">
-                    <button type="submit" class="btn btn-login btn-primary w-100">
-                        <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
-                    </button>
-                </div>
-                
-                {% if next %}
-                    <input type="hidden" name="next" value="{{ next }}">
-                {% endif %}
-            </form>
-            
-            <div class="text-center mt-3">
-                <small class="text-muted">
-                    <i class="fas fa-shield-alt"></i> Acceso seguro al sistema
-                </small>
-            </div>
-        </div>
+  <div class="login-container">
+    <div class="login-header">
+      <img class="login-logo-ss" src="{% static 'sis_colegio/img/Logo-School-Smart.png' %}" alt="School Smart">
+      <h6 class="mt-3 mb-0">Sistema Integral de Gestión Administrativa y Educativa</h6>
     </div>
-    
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <script>
-        // Auto-focus en el primer campo
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('id_username').focus();
-        });
-        
-        // Validación del formulario
-        document.getElementById('login-form').addEventListener('submit', function(e) {
-            const username = document.getElementById('id_username').value.trim();
-            const password = document.getElementById('id_password').value.trim();
-            
-            if (!username || !password) {
-                e.preventDefault();
-                alert('Por favor, complete todos los campos.');
-                return false;
-            }
-        });
-    </script>
+
+    <div class="login-body">
+      {% if form.errors %}
+        <div class="error-message">
+          <i class="fas fa-exclamation-triangle"></i>
+          Usuario o contraseña incorrectos. Por favor, inténtelo de nuevo.
+        </div>
+      {% endif %}
+
+      <form method="post" id="login-form" novalidate>
+        {% csrf_token %}
+
+        <div class="mb-3">
+          <label for="id_username" class="form-label">
+            <i class="fas fa-user me-1"></i> Usuario
+          </label>
+          <input type="text" class="form-control" id="id_username" name="username"
+                 placeholder="Ingrese su usuario" required autocomplete="username">
+        </div>
+
+        <div class="mb-3">
+          <label for="id_password" class="form-label">
+            <i class="fas fa-lock me-1"></i> Contraseña
+          </label>
+          <input type="password" class="form-control" id="id_password" name="password"
+                 placeholder="Ingrese su contraseña" required autocomplete="current-password">
+        </div>
+
+        <div class="mb-3">
+          <button type="submit" class="btn btn-login w-100">
+            <i class="fas fa-sign-in-alt me-1"></i> Iniciar Sesión
+          </button>
+        </div>
+
+        {% if next %}
+          <input type="hidden" name="next" value="{{ next }}">
+        {% endif %}
+      </form>
+    </div>
+
+    <div class="login-footer">
+      <small>
+        <i class="fas fa-shield-alt me-1"></i> Acceso seguro al sistema
+      </small>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Auto-focus en el primer campo
+    document.addEventListener('DOMContentLoaded', function() {
+      const u = document.getElementById('id_username');
+      if (u) u.focus();
+    });
+
+    // Validación simple en cliente
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+      const username = document.getElementById('id_username').value.trim();
+      const password = document.getElementById('id_password').value.trim();
+      if (!username || !password) {
+        e.preventDefault();
+        alert('Por favor, complete todos los campos.');
+      }
+    });
+  </script>
 </body>
 </html>

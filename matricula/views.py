@@ -2,12 +2,20 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+from django.utils.encoding import smart_str
 from config_institucional.models import Nivel
 from catalogos.models import CursoLectivo, Seccion, Subgrupo, Especialidad
 from core.models import Institucion
 from .models import Estudiante, MatriculaAcademica, PlantillaImpresionMatricula
 from dal import autocomplete
 import json
+import io
+
+try:
+    import openpyxl
+    from openpyxl.utils import get_column_letter
+except Exception:
+    openpyxl = None
 
 @login_required
 def consulta_estudiante(request):
@@ -581,3 +589,144 @@ def ejecutar_asignacion_grupos(request):
         logger = logging.getLogger(__name__)
         logger.error(f"Error en ejecutar_asignacion_grupos: {str(e)}")
         return JsonResponse({'success': False, 'error': f'Error interno: {str(e)}'})
+
+
+@login_required
+def exportar_listas_clase_excel(request):
+    """
+    Exporta listas de clase a Excel con filtros opcionales:
+    - alcance: all | nivel | seccion | subgrupo
+    - curso_lectivo_id (requerido)
+    - nivel_id | seccion_id | subgrupo_id (dependiendo de alcance)
+    """
+    if openpyxl is None:
+        return HttpResponse('openpyxl no está instalado en el entorno', status=500)
+
+    alcance = request.GET.get('alcance', 'all')
+    curso_lectivo_id = request.GET.get('curso_lectivo_id')
+    nivel_id = request.GET.get('nivel_id')
+    seccion_id = request.GET.get('seccion_id')
+    subgrupo_id = request.GET.get('subgrupo_id')
+
+    if not curso_lectivo_id:
+        return HttpResponse('Debe indicar curso_lectivo_id', status=400)
+
+    try:
+        curso_lectivo = CursoLectivo.objects.get(id=curso_lectivo_id)
+    except CursoLectivo.DoesNotExist:
+        return HttpResponse('Curso lectivo no encontrado', status=404)
+
+    # Base queryset restringido por institución si no es superusuario
+    qs = MatriculaAcademica.objects.select_related(
+        'estudiante', 'nivel', 'seccion', 'subgrupo', 'especialidad__especialidad'
+    ).filter(curso_lectivo=curso_lectivo, estado__iexact='activo')
+    if not request.user.is_superuser:
+        institucion_id = getattr(request, 'institucion_activa_id', None)
+        if not institucion_id:
+            return HttpResponse('No se pudo determinar la institución activa', status=400)
+        qs = qs.filter(institucion_id=institucion_id)
+
+    titulo = f"Listas de clase - {curso_lectivo.nombre}"
+
+    if alcance == 'nivel' and nivel_id:
+        qs = qs.filter(nivel_id=nivel_id)
+    elif alcance == 'seccion' and seccion_id:
+        qs = qs.filter(seccion_id=seccion_id)
+    elif alcance == 'subgrupo' and subgrupo_id:
+        qs = qs.filter(subgrupo_id=subgrupo_id)
+
+    # Orden consistente alfabético por apellidos y nombres
+    qs = qs.order_by('nivel__numero', 'seccion__numero', 'subgrupo__letra', 'estudiante__primer_apellido', 'estudiante__segundo_apellido', 'estudiante__nombres')
+
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = 'Listas'
+
+    headers = [
+        'Institución', 'Nivel', 'Sección', 'Subgrupo', 'Identificación',
+        '1er Apellido', '2do Apellido', 'Nombres', 'Sexo', 'Especialidad'
+    ]
+    ws.append(headers)
+
+    for mat in qs:
+        ws.append([
+            smart_str(getattr(mat.estudiante.institucion, 'nombre', '')),
+            smart_str(getattr(mat.nivel, 'nombre', '')),
+            smart_str(f"{getattr(getattr(mat, 'nivel', None), 'numero', '')}-{getattr(getattr(mat, 'seccion', None), 'numero', '')}" if getattr(mat, 'seccion_id', None) and getattr(mat, 'nivel_id', None) else ''),
+            smart_str(getattr(mat.subgrupo, 'letra', '')),
+            smart_str(mat.estudiante.identificacion),
+            smart_str(mat.estudiante.primer_apellido),
+            smart_str(mat.estudiante.segundo_apellido),
+            smart_str(mat.estudiante.nombres),
+            smart_str(getattr(getattr(mat.estudiante, 'sexo', None), 'nombre', '')),
+            smart_str(getattr(getattr(mat.especialidad, 'especialidad', None), 'nombre', '')),
+        ])
+
+    # Auto-ancho simple
+    for col_idx, _ in enumerate(headers, start=1):
+        col_letter = get_column_letter(col_idx)
+        ws.column_dimensions[col_letter].width = 18
+
+    output = io.BytesIO()
+    wb.save(output)
+    output.seek(0)
+
+    response = HttpResponse(
+        output.getvalue(),
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    filename = f"listas_clase_{curso_lectivo.anio}_{alcance}.xlsx"
+    response['Content-Disposition'] = f"attachment; filename={filename}"
+    return response
+
+
+@login_required
+def api_secciones_por_curso_nivel(request):
+    """Devuelve secciones activas (SeccionCursoLectivo) para curso_lectivo y nivel dados."""
+    curso_lectivo_id = request.GET.get('curso_lectivo_id')
+    nivel_id = request.GET.get('nivel_id')
+    if not curso_lectivo_id or not nivel_id:
+        return JsonResponse({'success': False, 'error': 'Parámetros incompletos'}, status=400)
+    try:
+        from config_institucional.models import SeccionCursoLectivo
+        curso_lectivo = CursoLectivo.objects.get(id=curso_lectivo_id)
+        qs = SeccionCursoLectivo.objects.select_related('seccion', 'seccion__nivel').filter(
+            curso_lectivo=curso_lectivo,
+            activa=True,
+            seccion__nivel_id=nivel_id
+        )
+        if not request.user.is_superuser:
+            institucion_id = getattr(request, 'institucion_activa_id', None)
+            if not institucion_id:
+                return JsonResponse({'success': False, 'error': 'No se pudo determinar la institución'}, status=400)
+            qs = qs.filter(institucion_id=institucion_id)
+        data = [{'id': sc.seccion.id, 'nombre': f"{sc.seccion.nivel.numero}-{sc.seccion.numero}", 'numero': sc.seccion.numero} for sc in qs]
+        return JsonResponse({'success': True, 'secciones': data})
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+
+@login_required
+def api_subgrupos_por_curso_seccion(request):
+    """Devuelve subgrupos activos (SubgrupoCursoLectivo) para curso_lectivo y seccion dados."""
+    curso_lectivo_id = request.GET.get('curso_lectivo_id')
+    seccion_id = request.GET.get('seccion_id')
+    if not curso_lectivo_id or not seccion_id:
+        return JsonResponse({'success': False, 'error': 'Parámetros incompletos'}, status=400)
+    try:
+        from config_institucional.models import SubgrupoCursoLectivo
+        curso_lectivo = CursoLectivo.objects.get(id=curso_lectivo_id)
+        qs = SubgrupoCursoLectivo.objects.select_related('subgrupo', 'subgrupo__seccion').filter(
+            curso_lectivo=curso_lectivo,
+            activa=True,
+            subgrupo__seccion_id=seccion_id
+        )
+        if not request.user.is_superuser:
+            institucion_id = getattr(request, 'institucion_activa_id', None)
+            if not institucion_id:
+                return JsonResponse({'success': False, 'error': 'No se pudo determinar la institución'}, status=400)
+            qs = qs.filter(institucion_id=institucion_id)
+        data = [{'id': sc.subgrupo.id, 'nombre': f"{sc.subgrupo.seccion.nivel.numero}-{sc.subgrupo.seccion.numero}{sc.subgrupo.letra}", 'letra': sc.subgrupo.letra} for sc in qs]
+        return JsonResponse({'success': True, 'subgrupos': data})
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)

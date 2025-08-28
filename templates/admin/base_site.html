@@ -1,23 +1,227 @@
 {# templates/admin/base_site.html #}
 {% extends "admin/base.html" %}
 {% load admin_extras %}
+{% load static %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+/* ───────────────────  Variables tema  ─────────────────── */
+:root{
+  --superhero-bg:#0F2537;
+  --superhero-navbar:#DF6919;
+  --superhero-text:#ffffff;
+}
+
+/* ───────────────────  Layout / Navbar / Sidebar  ─────────────────── */
+.main-header.navbar,.navbar-light,.navbar-expand-md{
+  background-color:var(--superhero-navbar)!important;border-bottom:none!important;
+}
+.navbar-light .navbar-nav .nav-link,.navbar-light .navbar-brand,
+.navbar .navbar-nav .nav-link,.navbar .navbar-brand{
+    font-family: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+    font-size: 18px !important;
+    font-weight: 400 !important;   /* normal, no bold */
+    padding: 5px 0 !important;     /* arriba/abajo */
+    margin: 0 16px 0 0 !important; /* mismo margen que Bootswatch */
+    text-decoration: none !important;
+    color:var(--superhero-text)!important;
+}    
+
+body,.wrapper,.content-wrapper{background-color:var(--superhero-bg)!important;color:var(--superhero-text)!important;}
+.main-sidebar{background-color:var(--superhero-bg)!important;}
+.main-sidebar .nav-sidebar .nav-item .nav-link{color:var(--superhero-text)!important;}
+
+/* Cards */
+.card{background:#20374C!important;color:var(--superhero-text)!important;border:1px solid #2C3E50;}
+.card-header{background:var(--superhero-navbar)!important;color:var(--superhero-text)!important;}
+
+/* ───────────────────  Listados del admin (#result_list)  ─────────────────── */
+/* Encabezados en naranja */
+#result_list thead th{
+  background:#DF6919!important;color:#fff!important;font-weight:bold;
+}
+#result_list thead th a{color:#fff!important;text-decoration:none;}
+#result_list thead th a:hover{color:#f8f9fa!important;text-decoration:underline;}
+
+/* Ordenamiento SOLO en encabezados */
+#result_list thead th.sortable,
+#result_list thead th.sorted{background:var(--superhero-navbar)!important;color:#fff!important;}
+#result_list thead th.sortable a,
+#result_list thead th.sorted a{color:#fff!important;}
+
+/* Cuerpo: fondo claro y texto oscuro (aplica a td y th del cuerpo) */
+/* Listas del admin (#result_list): fondo claro y texto oscuro */
+#result_list tbody td,
+#result_list tbody th {
+    color: #212529 !important;
+    border-color: #c6c8cc !important;
+}
+
+/* Zebra striping: impares blancas, pares gris claro */
+#result_list tbody tr:nth-of-type(odd) td,
+#result_list tbody tr:nth-of-type(odd) th {
+    background-color: #ffffff !important;
+}
+#result_list tbody tr:nth-of-type(even) td,
+#result_list tbody tr:nth-of-type(even) th {
+    background-color: #dce8f3 !important;
+}
+
+/* Hover más notorio (gris un poco más oscuro) */
+#result_list tbody tr:hover td,
+#result_list tbody tr:hover th {
+    background-color: #c6c8cc !important;
+}
+
+/* Enlaces del cuerpo heredan el color (evita blancos) */
+#result_list tbody td a,
+#result_list tbody th a{color:inherit!important;}
+
+/* Checkbox header/celda: use el mismo esquema claro del cuerpo */
+#result_list tbody td.action-checkbox{background:inherit!important;}
+th.action-checkbox-column{background:#DF6919!important;color:#fff!important;}
+
+/* ─────  Columna Identificación: texto verde, sin cambiar el fondo  ───── */
+#result_list tbody td.field-identificacion,
+#result_list tbody th.field-identificacion,
+#result_list tbody td.field_identificacion,
+#result_list tbody th.field_identificacion{
+  background-color:transparent!important; /* deja ver el zebra */
+  color:#198754!important; font-weight:600;
+}
+#result_list tbody td.field-identificacion a,
+#result_list tbody th.field-identificacion a,
+#result_list tbody td.field_identificacion a,
+#result_list tbody th.field_identificacion a{
+  color:#198754!important;font-weight:700;text-decoration:none;
+}
+#result_list tbody td.field-identificacion a:hover,
+#result_list tbody th.field-identificacion a:hover,
+#result_list tbody td.field_identificacion a:hover,
+#result_list tbody th.field_identificacion a:hover{
+  color:#157347!important;text-decoration:underline;
+}
+
+/* (Opcional) En Matrículas, si la identificación va en la columna 'estudiante' */
+#result_list tbody td.field-estudiante,
+#result_list tbody td.field_estudiante{color:#198754!important;font-weight:600;}
+#result_list tbody td.field-estudiante a,
+#result_list tbody td.field_estudiante a{color:#198754!important;font-weight:700;}
+
+/* ───────────────────  Botones / Formularios / Varios  ─────────────────── */
+.btn-primary{background:#007bff!important;border-color:#007bff!important;color:#fff!important;}
+.btn-secondary{background:#6c757d!important;border-color:#6c757d!important;color:#fff!important;}
+.btn-success{background:#28a745!important;border-color:#28a745!important;color:#fff!important;}
+.btn-info{background:#17a2b8!important;border-color:#17a2b8!important;color:#fff!important;}
+.btn-warning{background:#ffc107!important;border-color:#ffc107!important;color:#212529!important;}
+.btn-danger{background:#dc3545!important;border-color:#dc3545!important;color:#fff!important;}
+.btn-light{background:#f8f9fa!important;border-color:#f8f9fa!important;color:#212529!important;}
+.btn-dark{background:#343a40!important;border-color:#343a40!important;color:#fff!important;}
+.btn-primary:hover{background:#0056b3!important;border-color:#0056b3!important;}
+.btn-secondary:hover{background:#545b62!important;border-color:#545b62!important;}
+.btn-success:hover{background:#1e7e34!important;border-color:#1e7e34!important;}
+.btn-info:hover{background:#117a8b!important;border-color:#117a8b!important;}
+.btn-warning:hover{background:#e0a800!important;border-color:#e0a800!important;}
+.btn-danger:hover{background:#bd2130!important;border-color:#bd2130!important;}
+.btn-light:hover{background:#e2e6ea!important;border-color:#e2e6ea!important;}
+.btn-dark:hover{background:#23272b!important;border-color:#23272b!important;}
+
+a{color:var(--superhero-navbar)!important;}
+
+.default,input[type="submit"],input[type="button"],.submit-row input,.button{
+  background:var(--superhero-navbar)!important;border-color:var(--superhero-navbar)!important;
+  color:#fff!important;border-radius:6px!important;font-weight:600!important;
+}
+.default:hover,input[type="submit"]:hover,input[type="button"]:hover,.submit-row input:hover,.button:hover{
+  background:#c55a14!important;border-color:#c55a14!important;transform:translateY(-1px)!important;
+  box-shadow:0 4px 8px rgba(0,0,0,.2)!important;
+}
+input[name="_save"],.submit-row input[name="_save"]{background:var(--superhero-navbar)!important;border-color:var(--superhero-navbar)!important;color:#fff!important;}
+
+.deletelink,input[name="_delete"],.deletelink-box a{
+  background:#dc3545!important;border-color:#dc3545!important;color:#fff!important;border-radius:6px!important;font-weight:600!important;
+}
+.deletelink:hover,input[name="_delete"]:hover,.deletelink-box a:hover{
+  background:#bd2130!important;border-color:#bd2130!important;color:#fff!important;transform:translateY(-1px)!important;box-shadow:0 4px 8px rgba(0,0,0,.2)!important;
+}
+
+/* Formularios */
+.form-control, input[type="text"],input[type="email"],input[type="password"],
+input[type="number"],input[type="tel"],input[type="url"],input[type="date"],
+input[type="time"],textarea{background:#fff!important;border:1px solid #ced4da!important;color:#212529!important;}
+.form-control:focus, input[type="text"]:focus,input[type="email"]:focus,input[type="password"]:focus,
+input[type="number"]:focus,input[type="tel"]:focus,input[type="url"]:focus,
+input[type="date"]:focus,input[type="time"]:focus,textarea:focus{
+  background:#fff!important;color:#212529!important;border-color:var(--superhero-navbar)!important;
+  box-shadow:0 0 0 .2rem rgba(223,105,25,.25)!important;
+}
+
+/* Select / Select2 */
+select{background:#fff!important;color:#212529!important;border:1px solid #ced4da!important;}
+.select2-container--default .select2-selection--single,
+.select2-container--default .select2-selection--multiple{
+  background:#fff!important;border:1px solid #ced4da!important;color:#212529!important;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered,
+.select2-container--default .select2-selection--multiple .select2-selection__rendered{color:#212529!important;}
+.select2-dropdown{background:#fff!important;border:1px solid #ced4da!important;}
+.select2-container--default .select2-results__option--highlighted[aria-selected]{
+  background:var(--superhero-navbar)!important;color:#fff!important;
+}
+
+/* Filtros laterales, breadcrumbs y paginación */
+#changelist-filter{background:var(--superhero-bg)!important;border-left:1px solid #2C3E50;}
+#changelist-filter h2,#changelist-filter h3{color:var(--superhero-text)!important;}
+#changelist-filter li a{color:var(--superhero-text)!important;}
+#changelist-filter li.selected a{color:var(--superhero-navbar)!important;font-weight:bold;}
+
+.breadcrumbs{background:rgba(78,90,101,.3)!important;color:var(--superhero-text)!important;}
+.breadcrumbs a{color:var(--superhero-navbar)!important;}
+
+.paginator{color:var(--superhero-text)!important;}
+.paginator a{background:#4E5A65!important;border:1px solid #2C3E50!important;color:var(--superhero-text)!important;}
+.paginator .this-page{background:var(--superhero-navbar)!important;color:var(--superhero-text)!important;}
+
+.actions{background:rgba(78,90,101,.3)!important;color:var(--superhero-text)!important;}
+.actions select{background:#4E5A65!important;color:var(--superhero-text)!important;}
+
+.messagelist .success{background:rgba(40,167,69,.8)!important;color:var(--superhero-text)!important;}
+.messagelist .warning{background:rgba(255,193,7,.8)!important;color:#000!important;}
+.messagelist .error{background:rgba(220,53,69,.8)!important;color:var(--superhero-text)!important;}
+
+.navbar .dropdown-menu{background:#3a4650!important;border:1px solid rgba(255,255,255,.1)!important;}
+.navbar .dropdown-item{color:#fff!important;}
+.navbar .dropdown-item:hover,.navbar .dropdown-item:focus{
+  background:rgba(255,255,255,.08)!important;color:#fff!important;
+}
+
+
+/* O si quieres cambiar solo el fondo del contenedor del logo */
+.brand-link {
+    background-color: #389b4f !important; /* naranja */
+    color: #ffffff !important;
+    font-weight: 700;
+    text-align: center;
+}
+
+
+</style>
+{% endblock %}
 
 {% block usertools %}
   {{ block.super }}
   <li class="nav-item">
     <a class="nav-link" href="#">
       {{ request.user.email }}
-      {% user_role as role %}
-      {% if role %} ({{ role }}){% endif %}
+      {% user_role as role %}{% if role %} ({{ role }}){% endif %}
     </a>
   </li>
 {% endblock %}
 
 {% block footer %}
 <footer class="main-footer">
-    <div>
-        <strong>Copyright © 2025 Ing. Rodolfo Garro Monge.</strong> Todos los derechos reservados.
-    </div>
+  <div><strong>Copyright © 2025 Ing. Rodolfo Garro Monge.</strong> Todos los derechos reservados.</div>
 </footer>
 {% endblock %}
 

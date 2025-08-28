@@ -77,7 +77,9 @@ class PersonaContacto(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.primer_apellido} {self.nombres}"
+        segundo = (self.segundo_apellido or "").strip()
+        partes = [self.primer_apellido, segundo, self.nombres]
+        return " ".join([p for p in partes if p])
 
 # ──────────────────────────────  ESTUDIANTE  ───────────────────────────
 class Estudiante(models.Model):

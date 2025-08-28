@@ -2,7 +2,9 @@ from django.urls import path
 from .views import (
     consulta_estudiante, get_especialidades_disponibles, 
     EspecialidadAutocomplete, SeccionAutocomplete, SubgrupoAutocomplete,
-    asignacion_grupos, ejecutar_asignacion_grupos
+    asignacion_grupos, ejecutar_asignacion_grupos,
+    exportar_listas_clase_excel,
+    api_secciones_por_curso_nivel, api_subgrupos_por_curso_seccion
 )
 
 app_name = 'matricula'
@@ -19,4 +21,8 @@ urlpatterns = [
     # Asignación automática de grupos
     path('asignacion-grupos/', asignacion_grupos, name='asignacion_grupos'),
     path('ejecutar-asignacion-grupos/', ejecutar_asignacion_grupos, name='ejecutar_asignacion_grupos'),
+    path('exportar-listas-excel/', exportar_listas_clase_excel, name='exportar_listas_clase_excel'),
+    # APIs para poblar selects
+    path('api/secciones/', api_secciones_por_curso_nivel, name='api_secciones_por_curso_nivel'),
+    path('api/subgrupos/', api_subgrupos_por_curso_seccion, name='api_subgrupos_por_curso_seccion'),
 ]

@@ -9,6 +9,7 @@ JAZZMIN_SETTINGS = {
     "site_brand": "School Smart",
     "site_logo": "sis_colegio/img/Logo-Peque-School-Smart.png",
     "site_icon": "sis_colegio/img/Logo-Peque-School-Smart.png",
+
     
     "order_with_respect_to": [
         "core",
@@ -82,8 +83,8 @@ JAZZMIN_SETTINGS = {
     "site_logo_classes": "img-fluid",
     "brand_colour": False,
     
-    # CSS personalizado para el logo
-    "custom_css": "sis_colegio/css/logo-custom.css",
+    # CSS personalizado (logo + estilos de admin)
+    "custom_css": "sis_colegio/css/logo-custom.css, sis_colegio/css/custom-admin.css",
     
     # Configuración adicional del logo
     "welcome_sign": "Sistema Integral de Gestión Administrativa y Educativa",
@@ -109,22 +110,24 @@ JAZZMIN_UI_TWEAKS = {
     "footer_small_text": False,
     "body_small_text": False,
     "brand_small_text": False,
-    "brand_colour": "navbar-success",
-    "accent": "accent-teal",
+    
+    # Colores personalizados del tema Superhero de Bootswatch
+    "brand_colour": "#DF6919",  # Naranja del navbar
+    "accent": "accent-orange",
     "navbar": "navbar-dark",
     "no_navbar_border": False,
     "navbar_fixed": False,
     "layout_boxed": False,
     "footer_fixed": False,
     "sidebar_fixed": False,
-    "sidebar": "sidebar-dark-success",
+    "sidebar": "sidebar-dark-primary",
     "sidebar_nav_small_text": False,
     "sidebar_disable_expand": False,
     "sidebar_nav_child_indent": False,
     "sidebar_nav_compact_style": False,
     "sidebar_nav_legacy_style": False,
     "sidebar_nav_flat_style": False,
-    "theme": "cosmo",
+    "theme": "superhero",
     "dark_mode_theme": None,
     "button_classes": {
         "primary": "btn-primary",
@@ -133,5 +136,8 @@ JAZZMIN_UI_TWEAKS = {
         "warning": "btn-warning",
         "danger": "btn-danger",
         "success": "btn-success"
-    }
+    },
+    
+    # CSS personalizado para colores específicos del tema Superhero
+    "custom_css": "sis_colegio/css/superhero-colors.css",
 }
