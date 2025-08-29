@@ -31,14 +31,12 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
-    .print-btn:hover { 
-      background: #1565c0; 
+    .print-btn:hover {
+      background: #1565c0;
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(25, 118, 210, 0.4);
     }
-    .print-btn:active {
-      transform: translateY(0);
-    }
+    .print-btn:active { transform: translateY(0); }
 
     /* Contenedor general */
     .print-container {
@@ -53,15 +51,8 @@
     }
 
     /* Columnas */
-    .columns {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5em;
-    }
-    @media (min-width: 900px) {
-      .columns { flex-direction: row; }
-      .col { width: 50%; }
-    }
+    .columns { display: flex; flex-direction: column; gap: 1.5em; }
+    @media (min-width: 900px) { .columns { flex-direction: row; } .col { width: 50%; } }
     .col { box-sizing: border-box; }
     .datos-personales-list b { display: inline-block; min-width: 160px; }
     .encargado-block { margin-bottom: 1em; }
@@ -72,69 +63,29 @@
       align-items: center;
       justify-content: space-between;
       gap: 0.8em;
-      margin: 0.5em 0 0.5em 0;  /* reducir espacio superior e inferior */
+      margin: 0.5em 0 0.5em 0;
       text-align: center;
     }
-    .header-foto {
-      flex: 0 0 auto;
-    }
+    .header-foto { flex: 0 0 auto; }
     .header-foto img {
-      width: 140px;   /* reducir tamaño de foto */
-      height: 140px;
-      object-fit: cover;
-      border-radius: 8px;
-      border: 1px solid #999;
-      margin-left: 2em;
+      width: 140px; height: 140px; object-fit: cover;
+      border-radius: 8px; border: 1px solid #999; margin-left: 2em;
     }
-    .header-texto {
-      flex: 1 1 auto;
-      margin-left: -0.5em;
-    }
-    .titulo-matricula {
-      font-size: 22px;  /* reducir ligeramente */
-      font-weight: 800;
-      letter-spacing: 2px;
-      margin: 0.2em 0;
-    }
-    .texto-encabezado {
-      font-size: 14px;  /* más compacto */
-      color: #222;
-      margin-bottom: 0.4em;
-      font-weight: 500;
-      line-height: 1.2em;
-    }
+    .header-texto { flex: 1 1 auto; margin-left: -0.5em; }
+    .titulo-matricula { font-size: 22px; font-weight: 800; letter-spacing: 2px; margin: 0.2em 0; }
+    .texto-encabezado { font-size: 14px; color: #222; margin-bottom: 0.4em; font-weight: 500; line-height: 1.2em; }
     .header-logos-derecha {
-      flex: 0 0 auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.8em;
+      flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; gap: 0.8em;
     }
-    .header-logos-derecha .logo-grande {
-      max-height: 64px;   /* logos más pequeños */
-      max-width: 56px;
-    }
-    .header-logos-derecha img:first-child {
-      max-height: 80px;  /* logo superior más compacto */
-      max-width: 200px;
-    }
+    .header-logos-derecha .logo-grande { max-height: 64px; max-width: 56px; }
+    .header-logos-derecha img:first-child { max-height: 80px; max-width: 200px; }
 
     /* Firma */
-    .firma-block {
-      text-align: left;
-      font-size: 1em;
-    }
-    .firma-linea {
-      border-bottom: 1.5px solid #333;
-      width: 400px;
-      display: inline-block;
-      margin-bottom: 0.2em;
-    }
-    .cuerpo {
-      margin-left: 2em;
-    }
+    .firma-block { text-align: left; font-size: 1em; }
+    .firma-linea { border-bottom: 1.5px solid #333; width: 400px; display: inline-block; margin-bottom: 0.2em; }
+    .cuerpo { margin-left: 2em; }
 
-    /* --- ESTILOS MEJORADOS PARA LA CONSULTA --- */
+    /* --- ESTILOS MEJORADOS PARA LA CONSULTA (pantalla) --- */
     .consulta-container {
       background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
       border-radius: 16px;
@@ -143,326 +94,146 @@
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
-
-    .consulta-title {
-      font-size: 2.2rem;
-      font-weight: 700;
-      color: #2c3e50;
-      margin-bottom: 1.5rem;
-      text-align: center;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    .consulta-title { font-size: 2.2rem; font-weight: 700; color: #2c3e50; margin-bottom: 1.5rem; text-align: center; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
+    .consulta-form { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: flex-end; justify-content: center; }
+    .consulta-form .btn-buscar { margin-bottom: 0; }
+    .consulta-form { align-items: flex-end; }
+    .consulta-form .btn-buscar[onclick*="print"] { height: auto; line-height: 1.2; padding: 0.75rem 1.5rem; margin-bottom: 0; align-self: flex-end; }
+    .form-group { display: flex; flex-direction: column; min-width: 200px; }
+    .form-label { font-size: 0.95rem; font-weight: 600; color: #495057; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    .form-select, .form-input {
+      padding: 0.75rem 1rem; border: 2px solid #e9ecef; border-radius: 8px; font-size: 1rem; background: #fff;
+      transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     }
-
-    .consulta-form {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-      align-items: flex-end;
-      justify-content: center;
+    .form-select:focus, .form-input:focus {
+      outline: none; border-color: #007bff; box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1); transform: translateY(-1px);
     }
-
-    .consulta-form .btn-buscar {
-      margin-bottom: 0;
+    /* Asegurar campos de entrada funcionales */
+    .form-input, .form-select {
+      pointer-events: auto !important; user-select: auto !important;
+      -webkit-user-select: auto !important; -moz-user-select: auto !important; -ms-user-select: auto !important; cursor: text !important;
     }
-
-    /* Mantener alineación original para campos y botón buscar */
-    .consulta-form {
-      align-items: flex-end;
-    }
-
-    /* Solo el botón de imprimir se alinea con el botón de buscar */
-    .consulta-form .btn-buscar[onclick*="print"] {
-      height: auto;
-      line-height: 1.2;
-      padding: 0.75rem 1.5rem;
-      margin-bottom: 0;
-      align-self: flex-end;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      min-width: 200px;
-    }
-
-    .form-label {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: #495057;
-      margin-bottom: 0.5rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .form-select,
-    .form-input {
-      padding: 0.75rem 1rem;
-      border: 2px solid #e9ecef;
-      border-radius: 8px;
-      font-size: 1rem;
-      background: #fff;
-      transition: all 0.3s ease;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    }
-
-    .form-select:focus,
-    .form-input:focus {
-      outline: none;
-      border-color: #007bff;
-      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
-      transform: translateY(-1px);
-    }
-    
-    /* Asegurar que los campos de entrada sean funcionales */
-    .form-input,
-    .form-select {
-      pointer-events: auto !important;
-      user-select: auto !important;
-      -webkit-user-select: auto !important;
-      -moz-user-select: auto !important;
-      -ms-user-select: auto !important;
-      cursor: text !important;
-    }
-    
-    .form-select {
-      cursor: pointer !important;
-    }
-
-    .form-select {
-      cursor: pointer;
-      padding-right: 1rem;
-    }
-
+    .form-select { cursor: pointer !important; padding-right: 1rem; }
     .btn-buscar {
       background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-      color: white;
-      border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-size: 1rem; font-weight: 600;
+      cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+      text-transform: uppercase; letter-spacing: 0.5px;
     }
-
-    .btn-buscar:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
-      background: linear-gradient(135deg, #218838 0%, #1ea085 100%);
-    }
-
-    .btn-buscar:active {
-      transform: translateY(0);
-    }
-
-    .error-message {
-      background: #f8d7da;
-      color: #721c24;
-      padding: 0.75rem 1rem;
-      border-radius: 8px;
-      border: 1px solid #f5c6cb;
-      margin-top: 1rem;
-      text-align: center;
-      font-weight: 500;
-    }
+    .btn-buscar:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4); background: linear-gradient(135deg, #218838 0%, #1ea085 100%); }
+    .btn-buscar:active { transform: translateY(0); }
+    .error-message { background: #f8d7da; color: #721c24; padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid #f5c6cb; margin-top: 1rem; text-align: center; font-weight: 500; }
 
     /* Responsive */
     @media (max-width: 768px) {
-      .consulta-container {
-        padding: 1.5rem;
-      }
-      
-      .consulta-form {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      
-      .form-group {
-        min-width: auto;
-      }
-      
-      .consulta-title {
-        font-size: 1.8rem;
-      }
+      .consulta-container { padding: 1.5rem; }
+      .consulta-form { flex-direction: column; align-items: stretch; }
+      .form-group { min-width: auto; }
+      .consulta-title { font-size: 1.8rem; }
     }
 
-    /* === SOLO IMPRESIÓN (PDF) — A4, columnas estables y cabecera alineada === */
-@media print {
-  :root { --gap: 6mm; }
+    /* === SOLO IMPRESIÓN — FIJAR PÁGINA Y EVITAR ESCALADO === */
+    @media print {
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      html, body {
+        background: #fff !important; color: #000 !important;
+        font-family: Arial, Helvetica, sans-serif !important;
+        font-size: 10.5pt !important; line-height: 1.35 !important;
+        margin: 0 !important; padding: 0 !important;
+      }
 
-  /* Motor de impresión */
-  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  html, body {
-    background: #fff !important;
-    color: #000 !important;
-    font-family: Arial, Helvetica, sans-serif !important;
-    font-size: 10.5pt !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
+      /* Página y márgenes (Carta/Letter). Para A4: 210mm 297mm y ajuste del ancho útil abajo */
+      @page {
+        size: 216mm 279mm;
+        margin: 10mm 12mm 10mm 12mm !important; /* sup, der, inf, izq */
+        marks: none; bleed: 0;
+      }
 
-  /* Página A4 y márgenes */
-  @page {
-    size: A4 portrait;
-    margin: 10mm 12mm 10mm 12mm !important;  /* sup, der, inf, izq (más compacto) */
-  }
+      /* Ocultar UI no imprimible */
+      .print-btn, .noprint, .noprint *, .hide-on-print,
+      .copyright, .module-footer, .breadcrumbs, .user-tools, .module-header,
+      .module-title, .module-nav, .footer, .login-footer, #header, #nav-sidebar,
+      #footer, #branding, .submit-row, .changeform-tabs, .object-tools,
+      .object-tools li, .object-tools .addlink, .pagination, .related-widget-wrapper,
+      .messagelist, .navbar, .sidebar, .admin-autocomplete, .results, .nav,
+      .globalnav, .changelist-filter, .consulta-container, .consulta-form, .btn-buscar {
+        display: none !important;
+      }
 
-  /* Ocultar todo lo no imprimible */
-  .print-btn,
-  .noprint, .noprint *, .hide-on-print,
-  .copyright, .module-footer, .breadcrumbs, .user-tools, .module-header,
-  .module-title, .module-nav, .footer, .login-footer,
-  #header, #nav-sidebar, #footer, #branding, .submit-row, .changeform-tabs,
-  .object-tools, .object-tools li, .object-tools .addlink, .pagination,
-  .related-widget-wrapper, .messagelist, .navbar, .sidebar, .admin-autocomplete,
-  .results, .nav, .globalnav, .changelist-filter {
-    display: none !important;
-  }
-  
-  /* Asegurar que los elementos del formulario no se vean afectados por la impresión */
-  .consulta-container,
-  .consulta-form,
-  .form-group,
-  .form-label,
-  .form-input,
-  .form-select,
-  .btn-buscar {
-    display: none !important;
-  }
+      /* Contenedor principal: ancho ÚTIL = 216 - 12 - 12 = 192 mm */
+      .print-container{
+        box-shadow: none !important; border: none !important; border-radius: 0 !important;
+        width: 192mm !important; max-width: 192mm !important;
+        padding: 0 !important; margin: 0 auto !important;
+        overflow: visible !important; transform: none !important;
+      }
 
-  /* Contenedor principal sin bordes/sombras y ancho completo */
-  .print-container {
-    box-shadow: none !important;
-    border: none !important;
-    border-radius: 0 !important;
-    max-width: 100% !important;
-    width: 100% !important;
-    padding: 0 !important;
-    margin: 0 !important;
-  }
+      /* CABECERA */
+      .header-institucional{
+        display: grid !important;
+        grid-template-columns: 38mm 1fr 32mm;
+        align-items: center !important;
+        column-gap: 6mm !important;
+        margin: 0 0 4mm 0 !important; padding: 0 !important;
+        page-break-inside: avoid !important;
+      }
+      .header-texto { text-align: center !important; margin: 0 !important; padding: 0 !important; }
+      .header-foto img{
+        width: 35mm !important; height: 35mm !important; object-fit: cover !important;
+        border: 0.4pt solid #666 !important; border-radius: 2mm !important; margin: 0 !important;
+      }
+      .titulo-matricula { font-size: 14pt !important; font-weight: 800 !important; letter-spacing: 1pt !important; margin: 0 0 2mm 0 !important; }
+      .texto-encabezado { font-size: 10pt !important; line-height: 1.25 !important; margin: 0 !important; }
+      .header-logos-derecha { align-items: center !important; gap: 2mm !important; }
+      .header-logos-derecha img { display: block !important; margin: 0 auto !important; }
+      .header-logos-derecha img:first-child { max-width: 40mm !important; max-height: 20mm !important; }
+      .header-logos-derecha .logo-grande { max-width: 28mm !important; max-height: 28mm !important; }
 
-  /* ---------- CABECERA ---------- */
-  .header-institucional {
-    display: grid !important;
-    grid-template-columns: 38mm 1fr 32mm; /* foto | texto | logos */
-    align-items: center !important;
-    gap: var(--gap) !important;
-    margin: 0 0 4mm 0 !important;
-    padding: 0 !important;
-    width: 100% !important;
-    page-break-inside: avoid !important;
-  }
+      hr { border: 0 !important; border-top: 0.6pt solid #000 !important; margin: 3mm 0 !important; }
 
-  /* Centrar título y texto del encabezado en PDF y eliminar márgenes residuales */
-  .header-texto {
-    text-align: center !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
+      /* DOS COLUMNAS ESTABLES: 93 + 93 + gap(6) = 192mm */
+      .columns{
+        display: grid !important;
+        grid-template-columns: 93mm 93mm !important;
+        gap: 6mm !important; width: 100% !important; margin: 0 !important; padding: 0 !important;
+      }
+      .col { break-inside: avoid !important; page-break-inside: avoid !important; }
 
-  .header-foto img {
-    width: 35mm !important;
-    height: 35mm !important;
-    object-fit: cover !important;
-    border: 0.4pt solid #666 !important;
-    border-radius: 2mm !important;
-    margin: 0 !important;
-  }
+      h2 { font-size: 12pt !important; margin: 0 0 2mm 0 !important; }
 
-  .titulo-matricula {
-    font-size: 14pt !important;
-    font-weight: 800 !important;
-    letter-spacing: 1pt !important;
-    margin: 0 0 2mm 0 !important;
-  }
+      .cuerpo { margin: 0 !important; padding: 0 !important; }
+      .datos-personales-list { margin: 0 !important; padding: 0 !important; font-size: 10pt !important; }
+      .datos-personales-list b { display: inline !important; min-width: 0 !important; font-weight: 700 !important; }
+      .datos-personales-list br { margin-bottom: 0.8mm !important; display: block !important; }
+      ul { margin: 0 0 0 4mm !important; padding: 0 !important; }
+      .encargado-block { margin: 0 0 2mm 0 !important; padding: 0 !important; line-height: 1.45 !important; }
+      .encargado-block br { margin-bottom: 0.8mm !important; display: block !important; }
 
-  .texto-encabezado {
-    font-size: 10pt !important;
-    line-height: 1.25 !important;
-    margin: 0 !important;
-  }
+      .firma-linea { width: 70mm !important; border-bottom: 0.6pt solid #000 !important; display: inline-block !important; margin-bottom: 2mm !important; }
 
-  .header-logos-derecha { align-items: center !important; gap: 2mm !important; }
-  .header-logos-derecha img { display: block !important; margin: 0 auto !important; }
-  .header-logos-derecha img:first-child { max-width: 40mm !important; max-height: 20mm !important; }
-  .header-logos-derecha .logo-grande  { max-width: 28mm !important; max-height: 28mm !important; }
+      /* PIE DE PÁGINA FIJO */
+      .footer-institucional{
+        position: fixed !important; left: 0; right: 0; bottom: 10mm;
+        text-align: center !important; width: 100% !important;
+        font-size: 9pt !important; margin: 0 !important; padding: 4mm 0 0 0 !important;
+        page-break-inside: avoid !important;
+      }
 
-  hr {
-    border: 0 !important;
-    border-top: 0.6pt solid #000 !important;
-    margin: 3mm 0 !important;
-  }
+      /* Limpieza anti-escala/posición */
+      .header-institucional, .columns, .col, .datos-personales-list,
+      .encargado-block, .firma-block, .footer-institucional, .cuerpo {
+        transform: none !important; position: static !important; float: none !important; clear: both !important;
+      }
 
-  /* ---------- CUERPO EN DOS COLUMNAS ESTABLES ---------- */
-  .columns {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 5mm !important;        /* reducir espacio entre columnas */
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-  .col {
-    break-inside: avoid !important;   /* evita cortes incómodos */
-    page-break-inside: avoid !important;
-  }
+      /* Habilitar selección si se imprime a PDF */
+      .print-container * { pointer-events: auto !important; user-select: auto !important; }
+    }
 
-  h2 { font-size: 12pt !important; margin: 0 0 2mm 0 !important; }
-
-  .cuerpo { margin: 0 !important; padding: 0 !important; }
-
-  .datos-personales-list { margin: 0 !important; padding: 0 !important; font-size: 10pt !important; }
-  .datos-personales-list b {
-    display: inline !important;       /* evita desalineación por min-width */
-    min-width: 0 !important;
-    font-weight: 700 !important;
-  }
-
-  /* Reducir espacios verticales innecesarios */
-  .datos-personales-list br { margin-bottom: 0.8mm !important; display: block !important; }
-  ul { margin: 0 0 0 4mm !important; padding: 0 !important; }
-  .encargado-block { margin: 0 0 2mm 0 !important; padding: 0 !important; }
-  .encargado-block br { margin-bottom: 0.8mm !important; display: block !important; }
-
-  .firma-linea {
-    width: 70mm !important;
-    border-bottom: 0.6pt solid #000 !important;
-    display: inline-block !important;
-    margin-bottom: 2mm !important;
-  }
-
-  /* ---------- PIE DE PÁGINA ---------- */
-  .footer-institucional {
-    position: fixed !important;       /* mantiene el footer abajo en cada página impresa */
-    left: 0; right: 0; bottom: 10mm;
-    text-align: center !important;
-    width: 100% !important;
-    font-size: 9pt !important;
-    margin: 0 !important;
-    padding: 4mm 0 0 0 !important;  /* más espacio superior */
-    page-break-inside: avoid !important;
-  }
-
-  /* Limpiezas finales: sin transformaciones/posiciones raras */
-  .header-institucional, .columns, .col,
-  .datos-personales-list, .encargado-block,
-  .firma-block, .footer-institucional {
-    transform: none !important;
-    position: static !important;
-    float: none !important;
-    clear: both !important;
-  }
-  
-  /* Asegurar que solo se aplique a elementos de impresión */
-  .print-container * {
-    pointer-events: auto !important;
-    user-select: auto !important;
-  }
-}
-
+    /* === ESTILOS PARA PANTALLA (NO IMPRESIÓN) === */
+    .print-container, .cuerpo, .datos-personales-list, .encargado-block, .firma-block { color: #000 !important; }
+    .print-container * , .cuerpo * , .datos-personales-list * , .encargado-block * , .firma-block * { color: #000 !important; }
+    .print-container h2 { color: #2c3e50 !important; font-weight: 700 !important; }
+    .texto-encabezado, .texto-encabezado * { color: #000 !important; }
   </style>
 {% endblock %}
 
@@ -496,73 +267,54 @@
              value="{{ identificacion }}" class="form-input" required autocomplete="off"
              placeholder="Ingrese la identificación">
     </div>
-          <div class="form-group">
-        <button type="submit" class="btn-buscar">
-          🔍 Buscar
-        </button>
-      </div>
-      {% if estudiante %}
-        <div class="form-group">
-          <button type="button" class="btn-buscar" onclick="imprimirFichaAislada()" style="background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);">
-            <span style="font-size:1.2em;">🖨️</span> Imprimir ficha
-          </button>
-        </div>
-      {% endif %}
+    <div class="form-group">
+      <button type="submit" class="btn-buscar">🔍 Buscar</button>
+    </div>
+    {% if estudiante %}
+    <div class="form-group">
+      <button type="button" class="btn-buscar" onclick="imprimirFichaAislada()" style="background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);">
+        <span style="font-size:1.2em;">🖨️</span> Imprimir ficha
+      </button>
+    </div>
+    {% endif %}
   </form>
   {% if error %}<div class="error-message">{{ error }}</div>{% endif %}
 </div>
 
 {% if estudiante %}
-
   <div id="ficha-impresion" class="print-container">
-    <!-- Encabezado institucional con foto a la izquierda y logos a la derecha -->
+    <!-- Encabezado institucional -->
     <div class="header-institucional">
-      <!-- Foto del estudiante -->
       <div class="header-foto">
         {% if estudiante.foto %}
           <img src="{{ estudiante.foto.url }}" alt="Foto estudiante">
         {% else %}
-          <div style="width:180px;height:180px;background:#eee;
-                      border-radius:8px;border:1px solid #aaa;
-                      display:flex;align-items:center;justify-content:center;
-                      color:#999;font-size:.9em;">
+          <div style="width:180px;height:180px;background:#eee;border-radius:8px;border:1px solid #aaa;display:flex;align-items:center;justify-content:center;color:#999;font-size:.9em;">
             Sin&nbsp;foto
           </div>
         {% endif %}
       </div>
-      <!-- Texto central -->
       <div class="header-texto">
-                  <div class="titulo-matricula">
-            {{ plantilla.titulo|default:"CURSO LECTIVO 2025"|cut:"MATRÍCULA " }}
-          </div>
-        <div class="texto-encabezado">
-          {{ plantilla.encabezado|safe|linebreaksbr }}
-        </div>
+        <div class="titulo-matricula">{{ plantilla.titulo|default:"CURSO LECTIVO 2025"|cut:"MATRÍCULA " }}</div>
+        <div class="texto-encabezado">{{ plantilla.encabezado|safe|linebreaksbr }}</div>
       </div>
-      <!-- Logos a la derecha -->
       <div class="header-logos-derecha">
-        {% if plantilla and plantilla.logo_mep %}
-          <img src="{{ plantilla.logo_mep.url }}"
-               alt="Logo MEP" class="logo-grande">
-        {% endif %}
-        {% if institucion and institucion.logo %}
-          <img src="{{ institucion.logo.url }}"
-               alt="Logo institución" class="logo-grande">
-        {% endif %}
-        
+        {% if plantilla and plantilla.logo_mep %}<img src="{{ plantilla.logo_mep.url }}" alt="Logo MEP" class="logo-grande">{% endif %}
+        {% if institucion and institucion.logo %}<img src="{{ institucion.logo.url }}" alt="Logo institución" class="logo-grande">{% endif %}
       </div>
     </div>
+
     <hr>
+
     <div class="columns cuerpo">
-      <!-- Columna de Datos del Estudiante -->
+      <!-- Columna izquierda -->
       <div class="col">
         <h2>Datos del Estudiante</h2>
         <div style="display:flex;gap:1em;align-items:flex-start;">
           <div class="datos-personales-list">
-            <strong style="font-size: 1.4em; color: #2c3e50;">{{ estudiante.primer_apellido|default:"---" }} {{ estudiante.segundo_apellido|default:"---" }}
-                    {{ estudiante.nombres|default:"---" }}</strong><br>
+            <strong style="font-size: 1.4em; color: #2c3e50;">{{ estudiante.primer_apellido|default:"---" }} {{ estudiante.segundo_apellido|default:"---" }} {{ estudiante.nombres|default:"---" }}</strong><br>
             <strong style="font-size: 20px; color: #2c3e50;">{{ estudiante.identificacion|default:"---" }}</strong><br>
-            <b>Tipo identificación:</b> {{ estudiante.tipo_identificacion|default:"---" }}<br>        
+            <b>Tipo identificación:</b> {{ estudiante.tipo_identificacion|default:"---" }}<br>
             <b>Tipo estudiante:</b> {{ estudiante.get_tipo_estudiante_display|default:"---" }}<br>
             <b>Nivel:</b> {{ matricula.nivel|default:"---" }}<br>
             {% if matricula.especialidad %}
@@ -577,49 +329,37 @@
             <b>Celular:</b> {{ estudiante.celular|default:"---" }}<br>
             <b>Teléfono casa:</b> {{ estudiante.telefono_casa|default:"---" }}<br>
             <b>Correo:</b> {{ estudiante.correo|default:"---" }}<br>
-            <b>Domicilio:</b> {{ estudiante.provincia|default:"---" }}, {{ estudiante.canton|default:"---" }},
-                                 {{ estudiante.distrito|default:"---" }}<br>
+            <b>Domicilio:</b> {{ estudiante.provincia|default:"---" }}, {{ estudiante.canton|default:"---" }}, {{ estudiante.distrito|default:"---" }}<br>
             <b>Dirección exacta:</b> {{ estudiante.direccion_exacta|default:"---" }}<br>
             <b>Recibe Ed. Religiosa:</b> {{ estudiante.ed_religiosa|yesno:"Sí,No" }}<br>
             <b>Adecuación:</b> {{ estudiante.adecuacion|default:"---" }}<br>
             <b>Presenta enfermedad:</b> {{ estudiante.presenta_enfermedad|yesno:"Sí,No,---" }}<br>
             <b>Detalle enfermedad:</b> {{ estudiante.detalle_enfermedad|default:"---" }}<br>
-            <b>Medicamentos que consume:</b> {{ estudiante.medicamento_consume|default:"Ninguno" }}
+            <b>Medicamentos que consume:</b> {{ estudiante.medicamento_consume|default:"Ninguno" }}<br>
 
             {% if estudiante.tipo_estudiante == 'PN' %}
             <br>
             <b>Posee carnet de CONAPDIS:</b> {{ estudiante.posee_carnet_conapdis|yesno:"Sí,No" }}<br>
             <b>Posee válvula de drenaje LCR:</b> {{ estudiante.posee_valvula_drenaje_lcr|yesno:"Sí,No" }}<br>
             <b>Usa algún tipo de apoyo:</b> {{ estudiante.usa_apoyo|yesno:"Sí,No" }}<br>
-            {% if estudiante.usa_apoyo %}
-              <b>¿Cuál apoyo?</b> {{ estudiante.apoyo_cual|default:"---" }}<br>
-            {% endif %}
-            <b>Tipo de condición diagnosticada:</b>
-              {% if estudiante.tipo_condicion_diagnosticada %}
-                {{ estudiante.get_tipo_condicion_diagnosticada_display }}
-              {% else %} --- {% endif %}<br>
-            {% if estudiante.tipo_condicion_diagnosticada == 'OT' %}
-              <b>Otro (especifique condición):</b> {{ estudiante.tipo_condicion_otro|default:"---" }}<br>
-            {% endif %}
+            {% if estudiante.usa_apoyo %}<b>¿Cuál apoyo?</b> {{ estudiante.apoyo_cual|default:"---" }}<br>{% endif %}
+            <b>Tipo de condición diagnosticada:</b> {% if estudiante.tipo_condicion_diagnosticada %}{{ estudiante.get_tipo_condicion_diagnosticada_display }}{% else %} --- {% endif %}<br>
+            {% if estudiante.tipo_condicion_diagnosticada == 'OT' %}<b>Otro (especifique condición):</b> {{ estudiante.tipo_condicion_otro|default:"---" }}<br>{% endif %}
             <b>Posee algún tipo de control:</b> {{ estudiante.posee_control|yesno:"Sí,No" }}<br>
-            {% if estudiante.posee_control %}
-              <b>¿Cuál control?</b> {{ estudiante.control_cual|default:"---" }}<br>
-            {% endif %}
+            {% if estudiante.posee_control %}<b>¿Cuál control?</b> {{ estudiante.control_cual|default:"---" }}<br>{% endif %}
             <b>Existe persona con orden de alejamiento:</b> {{ estudiante.orden_alejamiento|yesno:"Sí,No,---" }}<br>
-            {% if estudiante.orden_alejamiento %}
-              <b>Nombre de la persona con orden:</b> {{ estudiante.orden_alejamiento_nombre|default:"---" }}<br>
-            {% endif %}
+            {% if estudiante.orden_alejamiento %}<b>Nombre de la persona con orden:</b> {{ estudiante.orden_alejamiento_nombre|default:"---" }}<br>{% endif %}
             {% endif %}
 
             <b>Autoriza derecho de imagen:</b> {{ estudiante.autoriza_derecho_imagen|yesno:"Sí,No" }}<br>
             <b>Número de póliza:</b> {{ estudiante.numero_poliza|default:"---" }}<br>
             <b>Rige póliza:</b> {{ estudiante.rige_poliza|default:"---" }}<br>
-            <b>Vence póliza:</b> {{ estudiante.vence_poliza|default:"---" }}<br> 
-              
+            <b>Vence póliza:</b> {{ estudiante.vence_poliza|default:"---" }}<br>
           </div>
         </div>
       </div>
-      <!-- Columna de Matrícula y Encargados -->
+
+      <!-- Columna derecha -->
       <div class="col">
         <h2>Encargados</h2>
         {% if encargados %}
@@ -643,19 +383,17 @@
           <p>No hay encargados registrados.</p>
         {% endif %}
 
-        <!-- Firma responsable -->
-          <div class="firma-block">
-            <br>
-            <b>Fecha asignación:</b> {{ matricula.fecha_asignacion|default:"---" }}<br><br><br>
-            <span>Firma responsable:</span><br><br>
-            <span class="firma-linea"></span><br>
-            <span>Cédula:</span><br><br>
-            <span class="firma-linea"></span><br><br><br><br>
-          </div>
+        <div class="firma-block">
+          <br>
+          <b>Fecha asignación:</b> {{ matricula.fecha_asignacion|default:"---" }}<br><br><br>
+          <span>Firma responsable:</span><br><br>
+          <span class="firma-linea"></span><br>
+          <span>Cédula:</span><br><br>
+          <span class="firma-linea"></span><br><br><br><br>
+        </div>
       </div>
     </div>
-    
-    <!-- Pie de página institucional -->
+
     {% if plantilla and plantilla.pie_pagina %}
       <div class="footer-institucional">
         {{ plantilla.pie_pagina|safe|linebreaksbr }}
@@ -671,23 +409,30 @@ function imprimirFichaAislada() {
 
   const html = nodo.outerHTML;
 
-  // CSS mínimo y aislado para A4 (sin interferencias globales)
+  /* CSS mínimo y aislado para el iframe de impresión.
+     Carta/Letter: 216x279 mm, márgenes 12/10. Si usa A4, cambie dimensiones
+     y ancho útil (ver comentario inicial). */
   const css = `
-    @page { size: A4 portrait; margin: 10mm 12mm 10mm 12mm; }
+    @page {
+      size: 216mm 279mm;
+      margin: 10mm 12mm 10mm 12mm;
+      marks: none; bleed: 0;
+    }
     html, body {
-      background: #fff; color: #000; font-family: Arial, sans-serif; font-size: 10.5pt;
+      background: #fff; color: #000; font-family: Arial, sans-serif; font-size: 10.5pt; line-height: 1.35;
       margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact;
     }
     * { box-sizing: border-box; }
-    
-    .print-container {
+
+    .print-container{
       box-shadow: none !important; border: none !important; border-radius: 0 !important;
-      max-width: 100% !important; width: 100% !important; margin: 0 !important; padding: 0 !important;
+      width: 192mm !important; max-width: 192mm !important; margin: 0 auto !important; padding: 0 !important;
+      overflow: visible !important; transform: none !important;
     }
-    
-    .header-institucional {
+
+    .header-institucional{
       display: grid !important; grid-template-columns: 38mm 1fr 32mm; align-items: center;
-      gap: 6mm; margin: 0 0 4mm 0; padding: 0; width: 100%; page-break-inside: avoid;
+      column-gap: 6mm; margin: 0 0 4mm 0; padding: 0; width: 100%; page-break-inside: avoid;
     }
     .header-texto { text-align: center !important; margin: 0 !important; padding: 0 !important; }
     .header-foto img { width: 35mm; height: 35mm; object-fit: cover; border: 0.4pt solid #666; border-radius: 2mm; margin: 0; }
@@ -697,36 +442,36 @@ function imprimirFichaAislada() {
     .header-logos-derecha img { display: block; margin: 0 auto; }
     .header-logos-derecha img:first-child { max-width: 40mm; max-height: 20mm; }
     .header-logos-derecha .logo-grande { max-width: 28mm; max-height: 28mm; }
-    
-    hr { border: 0; border-top: 0.6pt solid #000; margin: 6mm 0; }
-    
-    .columns {
-      display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 6mm;
-      width: 100%; margin: 0; padding: 0; margin-top: 4mm !important;
+
+    hr { border: 0; border-top: 0.6pt solid #000; margin: 3mm 0; }
+
+    .columns{
+      display: grid !important; grid-template-columns: 93mm 93mm !important; gap: 6mm;
+      width: 100%; margin: 0; padding: 0;
     }
     .col { break-inside: avoid; page-break-inside: avoid; }
-    
-    h2 { font-size: 12pt; margin: 0 0 4mm 0; padding-bottom: 2mm; border-bottom: 0.3pt solid #ccc; }
+
+    h2 { font-size: 12pt; margin: 0 0 2mm 0; }
     .cuerpo { margin: 0; padding: 0; }
-    
+
     .datos-personales-list strong { display: block !important; margin-bottom: 1mm !important; font-size: 12pt !important; }
     .datos-personales-list { margin: 0; padding: 0; font-size: 10pt; line-height: 1.5 !important; }
     .datos-personales-list b { display: inline; min-width: 0; font-weight: 700; }
     .datos-personales-list br { margin-bottom: 0.8mm !important; display: block !important; }
-    
+
     ul { margin: 0 0 0 4mm; padding: 0; }
     .encargado-block { margin: 0 0 2mm 0; padding: 0; line-height: 1.45 !important; }
     .encargado-block br { margin-bottom: 0.8mm !important; display: block !important; }
-    
+
     .firma-linea { width: 70mm; border-bottom: 0.6pt solid #000; display: inline-block; margin-bottom: 2mm; }
-    
+
     .footer-institucional {
       position: fixed; left: 0; right: 0; bottom: 10mm; text-align: center; width: 100%;
       font-size: 9pt; margin: 0; padding: 4mm 0 0 0; page-break-inside: avoid;
     }
   `;
 
-  // Imprimir en un iframe oculto (sin abrir ventanas/pestañas)
+  // Imprimir en un iframe oculto (sin abrir nuevas ventanas)
   const iframe = document.createElement('iframe');
   iframe.style.position = 'fixed';
   iframe.style.right = '-10000px';
