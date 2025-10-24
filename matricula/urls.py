@@ -4,13 +4,15 @@ from .views import (
     EspecialidadAutocomplete, SeccionAutocomplete, SubgrupoAutocomplete,
     asignacion_grupos, ejecutar_asignacion_grupos,
     exportar_listas_clase_excel,
-    api_secciones_por_curso_nivel, api_subgrupos_por_curso_seccion
+    comprobante_matricula,
+    api_secciones_por_curso_nivel, api_subgrupos_por_curso_seccion,
 )
 
 app_name = 'matricula'
 
 urlpatterns = [
     path('consulta-estudiante/', consulta_estudiante, name='consulta_estudiante'),
+    path('comprobante-matricula/', comprobante_matricula, name='comprobante_matricula'),
     path('get-especialidades-disponibles/', get_especialidades_disponibles, name='get_especialidades_disponibles'),
     
     # Django Autocomplete Light (DAL)

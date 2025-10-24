@@ -8,120 +8,102 @@
 
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Lato (opcional, para que combine con la navbar brand que configuraste) -->
-  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;600;700&display=swap" rel="stylesheet">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <!-- Logo CSS -->
-  <link rel="stylesheet" href="{% static 'sis_colegio/css/logo-custom.css' %}">
 
   <style>
-    /* Paleta igual a la app */
-    :root{
-      --bg:#0F2537;                 /* fondo app */
-      --card:#3a4650;               /* tarjetas/oscuros */
-      --card-2:#4E5A65;             /* variante */
-      --text:#ffffff;               /* texto claro */
-      --muted:#b8c2cc;              /* texto secundario */
-      --brand:#DF6919;              /* naranja navbar */
-      --brand-dark:#c55a14;         /* hover */
-    }
-
     html,body{height:100%}
     body{
-      background: var(--bg);
-      font-family: "Lato","Segoe UI",Roboto,Arial,sans-serif;
+      background: #f8f9fa;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       display:flex;align-items:center;justify-content:center;
-      color:var(--text);
       padding:24px;
     }
 
     .login-container{
-      width:100%;max-width: 520px;
-      background: linear-gradient(180deg, var(--card) 0%, var(--card-2) 100%);
-      border: 1px solid rgba(255,255,255,0.08);
-      color:var(--text);
-      border-radius: 16px;
-      box-shadow: 0 20px 40px rgba(0,0,0,.25);
+      width:100%;max-width: 480px;
+      background: #ffffff;
+      border: 1px solid #dee2e6;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,.1);
       overflow:hidden;
     }
 
     .login-header{
-      background: var(--brand);
-      color:#fff;
-      padding: 28px 28px 22px;
+      background: #ffffff;
+      padding: 32px 28px 24px;
       text-align:center;
+      border-bottom: 1px solid #dee2e6;
     }
-    .login-header h6{margin:12px 0 0;color:#fff;opacity:.9;font-weight:600}
+    .login-header h6{
+      margin:16px 0 0;
+      color:#495057;
+      font-weight:600;
+      font-size: 0.95rem;
+    }
 
-    .login-body{ padding: 26px 26px 28px; }
+    .login-body{ padding: 28px; }
 
     /* Labels */
     .form-label{
-      color: var(--text);
+      color: #495057;
       font-weight: 600;
-      margin-bottom: .35rem;
+      margin-bottom: .5rem;
     }
 
-    /* Inputs blancos para contraste */
+    /* Inputs */
     .form-control{
-      background:#fff;border:1px solid #ced4da;color:#212529;
-      border-radius:10px;padding:12px 14px;
-      transition: all .25s ease;
+      border-radius:8px;
+      padding:12px 14px;
+      transition: all .2s ease;
     }
-    .form-control::placeholder{color:#8b949e}
     .form-control:focus{
-      background:#fff;color:#212529;
-      border-color: var(--brand);
-      box-shadow: 0 0 0 .25rem rgba(223,105,25,.25);
+      box-shadow: 0 0 0 .2rem rgba(13,110,253,.25);
     }
 
-    /* Botón principal naranja */
+    /* Botón principal */
     .btn-login{
-      background: var(--brand);
-      border: 1px solid var(--brand);
+      background: #0d6efd;
+      border: 1px solid #0d6efd;
       color:#fff;
-      border-radius: 10px;
+      border-radius: 8px;
       padding: 12px;
-      font-weight: 700;
-      letter-spacing:.2px;
-      transition: transform .15s ease, box-shadow .2s ease, background-color .15s ease;
+      font-weight: 600;
+      transition: all .2s ease;
     }
     .btn-login:hover{
-      background: var(--brand-dark);
-      border-color: var(--brand-dark);
+      background: #0b5ed7;
+      border-color: #0b5ed7;
       transform: translateY(-1px);
-      box-shadow: 0 8px 18px rgba(0,0,0,.25);
+      box-shadow: 0 4px 8px rgba(0,0,0,.15);
     }
 
-    /* Mensaje de error con esquema del tema */
+    /* Mensaje de error */
     .error-message{
-      background: rgba(220,53,69,.12);
-      border: 1px solid rgba(220,53,69,.55);
-      color: #ffb3b8;
+      background: #f8d7da;
+      border: 1px solid #f5c2c7;
+      color: #842029;
       padding: 10px 12px;
-      border-radius: 10px;
+      border-radius: 8px;
       margin-bottom: 1rem;
     }
 
     .login-footer{
-      padding: 0 26px 24px;
-      color: var(--muted);
+      padding: 0 28px 24px;
+      color: #6c757d;
       text-align:center;
       font-size:.875rem;
     }
-    .login-footer a{ color:#fff; text-decoration:underline; }
-    .text-muted{ color: #fdfdfd; opacity: .9 !important; }
 
     /* Logo responsive */
     .login-logo-ss{
-      max-width: 220px; height:auto;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,.25));
+      max-width: 220px;
+      height:auto;
     }
 
-    /* Accesibilidad foco en el botón usando teclado */
+    /* Accesibilidad foco en el botón */
     .btn-login:focus{
-      box-shadow: 0 0 0 .25rem rgba(223,105,25,.35);
+      box-shadow: 0 0 0 .25rem rgba(13,110,253,.25);
       outline: none;
     }
   </style>
@@ -131,7 +113,7 @@
   <div class="login-container">
     <div class="login-header">
       <img class="login-logo-ss" src="{% static 'sis_colegio/img/Logo-School-Smart.png' %}" alt="School Smart">
-      <h6 class="mt-3 mb-0">Sistema Integral de Gestión Administrativa y Educativa</h6>
+      <h6>Sistema Integral de Gestión Administrativa y Educativa</h6>
     </div>
 
     <div class="login-body">

@@ -655,7 +655,10 @@ class SubgrupoCursoLectivoAdmin(InstitucionScopedAdmin):
         return () if request.user.is_superuser else ()
     
     def agregar_todos_subgrupos(self, request, queryset):
-        """Agregar todos los subgrupos disponibles de la institución a un curso lectivo específico."""
+        """
+        Agregar todos los subgrupos disponibles de la institución a un curso lectivo específico.
+        EXCLUYE niveles 10, 11 y 12 porque requieren especialidad (deben agregarse individualmente).
+        """
         if not queryset.exists():
             self.message_user(request, "Seleccione al menos un registro.", level='warning')
             return
@@ -671,8 +674,13 @@ class SubgrupoCursoLectivoAdmin(InstitucionScopedAdmin):
             curso_lectivo=curso_lectivo
         ).values_list('subgrupo_id', flat=True)
         
-        # Obtener todos los subgrupos globales que no estén ya asignados
-        subgrupos_disponibles = Subgrupo.objects.all().exclude(id__in=subgrupos_existentes)
+        # Obtener todos los subgrupos globales que NO sean de niveles 10, 11, 12
+        # (esos requieren especialidad y deben agregarse individualmente)
+        subgrupos_disponibles = Subgrupo.objects.exclude(
+            id__in=subgrupos_existentes
+        ).exclude(
+            seccion__nivel__numero__in=[10, 11, 12]
+        )
         
         # Crear las asignaciones
         creados = 0
@@ -685,12 +693,26 @@ class SubgrupoCursoLectivoAdmin(InstitucionScopedAdmin):
             )
             creados += 1
         
-        self.message_user(request, f"Se agregaron {creados} subgrupos al curso {curso_lectivo.nombre}.")
+        if creados > 0:
+            self.message_user(
+                request, 
+                f"Se agregaron {creados} subgrupos al curso {curso_lectivo.nombre}. "
+                f"Los niveles 10°, 11° y 12° se deben agregar individualmente con su especialidad."
+            )
+        else:
+            self.message_user(
+                request, 
+                "No hay subgrupos disponibles para agregar. Los niveles 10°, 11° y 12° se deben agregar individualmente con su especialidad.",
+                level='warning'
+            )
     
-    agregar_todos_subgrupos.short_description = "🚀 Agregar todos los subgrupos disponibles al curso lectivo"
+    agregar_todos_subgrupos.short_description = "🚀 Agregar subgrupos disponibles (excepto 10°, 11°, 12°)"
     
     def copiar_del_año_anterior(self, request, queryset):
-        """Copiar subgrupos del año anterior al año actual."""
+        """
+        Copiar subgrupos del año anterior al año actual.
+        EXCLUYE niveles 10, 11 y 12 porque requieren especialidad (deben agregarse individualmente).
+        """
         if not queryset.exists():
             self.message_user(request, "Seleccione al menos un registro.", level='warning')
             return
@@ -710,15 +732,18 @@ class SubgrupoCursoLectivoAdmin(InstitucionScopedAdmin):
             self.message_user(request, f"No se encontró curso lectivo para el año {año_anterior}.", level='error')
             return
         
-        # Obtener subgrupos del año anterior
+        # Obtener subgrupos del año anterior (EXCLUYENDO niveles 10, 11, 12)
         subgrupos_año_anterior = SubgrupoCursoLectivo.objects.filter(
             institucion=institucion,
             curso_lectivo=curso_anterior,
             activa=True
+        ).exclude(
+            subgrupo__seccion__nivel__numero__in=[10, 11, 12]
         )
         
         # Copiar al año actual (evitar duplicados)
         copiados = 0
+        omitidos_con_especialidad = 0
         for subgrupo_anterior in subgrupos_año_anterior:
             obj, created = SubgrupoCursoLectivo.objects.get_or_create(
                 institucion=institucion,
@@ -729,9 +754,27 @@ class SubgrupoCursoLectivoAdmin(InstitucionScopedAdmin):
             if created:
                 copiados += 1
         
-        self.message_user(request, f"Se copiaron {copiados} subgrupos del año {año_anterior} al {curso_actual.anio}.")
+        # Contar cuántos del año anterior eran de niveles con especialidad
+        total_año_anterior = SubgrupoCursoLectivo.objects.filter(
+            institucion=institucion,
+            curso_lectivo=curso_anterior,
+            activa=True,
+            subgrupo__seccion__nivel__numero__in=[10, 11, 12]
+        ).count()
+        
+        if copiados > 0:
+            mensaje = f"Se copiaron {copiados} subgrupos del año {año_anterior} al {curso_actual.anio}."
+            if total_año_anterior > 0:
+                mensaje += f" ({total_año_anterior} de niveles 10°, 11°, 12° no se copiaron - deben agregarse individualmente con especialidad)."
+            self.message_user(request, mensaje)
+        else:
+            self.message_user(
+                request,
+                f"No se copiaron subgrupos. Los niveles 10°, 11° y 12° deben agregarse individualmente con su especialidad.",
+                level='warning'
+            )
     
-    copiar_del_año_anterior.short_description = "📋 Copiar subgrupos del año anterior"
+    copiar_del_año_anterior.short_description = "📋 Copiar subgrupos del año anterior (excepto 10°, 11°, 12°)"
     
     def activar_seleccionadas(self, request, queryset):
         """Activar los subgrupos seleccionados."""

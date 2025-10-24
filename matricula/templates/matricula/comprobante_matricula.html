@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Comprobante de Matrícula</title>
+  <style>
+    html, body { background:#fff !important; color:#000 !important; margin:0; padding:0; font-family: Arial, Helvetica, sans-serif; }
+    .print-container { box-shadow: 0 2px 8px #bbb; border: 1px solid #aaa; border-radius: 12px; padding: 12px 14px; margin: 12px auto; background: #fff; max-width: 900px; }
+    .print-container, .print-container * { color: #000 !important; }
+    .header-institucional { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 6px 0; }
+    .header-texto { flex: 1 1 auto; text-align: center; }
+    .titulo-matricula { font-size: 20px; font-weight: 800; letter-spacing: 1px; margin: 4px 0; }
+    .texto-encabezado { font-size: 13px; color: #222; margin-bottom: 4px; font-weight: 500; line-height: 1.2em; }
+    .header-logos-derecha { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .header-logos-derecha .logo-grande { max-height: 58px; max-width: 120px; }
+    hr { border: 0; border-top: 1px solid #000; margin: 8px 0; }
+    .columns { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    @media (min-width: 800px) { .columns { grid-template-columns: 1fr 1fr; } }
+    .campo { margin-bottom: 6px; }
+    .campo b { display: inline-block; min-width: 170px; }
+
+    @media print {
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      @page { size: 216mm 279mm; margin: 10mm 12mm; }
+      html, body { background: #fff !important; color: #000 !important; }
+      .print-container { border: none; border-radius: 0; box-shadow: none; width: 192mm; max-width: 192mm; margin: 0 auto; padding: 0; }
+      .header-institucional { display: grid !important; grid-template-columns: 1fr 32mm; align-items: center; column-gap: 6mm; margin: 0 0 4mm 0; }
+      .titulo-matricula { font-size: 14pt !important; font-weight: 800 !important; margin: 0 0 2mm 0 !important; }
+      .texto-encabezado { font-size: 10pt !important; line-height: 1.25 !important; margin: 0 !important; }
+      .header-logos-derecha img:first-child { max-width: 40mm !important; max-height: 20mm !important; }
+      .header-logos-derecha .logo-grande { max-width: 28mm !important; max-height: 28mm !important; }
+      hr { border-top: 0.6pt solid #000 !important; margin: 3mm 0 !important; }
+      .columns { grid-template-columns: 93mm 93mm !important; gap: 6mm !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="print-container">
+    <div class="header-institucional">
+      <div class="header-texto">
+        <div class="titulo-matricula">{{ plantilla.titulo|default:"CURSO LECTIVO 2025"|cut:"MATRÍCULA " }}</div>
+        <div class="texto-encabezado">{{ plantilla.encabezado|safe|linebreaksbr }}</div>
+        <div style="font-weight:800;margin-top:4px;">Comprobante de Matrícula Curso Lectivo {{ curso_lectivo.anio }}</div>
+      </div>
+      <div class="header-logos-derecha">
+        {% if plantilla and plantilla.logo_mep %}<img src="{{ plantilla.logo_mep.url }}" alt="Logo MEP" class="logo-grande">{% endif %}
+        {% if institucion and institucion.logo %}<img src="{{ institucion.logo.url }}" alt="Logo institución" class="logo-grande">{% endif %}
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="columns">
+      <div>
+        <div class="campo"><b>Fecha Matrícula:</b> {{ matricula.fecha_asignacion|date:"d/m/Y" }}</div>
+        <div class="campo"><b>Estudiante:</b> {{ estudiante.primer_apellido }} {{ estudiante.segundo_apellido }} {{ estudiante.nombres }}</div>
+        <div class="campo"><b>Identificación:</b> {{ estudiante.identificacion }}</div>
+        <div class="campo"><b>Nivel matriculado:</b> {{ matricula.nivel.nombre }}</div>
+        {% if matricula.especialidad %}
+          {% if matricula.nivel.nombre == 'Décimo' or matricula.nivel.nombre == 'Undécimo' or matricula.nivel.nombre == 'Duodécimo' %}
+            <div class="campo"><b>Especialidad:</b> {{ matricula.especialidad.especialidad.nombre }}</div>
+          {% endif %}
+        {% endif %}
+        <div class="campo"><b>Fecha Nacimiento:</b> {{ estudiante.fecha_nacimiento|date:"d/m/Y" }} ({{ edad_estudiante }})</div>
+        <div class="campo"><b>Género:</b> {{ estudiante.sexo }}</div>
+        <div class="campo"><b>Adecuación Curricular:</b> {{ estudiante.adecuacion|default:"---" }}</div>
+        <div class="campo"><b>Recibe Edu. Religiosa:</b> {{ estudiante.ed_religiosa|yesno:"Sí,No" }}</div>
+      </div>
+
+      <div>
+        <h4 style="margin: 6px 0 8px 0;">Contacto principal</h4>
+        {% if contacto_principal %}
+          <div class="campo"><b>Nombre:</b> {{ contacto_principal.persona_contacto }}</div>
+          <div class="campo"><b>Parentesco:</b> {{ contacto_principal.parentesco }}</div>
+          <div class="campo"><b>Identificación:</b> {{ contacto_principal.persona_contacto.identificacion }}</div>
+        {% else %}
+          <div>No hay contacto principal registrado.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <script>
+    (function(){ try { setTimeout(function(){ window.print(); }, 200); } catch(e) {} })();
+  </script>
+</body>
+</html>
+
+

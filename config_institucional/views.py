@@ -399,8 +399,11 @@ def gestionar_subgrupos_curso_lectivo(request):
         if not curso_lectivo:
             curso_lectivo = CursoLectivo.objects.filter(activo=True).order_by('-anio').first()
     
-    # Obtener todos los subgrupos disponibles
-    subgrupos_disponibles = Subgrupo.objects.all().order_by('seccion__nivel__numero', 'seccion__numero', 'letra')
+    # Obtener todos los subgrupos disponibles (EXCLUYENDO niveles 10, 11, 12)
+    # Los niveles 10, 11, 12 requieren especialidad y deben agregarse individualmente
+    subgrupos_disponibles = Subgrupo.objects.exclude(
+        seccion__nivel__numero__in=[10, 11, 12]
+    ).order_by('seccion__nivel__numero', 'seccion__numero', 'letra')
     
     # Obtener subgrupos ya configurados para este curso lectivo e institución
     subgrupos_configurados = {}
@@ -490,6 +493,11 @@ def actualizar_subgrupos_curso_lectivo(request):
                     else:
                         # Crear nuevo
                         subgrupo = get_object_or_404(Subgrupo, id=subgrupo_id)
+                        
+                        # Validar que NO sea nivel 10, 11 o 12 (requieren especialidad)
+                        if subgrupo.seccion.nivel.numero in [10, 11, 12]:
+                            continue  # Saltar este subgrupo, no debe agregarse masivamente
+                        
                         SubgrupoCursoLectivo.objects.create(
                             institucion=institucion,
                             curso_lectivo=curso_lectivo,

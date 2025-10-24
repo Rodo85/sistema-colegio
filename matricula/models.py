@@ -158,6 +158,13 @@ class Estudiante(models.Model):
                 name="unique_estudiante_por_institucion"
             )
         ]
+        # Permisos personalizados para vistas no basadas en modelos específicos
+        permissions = [
+            ("access_consulta_estudiante", "Puede acceder a Consulta de Estudiante"),
+            ("print_ficha_estudiante", "Puede imprimir ficha del estudiante"),
+            ("print_comprobante_matricula", "Puede imprimir comprobante de matrícula"),
+            ("access_asignacion_grupos", "Puede acceder a Asignación de Grupos"),
+        ]
 
     def save(self, *args, **kwargs):
         # Normaliza strings: recorta y MAYÚSCULAS (correo se maneja aparte)
@@ -194,6 +201,10 @@ class Estudiante(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
+        # Mostrar: Primer Apellido Segundo Apellido Nombres
+        segundo = (self.segundo_apellido or "").strip()
+        if segundo:
+            return f"{self.primer_apellido} {segundo} {self.nombres}"
         return f"{self.primer_apellido} {self.nombres}"
 
 
@@ -262,6 +273,10 @@ class MatriculaAcademica(models.Model):
                 condition=Q(estado='activo'),
                 name='uniq_matricula_activa_por_anio',
             ),
+        ]
+        # Permiso personalizado para gestionar sección, subgrupo y estado
+        permissions = [
+            ("manage_seccion_subgrupo_estado", "Puede gestionar sección, subgrupo y estado de matrícula"),
         ]
     
     def __str__(self):
@@ -364,20 +379,32 @@ class MatriculaAcademica(models.Model):
             siguiente_data['especialidad'] = matricula_actual.especialidad
         
         # Verificar que la especialidad siga siendo válida para el siguiente curso lectivo
+        # IMPORTANTE: Buscar el EspecialidadCursoLectivo del NUEVO año
         if siguiente_data['especialidad']:
             try:
                 from config_institucional.models import EspecialidadCursoLectivo
+                # Buscar la especialidad del catálogo que tiene la matrícula actual
+                especialidad_catalogo = siguiente_data['especialidad'].especialidad
+                
+                # Buscar el EspecialidadCursoLectivo del NUEVO curso lectivo que apunte a la misma especialidad
                 especialidad_valida = EspecialidadCursoLectivo.objects.filter(
                     institucion=estudiante.institucion,
                     curso_lectivo=siguiente_curso,
-                    especialidad=siguiente_data['especialidad'].especialidad,
+                    especialidad=especialidad_catalogo,
                     activa=True
                 ).first()
                 
-                if not especialidad_valida:
+                if especialidad_valida:
+                    # CRÍTICO: Reemplazar con el EspecialidadCursoLectivo del nuevo año
+                    siguiente_data['especialidad'] = especialidad_valida
+                else:
                     # La especialidad no está disponible en el siguiente curso, no asignarla
                     siguiente_data['especialidad'] = None
-            except Exception:
+            except Exception as e:
+                # Log del error para debugging
+                import logging
+                logger = logging.getLogger(__name__)
+                logger.error(f"Error buscando especialidad para siguiente curso: {e}")
                 # Si hay error, no asignar especialidad
                 siguiente_data['especialidad'] = None
         

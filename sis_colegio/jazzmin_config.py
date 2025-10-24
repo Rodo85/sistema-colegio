@@ -71,7 +71,7 @@ JAZZMIN_SETTINGS = {
                 "name": "Consulta de Estudiante",
                 "url": "matricula:consulta_estudiante",
                 "icon": "fas fa-search",
-                "permissions": ["matricula.view_estudiante"],
+                "permissions": ["matricula.access_consulta_estudiante"],
             },
         ]
     },
@@ -82,9 +82,6 @@ JAZZMIN_SETTINGS = {
     # Configuración del logo
     "site_logo_classes": "img-fluid",
     "brand_colour": False,
-    
-    # CSS personalizado (logo + estilos de admin)
-    "custom_css": "sis_colegio/css/logo-custom.css, sis_colegio/css/custom-admin.css",
     
     # Configuración adicional del logo
     "welcome_sign": "Sistema Integral de Gestión Administrativa y Educativa",
@@ -111,10 +108,8 @@ JAZZMIN_UI_TWEAKS = {
     "body_small_text": False,
     "brand_small_text": False,
     
-    # Colores personalizados del tema Superhero de Bootswatch
-    "brand_colour": "#DF6919",  # Naranja del navbar
-    "accent": "accent-orange",
-    "navbar": "navbar-dark",
+    # Colores por defecto de Jazzmin (tema claro)
+    "navbar": "navbar-white navbar-light",
     "no_navbar_border": False,
     "navbar_fixed": False,
     "layout_boxed": False,
@@ -127,7 +122,7 @@ JAZZMIN_UI_TWEAKS = {
     "sidebar_nav_compact_style": False,
     "sidebar_nav_legacy_style": False,
     "sidebar_nav_flat_style": False,
-    "theme": "superhero",
+    "theme": "default",
     "dark_mode_theme": None,
     "button_classes": {
         "primary": "btn-primary",
@@ -137,7 +132,4 @@ JAZZMIN_UI_TWEAKS = {
         "danger": "btn-danger",
         "success": "btn-success"
     },
-    
-    # CSS personalizado para colores específicos del tema Superhero
-    "custom_css": "sis_colegio/css/superhero-colors.css",
 }

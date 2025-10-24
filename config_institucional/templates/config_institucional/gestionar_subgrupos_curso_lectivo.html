@@ -161,12 +161,10 @@
                 <label for="filtro_nivel">Filtrar por nivel</label>
                 <select name="nivel" id="filtro_nivel" onchange="filtrarPorNivel()">
                     <option value="">Todos los niveles</option>
-                    <option value="7">Sétimo</option>
-                    <option value="8">Octavo</option>
-                    <option value="9">Noveno</option>
-                    <option value="10">Décimo</option>
-                    <option value="11">Undécimo</option>
-                    <option value="12">Duodécimo</option>
+                    <option value="7">Sétimo (7°)</option>
+                    <option value="8">Octavo (8°)</option>
+                    <option value="9">Noveno (9°)</option>
+                    <!-- Niveles 10, 11, 12 no disponibles en gestión masiva (requieren especialidad) -->
                 </select>
             </div>
         </form>
@@ -184,6 +182,14 @@
     {% if institucion and curso_lectivo %}
     <div class="subgrupos-container">
         <h2>Subgrupos para {{ institucion.nombre }} — {{ curso_lectivo.nombre }}</h2>
+        
+        <!-- Mensaje informativo sobre niveles con especialidad -->
+        <div style="background: #fff3cd; border: 1px solid #ffc107; border-radius: 6px; padding: 12px 16px; margin: 16px 0; color: #856404;">
+            <strong>ℹ️ Nota importante:</strong> Los subgrupos de niveles <strong>10° (Décimo), 11° (Undécimo) y 12° (Duodécimo)</strong> 
+            no aparecen en esta lista porque requieren asignar una <strong>Especialidad</strong>. 
+            Estos subgrupos deben agregarse <strong>individualmente</strong> desde el formulario de 
+            <a href="{% url 'admin:config_institucional_subgrupocursolectivo_add' %}" style="color: #004085; text-decoration: underline;">Agregar Subgrupo por Curso Lectivo</a>.
+        </div>
 
         <!-- Acciones -->
         <div class="acciones">

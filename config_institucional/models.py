@@ -199,7 +199,12 @@ class EspecialidadCursoLectivo(models.Model):
         ordering = ("curso_lectivo__anio", "especialidad__nombre")
 
     def __str__(self):
-        return f"{self.especialidad.nombre}"
+        try:
+            if self.especialidad and hasattr(self.especialidad, 'nombre'):
+                return f"{self.especialidad.nombre}"
+            return f"Especialidad ID: {self.especialidad_id}"
+        except Exception:
+            return f"Especialidad ID: {self.especialidad_id if self.especialidad_id else 'N/A'}"
 
     def clean(self):
         from django.core.exceptions import ValidationError

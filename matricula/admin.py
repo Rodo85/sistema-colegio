@@ -244,29 +244,8 @@ class CursoLectivoFilter(admin.SimpleListFilter):
     def queryset(self, request, queryset):
         if self.value():
             return queryset.filter(curso_lectivo_id=self.value())
-        else:
-            # Si no hay filtro seleccionado, filtrar por el año actual por defecto
-            from catalogos.models import CursoLectivo
-            import datetime
-            curso_actual = CursoLectivo.objects.filter(anio=datetime.date.today().year).first()
-            if curso_actual:
-                return queryset.filter(curso_lectivo_id=curso_actual.id)
+        # Si no hay filtro seleccionado, mostrar TODAS las matrículas de todos los años
         return queryset
-    
-    def choices(self, changelist):
-        """Personalizar choices para tener seleccionado por defecto el año actual"""
-        from catalogos.models import CursoLectivo
-        import datetime
-        
-        # Obtener el curso lectivo del año actual
-        curso_actual = CursoLectivo.objects.filter(anio=datetime.date.today().year).first()
-        
-        # Si no hay un valor seleccionado y existe un curso para el año actual, seleccionarlo
-        if not self.value() and curso_actual:
-            # Modificar temporalmente el valor para que aparezca seleccionado
-            self.used_parameters[self.parameter_name] = str(curso_actual.id)
-        
-        return super().choices(changelist)
 
 # ─────────────────────────────  Formularios  ────────────────────────────
 class EstudianteForm(forms.ModelForm):
@@ -443,11 +422,28 @@ class MatriculaAcademicaInline(admin.StackedInline):  # Cambiado a StackedInline
     # Permitir histórico, no forzar matrícula inmediata
     # Validación de matrícula activa se moverá al modelo
     
+    def get_fields(self, request, obj=None):
+        """
+        Filtrar campos según permisos del usuario.
+        Los campos seccion, subgrupo y estado solo se muestran si el usuario tiene el permiso correspondiente.
+        """
+        fields = list(super().get_fields(request, obj))
+        
+        # Si no es superusuario y no tiene el permiso específico, ocultar seccion, subgrupo y estado
+        if not request.user.is_superuser:
+            if not request.user.has_perm('matricula.manage_seccion_subgrupo_estado'):
+                # Remover los campos restringidos
+                campos_restringidos = ['seccion', 'subgrupo', 'estado']
+                fields = [f for f in fields if f not in campos_restringidos]
+        
+        return fields
+    
     class Media:
         js = (
             'admin/js/jquery.init.js',
             'matricula/js/dependent-especialidad.js',  # Para inlines también
             'matricula/js/clear-dependent-fields.js',  # Limpieza automática de campos dependientes
+            'matricula/js/especialidad-limpia-campos.js',  # Limpieza específica al cambiar especialidad
         )
 
 # ────────────────────────  Estudiante admin  ───────────────────────────
@@ -525,8 +521,20 @@ class EstudianteAdmin(InstitucionScopedAdmin):
         base_display = ("identificacion", "primer_apellido", "segundo_apellido", "nombres", "tipo_estudiante", "acciones")
         return base_display
 
+    def get_list_display_links(self, request, list_display):
+        """Evitar que las filas sean clicables si el usuario solo puede ver."""
+        if request.user.is_superuser or request.user.has_perm('matricula.change_estudiante'):
+            # Enlazar a los campos principales cuando tiene permiso de cambiar
+            return ("identificacion", "primer_apellido", "segundo_apellido", "nombres")
+        # Sin enlaces para evitar navegación al change_view (evita 403)
+        return ()
+
     def acciones(self, obj):
         """Enlaces de acción para cada estudiante"""
+        # Mostrar el botón solo si el usuario puede crear matrículas
+        req = getattr(self, '_request', None)
+        if req and not (req.user.is_superuser or req.user.has_perm('matricula.add_matriculaacademica')):
+            return ""
         if obj.pk:
             # Obtener la URL del admin de matrícula
             from django.urls import reverse
@@ -534,8 +542,8 @@ class EstudianteAdmin(InstitucionScopedAdmin):
                 url = reverse('admin:matricula_matriculaacademica_add')
                 url += f'?estudiante={obj.pk}'
                 # Si tenemos el request guardado y no es superusuario, agregar la institución
-                if hasattr(self, '_request') and not self._request.user.is_superuser:
-                    institucion_id = getattr(self._request, 'institucion_activa_id', None)
+                if req and not req.user.is_superuser:
+                    institucion_id = getattr(req, 'institucion_activa_id', None)
                     if institucion_id:
                         url += f'&_institucion={institucion_id}'
                 return format_html(
@@ -567,10 +575,11 @@ class EstudianteAdmin(InstitucionScopedAdmin):
     foto_preview.short_description = "Foto"
     
     def get_readonly_fields(self, request, obj=None):
-        # No exponer 'institucion' a usuarios normales
-        if request.user.is_superuser:
-            return ()
-        return ()
+        # Si el usuario no tiene permiso de cambio, todos los campos en solo lectura
+        if not request.user.has_perm('matricula.change_estudiante') and not request.user.is_superuser:
+            # Devolver todos los fields del modelo como read-only
+            return [f.name for f in Estudiante._meta.get_fields() if hasattr(f, 'attname')]
+        return super().get_readonly_fields(request, obj)
     
     def get_form(self, request, obj=None, **kwargs):
         """Personalizar el formulario según el usuario y forzar institución."""
@@ -635,9 +644,10 @@ class EstudianteAdmin(InstitucionScopedAdmin):
         return queryset, use_distinct
 
     def change_view(self, request, object_id, form_url='', extra_context=None):
-        """Agregar botón de nueva matrícula en la vista de edición"""
+        """Agregar botón de nueva matrícula solo si el usuario puede crearla."""
         extra_context = extra_context or {}
-        extra_context['show_nueva_matricula'] = True
+        can_add_matricula = request.user.has_perm('matricula.add_matriculaacademica')
+        extra_context['show_nueva_matricula'] = bool(can_add_matricula)
         extra_context['estudiante_id'] = object_id
         return super().change_view(request, object_id, form_url, extra_context)
 
@@ -667,6 +677,13 @@ class EstudianteAdmin(InstitucionScopedAdmin):
         if not request.user.is_superuser and institucion_id:
             obj.institucion_id = institucion_id
         super().save_model(request, obj, form, change)
+    
+    class Media:
+        js = (
+            'admin/js/jquery.init.js',
+            'matricula/js/dependent-dropdowns.js',  # Provincia > Cantón > Distrito
+            'matricula/js/toggle-plan-nacional.js',  # Mostrar/ocultar pestaña Plan Nacional
+        )
 
 # ───────────────────────  Persona-Contacto admin  ───────────────────────
 @admin.register(PersonaContacto)
@@ -730,21 +747,28 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
             'admin/js/jquery.init.js',
             'matricula/js/dependent-especialidad.js',  # Forzar el JS correcto
             'matricula/js/clear-dependent-fields.js',  # Limpieza automática de campos dependientes
+            'matricula/js/especialidad-limpia-campos.js',  # Limpieza específica al cambiar especialidad
             'matricula/js/persist-admin-filters.js',   # Fix visual Jazzmin: no ocultar selects
         )
     
 
     def get_list_display(self, request):
-        """Mostrar institución solo para superusuarios"""
-        base_display = ("identificacion_estudiante", "apellido1_estudiante", "apellido2_estudiante", "nombre_estudiante", "nivel", "curso_lectivo", "seccion", "subgrupo", "especialidad_nombre")
+        """Mostrar columnas según permisos del usuario"""
+        base_display = ["identificacion_estudiante", "apellido1_estudiante", "apellido2_estudiante", "nombre_estudiante", "nivel", "curso_lectivo", "seccion", "subgrupo", "especialidad_nombre"]
+        
+        # Si no es superusuario y no tiene el permiso, ocultar seccion y subgrupo de la lista
+        if not request.user.is_superuser:
+            if not request.user.has_perm('matricula.manage_seccion_subgrupo_estado'):
+                # Remover seccion y subgrupo de la vista de lista
+                base_display = [f for f in base_display if f not in ['seccion', 'subgrupo']]
+        
         if request.user.is_superuser:
-            return base_display + ("institucion_estudiante",)
-        return base_display
+            return tuple(base_display) + ("institucion_estudiante",)
+        return tuple(base_display)
     def get_list_filter(self, request):
-        """Mostrar filtro de institución solo para superusuarios"""
+        """Mostrar filtros según permisos del usuario"""
         # Usar nuestro filtro personalizado que no depende del queryset
-        # (evita que el dropdown desaparezca cuando el queryset resulta vacío)
-        base_filters = (
+        base_filters = [
             NivelInstitucionFilter,
             'nivel',
             SeccionInstitucionFilter,
@@ -752,17 +776,41 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
             CursoLectivoFilter,
             "estado",
             EspecialidadInstitucionFilter,
-        )
+        ]
+        
+        # Si no es superusuario y no tiene el permiso, ocultar filtros de seccion, subgrupo y estado
+        if not request.user.is_superuser:
+            if not request.user.has_perm('matricula.manage_seccion_subgrupo_estado'):
+                # Remover los filtros restringidos
+                base_filters = [f for f in base_filters if f not in [SeccionInstitucionFilter, SubgrupoInstitucionFilter, 'estado']]
+        
         if request.user.is_superuser:
-            return base_filters + (InstitucionMatriculaFilter,)
-        return base_filters
+            return tuple(base_filters) + (InstitucionMatriculaFilter,)
+        return tuple(base_filters)
     search_fields = ("estudiante__identificacion", "estudiante__primer_apellido", "estudiante__nombres")
     ordering = ("curso_lectivo__anio", "estudiante__primer_apellido", "estudiante__nombres")
     
     # DAL maneja especialidad, seccion y subgrupo, autocomplete_fields para el resto
     autocomplete_fields = ("estudiante", "nivel")
     
+    # Campos base - se filtrarán dinámicamente en get_fields()
     fields = ('estudiante', 'institucion', 'curso_lectivo', 'nivel', 'especialidad', 'seccion', 'subgrupo', 'estado')
+    
+    def get_fields(self, request, obj=None):
+        """
+        Filtrar campos según permisos del usuario.
+        Los campos seccion, subgrupo y estado solo se muestran si el usuario tiene el permiso correspondiente.
+        """
+        fields = list(super().get_fields(request, obj))
+        
+        # Si no es superusuario y no tiene el permiso específico, ocultar seccion, subgrupo y estado
+        if not request.user.is_superuser:
+            if not request.user.has_perm('matricula.manage_seccion_subgrupo_estado'):
+                # Remover los campos restringidos
+                campos_restringidos = ['seccion', 'subgrupo', 'estado']
+                fields = [f for f in fields if f not in campos_restringidos]
+        
+        return fields
     
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -865,15 +913,43 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
                         form.base_fields['institucion'].initial = estudiante.institucion
                         form.base_fields['nivel'].initial = siguiente_data['nivel']
                         form.base_fields['curso_lectivo'].initial = siguiente_data['curso_lectivo']
+                        
+                        # Manejar especialidad de manera especial para que funcione con Select2
                         if siguiente_data['especialidad']:
+                            from config_institucional.models import EspecialidadCursoLectivo
+                            
+                            # Establecer el valor inicial
                             form.base_fields['especialidad'].initial = siguiente_data['especialidad']
+                            
+                            # Obtener todas las especialidades disponibles para la institución y nuevo curso
+                            # PERO asegurar que la especialidad inicial esté incluida
+                            especialidades_disponibles = EspecialidadCursoLectivo.objects.filter(
+                                institucion=estudiante.institucion,
+                                curso_lectivo=siguiente_data['curso_lectivo'],
+                                activa=True
+                            ).select_related('especialidad')
+                            
+                            # Verificar si la especialidad inicial está en las disponibles
+                            if not especialidades_disponibles.filter(id=siguiente_data['especialidad'].id).exists():
+                                # Si no está, agregar la especialidad actual al queryset usando union
+                                from django.db.models import Q
+                                especialidad_inicial_qs = EspecialidadCursoLectivo.objects.filter(
+                                    id=siguiente_data['especialidad'].id
+                                ).select_related('especialidad')
+                                
+                                # Combinar querysets
+                                form.base_fields['especialidad'].queryset = especialidades_disponibles | especialidad_inicial_qs
+                            else:
+                                form.base_fields['especialidad'].queryset = especialidades_disponibles
                         
                         # Agregar mensaje informativo
                         form.base_fields['estudiante'].help_text = "Estudiante seleccionado automáticamente"
                         form.base_fields['nivel'].help_text = f"Nivel automático: {siguiente_data['nivel'].nombre}"
                         form.base_fields['curso_lectivo'].help_text = f"Curso automático: {siguiente_data['curso_lectivo'].nombre}"
                         if siguiente_data['especialidad']:
-                            form.base_fields['especialidad'].help_text = f"Especialidad mantenida: {siguiente_data['especialidad'].nombre}"
+                            # siguiente_data['especialidad'] es un EspecialidadCursoLectivo, no una Especialidad
+                            especialidad_nombre = str(siguiente_data['especialidad'])  # Usa el __str__ que ya maneja el acceso seguro
+                            form.base_fields['especialidad'].help_text = f"Especialidad mantenida: {especialidad_nombre}"
                     else:
                         # Solo pre-llenar estudiante si no hay datos inteligentes
                         form.base_fields['estudiante'].initial = estudiante
@@ -892,10 +968,25 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         field = super().formfield_for_foreignkey(db_field, request, **kwargs)
-        bloqueados = {"estudiante", "nivel"}  # especialidad, seccion y subgrupo las maneja DAL
+        
+        # Campos bloqueados para todos los usuarios no superusuarios
+        bloqueados = {"estudiante", "nivel"}
         if db_field.name in bloqueados and not request.user.is_superuser:
             field.widget.can_add_related = False
             field.widget.can_change_related = False
+        
+        # Bloquear sección y subgrupo según permisos específicos
+        if db_field.name == "seccion":
+            if not request.user.has_perm('catalogos.add_seccion'):
+                field.widget.can_add_related = False
+            if not request.user.has_perm('catalogos.change_seccion'):
+                field.widget.can_change_related = False
+        
+        if db_field.name == "subgrupo":
+            if not request.user.has_perm('catalogos.add_subgrupo'):
+                field.widget.can_add_related = False
+            if not request.user.has_perm('catalogos.change_subgrupo'):
+                field.widget.can_change_related = False
         
         # Quitar límite artificial de 44 para no afectar filtros/selecciones
         # (DAL y filtros se encargan de paginar/cargar eficientemente)
@@ -1001,6 +1092,20 @@ class AsignacionGruposAdmin(InstitucionScopedAdmin):
         """Permitir eliminación solo a superusuarios"""
         return request.user.is_superuser
     
+    def has_view_permission(self, request, obj=None):
+        """Restringir vista al permiso custom de acceso."""
+        if request.user.is_superuser:
+            return True
+        return request.user.has_perm('matricula.access_asignacion_grupos')
+
+    def get_model_perms(self, request):
+        """Ocultar el modelo del índice/admin si no tiene permiso de acceso."""
+        if request.user.is_superuser:
+            return super().get_model_perms(request)
+        if not request.user.has_perm('matricula.access_asignacion_grupos'):
+            return {}
+        return super().get_model_perms(request)
+
     def changelist_view(self, request, extra_context=None):
         """Agregar botón para ir a la interfaz de asignación"""
         extra_context = extra_context or {}

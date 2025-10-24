@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse, HttpResponse
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.encoding import smart_str
 from config_institucional.models import Nivel
@@ -18,6 +18,7 @@ except Exception:
     openpyxl = None
 
 @login_required
+@permission_required('matricula.access_consulta_estudiante', raise_exception=True)
 def consulta_estudiante(request):
     estudiante = None
     matricula = None
@@ -160,6 +161,112 @@ def consulta_estudiante(request):
     }
     
     return render(request, 'matricula/consulta_estudiante.html', context)
+
+
+@login_required
+def comprobante_matricula(request):
+    """
+    Renderiza un comprobante de matrícula imprimible para un estudiante y curso lectivo dados.
+    Requiere: curso_lectivo_id, identificacion y (si es superusuario) institucion_id via querystring.
+    """
+    error = ''
+    estudiante = None
+    matricula = None
+    institucion = None
+    plantilla = None
+    edad_estudiante = ''
+    contacto_principal = None
+
+    curso_lectivo_id = request.GET.get('curso_lectivo_id')
+    identificacion = (request.GET.get('identificacion') or '').strip()
+    institucion_id = request.GET.get('institucion_id') if request.user.is_superuser else getattr(request, 'institucion_activa_id', None)
+
+    if not curso_lectivo_id or not identificacion:
+        return HttpResponse('Parámetros insuficientes', status=400)
+
+    try:
+        curso_lectivo = CursoLectivo.objects.get(pk=curso_lectivo_id)
+
+        # Determinar institución
+        if request.user.is_superuser:
+            if not institucion_id:
+                return HttpResponse('Institución requerida para superusuarios', status=400)
+            institucion = Institucion.objects.get(pk=institucion_id)
+        else:
+            if not institucion_id:
+                return HttpResponse('No se pudo determinar la institución activa', status=400)
+            institucion = Institucion.objects.get(pk=institucion_id)
+
+        # Plantilla de impresión para el encabezado
+        try:
+            plantilla = PlantillaImpresionMatricula.objects.filter(institucion=institucion).first()
+        except Exception:
+            plantilla = None
+
+        # Estudiante y matrícula activa
+        estudiante = Estudiante.objects.get(identificacion=identificacion, institucion=institucion)
+        matricula = MatriculaAcademica.objects.filter(
+            estudiante=estudiante,
+            curso_lectivo=curso_lectivo,
+            estado__iexact='activo'
+        ).select_related('nivel', 'especialidad__especialidad').first()
+
+        if not matricula:
+            return HttpResponse('No existe matrícula activa para este estudiante y curso lectivo', status=404)
+
+        # Edad en años y meses
+        if estudiante.fecha_nacimiento:
+            from datetime import date
+            today = date.today()
+            years = today.year - estudiante.fecha_nacimiento.year
+            months = today.month - estudiante.fecha_nacimiento.month
+            if today.day < estudiante.fecha_nacimiento.day:
+                months -= 1
+            if months < 0:
+                years -= 1
+                months += 12
+            if years == 0:
+                edad_estudiante = f"{months} meses"
+            elif months == 0:
+                edad_estudiante = f"{years} años"
+            else:
+                edad_estudiante = f"{years} años y {months} meses"
+
+        # Encargado principal
+        contacto_principal = (
+            estudiante.encargadoestudiante_set
+            .select_related('persona_contacto', 'parentesco')
+            .filter(principal=True)
+            .first()
+        )
+        if not contacto_principal:
+            contacto_principal = (
+                estudiante.encargadoestudiante_set
+                .select_related('persona_contacto', 'parentesco')
+                .first()
+            )
+
+        context = {
+            'estudiante': estudiante,
+            'matricula': matricula,
+            'curso_lectivo': curso_lectivo,
+            'institucion': institucion,
+            'plantilla': plantilla,
+            'edad_estudiante': edad_estudiante,
+            'contacto_principal': contacto_principal,
+        }
+        return render(request, 'matricula/comprobante_matricula.html', context)
+    except CursoLectivo.DoesNotExist:
+        return HttpResponse('Curso lectivo no encontrado', status=404)
+    except Institucion.DoesNotExist:
+        return HttpResponse('Institución no encontrada', status=404)
+    except Estudiante.DoesNotExist:
+        return HttpResponse('Estudiante no encontrado en la institución indicada', status=404)
+    except Exception as e:
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.error(f"Error en comprobante_matricula: {str(e)}")
+        return HttpResponse('Error interno del sistema', status=500)
 
 @csrf_exempt
 @login_required
@@ -309,8 +416,24 @@ class EspecialidadAutocomplete(autocomplete.Select2QuerySetView):
                     activa=True
                 ).select_related('especialidad', 'especialidad__modalidad')
                 
-                print(f"🎯 Especialidades configuradas encontradas: {[ecl.especialidad.nombre for ecl in qs]}")
-                print(f"📋 Especialidades encontradas: {[ecl.especialidad.nombre for ecl in qs]}")
+                # FILTRO ADICIONAL: Solo especialidades vinculadas a subgrupos de este nivel
+                from config_institucional.models import SubgrupoCursoLectivo
+                
+                especialidades_ids = SubgrupoCursoLectivo.objects.filter(
+                    curso_lectivo=curso_lectivo,
+                    institucion_id=institucion_id,
+                    subgrupo__seccion__nivel=nivel,
+                    activa=True,
+                    especialidad_curso__isnull=False
+                ).values_list('especialidad_curso_id', flat=True).distinct()
+                
+                print(f"🔍 IDs de especialidades vinculadas al nivel {nivel.numero}: {list(especialidades_ids)}")
+                
+                # Filtrar para incluir solo las especialidades del nivel
+                qs = qs.filter(id__in=especialidades_ids)
+                
+                print(f"🎯 Especialidades configuradas encontradas: {[ecl.especialidad.nombre if ecl.especialidad else 'N/A' for ecl in qs]}")
+                print(f"📋 Especialidades filtradas por nivel: {[ecl.especialidad.nombre if ecl.especialidad else 'N/A' for ecl in qs]}")
                 
             except (CursoLectivo.DoesNotExist, Nivel.DoesNotExist, ValueError) as e:
                 print(f"❌ Error: {e}")
@@ -331,18 +454,18 @@ class EspecialidadAutocomplete(autocomplete.Select2QuerySetView):
         # Filtro por búsqueda
         if self.q:
             qs = qs.filter(especialidad__nombre__icontains=self.q)
-            print(f"🔍 Filtrado por búsqueda '{self.q}': {[ecl.especialidad.nombre for ecl in qs]}")
+            print(f"🔍 Filtrado por búsqueda '{self.q}': {[ecl.especialidad.nombre if ecl.especialidad else 'N/A' for ecl in qs]}")
         
         final_qs = qs.order_by('especialidad__nombre')
-        print(f"🎯 RESULTADO FINAL: {[ecl.especialidad.nombre for ecl in final_qs]}")
+        print(f"🎯 RESULTADO FINAL: {[str(ecl) for ecl in final_qs]}")
         return final_qs
 
 
 class SeccionAutocomplete(autocomplete.Select2QuerySetView):
     """
-    Autocompletado para Sección que filtra por Curso Lectivo e institución.
+    Autocompletado para Sección que filtra por Curso Lectivo, Nivel, Especialidad e institución.
     Busca directamente en SeccionCursoLectivo.
-    Forward: curso_lectivo → seccion
+    Forward: curso_lectivo, nivel, especialidad → seccion
     """
     def get_queryset(self):
         print("🔥 SeccionAutocomplete.get_queryset() llamado")
@@ -369,13 +492,15 @@ class SeccionAutocomplete(autocomplete.Select2QuerySetView):
         # FILTRO POR CURSO LECTIVO Y NIVEL (forward) - BUSCAR EN SeccionCursoLectivo
         curso_lectivo_id = self.forwarded.get('curso_lectivo', None)
         nivel_id = self.forwarded.get('nivel', None)
+        especialidad_id = self.forwarded.get('especialidad', None)
         print(f"📅 Curso lectivo ID: {curso_lectivo_id}")
         print(f"📅 Nivel ID: {nivel_id}")
+        print(f"🎓 Especialidad ID: {especialidad_id}")
         print(f"📅 Forwarded completo: {self.forwarded}")
         
         if curso_lectivo_id and nivel_id:
             try:
-                from config_institucional.models import SeccionCursoLectivo
+                from config_institucional.models import SeccionCursoLectivo, SubgrupoCursoLectivo
                 from catalogos.models import Nivel
                 
                 # Verificar que el curso lectivo existe (ahora es global)
@@ -386,29 +511,50 @@ class SeccionAutocomplete(autocomplete.Select2QuerySetView):
                 nivel = Nivel.objects.get(id=nivel_id)
                 print(f"✅ Nivel encontrado: {nivel}")
                 
-                # Obtener secciones configuradas y activas para este curso lectivo
-                secciones_configuradas = SeccionCursoLectivo.objects.filter(
-                    institucion_id=institucion_id,
-                    curso_lectivo=curso_lectivo,
-                    activa=True
-                ).values_list('seccion_id', flat=True)
-                
-                print(f"🎯 Secciones configuradas IDs: {list(secciones_configuradas)}")
-                
-                # Filtrar secciones por nivel
-                qs = Seccion.objects.filter(
-                    id__in=secciones_configuradas,
-                    nivel=nivel
-                )
-                print(f"🎯 Nivel seleccionado: {nivel.nombre}")
-                print(f"📋 Secciones encontradas para nivel {nivel.numero}: {[sec.numero for sec in qs]}")
+                # SI HAY ESPECIALIDAD (niveles 10, 11, 12): filtrar por especialidad
+                if especialidad_id:
+                    print(f"🎓 Filtrando por ESPECIALIDAD: {especialidad_id}")
+                    # Obtener secciones que tienen subgrupos con esta especialidad
+                    secciones_con_especialidad = SubgrupoCursoLectivo.objects.filter(
+                        institucion_id=institucion_id,
+                        curso_lectivo=curso_lectivo,
+                        activa=True,
+                        especialidad_curso_id=especialidad_id
+                    ).values_list('subgrupo__seccion_id', flat=True).distinct()
+                    
+                    print(f"🎯 Secciones con especialidad IDs: {list(secciones_con_especialidad)}")
+                    
+                    # Filtrar secciones por nivel y que tengan la especialidad
+                    qs = Seccion.objects.filter(
+                        id__in=secciones_con_especialidad,
+                        nivel=nivel
+                    )
+                    print(f"📋 Secciones con especialidad para nivel {nivel.numero}: {[sec.numero for sec in qs]}")
+                else:
+                    # Sin especialidad: mostrar todas las secciones configuradas
+                    print(f"📋 Sin especialidad - mostrando todas las secciones")
+                    # Obtener secciones configuradas y activas para este curso lectivo
+                    secciones_configuradas = SeccionCursoLectivo.objects.filter(
+                        institucion_id=institucion_id,
+                        curso_lectivo=curso_lectivo,
+                        activa=True
+                    ).values_list('seccion_id', flat=True)
+                    
+                    print(f"🎯 Secciones configuradas IDs: {list(secciones_configuradas)}")
+                    
+                    # Filtrar secciones por nivel
+                    qs = Seccion.objects.filter(
+                        id__in=secciones_configuradas,
+                        nivel=nivel
+                    )
+                    print(f"📋 Secciones encontradas para nivel {nivel.numero}: {[sec.numero for sec in qs]}")
                 
             except (CursoLectivo.DoesNotExist, Nivel.DoesNotExist, ValueError) as e:
                 print(f"❌ Error: {e}")
                 return Seccion.objects.none()
         else:
             # Sin curso lectivo, no mostrar secciones
-            print("❌ No hay curso lectivo seleccionado")
+            print("❌ No hay curso lectivo o nivel seleccionado")
             return Seccion.objects.none()
         
         # Filtro por búsqueda
@@ -423,9 +569,9 @@ class SeccionAutocomplete(autocomplete.Select2QuerySetView):
 
 class SubgrupoAutocomplete(autocomplete.Select2QuerySetView):
     """
-    Autocompletado para Subgrupo que filtra por Curso Lectivo, Sección e institución.
+    Autocompletado para Subgrupo que filtra por Curso Lectivo, Sección, Especialidad e institución.
     Busca directamente en SubgrupoCursoLectivo.
-    Forward: curso_lectivo, seccion → subgrupo
+    Forward: curso_lectivo, seccion, especialidad → subgrupo
     """
     def get_queryset(self):
         print("🔥 SubgrupoAutocomplete.get_queryset() llamado")
@@ -449,11 +595,13 @@ class SubgrupoAutocomplete(autocomplete.Select2QuerySetView):
                 print("❌ No hay institución activa")
                 return Subgrupo.objects.none()
         
-        # FILTRO POR CURSO LECTIVO Y SECCIÓN (forward) - BUSCAR EN SubgrupoCursoLectivo
+        # FILTRO POR CURSO LECTIVO, SECCIÓN Y ESPECIALIDAD (forward) - BUSCAR EN SubgrupoCursoLectivo
         curso_lectivo_id = self.forwarded.get('curso_lectivo', None)
         seccion_id = self.forwarded.get('seccion', None)
+        especialidad_id = self.forwarded.get('especialidad', None)
         print(f"📅 Curso lectivo ID: {curso_lectivo_id}")
         print(f"📍 Sección ID: {seccion_id}")
+        print(f"🎓 Especialidad ID: {especialidad_id}")
         print(f"📅 Forwarded completo: {self.forwarded}")
         
         if curso_lectivo_id and seccion_id:
@@ -468,13 +616,24 @@ class SubgrupoAutocomplete(autocomplete.Select2QuerySetView):
                 seccion = Seccion.objects.get(id=seccion_id)
                 print(f"✅ Sección encontrada: {seccion}")
                 
+                # Filtros base
+                filtros = {
+                    'institucion_id': institucion_id,
+                    'curso_lectivo': curso_lectivo,
+                    'activa': True,
+                    'subgrupo__seccion': seccion
+                }
+                
+                # SI HAY ESPECIALIDAD (niveles 10, 11, 12): filtrar por especialidad
+                if especialidad_id:
+                    print(f"🎓 Filtrando por ESPECIALIDAD: {especialidad_id}")
+                    filtros['especialidad_curso_id'] = especialidad_id
+                
                 # Obtener subgrupos configurados y activos para este curso lectivo
                 # que pertenezcan específicamente a la sección seleccionada
+                # y opcionalmente a la especialidad seleccionada
                 subgrupos_configurados = SubgrupoCursoLectivo.objects.filter(
-                    institucion_id=institucion_id,
-                    curso_lectivo=curso_lectivo,
-                    activa=True,
-                    subgrupo__seccion=seccion  # FILTRO ADICIONAL: solo subgrupos de la sección seleccionada
+                    **filtros
                 ).values_list('subgrupo_id', flat=True)
                 
                 print(f"🎯 Subgrupos configurados IDs para sección {seccion}: {list(subgrupos_configurados)}")
@@ -509,6 +668,7 @@ class SubgrupoAutocomplete(autocomplete.Select2QuerySetView):
 # ════════════════════════════════════════════════════════════════
 
 @login_required
+@permission_required('matricula.access_asignacion_grupos', raise_exception=True)
 def asignacion_grupos(request):
     """
     Vista principal para la asignación automática de grupos.
@@ -531,6 +691,7 @@ def asignacion_grupos(request):
 
 
 @login_required
+@permission_required('matricula.access_asignacion_grupos', raise_exception=True)
 def ejecutar_asignacion_grupos(request):
     """
     Vista AJAX que ejecuta el algoritmo de asignación automática de grupos.
@@ -730,3 +891,6 @@ def api_subgrupos_por_curso_seccion(request):
         return JsonResponse({'success': True, 'subgrupos': data})
     except Exception as e:
         return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+
+

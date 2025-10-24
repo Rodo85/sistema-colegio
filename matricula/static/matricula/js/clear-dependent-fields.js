@@ -35,6 +35,20 @@
     }
 
     /**
+     * Verifica si el nivel actual requiere especialidad (10, 11, 12)
+     */
+    function nivelRequiereEspecialidad() {
+        const $nivel = $('select[name="nivel"]').not('[name*="__prefix__"]');
+        
+        if ($nivel.length === 0) {
+            return false;
+        }
+        
+        const nivelTexto = $nivel.find('option:selected').text().trim();
+        return /\b(10|11|12|décimo|undécimo|duodécimo)\b/i.test(nivelTexto);
+    }
+
+    /**
      * Aplica la lógica de limpieza y actualización a los campos dependientes.
      * @param {string} changedFieldName - El nombre del campo que cambió.
      */
@@ -57,6 +71,27 @@
             $subgrupoField.trigger('change');
             $especialidadField.trigger('change');
 
+        // Si el cambio es en 'especialidad', limpiar 'seccion' y 'subgrupo' para forzar reselección.
+        } else if (changedFieldName.includes('especialidad')) {
+            // CRÍTICO: Solo limpiar si el nivel requiere especialidad (10, 11, 12)
+            if (!nivelRequiereEspecialidad()) {
+                console.log("⚠️ Nivel NO requiere especialidad - NO se limpiarán sección/subgrupo");
+                return;
+            }
+            
+            console.log("🎓 Especialidad cambió (nivel 10-12) - limpiando sección y subgrupo");
+            const $seccionField = $('select[name*="seccion"]').not('[name*="__prefix__"]');
+            const $subgrupoField = $('select[name*="subgrupo"]').not('[name*="__prefix__"]');
+            
+            limpiarCampoSelect2($seccionField, 'Seleccione la sección correspondiente a la especialidad...');
+            limpiarCampoSelect2($subgrupoField, 'Seleccione primero una sección...');
+            
+            // Forzar actualización de los campos
+            $seccionField.trigger('change');
+            $subgrupoField.trigger('change');
+            
+            console.log("✅ Sección y subgrupo limpiados por cambio de especialidad");
+
         // Si el cambio es en 'seccion', solo limpiar 'subgrupo'.
         } else if (changedFieldName.includes('seccion')) {
             const $subgrupoField = $('select[name*="subgrupo"]');
@@ -74,16 +109,45 @@
         $(document).off('.dalDependentFields');
         
         // Vínculo a eventos de cambio y selección para todos los campos padres
-        $(document).on('change.dalDependentFields select2:select.dalDependentFields select2:unselect.dalDependentFields', 
-            'select[name*="curso_lectivo"], select[name*="nivel"], select[name*="seccion"]', function(e) {
+        // Incluye múltiples eventos de Select2 para capturar todos los cambios
+        $(document).on('change.dalDependentFields select2:select.dalDependentFields select2:unselect.dalDependentFields select2:clear.dalDependentFields', 
+            'select[name*="curso_lectivo"], select[name*="nivel"], select[name*="seccion"], select[name*="especialidad"]', function(e) {
             const fieldName = $(this).attr('name');
+            console.log("🔔 Evento detectado:", e.type, "en campo:", fieldName);
+            
             // Un pequeño retraso para asegurar que la lógica de DAL se ejecute primero
             setTimeout(() => {
                 aplicarLimpiezaDependiente(fieldName);
-            }, 50);
+            }, 100); // Aumentado a 100ms para dar más tiempo
         });
+        
+        console.log("✅ Eventos configurados para: curso_lectivo, nivel, seccion, especialidad");
     }
 
+    /**
+     * Monitoreo adicional para especialidad (verificación periódica del valor)
+     */
+    let especialidadAnterior = null;
+    function monitoreoContinuoEspecialidad() {
+        // CRÍTICO: Solo monitorear si el nivel requiere especialidad
+        if (!nivelRequiereEspecialidad()) {
+            return; // No monitorear para niveles 7, 8, 9
+        }
+        
+        const $especialidad = $('select[name*="especialidad"]').not('[name*="__prefix__"]');
+        if ($especialidad.length > 0) {
+            const valorActual = $especialidad.val();
+            
+            // Si cambió el valor de especialidad
+            if (especialidadAnterior !== null && especialidadAnterior !== valorActual && valorActual !== null && valorActual !== '') {
+                console.log("🔔 MONITOREO: Especialidad cambió de", especialidadAnterior, "a", valorActual);
+                aplicarLimpiezaDependiente($especialidad.attr('name'));
+            }
+            
+            especialidadAnterior = valorActual;
+        }
+    }
+    
     /**
      * Inicializa el script y sus oyentes, usando múltiples intentos.
      */
@@ -91,6 +155,9 @@
         if (!$) return;
         console.log('🚀 Inicializando sistema de limpieza... (Intento)');
         configurarEventos();
+        
+        // Iniciar monitoreo continuo de especialidad (cada 500ms)
+        setInterval(monitoreoContinuoEspecialidad, 500);
     }
     
     $(document).ready(function() {

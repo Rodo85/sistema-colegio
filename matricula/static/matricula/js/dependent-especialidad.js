@@ -19,6 +19,20 @@
         
         var especialidadOculta = false;
         var inicializando = false; // evita limpiar valores pre-cargados durante la carga inicial
+        var especialidadInicial = null; // guardar valor inicial para modo edición
+        var nivelInicialCargado = false; // bandera para saber si ya cargamos el nivel inicial
+        
+        // ══════════ CAPTURA TEMPRANA DE ESPECIALIDAD (INMEDIATA) ══════════
+        // Capturar el valor de especialidad ANTES de cualquier manipulación
+        $('select[name*="especialidad"]').each(function() {
+            if (!$(this).attr('name').includes('__prefix__')) {
+                var valorActual = $(this).val();
+                if (valorActual) {
+                    especialidadInicial = valorActual;
+                    console.log("🔒 CAPTURA TEMPRANA - Especialidad inicial:", especialidadInicial);
+                }
+            }
+        });
         
         // ──────────────── CONTROL DE ESPECIALIDAD ────────────────
         function mostrarEspecialidad() {
@@ -31,6 +45,12 @@
                 $row.show();
                 $wrapper.show();
                 $row.find('.select2-container').show();
+                
+                // Si hay especialidadInicial y el campo está vacío, restaurar
+                if (especialidadInicial && !$(this).val() && !nivelInicialCargado) {
+                    console.log("🔄 Restaurando especialidad inicial:", especialidadInicial);
+                    $(this).val(especialidadInicial).trigger('change');
+                }
             });
             especialidadOculta = false;
         }
@@ -41,8 +61,8 @@
                 if ($(this).attr('name').includes('__prefix__')) return;
                 var $row = $(this).closest('[class*="field-especialidad"], .form-row, .form-group');
                 var $wrapper = $(this).closest('.related-widget-wrapper');
-                // Limpiar selección SOLO si no estamos en inicialización (evita perder valor pre-llenado)
-                if (!inicializando) {
+                // Limpiar selección SOLO si no estamos en inicialización Y si no hay valor inicial guardado
+                if (!inicializando && (!especialidadInicial || nivelInicialCargado)) {
                     try { $(this).val(null).trigger('change'); } catch(e) { $(this).val(''); }
                 }
                 $row.hide();
@@ -78,38 +98,86 @@
             var $cursoLectivo = $('select[name*="curso_lectivo"]');
             var cursoLectivoId = $cursoLectivo.val();
             
+            // Obtener el nivel seleccionado
+            var nivelId = null;
+            var nivelTexto = '';
+            
+            // Buscar nivel en select
+            $('select[name*="nivel"]').each(function() {
+                if (!$(this).attr('name').includes('__prefix__')) {
+                    nivelId = $(this).val();
+                    nivelTexto = $(this).find('option:selected').text() || '';
+                }
+            });
+            
+            // Si no encontramos en select, buscar en select2 rendered
+            if (!nivelId) {
+                $('.select2-container').each(function() {
+                    var selectId = $(this).attr('id');
+                    if (selectId && selectId.includes('nivel')) {
+                        var originalSelectId = selectId.replace('select2-', '').replace('-container', '');
+                        var $originalSelect = $('#' + originalSelectId);
+                        if ($originalSelect.length) {
+                            nivelId = $originalSelect.val();
+                            nivelTexto = $(this).find('.select2-selection__rendered').text() || '';
+                        }
+                    }
+                });
+            }
+            
+            console.log("📊 Nivel seleccionado:", nivelId, "- Texto:", nivelTexto);
+            
             if (!cursoLectivoId) {
                 console.log("⚠️ No hay curso lectivo seleccionado");
                 return;
             }
             
-            console.log("📚 Curso lectivo seleccionado:", cursoLectivoId);
+            if (!nivelId) {
+                console.log("⚠️ No hay nivel seleccionado - no actualizar especialidades");
+                return;
+            }
             
-            // Hacer petición AJAX para obtener especialidades disponibles
-            $.ajax({
-                url: '/matricula/get-especialidades-disponibles/',
-                method: 'POST',
-                data: {
-                    curso_lectivo_id: cursoLectivoId,
-                    csrfmiddlewaretoken: $('[name=csrfmiddlewaretoken]').val()
-                },
-                success: function(response) {
-                    if (response.success) {
-                        console.log("✅ Especialidades obtenidas:", response.especialidades);
-                        console.log("🔍 DEBUG INFO:", response.debug);
-                        if (response.debug && response.debug.configuraciones_activas === 0) {
-                            console.warn("⚠️ NO HAY CONFIGURACIONES ACTIVAS para esta institución y curso lectivo");
-                            console.log("   - Institución:", response.debug.institucion_nombre);
-                            console.log("   - Curso lectivo ID:", response.debug.curso_lectivo_id);
-                            console.log("   - Necesitas configurar especialidades en el admin de 'Especialidades por curso lectivo'");
+            // Verificar si el nivel requiere especialidad
+            if (!esNivelEspecialidad(nivelTexto)) {
+                console.log("⚠️ Nivel no requiere especialidad - ocultar campo");
+                ocultarEspecialidad();
+                return;
+            }
+            
+            console.log("📚 Curso lectivo:", cursoLectivoId, "- Nivel:", nivelId);
+            
+            // NO USAR AJAX - Dejar que el autocomplete de DAL maneje el filtrado
+            // El autocomplete ya filtra correctamente por nivel en el backend
+            console.log("✅ Autocomplete DAL manejará el filtrado por nivel automáticamente");
+            mostrarEspecialidad();
+            
+            // FORZAR recarga del autocomplete para que use los parámetros forward actualizados
+            // PERO: NO limpiar si estamos en carga inicial y hay valor inicial
+            $('select[name*="especialidad"]').each(function() {
+                if ($(this).attr('name').includes('__prefix__')) return;
+                
+                var $select = $(this);
+                
+                // Destruir y reinicializar Select2 para forzar nueva carga
+                if ($select.hasClass('select2-hidden-accessible')) {
+                    try {
+                        // Solo limpiar si ya pasó la carga inicial (usuario cambió el nivel manualmente)
+                        // Y NO limpiar si hay especialidadInicial guardada y aún no se completó la carga
+                        if (nivelInicialCargado) {
+                            // Limpiar valor y forzar recarga
+                            $select.val(null).trigger('change');
+                            console.log("🔄 Especialidad limpiada para recarga con nivel:", nivelId);
+                        } else if (especialidadInicial && $select.val() == especialidadInicial) {
+                            console.log("⏭️ Carga inicial con especialidad - MANTENER valor:", especialidadInicial);
+                            // NO hacer nada - mantener el valor existente
+                        } else if (!especialidadInicial) {
+                            // Es creación nueva, permitir limpiar
+                            $select.val(null).trigger('change');
+                            console.log("🔄 Especialidad limpiada (nueva matrícula)");
                         }
-                        actualizarOpcionesEspecialidadAutocomplete(response.especialidades);
-                    } else {
-                        console.error("❌ Error al obtener especialidades:", response.error);
+                    } catch (e) {
+                        console.log("⚠️ Error limpiando especialidad:", e);
                     }
-                },
-                error: function(xhr, status, error) {
-                    console.error("❌ Error AJAX:", error);
                 }
             });
         }
@@ -249,6 +317,19 @@
                 if ($activeSelect && $activeSelect.attr('name').includes('nivel')) {
                     console.log("🖱️ CLICK EN NIVEL:", textoOpcion);
                     
+                    // Solo limpiar si ya pasó la carga inicial (evita limpiar en edición)
+                    if (nivelInicialCargado) {
+                        // LIMPIAR especialidad cuando cambia el nivel para forzar recarga
+                        $('select[name*="especialidad"]').each(function() {
+                            if (!$(this).attr('name').includes('__prefix__')) {
+                                $(this).val(null).trigger('change');
+                                console.log("🧹 Especialidad limpiada por click en nivel");
+                            }
+                        });
+                    } else {
+                        console.log("⏭️ Carga inicial - no limpiar especialidad");
+                    }
+                    
                     setTimeout(function() {
                         if (esNivelEspecialidad(textoOpcion)) {
                             mostrarEspecialidad();
@@ -268,6 +349,19 @@
                     var data = e.params.data;
                     if (data && data.text) {
                         console.log("📡 SELECT2:SELECT NIVEL detectado:", data.text);
+                        
+                        // Solo limpiar si ya pasó la carga inicial (evita limpiar en edición)
+                        if (nivelInicialCargado) {
+                            // LIMPIAR especialidad cuando cambia el nivel para forzar recarga
+                            $('select[name*="especialidad"]').each(function() {
+                                if (!$(this).attr('name').includes('__prefix__')) {
+                                    $(this).val(null).trigger('change');
+                                    console.log("🧹 Especialidad limpiada por cambio de nivel");
+                                }
+                            });
+                        } else {
+                            console.log("⏭️ Carga inicial - no limpiar especialidad");
+                        }
                         
                         setTimeout(function() {
                             if (esNivelEspecialidad(data.text)) {
@@ -344,6 +438,22 @@
             console.log("🚀 Inicializando especialidad dependiente...");
             inicializando = true;
             
+            // CAPTURAR VALOR INICIAL DE ESPECIALIDAD (para modo edición)
+            // IMPORTANTE: Capturar solo UNA VEZ para evitar sobreescribir con null
+            if (especialidadInicial === null) {
+                $('select[name*="especialidad"]').each(function() {
+                    if (!$(this).attr('name').includes('__prefix__')) {
+                        var valorActual = $(this).val();
+                        if (valorActual) {
+                            especialidadInicial = valorActual;
+                            console.log("💾 Especialidad inicial capturada:", especialidadInicial);
+                        }
+                    }
+                });
+            } else {
+                console.log("💾 Especialidad inicial ya existía:", especialidadInicial);
+            }
+            
             // Ocultar por defecto
             ocultarEspecialidad();
             
@@ -383,8 +493,19 @@
                 }
             });
             
-            // Actualizar especialidades disponibles al inicializar
-            setTimeout(actualizarEspecialidadesDisponibles, 500);
+            // Actualizar especialidades disponibles al inicializar SOLO si NO hay especialidad inicial
+            if (!especialidadInicial) {
+                console.log("🆕 Nueva matrícula - actualizar especialidades disponibles");
+                setTimeout(actualizarEspecialidadesDisponibles, 500);
+            } else {
+                console.log("✏️ Edición de matrícula - NO actualizar (mantener especialidad)");
+            }
+            
+            // Marcar que la carga inicial está completa después de un tiempo suficiente
+            setTimeout(function() {
+                nivelInicialCargado = true;
+                console.log("✅ Carga inicial completada - cambios futuros limpiarán especialidad");
+            }, 5000); // Aumentado a 5 segundos para dar tiempo a todo el DOM y Select2
             
             console.log("✅ Configuración completada");
             inicializando = false;

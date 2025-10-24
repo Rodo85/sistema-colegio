@@ -1,4 +1,5 @@
 // FILTRO DE ESPECIALIDADES PARA SUBGRUPO CURSO LECTIVO
+// Adaptado de dependent-especialidad.js (Matrículas Académicas)
 (function($) {
     if (!$) {
         console.error("filter-especialidades-subgrupo.js: jQuery no encontrado");
@@ -6,56 +7,93 @@
     }
     
     $(function() {
-        console.log("=== FILTRO DE ESPECIALIDADES PARA SUBGRUPO CURSO LECTIVO ===");
+        // Evitar interferir con la lista de admin (filtros de Jazzmin)
+        try {
+            var bodyClass = document && document.body ? document.body.className : '';
+            if (bodyClass && bodyClass.indexOf('change-list') !== -1) {
+                console.log('filter-especialidades-subgrupo: detectada changelist; no aplicar lógica de ocultar/mostrar');
+                return;
+            }
+        } catch (e) {}
+        
+        console.log("=== ESPECIALIDAD DEPENDIENTE - SUBGRUPO CURSO LECTIVO ===");
         console.log("jQuery version:", $.fn.jquery);
+        
+        var especialidadOculta = false;
+        var inicializando = false;
+        
+        // ──────────────── CONTROL DE ESPECIALIDAD ────────────────
+        function mostrarEspecialidad() {
+            console.log("🟢 MOSTRANDO especialidad");
+            $('select[name*="especialidad_curso"]').each(function() {
+                if ($(this).attr('name').includes('__prefix__')) return;
+                var $row = $(this).closest('[class*="field-especialidad"], .form-row, .form-group');
+                var $wrapper = $(this).closest('.related-widget-wrapper');
+                $row.show();
+                $wrapper.show();
+                $row.find('.select2-container').show();
+            });
+            especialidadOculta = false;
+        }
+        
+        function ocultarEspecialidad() {
+            console.log("🔴 OCULTANDO especialidad");
+            $('select[name*="especialidad_curso"]').each(function() {
+                if ($(this).attr('name').includes('__prefix__')) return;
+                var $row = $(this).closest('[class*="field-especialidad"], .form-row, .form-group');
+                var $wrapper = $(this).closest('.related-widget-wrapper');
+                // Limpiar selección SOLO si no estamos en inicialización
+                if (!inicializando) {
+                    try { $(this).val(null).trigger('change'); } catch(e) { $(this).val(''); }
+                }
+                $row.hide();
+                $wrapper.hide();
+                $row.find('.select2-container').hide();
+            });
+            especialidadOculta = true;
+        }
+        
+        function esNivelEspecialidad(texto) {
+            if (!texto) return false;
+            
+            // El subgrupo viene en formato "10-1A", "11-2B", "7-1A", etc.
+            // Extraer el número antes del guion
+            var match = texto.match(/^(\d+)-/);
+            if (match) {
+                var nivel = parseInt(match[1], 10);
+                var esEspecialidad = (nivel === 10 || nivel === 11 || nivel === 12);
+                console.log("🧪 Verificando subgrupo:", texto, "-> Nivel:", nivel, "-> ¿Es especialidad?", esEspecialidad);
+                return esEspecialidad;
+            }
+            
+            console.log("⚠️ No se pudo extraer nivel de:", texto);
+            return false;
+        }
         
         // ──────────────── ACTUALIZAR ESPECIALIDADES DISPONIBLES ────────────────
         function actualizarEspecialidadesDisponibles() {
             console.log("🔄 Actualizando especialidades disponibles...");
-            console.log("===========================================");
-            
-            // DEBUG: Mostrar todos los campos disponibles
-            console.log("🔍 CAMPOS DISPONIBLES EN LA PÁGINA:");
-            $('select[name*="curso_lectivo"]').each(function(i) {
-                console.log("   - Select curso_lectivo[" + i + "]:", $(this).attr('name'), "=", $(this).val());
-            });
-            $('select[name*="institucion"]').each(function(i) {
-                console.log("   - Select institucion[" + i + "]:", $(this).attr('name'), "=", $(this).val());
-            });
-            $('input[name*="institucion"]').each(function(i) {
-                console.log("   - Input institucion[" + i + "]:", $(this).attr('name'), "=", $(this).val());
-            });
-            $('select[name*="especialidad_curso"]').each(function(i) {
-                console.log("   - Select especialidad_curso[" + i + "]:", $(this).attr('name'), "=", $(this).val());
-            });
             
             // Obtener el curso lectivo seleccionado
-            var $cursoLectivo = $('select[name*="curso_lectivo"]');
+            var $cursoLectivo = $('select[name*="curso_lectivo"]').not('[name*="__prefix__"]');
             var cursoLectivoId = $cursoLectivo.val();
             
-            // Obtener la institución (puede ser hidden input o select)
+            // Obtener la institución
             var institucionId = $('input[name="institucion"]').val() || 
                               $('select[name="institucion"]').val() ||
                               $('#id_institucion').val() ||
-                              $('input[name*="institucion"]').val() ||
-                              $('select[name*="institucion"]').val();
+                              $('input[name*="institucion"]').not('[name*="__prefix__"]').val() ||
+                              $('select[name*="institucion"]').not('[name*="__prefix__"]').val();
             
-            console.log("📚 RESULTADO - Curso lectivo seleccionado:", cursoLectivoId);
-            console.log("🏫 RESULTADO - Institución:", institucionId);
-            console.log("🔍 TIPO DE DATOS:");
-            console.log("   - Curso lectivo tipo:", typeof cursoLectivoId, "vacío?", !cursoLectivoId);
-            console.log("   - Institución tipo:", typeof institucionId, "vacío?", !institucionId);
+            console.log("📚 Curso lectivo:", cursoLectivoId);
+            console.log("🏫 Institución:", institucionId);
             
-            // LÓGICA CRÍTICA: Si no hay curso lectivo O institución, limpiar especialidades
             if (!cursoLectivoId || !institucionId) {
-                console.log("❌ FALTAN DATOS REQUERIDOS - limpiando especialidades");
-                console.log("   - Curso lectivo:", cursoLectivoId ? "✓ PRESENTE" : "✗ FALTA");
-                console.log("   - Institución:", institucionId ? "✓ PRESENTE" : "✗ FALTA");
-                limpiarEspecialidades();
+                console.log("❌ Faltan datos requeridos");
                 return;
             }
             
-            console.log("✅ DATOS VÁLIDOS - Haciendo petición AJAX");
+            console.log("✅ Datos válidos - haciendo petición AJAX");
             
             var ajaxData = {
                 'forward': JSON.stringify({
@@ -64,50 +102,29 @@
                 })
             };
             
-            console.log("📡 URL:", '/config/especialidad-curso-lectivo-autocomplete/');
-            console.log("📡 Datos enviados:", ajaxData);
-            
             // Hacer petición AJAX para obtener especialidades disponibles
             $.ajax({
                 url: '/config/especialidad-curso-lectivo-autocomplete/',
                 method: 'GET',
                 data: ajaxData,
-                beforeSend: function(xhr, settings) {
-                    console.log("🚀 Enviando petición AJAX...");
-                    console.log("   - URL completa:", settings.url + '?' + $.param(settings.data));
-                },
                 success: function(response) {
-                    console.log("✅ RESPUESTA RECIBIDA:");
-                    console.log("   - Respuesta completa:", response);
-                    console.log("   - Tipo de respuesta:", typeof response);
-                    console.log("   - Tiene 'results'?", response.hasOwnProperty('results'));
-                    
-                    if (response.results) {
-                        console.log("   - Cantidad de results:", response.results.length);
-                        console.log("   - Primer result:", response.results[0]);
-                    }
+                    console.log("✅ Respuesta recibida:", response);
                     
                     if (response.results && response.results.length > 0) {
-                        console.log("✅ Especialidades obtenidas:", response.results);
-                        actualizarOpcionesEspecialidad(response.results);
+                        console.log("✅ Especialidades obtenidas:", response.results.length);
+                        actualizarOpcionesEspecialidadAutocomplete(response.results);
                     } else {
-                        console.log("⚠️ No hay especialidades disponibles para este curso lectivo e institución");
-                        limpiarEspecialidades();
+                        console.log("⚠️ No hay especialidades disponibles");
                     }
                 },
                 error: function(xhr, status, error) {
-                    console.error("❌ ERROR AJAX:");
-                    console.error("   - Status:", status);
-                    console.error("   - Error:", error);
-                    console.error("   - Response status:", xhr.status);
-                    console.error("   - Response text:", xhr.responseText);
-                    limpiarEspecialidades();
+                    console.error("❌ Error AJAX:", status, error);
                 }
             });
         }
         
-        function actualizarOpcionesEspecialidad(especialidades) {
-            console.log("🔄 Actualizando opciones de especialidad...");
+        function actualizarOpcionesEspecialidadAutocomplete(especialidades) {
+            console.log("🔄 Actualizando opciones de especialidad (AUTOCOMPLETE)...");
             
             $('select[name*="especialidad_curso"]').each(function() {
                 if ($(this).attr('name').includes('__prefix__')) return;
@@ -116,9 +133,8 @@
                 var valorActual = $select.val();
                 
                 console.log("🎯 Procesando select especialidad_curso:", $select.attr('name'));
-                console.log("   - Valor actual:", valorActual);
                 
-                // Para autocomplete fields, necesitamos destruir y recrear Select2
+                // Destruir Select2 si existe
                 if ($select.hasClass('select2-hidden-accessible')) {
                     try {
                         $select.select2('destroy');
@@ -150,11 +166,11 @@
                     $select.append($option);
                 });
                 
-                // Reinicializar Select2 para autocomplete
+                // Reinicializar Select2
                 if (typeof $select.select2 === 'function') {
                     try {
                         $select.select2();
-                        console.log("✅ Select2 reinicializado para especialidad_curso");
+                        console.log("✅ Select2 reinicializado");
                     } catch (e) {
                         console.log("⚠️ Error inicializando Select2:", e);
                     }
@@ -164,47 +180,10 @@
             });
         }
         
-        function limpiarEspecialidades() {
-            console.log("🧹 Limpiando especialidades...");
-            
-            $('select[name*="especialidad_curso"]').each(function() {
-                if ($(this).attr('name').includes('__prefix__')) return;
-                
-                var $select = $(this);
-                var valorActual = $select.val();
-                
-                // Solo limpiar si no estamos en modo edición (evita perder valor existente)
-                if (!valorActual) {
-                    // Destruir Select2 si existe
-                    if ($select.hasClass('select2-hidden-accessible')) {
-                        try {
-                            $select.select2('destroy');
-                        } catch (e) {
-                            console.log("⚠️ Error destruyendo Select2:", e);
-                        }
-                    }
-                    
-                    // Limpiar opciones
-                    $select.empty();
-                    $select.append('<option value="">---------</option>');
-                    $select.append('<option value="" disabled>Seleccione un curso lectivo primero</option>');
-                    
-                    // Reinicializar Select2
-                    if (typeof $select.select2 === 'function') {
-                        try {
-                            $select.select2();
-                        } catch (e) {
-                            console.log("⚠️ Error inicializando Select2:", e);
-                        }
-                    }
-                }
-            });
-        }
-        
         // ──────────────── CONFIGURAR EVENTOS CURSO LECTIVO ────────────────
         function configurarEventosCursoLectivo() {
             console.log("🎯 Configurando eventos curso lectivo...");
-            var $cursoLectivo = $('select[name*="curso_lectivo"]');
+            var $cursoLectivo = $('select[name*="curso_lectivo"]').not('[name*="__prefix__"]').first();
             
             if ($cursoLectivo.length === 0) {
                 console.log("❌ Campo curso_lectivo no encontrado");
@@ -218,19 +197,12 @@
             }
             
             console.log("✅ Campo curso_lectivo encontrado:", $cursoLectivo.attr('name'));
-            console.log("   - Tiene Select2:", $cursoLectivo.hasClass('select2-hidden-accessible'));
             
             // Configurar evento change
             $(document).off('change', 'select[name*="curso_lectivo"]');
             $(document).on('change', 'select[name*="curso_lectivo"]', function() {
+                if ($(this).attr('name').includes('__prefix__')) return;
                 console.log('📚 Change event curso_lectivo:', this.value);
-                actualizarEspecialidadesDisponibles();
-            });
-            
-            // TAMBIÉN configurar evento para cambios en institución (superusuarios)
-            $(document).off('change', 'select[name*="institucion"]');
-            $(document).on('change', 'select[name*="institucion"]', function() {
-                console.log('🏫 Change event institucion:', this.value);
                 actualizarEspecialidadesDisponibles();
             });
             
@@ -240,63 +212,198 @@
             console.log("✅ Eventos curso lectivo configurados");
         }
         
-        // ──────────────── INTERCEPTOR DE AUTOCOMPLETE ────────────────
+        // ──────────────── INTERCEPTOR DE AUTOCOMPLETE PARA SUBGRUPO ────────────────
         function configurarInterceptorAutocomplete() {
             console.log("🎯 Configurando interceptor de autocomplete...");
             
-            // Interceptar eventos Select2 para curso lectivo
+            // Interceptar clicks en opciones de subgrupo
+            $(document).on('click', '.select2-results__option', function(e) {
+                var textoOpcion = $(this).text() || '';
+                
+                // Verificar si el dropdown que está abierto es del campo subgrupo
+                var $activeDropdown = $(this).closest('.select2-dropdown');
+                var $activeSelect = null;
+                
+                // Buscar el select que está activo
+                $('.select2-container--open').each(function() {
+                    var selectId = $(this).attr('id');
+                    if (selectId) {
+                        var originalSelectId = selectId.replace('select2-', '').replace('-container', '');
+                        var $originalSelect = $('#' + originalSelectId);
+                        if ($originalSelect.attr('name') && $originalSelect.attr('name').includes('subgrupo')) {
+                            $activeSelect = $originalSelect;
+                        }
+                    }
+                });
+                
+                // Solo procesar si es realmente una selección de subgrupo
+                if ($activeSelect && $activeSelect.attr('name').includes('subgrupo')) {
+                    console.log("🖱️ CLICK EN SUBGRUPO:", textoOpcion);
+                    
+                    setTimeout(function() {
+                        if (esNivelEspecialidad(textoOpcion)) {
+                            mostrarEspecialidad();
+                            actualizarEspecialidadesDisponibles();
+                        } else {
+                            ocultarEspecialidad();
+                        }
+                    }, 200);
+                }
+            });
+            
+            // Interceptar eventos Select2 específicos para subgrupo
             $(document).on('select2:select', function(e) {
                 var $target = $(e.target);
                 
-                // Solo procesar si es el campo curso_lectivo
-                if ($target.attr('name') && $target.attr('name').includes('curso_lectivo')) {
+                // Solo procesar si es el campo subgrupo
+                if ($target.attr('name') && $target.attr('name').includes('subgrupo')) {
                     var data = e.params.data;
                     if (data && data.text) {
-                        console.log("📡 SELECT2:SELECT CURSO_LECTIVO detectado:", data.text);
+                        console.log("📡 SELECT2:SELECT SUBGRUPO detectado:", data.text);
                         
                         setTimeout(function() {
-                            actualizarEspecialidadesDisponibles();
+                            if (esNivelEspecialidad(data.text)) {
+                                mostrarEspecialidad();
+                                actualizarEspecialidadesDisponibles();
+                            } else {
+                                ocultarEspecialidad();
+                            }
                         }, 200);
                     }
                 }
             });
             
+            // Interceptar eventos en campos de entrada del autocomplete (subgrupo)
+            $('input[name*="subgrupo"]').off('input change blur.dependEspecialidad').on('input change blur.dependEspecialidad', function() {
+                var valor = $(this).val();
+                console.log("⌨️ INPUT SUBGRUPO:", valor);
+                
+                setTimeout(function() {
+                    if (esNivelEspecialidad(valor)) {
+                        mostrarEspecialidad();
+                        actualizarEspecialidadesDisponibles();
+                    } else {
+                        ocultarEspecialidad();
+                    }
+                }, 200);
+            });
+            
             // Configurar eventos para curso lectivo
             configurarEventosCursoLectivo();
             
-            console.log("✅ Interceptor de autocomplete configurado");
+            // Vigilar cambios en el DOM para nuevos elementos
+            var observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.addedNodes.length > 0) {
+                        mutation.addedNodes.forEach(function(node) {
+                            if (node.nodeType === 1) {
+                                // Si se añaden nuevos elementos autocomplete de subgrupo
+                                var $newInputs = $(node).find('input[name*="subgrupo"]');
+                                if ($newInputs.length > 0) {
+                                    console.log("👁️ Nuevos campos de subgrupo detectados");
+                                    $newInputs.off('input change blur.dependEspecialidad').on('input change blur.dependEspecialidad', function() {
+                                        var valor = $(this).val();
+                                        console.log("⌨️ NUEVO INPUT SUBGRUPO:", valor);
+                                        
+                                        setTimeout(function() {
+                                            if (esNivelEspecialidad(valor)) {
+                                                mostrarEspecialidad();
+                                                actualizarEspecialidadesDisponibles();
+                                            } else {
+                                                ocultarEspecialidad();
+                                            }
+                                        }, 200);
+                                    });
+                                }
+                                
+                                // Si se añaden nuevos campos de curso lectivo, reconfigurar eventos
+                                var $newCursoLectivo = $(node).find('select[name*="curso_lectivo"]');
+                                if ($newCursoLectivo.length > 0) {
+                                    console.log("👁️ Nuevos campos de curso lectivo detectados - reconfigurando...");
+                                    setTimeout(configurarEventosCursoLectivo, 100);
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+            
+            observer.observe(document.body, { childList: true, subtree: true });
+            console.log("👁️ Observer configurado para nuevos elementos");
         }
         
         // ──────────────── INICIALIZACIÓN ────────────────
         function inicializar() {
-            console.log("🚀 Inicializando filtro de especialidades...");
+            console.log("🚀 Inicializando especialidad dependiente - SubgrupoCursoLectivo...");
+            inicializando = true;
+            
+            // Ocultar por defecto
+            ocultarEspecialidad();
+            
+            // Configurar eventos curso lectivo
+            configurarEventosCursoLectivo();
             
             // Configurar interceptores
             configurarInterceptorAutocomplete();
             
-            // SIEMPRE ejecutar la actualización al inicializar para evaluar estado actual
-            console.log("🔍 Evaluando estado inicial...");
-            actualizarEspecialidadesDisponibles();
+            // Verificar estado inicial cuando el widget es input (select2)
+            $('input[name*="subgrupo"]').each(function() {
+                if ($(this).attr('name') && !$(this).attr('name').includes('__prefix__')) {
+                    var valor = $(this).val();
+                    if (valor && esNivelEspecialidad(valor)) {
+                        console.log("🏁 Inicial (input) subgrupo:", valor);
+                        mostrarEspecialidad();
+                        actualizarEspecialidadesDisponibles();
+                    }
+                }
+            });
+
+            // Verificar estado inicial cuando el widget es select (autocomplete clásico)
+            $('select[name*="subgrupo"]').each(function() {
+                if ($(this).attr('name') && !$(this).attr('name').includes('__prefix__')) {
+                    var texto = $(this).find('option:selected').text() || '';
+                    // Si no hay option (select2), intentar leer del contenedor select2
+                    if (!texto) {
+                        var $cont = $(this).siblings('.select2-container');
+                        var selectedText = $cont.find('.select2-selection__rendered').attr('title') || $cont.find('.select2-selection__rendered').text();
+                        texto = selectedText || '';
+                    }
+                    if (texto && esNivelEspecialidad(texto)) {
+                        console.log("🏁 Inicial (select) subgrupo:", texto);
+                        mostrarEspecialidad();
+                        actualizarEspecialidadesDisponibles();
+                    } else {
+                        ocultarEspecialidad();
+                    }
+                }
+            });
             
-            console.log("✅ Filtro de especialidades inicializado");
+            console.log("✅ Configuración completada");
+            inicializando = false;
         }
         
-        // ──────────────── MÚLTIPLES PUNTOS DE ENTRADA ────────────────
-        // Inicializar cuando el DOM esté listo
-        inicializar();
+        // Múltiples puntos de entrada para asegurar inicialización (como en Matrículas)
+        setTimeout(inicializar, 500);
+        setTimeout(inicializar, 1500);
+        setTimeout(inicializar, 3000);
         
-        // También inicializar cuando Django Admin termine de cargar
-        $(document).on('DOMContentLoaded', inicializar);
+        // También configurar eventos curso lectivo múltiples veces
+        setTimeout(function() { configurarEventosCursoLectivo(); }, 1000);
+        setTimeout(function() { configurarEventosCursoLectivo(); }, 2000);
         
-        // Inicializar en cada cambio de página (para navegación AJAX)
-        $(document).on('shown.bs.tab', inicializar);
-        $(document).on('shown.bs.modal', inicializar);
+        $(document).on('select2:ready', function() {
+            console.log("📡 Select2 ready - reinicializando");
+            setTimeout(inicializar, 100);
+        });
         
-        // Inicializar después de un tiempo (fallback)
-        setTimeout(inicializar, 1000);
-        setTimeout(inicializar, 2000);
+        // También cuando el DOM esté completamente listo
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', inicializar);
+        } else {
+            inicializar();
+        }
         
-        console.log("✅ Múltiples puntos de entrada configurados");
+        console.log("🎪 INTERCEPTOR DE AUTOCOMPLETE CONFIGURADO - SubgrupoCursoLectivo");
     });
-})(window.django && window.django.jQuery ? window.django.jQuery : window.jQuery);
-
+    
+})(typeof django !== 'undefined' && django.jQuery ? django.jQuery : (typeof $ !== 'undefined' ? $ : null));
