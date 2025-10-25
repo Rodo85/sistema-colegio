@@ -114,7 +114,7 @@
                     )
                     .fadeIn();
             } else {
-                // Existe en otra institución
+                // Existe en otra institución - mostrar info pero botón verificará si puede agregarlo
                 var html = 
                     '<div style="background-color: #d1ecf1; border: 1px solid #bee5eb; padding: 15px; border-radius: 5px;">' +
                     '<strong style="color: #0c5460;">ℹ Estudiante encontrado en el sistema</strong><br>' +
@@ -122,7 +122,7 @@
                     '<strong>Fecha de nacimiento:</strong> ' + estudiante.fecha_nacimiento + '<br>' +
                     '<strong>Institución actual:</strong> ' + institucion.nombre + '<br><br>' +
                     '<button type="button" id="btn-copiar-datos" class="button" style="background: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">' +
-                    '✓ Copiar datos y agregar a mi institución' +
+                    '✓ Agregar a mi institución' +
                     '</button>' +
                     '</div>';
                 
@@ -181,8 +181,14 @@
                         // Redirigir al listado de estudiantes
                         window.location.href = '/admin/matricula/estudiante/';
                     } else {
-                        alert('Error: ' + response.error);
-                        botonCopiar.prop('disabled', false).html('✓ Copiar datos y agregar a mi institución');
+                        // Manejar errores específicos
+                        if (response.requiere_baja) {
+                            // El estudiante está activo en otra institución
+                            alert('❌ NO SE PUEDE AGREGAR EL ESTUDIANTE\n\n' + response.error + '\n\nPara realizar el traslado:\n1. La institución "' + response.institucion_actual + '" debe dar de baja al estudiante primero\n2. Una vez dado de baja, usted podrá agregarlo a su institución');
+                        } else {
+                            alert('Error: ' + response.error);
+                        }
+                        botonCopiar.prop('disabled', false).html('✓ Agregar a mi institución');
                     }
                 },
                 error: function(xhr, status, error) {

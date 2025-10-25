@@ -708,6 +708,83 @@ class EstudianteAdmin(InstitucionScopedAdmin):
                         usuario_registro=request.user
                     )
     
+    def has_change_permission(self, request, obj=None):
+        """Deshabilitar edición de estudiantes dados de baja"""
+        # Verificar permiso base primero
+        if not super().has_change_permission(request, obj):
+            return False
+        
+        # Si no hay objeto específico, permitir (para el listado)
+        if obj is None:
+            return True
+        
+        # Superusuario siempre puede editar
+        if request.user.is_superuser:
+            return True
+        
+        # Verificar si el estudiante está dado de baja en la institución del usuario
+        institucion_id = getattr(request, 'institucion_activa_id', None)
+        if institucion_id:
+            relacion = EstudianteInstitucion.objects.filter(
+                estudiante=obj,
+                institucion_id=institucion_id
+            ).first()
+            
+            if relacion and relacion.estado != 'activo':
+                # Estudiante dado de baja, no permitir edición
+                return False
+        
+        return True
+    
+    def has_delete_permission(self, request, obj=None):
+        """Deshabilitar eliminación de estudiantes dados de baja"""
+        # Verificar permiso base primero
+        if not super().has_delete_permission(request, obj):
+            return False
+        
+        # Si no hay objeto específico, permitir (para el listado)
+        if obj is None:
+            return True
+        
+        # Superusuario siempre puede eliminar
+        if request.user.is_superuser:
+            return True
+        
+        # Verificar si el estudiante está dado de baja en la institución del usuario
+        institucion_id = getattr(request, 'institucion_activa_id', None)
+        if institucion_id:
+            relacion = EstudianteInstitucion.objects.filter(
+                estudiante=obj,
+                institucion_id=institucion_id
+            ).first()
+            
+            if relacion and relacion.estado != 'activo':
+                # Estudiante dado de baja, no permitir eliminación
+                return False
+        
+        return True
+    
+    def changeform_view(self, request, object_id=None, form_url='', extra_context=None):
+        """Agregar mensaje de advertencia si el estudiante está dado de baja"""
+        if object_id:
+            obj = self.get_object(request, object_id)
+            if obj and not request.user.is_superuser:
+                institucion_id = getattr(request, 'institucion_activa_id', None)
+                if institucion_id:
+                    relacion = EstudianteInstitucion.objects.filter(
+                        estudiante=obj,
+                        institucion_id=institucion_id
+                    ).first()
+                    
+                    if relacion and relacion.estado != 'activo':
+                        messages.warning(
+                            request,
+                            f'Este estudiante está dado de baja (Estado: {relacion.get_estado_display()}). '
+                            f'Solo puede consultar su información, no puede modificarla.'
+                        )
+        
+        return super().changeform_view(request, object_id, form_url, extra_context)
+    
     class Media:
         js = (
             'admin/js/jquery.init.js',
@@ -1025,6 +1102,31 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
         
         # DAL maneja el filtrado de especialidad, seccion y subgrupo automáticamente
         return field
+    
+    def save_model(self, request, obj, form, change):
+        """Validar que el estudiante no esté dado de baja antes de crear/modificar matrícula"""
+        # Verificar si el estudiante está dado de baja
+        if not request.user.is_superuser:
+            institucion_id = getattr(request, 'institucion_activa_id', None)
+            if institucion_id and obj.estudiante:
+                relacion = EstudianteInstitucion.objects.filter(
+                    estudiante=obj.estudiante,
+                    institucion_id=institucion_id
+                ).first()
+                
+                if relacion and relacion.estado != 'activo':
+                    raise ValidationError(
+                        f'No se puede crear o modificar una matrícula para un estudiante dado de baja. '
+                        f'Estado actual: {relacion.get_estado_display()}. '
+                        f'El estudiante debe estar activo en la institución.'
+                    )
+                elif not relacion:
+                    raise ValidationError(
+                        f'El estudiante no tiene una relación activa con su institución. '
+                        f'No se puede crear una matrícula.'
+                    )
+        
+        super().save_model(request, obj, form, change)
 
     def get_search_results(self, request, queryset, search_term):
         """Limitar resultados de búsqueda para evitar sobrecargar los selects"""
@@ -1078,6 +1180,7 @@ class EstudianteInstitucionAdmin(admin.ModelAdmin):
     search_fields = ('estudiante__identificacion', 'estudiante__primer_apellido', 'estudiante__nombres', 'institucion__nombre')
     readonly_fields = ('fecha_registro', 'usuario_registro')
     ordering = ('-fecha_ingreso',)
+    actions = ['dar_baja_trasladado', 'dar_baja_retirado', 'dar_baja_graduado']
     
     fieldsets = (
         ('Información Básica', {
@@ -1121,6 +1224,52 @@ class EstudianteInstitucionAdmin(admin.ModelAdmin):
                 kwargs["queryset"] = Institucion.objects.filter(id=institucion_id)
                 kwargs["initial"] = institucion_id
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
+    
+    @admin.action(description='Dar de baja por traslado')
+    def dar_baja_trasladado(self, request, queryset):
+        """Marca estudiantes como trasladados"""
+        from django.utils import timezone
+        # Solo actualizar los que están activos
+        activos = queryset.filter(estado='activo')
+        count = activos.update(
+            estado='trasladado',
+            fecha_salida=timezone.now().date()
+        )
+        self.message_user(
+            request,
+            f'{count} estudiante(s) marcado(s) como trasladado(s). Ahora pueden ser agregados a otra institución.',
+            messages.SUCCESS
+        )
+    
+    @admin.action(description='Dar de baja por retiro')
+    def dar_baja_retirado(self, request, queryset):
+        """Marca estudiantes como retirados"""
+        from django.utils import timezone
+        activos = queryset.filter(estado='activo')
+        count = activos.update(
+            estado='retirado',
+            fecha_salida=timezone.now().date()
+        )
+        self.message_user(
+            request,
+            f'{count} estudiante(s) marcado(s) como retirado(s).',
+            messages.SUCCESS
+        )
+    
+    @admin.action(description='Dar de baja por graduación')
+    def dar_baja_graduado(self, request, queryset):
+        """Marca estudiantes como graduados"""
+        from django.utils import timezone
+        activos = queryset.filter(estado='activo')
+        count = activos.update(
+            estado='graduado',
+            fecha_salida=timezone.now().date()
+        )
+        self.message_user(
+            request,
+            f'{count} estudiante(s) marcado(s) como graduado(s).',
+            messages.SUCCESS
+        )
 
 
 @admin.register(AsignacionGrupos)

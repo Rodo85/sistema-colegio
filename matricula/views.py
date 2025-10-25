@@ -1015,6 +1015,20 @@ def agregar_estudiante_a_institucion(request):
         if not institucion:
             return JsonResponse({'success': False, 'error': 'Institución no encontrada'}, status=404)
         
+        # Verificar si el estudiante está activo en otra institución
+        relacion_activa_otra = EstudianteInstitucion.objects.filter(
+            estudiante=estudiante,
+            estado='activo'
+        ).exclude(institucion=institucion).first()
+        
+        if relacion_activa_otra:
+            return JsonResponse({
+                'success': False,
+                'error': f'El estudiante está activo en {relacion_activa_otra.institucion.nombre}. Esa institución debe darle de baja primero antes de poder agregarlo a su institución.',
+                'requiere_baja': True,
+                'institucion_actual': relacion_activa_otra.institucion.nombre
+            })
+        
         # Verificar si ya existe la relación con esta institución
         relacion_existente = EstudianteInstitucion.objects.filter(
             estudiante=estudiante,
@@ -1024,15 +1038,6 @@ def agregar_estudiante_a_institucion(request):
         if relacion_existente:
             # Si existe pero está inactiva, reactivarla
             if relacion_existente.estado != 'activo':
-                # Primero, marcar como trasladado cualquier otra relación activa
-                EstudianteInstitucion.objects.filter(
-                    estudiante=estudiante,
-                    estado='activo'
-                ).exclude(id=relacion_existente.id).update(
-                    estado='trasladado',
-                    fecha_salida=timezone.now().date()
-                )
-                
                 # Reactivar esta relación
                 relacion_existente.estado = 'activo'
                 relacion_existente.fecha_ingreso = timezone.now().date()
@@ -1050,23 +1055,14 @@ def agregar_estudiante_a_institucion(request):
                     'error': 'El estudiante ya está activo en esta institución'
                 })
         
-        # Marcar como trasladado cualquier relación activa previa
-        EstudianteInstitucion.objects.filter(
-            estudiante=estudiante,
-            estado='activo'
-        ).update(
-            estado='trasladado',
-            fecha_salida=timezone.now().date()
-        )
-        
-        # Crear la nueva relación activa
+        # Crear la nueva relación activa (el estudiante no está activo en ninguna institución)
         EstudianteInstitucion.objects.create(
             estudiante=estudiante,
             institucion=institucion,
             estado='activo',
             fecha_ingreso=timezone.now().date(),
             usuario_registro=request.user,
-            observaciones='Trasladado desde búsqueda inteligente'
+            observaciones='Agregado desde búsqueda inteligente'
         )
         
         return JsonResponse({
