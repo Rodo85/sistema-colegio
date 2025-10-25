@@ -1051,7 +1051,7 @@ def agregar_estudiante_a_institucion(request):
             estado='activo',
             fecha_ingreso=fecha_actual,
             usuario_registro=request.user,
-            observaciones=f'Ingreso a la institución el {fecha_actual.strftime("%d/%m/%Y")} - Agregado por {request.user.get_full_name() or request.user.username}'
+            observaciones=f'Ingreso a la institución el {fecha_actual.strftime("%d/%m/%Y")} - Agregado por {request.user.username}'
         )
         
         return JsonResponse({
