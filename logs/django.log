@@ -27334,3 +27334,90 @@ INFO 2025-10-24 20:48:33,192 autoreload 30564 29988 D:\Proyecto Colegio\sistema_
 INFO 2025-10-24 20:48:34,221 autoreload 28996 30444 Watching for file changes with StatReloader
 INFO 2025-10-24 20:48:39,597 autoreload 28996 30444 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
 INFO 2025-10-24 20:48:40,605 autoreload 26672 19044 Watching for file changes with StatReloader
+INFO 2025-10-24 20:48:56,325 basehttp 26672 28796 "GET /admin/ HTTP/1.1" 200 35344
+INFO 2025-10-24 20:49:49,307 basehttp 26672 28796 "GET /admin/ HTTP/1.1" 200 35344
+INFO 2025-10-24 20:49:50,447 autoreload 26672 19044 D:\Proyecto Colegio\sistema_colegio\matricula\views.py changed, reloading.
+INFO 2025-10-24 20:49:51,397 autoreload 1392 24124 Watching for file changes with StatReloader
+INFO 2025-10-24 20:49:53,500 basehttp 1392 27880 "GET /admin/ HTTP/1.1" 200 35344
+INFO 2025-10-24 20:49:55,923 basehttp 1392 27880 "GET /admin/ HTTP/1.1" 200 35344
+INFO 2025-10-24 20:49:55,952 basehttp 1392 27020 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-10-24 20:49:55,955 basehttp 1392 27880 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-10-24 20:49:55,957 basehttp 1392 28812 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-10-24 20:49:55,960 basehttp 1392 24104 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-10-24 20:49:55,962 basehttp 1392 27020 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-10-24 20:49:55,963 basehttp 1392 27332 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-10-24 20:49:55,964 basehttp 1392 28812 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-10-24 20:49:55,976 basehttp 1392 25720 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-10-24 20:49:56,072 basehttp 1392 28812 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-10-24 20:49:56,080 basehttp 1392 25720 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-10-24 20:49:56,283 basehttp 1392 25720 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-10-24 20:49:58,324 basehttp 1392 25720 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 68080
+INFO 2025-10-24 20:49:58,354 basehttp 1392 28812 "GET /static/matricula/js/toggle-plan-nacional.js HTTP/1.1" 304 0
+INFO 2025-10-24 20:49:58,413 basehttp 1392 25720 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 20:50:00,312 basehttp 1392 25720 "GET /admin/matricula/estudiante/add/ HTTP/1.1" 200 185029
+INFO 2025-10-24 20:50:00,345 basehttp 1392 28812 "GET /static/matricula/js/buscar-estudiante-existente.js HTTP/1.1" 304 0
+INFO 2025-10-24 20:50:00,416 basehttp 1392 25720 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 20:50:00,958 views 1392 25720 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:50:00,959 basehttp 1392 25720 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:50:01,075 views 1392 25720 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:50:01,075 basehttp 1392 25720 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:50:01,651 views 1392 25720 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:50:01,652 basehttp 1392 25720 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:50:02,110 views 1392 25720 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:50:02,111 basehttp 1392 25720 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:50:02,797 views 1392 25720 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:50:02,797 basehttp 1392 25720 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:50:03,101 views 1392 25720 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:50:03,102 basehttp 1392 25720 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:50:04,124 views 1392 25720 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:50:04,125 basehttp 1392 25720 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:50:05,555 basehttp 1392 25720 "GET /matricula/api/buscar-estudiante/?identificacion=112280841 HTTP/1.1" 200 668
+ERROR 2025-10-24 20:50:07,739 views 1392 25720 Error al agregar estudiante a institución: 'User' object has no attribute 'username'
+ERROR 2025-10-24 20:50:07,740 log 1392 25720 Internal Server Error: /matricula/api/agregar-estudiante-institucion/
+ERROR 2025-10-24 20:50:07,741 basehttp 1392 25720 "POST /matricula/api/agregar-estudiante-institucion/ HTTP/1.1" 500 72
+INFO 2025-10-24 20:50:18,959 basehttp 1392 25720 "POST /admin/logout/ HTTP/1.1" 200 2182
+INFO 2025-10-24 20:50:20,080 basehttp 1392 25720 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-10-24 20:50:20,089 basehttp 1392 25720 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4955
+WARNING 2025-10-24 20:50:20,146 log 1392 25720 Not Found: /favicon.ico
+WARNING 2025-10-24 20:50:20,147 basehttp 1392 25720 "GET /favicon.ico HTTP/1.1" 404 3331
+INFO 2025-10-24 20:50:21,959 signals 1392 25720 Signal user_logged_in ejecutándose para usuario: rodolfo.garro.monge@mep.go.cr
+INFO 2025-10-24 20:50:21,963 signals 1392 25720 Usuario rodolfo.garro.monge@mep.go.cr tiene múltiples instituciones - debe seleccionar
+INFO 2025-10-24 20:50:21,966 basehttp 1392 25720 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-10-24 20:50:22,033 middleware 1392 25720 Redirigiendo a selección de institución
+INFO 2025-10-24 20:50:22,033 basehttp 1392 25720 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-10-24 20:50:22,125 basehttp 1392 25720 "GET /seleccionar-institucion/ HTTP/1.1" 200 16844
+INFO 2025-10-24 20:50:23,717 basehttp 1392 25720 "POST /seleccionar-institucion/ HTTP/1.1" 302 0
+INFO 2025-10-24 20:50:23,810 basehttp 1392 25720 "GET /admin/ HTTP/1.1" 200 35344
+INFO 2025-10-24 20:50:26,960 basehttp 1392 25720 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 42638
+INFO 2025-10-24 20:50:27,075 basehttp 1392 25720 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 20:50:28,883 basehttp 1392 25720 "GET /admin/matricula/estudiante/add/ HTTP/1.1" 200 185029
+INFO 2025-10-24 20:50:28,977 basehttp 1392 25720 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 20:50:29,496 views 1392 25720 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:50:29,497 basehttp 1392 25720 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:50:29,629 views 1392 25720 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:50:29,630 basehttp 1392 25720 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:50:30,193 views 1392 25720 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:50:30,193 basehttp 1392 25720 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:50:30,624 views 1392 25720 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:50:30,624 basehttp 1392 25720 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:50:31,233 views 1392 25720 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:50:31,234 basehttp 1392 25720 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:50:31,633 views 1392 25720 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:50:31,633 basehttp 1392 25720 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:50:32,667 views 1392 25720 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:50:32,668 basehttp 1392 25720 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:50:35,582 basehttp 1392 25720 "GET /matricula/api/buscar-estudiante/?identificacion=112280841 HTTP/1.1" 200 668
+ERROR 2025-10-24 20:50:37,026 views 1392 25720 Error al agregar estudiante a institución: 'User' object has no attribute 'username'
+ERROR 2025-10-24 20:50:37,026 log 1392 25720 Internal Server Error: /matricula/api/agregar-estudiante-institucion/
+ERROR 2025-10-24 20:50:37,027 basehttp 1392 25720 "POST /matricula/api/agregar-estudiante-institucion/ HTTP/1.1" 500 72
+INFO 2025-10-24 20:51:19,134 autoreload 1392 24124 D:\Proyecto Colegio\sistema_colegio\matricula\views.py changed, reloading.
+INFO 2025-10-24 20:51:20,159 autoreload 29208 29916 Watching for file changes with StatReloader
+INFO 2025-10-24 20:51:25,471 autoreload 29208 29916 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-10-24 20:51:26,442 autoreload 31380 31384 Watching for file changes with StatReloader
+INFO 2025-10-24 20:51:34,001 autoreload 31380 31384 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-10-24 20:51:34,833 autoreload 30988 30904 Watching for file changes with StatReloader
+INFO 2025-10-24 20:51:39,232 autoreload 30988 30904 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-10-24 20:51:40,233 autoreload 31296 31312 Watching for file changes with StatReloader
+INFO 2025-10-24 20:51:41,186 basehttp 31296 6052 "GET /admin/ HTTP/1.1" 200 35344
+INFO 2025-10-24 20:51:45,705 autoreload 31296 31312 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-10-24 20:51:46,707 autoreload 31480 31544 Watching for file changes with StatReloader

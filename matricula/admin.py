@@ -710,7 +710,7 @@ class EstudianteAdmin(InstitucionScopedAdmin):
                         estado='activo',
                         fecha_ingreso=fecha_actual,
                         usuario_registro=request.user,
-                        observaciones=f'Estudiante creado el {fecha_actual.strftime("%d/%m/%Y")} por {request.user.username}'
+                        observaciones=f'Estudiante creado el {fecha_actual.strftime("%d/%m/%Y")} por {request.user.full_name() or request.user.email}'
                     )
     
     def has_change_permission(self, request, obj=None):
@@ -1267,7 +1267,7 @@ class EstudianteInstitucionAdmin(admin.ModelAdmin):
             relacion.estado = 'trasladado'
             relacion.fecha_salida = fecha_actual
             # Agregar observación con usuario y fecha
-            observacion_nueva = f"Dado de baja por TRASLADO el {fecha_actual.strftime('%d/%m/%Y')} por {request.user.username}"
+            observacion_nueva = f"Dado de baja por TRASLADO el {fecha_actual.strftime('%d/%m/%Y')} por {request.user.full_name() or request.user.email}"
             if relacion.observaciones:
                 relacion.observaciones += f"\n{observacion_nueva}"
             else:
@@ -1293,7 +1293,7 @@ class EstudianteInstitucionAdmin(admin.ModelAdmin):
             relacion.estado = 'retirado'
             relacion.fecha_salida = fecha_actual
             # Agregar observación con usuario y fecha
-            observacion_nueva = f"Dado de baja por RETIRO el {fecha_actual.strftime('%d/%m/%Y')} por {request.user.username}"
+            observacion_nueva = f"Dado de baja por RETIRO el {fecha_actual.strftime('%d/%m/%Y')} por {request.user.full_name() or request.user.email}"
             if relacion.observaciones:
                 relacion.observaciones += f"\n{observacion_nueva}"
             else:
@@ -1319,7 +1319,7 @@ class EstudianteInstitucionAdmin(admin.ModelAdmin):
             relacion.estado = 'graduado'
             relacion.fecha_salida = fecha_actual
             # Agregar observación con usuario y fecha
-            observacion_nueva = f"Dado de baja por GRADUACIÓN el {fecha_actual.strftime('%d/%m/%Y')} por {request.user.username}"
+            observacion_nueva = f"Dado de baja por GRADUACIÓN el {fecha_actual.strftime('%d/%m/%Y')} por {request.user.full_name() or request.user.email}"
             if relacion.observaciones:
                 relacion.observaciones += f"\n{observacion_nueva}"
             else:
