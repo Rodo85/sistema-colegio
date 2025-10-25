@@ -1029,40 +1029,29 @@ def agregar_estudiante_a_institucion(request):
                 'institucion_actual': relacion_activa_otra.institucion.nombre
             })
         
-        # Verificar si ya existe la relación con esta institución
-        relacion_existente = EstudianteInstitucion.objects.filter(
+        # Verificar si ya está activo en esta institución
+        relacion_activa_actual = EstudianteInstitucion.objects.filter(
             estudiante=estudiante,
-            institucion=institucion
+            institucion=institucion,
+            estado='activo'
         ).first()
         
-        if relacion_existente:
-            # Si existe pero está inactiva, reactivarla
-            if relacion_existente.estado != 'activo':
-                # Reactivar esta relación
-                relacion_existente.estado = 'activo'
-                relacion_existente.fecha_ingreso = timezone.now().date()
-                relacion_existente.fecha_salida = None
-                relacion_existente.save()
-                
-                return JsonResponse({
-                    'success': True,
-                    'message': 'Estudiante reactivado en la institución',
-                    'estudiante_id': estudiante.id
-                })
-            else:
-                return JsonResponse({
-                    'success': False,
-                    'error': 'El estudiante ya está activo en esta institución'
-                })
+        if relacion_activa_actual:
+            return JsonResponse({
+                'success': False,
+                'error': 'El estudiante ya está activo en esta institución'
+            })
         
-        # Crear la nueva relación activa (el estudiante no está activo en ninguna institución)
+        # SIEMPRE crear un NUEVO registro para mantener el historial completo
+        # No reutilizar registros anteriores aunque existieran
+        fecha_actual = timezone.now().date()
         EstudianteInstitucion.objects.create(
             estudiante=estudiante,
             institucion=institucion,
             estado='activo',
-            fecha_ingreso=timezone.now().date(),
+            fecha_ingreso=fecha_actual,
             usuario_registro=request.user,
-            observaciones='Agregado desde búsqueda inteligente'
+            observaciones=f'Ingreso a la institución el {fecha_actual.strftime("%d/%m/%Y")} - Agregado por {request.user.get_full_name() or request.user.username}'
         )
         
         return JsonResponse({

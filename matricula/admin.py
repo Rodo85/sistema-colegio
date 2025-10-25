@@ -694,18 +694,23 @@ class EstudianteAdmin(InstitucionScopedAdmin):
         # Si es creación (no edición) y usuario NO es superusuario
         # Crear automáticamente la relación EstudianteInstitucion
         if not change and not request.user.is_superuser:
+            from django.utils import timezone
             institucion_id = getattr(request, 'institucion_activa_id', None)
             if institucion_id:
-                # Verificar que no existe ya la relación
+                # Verificar que no existe ya una relación activa
                 if not EstudianteInstitucion.objects.filter(
                     estudiante=obj,
-                    institucion_id=institucion_id
+                    institucion_id=institucion_id,
+                    estado='activo'
                 ).exists():
+                    fecha_actual = timezone.now().date()
                     EstudianteInstitucion.objects.create(
                         estudiante=obj,
                         institucion_id=institucion_id,
                         estado='activo',
-                        usuario_registro=request.user
+                        fecha_ingreso=fecha_actual,
+                        usuario_registro=request.user,
+                        observaciones=f'Estudiante creado el {fecha_actual.strftime("%d/%m/%Y")} por {request.user.get_full_name() or request.user.username}'
                     )
     
     def has_change_permission(self, request, obj=None):
@@ -1175,12 +1180,29 @@ class PlantillaImpresionMatriculaAdmin(admin.ModelAdmin):
 @admin.register(EstudianteInstitucion)
 class EstudianteInstitucionAdmin(admin.ModelAdmin):
     """Admin para gestionar el historial institucional de estudiantes"""
-    list_display = ('estudiante', 'institucion', 'estado', 'fecha_ingreso', 'fecha_salida')
-    list_filter = ('estado', 'institucion', 'fecha_ingreso')
+    list_display = ('estudiante', 'institucion', 'estado_display', 'fecha_ingreso', 'fecha_salida', 'usuario_registro')
+    list_filter = ('estado', 'institucion', 'fecha_ingreso', 'fecha_salida')
     search_fields = ('estudiante__identificacion', 'estudiante__primer_apellido', 'estudiante__nombres', 'institucion__nombre')
     readonly_fields = ('fecha_registro', 'usuario_registro')
-    ordering = ('-fecha_ingreso',)
+    ordering = ('-fecha_ingreso', '-fecha_registro')
     actions = ['dar_baja_trasladado', 'dar_baja_retirado', 'dar_baja_graduado']
+    
+    def estado_display(self, obj):
+        """Mostrar estado con colores"""
+        colores = {
+            'activo': 'green',
+            'trasladado': 'blue',
+            'retirado': 'orange',
+            'graduado': 'purple'
+        }
+        color = colores.get(obj.estado, 'gray')
+        return format_html(
+            '<span style="color: {}; font-weight: bold;">● {}</span>',
+            color,
+            obj.get_estado_display()
+        )
+    estado_display.short_description = 'Estado'
+    estado_display.admin_order_field = 'estado'
     
     fieldsets = (
         ('Información Básica', {
@@ -1191,13 +1213,20 @@ class EstudianteInstitucionAdmin(admin.ModelAdmin):
         }),
         ('Observaciones', {
             'fields': ('observaciones',),
-            'classes': ('collapse',)
+            'description': 'Historial de cambios y observaciones de esta relación institucional.'
         }),
         ('Auditoría', {
             'fields': ('fecha_registro', 'usuario_registro'),
             'classes': ('collapse',)
         }),
     )
+    
+    def changelist_view(self, request, extra_context=None):
+        """Agregar contexto adicional a la vista de listado"""
+        extra_context = extra_context or {}
+        extra_context['title'] = 'Historial Institucional de Estudiantes'
+        extra_context['subtitle'] = 'Registro completo de ingresos, salidas y traslados'
+        return super().changelist_view(request, extra_context)
     
     def get_queryset(self, request):
         qs = super().get_queryset(request)
