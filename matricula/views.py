@@ -3,6 +3,7 @@ from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.decorators import login_required, permission_required
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.encoding import smart_str
+from django.utils import timezone
 from config_institucional.models import Nivel
 from catalogos.models import CursoLectivo, Seccion, Subgrupo, Especialidad
 from core.models import Institucion
