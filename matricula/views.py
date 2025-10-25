@@ -87,11 +87,23 @@ def consulta_estudiante(request):
                         })
                     institucion = Institucion.objects.get(pk=institucion_id)
                 
-                # Buscar estudiante por identificación e institución
-                estudiante = Estudiante.objects.get(
-                    identificacion=identificacion,
-                    institucion=institucion
-                )
+                # Buscar estudiante por identificación
+                estudiante = Estudiante.objects.filter(
+                    identificacion=identificacion
+                ).first()
+                
+                # Verificar que el estudiante tenga relación activa con la institución
+                if estudiante:
+                    tiene_relacion_activa = estudiante.instituciones_historial.filter(
+                        institucion=institucion,
+                        estado='activo'
+                    ).exists()
+                    
+                    if not tiene_relacion_activa:
+                        error = f'El estudiante {identificacion} no pertenece a la institución seleccionada o no está activo en ella.'
+                        estudiante = None
+                else:
+                    error = f'No se encontró ningún estudiante con la identificación {identificacion}.'
                 
                 # Buscar matrícula activa para el curso seleccionado
                 matricula = MatriculaAcademica.objects.filter(
@@ -811,7 +823,7 @@ def exportar_listas_clase_excel(request):
 
     for mat in qs:
         ws.append([
-            smart_str(getattr(mat.estudiante.institucion, 'nombre', '')),
+            smart_str(getattr(mat.institucion, 'nombre', '')),  # Usar mat.institucion en lugar de estudiante.institucion
             smart_str(getattr(mat.nivel, 'nombre', '')),
             smart_str(f"{getattr(getattr(mat, 'nivel', None), 'numero', '')}-{getattr(getattr(mat, 'seccion', None), 'numero', '')}" if getattr(mat, 'seccion_id', None) and getattr(mat, 'nivel_id', None) else ''),
             smart_str(getattr(mat.subgrupo, 'letra', '')),

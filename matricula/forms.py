@@ -93,10 +93,13 @@ class MatriculaAcademicaForm(forms.ModelForm):
             if hasattr(self, 'instance') and self.instance and self.instance.pk:
                 # Para edición
                 if self.instance.estudiante and self.instance.curso_lectivo:
-                    especialidades_disponibles = MatriculaAcademica.get_especialidades_disponibles(
-                        institucion=self.instance.estudiante.institucion,
-                        curso_lectivo=self.instance.curso_lectivo
-                    ).select_related('especialidad')  # Optimizar carga
+                    # Obtener la institución activa del estudiante o la de la matrícula
+                    institucion = self.instance.institucion or self.instance.estudiante.get_institucion_activa()
+                    if institucion:
+                        especialidades_disponibles = MatriculaAcademica.get_especialidades_disponibles(
+                            institucion=institucion,
+                            curso_lectivo=self.instance.curso_lectivo
+                        ).select_related('especialidad')  # Optimizar carga
                     self.fields['especialidad'].queryset = especialidades_disponibles
                     
                     # Si hay una especialidad seleccionada, asegurarse de que esté en el queryset
@@ -125,11 +128,14 @@ class MatriculaAcademicaForm(forms.ModelForm):
                             estudiante = Estudiante.objects.get(id=estudiante_id)
                         
                         if estudiante and curso_lectivo:
-                            especialidades_disponibles = MatriculaAcademica.get_especialidades_disponibles(
-                                institucion=estudiante.institucion,
-                                curso_lectivo=curso_lectivo
-                            ).select_related('especialidad')  # Optimizar carga
-                            self.fields['especialidad'].queryset = especialidades_disponibles
+                            # Obtener la institución activa del estudiante
+                            institucion = estudiante.get_institucion_activa()
+                            if institucion:
+                                especialidades_disponibles = MatriculaAcademica.get_especialidades_disponibles(
+                                    institucion=institucion,
+                                    curso_lectivo=curso_lectivo
+                                ).select_related('especialidad')  # Optimizar carga
+                                self.fields['especialidad'].queryset = especialidades_disponibles
                     except (CursoLectivo.DoesNotExist, ValueError, Estudiante.DoesNotExist):
                         pass
                         
@@ -177,8 +183,14 @@ class MatriculaAcademicaForm(forms.ModelForm):
         # SOLO si se proporcionó una especialidad
         if especialidad and estudiante and curso_lectivo:
             try:
+                # Obtener la institución activa del estudiante
+                institucion = estudiante.get_institucion_activa()
+                if not institucion:
+                    self.add_error('especialidad', 'El estudiante no tiene una institución activa asignada.')
+                    return cleaned_data
+                    
                 especialidades_disponibles = MatriculaAcademica.get_especialidades_disponibles(
-                    institucion=estudiante.institucion,
+                    institucion=institucion,
                     curso_lectivo=curso_lectivo
                 )
                 
