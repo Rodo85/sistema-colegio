@@ -59,6 +59,24 @@ class PersonaContacto(models.Model):
                     raise ValidationError({
                         'identificacion': 'La cédula debe tener exactamente 9 dígitos numéricos.'
                     })
+        
+        # Validar unicidad de identificación por institución
+        if self.institucion_id and self.identificacion:
+            # Buscar personas de contacto con la misma institución e identificación
+            contactos_existentes = PersonaContacto.objects.filter(
+                institucion_id=self.institucion_id,
+                identificacion=self.identificacion.strip().upper()
+            )
+            
+            # Excluir el contacto actual si está editando
+            if self.pk:
+                contactos_existentes = contactos_existentes.exclude(pk=self.pk)
+            
+            if contactos_existentes.exists():
+                contacto_existente = contactos_existentes.first()
+                raise ValidationError({
+                    'identificacion': f'Ya existe una persona de contacto con la identificación {self.identificacion} en esta institución: {contacto_existente.primer_apellido} {contacto_existente.segundo_apellido or ""} {contacto_existente.nombres}.'
+                })
 
     def save(self, *args, **kwargs):
         # Normaliza strings: recorta y a MAYÚSCULA (correo se maneja aparte)
@@ -165,6 +183,28 @@ class Estudiante(models.Model):
             ("print_comprobante_matricula", "Puede imprimir comprobante de matrícula"),
             ("access_asignacion_grupos", "Puede acceder a Asignación de Grupos"),
         ]
+
+    def clean(self):
+        """Validación personalizada para el modelo Estudiante"""
+        super().clean()
+        
+        # Validar unicidad de identificación por institución
+        if self.institucion_id and self.identificacion:
+            # Buscar estudiantes con la misma institución e identificación
+            estudiantes_existentes = Estudiante.objects.filter(
+                institucion_id=self.institucion_id,
+                identificacion=self.identificacion.strip().upper()
+            )
+            
+            # Excluir el estudiante actual si está editando
+            if self.pk:
+                estudiantes_existentes = estudiantes_existentes.exclude(pk=self.pk)
+            
+            if estudiantes_existentes.exists():
+                estudiante_existente = estudiantes_existentes.first()
+                raise ValidationError({
+                    'identificacion': f'Ya existe un estudiante con la identificación {self.identificacion} en esta institución: {estudiante_existente.primer_apellido} {estudiante_existente.segundo_apellido} {estudiante_existente.nombres}.'
+                })
 
     def save(self, *args, **kwargs):
         # Normaliza strings: recorta y MAYÚSCULAS (correo se maneja aparte)

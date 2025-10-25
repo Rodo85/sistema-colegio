@@ -279,6 +279,7 @@ class EstudianteForm(forms.ModelForm):
         tipo_identificacion = cleaned_data.get('tipo_identificacion')
         identificacion = cleaned_data.get('identificacion')
         foto = cleaned_data.get('foto')
+        institucion = cleaned_data.get('institucion')
         
         # Validar identificación para Cédula de identidad
         if tipo_identificacion and identificacion:
@@ -302,6 +303,24 @@ class EstudianteForm(forms.ModelForm):
                 # Si pasa la validación, guardar la versión limpia
                 if len(self.errors) == 0:
                     cleaned_data['identificacion'] = identificacion_limpia
+        
+        # Validar unicidad de identificación por institución
+        if institucion and identificacion:
+            identificacion_normalizada = identificacion.strip().upper()
+            estudiantes_existentes = Estudiante.objects.filter(
+                institucion=institucion,
+                identificacion=identificacion_normalizada
+            )
+            
+            # Excluir el estudiante actual si está editando
+            if self.instance and self.instance.pk:
+                estudiantes_existentes = estudiantes_existentes.exclude(pk=self.instance.pk)
+            
+            if estudiantes_existentes.exists():
+                estudiante_existente = estudiantes_existentes.first()
+                self.add_error('identificacion', 
+                    f'Ya existe un estudiante con la identificación {identificacion_normalizada} en esta institución: '
+                    f'{estudiante_existente.primer_apellido} {estudiante_existente.segundo_apellido} {estudiante_existente.nombres}.')
         
         # Validar foto si se proporciona
         if foto and hasattr(foto, 'size'):
@@ -351,6 +370,7 @@ class PersonaContactoForm(forms.ModelForm):
         cleaned_data = super().clean()
         tipo_identificacion = cleaned_data.get('tipo_identificacion')
         identificacion = cleaned_data.get('identificacion')
+        institucion = cleaned_data.get('institucion')
         
         # Validar identificación para Cédula de identidad
         if tipo_identificacion and identificacion:
@@ -374,6 +394,25 @@ class PersonaContactoForm(forms.ModelForm):
                 # Si pasa la validación, guardar la versión limpia
                 if len(self.errors) == 0:
                     cleaned_data['identificacion'] = identificacion_limpia
+        
+        # Validar unicidad de identificación por institución
+        if institucion and identificacion:
+            identificacion_normalizada = identificacion.strip().upper()
+            contactos_existentes = PersonaContacto.objects.filter(
+                institucion=institucion,
+                identificacion=identificacion_normalizada
+            )
+            
+            # Excluir el contacto actual si está editando
+            if self.instance and self.instance.pk:
+                contactos_existentes = contactos_existentes.exclude(pk=self.instance.pk)
+            
+            if contactos_existentes.exists():
+                contacto_existente = contactos_existentes.first()
+                segundo_apellido = f" {contacto_existente.segundo_apellido}" if contacto_existente.segundo_apellido else ""
+                self.add_error('identificacion', 
+                    f'Ya existe una persona de contacto con la identificación {identificacion_normalizada} en esta institución: '
+                    f'{contacto_existente.primer_apellido}{segundo_apellido} {contacto_existente.nombres}.')
         
         return cleaned_data
 
