@@ -87,20 +87,33 @@ def consulta_estudiante(request):
                         })
                     institucion = Institucion.objects.get(pk=institucion_id)
                 
-                # Buscar estudiante por identificación e institución
-                estudiante = Estudiante.objects.get(
-                    identificacion=identificacion,
-                    institucion=institucion
-                )
+                # Buscar estudiante por identificación
+                try:
+                    estudiante = Estudiante.objects.get(identificacion=identificacion)
+                    
+                    # Verificar que tenga relación activa con la institución
+                    relacion_activa = estudiante.instituciones_estudiante.filter(
+                        institucion=institucion,
+                        estado='activo'
+                    ).exists()
+                    
+                    if not relacion_activa:
+                        error = f'El estudiante {identificacion} no pertenece a la institución seleccionada o no está activo en ella.'
+                        estudiante = None
+                except Estudiante.DoesNotExist:
+                    error = f'No se encontró ningún estudiante con la identificación {identificacion}.'
+                    estudiante = None
                 
-                # Buscar matrícula activa para el curso seleccionado
-                matricula = MatriculaAcademica.objects.filter(
-                    estudiante=estudiante,
-                    curso_lectivo=curso_lectivo,
-                    estado__iexact='activo'
-                ).first()
+                # Buscar matrícula activa para el curso seleccionado solo si estudiante es válido
+                matricula = None
+                if estudiante:
+                    matricula = MatriculaAcademica.objects.filter(
+                        estudiante=estudiante,
+                        curso_lectivo=curso_lectivo,
+                        estado__iexact='activo'
+                    ).first()
                 
-                if matricula:
+                if matricula and estudiante:
                     # Si hay matrícula activa, obtener encargados
                     encargados = estudiante.encargadoestudiante_set.select_related(
                         'persona_contacto', 'parentesco'
@@ -811,7 +824,7 @@ def exportar_listas_clase_excel(request):
 
     for mat in qs:
         ws.append([
-            smart_str(getattr(mat.estudiante.institucion, 'nombre', '')),
+            smart_str(getattr(mat.institucion, 'nombre', '')),  # Usar mat.institucion directamente
             smart_str(getattr(mat.nivel, 'nombre', '')),
             smart_str(f"{getattr(getattr(mat, 'nivel', None), 'numero', '')}-{getattr(getattr(mat, 'seccion', None), 'numero', '')}" if getattr(mat, 'seccion_id', None) and getattr(mat, 'nivel_id', None) else ''),
             smart_str(getattr(mat.subgrupo, 'letra', '')),

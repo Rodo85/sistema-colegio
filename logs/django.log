@@ -26005,3 +26005,15 @@ INFO 2025-10-24 19:36:12,536 autoreload 23864 22660 D:\Proyecto Colegio\sistema_
 INFO 2025-10-24 19:36:13,472 autoreload 19244 10944 Watching for file changes with StatReloader
 INFO 2025-10-24 19:36:35,060 autoreload 19244 10944 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
 INFO 2025-10-24 19:36:35,971 autoreload 27156 13668 Watching for file changes with StatReloader
+INFO 2025-10-24 19:39:18,945 autoreload 27156 13668 D:\Proyecto Colegio\sistema_colegio\matricula\views.py changed, reloading.
+INFO 2025-10-24 19:39:19,903 autoreload 26056 21844 Watching for file changes with StatReloader
+INFO 2025-10-24 19:39:35,048 autoreload 26056 21844 D:\Proyecto Colegio\sistema_colegio\matricula\views.py changed, reloading.
+INFO 2025-10-24 19:39:35,957 autoreload 26688 26132 Watching for file changes with StatReloader
+INFO 2025-10-24 19:39:42,403 autoreload 26688 26132 D:\Proyecto Colegio\sistema_colegio\matricula\views.py changed, reloading.
+INFO 2025-10-24 19:39:43,362 autoreload 24744 8460 Watching for file changes with StatReloader
+INFO 2025-10-24 19:39:57,384 autoreload 24744 8460 D:\Proyecto Colegio\sistema_colegio\matricula\forms.py changed, reloading.
+INFO 2025-10-24 19:39:58,292 autoreload 26856 6228 Watching for file changes with StatReloader
+INFO 2025-10-24 19:40:04,704 autoreload 26856 6228 D:\Proyecto Colegio\sistema_colegio\matricula\forms.py changed, reloading.
+INFO 2025-10-24 19:40:05,603 autoreload 24184 23496 Watching for file changes with StatReloader
+INFO 2025-10-24 19:40:10,980 autoreload 24184 23496 D:\Proyecto Colegio\sistema_colegio\matricula\forms.py changed, reloading.
+INFO 2025-10-24 19:40:11,975 autoreload 25980 24388 Watching for file changes with StatReloader
