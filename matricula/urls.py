@@ -6,6 +6,7 @@ from .views import (
     exportar_listas_clase_excel,
     comprobante_matricula,
     api_secciones_por_curso_nivel, api_subgrupos_por_curso_seccion,
+    buscar_estudiante_existente,
 )
 
 app_name = 'matricula'
@@ -27,4 +28,7 @@ urlpatterns = [
     # APIs para poblar selects
     path('api/secciones/', api_secciones_por_curso_nivel, name='api_secciones_por_curso_nivel'),
     path('api/subgrupos/', api_subgrupos_por_curso_seccion, name='api_subgrupos_por_curso_seccion'),
+    
+    # Buscar estudiante existente
+    path('api/buscar-estudiante/', buscar_estudiante_existente, name='buscar_estudiante_existente'),
 ]

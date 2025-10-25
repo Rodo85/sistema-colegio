@@ -335,7 +335,10 @@ class EstudianteForm(forms.ModelForm):
             'identificacion': forms.TextInput(attrs={
                 'autocomplete': 'off',
                 'placeholder': "Si es cédula de identidad no ingrese guiones. Ejemplo: 914750521",
-                'title': 'Ingrese 9 dígitos sin guiones ni espacios'
+                'title': 'Ingrese 9 dígitos sin guiones ni espacios',
+                'id': 'id_identificacion',
+                'class': 'vTextField',
+                'style': 'display: inline-block; width: 60%;'
             }),
             'foto': ImagePreviewWidget(),
             'numero_poliza': forms.TextInput(attrs={'autocomplete': 'off', 'name': 'num_poliza_custom', 'id': 'id_num_poliza_custom'}),
@@ -347,6 +350,7 @@ class EstudianteForm(forms.ModelForm):
             'admin/js/jquery.init.js',
             "matricula/js/dependent-dropdowns.js",
             "matricula/js/autocomplete-correo.js",
+            "matricula/js/buscar-estudiante-existente.js",
         )
 
 class PersonaContactoForm(forms.ModelForm):
@@ -494,7 +498,7 @@ class MatriculaAcademicaInline(admin.StackedInline):  # Cambiado a StackedInline
 @admin.register(Estudiante)
 class EstudianteAdmin(InstitucionScopedAdmin):
     form    = EstudianteForm
-    inlines = [EstudianteInstitucionInline, EncargadoInline]
+    inlines = [EncargadoInline]  # Quitado EstudianteInstitucionInline
     fields = None  # Fuerza el uso de fieldsets
 
     def get_fieldsets(self, request, obj=None):

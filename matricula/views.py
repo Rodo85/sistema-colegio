@@ -906,4 +906,76 @@ def api_subgrupos_por_curso_seccion(request):
         return JsonResponse({'success': False, 'error': str(e)}, status=500)
 
 
+@login_required
+def buscar_estudiante_existente(request):
+    """
+    Busca si un estudiante con la identificación proporcionada ya existe en el sistema.
+    Retorna información del estudiante y su institución activa.
+    """
+    identificacion = request.GET.get('identificacion', '').strip().upper()
+    
+    if not identificacion:
+        return JsonResponse({'existe': False})
+    
+    try:
+        # Buscar estudiante por identificación
+        estudiante = Estudiante.objects.filter(identificacion=identificacion).first()
+        
+        if not estudiante:
+            return JsonResponse({'existe': False})
+        
+        # Obtener la institución activa
+        institucion_activa = estudiante.get_institucion_activa()
+        
+        # Verificar si el usuario es superusuario o tiene una institución
+        institucion_usuario = None
+        if not request.user.is_superuser:
+            institucion_id = getattr(request, 'institucion_activa_id', None)
+            if institucion_id:
+                from core.models import Institucion
+                institucion_usuario = Institucion.objects.filter(id=institucion_id).first()
+        
+        # Verificar si el estudiante ya pertenece a la institución del usuario
+        ya_esta_en_institucion = False
+        if institucion_usuario and institucion_activa:
+            ya_esta_en_institucion = (institucion_activa.id == institucion_usuario.id)
+        
+        # Preparar datos del estudiante
+        data = {
+            'existe': True,
+            'estudiante': {
+                'id': estudiante.id,
+                'identificacion': estudiante.identificacion,
+                'nombres': estudiante.nombres,
+                'primer_apellido': estudiante.primer_apellido,
+                'segundo_apellido': estudiante.segundo_apellido,
+                'nombre_completo': str(estudiante),
+                'tipo_identificacion': estudiante.tipo_identificacion.nombre if estudiante.tipo_identificacion else '',
+                'fecha_nacimiento': estudiante.fecha_nacimiento.strftime('%Y-%m-%d') if estudiante.fecha_nacimiento else '',
+                'sexo': estudiante.sexo.id if estudiante.sexo else None,
+                'nacionalidad': estudiante.nacionalidad.id if estudiante.nacionalidad else None,
+                'correo': estudiante.correo,
+                'celular': estudiante.celular or '',
+                'telefono_casa': estudiante.telefono_casa or '',
+                'provincia': estudiante.provincia.id if estudiante.provincia else None,
+                'canton': estudiante.canton.id if estudiante.canton else None,
+                'distrito': estudiante.distrito.id if estudiante.distrito else None,
+                'direccion_exacta': estudiante.direccion_exacta or '',
+            },
+            'institucion_activa': {
+                'id': institucion_activa.id if institucion_activa else None,
+                'nombre': institucion_activa.nombre if institucion_activa else 'Sin institución activa'
+            },
+            'ya_esta_en_institucion': ya_esta_en_institucion
+        }
+        
+        return JsonResponse(data)
+        
+    except Exception as e:
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.error(f"Error al buscar estudiante: {e}")
+        return JsonResponse({'existe': False, 'error': str(e)}, status=500)
+
+
 
