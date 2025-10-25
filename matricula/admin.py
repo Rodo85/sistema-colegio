@@ -1231,10 +1231,21 @@ class EstudianteInstitucionAdmin(admin.ModelAdmin):
         from django.utils import timezone
         # Solo actualizar los que están activos
         activos = queryset.filter(estado='activo')
-        count = activos.update(
-            estado='trasladado',
-            fecha_salida=timezone.now().date()
-        )
+        count = 0
+        fecha_actual = timezone.now().date()
+        
+        for relacion in activos:
+            relacion.estado = 'trasladado'
+            relacion.fecha_salida = fecha_actual
+            # Agregar observación con usuario y fecha
+            observacion_nueva = f"Dado de baja por TRASLADO el {fecha_actual.strftime('%d/%m/%Y')} por {request.user.get_full_name() or request.user.username}"
+            if relacion.observaciones:
+                relacion.observaciones += f"\n{observacion_nueva}"
+            else:
+                relacion.observaciones = observacion_nueva
+            relacion.save()
+            count += 1
+        
         self.message_user(
             request,
             f'{count} estudiante(s) marcado(s) como trasladado(s). Ahora pueden ser agregados a otra institución.',
@@ -1246,10 +1257,21 @@ class EstudianteInstitucionAdmin(admin.ModelAdmin):
         """Marca estudiantes como retirados"""
         from django.utils import timezone
         activos = queryset.filter(estado='activo')
-        count = activos.update(
-            estado='retirado',
-            fecha_salida=timezone.now().date()
-        )
+        count = 0
+        fecha_actual = timezone.now().date()
+        
+        for relacion in activos:
+            relacion.estado = 'retirado'
+            relacion.fecha_salida = fecha_actual
+            # Agregar observación con usuario y fecha
+            observacion_nueva = f"Dado de baja por RETIRO el {fecha_actual.strftime('%d/%m/%Y')} por {request.user.get_full_name() or request.user.username}"
+            if relacion.observaciones:
+                relacion.observaciones += f"\n{observacion_nueva}"
+            else:
+                relacion.observaciones = observacion_nueva
+            relacion.save()
+            count += 1
+        
         self.message_user(
             request,
             f'{count} estudiante(s) marcado(s) como retirado(s).',
@@ -1261,10 +1283,21 @@ class EstudianteInstitucionAdmin(admin.ModelAdmin):
         """Marca estudiantes como graduados"""
         from django.utils import timezone
         activos = queryset.filter(estado='activo')
-        count = activos.update(
-            estado='graduado',
-            fecha_salida=timezone.now().date()
-        )
+        count = 0
+        fecha_actual = timezone.now().date()
+        
+        for relacion in activos:
+            relacion.estado = 'graduado'
+            relacion.fecha_salida = fecha_actual
+            # Agregar observación con usuario y fecha
+            observacion_nueva = f"Dado de baja por GRADUACIÓN el {fecha_actual.strftime('%d/%m/%Y')} por {request.user.get_full_name() or request.user.username}"
+            if relacion.observaciones:
+                relacion.observaciones += f"\n{observacion_nueva}"
+            else:
+                relacion.observaciones = observacion_nueva
+            relacion.save()
+            count += 1
+        
         self.message_user(
             request,
             f'{count} estudiante(s) marcado(s) como graduado(s).',
