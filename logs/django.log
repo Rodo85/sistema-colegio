@@ -25924,3 +25924,84 @@ INFO 2025-10-24 19:30:39,975 autoreload 26304 26760 D:\Proyecto Colegio\sistema_
 INFO 2025-10-24 19:30:40,965 autoreload 7908 26472 Watching for file changes with StatReloader
 INFO 2025-10-24 19:30:50,627 autoreload 7908 26472 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
 INFO 2025-10-24 19:30:51,617 autoreload 24616 25120 Watching for file changes with StatReloader
+INFO 2025-10-24 19:33:19,901 basehttp 24616 22812 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-10-24 19:33:19,916 basehttp 24616 22812 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4955
+INFO 2025-10-24 19:33:22,034 basehttp 24616 22812 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-10-24 19:33:22,150 basehttp 24616 22812 "GET /admin/ HTTP/1.1" 200 34622
+INFO 2025-10-24 19:33:24,630 basehttp 24616 22812 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 66978
+INFO 2025-10-24 19:33:24,726 basehttp 24616 22812 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-10-24 19:33:29,033 log 24616 22812 Internal Server Error: /admin/matricula/estudiante/add/
+Traceback (most recent call last):
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 840, in get_form
+    return modelform_factory(self.model, **defaults)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\forms\models.py", line 654, in modelform_factory
+    return type(form)(class_name, (form,), form_class_attrs)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\forms\models.py", line 334, in __new__
+    raise FieldError(message)
+django.core.exceptions.FieldError: Unknown field(s) (institucion) specified for Estudiante
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 719, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\views\decorators\cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\sites.py", line 246, in inner
+    return view(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 1984, in add_view
+    return self.changeform_view(request, None, form_url, extra_context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 1840, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 1878, in _changeform_view
+    ModelForm = self.get_form(
+        request, obj, change=not add, fields=flatten_fieldsets(fieldsets)
+    )
+  File "D:\Proyecto Colegio\sistema_colegio\matricula\admin.py", line 625, in get_form
+    Form = super().get_form(request, obj, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\core\mixins.py", line 45, in get_form
+    form = super().get_form(request, obj, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 842, in get_form
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Unknown field(s) (institucion) specified for Estudiante. Check fields/fieldsets/exclude attributes of class EstudianteAdmin.
+ERROR 2025-10-24 19:33:29,040 basehttp 24616 22812 "GET /admin/matricula/estudiante/add/ HTTP/1.1" 500 184596
+INFO 2025-10-24 19:33:33,711 basehttp 24616 22812 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 66978
+INFO 2025-10-24 19:33:33,807 basehttp 24616 22812 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 19:34:26,077 autoreload 24616 25120 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-10-24 19:34:27,094 autoreload 22228 1356 Watching for file changes with StatReloader
+INFO 2025-10-24 19:34:36,739 autoreload 22228 1356 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-10-24 19:34:37,613 autoreload 5608 25428 Watching for file changes with StatReloader
+INFO 2025-10-24 19:34:46,141 autoreload 5608 25428 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-10-24 19:34:47,078 autoreload 22080 27568 Watching for file changes with StatReloader
+INFO 2025-10-24 19:35:01,067 autoreload 22080 27568 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-10-24 19:35:01,954 autoreload 26152 22088 Watching for file changes with StatReloader
+INFO 2025-10-24 19:35:10,484 autoreload 26152 22088 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-10-24 19:35:11,552 autoreload 10824 1784 Watching for file changes with StatReloader
+INFO 2025-10-24 19:35:25,479 autoreload 10824 1784 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-10-24 19:35:26,370 autoreload 13768 25992 Watching for file changes with StatReloader
+INFO 2025-10-24 19:35:58,870 autoreload 13768 25992 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-10-24 19:35:59,738 autoreload 23864 22660 Watching for file changes with StatReloader
+INFO 2025-10-24 19:36:12,536 autoreload 23864 22660 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-10-24 19:36:13,472 autoreload 19244 10944 Watching for file changes with StatReloader
+INFO 2025-10-24 19:36:35,060 autoreload 19244 10944 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-10-24 19:36:35,971 autoreload 27156 13668 Watching for file changes with StatReloader

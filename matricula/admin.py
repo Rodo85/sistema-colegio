@@ -6,7 +6,7 @@ from django.utils.safestring import mark_safe
 from django.forms.models import BaseInlineFormSet
 
 from core.mixins import InstitucionScopedAdmin
-from .models import Estudiante, EncargadoEstudiante, PersonaContacto, MatriculaAcademica, PlantillaImpresionMatricula, AsignacionGrupos
+from .models import Estudiante, EncargadoEstudiante, PersonaContacto, MatriculaAcademica, PlantillaImpresionMatricula, AsignacionGrupos, EstudianteInstitucion
 
 from catalogos.models import Provincia, Canton, Distrito
 from .forms import MatriculaAcademicaForm
@@ -279,7 +279,6 @@ class EstudianteForm(forms.ModelForm):
         tipo_identificacion = cleaned_data.get('tipo_identificacion')
         identificacion = cleaned_data.get('identificacion')
         foto = cleaned_data.get('foto')
-        institucion = cleaned_data.get('institucion')
         
         # Validar identificación para Cédula de identidad
         if tipo_identificacion and identificacion:
@@ -304,23 +303,8 @@ class EstudianteForm(forms.ModelForm):
                 if len(self.errors) == 0:
                     cleaned_data['identificacion'] = identificacion_limpia
         
-        # Validar unicidad de identificación por institución
-        if institucion and identificacion:
-            identificacion_normalizada = identificacion.strip().upper()
-            estudiantes_existentes = Estudiante.objects.filter(
-                institucion=institucion,
-                identificacion=identificacion_normalizada
-            )
-            
-            # Excluir el estudiante actual si está editando
-            if self.instance and self.instance.pk:
-                estudiantes_existentes = estudiantes_existentes.exclude(pk=self.instance.pk)
-            
-            if estudiantes_existentes.exists():
-                estudiante_existente = estudiantes_existentes.first()
-                self.add_error('identificacion', 
-                    f'Ya existe un estudiante con la identificación {identificacion_normalizada} en esta institución: '
-                    f'{estudiante_existente.primer_apellido} {estudiante_existente.segundo_apellido} {estudiante_existente.nombres}.')
+        # NOTA: La validación de unicidad se maneja en el modelo Estudiante.clean()
+        # No validamos aquí para evitar duplicar lógica
         
         # Validar foto si se proporciona
         if foto and hasattr(foto, 'size'):
@@ -453,6 +437,27 @@ class EncargadoInline(admin.TabularInline):
     readonly_fields = ()
     formset = EncargadoInlineFormSet
 
+class EstudianteInstitucionInline(admin.TabularInline):
+    model = EstudianteInstitucion
+    extra = 1
+    fields = ("institucion", "estado", "fecha_ingreso", "fecha_salida", "observaciones")
+    readonly_fields = ("fecha_registro",)
+    
+    def get_readonly_fields(self, request, obj=None):
+        # Solo superusuarios pueden editar institución
+        if not request.user.is_superuser:
+            return self.readonly_fields + ("institucion",)
+        return self.readonly_fields
+    
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "institucion" and not request.user.is_superuser:
+            # Usuarios normales solo pueden agregar a su institución activa
+            institucion_id = getattr(request, 'institucion_activa_id', None)
+            if institucion_id:
+                kwargs["queryset"] = Institucion.objects.filter(id=institucion_id)
+                kwargs["initial"] = institucion_id
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
 class MatriculaAcademicaInline(admin.StackedInline):  # Cambiado a StackedInline para vista vertical
     model = MatriculaAcademica
     form = MatriculaAcademicaForm
@@ -489,19 +494,12 @@ class MatriculaAcademicaInline(admin.StackedInline):  # Cambiado a StackedInline
 @admin.register(Estudiante)
 class EstudianteAdmin(InstitucionScopedAdmin):
     form    = EstudianteForm
-    inlines = [EncargadoInline]
+    inlines = [EstudianteInstitucionInline, EncargadoInline]
     fields = None  # Fuerza el uso de fieldsets
 
     def get_fieldsets(self, request, obj=None):
         fieldsets = []
-        # Solo superadmin ve Información Institucional
-        if request.user.is_superuser:
-            fieldsets.append(
-                ('Información Institucional', {
-                    'fields': ('institucion',),
-                    'classes': ('collapse',)
-                })
-            )
+        # Ya no hay campo institucion en Estudiante (se maneja via EstudianteInstitucion)
         # Usuarios normales: no incluir campo institucion en el formulario
         fieldsets.append(
             ('Datos Personales', {
@@ -621,52 +619,17 @@ class EstudianteAdmin(InstitucionScopedAdmin):
         return super().get_readonly_fields(request, obj)
     
     def get_form(self, request, obj=None, **kwargs):
-        """Personalizar el formulario según el usuario y forzar institución."""
+        """Personalizar el formulario según el usuario."""
         Form = super().get_form(request, obj, **kwargs)
-        institucion_id = getattr(request, 'institucion_activa_id', None)
-        is_super = request.user.is_superuser
-
-        class FormWithInst(Form):
+        
+        class FormCustom(Form):
             def __init__(self, *args, **kw):
                 super().__init__(*args, **kw)
-                # Etiqueta
+                # Etiqueta personalizada
                 if self.base_fields.get('sexo'):
                     self.base_fields['sexo'].label = "Género"
 
-                if is_super or not institucion_id:
-                    return
-
-                # Campo oculto (aunque no esté en fieldsets)
-                from core.models import Institucion
-                if 'institucion' not in self.fields:
-                    self.fields['institucion'] = forms.ModelChoiceField(
-                        queryset=Institucion.objects.filter(id=institucion_id),
-                        initial=institucion_id,
-                        widget=forms.HiddenInput(),
-                        required=True,
-                    )
-                else:
-                    self.fields['institucion'].widget = forms.HiddenInput()
-                    self.fields['institucion'].required = True
-                    self.fields['institucion'].initial = institucion_id
-
-                # Inyectar en POST si falta
-                if self.is_bound:
-                    data = self.data.copy()
-                    key = self.add_prefix('institucion')
-                    if not data.get(key):
-                        data[key] = str(institucion_id)
-                        self.data = data
-
-                # Fijar en la instancia antes de validaciones del modelo
-                self.instance.institucion_id = institucion_id
-
-            def clean(self):
-                if not is_super and institucion_id:
-                    self.instance.institucion_id = institucion_id
-                return super().clean()
-
-        return FormWithInst
+        return FormCustom
 
     # Búsqueda por identificación y nombre
     search_fields = ("identificacion", "primer_apellido", "segundo_apellido", "nombres")
@@ -674,6 +637,24 @@ class EstudianteAdmin(InstitucionScopedAdmin):
     list_filter = ('tipo_estudiante', 'sexo', 'nacionalidad')
     list_per_page = 25
     ordering = ("primer_apellido", "nombres")
+    
+    def get_queryset(self, request):
+        """Filtrar estudiantes por institución activa usando EstudianteInstitucion"""
+        qs = super(InstitucionScopedAdmin, self).get_queryset(request)
+        
+        if request.user.is_superuser:
+            return qs
+        
+        # Filtrar por institución activa a través de EstudianteInstitucion
+        institucion_id = getattr(request, 'institucion_activa_id', None)
+        if institucion_id:
+            # Filtrar estudiantes que tienen relación activa con la institución
+            return qs.filter(
+                instituciones_estudiante__institucion_id=institucion_id,
+                instituciones_estudiante__estado='activo'
+            ).distinct()
+        
+        return qs.none()
 
     def get_search_results(self, request, queryset, search_term):
         queryset, use_distinct = super().get_search_results(request, queryset, search_term)
@@ -700,22 +681,28 @@ class EstudianteAdmin(InstitucionScopedAdmin):
             field.widget.can_add_related = False
             field.widget.can_change_related = False
         
-        # Manejar el campo institución de manera especial
-        if db_field.name == "institucion" and not request.user.is_superuser:
-            institucion_id = getattr(request, 'institucion_activa_id', None)
-            if institucion_id:
-                field.initial = institucion_id
-                field.widget.can_add_related = False
-                field.widget.can_change_related = False
-        
         return field
     
     def save_model(self, request, obj, form, change):
-        # Forzar institución desde el contexto activo, ignorando el formulario
-        institucion_id = getattr(request, 'institucion_activa_id', None)
-        if not request.user.is_superuser and institucion_id:
-            obj.institucion_id = institucion_id
+        # Guardar el estudiante primero
         super().save_model(request, obj, form, change)
+        
+        # Si es creación (no edición) y usuario NO es superusuario
+        # Crear automáticamente la relación EstudianteInstitucion
+        if not change and not request.user.is_superuser:
+            institucion_id = getattr(request, 'institucion_activa_id', None)
+            if institucion_id:
+                # Verificar que no existe ya la relación
+                if not EstudianteInstitucion.objects.filter(
+                    estudiante=obj,
+                    institucion_id=institucion_id
+                ).exists():
+                    EstudianteInstitucion.objects.create(
+                        estudiante=obj,
+                        institucion_id=institucion_id,
+                        estado='activo',
+                        usuario_registro=request.user
+                    )
     
     class Media:
         js = (
@@ -1072,6 +1059,59 @@ class PlantillaImpresionMatriculaAdmin(admin.ModelAdmin):
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "institucion" and not request.user.is_superuser:
             # Usuario normal: solo puede seleccionar su institución activa
+            institucion_id = getattr(request, 'institucion_activa_id', None)
+            if institucion_id:
+                kwargs["queryset"] = Institucion.objects.filter(id=institucion_id)
+                kwargs["initial"] = institucion_id
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+
+@admin.register(EstudianteInstitucion)
+class EstudianteInstitucionAdmin(admin.ModelAdmin):
+    """Admin para gestionar el historial institucional de estudiantes"""
+    list_display = ('estudiante', 'institucion', 'estado', 'fecha_ingreso', 'fecha_salida')
+    list_filter = ('estado', 'institucion', 'fecha_ingreso')
+    search_fields = ('estudiante__identificacion', 'estudiante__primer_apellido', 'estudiante__nombres', 'institucion__nombre')
+    readonly_fields = ('fecha_registro', 'usuario_registro')
+    ordering = ('-fecha_ingreso',)
+    
+    fieldsets = (
+        ('Información Básica', {
+            'fields': ('estudiante', 'institucion', 'estado')
+        }),
+        ('Fechas', {
+            'fields': ('fecha_ingreso', 'fecha_salida')
+        }),
+        ('Observaciones', {
+            'fields': ('observaciones',),
+            'classes': ('collapse',)
+        }),
+        ('Auditoría', {
+            'fields': ('fecha_registro', 'usuario_registro'),
+            'classes': ('collapse',)
+        }),
+    )
+    
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        
+        # Usuarios normales solo ven relaciones de su institución
+        institucion_id = getattr(request, 'institucion_activa_id', None)
+        if institucion_id:
+            return qs.filter(institucion_id=institucion_id)
+        return qs.none()
+    
+    def save_model(self, request, obj, form, change):
+        # Guardar el usuario que registró
+        if not change:
+            obj.usuario_registro = request.user
+        super().save_model(request, obj, form, change)
+    
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "institucion" and not request.user.is_superuser:
+            # Usuarios normales solo pueden seleccionar su institución
             institucion_id = getattr(request, 'institucion_activa_id', None)
             if institucion_id:
                 kwargs["queryset"] = Institucion.objects.filter(id=institucion_id)
