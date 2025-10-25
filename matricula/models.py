@@ -109,7 +109,7 @@ class Estudiante(models.Model):
     ]
 
     # ======== SOLO estos campos quedan NO NULOS ========
-    institucion         = models.ForeignKey(Institucion, on_delete=models.PROTECT)                    # NOT NULL
+    # NOTA: institucion se maneja ahora a través de EstudianteInstitucion (tabla intermedia)
     tipo_estudiante     = models.CharField("Tipo de estudiante", max_length=2, choices=TIPO_CHOICES, default=PR)  # NOT NULL
     tipo_identificacion = models.ForeignKey(TipoIdentificacion, on_delete=models.PROTECT)             # NOT NULL
     identificacion      = models.CharField("Identificación", max_length=20)                           # NOT NULL
@@ -171,9 +171,10 @@ class Estudiante(models.Model):
         verbose_name_plural = "Estudiantes"
         ordering = ("primer_apellido", "nombres")
         constraints = [
+            # Identificación única GLOBALMENTE (no por institución)
             models.UniqueConstraint(
-                fields=["institucion", "identificacion"],
-                name="unique_estudiante_por_institucion"
+                fields=["identificacion"],
+                name="unique_estudiante_identificacion_global"
             )
         ]
         # Permisos personalizados para vistas no basadas en modelos específicos
@@ -188,11 +189,10 @@ class Estudiante(models.Model):
         """Validación personalizada para el modelo Estudiante"""
         super().clean()
         
-        # Validar unicidad de identificación por institución
-        if self.institucion_id and self.identificacion:
-            # Buscar estudiantes con la misma institución e identificación
+        # Validar unicidad de identificación GLOBALMENTE
+        if self.identificacion:
+            # Buscar estudiantes con la misma identificación
             estudiantes_existentes = Estudiante.objects.filter(
-                institucion_id=self.institucion_id,
                 identificacion=self.identificacion.strip().upper()
             )
             
@@ -203,7 +203,7 @@ class Estudiante(models.Model):
             if estudiantes_existentes.exists():
                 estudiante_existente = estudiantes_existentes.first()
                 raise ValidationError({
-                    'identificacion': f'Ya existe un estudiante con la identificación {self.identificacion} en esta institución: {estudiante_existente.primer_apellido} {estudiante_existente.segundo_apellido} {estudiante_existente.nombres}.'
+                    'identificacion': f'Ya existe un estudiante con la identificación {self.identificacion}: {estudiante_existente.primer_apellido} {estudiante_existente.segundo_apellido} {estudiante_existente.nombres}.'
                 })
 
     def save(self, *args, **kwargs):
@@ -246,6 +246,100 @@ class Estudiante(models.Model):
         if segundo:
             return f"{self.primer_apellido} {segundo} {self.nombres}"
         return f"{self.primer_apellido} {self.nombres}"
+    
+    def get_institucion_activa(self):
+        """Obtiene la institución activa actual del estudiante"""
+        try:
+            relacion_activa = self.instituciones_estudiante.filter(estado='activo').first()
+            return relacion_activa.institucion if relacion_activa else None
+        except:
+            return None
+    
+    def get_instituciones_historial(self):
+        """Obtiene el historial completo de instituciones ordenado por fecha"""
+        try:
+            return self.instituciones_estudiante.all().order_by('-fecha_ingreso')
+        except:
+            return []
+
+
+# ────────────────────  HISTORIAL INSTITUCIONAL  ───────────────────────────
+class EstudianteInstitucion(models.Model):
+    """
+    Tabla intermedia que registra el historial de instituciones de un estudiante.
+    Permite que un estudiante cambie de colegio sin duplicar su información personal.
+    """
+    ACTIVO = 'activo'
+    TRASLADADO = 'trasladado'
+    RETIRADO = 'retirado'
+    GRADUADO = 'graduado'
+    
+    ESTADO_CHOICES = [
+        (ACTIVO, 'Activo'),
+        (TRASLADADO, 'Trasladado'),
+        (RETIRADO, 'Retirado'),
+        (GRADUADO, 'Graduado'),
+    ]
+    
+    estudiante = models.ForeignKey(
+        Estudiante, 
+        on_delete=models.PROTECT, 
+        related_name='instituciones_estudiante',
+        verbose_name="Estudiante"
+    )
+    institucion = models.ForeignKey(
+        Institucion, 
+        on_delete=models.PROTECT,
+        related_name='estudiantes_institucion',
+        verbose_name="Institución"
+    )
+    estado = models.CharField("Estado", max_length=15, choices=ESTADO_CHOICES, default=ACTIVO)
+    fecha_ingreso = models.DateField("Fecha de ingreso", default=timezone.now)
+    fecha_salida = models.DateField("Fecha de salida", blank=True, null=True)
+    observaciones = models.TextField("Observaciones", blank=True, null=True)
+    
+    # Auditoría
+    fecha_registro = models.DateTimeField("Fecha de registro", auto_now_add=True)
+    usuario_registro = models.ForeignKey(
+        User, 
+        on_delete=models.PROTECT, 
+        blank=True, 
+        null=True,
+        verbose_name="Usuario que registró"
+    )
+    
+    class Meta:
+        verbose_name = "Historial institucional del estudiante"
+        verbose_name_plural = "Historiales institucionales de estudiantes"
+        ordering = ['-fecha_ingreso']
+        constraints = [
+            # Un estudiante solo puede tener UNA relación activa a la vez
+            models.UniqueConstraint(
+                fields=['estudiante'],
+                condition=Q(estado='activo'),
+                name='unique_estudiante_activo_por_vez',
+            ),
+        ]
+    
+    def clean(self):
+        """Validaciones personalizadas"""
+        super().clean()
+        
+        # Validar que fecha_salida sea posterior a fecha_ingreso
+        if self.fecha_salida and self.fecha_ingreso:
+            if self.fecha_salida < self.fecha_ingreso:
+                raise ValidationError({
+                    'fecha_salida': 'La fecha de salida debe ser posterior a la fecha de ingreso.'
+                })
+        
+        # Si el estado es activo, no debe tener fecha de salida
+        if self.estado == self.ACTIVO and self.fecha_salida:
+            raise ValidationError({
+                'fecha_salida': 'Un estudiante activo no puede tener fecha de salida.'
+            })
+    
+    def __str__(self):
+        return f"{self.estudiante} - {self.institucion} ({self.get_estado_display()})"
 
 
 # ────────────────────────  TABLA INTERMEDIA  ───────────────────────────
@@ -323,9 +417,11 @@ class MatriculaAcademica(models.Model):
         return f"{self.estudiante} - {self.nivel} {self.seccion or ''} {self.subgrupo or ''} ({self.curso_lectivo})"
 
     def save(self, *args, **kwargs):
-        # Asignar automáticamente la institución del estudiante si no está establecida
+        # Asignar automáticamente la institución activa del estudiante si no está establecida
         if not self.institucion_id and self.estudiante_id:
-            self.institucion = self.estudiante.institucion
+            institucion_activa = self.estudiante.get_institucion_activa()
+            if institucion_activa:
+                self.institucion = institucion_activa
         
         # No alterar "estado": debe coincidir con las keys de choices ('activo', 'retirado', ...)
         super().save(*args, **kwargs)
@@ -350,22 +446,31 @@ class MatriculaAcademica(models.Model):
                 if not matricula_10 or not matricula_10.especialidad:
                     raise ValidationError("Para 11° y 12° debe seleccionar una especialidad si no existe una asignada en décimo.")
 
-        # 3) Coherencia ECL ↔ curso lectivo y institución del estudiante
+        # 3) Validar que el estudiante tenga relación activa con la institución
+        if self.estudiante and self.institucion:
+            relacion_activa = EstudianteInstitucion.objects.filter(
+                estudiante=self.estudiante,
+                institucion=self.institucion,
+                estado='activo'
+            ).exists()
+            
+            if not relacion_activa:
+                raise ValidationError(
+                    f"El estudiante no tiene una relación activa con la institución {self.institucion}. "
+                    f"Debe agregarlo primero al historial institucional."
+                )
+        
+        # 4) Coherencia ECL ↔ curso lectivo e institución
         if self.especialidad:
             if self.especialidad.curso_lectivo_id != self.curso_lectivo_id:
                 raise ValidationError("La especialidad seleccionada no corresponde a este curso lectivo.")
 
-            # Validar que la especialidad pertenece a la institución del estudiante
-            if self.estudiante and self.estudiante.institucion_id:
-                if self.especialidad.institucion_id != self.estudiante.institucion_id:
-                    raise ValidationError("La especialidad no pertenece a la institución del estudiante.")
-        
-        # 4) Validar que la institución coincida con la del estudiante
-        if self.estudiante and self.estudiante.institucion_id and self.institucion_id:
-            if self.institucion_id != self.estudiante.institucion_id:
-                raise ValidationError("La institución de la matrícula debe coincidir con la del estudiante.")
+            # Validar que la especialidad pertenece a la institución de la matrícula
+            if self.institucion:
+                if self.especialidad.institucion_id != self.institucion_id:
+                    raise ValidationError("La especialidad no pertenece a la institución de la matrícula.")
 
-        # 4) Salvaguarda adicional (evita dos activas por año aunque cambie sección/subgrupo)
+        # 5) Salvaguarda adicional (evita dos activas por año aunque cambie sección/subgrupo)
         if (self.estado == 'activo' and self.curso_lectivo_id and getattr(self.estudiante, 'pk', None)):
             existe = MatriculaAcademica.objects.filter(
                 estudiante=self.estudiante,

@@ -25871,3 +25871,56 @@ INFO 2025-10-24 19:12:57,854 autoreload 13092 20164 D:\Proyecto Colegio\sistema_
 INFO 2025-10-24 19:12:59,056 autoreload 22628 25824 Watching for file changes with StatReloader
 INFO 2025-10-24 19:13:43,738 autoreload 22628 25824 D:\Proyecto Colegio\sistema_colegio\matricula\forms.py changed, reloading.
 INFO 2025-10-24 19:13:44,824 autoreload 3772 6240 Watching for file changes with StatReloader
+INFO 2025-10-24 19:16:49,905 basehttp 3772 8704 "GET /admin/ HTTP/1.1" 200 34622
+INFO 2025-10-24 19:16:52,525 basehttp 3772 8704 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 66978
+INFO 2025-10-24 19:16:52,552 basehttp 3772 23088 "GET /static/matricula/js/toggle-plan-nacional.js HTTP/1.1" 304 0
+INFO 2025-10-24 19:16:52,601 basehttp 3772 8704 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 19:16:55,393 basehttp 3772 8704 "GET /admin/matricula/estudiante/add/ HTTP/1.1" 200 187234
+INFO 2025-10-24 19:16:55,486 basehttp 3772 8704 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 19:16:55,988 views 3772 8704 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:16:55,989 basehttp 3772 8704 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:16:56,111 views 3772 8704 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:16:56,112 basehttp 3772 8704 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:16:56,662 views 3772 8704 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:16:56,663 basehttp 3772 8704 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:16:57,106 views 3772 8704 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:16:57,106 basehttp 3772 8704 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:16:57,663 views 3772 8704 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:16:57,664 basehttp 3772 8704 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:16:58,121 views 3772 8704 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:16:58,122 basehttp 3772 8704 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:16:59,197 views 3772 8704 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:16:59,198 basehttp 3772 8704 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:28:05,729 basehttp 3772 24680 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 66978
+INFO 2025-10-24 19:28:05,761 basehttp 3772 10080 "GET /static/matricula/js/toggle-plan-nacional.js HTTP/1.1" 304 0
+INFO 2025-10-24 19:28:05,813 basehttp 3772 24680 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 19:28:08,843 basehttp 3772 24680 "GET /admin/matricula/estudiante/?q=lucca HTTP/1.1" 200 48337
+INFO 2025-10-24 19:28:08,925 basehttp 3772 24680 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 19:28:11,561 basehttp 3772 24680 "POST /admin/logout/ HTTP/1.1" 200 2182
+INFO 2025-10-24 19:28:12,676 basehttp 3772 24680 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-10-24 19:28:12,683 basehttp 3772 24680 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4955
+INFO 2025-10-24 19:28:23,612 signals 3772 24680 Signal user_logged_in ejecutándose para usuario: rodolfo.garro.monge@mep.go.cr
+INFO 2025-10-24 19:28:23,618 signals 3772 24680 Usuario rodolfo.garro.monge@mep.go.cr tiene múltiples instituciones - debe seleccionar
+INFO 2025-10-24 19:28:23,622 basehttp 3772 24680 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-10-24 19:28:23,687 middleware 3772 24680 Redirigiendo a selección de institución
+INFO 2025-10-24 19:28:23,688 basehttp 3772 24680 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-10-24 19:28:23,889 basehttp 3772 24680 "GET /seleccionar-institucion/ HTTP/1.1" 200 10902
+INFO 2025-10-24 19:28:25,604 basehttp 3772 24680 "POST /seleccionar-institucion/ HTTP/1.1" 302 0
+INFO 2025-10-24 19:28:25,697 basehttp 3772 24680 "GET /admin/ HTTP/1.1" 200 12378
+INFO 2025-10-24 19:28:27,465 basehttp 3772 24680 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 39815
+INFO 2025-10-24 19:28:30,384 basehttp 3772 24680 "GET /admin/matricula/estudiante/?q=lucca HTTP/1.1" 200 24530
+INFO 2025-10-24 19:28:34,173 basehttp 3772 24680 "POST /admin/logout/ HTTP/1.1" 200 2182
+INFO 2025-10-24 19:29:35,772 autoreload 3772 6240 D:\Proyecto Colegio\sistema_colegio\matricula\migrations\__init__.py changed, reloading.
+INFO 2025-10-24 19:29:36,772 autoreload 4076 25772 Watching for file changes with StatReloader
+INFO 2025-10-24 19:29:48,738 autoreload 4076 25772 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-10-24 19:29:49,613 autoreload 27620 23184 Watching for file changes with StatReloader
+INFO 2025-10-24 19:29:56,070 autoreload 27620 23184 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-10-24 19:29:56,992 autoreload 7136 27484 Watching for file changes with StatReloader
+INFO 2025-10-24 19:30:06,705 autoreload 7136 27484 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-10-24 19:30:07,667 autoreload 27640 8784 Watching for file changes with StatReloader
+INFO 2025-10-24 19:30:27,095 autoreload 27640 8784 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-10-24 19:30:28,081 autoreload 26304 26760 Watching for file changes with StatReloader
+INFO 2025-10-24 19:30:39,975 autoreload 26304 26760 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-10-24 19:30:40,965 autoreload 7908 26472 Watching for file changes with StatReloader
+INFO 2025-10-24 19:30:50,627 autoreload 7908 26472 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-10-24 19:30:51,617 autoreload 24616 25120 Watching for file changes with StatReloader
