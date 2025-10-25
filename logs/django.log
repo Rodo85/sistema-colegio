@@ -26217,3 +26217,330 @@ INFO 2025-10-24 19:52:38,898 autoreload 27768 18896 D:\Proyecto Colegio\sistema_
 INFO 2025-10-24 19:52:39,981 autoreload 27876 28184 Watching for file changes with StatReloader
 INFO 2025-10-24 19:52:46,298 autoreload 27876 28184 D:\Proyecto Colegio\sistema_colegio\matricula\urls.py changed, reloading.
 INFO 2025-10-24 19:52:47,283 autoreload 25784 4112 Watching for file changes with StatReloader
+INFO 2025-10-24 19:55:04,606 basehttp 25784 4504 "GET /admin/ HTTP/1.1" 200 35344
+INFO 2025-10-24 19:55:06,553 basehttp 25784 4504 "POST /admin/logout/ HTTP/1.1" 200 2182
+INFO 2025-10-24 19:55:10,352 basehttp 25784 4504 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-10-24 19:55:10,362 basehttp 25784 4504 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4955
+INFO 2025-10-24 19:55:12,913 basehttp 25784 4504 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-10-24 19:55:12,996 basehttp 25784 4504 "GET /admin/ HTTP/1.1" 200 35340
+INFO 2025-10-24 19:55:14,917 basehttp 25784 4504 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 67696
+INFO 2025-10-24 19:55:14,947 basehttp 25784 5628 "GET /static/matricula/js/toggle-plan-nacional.js HTTP/1.1" 304 0
+INFO 2025-10-24 19:55:15,008 basehttp 25784 4504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 19:55:18,060 basehttp 25784 4504 "GET /admin/matricula/estudiante/add/ HTTP/1.1" 200 185025
+INFO 2025-10-24 19:55:18,099 basehttp 25784 5628 "GET /static/matricula/js/buscar-estudiante-existente.js HTTP/1.1" 200 7790
+INFO 2025-10-24 19:55:18,264 basehttp 25784 4504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 19:55:18,781 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:55:18,782 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:55:19,052 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:55:19,053 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:55:19,508 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:55:19,509 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:55:19,959 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:55:19,960 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:55:20,485 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:55:20,486 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:55:20,953 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:55:20,954 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:55:21,968 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:55:21,968 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:55:25,258 basehttp 25784 4504 "GET /matricula/api/buscar-estudiante/?identificacion=112280841 HTTP/1.1" 200 571
+INFO 2025-10-24 19:55:35,235 basehttp 25784 4504 "GET /admin/matricula/ HTTP/1.1" 200 35554
+INFO 2025-10-24 19:55:37,034 basehttp 25784 4504 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 67696
+INFO 2025-10-24 19:55:37,114 basehttp 25784 4504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 19:55:42,769 basehttp 25784 4504 "GET /admin/matricula/estudiante/?q=lucca HTTP/1.1" 200 49055
+INFO 2025-10-24 19:55:42,856 basehttp 25784 4504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 19:55:54,616 basehttp 25784 4504 "GET /admin/matricula/estudiante/951/change/?_changelist_filters=q%3Dlucca HTTP/1.1" 200 186338
+INFO 2025-10-24 19:55:54,649 basehttp 25784 5628 "GET /static/matricula/js/buscar-estudiante-existente.js HTTP/1.1" 304 0
+INFO 2025-10-24 19:55:54,703 basehttp 25784 4504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 19:55:55,189 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:55:55,190 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:55:55,350 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:55:55,351 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:55:55,893 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:55:55,894 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:55:56,358 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:55:56,359 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:55:56,932 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:55:56,932 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:55:57,385 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:55:57,385 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:55:58,413 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:55:58,413 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:56:03,402 basehttp 25784 4504 "POST /admin/logout/ HTTP/1.1" 200 2182
+INFO 2025-10-24 19:56:04,575 basehttp 25784 4504 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-10-24 19:56:04,582 basehttp 25784 4504 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4955
+INFO 2025-10-24 19:56:18,463 signals 25784 4504 Signal user_logged_in ejecutándose para usuario: rodolfo.garro.monge@mep.go.cr
+INFO 2025-10-24 19:56:18,468 signals 25784 4504 Usuario rodolfo.garro.monge@mep.go.cr tiene múltiples instituciones - debe seleccionar
+INFO 2025-10-24 19:56:18,471 basehttp 25784 4504 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-10-24 19:56:18,535 middleware 25784 4504 Redirigiendo a selección de institución
+INFO 2025-10-24 19:56:18,536 basehttp 25784 4504 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-10-24 19:56:18,624 basehttp 25784 4504 "GET /seleccionar-institucion/ HTTP/1.1" 200 16844
+INFO 2025-10-24 19:56:20,113 basehttp 25784 4504 "POST /seleccionar-institucion/ HTTP/1.1" 302 0
+INFO 2025-10-24 19:56:20,207 basehttp 25784 4504 "GET /admin/ HTTP/1.1" 200 35344
+INFO 2025-10-24 19:56:22,144 basehttp 25784 4504 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 68080
+INFO 2025-10-24 19:56:22,234 basehttp 25784 4504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 19:56:24,204 basehttp 25784 4504 "GET /admin/matricula/estudiante/?q=lucca HTTP/1.1" 200 49078
+INFO 2025-10-24 19:56:24,300 basehttp 25784 4504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 19:56:30,567 basehttp 25784 4504 "POST /admin/logout/ HTTP/1.1" 200 2182
+INFO 2025-10-24 19:56:31,585 basehttp 25784 4504 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-10-24 19:56:31,593 basehttp 25784 4504 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4955
+INFO 2025-10-24 19:56:40,519 signals 25784 4504 Signal user_logged_in ejecutándose para usuario: rodolfo.garro.monge@mep.go.cr
+INFO 2025-10-24 19:56:40,525 signals 25784 4504 Usuario rodolfo.garro.monge@mep.go.cr tiene múltiples instituciones - debe seleccionar
+INFO 2025-10-24 19:56:40,528 basehttp 25784 4504 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-10-24 19:56:40,601 middleware 25784 4504 Redirigiendo a selección de institución
+INFO 2025-10-24 19:56:40,602 basehttp 25784 4504 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-10-24 19:56:40,692 basehttp 25784 4504 "GET /seleccionar-institucion/ HTTP/1.1" 200 16844
+INFO 2025-10-24 19:56:42,523 basehttp 25784 4504 "POST /seleccionar-institucion/ HTTP/1.1" 302 0
+INFO 2025-10-24 19:56:42,625 basehttp 25784 4504 "GET /admin/ HTTP/1.1" 200 35344
+INFO 2025-10-24 19:56:45,309 basehttp 25784 4504 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 42638
+INFO 2025-10-24 19:56:45,415 basehttp 25784 4504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 19:56:47,595 basehttp 25784 4504 "GET /admin/matricula/estudiante/?q=lucca HTTP/1.1" 200 42711
+INFO 2025-10-24 19:56:47,692 basehttp 25784 4504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 19:56:50,072 basehttp 25784 4504 "GET /admin/matricula/estudiante/add/?_changelist_filters=q%3Dlucca HTTP/1.1" 200 185059
+INFO 2025-10-24 19:56:50,115 basehttp 25784 5628 "GET /static/matricula/js/buscar-estudiante-existente.js HTTP/1.1" 304 0
+INFO 2025-10-24 19:56:50,165 basehttp 25784 4504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 19:56:50,643 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:56:50,643 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:56:50,790 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:56:50,791 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:56:51,453 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:56:51,454 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:56:51,810 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:56:51,811 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:56:52,364 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:56:52,364 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:56:52,809 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:56:52,810 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:56:53,790 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:56:53,791 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:57:14,519 basehttp 25784 4504 "POST /admin/matricula/estudiante/add/?_changelist_filters=q%3Dlucca HTTP/1.1" 200 185607
+INFO 2025-10-24 19:57:14,564 basehttp 25784 5628 "GET /static/matricula/js/buscar-estudiante-existente.js HTTP/1.1" 304 0
+INFO 2025-10-24 19:57:14,626 basehttp 25784 4504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 19:57:15,147 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:57:15,148 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:57:15,281 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:57:15,282 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:57:15,831 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:57:15,831 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:57:16,295 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:57:16,296 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:57:16,950 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:57:16,951 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:57:17,284 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:57:17,284 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:57:18,293 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:57:18,294 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:57:19,017 basehttp 25784 4504 "GET /matricula/api/buscar-estudiante/?identificacion=112280841 HTTP/1.1" 200 571
+INFO 2025-10-24 19:57:36,514 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:57:36,515 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:57:51,799 basehttp 25784 4504 "POST /admin/matricula/estudiante/add/?_changelist_filters=q%3Dlucca HTTP/1.1" 200 185619
+INFO 2025-10-24 19:57:51,838 basehttp 25784 5628 "GET /static/matricula/js/buscar-estudiante-existente.js HTTP/1.1" 304 0
+INFO 2025-10-24 19:57:51,925 basehttp 25784 4504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 19:57:52,433 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:57:52,433 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:57:52,569 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:57:52,570 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:57:53,127 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:57:53,128 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:57:53,581 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:57:53,582 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:57:54,144 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:57:54,144 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:57:54,597 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:57:54,598 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:57:55,583 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:57:55,584 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:57:59,850 basehttp 25784 4504 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 42638
+INFO 2025-10-24 19:57:59,939 basehttp 25784 4504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 19:58:05,138 basehttp 25784 4504 "GET /admin/matricula/estudiante/?q=lucca HTTP/1.1" 200 42711
+INFO 2025-10-24 19:58:05,215 basehttp 25784 4504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 19:58:08,019 basehttp 25784 4504 "GET /admin/matricula/estudiante/?q=lucca HTTP/1.1" 200 42711
+INFO 2025-10-24 19:58:08,113 basehttp 25784 4504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 19:58:21,981 basehttp 25784 4504 "GET /admin/matricula/estudiante/add/?_changelist_filters=q%3Dlucca HTTP/1.1" 200 185059
+INFO 2025-10-24 19:58:22,023 basehttp 25784 5628 "GET /static/matricula/js/buscar-estudiante-existente.js HTTP/1.1" 304 0
+INFO 2025-10-24 19:58:22,090 basehttp 25784 4504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 19:58:22,579 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:58:22,580 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:58:22,822 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:58:22,822 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:58:23,371 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:58:23,371 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:58:23,752 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:58:23,753 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:58:24,260 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:58:24,260 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:58:24,735 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:58:24,735 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:58:25,716 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:58:25,717 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:58:28,913 basehttp 25784 4504 "GET /matricula/api/buscar-estudiante/?identificacion=112280841 HTTP/1.1" 200 571
+INFO 2025-10-24 19:58:30,708 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:58:30,709 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:59:04,217 basehttp 25784 4504 "POST /admin/matricula/estudiante/add/?_changelist_filters=q%3Dlucca HTTP/1.1" 200 185619
+INFO 2025-10-24 19:59:04,256 basehttp 25784 5628 "GET /static/matricula/js/buscar-estudiante-existente.js HTTP/1.1" 304 0
+INFO 2025-10-24 19:59:04,315 basehttp 25784 4504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 19:59:04,806 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:59:04,807 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:59:05,071 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:59:05,072 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:59:05,499 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:59:05,499 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:59:05,949 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:59:05,950 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:59:06,503 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:59:06,503 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:59:06,972 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:59:06,972 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:59:07,953 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 19:59:07,953 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 19:59:18,770 basehttp 25784 4504 "GET /admin/ HTTP/1.1" 200 35344
+INFO 2025-10-24 19:59:21,645 basehttp 25784 4504 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 42638
+INFO 2025-10-24 19:59:21,729 basehttp 25784 4504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 19:59:25,536 basehttp 25784 4504 "GET /admin/matricula/estudiante/?q=lucca HTTP/1.1" 200 42711
+INFO 2025-10-24 19:59:25,619 basehttp 25784 4504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 19:59:58,470 basehttp 25784 4504 "POST /admin/logout/ HTTP/1.1" 200 2182
+INFO 2025-10-24 19:59:59,735 basehttp 25784 4504 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-10-24 19:59:59,742 basehttp 25784 4504 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4955
+INFO 2025-10-24 20:00:03,839 basehttp 25784 4504 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-10-24 20:00:03,939 basehttp 25784 4504 "GET /admin/ HTTP/1.1" 200 35340
+INFO 2025-10-24 20:00:06,241 basehttp 25784 4504 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 67696
+INFO 2025-10-24 20:00:06,315 basehttp 25784 4504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 20:00:08,971 basehttp 25784 4504 "GET /admin/matricula/estudiante/?q=lucca HTTP/1.1" 200 49055
+INFO 2025-10-24 20:00:09,077 basehttp 25784 4504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 20:00:11,086 basehttp 25784 4504 "GET /admin/matricula/estudiante/951/change/?_changelist_filters=q%3Dlucca HTTP/1.1" 200 186338
+INFO 2025-10-24 20:00:11,158 basehttp 25784 5628 "GET /static/matricula/js/buscar-estudiante-existente.js HTTP/1.1" 304 0
+INFO 2025-10-24 20:00:11,274 basehttp 25784 4504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 20:00:11,787 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:00:11,788 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:00:11,942 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:00:11,943 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:00:12,598 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:00:12,599 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:00:12,929 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:00:12,930 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:00:13,494 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:00:13,495 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:00:13,942 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:00:13,943 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:00:14,956 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:00:14,957 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:00:38,848 views 25784 4504 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-10-24 20:00:38,849 basehttp 25784 4504 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-10-24 20:01:44,165 basehttp 25784 4504 "POST /admin/matricula/estudiante/951/change/?_changelist_filters=q%3Dlucca HTTP/1.1" 302 0
+INFO 2025-10-24 20:01:44,281 basehttp 25784 4504 "GET /admin/matricula/estudiante/?q=lucca HTTP/1.1" 200 49643
+INFO 2025-10-24 20:01:44,399 basehttp 25784 4504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 20:01:50,271 basehttp 25784 4504 "POST /admin/logout/ HTTP/1.1" 200 2182
+INFO 2025-10-24 20:01:51,428 basehttp 25784 4504 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-10-24 20:01:51,435 basehttp 25784 4504 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4955
+INFO 2025-10-24 20:02:01,370 basehttp 25784 4504 "POST /admin/login/?next=/admin/ HTTP/1.1" 200 5144
+INFO 2025-10-24 20:02:12,500 signals 25784 4504 Signal user_logged_in ejecutándose para usuario: rodolfo.garro.monge@mep.go.cr
+INFO 2025-10-24 20:02:12,505 signals 25784 4504 Usuario rodolfo.garro.monge@mep.go.cr tiene múltiples instituciones - debe seleccionar
+INFO 2025-10-24 20:02:12,509 basehttp 25784 4504 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-10-24 20:02:12,589 middleware 25784 4504 Redirigiendo a selección de institución
+INFO 2025-10-24 20:02:12,590 basehttp 25784 4504 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-10-24 20:02:12,686 basehttp 25784 4504 "GET /seleccionar-institucion/ HTTP/1.1" 200 16844
+INFO 2025-10-24 20:02:14,334 basehttp 25784 4504 "POST /seleccionar-institucion/ HTTP/1.1" 302 0
+INFO 2025-10-24 20:02:14,443 basehttp 25784 4504 "GET /admin/ HTTP/1.1" 200 35344
+INFO 2025-10-24 20:02:16,328 basehttp 25784 4504 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 68080
+INFO 2025-10-24 20:02:16,413 basehttp 25784 4504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 20:02:19,898 basehttp 25784 4504 "GET /admin/matricula/estudiante/?q=lucca HTTP/1.1" 200 49078
+INFO 2025-10-24 20:02:19,993 basehttp 25784 4504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 20:02:23,867 basehttp 25784 4504 "GET /admin/matricula/estudiante/951/change/?_changelist_filters=q%3Dlucca HTTP/1.1" 200 295702
+INFO 2025-10-24 20:02:23,907 basehttp 25784 21220 "GET /static/matricula/js/buscar-estudiante-existente.js HTTP/1.1" 304 0
+INFO 2025-10-24 20:02:23,969 basehttp 25784 4504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 20:02:23,992 basehttp 25784 5628 "GET /media/estudiantes/fotos/2025/10/mascota_AxSANOe.png HTTP/1.1" 200 98245
+INFO 2025-10-24 20:02:24,520 views 25784 5628 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:02:24,521 basehttp 25784 5628 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:02:24,602 views 25784 5628 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-10-24 20:02:24,602 basehttp 25784 5628 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-10-24 20:02:24,651 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:02:24,651 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:02:24,724 views 25784 4504 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-10-24 20:02:24,724 basehttp 25784 4504 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-10-24 20:02:25,199 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:02:25,200 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:02:25,262 views 25784 4504 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-10-24 20:02:25,263 basehttp 25784 4504 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-10-24 20:02:25,666 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:02:25,666 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:02:25,837 views 25784 4504 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-10-24 20:02:25,838 basehttp 25784 4504 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-10-24 20:02:26,236 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:02:26,237 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:02:26,340 views 25784 4504 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-10-24 20:02:26,341 basehttp 25784 4504 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-10-24 20:02:26,652 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:02:26,653 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:02:26,733 views 25784 4504 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-10-24 20:02:26,734 basehttp 25784 4504 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-10-24 20:02:27,438 basehttp 25784 4504 "POST /admin/logout/ HTTP/1.1" 200 2182
+INFO 2025-10-24 20:02:28,402 basehttp 25784 4504 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-10-24 20:02:28,409 basehttp 25784 4504 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4955
+INFO 2025-10-24 20:02:39,436 signals 25784 4504 Signal user_logged_in ejecutándose para usuario: rodolfo.garro.monge@mep.go.cr
+INFO 2025-10-24 20:02:39,441 signals 25784 4504 Usuario rodolfo.garro.monge@mep.go.cr tiene múltiples instituciones - debe seleccionar
+INFO 2025-10-24 20:02:39,444 basehttp 25784 4504 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-10-24 20:02:39,512 middleware 25784 4504 Redirigiendo a selección de institución
+INFO 2025-10-24 20:02:39,512 basehttp 25784 4504 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-10-24 20:02:39,602 basehttp 25784 4504 "GET /seleccionar-institucion/ HTTP/1.1" 200 16844
+INFO 2025-10-24 20:02:42,622 basehttp 25784 4504 "POST /seleccionar-institucion/ HTTP/1.1" 302 0
+INFO 2025-10-24 20:02:42,710 basehttp 25784 4504 "GET /admin/ HTTP/1.1" 200 35344
+INFO 2025-10-24 20:02:47,202 basehttp 25784 4504 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 42638
+INFO 2025-10-24 20:02:47,285 basehttp 25784 4504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 20:02:51,813 basehttp 25784 4504 "GET /admin/matricula/estudiante/?q=lucca HTTP/1.1" 200 42711
+INFO 2025-10-24 20:02:51,895 basehttp 25784 4504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 20:02:54,014 basehttp 25784 4504 "GET /admin/matricula/estudiante/add/?_changelist_filters=q%3Dlucca HTTP/1.1" 200 185059
+INFO 2025-10-24 20:02:54,108 basehttp 25784 4504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 20:02:54,594 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:02:54,595 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:02:54,740 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:02:54,740 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:02:55,289 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:02:55,289 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:02:55,747 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:02:55,748 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:02:56,286 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:02:56,287 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:02:56,734 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:02:56,735 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:02:57,735 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:02:57,736 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:02:59,093 basehttp 25784 4504 "GET /matricula/api/buscar-estudiante/?identificacion=112280841 HTTP/1.1" 200 662
+INFO 2025-10-24 20:03:06,926 views 25784 4504 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:03:06,928 basehttp 25784 4504 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:03:06,932 views 25784 5628 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-10-24 20:03:06,933 basehttp 25784 5628 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-10-24 20:03:25,129 basehttp 25784 5628 "GET /matricula/api/buscar-estudiante/?identificacion=112280841 HTTP/1.1" 200 662
+INFO 2025-10-24 20:03:36,527 basehttp 25784 5628 "GET /admin/ HTTP/1.1" 200 35344
+INFO 2025-10-24 20:03:40,710 basehttp 25784 5628 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 42638
+INFO 2025-10-24 20:03:40,790 basehttp 25784 5628 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 20:03:43,248 basehttp 25784 5628 "GET /admin/matricula/estudiante/add/ HTTP/1.1" 200 185029
+INFO 2025-10-24 20:03:43,275 basehttp 25784 4504 "GET /static/matricula/js/buscar-estudiante-existente.js HTTP/1.1" 304 0
+INFO 2025-10-24 20:03:43,445 basehttp 25784 5628 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 20:03:43,972 views 25784 5628 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:03:43,973 basehttp 25784 5628 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:03:44,098 views 25784 5628 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:03:44,099 basehttp 25784 5628 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:03:44,753 views 25784 5628 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:03:44,755 basehttp 25784 5628 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:03:45,096 views 25784 5628 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:03:45,097 basehttp 25784 5628 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:03:45,665 views 25784 5628 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:03:45,665 basehttp 25784 5628 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:03:46,150 views 25784 5628 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:03:46,151 basehttp 25784 5628 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:03:47,100 views 25784 5628 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:03:47,101 basehttp 25784 5628 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:03:54,426 basehttp 25784 5628 "GET /matricula/api/buscar-estudiante/?identificacion=112280841 HTTP/1.1" 200 662
+INFO 2025-10-24 20:07:15,324 views 25784 28804 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-10-24 20:07:15,325 basehttp 25784 28804 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-10-24 20:07:15,338 views 25784 29500 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-10-24 20:07:15,339 basehttp 25784 29500 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-10-24 20:07:23,498 basehttp 25784 29500 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 42638
+INFO 2025-10-24 20:07:23,543 basehttp 25784 28804 "GET /static/matricula/js/toggle-plan-nacional.js HTTP/1.1" 304 0
+INFO 2025-10-24 20:07:23,658 basehttp 25784 29500 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-10-24 20:07:44,825 autoreload 25784 4112 D:\Proyecto Colegio\sistema_colegio\matricula\views.py changed, reloading.
+INFO 2025-10-24 20:07:46,012 autoreload 27712 6468 Watching for file changes with StatReloader
+INFO 2025-10-24 20:07:51,382 autoreload 27712 6468 D:\Proyecto Colegio\sistema_colegio\matricula\urls.py changed, reloading.
+INFO 2025-10-24 20:07:52,338 autoreload 27772 29048 Watching for file changes with StatReloader
+INFO 2025-10-24 20:08:54,867 autoreload 27772 29048 D:\Proyecto Colegio\sistema_colegio\matricula\urls.py changed, reloading.
+INFO 2025-10-24 20:08:55,882 autoreload 27808 11416 Watching for file changes with StatReloader

@@ -137,36 +137,71 @@
             }
         }
 
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
         function copiarDatosEstudiante(estudiante) {
-            console.log('Copiando datos del estudiante:', estudiante);
+            console.log('Agregando estudiante a la institución:', estudiante);
 
-            // Llenar los campos del formulario con los datos del estudiante
-            $('#id_identificacion').val(estudiante.identificacion);
-            $('#id_primer_apellido').val(estudiante.primer_apellido);
-            $('#id_segundo_apellido').val(estudiante.segundo_apellido);
-            $('#id_nombres').val(estudiante.nombres);
-            $('#id_correo').val(estudiante.correo);
-            
-            if (estudiante.celular) $('#id_celular').val(estudiante.celular);
-            if (estudiante.telefono_casa) $('#id_telefono_casa').val(estudiante.telefono_casa);
-            if (estudiante.direccion_exacta) $('#id_direccion_exacta').val(estudiante.direccion_exacta);
-            
-            // Campos de selección (select)
-            if (estudiante.sexo) $('#id_sexo').val(estudiante.sexo).trigger('change');
-            if (estudiante.nacionalidad) $('#id_nacionalidad').val(estudiante.nacionalidad).trigger('change');
-            if (estudiante.provincia) $('#id_provincia').val(estudiante.provincia).trigger('change');
-            if (estudiante.canton) $('#id_canton').val(estudiante.canton).trigger('change');
-            if (estudiante.distrito) $('#id_distrito').val(estudiante.distrito).trigger('change');
-            if (estudiante.fecha_nacimiento) $('#id_fecha_nacimiento').val(estudiante.fecha_nacimiento);
+            // Deshabilitar el botón para evitar clics múltiples
+            var botonCopiar = $('#btn-copiar-datos');
+            botonCopiar.prop('disabled', true).html('⏳ Agregando...');
 
-            // Ocultar resultados
-            $('#resultados-busqueda').fadeOut();
+            // Obtener CSRF token
+            var csrftoken = getCookie('csrftoken');
 
-            // Mostrar mensaje de éxito
-            alert('✓ Datos copiados exitosamente.\n\nRevise la información y complete los campos faltantes antes de guardar.');
-
-            // Scroll al inicio del formulario
-            $('html, body').animate({ scrollTop: 0 }, 'slow');
+            // Hacer llamada AJAX para agregar el estudiante a la institución
+            $.ajax({
+                url: '/matricula/api/agregar-estudiante-institucion/',
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                    'Content-Type': 'application/json'
+                },
+                data: JSON.stringify({
+                    estudiante_id: estudiante.id
+                }),
+                success: function(response) {
+                    console.log('Respuesta del servidor:', response);
+                    
+                    if (response.success) {
+                        alert('✓ ' + response.message + '\n\nSerás redirigido al listado de estudiantes donde podrás ver al estudiante agregado.');
+                        // Redirigir al listado de estudiantes
+                        window.location.href = '/admin/matricula/estudiante/';
+                    } else {
+                        alert('Error: ' + response.error);
+                        botonCopiar.prop('disabled', false).html('✓ Copiar datos y agregar a mi institución');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error al agregar estudiante:', error);
+                    var mensajeError = 'Ocurrió un error al agregar el estudiante a tu institución.';
+                    
+                    try {
+                        var response = JSON.parse(xhr.responseText);
+                        if (response.error) {
+                            mensajeError = 'Error: ' + response.error;
+                        }
+                    } catch (e) {
+                        console.error('Error al parsear respuesta:', e);
+                    }
+                    
+                    alert(mensajeError);
+                    botonCopiar.prop('disabled', false).html('✓ Copiar datos y agregar a mi institución');
+                }
+            });
         }
     });
 

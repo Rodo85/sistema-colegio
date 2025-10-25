@@ -978,4 +978,87 @@ def buscar_estudiante_existente(request):
         return JsonResponse({'existe': False, 'error': str(e)}, status=500)
 
 
+@login_required
+def agregar_estudiante_a_institucion(request):
+    """
+    Agrega un estudiante existente a la institución del usuario actual.
+    Crea la relación EstudianteInstitucion con estado activo.
+    """
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)
+    
+    try:
+        import json
+        data = json.loads(request.body)
+        estudiante_id = data.get('estudiante_id')
+        
+        if not estudiante_id:
+            return JsonResponse({'success': False, 'error': 'ID de estudiante no proporcionado'}, status=400)
+        
+        # Obtener el estudiante
+        from matricula.models import Estudiante, EstudianteInstitucion
+        estudiante = Estudiante.objects.filter(id=estudiante_id).first()
+        
+        if not estudiante:
+            return JsonResponse({'success': False, 'error': 'Estudiante no encontrado'}, status=404)
+        
+        # Obtener la institución del usuario
+        institucion_id = getattr(request, 'institucion_activa_id', None)
+        if not institucion_id:
+            return JsonResponse({'success': False, 'error': 'No se pudo determinar la institución del usuario'}, status=400)
+        
+        from core.models import Institucion
+        institucion = Institucion.objects.filter(id=institucion_id).first()
+        
+        if not institucion:
+            return JsonResponse({'success': False, 'error': 'Institución no encontrada'}, status=404)
+        
+        # Verificar si ya existe la relación
+        relacion_existente = EstudianteInstitucion.objects.filter(
+            estudiante=estudiante,
+            institucion=institucion
+        ).first()
+        
+        if relacion_existente:
+            # Si existe pero está inactiva, reactivarla
+            if relacion_existente.estado != 'activo':
+                relacion_existente.estado = 'activo'
+                relacion_existente.fecha_ingreso = timezone.now().date()
+                relacion_existente.fecha_salida = None
+                relacion_existente.save()
+                
+                return JsonResponse({
+                    'success': True,
+                    'message': 'Estudiante reactivado en la institución',
+                    'estudiante_id': estudiante.id
+                })
+            else:
+                return JsonResponse({
+                    'success': False,
+                    'error': 'El estudiante ya está activo en esta institución'
+                })
+        
+        # Crear la nueva relación
+        EstudianteInstitucion.objects.create(
+            estudiante=estudiante,
+            institucion=institucion,
+            estado='activo',
+            fecha_ingreso=timezone.now().date(),
+            usuario_registro=request.user,
+            observaciones='Agregado desde búsqueda inteligente'
+        )
+        
+        return JsonResponse({
+            'success': True,
+            'message': 'Estudiante agregado exitosamente a la institución',
+            'estudiante_id': estudiante.id
+        })
+        
+    except Exception as e:
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.error(f"Error al agregar estudiante a institución: {e}")
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+
 
