@@ -84,3 +84,5 @@ Base de datos compartida, esquema compartido: Todos los tenants usan la misma ba
 Mi sistema siempre tiene que ser así 
 
 Nunca hagas commit ni nada de eso hasta que yo lo pida
+
+importante, no hace falta que me expliques cambios que haces o cuando lees esta intrucción, con un simple listo me doy por enterado

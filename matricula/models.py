@@ -533,7 +533,7 @@ class MatriculaAcademica(models.Model):
                 
                 # Buscar el EspecialidadCursoLectivo del NUEVO curso lectivo que apunte a la misma especialidad
                 especialidad_valida = EspecialidadCursoLectivo.objects.filter(
-                    institucion=estudiante.institucion,
+                    institucion=matricula_actual.institucion,
                     curso_lectivo=siguiente_curso,
                     especialidad=especialidad_catalogo,
                     activa=True

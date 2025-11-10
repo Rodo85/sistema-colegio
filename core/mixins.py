@@ -15,10 +15,14 @@ class InstitucionScopedAdmin(admin.ModelAdmin):
         if hasattr(qs.model, 'institucion_id'):
             return qs.filter(institucion_id=request.institucion_activa_id)
         
-        # Para modelos que obtienen institución a través de relaciones
+        # Para modelos que obtienen institución a través de estudiante
         # (como MatriculaAcademica que la obtiene a través de estudiante)
-        if hasattr(qs.model, 'estudiante') and hasattr(qs.model.estudiante.field, 'related_model'):
-            return qs.filter(estudiante__institucion_id=request.institucion_activa_id)
+        # El estudiante usa una tabla intermedia EstudianteInstitucion
+        if hasattr(qs.model, 'estudiante'):
+            return qs.filter(
+                estudiante__instituciones_estudiante__institucion_id=request.institucion_activa_id,
+                estudiante__instituciones_estudiante__estado='activo'
+            )
         
         return qs
 

@@ -533,9 +533,52 @@ function imprimirComprobanteMatricula() {
   if (instSel && instSel.value) {
     url += '&institucion_id=' + encodeURIComponent(instSel.value);
   }
-  // Abrir en nueva pestaña/ventana y dejar que la plantilla auto-imprima
-  const w = window.open(url, '_blank');
-  if (w) { try { w.focus(); } catch (e) {} }
+  
+  // Usar la misma técnica que imprimir ficha
+  fetch(url)
+    .then(response => response.text())
+    .then(html => {
+      // Crear iframe oculto para imprimir
+      const iframe = document.createElement('iframe');
+      iframe.style.position = 'fixed';
+      iframe.style.right = '-10000px';
+      iframe.style.bottom = '0';
+      iframe.style.width = '0';
+      iframe.style.height = '0';
+      iframe.style.opacity = '0';
+      iframe.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(iframe);
+      
+      const doc = iframe.contentWindow.document;
+      doc.open();
+      doc.write(html);
+      doc.close();
+      
+      iframe.onload = function() {
+        const iw = iframe.contentWindow;
+        const waitForImages = () => {
+          const imgs = iw.document.images;
+          for (let i = 0; i < imgs.length; i++) {
+            if (!imgs[i].complete) { 
+              setTimeout(waitForImages, 60); 
+              return; 
+            }
+          }
+          iw.focus();
+          iw.print();
+          iw.onafterprint = () => { 
+            try { document.body.removeChild(iframe); } catch (e) {} 
+          };
+          setTimeout(() => { 
+            try { document.body.removeChild(iframe); } catch (e) {} 
+          }, 1200);
+        };
+        waitForImages();
+      };
+    })
+    .catch(err => {
+      alert('Error al cargar el comprobante: ' + err.message);
+    });
 }
 
 // (Se eliminó lógica de asignación de grupo en esta pantalla)

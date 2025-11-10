@@ -113,7 +113,10 @@ class InstitucionMatriculaFilter(admin.SimpleListFilter):
             return queryset
         
         if self.value():
-            return queryset.filter(estudiante__institucion_id=self.value())
+            return queryset.filter(
+                estudiante__instituciones_estudiante__institucion_id=self.value(),
+                estudiante__instituciones_estudiante__estado='activo'
+            )
         return queryset
 
 class SubgrupoInstitucionFilter(InstitucionScopedFilter):
@@ -440,12 +443,40 @@ class EncargadoInline(admin.TabularInline):
     fields = ("persona_contacto", "parentesco", "convivencia", "principal")
     readonly_fields = ()
     formset = EncargadoInlineFormSet
+    
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "parentesco":
+            from catalogos.models import Parentesco
+            from django.db.models import Case, When, Value, IntegerField
+            
+            # Ordenar con prioridad: Madre, Padre, Encargado(a), luego alfabético
+            parentescos = Parentesco.objects.annotate(
+                orden=Case(
+                    When(descripcion__iexact='MADRE', then=Value(1)),
+                    When(descripcion__iexact='PADRE', then=Value(2)),
+                    When(descripcion__iexact='ENCARGADO(A)', then=Value(3)),
+                    When(descripcion__iexact='ENCARGADO', then=Value(3)),
+                    When(descripcion__iexact='ENCARGADA', then=Value(3)),
+                    default=Value(999),
+                    output_field=IntegerField()
+                )
+            ).order_by('orden', 'descripcion')
+            
+            kwargs["queryset"] = parentescos
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 class EstudianteInstitucionInline(admin.TabularInline):
     model = EstudianteInstitucion
     extra = 1
-    fields = ("institucion", "estado", "fecha_ingreso", "fecha_salida", "observaciones")
-    readonly_fields = ("fecha_registro",)
+    fields = ("estudiante_identificacion", "institucion", "estado", "fecha_ingreso", "fecha_salida", "observaciones")
+    readonly_fields = ("fecha_registro", "estudiante_identificacion")
+    
+    def estudiante_identificacion(self, obj):
+        """Mostrar la identificación del estudiante"""
+        if obj.estudiante:
+            return obj.estudiante.identificacion
+        return "-"
+    estudiante_identificacion.short_description = "Identificación"
     
     def get_readonly_fields(self, request, obj=None):
         # Solo superusuarios pueden editar institución
@@ -929,9 +960,13 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
         if request.user.is_superuser:
             return qs
         # Usuarios normales solo ven matrículas de su institución
+        # El estudiante usa una tabla intermedia EstudianteInstitucion
         institucion_id = getattr(request, 'institucion_activa_id', None)
         if institucion_id:
-            return qs.filter(estudiante__institucion_id=institucion_id)
+            return qs.filter(
+                estudiante__instituciones_estudiante__institucion_id=institucion_id,
+                estudiante__instituciones_estudiante__estado='activo'
+            )
         return qs.none()
     
     def identificacion_estudiante(self, obj):
@@ -968,11 +1003,12 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
 
     def institucion_estudiante(self, obj):
         """Mostrar la institución del estudiante"""
-        if obj.estudiante and hasattr(obj.estudiante, 'institucion'):
-            return obj.estudiante.institucion.nombre
+        if obj.estudiante:
+            institucion_activa = obj.estudiante.get_institucion_activa()
+            if institucion_activa:
+                return institucion_activa.nombre
         return "-"
     institucion_estudiante.short_description = "Institución"
-    institucion_estudiante.admin_order_field = 'estudiante__institucion__nombre'
 
     def get_form(self, request, obj=None, **kwargs):
         """Personalizar formulario para lógica inteligente de matrícula"""
@@ -1002,7 +1038,14 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
                 if not request.user.is_superuser:
                     institucion_id = getattr(request, 'institucion_activa_id', None)
                     if institucion_id:
-                        estudiante = Estudiante.objects.get(pk=estudiante_id, institucion_id=institucion_id)
+                        # Filtrar por la tabla intermedia EstudianteInstitucion
+                        estudiante = Estudiante.objects.filter(
+                            pk=estudiante_id,
+                            instituciones_estudiante__institucion_id=institucion_id,
+                            instituciones_estudiante__estado='activo'
+                        ).first()
+                        if not estudiante:
+                            raise Estudiante.DoesNotExist("Estudiante no encontrado o no activo en esta institución")
                     else:
                         estudiante = Estudiante.objects.get(pk=estudiante_id)
                 else:
@@ -1022,7 +1065,9 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
                     if siguiente_data:
                         # Pre-llenar campos con datos inteligentes
                         form.base_fields['estudiante'].initial = estudiante
-                        form.base_fields['institucion'].initial = estudiante.institucion
+                        # Obtener institución activa del estudiante
+                        institucion_activa = estudiante.get_institucion_activa()
+                        form.base_fields['institucion'].initial = institucion_activa
                         form.base_fields['nivel'].initial = siguiente_data['nivel']
                         form.base_fields['curso_lectivo'].initial = siguiente_data['curso_lectivo']
                         
@@ -1036,7 +1081,7 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
                             # Obtener todas las especialidades disponibles para la institución y nuevo curso
                             # PERO asegurar que la especialidad inicial esté incluida
                             especialidades_disponibles = EspecialidadCursoLectivo.objects.filter(
-                                institucion=estudiante.institucion,
+                                institucion=institucion_activa,
                                 curso_lectivo=siguiente_data['curso_lectivo'],
                                 activa=True
                             ).select_related('especialidad')
@@ -1065,12 +1110,14 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
                     else:
                         # Solo pre-llenar estudiante si no hay datos inteligentes
                         form.base_fields['estudiante'].initial = estudiante
-                        form.base_fields['institucion'].initial = estudiante.institucion
+                        institucion_activa = estudiante.get_institucion_activa()
+                        form.base_fields['institucion'].initial = institucion_activa
                         form.base_fields['estudiante'].help_text = "Estudiante seleccionado. Complete manualmente los demás campos."
                 else:
                     # Solo pre-llenar estudiante, proceso completamente manual
                     form.base_fields['estudiante'].initial = estudiante
-                    form.base_fields['institucion'].initial = estudiante.institucion
+                    institucion_activa = estudiante.get_institucion_activa()
+                    form.base_fields['institucion'].initial = institucion_activa
                     form.base_fields['estudiante'].help_text = "Estudiante seleccionado. Complete manualmente nivel, curso lectivo y demás campos."
                         
             except (Estudiante.DoesNotExist, ValueError):
@@ -1180,12 +1227,20 @@ class PlantillaImpresionMatriculaAdmin(admin.ModelAdmin):
 @admin.register(EstudianteInstitucion)
 class EstudianteInstitucionAdmin(admin.ModelAdmin):
     """Admin para gestionar el historial institucional de estudiantes"""
-    list_display = ('estudiante', 'institucion', 'estado_display', 'fecha_ingreso', 'fecha_salida', 'usuario_registro')
+    list_display = ('identificacion_estudiante', 'estudiante', 'institucion', 'estado_display', 'fecha_ingreso', 'fecha_salida', 'usuario_registro')
     list_filter = ('estado', 'institucion', 'fecha_ingreso', 'fecha_salida')
     search_fields = ('estudiante__identificacion', 'estudiante__primer_apellido', 'estudiante__nombres', 'institucion__nombre')
     readonly_fields = ('fecha_registro', 'usuario_registro')
     ordering = ('-fecha_ingreso', '-fecha_registro')
     actions = ['dar_baja_trasladado', 'dar_baja_retirado', 'dar_baja_graduado']
+    
+    def identificacion_estudiante(self, obj):
+        """Mostrar identificación del estudiante"""
+        if obj.estudiante:
+            return obj.estudiante.identificacion
+        return "-"
+    identificacion_estudiante.short_description = "Identificación"
+    identificacion_estudiante.admin_order_field = 'estudiante__identificacion'
     
     def estado_display(self, obj):
         """Mostrar estado con colores"""

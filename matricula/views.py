@@ -218,7 +218,16 @@ def comprobante_matricula(request):
             plantilla = None
 
         # Estudiante y matrícula activa
-        estudiante = Estudiante.objects.get(identificacion=identificacion, institucion=institucion)
+        # El estudiante usa tabla intermedia EstudianteInstitucion
+        estudiante = Estudiante.objects.filter(
+            identificacion=identificacion,
+            instituciones_estudiante__institucion=institucion,
+            instituciones_estudiante__estado='activo'
+        ).first()
+        
+        if not estudiante:
+            return HttpResponse('Estudiante no encontrado en la institución indicada', status=404)
+        
         matricula = MatriculaAcademica.objects.filter(
             estudiante=estudiante,
             curso_lectivo=curso_lectivo,
@@ -274,8 +283,6 @@ def comprobante_matricula(request):
         return HttpResponse('Curso lectivo no encontrado', status=404)
     except Institucion.DoesNotExist:
         return HttpResponse('Institución no encontrada', status=404)
-    except Estudiante.DoesNotExist:
-        return HttpResponse('Estudiante no encontrado en la institución indicada', status=404)
     except Exception as e:
         import logging
         logger = logging.getLogger(__name__)
