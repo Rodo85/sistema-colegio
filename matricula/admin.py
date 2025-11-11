@@ -309,6 +309,12 @@ class EstudianteForm(forms.ModelForm):
         # NOTA: La validación de unicidad se maneja en el modelo Estudiante.clean()
         # No validamos aquí para evitar duplicar lógica
         
+        # Manejar eliminación de foto si el checkbox está marcado
+        foto_clear = self.data.get('foto-clear')
+        if foto_clear:
+            # Si el checkbox está marcado, eliminar la foto
+            cleaned_data['foto'] = None
+        
         # Validar foto si se proporciona
         if foto and hasattr(foto, 'size'):
             # Verificar tamaño del archivo (máximo 5MB)
@@ -517,6 +523,22 @@ class MatriculaAcademicaInline(admin.StackedInline):  # Cambiado a StackedInline
         
         return fields
     
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        """
+        Filtrar el queryset de curso_lectivo para mostrar solo el curso con matricular=True
+        """
+        if db_field.name == "curso_lectivo":
+            from catalogos.models import CursoLectivo
+            # Filtrar para mostrar solo el curso marcado para matrícula
+            curso_matricular = CursoLectivo.get_matricular()
+            if curso_matricular:
+                kwargs["queryset"] = CursoLectivo.objects.filter(id=curso_matricular.id)
+            else:
+                # Si no hay curso marcado para matrícula, mostrar todos
+                kwargs["queryset"] = CursoLectivo.objects.all()
+        
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+    
     class Media:
         js = (
             'admin/js/jquery.init.js',
@@ -673,6 +695,12 @@ class EstudianteAdmin(InstitucionScopedAdmin):
     list_per_page = 25
     ordering = ("primer_apellido", "nombres")
     
+    def get_list_filter(self, request):
+        """Ocultar filtros para usuarios con permiso 'only_search_estudiante'"""
+        if request.user.has_perm('matricula.only_search_estudiante'):
+            return ()  # Sin filtros
+        return self.list_filter
+    
     def get_queryset(self, request):
         """Filtrar estudiantes por institución activa usando EstudianteInstitucion"""
         qs = super(InstitucionScopedAdmin, self).get_queryset(request)
@@ -683,19 +711,51 @@ class EstudianteAdmin(InstitucionScopedAdmin):
         # Filtrar por institución activa a través de EstudianteInstitucion
         institucion_id = getattr(request, 'institucion_activa_id', None)
         if institucion_id:
-            # Filtrar estudiantes que tienen relación activa con la institución
-            return qs.filter(
+            qs = qs.filter(
                 instituciones_estudiante__institucion_id=institucion_id,
                 instituciones_estudiante__estado='activo'
             ).distinct()
+        else:
+            return qs.none()
         
-        return qs.none()
+        # Si el usuario tiene el permiso de "solo búsqueda", no mostrar nada por defecto
+        if request.user.has_perm('matricula.only_search_estudiante'):
+            # Verificar si hay término de búsqueda
+            search_term = request.GET.get('q', '').strip()
+            if not search_term:
+                # No hay búsqueda, retornar queryset vacío
+                resolver = getattr(request, 'resolver_match', None)
+                if resolver and resolver.kwargs.get('object_id'):
+                    return qs
+                return qs.none()
+        
+        return qs
 
     def get_search_results(self, request, queryset, search_term):
+        # Si el usuario tiene permiso 'only_search_estudiante', usar búsqueda mejorada
+        if request.user.has_perm('matricula.only_search_estudiante') and search_term:
+            from django.db.models import Q
+            
+            # Búsqueda que empiece o termine con el término
+            q_objects = Q()
+            
+            for field in self.search_fields:
+                # Buscar que empiece con el término
+                q_objects |= Q(**{f"{field}__istartswith": search_term})
+                # Buscar que termine con el término
+                q_objects |= Q(**{f"{field}__iendswith": search_term})
+            
+            queryset = queryset.filter(q_objects).distinct()
+            
+            # Limitar resultados solo para este permiso especial
+            if not (request.method == 'POST' and 'action' in request.POST and request.POST['action'] == 'delete_selected'):
+                queryset = queryset[:20]
+            
+            # YA aplicamos distinct antes del slice, reportar False
+            return queryset, False
+        
+        # Búsqueda normal para otros usuarios
         queryset, use_distinct = super().get_search_results(request, queryset, search_term)
-        # Solo limitar resultados si no es una acción de borrado masivo
-        if not (request.method == 'POST' and 'action' in request.POST and request.POST['action'] == 'delete_selected'):
-            queryset = queryset[:20]
         return queryset, use_distinct
 
     def change_view(self, request, object_id, form_url='', extra_context=None):
@@ -719,6 +779,19 @@ class EstudianteAdmin(InstitucionScopedAdmin):
         return field
     
     def save_model(self, request, obj, form, change):
+        # Manejar eliminación de foto si el checkbox está marcado
+        foto_clear = request.POST.get('foto-clear')
+        if foto_clear and obj.foto:
+            # Eliminar el archivo físico de la foto
+            import os
+            try:
+                if os.path.isfile(obj.foto.path):
+                    os.remove(obj.foto.path)
+            except Exception:
+                pass  # Ignorar errores al eliminar el archivo
+            # Limpiar el campo foto del objeto
+            obj.foto = None
+        
         # Guardar el estudiante primero
         super().save_model(request, obj, form, change)
         
@@ -856,6 +929,49 @@ class PersonaContactoAdmin(InstitucionScopedAdmin):
     list_per_page = 25
     ordering = ("primer_apellido", "nombres")
 
+    def get_list_filter(self, request):
+        """Ocultar filtros cuando el usuario solo puede buscar contactos."""
+        if request.user.has_perm('matricula.only_search_personacontacto'):
+            return ()
+        return self.list_filter
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+
+        if request.user.is_superuser:
+            return qs
+
+        # Para el permiso especial, no mostrar nada a menos que use búsqueda
+        if request.user.has_perm('matricula.only_search_personacontacto'):
+            search_term = request.GET.get('q', '').strip()
+            if not search_term:
+                resolver = getattr(request, 'resolver_match', None)
+                if resolver and resolver.kwargs.get('object_id'):
+                    return qs
+                return qs.none()
+
+        return qs
+
+    def get_search_results(self, request, queryset, search_term):
+        # Manejo especial para el permiso de búsqueda
+        if request.user.has_perm('matricula.only_search_personacontacto') and search_term:
+            from django.db.models import Q
+
+            q_objects = Q()
+            for field in self.search_fields:
+                q_objects |= Q(**{f"{field}__istartswith": search_term})
+                q_objects |= Q(**{f"{field}__iendswith": search_term})
+
+            queryset = queryset.filter(q_objects)
+
+            if not (request.method == 'POST' and 'action' in request.POST and request.POST['action'] == 'delete_selected'):
+                queryset = queryset[:20]
+
+            # devolvemos False para que Django no intente aplicar distinct automáticamente
+            return queryset, False
+
+        return super().get_search_results(request, queryset, search_term)
+
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         # Primero llamar al mixin para establecer el valor inicial
         field = super().formfield_for_foreignkey(db_field, request, **kwargs)
@@ -954,6 +1070,22 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
                 fields = [f for f in fields if f not in campos_restringidos]
         
         return fields
+    
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        """
+        Filtrar el queryset de curso_lectivo para mostrar solo el curso con matricular=True
+        """
+        if db_field.name == "curso_lectivo":
+            from catalogos.models import CursoLectivo
+            # Filtrar para mostrar solo el curso marcado para matrícula
+            curso_matricular = CursoLectivo.get_matricular()
+            if curso_matricular:
+                kwargs["queryset"] = CursoLectivo.objects.filter(id=curso_matricular.id)
+            else:
+                # Si no hay curso marcado para matrícula, mostrar todos
+                kwargs["queryset"] = CursoLectivo.objects.all()
+        
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
     
     def get_queryset(self, request):
         qs = super().get_queryset(request)

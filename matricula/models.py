@@ -47,6 +47,9 @@ class PersonaContacto(models.Model):
                 name="unique_persona_contacto_por_institucion",
             )
         ]
+        permissions = [
+            ("only_search_personacontacto", "Solo puede buscar personas de contacto (no ve lista completa)"),
+        ]
 
     def clean(self):
         from django.core.exceptions import ValidationError
@@ -183,6 +186,7 @@ class Estudiante(models.Model):
             ("print_ficha_estudiante", "Puede imprimir ficha del estudiante"),
             ("print_comprobante_matricula", "Puede imprimir comprobante de matrícula"),
             ("access_asignacion_grupos", "Puede acceder a Asignación de Grupos"),
+            ("only_search_estudiante", "Solo puede buscar estudiantes (no ve lista completa)"),
         ]
 
     def clean(self):
@@ -237,6 +241,34 @@ class Estudiante(models.Model):
             except ValueError:
                 # Si es 29 de febrero en año no bisiesto, usar 28 de febrero
                 self.vence_poliza = date(vence_anio, vence_mes, 28)
+
+        # Eliminar foto anterior si se está cargando una nueva
+        if self.pk:  # Solo si el estudiante ya existe
+            try:
+                # Obtener el estudiante actual de la base de datos
+                estudiante_actual = Estudiante.objects.get(pk=self.pk)
+                
+                # Si el estudiante tenía una foto anterior y ahora tiene una nueva (diferente)
+                if estudiante_actual.foto and self.foto and estudiante_actual.foto != self.foto:
+                    # Eliminar el archivo físico de la foto anterior
+                    import os
+                    if os.path.isfile(estudiante_actual.foto.path):
+                        os.remove(estudiante_actual.foto.path)
+                
+                # Si se está eliminando la foto (foto = None o '')
+                elif estudiante_actual.foto and not self.foto:
+                    # Eliminar el archivo físico de la foto anterior
+                    import os
+                    if os.path.isfile(estudiante_actual.foto.path):
+                        os.remove(estudiante_actual.foto.path)
+                        
+            except Estudiante.DoesNotExist:
+                pass  # El estudiante no existe aún, no hay foto anterior que eliminar
+            except Exception as e:
+                # Si hay algún error al eliminar la foto, registrar pero continuar
+                import logging
+                logger = logging.getLogger(__name__)
+                logger.warning(f"Error al eliminar foto anterior del estudiante: {e}")
 
         super().save(*args, **kwargs)
 
