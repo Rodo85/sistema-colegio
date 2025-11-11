@@ -86,3 +86,7 @@ Mi sistema siempre tiene que ser así
 Nunca hagas commit ni nada de eso hasta que yo lo pida
 
 importante, no hace falta que me expliques cambios que haces o cuando lees esta intrucción, con un simple listo me doy por enterado
+
+No hace falta crear documentos explicativos nunca
+
+No hagas commit hasta que yo te de la instrucción

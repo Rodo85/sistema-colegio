@@ -29739,3 +29739,1557 @@ INFO 2025-11-10 08:14:08,064 basehttp 27944 38408 "GET /admin/ HTTP/1.1" 200 353
 INFO 2025-11-10 08:14:44,468 basehttp 27944 38408 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 67696
 INFO 2025-11-10 08:14:44,504 basehttp 27944 38412 "GET /static/matricula/js/toggle-plan-nacional.js HTTP/1.1" 200 5947
 INFO 2025-11-10 08:14:44,608 basehttp 27944 38408 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 08:32:14,423 autoreload 38068 6560 Watching for file changes with StatReloader
+INFO 2025-11-10 08:32:22,444 basehttp 38068 36860 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 67696
+INFO 2025-11-10 08:32:22,471 basehttp 38068 18420 "GET /static/matricula/js/toggle-plan-nacional.js HTTP/1.1" 200 5947
+INFO 2025-11-10 08:32:22,535 basehttp 38068 36860 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 08:32:25,682 basehttp 38068 36860 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 67696
+INFO 2025-11-10 08:32:25,751 basehttp 38068 36860 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 08:32:29,761 basehttp 38068 36860 "GET /admin/matricula/estudiante/867/change/ HTTP/1.1" 200 241366
+INFO 2025-11-10 08:32:29,811 basehttp 38068 18420 "GET /static/matricula/js/buscar-estudiante-existente.js HTTP/1.1" 304 0
+INFO 2025-11-10 08:32:29,916 basehttp 38068 18420 "GET /media/estudiantes/fotos/2025/10/PEREZ_PEREZ_DEIBY_ANTONIO.jpg HTTP/1.1" 200 21286
+INFO 2025-11-10 08:32:29,918 basehttp 38068 36860 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 08:32:30,491 views 38068 36860 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:32:30,492 basehttp 38068 36860 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:32:30,629 views 38068 36860 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:32:30,629 basehttp 38068 36860 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:32:31,206 views 38068 36860 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:32:31,206 basehttp 38068 36860 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:32:31,627 views 38068 36860 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:32:31,628 basehttp 38068 36860 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:32:32,324 views 38068 36860 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:32:32,326 basehttp 38068 36860 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:32:32,781 views 38068 36860 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:32:32,782 basehttp 38068 36860 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:32:33,657 views 38068 36860 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:32:33,658 basehttp 38068 36860 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:35:45,193 autoreload 38068 6560 D:\Proyecto Colegio\sistema_colegio\matricula\widgets.py changed, reloading.
+INFO 2025-11-10 08:35:46,136 autoreload 33352 39288 Watching for file changes with StatReloader
+INFO 2025-11-10 08:35:54,120 basehttp 33352 6148 "GET /admin/matricula/estudiante/867/change/ HTTP/1.1" 200 241664
+INFO 2025-11-10 08:35:54,168 basehttp 33352 40160 "GET /static/matricula/js/toggle-plan-nacional.js HTTP/1.1" 304 0
+INFO 2025-11-10 08:35:54,242 basehttp 33352 19400 "GET /media/estudiantes/fotos/2025/10/PEREZ_PEREZ_DEIBY_ANTONIO.jpg HTTP/1.1" 200 21286
+INFO 2025-11-10 08:35:54,242 basehttp 33352 6148 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 08:35:54,930 views 33352 6148 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:35:54,930 basehttp 33352 6148 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:35:55,066 views 33352 6148 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:35:55,066 basehttp 33352 6148 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:35:55,642 views 33352 6148 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:35:55,643 basehttp 33352 6148 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:35:56,196 views 33352 6148 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:35:56,197 basehttp 33352 6148 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:35:56,639 views 33352 6148 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:35:56,640 basehttp 33352 6148 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:35:57,065 views 33352 6148 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:35:57,066 basehttp 33352 6148 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:35:58,065 views 33352 6148 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:35:58,066 basehttp 33352 6148 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:36:07,149 basehttp 33352 6148 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 67696
+INFO 2025-11-10 08:36:07,236 autoreload 33352 39288 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-11-10 08:36:08,280 autoreload 19928 34632 Watching for file changes with StatReloader
+INFO 2025-11-10 08:36:09,291 basehttp 19928 10536 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 08:36:13,742 basehttp 19928 10536 "GET /admin/matricula/estudiante/867/change/ HTTP/1.1" 200 241664
+INFO 2025-11-10 08:36:13,847 basehttp 19928 10536 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 08:36:13,851 basehttp 19928 40568 "GET /media/estudiantes/fotos/2025/10/PEREZ_PEREZ_DEIBY_ANTONIO.jpg HTTP/1.1" 200 21286
+INFO 2025-11-10 08:36:14,373 views 19928 40568 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:36:14,374 basehttp 19928 40568 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:36:14,514 views 19928 40568 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:36:14,515 basehttp 19928 40568 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:36:15,070 views 19928 40568 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:36:15,071 basehttp 19928 40568 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:36:15,510 views 19928 40568 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:36:15,511 basehttp 19928 40568 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:36:16,077 views 19928 40568 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:36:16,077 basehttp 19928 40568 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:36:16,529 views 19928 40568 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:36:16,529 basehttp 19928 40568 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:36:17,534 views 19928 40568 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:36:17,535 basehttp 19928 40568 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:36:26,294 basehttp 19928 40568 "POST /admin/matricula/estudiante/867/change/ HTTP/1.1" 302 0
+INFO 2025-11-10 08:36:26,478 basehttp 19928 40568 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 68286
+INFO 2025-11-10 08:36:26,585 basehttp 19928 40568 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 08:36:29,520 basehttp 19928 40568 "GET /admin/matricula/estudiante/867/change/ HTTP/1.1" 200 241664
+INFO 2025-11-10 08:36:29,534 autoreload 19928 34632 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-11-10 08:36:30,528 autoreload 19144 38712 Watching for file changes with StatReloader
+INFO 2025-11-10 08:36:31,309 basehttp 19144 4636 "GET /media/estudiantes/fotos/2025/10/PEREZ_PEREZ_DEIBY_ANTONIO.jpg HTTP/1.1" 200 21286
+INFO 2025-11-10 08:36:31,315 basehttp 19144 20288 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 08:36:31,843 views 19144 20288 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:36:31,843 basehttp 19144 20288 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:36:32,128 views 19144 20288 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:36:32,129 basehttp 19144 20288 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:36:32,534 views 19144 20288 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:36:32,535 basehttp 19144 20288 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:36:33,013 views 19144 20288 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:36:33,015 basehttp 19144 20288 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:36:33,572 views 19144 20288 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:36:33,573 basehttp 19144 20288 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:36:34,017 views 19144 20288 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:36:34,018 basehttp 19144 20288 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:36:35,018 views 19144 20288 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:36:35,019 basehttp 19144 20288 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:36:45,919 basehttp 19144 20288 "GET /admin/matricula/estudiante/867/change/ HTTP/1.1" 200 241664
+INFO 2025-11-10 08:36:46,001 basehttp 19144 20288 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-11-10 08:36:46,004 basehttp 19144 36700 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-11-10 08:36:46,008 basehttp 19144 39440 "GET /static/vendor/select2/css/select2.min.css HTTP/1.1" 200 16264
+INFO 2025-11-10 08:36:46,023 basehttp 19144 40484 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 08:36:46,028 basehttp 19144 36700 "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+INFO 2025-11-10 08:36:46,030 basehttp 19144 36700 "GET /static/matricula/js/dependent-dropdowns.js HTTP/1.1" 200 17518
+INFO 2025-11-10 08:36:46,067 basehttp 19144 20288 "GET /static/admin/js/calendar.js HTTP/1.1" 200 9141
+INFO 2025-11-10 08:36:46,070 basehttp 19144 40484 "GET /static/admin/js/core.js HTTP/1.1" 200 6208
+INFO 2025-11-10 08:36:46,073 basehttp 19144 40484 "GET /static/matricula/js/toggle-plan-nacional.js HTTP/1.1" 200 5947
+INFO 2025-11-10 08:36:46,077 basehttp 19144 39440 "GET /static/admin/js/admin/DateTimeShortcuts.js HTTP/1.1" 200 19319
+INFO 2025-11-10 08:36:46,080 basehttp 19144 40484 "GET /static/matricula/js/autocomplete-correo.js HTTP/1.1" 200 987
+INFO 2025-11-10 08:36:46,081 basehttp 19144 36700 "GET /static/admin/js/inlines.js HTTP/1.1" 200 15628
+INFO 2025-11-10 08:36:46,084 basehttp 19144 40484 "GET /static/matricula/js/buscar-estudiante-existente.js HTTP/1.1" 200 9595
+INFO 2025-11-10 08:36:46,117 basehttp 19144 36700 "GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+INFO 2025-11-10 08:36:46,119 basehttp 19144 39440 "GET /static/admin/js/actions.js HTTP/1.1" 200 8076
+INFO 2025-11-10 08:36:46,121 basehttp 19144 20288 "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 9777
+INFO 2025-11-10 08:36:46,121 basehttp 19144 4636 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-11-10 08:36:46,125 basehttp 19144 40484 "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+INFO 2025-11-10 08:36:46,130 basehttp 19144 39440 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-11-10 08:36:46,171 basehttp 19144 39440 "GET /static/admin/js/change_form.js HTTP/1.1" 200 606
+INFO 2025-11-10 08:36:46,187 basehttp 19144 32604 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-11-10 08:36:46,197 basehttp 19144 39440 "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 200 586
+INFO 2025-11-10 08:36:46,203 basehttp 19144 20288 "GET /media/estudiantes/fotos/2025/10/PEREZ_PEREZ_DEIBY_ANTONIO.jpg HTTP/1.1" 200 21286
+INFO 2025-11-10 08:36:46,266 basehttp 19144 20288 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-11-10 08:36:46,273 basehttp 19144 39440 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-11-10 08:36:46,278 basehttp 19144 36700 "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 325171
+INFO 2025-11-10 08:36:46,302 basehttp 19144 4636 "GET /static/admin/img/icon-deletelink.svg HTTP/1.1" 200 392
+INFO 2025-11-10 08:36:46,302 basehttp 19144 32604 "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+INFO 2025-11-10 08:36:46,303 basehttp 19144 40484 "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+INFO 2025-11-10 08:36:46,303 basehttp 19144 20288 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-11-10 08:36:46,320 basehttp 19144 32604 "GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 200 581
+INFO 2025-11-10 08:36:46,329 basehttp 19144 36700 "GET /static/jazzmin/js/change_form.js HTTP/1.1" 200 6052
+INFO 2025-11-10 08:36:46,333 basehttp 19144 40484 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-11-10 08:36:46,339 basehttp 19144 20288 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-11-10 08:36:46,348 basehttp 19144 39440 "GET /static/vendor/select2/js/select2.min.js HTTP/1.1" 200 73170
+INFO 2025-11-10 08:36:46,372 autoreload 19144 38712 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-11-10 08:36:47,389 autoreload 12956 37996 Watching for file changes with StatReloader
+INFO 2025-11-10 08:36:48,085 basehttp 12956 25264 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-11-10 08:36:48,163 views 12956 25264 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:36:48,164 basehttp 12956 25264 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:36:48,240 views 12956 25264 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:36:48,241 basehttp 12956 25264 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:36:48,310 views 12956 12004 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:36:48,311 basehttp 12956 12004 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:36:48,484 views 12956 25264 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:36:48,485 basehttp 12956 25264 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:36:48,622 views 12956 25264 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:36:48,623 basehttp 12956 25264 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:36:49,079 views 12956 25264 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:36:49,080 basehttp 12956 25264 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:36:50,088 views 12956 25264 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:36:50,089 basehttp 12956 25264 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:47:11,244 basehttp 12956 34016 "POST /admin/matricula/estudiante/867/change/ HTTP/1.1" 302 0
+INFO 2025-11-10 08:47:11,520 basehttp 12956 34016 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 68286
+INFO 2025-11-10 08:47:11,550 basehttp 12956 5408 "GET /static/matricula/js/toggle-plan-nacional.js HTTP/1.1" 304 0
+INFO 2025-11-10 08:47:11,615 basehttp 12956 34016 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 08:47:14,423 basehttp 12956 34016 "GET /admin/matricula/estudiante/867/change/ HTTP/1.1" 200 240988
+INFO 2025-11-10 08:47:14,516 basehttp 12956 34016 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 08:47:15,046 views 12956 34016 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:47:15,047 basehttp 12956 34016 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:47:15,216 views 12956 34016 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:47:15,216 basehttp 12956 34016 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:47:15,765 views 12956 34016 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:47:15,766 basehttp 12956 34016 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:47:16,212 views 12956 34016 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:47:16,213 basehttp 12956 34016 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:47:16,748 views 12956 34016 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:47:16,748 basehttp 12956 34016 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:47:17,192 views 12956 34016 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:47:17,193 basehttp 12956 34016 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:47:18,224 views 12956 34016 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 08:47:18,224 basehttp 12956 34016 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 08:47:24,121 basehttp 12956 34016 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 67696
+INFO 2025-11-10 08:47:24,202 basehttp 12956 34016 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 08:47:29,315 basehttp 12956 34016 "GET /admin/matricula/estudiante/?q=lucca HTTP/1.1" 200 49049
+INFO 2025-11-10 08:47:29,396 basehttp 12956 34016 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 08:47:31,648 basehttp 12956 34016 "GET /admin/matricula/estudiante/952/change/?_changelist_filters=q%3Dlucca HTTP/1.1" 200 295900
+INFO 2025-11-10 08:47:31,740 basehttp 12956 34016 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 08:47:31,746 basehttp 12956 5408 "GET /media/estudiantes/fotos/2025/11/mascota.png HTTP/1.1" 200 98245
+INFO 2025-11-10 08:47:32,332 views 12956 5408 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-11-10 08:47:32,332 basehttp 12956 5408 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-11-10 08:47:32,403 views 12956 5408 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-11-10 08:47:32,404 basehttp 12956 5408 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-11-10 08:47:32,455 views 12956 34016 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-11-10 08:47:32,456 basehttp 12956 34016 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-11-10 08:47:32,519 views 12956 34016 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-11-10 08:47:32,519 basehttp 12956 34016 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-11-10 08:47:33,128 views 12956 34016 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-11-10 08:47:33,129 basehttp 12956 34016 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-11-10 08:47:33,212 views 12956 34016 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-11-10 08:47:33,213 basehttp 12956 34016 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-11-10 08:47:33,429 views 12956 34016 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-11-10 08:47:33,430 basehttp 12956 34016 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-11-10 08:47:33,489 views 12956 34016 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-11-10 08:47:33,490 basehttp 12956 34016 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-11-10 08:47:33,978 views 12956 34016 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-11-10 08:47:33,979 basehttp 12956 34016 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-11-10 08:47:34,049 views 12956 34016 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-11-10 08:47:34,050 basehttp 12956 34016 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-11-10 08:47:34,443 views 12956 34016 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-11-10 08:47:34,443 basehttp 12956 34016 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-11-10 08:47:34,515 views 12956 34016 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-11-10 08:47:34,516 basehttp 12956 34016 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-11-10 08:47:35,461 views 12956 34016 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-11-10 08:47:35,462 basehttp 12956 34016 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-11-10 08:47:35,632 views 12956 34016 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-11-10 08:47:35,634 basehttp 12956 34016 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-11-10 08:47:35,677 basehttp 12956 5408 "POST /admin/matricula/estudiante/952/change/?_changelist_filters=q%3Dlucca HTTP/1.1" 302 0
+INFO 2025-11-10 08:47:35,783 basehttp 12956 5408 "GET /admin/matricula/estudiante/?q=lucca HTTP/1.1" 200 49634
+INFO 2025-11-10 08:47:35,859 basehttp 12956 5408 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 08:47:38,716 basehttp 12956 5408 "GET /admin/matricula/estudiante/952/change/?_changelist_filters=q%3Dlucca HTTP/1.1" 200 295242
+INFO 2025-11-10 08:47:38,798 basehttp 12956 5408 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 08:47:39,370 views 12956 5408 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-11-10 08:47:39,371 basehttp 12956 5408 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-11-10 08:47:39,437 views 12956 5408 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-11-10 08:47:39,438 basehttp 12956 5408 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-11-10 08:47:39,491 views 12956 34016 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-11-10 08:47:39,491 basehttp 12956 34016 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-11-10 08:47:39,562 views 12956 34016 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-11-10 08:47:39,563 basehttp 12956 34016 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-11-10 08:47:40,042 views 12956 34016 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-11-10 08:47:40,042 basehttp 12956 34016 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-11-10 08:47:40,104 views 12956 34016 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-11-10 08:47:40,105 basehttp 12956 34016 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-11-10 08:47:40,520 views 12956 34016 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-11-10 08:47:40,520 basehttp 12956 34016 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-11-10 08:47:40,582 views 12956 34016 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-11-10 08:47:40,582 basehttp 12956 34016 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-11-10 08:47:41,049 views 12956 34016 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-11-10 08:47:41,050 basehttp 12956 34016 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-11-10 08:47:41,111 views 12956 34016 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-11-10 08:47:41,112 basehttp 12956 34016 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-11-10 08:47:41,526 views 12956 34016 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-11-10 08:47:41,526 basehttp 12956 34016 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-11-10 08:47:41,586 views 12956 34016 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-11-10 08:47:41,587 basehttp 12956 34016 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-11-10 08:47:42,509 views 12956 34016 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-11-10 08:47:42,509 basehttp 12956 34016 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-11-10 08:47:42,580 views 12956 34016 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-11-10 08:47:42,581 basehttp 12956 34016 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-11-10 10:51:31,217 autoreload 12956 37996 D:\Proyecto Colegio\sistema_colegio\matricula\widgets.py changed, reloading.
+INFO 2025-11-10 10:51:32,061 autoreload 30284 47364 Watching for file changes with StatReloader
+INFO 2025-11-10 10:52:05,634 basehttp 30284 40972 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 67696
+INFO 2025-11-10 10:52:05,662 basehttp 30284 47284 "GET /static/matricula/js/toggle-plan-nacional.js HTTP/1.1" 304 0
+INFO 2025-11-10 10:52:05,715 basehttp 30284 40972 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 10:52:55,558 basehttp 30284 40972 "GET /admin/matricula/matriculaacademica/add/?estudiante=867 HTTP/1.1" 200 59609
+INFO 2025-11-10 10:52:55,600 basehttp 30284 47284 "GET /static/matricula/js/dependent-especialidad.js HTTP/1.1" 200 27435
+INFO 2025-11-10 10:52:55,611 basehttp 30284 37252 "GET /static/matricula/js/clear-dependent-fields.js HTTP/1.1" 200 8339
+INFO 2025-11-10 10:52:55,615 basehttp 30284 37388 "GET /static/matricula/js/especialidad-limpia-campos.js HTTP/1.1" 200 7932
+INFO 2025-11-10 10:52:55,692 basehttp 30284 40972 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 10:53:44,609 basehttp 30284 40972 "GET /admin/ HTTP/1.1" 200 35340
+INFO 2025-11-10 10:53:47,997 basehttp 30284 40972 "GET /admin/catalogos/cursolectivo/ HTTP/1.1" 200 46745
+INFO 2025-11-10 10:53:48,081 basehttp 30284 40972 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 10:56:02,210 basehttp 30284 40972 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 67696
+INFO 2025-11-10 10:56:02,316 basehttp 30284 40972 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 10:56:04,756 basehttp 30284 40972 "GET /admin/matricula/matriculaacademica/add/?estudiante=867 HTTP/1.1" 200 59609
+INFO 2025-11-10 10:56:04,856 basehttp 30284 40972 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 10:57:00,576 basehttp 30284 40972 "GET /admin/catalogos/cursolectivo/ HTTP/1.1" 200 46745
+INFO 2025-11-10 10:57:00,677 basehttp 30284 40972 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 10:58:56,181 autoreload 30284 47364 D:\Proyecto Colegio\sistema_colegio\catalogos\models.py changed, reloading.
+INFO 2025-11-10 10:58:58,035 autoreload 42456 11324 Watching for file changes with StatReloader
+INFO 2025-11-10 10:59:31,089 autoreload 42456 11324 D:\Proyecto Colegio\sistema_colegio\catalogos\admin.py changed, reloading.
+INFO 2025-11-10 10:59:32,053 autoreload 42788 48872 Watching for file changes with StatReloader
+INFO 2025-11-10 10:59:54,760 autoreload 42788 48872 D:\Proyecto Colegio\sistema_colegio\matricula\forms.py changed, reloading.
+INFO 2025-11-10 10:59:55,727 autoreload 34256 44972 Watching for file changes with StatReloader
+INFO 2025-11-10 11:01:57,319 autoreload 34256 44972 D:\Proyecto Colegio\sistema_colegio\catalogos\models.py changed, reloading.
+INFO 2025-11-10 11:01:58,320 autoreload 21396 42632 Watching for file changes with StatReloader
+INFO 2025-11-10 11:02:23,622 basehttp 21396 42012 "GET /admin/ HTTP/1.1" 200 35340
+INFO 2025-11-10 11:02:26,079 basehttp 21396 42012 "GET /admin/ HTTP/1.1" 200 35340
+INFO 2025-11-10 11:02:26,113 basehttp 21396 42012 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-11-10 11:02:26,115 basehttp 21396 47160 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-11-10 11:02:26,127 basehttp 21396 40916 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-11-10 11:02:26,136 basehttp 21396 39876 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-11-10 11:02:26,152 basehttp 21396 47160 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-11-10 11:02:26,170 basehttp 21396 42012 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-11-10 11:02:26,180 basehttp 21396 43256 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-11-10 11:02:26,198 basehttp 21396 47888 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-11-10 11:02:26,229 basehttp 21396 47888 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-11-10 11:02:26,230 basehttp 21396 43256 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-11-10 11:02:26,384 basehttp 21396 43256 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-11-10 11:02:31,390 basehttp 21396 43256 "GET /admin/catalogos/cursolectivo/ HTTP/1.1" 200 47998
+INFO 2025-11-10 11:02:31,518 basehttp 21396 43256 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 11:02:44,102 basehttp 21396 43256 "GET /admin/catalogos/cursolectivo/1/change/ HTTP/1.1" 200 45935
+INFO 2025-11-10 11:02:44,185 basehttp 21396 43256 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 11:02:52,439 basehttp 21396 43256 "POST /admin/catalogos/cursolectivo/1/change/ HTTP/1.1" 302 0
+INFO 2025-11-10 11:02:52,535 basehttp 21396 43256 "GET /admin/catalogos/cursolectivo/ HTTP/1.1" 200 48578
+INFO 2025-11-10 11:02:52,630 basehttp 21396 43256 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 11:03:01,350 basehttp 21396 43256 "GET /admin/catalogos/cursolectivo/2/change/ HTTP/1.1" 200 45918
+INFO 2025-11-10 11:03:01,439 basehttp 21396 43256 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 11:03:04,838 basehttp 21396 43256 "POST /admin/catalogos/cursolectivo/2/change/ HTTP/1.1" 302 0
+INFO 2025-11-10 11:03:04,932 basehttp 21396 43256 "GET /admin/catalogos/cursolectivo/ HTTP/1.1" 200 49195
+INFO 2025-11-10 11:03:05,022 basehttp 21396 43256 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 11:03:09,395 basehttp 21396 43256 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 67696
+INFO 2025-11-10 11:03:09,480 basehttp 21396 43256 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-11-10 11:03:11,311 forms 21396 43256 Error al filtrar especialidades: cannot access local variable 'Estudiante' where it is not associated with a value
+INFO 2025-11-10 11:03:11,369 basehttp 21396 43256 "GET /admin/matricula/matriculaacademica/add/?estudiante=867 HTTP/1.1" 200 59633
+INFO 2025-11-10 11:03:11,570 basehttp 21396 43256 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 11:05:50,440 autoreload 21396 42632 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-11-10 11:05:51,427 autoreload 37212 40556 Watching for file changes with StatReloader
+INFO 2025-11-10 11:06:07,658 autoreload 37212 40556 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-11-10 11:06:08,571 autoreload 27032 48888 Watching for file changes with StatReloader
+INFO 2025-11-10 11:06:14,139 basehttp 27032 34744 "GET /admin/ HTTP/1.1" 200 35340
+INFO 2025-11-10 11:06:16,519 basehttp 27032 34744 "GET /admin/ HTTP/1.1" 200 35340
+INFO 2025-11-10 11:06:16,553 basehttp 27032 38128 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-11-10 11:06:16,557 basehttp 27032 2916 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-11-10 11:06:16,557 basehttp 27032 34744 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-11-10 11:06:16,564 basehttp 27032 38128 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-11-10 11:06:16,564 basehttp 27032 42484 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-11-10 11:06:16,565 basehttp 27032 44136 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-11-10 11:06:16,568 basehttp 27032 2916 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-11-10 11:06:16,579 basehttp 27032 39644 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-11-10 11:06:16,665 basehttp 27032 2916 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-11-10 11:06:16,666 basehttp 27032 39644 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-11-10 11:06:16,833 basehttp 27032 39644 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-11-10 11:08:37,518 autoreload 27032 48888 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-11-10 11:08:38,440 autoreload 1460 48984 Watching for file changes with StatReloader
+INFO 2025-11-10 11:08:42,711 basehttp 1460 45644 "GET /admin/ HTTP/1.1" 200 35340
+INFO 2025-11-10 11:08:44,843 basehttp 1460 45644 "GET /admin/ HTTP/1.1" 200 35340
+INFO 2025-11-10 11:08:44,869 basehttp 1460 45156 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-11-10 11:08:44,871 basehttp 1460 45644 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-11-10 11:08:44,872 basehttp 1460 38088 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-11-10 11:08:44,873 basehttp 1460 19144 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-11-10 11:08:44,876 basehttp 1460 17532 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-11-10 11:08:44,876 basehttp 1460 45156 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-11-10 11:08:44,883 basehttp 1460 38088 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-11-10 11:08:44,889 basehttp 1460 42400 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-11-10 11:08:44,992 basehttp 1460 38088 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-11-10 11:08:44,994 basehttp 1460 42400 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-11-10 11:08:45,149 basehttp 1460 42400 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-11-10 11:08:52,932 basehttp 1460 42400 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 67696
+INFO 2025-11-10 11:08:52,956 basehttp 1460 38088 "GET /static/matricula/js/toggle-plan-nacional.js HTTP/1.1" 304 0
+INFO 2025-11-10 11:08:53,018 basehttp 1460 42400 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-11-10 11:08:54,757 log 1460 42400 Internal Server Error: /admin/matricula/matriculaacademica/add/
+Traceback (most recent call last):
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 719, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\views\decorators\cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\sites.py", line 246, in inner
+    return view(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 1984, in add_view
+    return self.changeform_view(request, None, form_url, extra_context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 1840, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 1910, in _changeform_view
+    form = ModelForm(initial=initial)
+  File "D:\Proyecto Colegio\sistema_colegio\matricula\admin.py", line 1068, in __init__
+    super().__init__(*args, **kwargs)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\matricula\forms.py", line 76, in __init__
+    self.fields['curso_lectivo'].initial = curso_matricular.id
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+KeyError: 'curso_lectivo'
+ERROR 2025-11-10 11:08:54,762 basehttp 1460 42400 "GET /admin/matricula/matriculaacademica/add/?estudiante=867 HTTP/1.1" 500 143836
+WARNING 2025-11-10 11:08:54,921 log 1460 42400 Not Found: /favicon.ico
+WARNING 2025-11-10 11:08:54,922 basehttp 1460 42400 "GET /favicon.ico HTTP/1.1" 404 3331
+INFO 2025-11-10 11:09:49,559 autoreload 1460 48984 D:\Proyecto Colegio\sistema_colegio\matricula\forms.py changed, reloading.
+INFO 2025-11-10 11:09:50,521 autoreload 38900 47596 Watching for file changes with StatReloader
+INFO 2025-11-10 11:10:02,272 autoreload 38900 47596 D:\Proyecto Colegio\sistema_colegio\matricula\forms.py changed, reloading.
+INFO 2025-11-10 11:10:03,175 autoreload 48176 38496 Watching for file changes with StatReloader
+INFO 2025-11-10 11:10:06,727 basehttp 48176 44504 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 67696
+INFO 2025-11-10 11:10:06,864 basehttp 48176 44504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 11:10:07,860 basehttp 48176 44504 "GET /admin/ HTTP/1.1" 200 35340
+INFO 2025-11-10 11:10:09,689 basehttp 48176 44504 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 67696
+INFO 2025-11-10 11:10:09,765 basehttp 48176 44504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-11-10 11:10:11,811 log 48176 44504 Internal Server Error: /admin/matricula/matriculaacademica/add/
+Traceback (most recent call last):
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 719, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\views\decorators\cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\sites.py", line 246, in inner
+    return view(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 1984, in add_view
+    return self.changeform_view(request, None, form_url, extra_context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 1840, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 1910, in _changeform_view
+    form = ModelForm(initial=initial)
+  File "D:\Proyecto Colegio\sistema_colegio\matricula\admin.py", line 1068, in __init__
+    super().__init__(*args, **kwargs)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\matricula\forms.py", line 82, in __init__
+    self.fields['curso_lectivo'].initial = curso_matricular.id
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+KeyError: 'curso_lectivo'
+ERROR 2025-11-10 11:10:11,817 basehttp 48176 44504 "GET /admin/matricula/matriculaacademica/add/?estudiante=867 HTTP/1.1" 500 143978
+INFO 2025-11-10 11:10:17,773 basehttp 48176 44504 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 67696
+INFO 2025-11-10 11:10:17,861 basehttp 48176 44504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 11:10:20,620 basehttp 48176 44504 "GET /admin/matricula/estudiante/867/change/ HTTP/1.1" 200 240988
+INFO 2025-11-10 11:10:20,718 basehttp 48176 44504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 11:10:21,254 views 48176 44504 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 11:10:21,254 basehttp 48176 44504 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 11:10:21,391 views 48176 44504 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 11:10:21,391 basehttp 48176 44504 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+ERROR 2025-11-10 11:10:21,837 log 48176 44504 Internal Server Error: /admin/matricula/matriculaacademica/add/
+Traceback (most recent call last):
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 719, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\views\decorators\cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\sites.py", line 246, in inner
+    return view(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 1984, in add_view
+    return self.changeform_view(request, None, form_url, extra_context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 1840, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 1910, in _changeform_view
+    form = ModelForm(initial=initial)
+  File "D:\Proyecto Colegio\sistema_colegio\matricula\admin.py", line 1068, in __init__
+    super().__init__(*args, **kwargs)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\matricula\forms.py", line 82, in __init__
+    self.fields['curso_lectivo'].initial = curso_matricular.id
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+KeyError: 'curso_lectivo'
+ERROR 2025-11-10 11:10:21,840 basehttp 48176 44504 "GET /admin/matricula/matriculaacademica/add/?estudiante=867 HTTP/1.1" 500 143989
+INFO 2025-11-10 11:10:25,552 basehttp 48176 44504 "GET /admin/matricula/estudiante/867/change/ HTTP/1.1" 200 240988
+INFO 2025-11-10 11:10:25,640 basehttp 48176 44504 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 11:10:26,141 views 48176 44504 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 11:10:26,141 basehttp 48176 44504 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 11:10:26,308 views 48176 44504 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 11:10:26,308 basehttp 48176 44504 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 11:10:26,845 views 48176 44504 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 11:10:26,846 basehttp 48176 44504 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 11:10:28,038 views 48176 44504 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 11:10:28,039 basehttp 48176 44504 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 11:10:28,108 views 48176 48304 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 11:10:28,109 basehttp 48176 48304 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 11:10:28,990 views 48176 48304 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 11:10:28,991 basehttp 48176 48304 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 11:10:29,993 views 48176 48304 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-10 11:10:29,994 basehttp 48176 48304 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-10 11:11:36,089 autoreload 48176 38496 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-11-10 11:11:37,032 autoreload 45388 22172 Watching for file changes with StatReloader
+INFO 2025-11-10 11:11:44,460 autoreload 45388 22172 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-11-10 11:11:45,401 autoreload 46020 38196 Watching for file changes with StatReloader
+INFO 2025-11-10 11:12:25,317 autoreload 46020 38196 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-11-10 11:12:26,183 autoreload 44912 43608 Watching for file changes with StatReloader
+INFO 2025-11-10 11:12:31,696 basehttp 44912 47472 "GET /admin/ HTTP/1.1" 200 35340
+INFO 2025-11-10 11:12:33,394 basehttp 44912 47472 "GET /admin/ HTTP/1.1" 200 35340
+INFO 2025-11-10 11:12:33,411 basehttp 44912 47472 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-11-10 11:12:33,425 basehttp 44912 48236 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-11-10 11:12:33,426 basehttp 44912 47472 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-11-10 11:12:33,426 basehttp 44912 4388 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-11-10 11:12:33,428 basehttp 44912 44960 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-11-10 11:12:33,430 basehttp 44912 48140 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-11-10 11:12:33,436 basehttp 44912 44960 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-11-10 11:12:33,444 basehttp 44912 44672 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-11-10 11:12:33,528 basehttp 44912 44960 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-11-10 11:12:33,530 basehttp 44912 44672 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-11-10 11:12:33,671 basehttp 44912 44672 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-11-10 11:12:36,212 basehttp 44912 44672 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 67696
+INFO 2025-11-10 11:12:36,295 basehttp 44912 44672 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 11:12:37,822 basehttp 44912 44672 "GET /admin/matricula/matriculaacademica/add/?estudiante=867 HTTP/1.1" 200 59633
+INFO 2025-11-10 11:12:37,850 basehttp 44912 48140 "GET /static/matricula/js/clear-dependent-fields.js HTTP/1.1" 304 0
+INFO 2025-11-10 11:12:37,851 basehttp 44912 48236 "GET /static/matricula/js/especialidad-limpia-campos.js HTTP/1.1" 304 0
+INFO 2025-11-10 11:12:37,851 basehttp 44912 44960 "GET /static/matricula/js/dependent-especialidad.js HTTP/1.1" 304 0
+INFO 2025-11-10 11:12:37,908 basehttp 44912 44672 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 11:13:35,897 basehttp 44912 44672 "GET /admin/catalogos/cursolectivo/ HTTP/1.1" 200 48010
+INFO 2025-11-10 11:13:36,001 basehttp 44912 44672 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 11:14:48,839 autoreload 44912 43608 D:\Proyecto Colegio\sistema_colegio\matricula\forms.py changed, reloading.
+INFO 2025-11-10 11:14:49,826 autoreload 45584 39452 Watching for file changes with StatReloader
+INFO 2025-11-10 11:15:24,271 autoreload 45584 39452 D:\Proyecto Colegio\sistema_colegio\matricula\forms.py changed, reloading.
+INFO 2025-11-10 11:15:25,151 autoreload 41912 22580 Watching for file changes with StatReloader
+INFO 2025-11-10 11:15:26,043 basehttp 41912 37896 "GET /admin/ HTTP/1.1" 200 35340
+INFO 2025-11-10 11:15:27,709 basehttp 41912 37896 "GET /admin/ HTTP/1.1" 200 35340
+INFO 2025-11-10 11:15:27,732 basehttp 41912 27440 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-11-10 11:15:27,737 basehttp 41912 37896 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-11-10 11:15:27,738 basehttp 41912 27440 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-11-10 11:15:27,738 basehttp 41912 48548 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-11-10 11:15:27,739 basehttp 41912 43820 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-11-10 11:15:27,742 basehttp 41912 27440 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-11-10 11:15:27,743 basehttp 41912 38712 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-11-10 11:15:27,752 basehttp 41912 47756 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-11-10 11:15:27,833 basehttp 41912 38712 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-11-10 11:15:27,835 basehttp 41912 47756 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-11-10 11:15:27,975 basehttp 41912 47756 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-11-10 11:15:32,301 basehttp 41912 47756 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 67696
+INFO 2025-11-10 11:15:32,399 basehttp 41912 47756 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 11:15:34,827 basehttp 41912 47756 "GET /admin/matricula/matriculaacademica/add/?estudiante=867 HTTP/1.1" 200 59575
+INFO 2025-11-10 11:15:34,914 basehttp 41912 47756 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 11:15:45,729 basehttp 41912 47756 "GET /admin/autocomplete/?app_label=matricula&model_name=matriculaacademica&field_name=nivel HTTP/1.1" 200 497
+INFO 2025-11-10 11:15:48,273 basehttp 41912 47756 "GET /matricula/especialidad-autocomplete/?forward=%7B%22curso_lectivo%22%3A%222%22%2C%22nivel%22%3A%2210%22%7D HTTP/1.1" 200 373
+INFO 2025-11-10 11:15:50,107 basehttp 41912 47756 "GET /admin/autocomplete/?app_label=matricula&model_name=matriculaacademica&field_name=nivel HTTP/1.1" 200 497
+INFO 2025-11-10 11:15:58,380 basehttp 41912 47756 "GET /admin/ HTTP/1.1" 200 35340
+INFO 2025-11-10 11:16:01,373 basehttp 41912 47756 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 67696
+INFO 2025-11-10 11:16:01,553 basehttp 41912 47756 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 11:16:02,736 basehttp 41912 47756 "GET /admin/matricula/matriculaacademica/add/?estudiante=867 HTTP/1.1" 200 59575
+INFO 2025-11-10 11:16:02,814 basehttp 41912 47756 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 11:16:07,721 basehttp 41912 47756 "POST /admin/logout/ HTTP/1.1" 200 2182
+INFO 2025-11-10 11:16:08,898 basehttp 41912 47756 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-11-10 11:16:08,938 basehttp 41912 47756 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4955
+WARNING 2025-11-10 11:16:09,004 log 41912 47756 Not Found: /favicon.ico
+WARNING 2025-11-10 11:16:09,006 basehttp 41912 47756 "GET /favicon.ico HTTP/1.1" 404 3331
+INFO 2025-11-10 11:16:16,413 signals 41912 47756 Signal user_logged_in ejecutándose para usuario: jordy@gmail.com
+INFO 2025-11-10 11:16:16,424 signals 41912 47756 Asignando automáticamente institución única: CTP. MÁXIMO QUESADA
+INFO 2025-11-10 11:16:16,428 basehttp 41912 47756 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-11-10 11:16:16,526 basehttp 41912 47756 "GET /admin/ HTTP/1.1" 200 12851
+INFO 2025-11-10 11:16:17,910 basehttp 41912 47756 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 40288
+INFO 2025-11-10 11:16:20,397 basehttp 41912 47756 "GET /admin/matricula/matriculaacademica/add/?estudiante=867&_institucion=1 HTTP/1.1" 200 24970
+INFO 2025-11-10 11:16:20,495 basehttp 41912 47756 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 11:16:29,290 basehttp 41912 47756 "GET /admin/autocomplete/?app_label=matricula&model_name=matriculaacademica&field_name=nivel HTTP/1.1" 200 497
+INFO 2025-11-10 11:16:33,427 basehttp 41912 47756 "GET /admin/autocomplete/?app_label=matricula&model_name=matriculaacademica&field_name=estudiante HTTP/1.1" 200 1089
+INFO 2025-11-10 11:17:33,166 autoreload 41912 22580 D:\Proyecto Colegio\sistema_colegio\matricula\forms.py changed, reloading.
+INFO 2025-11-10 11:17:34,104 autoreload 18520 40108 Watching for file changes with StatReloader
+INFO 2025-11-10 11:17:43,767 autoreload 18520 40108 D:\Proyecto Colegio\sistema_colegio\matricula\forms.py changed, reloading.
+INFO 2025-11-10 11:17:44,733 autoreload 46124 26752 Watching for file changes with StatReloader
+INFO 2025-11-10 11:17:48,764 basehttp 46124 34508 "GET /admin/matricula/matriculaacademica/add/?estudiante=867&_institucion=1 HTTP/1.1" 200 24931
+INFO 2025-11-10 11:17:48,801 basehttp 46124 34508 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-11-10 11:17:48,817 basehttp 46124 40060 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-11-10 11:17:48,834 basehttp 46124 39532 "GET /static/vendor/select2/css/select2.min.css HTTP/1.1" 200 16264
+INFO 2025-11-10 11:17:48,836 basehttp 46124 37020 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-11-10 11:17:48,851 basehttp 46124 39532 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-11-10 11:17:48,866 basehttp 46124 34508 "GET /static/autocomplete_light/select2.css HTTP/1.1" 200 2765
+INFO 2025-11-10 11:17:48,877 basehttp 46124 38836 "GET /static/admin/css/autocomplete.css HTTP/1.1" 200 9185
+INFO 2025-11-10 11:17:48,882 basehttp 46124 48408 "GET /static/admin/css/vendor/select2/select2.css HTTP/1.1" 200 17358
+INFO 2025-11-10 11:17:48,885 basehttp 46124 38836 "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+INFO 2025-11-10 11:17:48,890 basehttp 46124 38836 "GET /static/admin/js/core.js HTTP/1.1" 200 6208
+INFO 2025-11-10 11:17:48,903 basehttp 46124 39532 "GET /static/admin/js/vendor/select2/i18n/es.js HTTP/1.1" 200 922
+INFO 2025-11-10 11:17:48,934 basehttp 46124 34508 "GET /static/autocomplete_light/autocomplete_light.js HTTP/1.1" 200 18263
+INFO 2025-11-10 11:17:48,935 basehttp 46124 48408 "GET /static/autocomplete_light/select2.js HTTP/1.1" 200 4937
+INFO 2025-11-10 11:17:48,940 basehttp 46124 39532 "GET /static/matricula/js/dependent-especialidad.js HTTP/1.1" 200 27435
+INFO 2025-11-10 11:17:48,950 basehttp 46124 38836 "GET /static/admin/js/autocomplete.js HTTP/1.1" 200 1060
+INFO 2025-11-10 11:17:48,954 basehttp 46124 40060 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-10 11:17:48,960 basehttp 46124 38836 "GET /static/admin/js/actions.js HTTP/1.1" 200 8076
+INFO 2025-11-10 11:17:48,967 basehttp 46124 40060 "GET /static/matricula/js/especialidad-limpia-campos.js HTTP/1.1" 200 7932
+INFO 2025-11-10 11:17:48,971 basehttp 46124 38836 "GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+INFO 2025-11-10 11:17:48,971 basehttp 46124 40060 "GET /static/matricula/js/persist-admin-filters.js HTTP/1.1" 200 1583
+INFO 2025-11-10 11:17:48,978 basehttp 46124 34508 "GET /static/autocomplete_light/i18n/es.js HTTP/1.1" 200 990
+INFO 2025-11-10 11:17:48,978 basehttp 46124 39532 "GET /static/matricula/js/clear-dependent-fields.js HTTP/1.1" 200 8339
+INFO 2025-11-10 11:17:48,982 basehttp 46124 40060 "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+INFO 2025-11-10 11:17:48,987 basehttp 46124 48408 "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 9777
+INFO 2025-11-10 11:17:48,989 basehttp 46124 34508 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-11-10 11:17:48,997 basehttp 46124 34508 "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 200 586
+INFO 2025-11-10 11:17:49,002 basehttp 46124 34508 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-11-10 11:17:49,010 basehttp 46124 34508 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-11-10 11:17:49,013 basehttp 46124 40060 "GET /static/admin/js/change_form.js HTTP/1.1" 200 606
+INFO 2025-11-10 11:17:49,020 basehttp 46124 40060 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-11-10 11:17:49,027 basehttp 46124 40060 "GET /static/jazzmin/js/change_form.js HTTP/1.1" 200 6052
+INFO 2025-11-10 11:17:49,029 basehttp 46124 37020 "GET /static/admin/js/vendor/select2/select2.full.js HTTP/1.1" 200 173566
+INFO 2025-11-10 11:17:49,080 basehttp 46124 34508 "GET /static/vendor/select2/js/select2.min.js HTTP/1.1" 200 73170
+INFO 2025-11-10 11:17:49,085 basehttp 46124 34508 "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+INFO 2025-11-10 11:17:49,090 basehttp 46124 34508 "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+INFO 2025-11-10 11:17:49,096 basehttp 46124 34508 "GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 200 581
+INFO 2025-11-10 11:17:49,119 basehttp 46124 38836 "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 325171
+INFO 2025-11-10 11:17:49,147 basehttp 46124 34508 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-11-10 11:17:49,149 basehttp 46124 38836 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-11-10 11:17:49,332 basehttp 46124 38836 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-11-11 07:51:40,386 autoreload 18408 5392 Watching for file changes with StatReloader
+INFO 2025-11-11 07:51:50,017 basehttp 18408 31868 "GET / HTTP/1.1" 302 0
+INFO 2025-11-11 07:51:50,333 basehttp 18408 31868 "GET /admin/ HTTP/1.1" 200 12851
+INFO 2025-11-11 07:51:54,852 basehttp 18408 31868 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 40288
+INFO 2025-11-11 07:51:54,882 basehttp 18408 31868 "GET /static/matricula/js/toggle-plan-nacional.js HTTP/1.1" 200 5947
+INFO 2025-11-11 07:51:59,250 basehttp 18408 31868 "POST /admin/logout/ HTTP/1.1" 200 2182
+INFO 2025-11-11 07:52:00,533 basehttp 18408 31868 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-11-11 07:52:00,579 basehttp 18408 31868 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4955
+WARNING 2025-11-11 07:52:00,662 log 18408 31868 Not Found: /favicon.ico
+WARNING 2025-11-11 07:52:00,663 basehttp 18408 31868 "GET /favicon.ico HTTP/1.1" 404 3331
+INFO 2025-11-11 07:52:05,426 basehttp 18408 31868 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-11-11 07:52:05,517 basehttp 18408 31868 "GET /admin/ HTTP/1.1" 200 35340
+INFO 2025-11-11 07:52:07,588 basehttp 18408 31868 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 67696
+INFO 2025-11-11 07:52:07,616 basehttp 18408 45228 "GET /static/matricula/js/toggle-plan-nacional.js HTTP/1.1" 304 0
+INFO 2025-11-11 07:52:07,683 basehttp 18408 31868 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 07:52:11,975 basehttp 18408 31868 "GET /admin/matricula/estudiante/867/change/ HTTP/1.1" 200 240988
+INFO 2025-11-11 07:52:12,067 basehttp 18408 31868 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 07:52:12,617 views 18408 31868 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-11 07:52:12,618 basehttp 18408 31868 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-11 07:52:12,745 views 18408 31868 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-11 07:52:12,745 basehttp 18408 31868 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-11 07:52:13,286 views 18408 31868 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-11 07:52:13,286 basehttp 18408 31868 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-11 07:52:13,755 views 18408 31868 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-11 07:52:13,755 basehttp 18408 31868 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-11 07:52:14,278 views 18408 31868 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-11 07:52:14,279 basehttp 18408 31868 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-11 07:52:14,884 views 18408 31868 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-11 07:52:14,884 basehttp 18408 31868 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-11 07:52:15,732 views 18408 31868 Cantones para provincia 2 (Alajuela): 15 encontrados
+INFO 2025-11-11 07:52:15,733 basehttp 18408 31868 "GET /catalogos/api/cantones/2/ HTTP/1.1" 200 516
+INFO 2025-11-11 07:52:16,324 basehttp 18408 31868 "GET /admin/matricula/matriculaacademica/add/?estudiante=867 HTTP/1.1" 200 59536
+INFO 2025-11-11 07:52:16,360 basehttp 18408 45228 "GET /static/matricula/js/dependent-especialidad.js HTTP/1.1" 200 27435
+INFO 2025-11-11 07:52:16,364 basehttp 18408 48328 "GET /static/matricula/js/clear-dependent-fields.js HTTP/1.1" 200 8339
+INFO 2025-11-11 07:52:16,372 basehttp 18408 19944 "GET /static/matricula/js/especialidad-limpia-campos.js HTTP/1.1" 200 7932
+INFO 2025-11-11 07:52:16,432 basehttp 18408 31868 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 07:52:24,279 basehttp 18408 31868 "GET /admin/catalogos/cursolectivo/ HTTP/1.1" 200 48010
+INFO 2025-11-11 07:52:24,363 basehttp 18408 31868 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 07:52:35,928 basehttp 18408 31868 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 67696
+INFO 2025-11-11 07:52:35,954 basehttp 18408 19944 "GET /static/matricula/js/toggle-plan-nacional.js HTTP/1.1" 304 0
+INFO 2025-11-11 07:52:36,022 basehttp 18408 31868 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 07:52:41,786 basehttp 18408 31868 "GET /admin/matricula/matriculaacademica/add/?estudiante=867 HTTP/1.1" 200 59536
+INFO 2025-11-11 07:52:41,814 basehttp 18408 19944 "GET /static/matricula/js/dependent-especialidad.js HTTP/1.1" 304 0
+INFO 2025-11-11 07:52:41,814 basehttp 18408 48328 "GET /static/matricula/js/clear-dependent-fields.js HTTP/1.1" 304 0
+INFO 2025-11-11 07:52:41,815 basehttp 18408 45228 "GET /static/matricula/js/especialidad-limpia-campos.js HTTP/1.1" 304 0
+INFO 2025-11-11 07:52:41,871 basehttp 18408 31868 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 07:52:43,084 basehttp 18408 31868 "GET /admin/autocomplete/?app_label=matricula&model_name=matriculaacademica&field_name=nivel HTTP/1.1" 200 497
+INFO 2025-11-11 07:52:54,039 basehttp 18408 31868 "GET /matricula/seccion-autocomplete/?forward=%7B%22curso_lectivo%22%3A%222%22%2C%22nivel%22%3A%228%22%2C%22especialidad%22%3A%22%22%7D HTTP/1.1" 200 253
+INFO 2025-11-11 07:52:55,473 basehttp 18408 31868 "GET /matricula/subgrupo-autocomplete/?forward=%7B%22curso_lectivo%22%3A%222%22%2C%22seccion%22%3A%228%22%2C%22especialidad%22%3A%22%22%7D HTTP/1.1" 200 46
+INFO 2025-11-11 07:52:59,444 basehttp 18408 31868 "GET /matricula/subgrupo-autocomplete/?forward=%7B%22curso_lectivo%22%3A%222%22%2C%22seccion%22%3A%228%22%2C%22especialidad%22%3A%22%22%7D HTTP/1.1" 200 46
+INFO 2025-11-11 07:53:04,880 basehttp 18408 31868 "GET /admin/autocomplete/?app_label=matricula&model_name=matriculaacademica&field_name=nivel HTTP/1.1" 200 497
+INFO 2025-11-11 07:53:06,724 basehttp 18408 31868 "GET /matricula/especialidad-autocomplete/?forward=%7B%22curso_lectivo%22%3A%222%22%2C%22nivel%22%3A%2210%22%7D HTTP/1.1" 200 373
+INFO 2025-11-11 07:53:07,955 basehttp 18408 37440 "GET /matricula/seccion-autocomplete/?forward=%7B%22curso_lectivo%22%3A%222%22%2C%22nivel%22%3A%2210%22%2C%22especialidad%22%3A%2210%22%7D HTTP/1.1" 200 99
+INFO 2025-11-11 07:53:09,384 basehttp 18408 37440 "GET /matricula/subgrupo-autocomplete/?forward=%7B%22curso_lectivo%22%3A%222%22%2C%22seccion%22%3A%2221%22%2C%22especialidad%22%3A%2210%22%7D HTTP/1.1" 200 101
+INFO 2025-11-11 07:53:12,192 basehttp 18408 37440 "GET /admin/autocomplete/?app_label=matricula&model_name=matriculaacademica&field_name=nivel HTTP/1.1" 200 497
+INFO 2025-11-11 07:53:14,166 basehttp 18408 37440 "GET /matricula/seccion-autocomplete/?forward=%7B%22curso_lectivo%22%3A%222%22%2C%22nivel%22%3A%227%22%2C%22especialidad%22%3A%22%22%7D HTTP/1.1" 200 252
+INFO 2025-11-11 07:53:15,451 basehttp 18408 37440 "GET /matricula/subgrupo-autocomplete/?forward=%7B%22curso_lectivo%22%3A%222%22%2C%22seccion%22%3A%221%22%2C%22especialidad%22%3A%22%22%7D HTTP/1.1" 200 152
+INFO 2025-11-11 07:54:09,523 basehttp 18408 45616 "GET /admin/ HTTP/1.1" 200 35340
+INFO 2025-11-11 07:54:11,587 basehttp 18408 45616 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 67696
+INFO 2025-11-11 07:54:11,606 basehttp 18408 22980 "GET /static/matricula/js/toggle-plan-nacional.js HTTP/1.1" 304 0
+INFO 2025-11-11 07:54:11,669 basehttp 18408 45616 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 07:55:10,016 basehttp 18408 45616 "GET /admin/auth/group/ HTTP/1.1" 200 42773
+INFO 2025-11-11 07:55:10,110 basehttp 18408 45616 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 07:56:31,960 basehttp 18408 45616 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 67696
+INFO 2025-11-11 07:56:31,988 basehttp 18408 22980 "GET /static/matricula/js/toggle-plan-nacional.js HTTP/1.1" 304 0
+INFO 2025-11-11 07:56:32,053 basehttp 18408 45616 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 07:58:31,116 autoreload 18408 5392 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-11-11 07:58:32,152 autoreload 15136 35144 Watching for file changes with StatReloader
+INFO 2025-11-11 07:58:42,899 autoreload 15136 35144 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-11-11 07:58:43,838 autoreload 11832 43756 Watching for file changes with StatReloader
+INFO 2025-11-11 08:02:12,461 basehttp 11832 9316 "GET /admin/ HTTP/1.1" 200 35340
+INFO 2025-11-11 08:02:14,444 basehttp 11832 9316 "GET /admin/ HTTP/1.1" 200 35340
+INFO 2025-11-11 08:02:14,518 basehttp 11832 9316 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-11-11 08:02:14,537 basehttp 11832 9808 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-11-11 08:02:14,579 basehttp 11832 48432 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-11-11 08:02:14,592 basehttp 11832 9808 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-11-11 08:02:14,607 basehttp 11832 9316 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-11-11 08:02:14,622 basehttp 11832 7544 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-11-11 08:02:14,624 basehttp 11832 33772 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-11-11 08:02:14,701 basehttp 11832 7544 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-11-11 08:02:14,704 basehttp 11832 33772 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-11-11 08:02:14,736 basehttp 11832 38744 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-11-11 08:02:14,843 basehttp 11832 38744 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-11-11 08:02:20,616 autoreload 11832 43756 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-11-11 08:02:21,941 autoreload 42276 50088 Watching for file changes with StatReloader
+INFO 2025-11-11 08:02:24,121 basehttp 42276 16700 "GET /admin/ HTTP/1.1" 200 35340
+INFO 2025-11-11 08:02:24,287 basehttp 42276 16700 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-11-11 08:02:31,168 basehttp 42276 16700 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 67696
+INFO 2025-11-11 08:02:31,201 basehttp 42276 49872 "GET /static/matricula/js/toggle-plan-nacional.js HTTP/1.1" 304 0
+INFO 2025-11-11 08:02:31,307 basehttp 42276 16700 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 08:02:46,783 basehttp 42276 16700 "GET /admin/auth/group/ HTTP/1.1" 200 43176
+INFO 2025-11-11 08:02:46,868 basehttp 42276 16700 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 08:03:00,043 basehttp 42276 16700 "GET /admin/auth/group/8/change/ HTTP/1.1" 200 57870
+INFO 2025-11-11 08:03:00,144 basehttp 42276 16700 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 08:03:06,575 basehttp 42276 16700 "GET /admin/ HTTP/1.1" 200 35340
+INFO 2025-11-11 08:03:15,273 basehttp 42276 16700 "GET /admin/auth/group/ HTTP/1.1" 200 43176
+INFO 2025-11-11 08:03:15,359 basehttp 42276 16700 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 08:03:52,054 basehttp 42276 16700 "GET /admin/core/user/ HTTP/1.1" 200 51012
+INFO 2025-11-11 08:03:52,148 basehttp 42276 16700 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 08:03:53,855 basehttp 42276 16700 "GET /admin/core/user/3ef551a2-5ea0-42b0-a3f6-bad865be5357/change/ HTTP/1.1" 200 69880
+INFO 2025-11-11 08:03:53,968 basehttp 42276 16700 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 08:04:00,947 basehttp 42276 16700 "POST /admin/core/user/3ef551a2-5ea0-42b0-a3f6-bad865be5357/change/ HTTP/1.1" 302 0
+INFO 2025-11-11 08:04:01,045 basehttp 42276 16700 "GET /admin/core/user/ HTTP/1.1" 200 51614
+INFO 2025-11-11 08:04:01,133 basehttp 42276 16700 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 08:04:04,335 basehttp 42276 16700 "POST /admin/logout/ HTTP/1.1" 200 2182
+INFO 2025-11-11 08:04:05,463 basehttp 42276 16700 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-11-11 08:04:05,508 basehttp 42276 16700 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4955
+WARNING 2025-11-11 08:04:05,593 log 42276 16700 Not Found: /favicon.ico
+WARNING 2025-11-11 08:04:05,593 basehttp 42276 16700 "GET /favicon.ico HTTP/1.1" 404 3331
+INFO 2025-11-11 08:04:09,153 signals 42276 16700 Signal user_logged_in ejecutándose para usuario: jordy@gmail.com
+INFO 2025-11-11 08:04:09,167 signals 42276 16700 Asignando automáticamente institución única: CTP. MÁXIMO QUESADA
+INFO 2025-11-11 08:04:09,171 basehttp 42276 16700 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-11-11 08:04:09,269 basehttp 42276 16700 "GET /admin/ HTTP/1.1" 200 10367
+INFO 2025-11-11 08:04:12,442 basehttp 42276 16700 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 17586
+INFO 2025-11-11 08:04:12,483 basehttp 42276 16700 "GET /static/matricula/js/toggle-plan-nacional.js HTTP/1.1" 304 0
+INFO 2025-11-11 08:04:19,757 basehttp 42276 16700 "GET /admin/matricula/estudiante/?q=112280841 HTTP/1.1" 200 22346
+INFO 2025-11-11 08:04:29,053 basehttp 42276 16700 "GET /admin/matricula/estudiante/?q=marcell HTTP/1.1" 200 22332
+INFO 2025-11-11 08:04:38,105 basehttp 42276 16700 "GET /admin/matricula/estudiante/?q=ana HTTP/1.1" 200 35792
+INFO 2025-11-11 08:05:02,199 basehttp 42276 16700 "GET /admin/matricula/estudiante/?q= HTTP/1.1" 200 17649
+INFO 2025-11-11 08:05:05,101 basehttp 42276 16700 "GET /admin/matricula/estudiante/?q=ana HTTP/1.1" 200 35792
+INFO 2025-11-11 08:05:25,131 basehttp 42276 16700 "GET /admin/matricula/personacontacto/ HTTP/1.1" 200 36857
+INFO 2025-11-11 08:06:01,209 basehttp 42276 16700 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 17586
+INFO 2025-11-11 08:06:01,254 basehttp 42276 16700 "GET /static/matricula/js/toggle-plan-nacional.js HTTP/1.1" 304 0
+INFO 2025-11-11 08:06:55,179 basehttp 42276 16700 "GET /admin/matricula/estudiante/?q= HTTP/1.1" 200 17649
+INFO 2025-11-11 08:07:00,264 basehttp 42276 16700 "GET /admin/matricula/estudiante/?q=rodo HTTP/1.1" 200 17954
+INFO 2025-11-11 08:07:06,060 basehttp 42276 16700 "GET /admin/matricula/estudiante/?q=juan HTTP/1.1" 200 25137
+INFO 2025-11-11 08:07:15,808 basehttp 42276 16700 "GET /admin/matricula/estudiante/?q=ana HTTP/1.1" 200 35792
+INFO 2025-11-11 08:09:24,061 basehttp 42276 16700 "GET /admin/matricula/estudiante/?q= HTTP/1.1" 200 17649
+INFO 2025-11-11 08:09:24,088 basehttp 42276 16700 "GET /static/matricula/js/toggle-plan-nacional.js HTTP/1.1" 304 0
+INFO 2025-11-11 08:09:30,422 basehttp 42276 16700 "GET /admin/matricula/estudiante/?q=chispa HTTP/1.1" 200 22312
+INFO 2025-11-11 08:09:37,324 basehttp 42276 16700 "GET /admin/matricula/estudiante/?q=nana HTTP/1.1" 200 22296
+INFO 2025-11-11 08:09:50,192 basehttp 42276 16700 "GET /admin/matricula/estudiante/?q=ana HTTP/1.1" 200 35792
+INFO 2025-11-11 08:13:18,526 autoreload 42276 50088 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-11-11 08:13:19,427 autoreload 49960 38744 Watching for file changes with StatReloader
+INFO 2025-11-11 08:13:28,992 autoreload 49960 38744 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-11-11 08:13:29,958 autoreload 45620 48512 Watching for file changes with StatReloader
+INFO 2025-11-11 08:13:39,554 autoreload 45620 48512 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-11-11 08:13:40,453 autoreload 40980 36940 Watching for file changes with StatReloader
+INFO 2025-11-11 08:13:55,519 autoreload 40980 36940 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-11-11 08:13:56,368 autoreload 43840 39156 Watching for file changes with StatReloader
+INFO 2025-11-11 08:14:17,698 basehttp 43840 37500 "GET /admin/ HTTP/1.1" 200 10367
+INFO 2025-11-11 08:14:20,349 basehttp 43840 37500 "GET /admin/ HTTP/1.1" 200 10367
+INFO 2025-11-11 08:14:20,367 basehttp 43840 37500 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-11-11 08:14:20,379 basehttp 43840 37500 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-11-11 08:14:20,381 basehttp 43840 29332 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-11-11 08:14:20,382 basehttp 43840 19464 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-11-11 08:14:20,385 basehttp 43840 37500 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-11-11 08:14:20,386 basehttp 43840 20688 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-11-11 08:14:20,387 basehttp 43840 34140 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-11-11 08:14:20,397 basehttp 43840 28604 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-11-11 08:14:20,504 basehttp 43840 34140 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-11-11 08:14:20,506 basehttp 43840 28604 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-11-11 08:14:20,642 basehttp 43840 28604 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-11-11 08:14:23,437 basehttp 43840 28604 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 13889
+INFO 2025-11-11 08:14:23,481 basehttp 43840 28604 "GET /static/matricula/js/toggle-plan-nacional.js HTTP/1.1" 304 0
+ERROR 2025-11-11 08:14:36,400 log 43840 28604 Internal Server Error: /admin/matricula/estudiante/
+Traceback (most recent call last):
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 719, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\views\decorators\cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\sites.py", line 246, in inner
+    return view(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 2024, in changelist_view
+    cl = self.get_changelist_instance(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 867, in get_changelist_instance
+    return ChangeList(
+        request,
+    ...<12 lines>...
+        self.search_help_text,
+    )
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\views\main.py", line 145, in __init__
+    self.queryset = self.get_queryset(request)
+                    ~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\views\main.py", line 596, in get_queryset
+    return qs.distinct()
+           ~~~~~~~~~~~^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\db\models\query.py", line 1731, in distinct
+    raise TypeError(
+        "Cannot create distinct fields once a slice has been taken."
+    )
+TypeError: Cannot create distinct fields once a slice has been taken.
+ERROR 2025-11-11 08:14:36,409 basehttp 43840 28604 "GET /admin/matricula/estudiante/?q=lucca HTTP/1.1" 500 144965
+WARNING 2025-11-11 08:14:36,579 log 43840 28604 Not Found: /favicon.ico
+WARNING 2025-11-11 08:14:36,580 basehttp 43840 28604 "GET /favicon.ico HTTP/1.1" 404 3331
+INFO 2025-11-11 08:14:43,248 basehttp 43840 28604 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 13889
+ERROR 2025-11-11 08:14:48,807 log 43840 28604 Internal Server Error: /admin/matricula/estudiante/
+Traceback (most recent call last):
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 719, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\views\decorators\cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\sites.py", line 246, in inner
+    return view(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 2024, in changelist_view
+    cl = self.get_changelist_instance(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 867, in get_changelist_instance
+    return ChangeList(
+        request,
+    ...<12 lines>...
+        self.search_help_text,
+    )
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\views\main.py", line 145, in __init__
+    self.queryset = self.get_queryset(request)
+                    ~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\views\main.py", line 596, in get_queryset
+    return qs.distinct()
+           ~~~~~~~~~~~^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\db\models\query.py", line 1731, in distinct
+    raise TypeError(
+        "Cannot create distinct fields once a slice has been taken."
+    )
+TypeError: Cannot create distinct fields once a slice has been taken.
+ERROR 2025-11-11 08:14:48,810 basehttp 43840 28604 "GET /admin/matricula/estudiante/?q=112280841 HTTP/1.1" 500 145037
+INFO 2025-11-11 08:15:53,981 autoreload 43840 39156 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-11-11 08:15:54,953 autoreload 47760 49056 Watching for file changes with StatReloader
+INFO 2025-11-11 08:16:06,660 autoreload 47760 49056 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-11-11 08:16:07,548 autoreload 39872 8640 Watching for file changes with StatReloader
+INFO 2025-11-11 08:18:34,950 basehttp 39872 34884 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 13889
+INFO 2025-11-11 08:18:38,930 basehttp 39872 34884 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 13889
+INFO 2025-11-11 08:18:38,962 basehttp 39872 49272 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-11-11 08:18:38,963 basehttp 39872 34884 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-11-11 08:18:38,970 basehttp 39872 42688 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-11-11 08:18:38,979 basehttp 39872 30284 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-11-11 08:18:38,987 basehttp 39872 4604 "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+INFO 2025-11-11 08:18:38,999 basehttp 39872 34884 "GET /static/matricula/js/dependent-dropdowns.js HTTP/1.1" 200 17518
+INFO 2025-11-11 08:18:39,010 basehttp 39872 1972 "GET /static/vendor/select2/css/select2.min.css HTTP/1.1" 200 16264
+INFO 2025-11-11 08:18:39,015 basehttp 39872 30284 "GET /static/matricula/js/toggle-plan-nacional.js HTTP/1.1" 200 5947
+INFO 2025-11-11 08:18:39,031 basehttp 39872 34884 "GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+INFO 2025-11-11 08:18:39,039 basehttp 39872 34884 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-11-11 08:18:39,040 basehttp 39872 42688 "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 9777
+INFO 2025-11-11 08:18:39,040 basehttp 39872 49272 "GET /static/admin/js/core.js HTTP/1.1" 200 6208
+INFO 2025-11-11 08:18:39,046 basehttp 39872 4604 "GET /static/admin/js/actions.js HTTP/1.1" 200 8076
+INFO 2025-11-11 08:18:39,047 basehttp 39872 34884 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-11-11 08:18:39,054 basehttp 39872 1972 "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+INFO 2025-11-11 08:18:39,064 basehttp 39872 34884 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-11-11 08:18:39,065 basehttp 39872 1972 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-11-11 08:18:39,118 basehttp 39872 34884 "GET /static/jazzmin/js/change_list.js HTTP/1.1" 200 2252
+INFO 2025-11-11 08:18:39,152 basehttp 39872 1972 "GET /static/vendor/select2/js/select2.min.js HTTP/1.1" 200 73170
+INFO 2025-11-11 08:18:39,184 basehttp 39872 30284 "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 325171
+INFO 2025-11-11 08:18:39,212 basehttp 39872 1972 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-11-11 08:18:39,214 basehttp 39872 30284 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-11-11 08:18:39,367 basehttp 39872 30284 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+ERROR 2025-11-11 08:18:45,925 log 39872 30284 Internal Server Error: /admin/matricula/estudiante/
+Traceback (most recent call last):
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 719, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\views\decorators\cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\sites.py", line 246, in inner
+    return view(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 2024, in changelist_view
+    cl = self.get_changelist_instance(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 867, in get_changelist_instance
+    return ChangeList(
+        request,
+    ...<12 lines>...
+        self.search_help_text,
+    )
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\views\main.py", line 145, in __init__
+    self.queryset = self.get_queryset(request)
+                    ~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\views\main.py", line 596, in get_queryset
+    return qs.distinct()
+           ~~~~~~~~~~~^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\db\models\query.py", line 1731, in distinct
+    raise TypeError(
+        "Cannot create distinct fields once a slice has been taken."
+    )
+TypeError: Cannot create distinct fields once a slice has been taken.
+ERROR 2025-11-11 08:18:45,932 basehttp 39872 30284 "GET /admin/matricula/estudiante/?q=lucca HTTP/1.1" 500 144965
+WARNING 2025-11-11 08:18:46,174 log 39872 30284 Not Found: /favicon.ico
+WARNING 2025-11-11 08:18:46,175 basehttp 39872 30284 "GET /favicon.ico HTTP/1.1" 404 3331
+INFO 2025-11-11 08:19:04,999 basehttp 39872 30284 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 13889
+ERROR 2025-11-11 08:19:14,131 log 39872 30284 Internal Server Error: /admin/matricula/estudiante/
+Traceback (most recent call last):
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 719, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\views\decorators\cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\sites.py", line 246, in inner
+    return view(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 2024, in changelist_view
+    cl = self.get_changelist_instance(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 867, in get_changelist_instance
+    return ChangeList(
+        request,
+    ...<12 lines>...
+        self.search_help_text,
+    )
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\views\main.py", line 145, in __init__
+    self.queryset = self.get_queryset(request)
+                    ~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\views\main.py", line 596, in get_queryset
+    return qs.distinct()
+           ~~~~~~~~~~~^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\db\models\query.py", line 1731, in distinct
+    raise TypeError(
+        "Cannot create distinct fields once a slice has been taken."
+    )
+TypeError: Cannot create distinct fields once a slice has been taken.
+ERROR 2025-11-11 08:19:14,135 basehttp 39872 30284 "GET /admin/matricula/estudiante/?q=112280841 HTTP/1.1" 500 145037
+INFO 2025-11-11 08:19:59,358 autoreload 39872 8640 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-11-11 08:20:00,311 autoreload 40468 18408 Watching for file changes with StatReloader
+INFO 2025-11-11 08:20:14,326 autoreload 40468 18408 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-11-11 08:20:15,240 autoreload 37692 42508 Watching for file changes with StatReloader
+INFO 2025-11-11 08:20:29,215 autoreload 37692 42508 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-11-11 08:20:29,996 autoreload 37252 34272 Watching for file changes with StatReloader
+INFO 2025-11-11 08:21:25,503 basehttp 37252 2572 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 13889
+INFO 2025-11-11 08:21:27,476 basehttp 37252 2572 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 13889
+INFO 2025-11-11 08:21:27,506 basehttp 37252 2572 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-11-11 08:21:27,512 basehttp 37252 48236 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-11-11 08:21:27,513 basehttp 37252 42096 "GET /static/vendor/select2/css/select2.min.css HTTP/1.1" 200 16264
+INFO 2025-11-11 08:21:27,514 basehttp 37252 2572 "GET /static/admin/js/core.js HTTP/1.1" 200 6208
+INFO 2025-11-11 08:21:27,516 basehttp 37252 36892 "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+INFO 2025-11-11 08:21:27,524 basehttp 37252 42096 "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 9777
+INFO 2025-11-11 08:21:27,525 basehttp 37252 2572 "GET /static/matricula/js/toggle-plan-nacional.js HTTP/1.1" 200 5947
+INFO 2025-11-11 08:21:27,527 basehttp 37252 48236 "GET /static/matricula/js/dependent-dropdowns.js HTTP/1.1" 200 17518
+INFO 2025-11-11 08:21:27,529 basehttp 37252 36892 "GET /static/admin/js/actions.js HTTP/1.1" 200 8076
+INFO 2025-11-11 08:21:27,532 basehttp 37252 2572 "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+INFO 2025-11-11 08:21:27,534 basehttp 37252 42096 "GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+INFO 2025-11-11 08:21:27,540 basehttp 37252 6972 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-11-11 08:21:27,542 basehttp 37252 36892 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-11-11 08:21:27,542 basehttp 37252 42096 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-11-11 08:21:27,545 basehttp 37252 48236 "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 325171
+INFO 2025-11-11 08:21:27,552 basehttp 37252 47480 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-11-11 08:21:27,575 basehttp 37252 47480 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-11-11 08:21:27,596 basehttp 37252 47480 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-11-11 08:21:27,597 basehttp 37252 48236 "GET /static/vendor/select2/js/select2.min.js HTTP/1.1" 200 73170
+INFO 2025-11-11 08:21:27,606 basehttp 37252 48236 "GET /static/jazzmin/js/change_list.js HTTP/1.1" 200 2252
+INFO 2025-11-11 08:21:27,632 basehttp 37252 47480 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-11-11 08:21:27,635 basehttp 37252 48236 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-11-11 08:21:27,800 basehttp 37252 48236 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+ERROR 2025-11-11 08:21:32,458 log 37252 48236 Internal Server Error: /admin/matricula/estudiante/
+Traceback (most recent call last):
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 719, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\views\decorators\cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\sites.py", line 246, in inner
+    return view(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 2024, in changelist_view
+    cl = self.get_changelist_instance(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 867, in get_changelist_instance
+    return ChangeList(
+        request,
+    ...<12 lines>...
+        self.search_help_text,
+    )
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\views\main.py", line 145, in __init__
+    self.queryset = self.get_queryset(request)
+                    ~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\views\main.py", line 596, in get_queryset
+    return qs.distinct()
+           ~~~~~~~~~~~^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\db\models\query.py", line 1731, in distinct
+    raise TypeError(
+        "Cannot create distinct fields once a slice has been taken."
+    )
+TypeError: Cannot create distinct fields once a slice has been taken.
+ERROR 2025-11-11 08:21:32,465 basehttp 37252 48236 "GET /admin/matricula/estudiante/?q=lucca HTTP/1.1" 500 144965
+WARNING 2025-11-11 08:21:32,594 log 37252 48236 Not Found: /favicon.ico
+WARNING 2025-11-11 08:21:32,594 basehttp 37252 48236 "GET /favicon.ico HTTP/1.1" 404 3331
+INFO 2025-11-11 08:21:42,644 basehttp 37252 48236 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 13889
+INFO 2025-11-11 08:21:44,845 basehttp 37252 48236 "POST /admin/logout/ HTTP/1.1" 200 2182
+INFO 2025-11-11 08:21:45,905 basehttp 37252 48236 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-11-11 08:21:45,916 basehttp 37252 48236 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4955
+INFO 2025-11-11 08:21:49,629 basehttp 37252 37996 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-11-11 08:21:49,728 basehttp 37252 37996 "GET /admin/ HTTP/1.1" 200 35340
+INFO 2025-11-11 08:21:52,005 basehttp 37252 37996 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 63999
+INFO 2025-11-11 08:21:52,107 basehttp 37252 37996 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+ERROR 2025-11-11 08:21:58,332 log 37252 37996 Internal Server Error: /admin/matricula/estudiante/
+Traceback (most recent call last):
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 719, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\views\decorators\cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\sites.py", line 246, in inner
+    return view(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 2024, in changelist_view
+    cl = self.get_changelist_instance(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 867, in get_changelist_instance
+    return ChangeList(
+        request,
+    ...<12 lines>...
+        self.search_help_text,
+    )
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\views\main.py", line 145, in __init__
+    self.queryset = self.get_queryset(request)
+                    ~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\views\main.py", line 596, in get_queryset
+    return qs.distinct()
+           ~~~~~~~~~~~^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\db\models\query.py", line 1731, in distinct
+    raise TypeError(
+        "Cannot create distinct fields once a slice has been taken."
+    )
+TypeError: Cannot create distinct fields once a slice has been taken.
+ERROR 2025-11-11 08:21:58,335 basehttp 37252 37996 "GET /admin/matricula/estudiante/?q=lucca HTTP/1.1" 500 145037
+INFO 2025-11-11 08:22:28,029 autoreload 37252 34272 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-11-11 08:22:29,024 autoreload 39024 49744 Watching for file changes with StatReloader
+INFO 2025-11-11 08:22:45,229 autoreload 39024 49744 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-11-11 08:22:46,113 autoreload 39156 38276 Watching for file changes with StatReloader
+INFO 2025-11-11 08:23:01,190 autoreload 39156 38276 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-11-11 08:23:02,201 autoreload 18564 42204 Watching for file changes with StatReloader
+ERROR 2025-11-11 08:23:03,038 log 18564 44984 Internal Server Error: /admin/matricula/estudiante/
+Traceback (most recent call last):
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 719, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\views\decorators\cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\sites.py", line 246, in inner
+    return view(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 2024, in changelist_view
+    cl = self.get_changelist_instance(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 867, in get_changelist_instance
+    return ChangeList(
+        request,
+    ...<12 lines>...
+        self.search_help_text,
+    )
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\views\main.py", line 145, in __init__
+    self.queryset = self.get_queryset(request)
+                    ~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\views\main.py", line 596, in get_queryset
+    return qs.distinct()
+           ~~~~~~~~~~~^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\db\models\query.py", line 1731, in distinct
+    raise TypeError(
+        "Cannot create distinct fields once a slice has been taken."
+    )
+TypeError: Cannot create distinct fields once a slice has been taken.
+ERROR 2025-11-11 08:23:03,045 basehttp 18564 44984 "GET /admin/matricula/estudiante/ HTTP/1.1" 500 146253
+INFO 2025-11-11 08:23:04,820 basehttp 18564 44984 "GET /admin/ HTTP/1.1" 200 35340
+INFO 2025-11-11 08:23:06,852 basehttp 18564 44984 "GET /admin/ HTTP/1.1" 200 35340
+INFO 2025-11-11 08:23:06,875 basehttp 18564 41520 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-11-11 08:23:06,876 basehttp 18564 44984 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-11-11 08:23:06,880 basehttp 18564 36892 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-11-11 08:23:06,882 basehttp 18564 6972 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-11-11 08:23:06,882 basehttp 18564 2572 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-11-11 08:23:06,887 basehttp 18564 41520 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-11-11 08:23:06,887 basehttp 18564 44984 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-11-11 08:23:06,896 basehttp 18564 36924 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-11-11 08:23:07,008 basehttp 18564 44984 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-11-11 08:23:07,009 basehttp 18564 36924 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-11-11 08:23:07,170 basehttp 18564 36924 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-11-11 08:23:11,015 basehttp 18564 36924 "GET /admin/ HTTP/1.1" 200 35340
+ERROR 2025-11-11 08:23:13,458 log 18564 36924 Internal Server Error: /admin/matricula/estudiante/
+Traceback (most recent call last):
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 719, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\views\decorators\cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\sites.py", line 246, in inner
+    return view(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 2024, in changelist_view
+    cl = self.get_changelist_instance(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 867, in get_changelist_instance
+    return ChangeList(
+        request,
+    ...<12 lines>...
+        self.search_help_text,
+    )
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\views\main.py", line 145, in __init__
+    self.queryset = self.get_queryset(request)
+                    ~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\views\main.py", line 596, in get_queryset
+    return qs.distinct()
+           ~~~~~~~~~~~^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\db\models\query.py", line 1731, in distinct
+    raise TypeError(
+        "Cannot create distinct fields once a slice has been taken."
+    )
+TypeError: Cannot create distinct fields once a slice has been taken.
+ERROR 2025-11-11 08:23:13,461 basehttp 18564 36924 "GET /admin/matricula/estudiante/ HTTP/1.1" 500 146384
+WARNING 2025-11-11 08:23:13,697 log 18564 36924 Not Found: /favicon.ico
+WARNING 2025-11-11 08:23:13,697 basehttp 18564 36924 "GET /favicon.ico HTTP/1.1" 404 3331
+INFO 2025-11-11 08:23:15,030 basehttp 18564 36924 "GET /admin/ HTTP/1.1" 200 35340
+ERROR 2025-11-11 08:23:17,207 log 18564 36924 Internal Server Error: /admin/matricula/estudiante/
+Traceback (most recent call last):
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 719, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\views\decorators\cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\sites.py", line 246, in inner
+    return view(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 2024, in changelist_view
+    cl = self.get_changelist_instance(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 867, in get_changelist_instance
+    return ChangeList(
+        request,
+    ...<12 lines>...
+        self.search_help_text,
+    )
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\views\main.py", line 145, in __init__
+    self.queryset = self.get_queryset(request)
+                    ~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\views\main.py", line 596, in get_queryset
+    return qs.distinct()
+           ~~~~~~~~~~~^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\db\models\query.py", line 1731, in distinct
+    raise TypeError(
+        "Cannot create distinct fields once a slice has been taken."
+    )
+TypeError: Cannot create distinct fields once a slice has been taken.
+ERROR 2025-11-11 08:23:17,210 basehttp 18564 36924 "GET /admin/matricula/estudiante/ HTTP/1.1" 500 146384
+INFO 2025-11-11 08:24:11,851 basehttp 18564 36924 "GET /admin/ HTTP/1.1" 200 35340
+INFO 2025-11-11 08:24:25,092 autoreload 18564 42204 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-11-11 08:24:25,998 autoreload 42664 49208 Watching for file changes with StatReloader
+INFO 2025-11-11 08:24:29,309 basehttp 42664 19560 "GET /admin/ HTTP/1.1" 200 35340
+INFO 2025-11-11 08:24:32,791 basehttp 42664 19560 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 63999
+INFO 2025-11-11 08:24:32,843 basehttp 42664 45908 "GET /static/matricula/js/toggle-plan-nacional.js HTTP/1.1" 304 0
+INFO 2025-11-11 08:24:32,931 basehttp 42664 19560 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 08:24:42,359 autoreload 42664 49208 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-11-11 08:24:43,194 autoreload 35948 49884 Watching for file changes with StatReloader
+ERROR 2025-11-11 08:24:45,284 log 35948 47244 Internal Server Error: /admin/matricula/estudiante/
+Traceback (most recent call last):
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 719, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\views\decorators\cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\sites.py", line 246, in inner
+    return view(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 2024, in changelist_view
+    cl = self.get_changelist_instance(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 867, in get_changelist_instance
+    return ChangeList(
+        request,
+    ...<12 lines>...
+        self.search_help_text,
+    )
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\views\main.py", line 145, in __init__
+    self.queryset = self.get_queryset(request)
+                    ~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\views\main.py", line 596, in get_queryset
+    return qs.distinct()
+           ~~~~~~~~~~~^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\db\models\query.py", line 1731, in distinct
+    raise TypeError(
+        "Cannot create distinct fields once a slice has been taken."
+    )
+TypeError: Cannot create distinct fields once a slice has been taken.
+ERROR 2025-11-11 08:24:45,292 basehttp 35948 47244 "GET /admin/matricula/estudiante/?q=lucca HTTP/1.1" 500 145037
+INFO 2025-11-11 08:28:36,575 basehttp 35948 47244 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 63999
+INFO 2025-11-11 08:28:36,671 basehttp 35948 47244 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 08:28:45,949 basehttp 35948 47244 "POST /admin/logout/ HTTP/1.1" 200 2182
+INFO 2025-11-11 08:28:46,993 basehttp 35948 47244 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-11-11 08:28:47,003 basehttp 35948 47244 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4955
+INFO 2025-11-11 08:28:51,242 signals 35948 47244 Signal user_logged_in ejecutándose para usuario: jordy@gmail.com
+INFO 2025-11-11 08:28:51,256 signals 35948 47244 Asignando automáticamente institución única: CTP. MÁXIMO QUESADA
+INFO 2025-11-11 08:28:51,261 basehttp 35948 47244 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-11-11 08:28:51,373 basehttp 35948 47244 "GET /admin/ HTTP/1.1" 200 10367
+INFO 2025-11-11 08:28:53,648 basehttp 35948 47244 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 13889
+INFO 2025-11-11 08:28:53,670 basehttp 35948 47244 "GET /static/matricula/js/toggle-plan-nacional.js HTTP/1.1" 304 0
+ERROR 2025-11-11 08:28:55,887 log 35948 47244 Internal Server Error: /admin/matricula/estudiante/
+Traceback (most recent call last):
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 719, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\views\decorators\cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\sites.py", line 246, in inner
+    return view(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 2024, in changelist_view
+    cl = self.get_changelist_instance(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\options.py", line 867, in get_changelist_instance
+    return ChangeList(
+        request,
+    ...<12 lines>...
+        self.search_help_text,
+    )
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\views\main.py", line 145, in __init__
+    self.queryset = self.get_queryset(request)
+                    ~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\contrib\admin\views\main.py", line 596, in get_queryset
+    return qs.distinct()
+           ~~~~~~~~~~~^^
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\db\models\query.py", line 1731, in distinct
+    raise TypeError(
+        "Cannot create distinct fields once a slice has been taken."
+    )
+TypeError: Cannot create distinct fields once a slice has been taken.
+ERROR 2025-11-11 08:28:55,891 basehttp 35948 47244 "GET /admin/matricula/estudiante/?q=lucca HTTP/1.1" 500 144965
+INFO 2025-11-11 08:28:57,365 basehttp 35948 47244 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 13889
+INFO 2025-11-11 08:29:22,071 autoreload 35948 49884 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-11-11 08:29:22,996 autoreload 44860 39608 Watching for file changes with StatReloader
+INFO 2025-11-11 08:29:33,638 autoreload 44860 39608 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-11-11 08:29:34,417 autoreload 40264 33392 Watching for file changes with StatReloader
+INFO 2025-11-11 08:29:38,668 basehttp 40264 44544 "GET /admin/ HTTP/1.1" 200 10367
+INFO 2025-11-11 08:29:40,180 basehttp 40264 44544 "GET /admin/ HTTP/1.1" 200 10367
+INFO 2025-11-11 08:29:40,202 basehttp 40264 44544 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-11-11 08:29:40,217 basehttp 40264 44544 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-11-11 08:29:40,223 basehttp 40264 44544 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-11-11 08:29:40,223 basehttp 40264 19864 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-11-11 08:29:40,225 basehttp 40264 49060 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-11-11 08:29:40,230 basehttp 40264 49972 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-11-11 08:29:40,230 basehttp 40264 37468 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-11-11 08:29:40,243 basehttp 40264 16692 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-11-11 08:29:40,359 basehttp 40264 37468 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-11-11 08:29:40,362 basehttp 40264 16692 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-11-11 08:29:40,521 basehttp 40264 16692 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-11-11 08:29:42,521 basehttp 40264 16692 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 13889
+INFO 2025-11-11 08:29:44,557 basehttp 40264 16692 "GET /admin/matricula/estudiante/?q=lucca HTTP/1.1" 200 18597
+INFO 2025-11-11 08:30:04,112 basehttp 40264 16692 "GET /admin/matricula/estudiante/?q=chispa HTTP/1.1" 200 18615
+INFO 2025-11-11 08:30:10,156 basehttp 40264 16692 "GET /admin/matricula/estudiante/?q=ana HTTP/1.1" 200 32094
+INFO 2025-11-11 08:30:22,802 basehttp 40264 16692 "GET /admin/matricula/estudiante/?q=dayana HTTP/1.1" 200 22230
+INFO 2025-11-11 08:30:49,261 basehttp 40264 16692 "GET /admin/matricula/personacontacto/ HTTP/1.1" 200 36857
+INFO 2025-11-11 08:31:07,951 basehttp 40264 16692 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 13889
+INFO 2025-11-11 08:32:28,624 autoreload 40264 33392 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-11-11 08:32:29,623 autoreload 39424 10728 Watching for file changes with StatReloader
+INFO 2025-11-11 08:32:45,654 autoreload 39424 10728 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-11-11 08:32:46,568 autoreload 13912 13920 Watching for file changes with StatReloader
+INFO 2025-11-11 08:48:13,283 autoreload 13912 13920 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-11-11 08:48:14,195 autoreload 11292 48488 Watching for file changes with StatReloader
+INFO 2025-11-11 08:50:23,425 basehttp 11292 47284 "GET /admin/ HTTP/1.1" 200 10367
+INFO 2025-11-11 08:50:25,022 basehttp 11292 47284 "GET /admin/ HTTP/1.1" 200 10367
+INFO 2025-11-11 08:50:25,053 basehttp 11292 23292 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-11-11 08:50:25,055 basehttp 11292 47284 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-11-11 08:50:25,056 basehttp 11292 44712 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-11-11 08:50:25,057 basehttp 11292 23400 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-11-11 08:50:25,061 basehttp 11292 47284 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-11-11 08:50:25,063 basehttp 11292 3296 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-11-11 08:50:25,064 basehttp 11292 23400 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-11-11 08:50:25,072 basehttp 11292 14120 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-11-11 08:50:25,208 basehttp 11292 23400 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-11-11 08:50:25,213 basehttp 11292 14120 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-11-11 08:50:25,371 basehttp 11292 14120 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-11-11 08:50:27,202 basehttp 11292 14120 "GET /admin/ HTTP/1.1" 200 10367
+INFO 2025-11-11 08:50:29,862 basehttp 11292 14120 "GET /admin/ HTTP/1.1" 200 10367
+INFO 2025-11-11 08:50:31,952 basehttp 11292 14120 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 13889
+INFO 2025-11-11 08:50:31,981 basehttp 11292 14120 "GET /static/matricula/js/toggle-plan-nacional.js HTTP/1.1" 304 0
+INFO 2025-11-11 08:50:34,151 basehttp 11292 14120 "GET /admin/matricula/estudiante/?q=lucca HTTP/1.1" 200 18597
+INFO 2025-11-11 08:50:49,573 basehttp 11292 14120 "GET /admin/matricula/personacontacto/ HTTP/1.1" 200 13796
+INFO 2025-11-11 08:50:58,579 basehttp 11292 14120 "GET /admin/matricula/personacontacto/?q=jenifer HTTP/1.1" 200 18326
+INFO 2025-11-11 08:51:01,923 basehttp 11292 14120 "GET /admin/matricula/personacontacto/add/?_changelist_filters=q%3Djenifer HTTP/1.1" 200 29033
+INFO 2025-11-11 08:51:02,126 basehttp 11292 14120 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 08:51:14,364 basehttp 11292 14120 "GET /admin/ HTTP/1.1" 200 10367
+INFO 2025-11-11 08:51:26,200 basehttp 11292 14120 "GET /admin/matricula/personacontacto/ HTTP/1.1" 200 13796
+INFO 2025-11-11 08:51:28,018 basehttp 11292 14120 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 13889
+INFO 2025-11-11 08:53:09,181 basehttp 11292 50032 "GET /admin/matricula/personacontacto/ HTTP/1.1" 200 13796
+INFO 2025-11-11 08:53:17,934 basehttp 11292 50032 "GET /admin/matricula/personacontacto/?q=jenifer HTTP/1.1" 200 18326
+INFO 2025-11-11 08:53:24,573 basehttp 11292 50032 "GET /admin/matricula/personacontacto/add/?_changelist_filters=q%3Djenifer HTTP/1.1" 200 29033
+INFO 2025-11-11 08:53:24,657 basehttp 11292 50032 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 08:54:02,035 basehttp 11292 50032 "POST /admin/matricula/personacontacto/add/?_changelist_filters=q%3Djenifer HTTP/1.1" 200 29616
+INFO 2025-11-11 08:54:02,128 basehttp 11292 50032 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 08:54:19,130 basehttp 11292 50032 "GET /admin/matricula/personacontacto/ HTTP/1.1" 200 13796
+INFO 2025-11-11 08:54:24,206 basehttp 11292 50032 "GET /admin/matricula/personacontacto/?q=jenifer HTTP/1.1" 200 18326
+INFO 2025-11-11 08:54:25,318 basehttp 11292 50032 "GET /admin/matricula/personacontacto/826/change/?_changelist_filters=q%3Djenifer HTTP/1.1" 302 0
+INFO 2025-11-11 08:54:25,412 basehttp 11292 50032 "GET /admin/ HTTP/1.1" 200 10925
+INFO 2025-11-11 08:54:35,235 basehttp 11292 50032 "GET /admin/matricula/personacontacto/?q=jenifer HTTP/1.1" 200 18326
+INFO 2025-11-11 08:54:37,824 basehttp 11292 50032 "GET /admin/matricula/personacontacto/826/change/?_changelist_filters=q%3Djenifer HTTP/1.1" 302 0
+INFO 2025-11-11 08:54:37,922 basehttp 11292 50032 "GET /admin/ HTTP/1.1" 200 10925
+INFO 2025-11-11 08:54:41,224 basehttp 11292 50032 "GET /admin/matricula/personacontacto/?q=jenifer HTTP/1.1" 200 18326
+INFO 2025-11-11 08:54:47,361 basehttp 11292 50032 "GET /admin/ HTTP/1.1" 200 10367
+INFO 2025-11-11 08:54:51,318 basehttp 11292 50032 "GET /admin/matricula/personacontacto/ HTTP/1.1" 200 13796
+INFO 2025-11-11 08:54:56,019 basehttp 11292 50032 "GET /admin/matricula/personacontacto/?q=jenifer HTTP/1.1" 200 18326
+INFO 2025-11-11 08:54:57,050 basehttp 11292 50032 "GET /admin/matricula/personacontacto/826/change/?_changelist_filters=q%3Djenifer HTTP/1.1" 302 0
+INFO 2025-11-11 08:54:57,145 basehttp 11292 50032 "GET /admin/ HTTP/1.1" 200 10925
+INFO 2025-11-11 08:54:59,001 basehttp 11292 50032 "GET /admin/ HTTP/1.1" 200 10367
+INFO 2025-11-11 08:55:00,796 basehttp 11292 50032 "POST /admin/logout/ HTTP/1.1" 200 2182
+INFO 2025-11-11 08:55:01,808 basehttp 11292 50032 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-11-11 08:55:01,817 basehttp 11292 50032 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4955
+WARNING 2025-11-11 08:55:01,880 log 11292 50032 Not Found: /favicon.ico
+WARNING 2025-11-11 08:55:01,880 basehttp 11292 50032 "GET /favicon.ico HTTP/1.1" 404 3331
+INFO 2025-11-11 08:55:06,295 basehttp 11292 50032 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-11-11 08:55:06,381 basehttp 11292 50032 "GET /admin/ HTTP/1.1" 200 35340
+INFO 2025-11-11 08:55:18,380 basehttp 11292 50032 "GET /admin/matricula/personacontacto/ HTTP/1.1" 200 61927
+INFO 2025-11-11 08:55:18,463 basehttp 11292 50032 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 08:55:27,982 basehttp 11292 50032 "GET /admin/matricula/personacontacto/?q=jenifer HTTP/1.1" 200 44894
+INFO 2025-11-11 08:55:28,061 basehttp 11292 50032 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 08:55:29,523 basehttp 11292 50032 "GET /admin/matricula/personacontacto/826/change/?_changelist_filters=q%3Djenifer HTTP/1.1" 200 61631
+INFO 2025-11-11 08:55:29,604 basehttp 11292 50032 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 08:56:16,631 basehttp 11292 50032 "GET /admin/auth/group/ HTTP/1.1" 200 43176
+INFO 2025-11-11 08:56:16,724 basehttp 11292 50032 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 08:56:18,235 basehttp 11292 50032 "GET /admin/auth/group/8/change/ HTTP/1.1" 200 58007
+INFO 2025-11-11 08:56:18,316 basehttp 11292 50032 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 08:57:34,508 basehttp 11292 50032 "POST /admin/logout/ HTTP/1.1" 200 2182
+INFO 2025-11-11 08:57:35,559 basehttp 11292 50032 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-11-11 08:57:35,565 basehttp 11292 50032 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4955
+INFO 2025-11-11 08:57:38,988 signals 11292 50032 Signal user_logged_in ejecutándose para usuario: jordy@gmail.com
+INFO 2025-11-11 08:57:38,997 signals 11292 50032 Asignando automáticamente institución única: CTP. MÁXIMO QUESADA
+INFO 2025-11-11 08:57:39,003 basehttp 11292 50032 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-11-11 08:57:39,099 basehttp 11292 50032 "GET /admin/ HTTP/1.1" 200 10367
+INFO 2025-11-11 08:57:41,061 basehttp 11292 50032 "GET /admin/matricula/personacontacto/ HTTP/1.1" 200 13796
+INFO 2025-11-11 08:57:45,041 basehttp 11292 50032 "GET /admin/matricula/personacontacto/?q=jenifer HTTP/1.1" 200 18326
+INFO 2025-11-11 08:57:46,125 basehttp 11292 50032 "GET /admin/matricula/personacontacto/826/change/?_changelist_filters=q%3Djenifer HTTP/1.1" 302 0
+INFO 2025-11-11 08:57:46,216 basehttp 11292 50032 "GET /admin/ HTTP/1.1" 200 10925
+INFO 2025-11-11 08:58:33,287 autoreload 11292 48488 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-11-11 08:58:34,235 autoreload 40096 43520 Watching for file changes with StatReloader
+INFO 2025-11-11 08:58:54,793 autoreload 40096 43520 D:\Proyecto Colegio\sistema_colegio\matricula\admin.py changed, reloading.
+INFO 2025-11-11 08:58:55,750 autoreload 40544 16112 Watching for file changes with StatReloader
+INFO 2025-11-11 09:25:17,251 basehttp 40544 19504 "GET /admin/ HTTP/1.1" 200 10367
+INFO 2025-11-11 09:25:19,046 basehttp 40544 19504 "GET /admin/ HTTP/1.1" 200 10367
+INFO 2025-11-11 09:25:19,080 basehttp 40544 36924 "GET /static/jazzmin/css/main.css HTTP/1.1" 200 16969
+INFO 2025-11-11 09:25:19,081 basehttp 40544 19504 "GET /static/vendor/fontawesome-free/css/all.min.css HTTP/1.1" 200 103009
+INFO 2025-11-11 09:25:19,083 basehttp 40544 22712 "GET /static/vendor/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 62440
+INFO 2025-11-11 09:25:19,086 basehttp 40544 408 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-11-11 09:25:19,087 basehttp 40544 36924 "GET /static/vendor/adminlte/js/adminlte.min.js HTTP/1.1" 200 44244
+INFO 2025-11-11 09:25:19,089 basehttp 40544 14220 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-11-11 09:25:19,092 basehttp 40544 22712 "GET /static/jazzmin/js/main.js HTTP/1.1" 200 2391
+INFO 2025-11-11 09:25:19,099 basehttp 40544 19564 "GET /static/vendor/adminlte/css/adminlte.min.css HTTP/1.1" 200 1382975
+INFO 2025-11-11 09:25:19,176 basehttp 40544 22712 "GET /static/vendor/fontawesome-free/webfonts/fa-regular-400.woff2 HTTP/1.1" 200 25392
+INFO 2025-11-11 09:25:19,178 basehttp 40544 19564 "GET /static/vendor/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 156400
+INFO 2025-11-11 09:25:19,349 basehttp 40544 19564 "GET /static/sis_colegio/img/Logo-Peque-School-Smart.png HTTP/1.1" 200 164783
+INFO 2025-11-11 09:26:08,889 basehttp 40544 19564 "GET /admin/matricula/personacontacto/ HTTP/1.1" 200 13796
+INFO 2025-11-11 09:26:12,987 basehttp 40544 19564 "GET /admin/matricula/personacontacto/?q=jenifer HTTP/1.1" 200 18326
+INFO 2025-11-11 09:26:14,040 basehttp 40544 19564 "GET /admin/matricula/personacontacto/826/change/?_changelist_filters=q%3Djenifer HTTP/1.1" 200 29754
+INFO 2025-11-11 09:26:14,143 basehttp 40544 19564 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 09:26:22,373 basehttp 40544 19564 "POST /admin/matricula/personacontacto/826/change/?_changelist_filters=q%3Djenifer HTTP/1.1" 302 0
+INFO 2025-11-11 09:26:22,488 basehttp 40544 19564 "GET /admin/matricula/personacontacto/?q=jenifer HTTP/1.1" 200 18932
+INFO 2025-11-11 09:26:25,052 basehttp 40544 19564 "GET /admin/matricula/personacontacto/826/change/?_changelist_filters=q%3Djenifer HTTP/1.1" 200 29754
+INFO 2025-11-11 09:26:25,135 basehttp 40544 19564 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 09:26:30,299 basehttp 40544 19564 "POST /admin/matricula/personacontacto/826/change/?_changelist_filters=q%3Djenifer HTTP/1.1" 302 0
+INFO 2025-11-11 09:26:30,418 basehttp 40544 19564 "GET /admin/matricula/personacontacto/?q=jenifer HTTP/1.1" 200 18932
+INFO 2025-11-11 09:26:33,721 basehttp 40544 19564 "GET /admin/matricula/personacontacto/ HTTP/1.1" 200 13796
+INFO 2025-11-11 09:26:34,179 basehttp 40544 19564 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 13889
+INFO 2025-11-11 09:26:34,217 basehttp 40544 19564 "GET /static/matricula/js/toggle-plan-nacional.js HTTP/1.1" 304 0
+INFO 2025-11-11 09:26:36,956 basehttp 40544 19564 "GET /admin/matricula/estudiante/?q=lucca HTTP/1.1" 200 18597
+INFO 2025-11-11 09:26:39,162 basehttp 40544 19564 "GET /admin/matricula/estudiante/952/change/?_changelist_filters=q%3Dlucca HTTP/1.1" 200 255839
+INFO 2025-11-11 09:26:39,269 basehttp 40544 19564 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 09:26:39,805 views 40544 19564 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-11-11 09:26:39,805 basehttp 40544 19564 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-11-11 09:26:39,878 views 40544 19564 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-11-11 09:26:39,879 basehttp 40544 19564 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-11-11 09:26:39,936 views 40544 22712 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-11-11 09:26:39,937 basehttp 40544 22712 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-11-11 09:26:40,113 views 40544 22712 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-11-11 09:26:40,113 basehttp 40544 22712 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-11-11 09:26:40,477 views 40544 22712 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-11-11 09:26:40,477 basehttp 40544 22712 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-11-11 09:26:40,542 views 40544 22712 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-11-11 09:26:40,542 basehttp 40544 22712 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-11-11 09:26:40,952 views 40544 22712 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-11-11 09:26:40,952 basehttp 40544 22712 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-11-11 09:26:41,021 views 40544 22712 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-11-11 09:26:41,021 basehttp 40544 22712 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-11-11 09:26:41,529 views 40544 22712 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-11-11 09:26:41,579 basehttp 40544 22712 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-11-11 09:26:41,655 views 40544 22712 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-11-11 09:26:41,655 basehttp 40544 22712 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-11-11 09:26:41,979 views 40544 22712 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-11-11 09:26:41,980 basehttp 40544 22712 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-11-11 09:26:42,046 views 40544 22712 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-11-11 09:26:42,046 basehttp 40544 22712 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-11-11 09:26:42,938 views 40544 22712 Cantones para provincia 1 (San José): 20 encontrados
+INFO 2025-11-11 09:26:42,939 basehttp 40544 22712 "GET /catalogos/api/cantones/1/ HTTP/1.1" 200 746
+INFO 2025-11-11 09:26:43,008 views 40544 22712 Distritos para cantón 3 (Desamparados): 13 encontrados
+INFO 2025-11-11 09:26:43,009 basehttp 40544 22712 "GET /catalogos/api/distritos/3/ HTTP/1.1" 200 487
+INFO 2025-11-11 09:26:55,442 basehttp 40544 22712 "POST /admin/logout/ HTTP/1.1" 200 2182
+INFO 2025-11-11 09:26:56,661 basehttp 40544 22712 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-11-11 09:26:56,669 basehttp 40544 22712 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4955
+WARNING 2025-11-11 09:26:56,734 log 40544 22712 Not Found: /favicon.ico
+WARNING 2025-11-11 09:26:56,735 basehttp 40544 22712 "GET /favicon.ico HTTP/1.1" 404 3331
+INFO 2025-11-11 09:27:01,788 basehttp 40544 22712 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-11-11 09:27:01,979 basehttp 40544 22712 "GET /admin/ HTTP/1.1" 200 35340
+INFO 2025-11-11 09:27:07,495 basehttp 40544 22712 "GET /admin/auth/group/ HTTP/1.1" 200 43176
+INFO 2025-11-11 09:27:07,596 basehttp 40544 22712 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 09:27:11,031 basehttp 40544 22712 "GET /admin/core/user/ HTTP/1.1" 200 51012
+INFO 2025-11-11 09:27:11,110 basehttp 40544 22712 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 09:27:15,487 basehttp 40544 22712 "GET /admin/core/user/3ef551a2-5ea0-42b0-a3f6-bad865be5357/change/ HTTP/1.1" 200 69999
+INFO 2025-11-11 09:27:15,566 basehttp 40544 22712 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 09:27:26,725 basehttp 40544 22712 "POST /admin/core/user/3ef551a2-5ea0-42b0-a3f6-bad865be5357/change/ HTTP/1.1" 302 0
+INFO 2025-11-11 09:27:26,819 basehttp 40544 22712 "GET /admin/core/user/ HTTP/1.1" 200 51614
+INFO 2025-11-11 09:27:26,909 basehttp 40544 22712 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 09:27:28,614 basehttp 40544 22712 "POST /admin/logout/ HTTP/1.1" 200 2182
+INFO 2025-11-11 09:27:29,709 basehttp 40544 22712 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-11-11 09:27:29,717 basehttp 40544 22712 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4955
+INFO 2025-11-11 09:27:34,420 signals 40544 22712 Signal user_logged_in ejecutándose para usuario: jordy@gmail.com
+INFO 2025-11-11 09:27:34,429 signals 40544 22712 Asignando automáticamente institución única: CTP. MÁXIMO QUESADA
+INFO 2025-11-11 09:27:34,435 basehttp 40544 22712 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-11-11 09:27:34,534 basehttp 40544 22712 "GET /admin/ HTTP/1.1" 200 12851
+INFO 2025-11-11 09:27:36,386 basehttp 40544 22712 "GET /matricula/consulta-estudiante/ HTTP/1.1" 200 29467
+INFO 2025-11-11 09:27:42,426 basehttp 40544 22712 "POST /matricula/consulta-estudiante/ HTTP/1.1" 200 34721
+INFO 2025-11-11 09:27:42,588 basehttp 40544 22712 "GET /media/plantillas/logos_mep/logoMep.png HTTP/1.1" 200 15748
+INFO 2025-11-11 09:27:42,594 basehttp 40544 19564 "GET /media/instituciones/logos/logoMaximo.png HTTP/1.1" 200 43809
+INFO 2025-11-11 09:27:46,000 basehttp 40544 19564 "GET /media/plantillas/logos_mep/logoMep.png HTTP/1.1" 200 15748
+INFO 2025-11-11 09:27:46,000 basehttp 40544 22712 "GET /media/instituciones/logos/logoMaximo.png HTTP/1.1" 200 43809
+INFO 2025-11-11 09:27:49,915 basehttp 40544 22712 "GET /matricula/comprobante-matricula/?curso_lectivo_id=1&identificacion=112280841 HTTP/1.1" 200 4263
+INFO 2025-11-11 09:27:49,997 basehttp 40544 22712 "GET /media/plantillas/logos_mep/logoMep.png HTTP/1.1" 200 15748
+INFO 2025-11-11 09:27:50,000 basehttp 40544 19564 "GET /media/instituciones/logos/logoMaximo.png HTTP/1.1" 200 43809
+INFO 2025-11-11 09:27:59,361 basehttp 40544 19564 "GET /admin/ HTTP/1.1" 200 12851
+INFO 2025-11-11 09:28:02,443 basehttp 40544 19564 "GET /admin/matricula/personacontacto/ HTTP/1.1" 200 16355
+INFO 2025-11-11 09:28:02,527 basehttp 40544 19564 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 09:28:04,024 basehttp 40544 19564 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 29202
+INFO 2025-11-11 09:28:04,063 basehttp 40544 22712 "GET /static/matricula/js/dependent-especialidad.js HTTP/1.1" 304 0
+INFO 2025-11-11 09:28:04,063 basehttp 40544 14220 "GET /static/matricula/js/especialidad-limpia-campos.js HTTP/1.1" 304 0
+INFO 2025-11-11 09:28:04,063 basehttp 40544 36924 "GET /static/matricula/js/clear-dependent-fields.js HTTP/1.1" 304 0
+INFO 2025-11-11 09:28:04,121 basehttp 40544 19564 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 09:28:12,585 basehttp 40544 19564 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 16373
+INFO 2025-11-11 09:28:14,940 basehttp 40544 19564 "GET /admin/matricula/estudiante/?q=lucca HTTP/1.1" 200 21303
+INFO 2025-11-11 09:28:16,876 basehttp 40544 19564 "GET /admin/matricula/matriculaacademica/add/?estudiante=952&_institucion=1 HTTP/1.1" 200 25229
+INFO 2025-11-11 09:28:16,971 basehttp 40544 19564 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 09:31:16,720 basehttp 40544 19564 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 16373
+INFO 2025-11-11 09:31:23,757 basehttp 40544 19564 "GET /admin/matricula/matriculaacademica/ HTTP/1.1" 200 29202
+INFO 2025-11-11 09:31:23,962 basehttp 40544 19564 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 09:31:29,752 basehttp 40544 19564 "GET /admin/matricula/matriculaacademica/8855/change/ HTTP/1.1" 200 25506
+INFO 2025-11-11 09:31:29,853 basehttp 40544 19564 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 09:31:43,154 basehttp 40544 19564 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 16373
+INFO 2025-11-11 09:31:45,871 basehttp 40544 19564 "GET /admin/matricula/estudiante/?q=lucca HTTP/1.1" 200 21303
+INFO 2025-11-11 09:31:47,313 basehttp 40544 19564 "GET /admin/matricula/matriculaacademica/add/?estudiante=952&_institucion=1 HTTP/1.1" 200 25229
+INFO 2025-11-11 09:31:47,399 basehttp 40544 19564 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 09:32:02,965 basehttp 40544 19564 "POST /admin/logout/ HTTP/1.1" 200 2182

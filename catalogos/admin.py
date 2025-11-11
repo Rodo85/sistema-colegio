@@ -151,12 +151,49 @@ class SubgrupoAdmin(admin.ModelAdmin):
 
 @admin.register(CursoLectivo)
 class CursoLectivoAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'anio', 'fecha_inicio', 'fecha_fin', 'activo')
-    list_filter = ('anio', 'activo')
+    list_display = ('nombre_completo', 'anio', 'fecha_inicio', 'fecha_fin', 'estado_activo', 'estado_matricular')
+    list_filter = ('anio', 'activo', 'matricular')
     search_fields = ('nombre', 'anio')
     ordering = ('-anio',)
     
-    fields = ('anio', 'nombre', 'fecha_inicio', 'fecha_fin', 'activo')
+    fields = ('anio', 'nombre', 'fecha_inicio', 'fecha_fin', 'activo', 'matricular')
+    
+    @admin.display(description="Nombre del curso", ordering='nombre')
+    def nombre_completo(self, obj):
+        return str(obj)  # Usa el __str__ que incluye las etiquetas
+    
+    @admin.display(description="Curso Activo", boolean=True, ordering='activo')
+    def estado_activo(self, obj):
+        return obj.activo
+    
+    @admin.display(description="Matriculando", boolean=True, ordering='matricular')
+    def estado_matricular(self, obj):
+        return obj.matricular
+    
+    def save_model(self, request, obj, form, change):
+        """
+        Al guardar, si se marca como activo o matricular, 
+        automáticamente desactiva los demás (esto ya está en el modelo).
+        Mostrar mensaje informativo.
+        """
+        from django.contrib import messages
+        
+        was_activo = False
+        was_matricular = False
+        
+        if change:
+            old_obj = CursoLectivo.objects.get(pk=obj.pk)
+            was_activo = old_obj.activo
+            was_matricular = old_obj.matricular
+        
+        super().save_model(request, obj, form, change)
+        
+        # Mensajes informativos
+        if obj.activo and not was_activo:
+            messages.success(request, f"✅ {obj.nombre} ahora es el curso lectivo ACTIVO. Los demás cursos fueron desactivados automáticamente.")
+        
+        if obj.matricular and not was_matricular:
+            messages.success(request, f"📚 {obj.nombre} ahora es el curso para MATRÍCULA. Los demás cursos fueron desmarcados automáticamente.")
 
 
 @admin.register(SubAreaInstitucion)

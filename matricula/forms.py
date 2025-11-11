@@ -67,6 +67,21 @@ class MatriculaAcademicaForm(forms.ModelForm):
         
         from config_institucional.models import EspecialidadCursoLectivo
         
+        # ===== FILTRAR CURSO LECTIVO: SOLO MOSTRAR EL CURSO CON MATRICULAR=TRUE =====
+        curso_matricular = CursoLectivo.get_matricular()
+        if curso_matricular:
+            # Filtrar el queryset para mostrar solo el curso de matrícula
+            self.fields['curso_lectivo'].queryset = CursoLectivo.objects.filter(id=curso_matricular.id)
+            # Establecer como inicial si es un registro nuevo
+            if not self.instance.pk:
+                self.fields['curso_lectivo'].initial = curso_matricular.id
+            # Eliminar la opción vacía (-------)
+            self.fields['curso_lectivo'].empty_label = None
+            self.fields['curso_lectivo'].required = True
+        else:
+            # Si no hay curso marcado para matrícula, mostrar todos
+            self.fields['curso_lectivo'].queryset = CursoLectivo.objects.all()
+        
         # Si hay un valor inicial en el campo especialidad, incluirlo en el queryset
         especialidad_inicial = self.initial.get('especialidad') if self.initial else None
         if especialidad_inicial:

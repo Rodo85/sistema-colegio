@@ -272,6 +272,11 @@ class CursoLectivo(models.Model):
     """
     Modelo global para manejar el año lectivo (matrícula por año)
     Ejemplo: Curso Lectivo 2025, Curso Lectivo 2026
+    
+    - activo: Indica el curso lectivo que está en ejecución actualmente
+    - matricular: Indica el curso lectivo para el cual se están recibiendo matrículas
+    
+    Solo un curso puede tener activo=True y solo uno puede tener matricular=True
     """
     def year_choices():
         current = datetime.date.today().year
@@ -282,7 +287,10 @@ class CursoLectivo(models.Model):
                              help_text="Ej: Curso Lectivo 2025")
     fecha_inicio = models.DateField(verbose_name="Fecha de inicio del año lectivo")
     fecha_fin = models.DateField(verbose_name="Fecha de fin del año lectivo")
-    activo = models.BooleanField(default=True, verbose_name="Curso activo")
+    activo = models.BooleanField(default=False, verbose_name="Curso activo",
+                                 help_text="Curso lectivo en ejecución actual. Solo uno puede estar activo.")
+    matricular = models.BooleanField(default=False, verbose_name="Matricular en este curso",
+                                     help_text="Curso lectivo para el que se están recibiendo matrículas. Solo uno puede estar activo para matrícula.")
 
     class Meta:
         verbose_name = "Curso Lectivo"
@@ -291,6 +299,14 @@ class CursoLectivo(models.Model):
         ordering = ("-anio",)
 
     def __str__(self):
+        etiquetas = []
+        if self.activo:
+            etiquetas.append("ACTIVO")
+        if self.matricular:
+            etiquetas.append("MATRICULANDO")
+        
+        if etiquetas:
+            return f"{self.nombre} [{', '.join(etiquetas)}]"
         return self.nombre
 
     def clean(self):
@@ -301,7 +317,26 @@ class CursoLectivo(models.Model):
 
     def save(self, *args, **kwargs):
         self.full_clean()
+        
+        # Si este curso se marca como activo, desactivar todos los demás
+        if self.activo:
+            CursoLectivo.objects.exclude(pk=self.pk).update(activo=False)
+        
+        # Si este curso se marca como matricular, desactivar todos los demás
+        if self.matricular:
+            CursoLectivo.objects.exclude(pk=self.pk).update(matricular=False)
+        
         super().save(*args, **kwargs)
+    
+    @classmethod
+    def get_activo(cls):
+        """Obtiene el curso lectivo activo"""
+        return cls.objects.filter(activo=True).first()
+    
+    @classmethod
+    def get_matricular(cls):
+        """Obtiene el curso lectivo para matrículas"""
+        return cls.objects.filter(matricular=True).first()
 
 
 class SubAreaInstitucion(models.Model):

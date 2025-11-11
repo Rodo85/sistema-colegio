@@ -54,10 +54,18 @@ class ImagePreviewWidget(forms.FileInput):
         
         # Mostrar imagen actual si existe
         if value and hasattr(value, 'url'):
+            clear_checkbox_name = name + '-clear'
+            clear_checkbox_id = 'id_' + name + '-clear'
             output.append(
                 '<div class="current-image-preview" style="margin-top: 15px;">'
                 '<label style="font-weight: bold; color: #333;">Imagen actual:</label><br>'
                 f'<img src="{value.url}" alt="Imagen actual" style="max-width: 200px; max-height: 200px; border: 2px solid #ddd; border-radius: 8px; margin: 10px 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">'
+                '<div style="margin: 10px 0;">'
+                f'<label style="display: inline-flex; align-items: center; cursor: pointer; color: #d32f2f; font-weight: normal;">'
+                f'<input type="checkbox" name="{clear_checkbox_name}" id="{clear_checkbox_id}" style="margin-right: 5px; cursor: pointer;">'
+                '<span>🗑️ Eliminar esta foto</span>'
+                '</label>'
+                '</div>'
                 '</div>'
             )
         
