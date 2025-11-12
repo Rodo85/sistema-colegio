@@ -8,9 +8,9 @@ services:
       pip install -r requirements.txt
       python manage.py collectstatic --noinput
     startCommand: |
-      python manage.py collectstatic --noinput --no-post-process
-      gunicorn sis_colegio.wsgi:application
-    preDeployCommand: python manage.py migrate --noinput
+      bash -c "mkdir -p staticfiles && python manage.py collectstatic --noinput --no-post-process && gunicorn sis_colegio.wsgi:application"
+    preDeployCommand: |
+      python manage.py migrate --noinput
     autoDeploy: true
     envVars:
       - key: PYTHON_VERSION
