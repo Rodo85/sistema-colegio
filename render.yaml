@@ -7,7 +7,9 @@ services:
       pip install --upgrade pip
       pip install -r requirements.txt
       python manage.py collectstatic --noinput
-    startCommand: gunicorn sis_colegio.wsgi:application
+    startCommand: |
+      python manage.py collectstatic --noinput --no-post-process
+      gunicorn sis_colegio.wsgi:application
     preDeployCommand: python manage.py migrate --noinput
     autoDeploy: true
     envVars:
