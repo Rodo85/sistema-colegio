@@ -329,3 +329,5 @@ Las mejoras implementadas hacen que la gestión de fotos sea:
 El sistema ahora gestiona las fotos de manera inteligente, manteniendo solo la foto actual de cada estudiante y eliminando automáticamente las fotos obsoletas.
 
 
+
+

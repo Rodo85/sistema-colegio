@@ -31293,3 +31293,80 @@ INFO 2025-11-11 09:31:45,871 basehttp 40544 19564 "GET /admin/matricula/estudian
 INFO 2025-11-11 09:31:47,313 basehttp 40544 19564 "GET /admin/matricula/matriculaacademica/add/?estudiante=952&_institucion=1 HTTP/1.1" 200 25229
 INFO 2025-11-11 09:31:47,399 basehttp 40544 19564 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
 INFO 2025-11-11 09:32:02,965 basehttp 40544 19564 "POST /admin/logout/ HTTP/1.1" 200 2182
+INFO 2025-11-11 14:07:35,100 autoreload 20316 47344 Watching for file changes with StatReloader
+INFO 2025-11-11 14:07:50,531 basehttp 20316 5300 "GET / HTTP/1.1" 302 0
+INFO 2025-11-11 14:07:50,534 basehttp 20316 5300 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-11-11 14:07:50,559 basehttp 20316 5300 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4955
+WARNING 2025-11-11 14:07:51,132 log 20316 5300 Not Found: /favicon.ico
+WARNING 2025-11-11 14:07:51,133 basehttp 20316 5300 "GET /favicon.ico HTTP/1.1" 404 3331
+INFO 2025-11-11 14:07:55,136 basehttp 20316 5300 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-11-11 14:07:55,339 basehttp 20316 5300 "GET /admin/ HTTP/1.1" 200 35340
+INFO 2025-11-11 14:08:59,191 autoreload 20316 47344 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-11-11 14:09:00,335 autoreload 40768 52508 Watching for file changes with StatReloader
+INFO 2025-11-11 14:09:02,420 autoreload 40768 52508 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-11-11 14:09:03,490 autoreload 6668 41080 Watching for file changes with StatReloader
+INFO 2025-11-11 14:09:06,728 autoreload 6668 41080 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-11-11 14:09:07,657 autoreload 55340 21992 Watching for file changes with StatReloader
+INFO 2025-11-11 14:09:14,021 autoreload 55340 21992 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-11-11 14:09:14,919 autoreload 41872 6032 Watching for file changes with StatReloader
+INFO 2025-11-11 14:09:41,951 autoreload 41872 6032 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-11-11 14:09:43,042 autoreload 18368 55428 Watching for file changes with StatReloader
+INFO 2025-11-11 14:09:46,382 autoreload 18368 55428 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-11-11 14:09:47,341 autoreload 37832 42792 Watching for file changes with StatReloader
+INFO 2025-11-11 14:09:54,396 autoreload 37832 42792 D:\Proyecto Colegio\sistema_colegio\matricula\models.py changed, reloading.
+INFO 2025-11-11 14:09:55,456 autoreload 43816 3580 Watching for file changes with StatReloader
+INFO 2025-11-11 14:10:28,320 basehttp 43816 34228 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 70742
+INFO 2025-11-11 14:10:28,354 basehttp 43816 51912 "GET /static/matricula/js/toggle-plan-nacional.js HTTP/1.1" 200 5947
+INFO 2025-11-11 14:10:28,465 basehttp 43816 34228 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 14:10:31,922 basehttp 43816 34228 "POST /admin/logout/ HTTP/1.1" 200 2182
+INFO 2025-11-11 14:10:32,924 basehttp 43816 34228 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-11-11 14:10:32,933 basehttp 43816 34228 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4955
+INFO 2025-11-11 14:10:37,129 signals 43816 34228 Signal user_logged_in ejecutándose para usuario: jordy@gmail.com
+INFO 2025-11-11 14:10:37,142 signals 43816 34228 Asignando automáticamente institución única: CTP. MÁXIMO QUESADA
+INFO 2025-11-11 14:10:37,148 basehttp 43816 34228 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-11-11 14:10:37,357 basehttp 43816 34228 "GET /admin/ HTTP/1.1" 200 12851
+INFO 2025-11-11 14:10:54,817 basehttp 43816 34228 "GET /admin/matricula/estudiante/ HTTP/1.1" 200 16373
+INFO 2025-11-11 14:10:54,843 basehttp 43816 34228 "GET /static/matricula/js/toggle-plan-nacional.js HTTP/1.1" 304 0
+INFO 2025-11-11 14:10:58,761 basehttp 43816 34228 "GET /admin/catalogos/nivel/ HTTP/1.1" 200 20369
+INFO 2025-11-11 14:11:01,847 basehttp 43816 34228 "GET /admin/matricula/personacontacto/ HTTP/1.1" 200 16355
+INFO 2025-11-11 14:11:02,058 basehttp 43816 34228 "GET /admin/jsi18n/ HTTP/1.1" 200 8691
+INFO 2025-11-11 14:11:02,576 basehttp 43816 34228 "GET /matricula/consulta-estudiante/ HTTP/1.1" 200 29467
+INFO 2025-11-11 15:27:34,708 basehttp 43816 13172 "GET / HTTP/1.1" 302 0
+INFO 2025-11-11 15:27:34,914 basehttp 43816 13172 "GET /admin/ HTTP/1.1" 200 12851
+INFO 2025-11-11 20:40:36,218 autoreload 73432 62188 Watching for file changes with StatReloader
+ERROR 2025-11-11 20:40:42,011 log 73432 61216 Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\http\request.py", line 191, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+WARNING 2025-11-11 20:40:42,014 basehttp 73432 61216 "GET / HTTP/1.1" 400 85644
+ERROR 2025-11-11 20:40:42,880 log 73432 74604 Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\http\request.py", line 191, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+WARNING 2025-11-11 20:40:42,882 basehttp 73432 74604 "GET / HTTP/1.1" 400 85500
+ERROR 2025-11-11 20:40:43,097 log 73432 74736 Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\utils\deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "D:\Proyecto Colegio\sistema_colegio\venv\Lib\site-packages\django\http\request.py", line 191, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+WARNING 2025-11-11 20:40:43,098 basehttp 73432 74736 "GET /favicon.ico HTTP/1.1" 400 85309

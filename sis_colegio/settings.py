@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+import dj_database_url
 
 # Cargar variables de entorno
 load_dotenv()
@@ -30,7 +31,11 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-z4)inpic*sstrkifp(au+d4-^4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
+
+render_hostname = os.getenv('RENDER_EXTERNAL_HOSTNAME')
+if render_hostname:
+    ALLOWED_HOSTS.append(render_hostname)
 
 
 
@@ -46,6 +51,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Application definition
 INSTALLED_APPS = [
+    'whitenoise.runserver_nostatic',
     # Django Autocomplete Light (DAL) - DEBE ir ANTES del admin
     'dal',
     'dal_select2',
@@ -71,6 +77,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -127,6 +134,14 @@ DATABASES = {
     }
 }
 
+DATABASE_URL = os.getenv('DATABASE_URL')
+if DATABASE_URL:
+    DATABASES['default'] = dj_database_url.parse(
+        DATABASE_URL,
+        conn_max_age=int(os.getenv('DB_CONN_MAX_AGE', '600')),
+        ssl_require=os.getenv('DB_SSL_REQUIRED', 'true').lower() == 'true'
+    )
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -179,7 +194,8 @@ if DEBUG:
     ]
 else:
     # En producción: usar caché
-    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    WHITENOISE_MAX_AGE = int(os.getenv('WHITENOISE_MAX_AGE', str(60 * 60 * 24 * 7)))  # 1 semana por defecto
 
 
 # Default primary key field type
@@ -198,6 +214,11 @@ if not DEBUG:
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = 'DENY'
+    CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',') if origin.strip()]
+    if render_hostname:
+        render_origin = f"https://{render_hostname}"
+        if render_origin not in CSRF_TRUSTED_ORIGINS:
+            CSRF_TRUSTED_ORIGINS.append(render_origin)
 
 # Configuración de caché
 if DEBUG:
