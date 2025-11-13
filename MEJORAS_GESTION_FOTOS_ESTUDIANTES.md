@@ -331,3 +331,4 @@ El sistema ahora gestiona las fotos de manera inteligente, manteniendo solo la f
 
 
 
+
