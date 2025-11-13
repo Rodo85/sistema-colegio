@@ -244,8 +244,8 @@ USE_DJANGO_JQUERY = True
 
 
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = os.getenv('MEDIA_URL', '/media/')
+MEDIA_ROOT = Path(os.getenv('MEDIA_ROOT', BASE_DIR / 'media'))
 
 # ─────────────────────  Email  ─────────────────────
 # Por defecto en desarrollo imprime en consola
