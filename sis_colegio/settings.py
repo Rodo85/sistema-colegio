@@ -197,6 +197,7 @@ else:
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
     WHITENOISE_MAX_AGE = int(os.getenv('WHITENOISE_MAX_AGE', str(60 * 60 * 24 * 7)))  # 1 semana por defecto
     WHITENOISE_USE_FINDERS = True
+    WHITENOISE_AUTOREFRESH = True
 
 
 # Default primary key field type
