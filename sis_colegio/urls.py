@@ -31,6 +31,9 @@ urlpatterns = [
     path('', RedirectView.as_view(pattern_name='admin:index', permanent=False)),
 ]
 
-# Configuración para servir archivos media en desarrollo
+# Servir archivos estáticos adicionales solo en DEBUG (opcional)
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+# Servir archivos media siempre (WhiteNoise respaldará en producción)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
