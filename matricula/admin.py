@@ -315,16 +315,23 @@ class EstudianteForm(forms.ModelForm):
             # Si el checkbox está marcado, eliminar la foto
             cleaned_data['foto'] = None
         
-        # Validar foto si se proporciona
         if foto and hasattr(foto, 'size'):
-            # Verificar tamaño del archivo (máximo 5MB)
-            if foto.size > 5 * 1024 * 1024:  # 5MB en bytes
-                self.add_error('foto', 'La imagen no puede ser mayor a 5MB.')
-            
-            # Verificar tipo de archivo
-            allowed_types = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']
-            if hasattr(foto, 'content_type') and foto.content_type not in allowed_types:
-                self.add_error('foto', 'Solo se permiten archivos de imagen (JPG, PNG, GIF).')
+            try:
+                foto_size = foto.size
+            except (FileNotFoundError, OSError):
+                # El archivo físico no existe; informar al usuario para que vuelva a subirlo
+                cleaned_data['foto'] = None
+                self.add_error('foto', 'La foto asociada ya no existe en el servidor. Vuelve a subirla.')
+                foto_size = None
+            if foto_size is not None:
+                # Verificar tamaño del archivo (máximo 5MB)
+                if foto_size > 5 * 1024 * 1024:  # 5MB en bytes
+                    self.add_error('foto', 'La imagen no puede ser mayor a 5MB.')
+                
+                # Verificar tipo de archivo
+                allowed_types = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']
+                if hasattr(foto, 'content_type') and foto.content_type not in allowed_types:
+                    self.add_error('foto', 'Solo se permiten archivos de imagen (JPG, PNG, GIF).')
         
         # Normalizar los booleanos tri-estado para que nunca queden en None
         for nombre in ('presenta_enfermedad', 'orden_alejamiento'):
