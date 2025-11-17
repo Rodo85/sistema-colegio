@@ -1,5 +1,6 @@
+import uuid
+
 from django import forms
-from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 
 
@@ -19,13 +20,19 @@ class ImagePreviewWidget(forms.FileInput):
     
     def render(self, name, value, attrs=None, renderer=None):
         output = []
-        
-        # Crear ID único para este widget
-        unique_id = f"drag-drop-{name}"
-        
-        # Zona de arrastrar y soltar (drag & drop)
+
+        # Identificadores únicos para aislar múltiples instancias del widget
+        uid = uuid.uuid4().hex
+        wrapper_id = f"image-preview-wrapper-{uid}"
+        drop_zone_id = f"drag-drop-{uid}"
+        preview_container_id = f"new-image-preview-{uid}"
+        preview_img_id = f"image-preview-{uid}"
+        remove_button_id = f"remove-preview-{uid}"
+
+        # Contenedor principal del widget
         output.append(f'''
-        <div id="{unique_id}" class="drag-drop-zone" style="
+        <div id="{wrapper_id}" class="image-preview-widget">
+        <div id="{drop_zone_id}" data-role="drop-zone" class="drag-drop-zone" style="
             border: 2px dashed #ccc;
             border-radius: 8px;
             padding: 30px;
@@ -68,7 +75,7 @@ class ImagePreviewWidget(forms.FileInput):
                 '</div>'
                 '</div>'
             )
-        
+
         # Input para nueva imagen (oculto, se activa con click o drag & drop)
         attrs_copy = attrs.copy() if attrs else {}
         attrs_copy['style'] = 'display: none;'
@@ -76,79 +83,95 @@ class ImagePreviewWidget(forms.FileInput):
         
         # Contenedor para previsualización de nueva imagen
         output.append(
-            '<div class="new-image-preview" style="display: none; margin-top: 15px;">'
+            f'<div id="{preview_container_id}" class="new-image-preview" data-role="new-preview" style="display: none; margin-top: 15px;">'
             '<label style="font-weight: bold; color: #333;">Nueva imagen (vista previa):</label><br>'
-            '<img id="image-preview" src="" alt="Vista previa" style="max-width: 200px; max-height: 200px; border: 2px solid #4CAF50; border-radius: 8px; margin: 10px 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">'
-            '<button type="button" class="remove-preview-btn" style="display: block; margin: 10px 0; padding: 5px 15px; background: #f44336; color: white; border: none; border-radius: 4px; cursor: pointer;">Quitar imagen</button>'
+            f'<img id="{preview_img_id}" data-role="new-preview-img" src="" alt="Vista previa" style="max-width: 200px; max-height: 200px; border: 2px solid #4CAF50; border-radius: 8px; margin: 10px 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">'
+            f'<button type="button" id="{remove_button_id}" data-role="remove-preview" class="remove-preview-btn" style="display: block; margin: 10px 0; padding: 5px 15px; background: #f44336; color: white; border: none; border-radius: 4px; cursor: pointer;">Quitar imagen</button>'
             '</div>'
         )
-        
+
         # JavaScript para drag & drop y previsualización en tiempo real
         output.append('''
         <script>
         (function() {
             function initializeImagePreview() {
-                var inputName = "%s";
-                var input = document.querySelector('input[name="' + inputName + '"]');
-                var dropZone = document.getElementById('%s');
-                var preview = document.querySelector('.new-image-preview');
-                var previewImg = document.getElementById('image-preview');
-                var removeBtn = document.querySelector('.remove-preview-btn');
-                
-                if (!input || !dropZone || !preview || !previewImg) {
-                    console.log('Elementos no encontrados para drag & drop');
+                var wrapper = document.getElementById('%(wrapper_id)s');
+                if (!wrapper) {
                     return;
                 }
-                
-                // Función para procesar archivo
+                if (wrapper.dataset.initialized === '1') {
+                    return;
+                }
+                wrapper.dataset.initialized = '1';
+
+                var input = wrapper.querySelector('input[type="file"][name="%(name)s"]');
+                var dropZone = wrapper.querySelector('[data-role="drop-zone"]');
+                var preview = wrapper.querySelector('[data-role="new-preview"]');
+                var previewImg = wrapper.querySelector('[data-role="new-preview-img"]');
+                var removeBtn = wrapper.querySelector('[data-role="remove-preview"]');
+
+                if (!input || !dropZone || !preview || !previewImg) {
+                    console.warn('ImagePreviewWidget: elementos no encontrados', {
+                        input: !!input,
+                        dropZone: !!dropZone,
+                        preview: !!preview,
+                        previewImg: !!previewImg
+                    });
+                    return;
+                }
+
+                function resetPreview() {
+                    preview.style.display = 'none';
+                    previewImg.removeAttribute('src');
+                    dropZone.style.borderColor = '#ccc';
+                    dropZone.style.backgroundColor = '#f9f9f9';
+                    dropZone.style.transform = 'scale(1)';
+                }
+
                 function processFile(file) {
-                    // Validar tipo de archivo
-                    if (!file.type.match('image.*')) {
-                        alert('Por favor seleccione solo archivos de imagen (JPG, PNG, GIF)');
-                        return false;
+                    if (!file) {
+                        return;
                     }
-                    
-                    // Validar tamaño (5MB)
+                    if (!file.type || !file.type.match(/^image\\//)) {
+                        alert('Por favor seleccione solo archivos de imagen (JPG, PNG, GIF).');
+                        resetPreview();
+                        input.value = '';
+                        return;
+                    }
                     if (file.size > 5 * 1024 * 1024) {
-                        alert('La imagen debe ser menor a 5MB');
-                        return false;
+                        alert('La imagen debe ser menor a 5MB.');
+                        resetPreview();
+                        input.value = '';
+                        return;
                     }
-                    
-                    // Mostrar previsualización
+
                     var reader = new FileReader();
                     reader.onload = function(e) {
                         previewImg.src = e.target.result;
                         preview.style.display = 'block';
                         dropZone.style.borderColor = '#4CAF50';
                         dropZone.style.backgroundColor = '#f1f8f4';
+                        dropZone.style.transform = 'scale(1)';
                     };
                     reader.readAsDataURL(file);
-                    return true;
                 }
-                
-                // Click en la zona para abrir selector de archivos
+
                 dropZone.addEventListener('click', function(e) {
                     e.preventDefault();
                     input.click();
                 });
-                
-                // Cambio en input (selector de archivos tradicional)
+
                 input.addEventListener('change', function(e) {
-                    var file = e.target.files[0];
-                    if (file) {
-                        processFile(file);
-                    }
+                    processFile(e.target.files ? e.target.files[0] : null);
                 });
-                
-                // Prevenir comportamiento por defecto del navegador
+
                 ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(function(eventName) {
                     dropZone.addEventListener(eventName, function(e) {
                         e.preventDefault();
                         e.stopPropagation();
                     }, false);
                 });
-                
-                // Efectos visuales al arrastrar sobre la zona
+
                 ['dragenter', 'dragover'].forEach(function(eventName) {
                     dropZone.addEventListener(eventName, function() {
                         dropZone.style.borderColor = '#2196F3';
@@ -156,7 +179,7 @@ class ImagePreviewWidget(forms.FileInput):
                         dropZone.style.transform = 'scale(1.02)';
                     }, false);
                 });
-                
+
                 ['dragleave', 'drop'].forEach(function(eventName) {
                     dropZone.addEventListener(eventName, function() {
                         dropZone.style.borderColor = '#ccc';
@@ -164,50 +187,72 @@ class ImagePreviewWidget(forms.FileInput):
                         dropZone.style.transform = 'scale(1)';
                     }, false);
                 });
-                
-                // Manejar el drop (soltar archivo)
+
                 dropZone.addEventListener('drop', function(e) {
-                    var dt = e.dataTransfer;
-                    var files = dt.files;
-                    
-                    if (files.length > 0) {
-                        var file = files[0];
-                        
-                        // Crear un nuevo FileList para el input
-                        var dataTransfer = new DataTransfer();
-                        dataTransfer.items.add(file);
-                        input.files = dataTransfer.files;
-                        
-                        // Procesar el archivo
-                        processFile(file);
+                    var files = e.dataTransfer && e.dataTransfer.files;
+                    if (!files || !files.length) {
+                        return;
                     }
+                    var file = files[0];
+                    var assigned = false;
+
+                    try {
+                        if (window.DataTransfer) {
+                            var dt = new DataTransfer();
+                            Array.prototype.forEach.call(files, function(f) {
+                                dt.items.add(f);
+                            });
+                            input.files = dt.files;
+                            assigned = true;
+                        }
+                    } catch (err) {
+                        assigned = false;
+                    }
+
+                    if (!assigned) {
+                        try {
+                            input.files = files;
+                            assigned = input.files && input.files.length > 0;
+                        } catch (assignErr) {
+                            assigned = false;
+                        }
+                    }
+
+                    if (!assigned) {
+                        console.warn('ImagePreviewWidget: no se pudo asignar archivos al input mediante drop.');
+                    }
+
+                    processFile(file);
                 }, false);
-                
-                // Botón para quitar imagen
+
                 if (removeBtn) {
                     removeBtn.addEventListener('click', function(e) {
                         e.preventDefault();
                         e.stopPropagation();
                         input.value = '';
-                        preview.style.display = 'none';
-                        previewImg.src = '';
-                        dropZone.style.borderColor = '#ccc';
-                        dropZone.style.backgroundColor = '#f9f9f9';
+                        resetPreview();
                     });
                 }
             }
-            
-            // Inicializar cuando el DOM esté listo
+
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', initializeImagePreview);
             } else {
                 initializeImagePreview();
             }
-            
-            // También inicializar con un delay para Jazzmin
-            setTimeout(initializeImagePreview, 500);
+
+            document.addEventListener('formset:added', function() {
+                setTimeout(initializeImagePreview, 50);
+            });
+
+            setTimeout(initializeImagePreview, 300);
         })();
         </script>
-        ''' % (name, unique_id))
-        
-        return mark_safe(''.join(output)) 
+        ''' % {
+            "wrapper_id": wrapper_id,
+            "name": name,
+        })
+
+        output.append('</div>')
+
+        return mark_safe(''.join(output))
