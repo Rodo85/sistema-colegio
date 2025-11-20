@@ -11,7 +11,15 @@ from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 
 from core.mixins import InstitucionScopedAdmin
-from .models import Estudiante, EncargadoEstudiante, PersonaContacto, MatriculaAcademica, PlantillaImpresionMatricula, AsignacionGrupos, EstudianteInstitucion
+from .models import (
+    Estudiante,
+    EncargadoEstudiante,
+    PersonaContacto,
+    MatriculaAcademica,
+    PlantillaImpresionMatricula,
+    AsignacionGrupos,
+    EstudianteInstitucion,
+)
 
 from catalogos.models import Provincia, Canton, Distrito
 from .forms import MatriculaAcademicaForm
@@ -1072,7 +1080,6 @@ class PersonaContactoAdmin(InstitucionScopedAdmin):
 @admin.register(MatriculaAcademica)
 class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
     form = MatriculaAcademicaForm
-    change_form_template = "admin/matricula/matriculaacademica/change_form.html"
     
     class Media:
         js = (
@@ -1081,6 +1088,7 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
             'matricula/js/clear-dependent-fields.js',  # Limpieza automática de campos dependientes
             'matricula/js/especialidad-limpia-campos.js',  # Limpieza específica al cambiar especialidad
             'matricula/js/persist-admin-filters.js',   # Fix visual Jazzmin: no ocultar selects
+            'matricula/js/finalizar-matricula-button.js',  # Ajustar texto del botón Guardar
         )
     
 
