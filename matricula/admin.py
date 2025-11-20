@@ -1,9 +1,14 @@
+import unicodedata
+
 from django import forms
-from django.contrib import admin
-from django.utils.html import format_html
-from django.urls import reverse
-from django.utils.safestring import mark_safe
+from django.contrib import admin, messages
+from django.db.models import F, Q, Value
+from django.db.models.functions import Replace, Upper
 from django.forms.models import BaseInlineFormSet
+from django.shortcuts import redirect
+from django.urls import reverse
+from django.utils.html import format_html
+from django.utils.safestring import mark_safe
 
 from core.mixins import InstitucionScopedAdmin
 from .models import Estudiante, EncargadoEstudiante, PersonaContacto, MatriculaAcademica, PlantillaImpresionMatricula, AsignacionGrupos, EstudianteInstitucion
@@ -557,6 +562,53 @@ class MatriculaAcademicaInline(admin.StackedInline):  # Cambiado a StackedInline
 # ────────────────────────  Estudiante admin  ───────────────────────────
 @admin.register(Estudiante)
 class EstudianteAdmin(InstitucionScopedAdmin):
+    ACCENT_REPLACEMENTS = (
+        ("Á", "A"), ("À", "A"), ("Â", "A"), ("Ã", "A"), ("Ä", "A"),
+        ("É", "E"), ("È", "E"), ("Ê", "E"), ("Ë", "E"),
+        ("Í", "I"), ("Ì", "I"), ("Î", "I"), ("Ï", "I"),
+        ("Ó", "O"), ("Ò", "O"), ("Ô", "O"), ("Õ", "O"), ("Ö", "O"),
+        ("Ú", "U"), ("Ù", "U"), ("Û", "U"), ("Ü", "U"),
+        ("Ñ", "N"), ("Ç", "C"),
+    )
+
+    @staticmethod
+    def _normalize_text(value):
+        if value is None:
+            return ""
+        normalized = unicodedata.normalize("NFD", value.upper())
+        return "".join(char for char in normalized if unicodedata.category(char) != "Mn")
+
+    def _normalize_expression(self, field_name):
+        expression = Upper(F(field_name))
+        for source, target in self.ACCENT_REPLACEMENTS:
+            expression = Replace(expression, Value(source), Value(target))
+        return expression
+
+    def _annotate_normalized_fields(self, queryset):
+        annotations = {}
+        aliases = {}
+        for field in self.search_fields:
+            alias = f"_norm_{field.replace('__', '_')}"
+            if alias in annotations:
+                continue
+            annotations[alias] = self._normalize_expression(field)
+            aliases[field] = alias
+        if annotations:
+            queryset = queryset.annotate(**annotations)
+        return queryset, list(aliases.values())
+
+    def _apply_accent_insensitive_filter(self, queryset, search_term, lookups=None):
+        if not search_term:
+            return queryset.none()
+        lookups = lookups or ["contains"]
+        normalized_term = self._normalize_text(search_term)
+        queryset, aliases = self._annotate_normalized_fields(queryset)
+        q_objects = Q()
+        for alias in aliases:
+            for lookup in lookups:
+                q_objects |= Q(**{f"{alias}__{lookup}": normalized_term})
+        return queryset.filter(q_objects)
+
     form    = EstudianteForm
     inlines = [EncargadoInline]  # Quitado EstudianteInstitucionInline
     fields = None  # Fuerza el uso de fieldsets
@@ -739,30 +791,27 @@ class EstudianteAdmin(InstitucionScopedAdmin):
         return qs
 
     def get_search_results(self, request, queryset, search_term):
-        # Si el usuario tiene permiso 'only_search_estudiante', usar búsqueda mejorada
+        base_queryset = queryset
+
         if request.user.has_perm('matricula.only_search_estudiante') and search_term:
-            from django.db.models import Q
-            
-            # Búsqueda que empiece o termine con el término
-            q_objects = Q()
-            
-            for field in self.search_fields:
-                # Buscar que empiece con el término
-                q_objects |= Q(**{f"{field}__istartswith": search_term})
-                # Buscar que termine con el término
-                q_objects |= Q(**{f"{field}__iendswith": search_term})
-            
-            queryset = queryset.filter(q_objects).distinct()
-            
-            # Limitar resultados solo para este permiso especial
-            if not (request.method == 'POST' and 'action' in request.POST and request.POST['action'] == 'delete_selected'):
+            queryset = self._apply_accent_insensitive_filter(
+                base_queryset, search_term, lookups=["startswith", "endswith", "contains"]
+            ).distinct()
+
+            if not (request.method == 'POST' and request.POST.get('action') == 'delete_selected'):
                 queryset = queryset[:20]
-            
-            # YA aplicamos distinct antes del slice, reportar False
+
             return queryset, False
-        
-        # Búsqueda normal para otros usuarios
+
         queryset, use_distinct = super().get_search_results(request, queryset, search_term)
+
+        if search_term:
+            accent_queryset = self._apply_accent_insensitive_filter(
+                base_queryset, search_term, lookups=["contains", "startswith", "endswith"]
+            )
+            queryset = (queryset | accent_queryset).distinct()
+            use_distinct = True
+
         return queryset, use_distinct
 
     def change_view(self, request, object_id, form_url='', extra_context=None):
@@ -772,6 +821,22 @@ class EstudianteAdmin(InstitucionScopedAdmin):
         extra_context['show_nueva_matricula'] = bool(can_add_matricula)
         extra_context['estudiante_id'] = object_id
         return super().change_view(request, object_id, form_url, extra_context)
+
+    def response_change(self, request, obj):
+        if "_continuar_matricula" in request.POST:
+            url = reverse('admin:matricula_matriculaacademica_add')
+            url += f"?estudiante={obj.pk}"
+            if not request.user.is_superuser:
+                institucion_id = getattr(request, 'institucion_activa_id', None)
+                if institucion_id:
+                    url += f"&_institucion={institucion_id}"
+            self.message_user(
+                request,
+                "Estudiante guardado correctamente. Continúa con la matrícula.",
+                level=messages.SUCCESS,
+            )
+            return redirect(url)
+        return super().response_change(request, obj)
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         field = super().formfield_for_foreignkey(db_field, request, **kwargs)
@@ -1007,6 +1072,7 @@ class PersonaContactoAdmin(InstitucionScopedAdmin):
 @admin.register(MatriculaAcademica)
 class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
     form = MatriculaAcademicaForm
+    change_form_template = "admin/matricula/matriculaacademica/change_form.html"
     
     class Media:
         js = (

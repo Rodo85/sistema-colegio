@@ -5,11 +5,13 @@
     {{ block.super }}
     {% if show_nueva_matricula %}
         <div style="margin-top: 15px; text-align: left;">
-            <a href="{% url 'admin:matricula_matriculaacademica_add' %}?estudiante={{ estudiante_id }}" 
-               class="button" 
-               style="background: #28a745; color: white; padding: 10px 40px; border-radius: 6px; text-decoration: none; font-weight: bold; display: inline-block;">
-                📚 Nueva Matrícula
-            </a>
+            <button type="submit"
+                    name="_continuar_matricula"
+                    value="1"
+                    class="button"
+                    style="background: #ffc107; color: #212529; padding: 10px 40px; border-radius: 6px; border: none; text-decoration: none; font-weight: bold; display: inline-block;">
+                📚 Continuar Matrícula
+            </button>
         </div>
     {% endif %}
 {% endblock %}
