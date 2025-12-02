@@ -383,6 +383,13 @@ class EstudianteForm(forms.ModelForm):
         )
 
 class PersonaContactoForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if "celular_avisos" in self.fields:
+            self.fields["celular_avisos"].label = "Celular WhatsApp"
+        if "ocupacion" in self.fields:
+            self.fields["ocupacion"].label = "Ocupación"
+
     def clean(self):
         cleaned_data = super().clean()
         tipo_identificacion = cleaned_data.get('tipo_identificacion')
@@ -567,9 +574,10 @@ class MatriculaAcademicaInline(admin.StackedInline):  # Cambiado a StackedInline
             'matricula/js/especialidad-limpia-campos.js',  # Limpieza específica al cambiar especialidad
         )
 
-# ────────────────────────  Estudiante admin  ───────────────────────────
-@admin.register(Estudiante)
-class EstudianteAdmin(InstitucionScopedAdmin):
+# ────────────────────────  Utilidades de búsqueda  ─────────────────────
+class AccentInsensitiveAdminMixin:
+    """Helper mixin to provide accent-insensitive search behavior."""
+
     ACCENT_REPLACEMENTS = (
         ("Á", "A"), ("À", "A"), ("Â", "A"), ("Ã", "A"), ("Ä", "A"),
         ("É", "E"), ("È", "E"), ("Ê", "E"), ("Ë", "E"),
@@ -584,7 +592,9 @@ class EstudianteAdmin(InstitucionScopedAdmin):
         if value is None:
             return ""
         normalized = unicodedata.normalize("NFD", value.upper())
-        return "".join(char for char in normalized if unicodedata.category(char) != "Mn")
+        return "".join(
+            char for char in normalized if unicodedata.category(char) != "Mn"
+        )
 
     def _normalize_expression(self, field_name):
         expression = Upper(F(field_name))
@@ -594,16 +604,16 @@ class EstudianteAdmin(InstitucionScopedAdmin):
 
     def _annotate_normalized_fields(self, queryset):
         annotations = {}
-        aliases = {}
+        aliases = []
         for field in self.search_fields:
             alias = f"_norm_{field.replace('__', '_')}"
             if alias in annotations:
                 continue
             annotations[alias] = self._normalize_expression(field)
-            aliases[field] = alias
+            aliases.append(alias)
         if annotations:
             queryset = queryset.annotate(**annotations)
-        return queryset, list(aliases.values())
+        return queryset, aliases
 
     def _apply_accent_insensitive_filter(self, queryset, search_term, lookups=None):
         if not search_term:
@@ -616,6 +626,11 @@ class EstudianteAdmin(InstitucionScopedAdmin):
             for lookup in lookups:
                 q_objects |= Q(**{f"{alias}__{lookup}": normalized_term})
         return queryset.filter(q_objects)
+
+
+# ────────────────────────  Estudiante admin  ───────────────────────────
+@admin.register(Estudiante)
+class EstudianteAdmin(AccentInsensitiveAdminMixin, InstitucionScopedAdmin):
 
     form    = EstudianteForm
     inlines = [EncargadoInline]  # Quitado EstudianteInstitucionInline
@@ -1078,7 +1093,7 @@ class PersonaContactoAdmin(InstitucionScopedAdmin):
 
 # ────────────────────────  Matrícula Académica admin  ───────────────────────────
 @admin.register(MatriculaAcademica)
-class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
+class MatriculaAcademicaAdmin(AccentInsensitiveAdminMixin, InstitucionScopedAdmin):
     form = MatriculaAcademicaForm
     
     class Media:
@@ -1127,7 +1142,12 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
         if request.user.is_superuser:
             return tuple(base_filters) + (InstitucionMatriculaFilter,)
         return tuple(base_filters)
-    search_fields = ("estudiante__identificacion", "estudiante__primer_apellido", "estudiante__nombres")
+    search_fields = (
+        "estudiante__identificacion",
+        "estudiante__primer_apellido",
+        "estudiante__segundo_apellido",
+        "estudiante__nombres",
+    )
     ordering = ("curso_lectivo__anio", "estudiante__primer_apellido", "estudiante__nombres")
     
     # DAL maneja especialidad, seccion y subgrupo, autocomplete_fields para el resto
@@ -1394,11 +1414,17 @@ class MatriculaAcademicaAdmin(InstitucionScopedAdmin):
         super().save_model(request, obj, form, change)
 
     def get_search_results(self, request, queryset, search_term):
-        """Limitar resultados de búsqueda para evitar sobrecargar los selects"""
+        """Aplicar búsqueda insensible a tildes y mayúsculas en datos del estudiante."""
+        base_queryset = queryset
         queryset, use_distinct = super().get_search_results(request, queryset, search_term)
-        
-        # Quitar recorte de resultados; el admin ya pagina y Jazzmin maneja UI
-        
+
+        if search_term:
+            accent_queryset = self._apply_accent_insensitive_filter(
+                base_queryset, search_term, lookups=["contains", "startswith", "endswith"]
+            )
+            queryset = (queryset | accent_queryset).distinct()
+            use_distinct = True
+
         return queryset, use_distinct
 
 @admin.register(PlantillaImpresionMatricula)

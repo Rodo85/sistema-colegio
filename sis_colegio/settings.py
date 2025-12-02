@@ -58,7 +58,7 @@ INSTALLED_APPS = [
     
     # Apps del proyecto multi-tenant
     "core.apps.CoreConfig",
-    "matricula",
+    "matricula.apps.MatriculaConfig",
     "catalogos.apps.CatalogosConfig",
     "config_institucional",
     "django_extensions",
@@ -160,6 +160,10 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+LOGIN_URL = '/admin/login/'
+LOGIN_REDIRECT_URL = '/admin/'
+LOGOUT_REDIRECT_URL = '/admin/login/'
 
 
 # Internationalization
