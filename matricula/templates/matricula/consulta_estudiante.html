@@ -408,6 +408,7 @@
                 <b>Escolaridad:</b> {{ enc.persona_contacto.escolaridad|default:"---" }}<br>
                 <b>Ocupación:</b> {{ enc.persona_contacto.ocupacion|default:"---" }}<br>
                 <b>Convive con el estudiante:</b> {{ enc.convivencia|yesno:"Sí,No" }}<br>
+                <b>Encargado principal:</b> {{ enc.principal|yesno:"Sí,No" }}<br>
               </li>
             {% endfor %}
           </ul>
