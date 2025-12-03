@@ -443,6 +443,7 @@ class MatriculaAcademica(models.Model):
         # Permiso personalizado para gestionar sección, subgrupo y estado
         permissions = [
             ("manage_seccion_subgrupo_estado", "Puede gestionar sección, subgrupo y estado de matrícula"),
+            ("access_reporte_matricula", "Puede acceder al reporte de matrícula académica"),
         ]
     
     def __str__(self):

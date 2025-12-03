@@ -4,10 +4,12 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.encoding import smart_str
 from django.utils import timezone
+from django.db.models import Count, Q, Value
+from django.db.models.functions import Coalesce
 from config_institucional.models import Nivel
 from catalogos.models import CursoLectivo, Seccion, Subgrupo, Especialidad
 from core.models import Institucion
-from .models import Estudiante, MatriculaAcademica, PlantillaImpresionMatricula
+from .models import Estudiante, EstudianteInstitucion, MatriculaAcademica, PlantillaImpresionMatricula
 from dal import autocomplete
 import json
 import io
@@ -197,6 +199,208 @@ def consulta_estudiante(request):
     }
     
     return render(request, 'matricula/consulta_estudiante.html', context)
+
+
+@login_required
+@permission_required('matricula.access_asignacion_grupos', raise_exception=True)
+@permission_required('matricula.access_reporte_matricula', raise_exception=True)
+def reporte_matricula(request):
+    cursos_lectivos = CursoLectivo.objects.all().order_by('-anio')
+    curso_lectivo_id = request.GET.get('curso_lectivo')
+    curso_lectivo = None
+
+    if not curso_lectivo_id and cursos_lectivos.exists():
+        curso_lectivo = cursos_lectivos.first()
+        curso_lectivo_id = str(curso_lectivo.pk)
+    elif curso_lectivo_id:
+        try:
+            curso_lectivo = cursos_lectivos.get(pk=curso_lectivo_id)
+        except CursoLectivo.DoesNotExist:
+            curso_lectivo = None
+            curso_lectivo_id = None
+
+    instituciones = []
+    institucion = None
+    institucion_id = None
+    error = ''
+
+    if request.user.is_superuser:
+        instituciones = Institucion.objects.all().order_by('nombre')
+        institucion_id = request.GET.get('institucion')
+        if institucion_id:
+            try:
+                institucion = instituciones.get(pk=institucion_id)
+            except Institucion.DoesNotExist:
+                institucion = None
+                institucion_id = None
+                error = 'La institución seleccionada no existe.'
+    else:
+        institucion_id = getattr(request, 'institucion_activa_id', None)
+        if institucion_id:
+            try:
+                institucion = Institucion.objects.get(pk=institucion_id)
+            except Institucion.DoesNotExist:
+                institucion = None
+                error = 'No se pudo determinar la institución activa.'
+        else:
+            error = 'No se pudo determinar la institución activa.'
+
+    resumen = {
+        'total': 0,
+        'hombres': 0,
+        'mujeres': 0,
+        'pn': 0,
+        'pr': 0,
+        'otros_generos': 0,
+    }
+    genero_tipo = []
+    niveles = []
+    especialidades = []
+    estados = []
+    sin_matricula = {
+        'total': 0,
+        'pn': 0,
+        'pr': 0,
+    }
+    sin_matricula_genero = []
+
+    if curso_lectivo_id and institucion_id and not error:
+        base_qs = (
+            MatriculaAcademica.objects.filter(
+                curso_lectivo_id=curso_lectivo_id,
+                institucion_id=institucion_id,
+                estado__iexact='activo'
+            )
+            .select_related(
+                'estudiante__sexo',
+                'nivel',
+                'especialidad__especialidad'
+            )
+        )
+
+        aggregated = base_qs.aggregate(
+            total=Count('id', distinct=True),
+            hombres=Count('id', filter=Q(estudiante__sexo__codigo='M'), distinct=True),
+            mujeres=Count('id', filter=Q(estudiante__sexo__codigo='F'), distinct=True),
+            pn=Count('id', filter=Q(estudiante__tipo_estudiante=Estudiante.PN), distinct=True),
+            pr=Count('id', filter=Q(estudiante__tipo_estudiante=Estudiante.PR), distinct=True),
+        )
+
+        for key, value in aggregated.items():
+            resumen[key] = value or 0
+
+        resumen['otros_generos'] = (
+            resumen['total'] - resumen['hombres'] - resumen['mujeres']
+        )
+
+        genero_tipo = list(
+            base_qs.values(
+                'estudiante__sexo__codigo',
+                'estudiante__sexo__nombre'
+            ).annotate(
+                total=Count('id', distinct=True),
+                pn=Count('id', filter=Q(estudiante__tipo_estudiante=Estudiante.PN), distinct=True),
+                pr=Count('id', filter=Q(estudiante__tipo_estudiante=Estudiante.PR), distinct=True),
+            ).order_by('estudiante__sexo__nombre')
+        )
+
+        niveles = list(
+            base_qs.values(
+                'nivel__id',
+                'nivel__nombre',
+                'nivel__numero'
+            ).annotate(
+                total=Count('id', distinct=True),
+                pn=Count('id', filter=Q(estudiante__tipo_estudiante=Estudiante.PN), distinct=True),
+                pr=Count('id', filter=Q(estudiante__tipo_estudiante=Estudiante.PR), distinct=True),
+            ).order_by('nivel__numero')
+        )
+
+        especialidades = list(
+            base_qs.annotate(
+                especialidad_nombre=Coalesce(
+                    'especialidad__especialidad__nombre',
+                    Value('SIN ESPECIALIDAD')
+                )
+            )
+            .filter(
+                Q(especialidad__isnull=True) | Q(especialidad__activa=True)
+            )
+            .values('especialidad_nombre')
+            .annotate(
+                total=Count('id', distinct=True),
+                pn=Count('id', filter=Q(estudiante__tipo_estudiante=Estudiante.PN), distinct=True),
+                pr=Count('id', filter=Q(estudiante__tipo_estudiante=Estudiante.PR), distinct=True),
+            )
+            .order_by('especialidad_nombre')
+        )
+
+        estados = list(
+            MatriculaAcademica.objects.filter(
+                curso_lectivo_id=curso_lectivo_id,
+                institucion_id=institucion_id,
+            )
+            .values('estado')
+            .annotate(
+                total=Count('id', distinct=True),
+                pn=Count('id', filter=Q(estudiante__tipo_estudiante=Estudiante.PN), distinct=True),
+                pr=Count('id', filter=Q(estudiante__tipo_estudiante=Estudiante.PR), distinct=True),
+            )
+            .order_by('estado')
+        )
+
+        estudiantes_activos = Estudiante.objects.filter(
+            instituciones_estudiante__institucion_id=institucion_id,
+            instituciones_estudiante__estado=EstudianteInstitucion.ACTIVO
+        ).distinct()
+
+        activos_sin_matricula = estudiantes_activos.exclude(
+            matriculas_academicas__curso_lectivo_id=curso_lectivo_id,
+            matriculas_academicas__estado__iexact='activo'
+        )
+
+        sin_matricula['total'] = activos_sin_matricula.count()
+        sin_por_tipo = activos_sin_matricula.values('tipo_estudiante').annotate(
+            total=Count('id', distinct=True)
+        )
+        for item in sin_por_tipo:
+            codigo = item['tipo_estudiante']
+            if codigo == Estudiante.PN:
+                sin_matricula['pn'] = item['total']
+            elif codigo == Estudiante.PR:
+                sin_matricula['pr'] = item['total']
+
+        sin_matricula_genero = list(
+            activos_sin_matricula.values(
+                'sexo__codigo',
+                'sexo__nombre'
+            ).annotate(
+                total=Count('id', distinct=True),
+            ).order_by('sexo__nombre')
+        )
+
+    tipo_estudiante_labels = dict(Estudiante.TIPO_CHOICES)
+
+    context = {
+        'cursos_lectivos': cursos_lectivos,
+        'curso_lectivo': curso_lectivo,
+        'curso_lectivo_id': curso_lectivo_id,
+        'instituciones': instituciones,
+        'institucion': institucion,
+        'institucion_id': institucion_id,
+        'es_superusuario': request.user.is_superuser,
+        'error': error,
+        'resumen': resumen,
+        'genero_tipo': genero_tipo,
+        'niveles': niveles,
+        'especialidades': especialidades,
+        'estados': estados,
+        'sin_matricula': sin_matricula,
+        'sin_matricula_genero': sin_matricula_genero,
+        'tipo_estudiante_labels': tipo_estudiante_labels,
+    }
+
+    return render(request, 'matricula/reporte_matricula.html', context)
 
 
 @login_required

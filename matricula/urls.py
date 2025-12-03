@@ -5,6 +5,7 @@ from .views import (
     asignacion_grupos, ejecutar_asignacion_grupos,
     exportar_listas_clase_excel,
     comprobante_matricula,
+    reporte_matricula,
     api_secciones_por_curso_nivel, api_subgrupos_por_curso_seccion,
     buscar_estudiante_existente, agregar_estudiante_a_institucion,
 )
@@ -13,6 +14,7 @@ app_name = 'matricula'
 
 urlpatterns = [
     path('consulta-estudiante/', consulta_estudiante, name='consulta_estudiante'),
+    path('reporte-matricula/', reporte_matricula, name='reporte_matricula'),
     path('comprobante-matricula/', comprobante_matricula, name='comprobante_matricula'),
     path('get-especialidades-disponibles/', get_especialidades_disponibles, name='get_especialidades_disponibles'),
     

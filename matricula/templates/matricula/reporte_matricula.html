@@ -1,0 +1,355 @@
+{% extends 'admin/base_site.html' %}
+
+{% block extrahead %}
+  {{ block.super }}
+  <style>
+    .reporte-container {
+      background: #fff;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 12px 32px rgba(44, 62, 80, 0.12);
+      margin-bottom: 2rem;
+    }
+    .reporte-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #2c3e50;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .reporte-filtros {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      align-items: flex-end;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+    .reporte-filtros .form-group {
+      display: flex;
+      flex-direction: column;
+      min-width: 220px;
+    }
+    .reporte-filtros label {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #495057;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .reporte-filtros select {
+      padding: 0.75rem 1rem;
+      border: 2px solid #e9ecef;
+      border-radius: 8px;
+      font-size: 1rem;
+      background: #fff;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    .reporte-filtros select:focus {
+      outline: none;
+      border-color: #1976d2;
+      box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.2);
+    }
+    .btn-aplicar {
+      background: linear-gradient(135deg, #1976d2 0%, #115293 100%);
+      color: #fff;
+      border: none;
+      padding: 0.8rem 1.6rem;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 6px 18px rgba(25, 118, 210, 0.35);
+    }
+    .btn-aplicar:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(25, 118, 210, 0.45);
+    }
+    .btn-aplicar:active {
+      transform: translateY(0);
+    }
+    .alerta {
+      background: #fdecea;
+      color: #b71c1c;
+      border: 1px solid #f5c6cb;
+      border-radius: 10px;
+      padding: 0.9rem 1.1rem;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .resumen-grid {
+      display: grid;
+      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      margin-bottom: 2.5rem;
+    }
+    .resumen-card {
+      border-radius: 14px;
+      padding: 1.5rem;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+    }
+    .resumen-card span.valor {
+      display: block;
+      font-size: 2.4rem;
+      font-weight: 800;
+      margin-top: 0.5rem;
+    }
+    .resumen-card.resumen-total { background: linear-gradient(135deg, #1abc9c 0%, #16a085 100%); }
+    .resumen-card.resumen-hombres { background: linear-gradient(135deg, #3498db 0%, #1d6fa5 100%); }
+    .resumen-card.resumen-mujeres { background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%); }
+    .resumen-card.resumen-otros { background: linear-gradient(135deg, #9b59b6 0%, #6d3b92 100%); }
+    .resumen-card.resumen-pn { background: linear-gradient(135deg, #f39c12 0%, #d35400 100%); }
+    .resumen-card.resumen-pr { background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); }
+    .resumen-card.resumen-sin { background: linear-gradient(135deg, #ffb74d 0%, #f57c00 100%); }
+    .resumen-card small {
+      display: block;
+      margin-top: 0.6rem;
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+    .section-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #2c3e50;
+      margin: 2.5rem 0 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+    .tabla-resumen {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+    }
+    .tabla-resumen thead {
+      background: #1976d2;
+      color: #fff;
+    }
+    .tabla-resumen th,
+    .tabla-resumen td {
+      padding: 0.9rem 1rem;
+      text-align: center;
+      font-weight: 600;
+    }
+    .tabla-resumen tbody tr:nth-child(even) {
+      background: #f5f8fc;
+    }
+    .tabla-resumen tbody tr:hover {
+      background: #e9f3ff;
+    }
+    .tabla-resumen td.total-col {
+      font-size: 1.1rem;
+      color: #2c3e50;
+      font-weight: 700;
+    }
+    @media (max-width: 768px) {
+      .reporte-container { padding: 1.5rem; }
+      .reporte-filtros { flex-direction: column; align-items: stretch; }
+      .resumen-card span.valor { font-size: 2rem; }
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+<div class="reporte-container">
+  <h1 class="reporte-title">Reporte de Matrícula Académica</h1>
+
+  <form method="get" class="reporte-filtros">
+    <div class="form-group">
+      <label for="id_curso_lectivo">Curso lectivo</label>
+      <select id="id_curso_lectivo" name="curso_lectivo" required>
+        <option value="">Seleccione un curso lectivo</option>
+        {% for curso in cursos_lectivos %}
+          <option value="{{ curso.pk }}" {% if curso_lectivo and curso.pk == curso_lectivo.pk %}selected{% endif %}>{{ curso.nombre }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    {% if es_superusuario %}
+    <div class="form-group">
+      <label for="id_institucion">Institución</label>
+      <select id="id_institucion" name="institucion" required>
+        <option value="">Seleccione una institución</option>
+        {% for inst in instituciones %}
+          <option value="{{ inst.pk }}" {% if institucion and inst.pk == institucion.pk %}selected{% endif %}>{{ inst.nombre }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    {% endif %}
+
+    <div class="form-group">
+      <button type="submit" class="btn-aplicar">Aplicar filtros</button>
+    </div>
+  </form>
+
+  {% if error %}
+    <div class="alerta">{{ error }}</div>
+  {% endif %}
+
+  {% if curso_lectivo and institucion and not error %}
+    <div class="resumen-grid">
+      <div class="resumen-card resumen-total">
+        Total matriculados
+        <span class="valor">{{ resumen.total }}</span>
+      </div>
+      <div class="resumen-card resumen-hombres">
+        Hombres
+        <span class="valor">{{ resumen.hombres }}</span>
+      </div>
+      <div class="resumen-card resumen-mujeres">
+        Mujeres
+        <span class="valor">{{ resumen.mujeres }}</span>
+      </div>
+      <div class="resumen-card resumen-otros">
+        Otros géneros
+        <span class="valor">{{ resumen.otros_generos }}</span>
+      </div>
+      <div class="resumen-card resumen-pn">
+        Plan nacional (PN)
+        <span class="valor">{{ resumen.pn }}</span>
+      </div>
+      <div class="resumen-card resumen-pr">
+        Plan regular (PR)
+        <span class="valor">{{ resumen.pr }}</span>
+      </div>
+      <div class="resumen-card resumen-sin">
+        Activos sin matrícula
+        <span class="valor">{{ sin_matricula.total }}</span>
+        <small>PN: {{ sin_matricula.pn }} | PR: {{ sin_matricula.pr }}</small>
+      </div>
+    </div>
+
+    <h2 class="section-title">Distribución por género y tipo de estudiante</h2>
+    <table class="tabla-resumen">
+      <thead>
+        <tr>
+          <th>Género</th>
+          <th>Total</th>
+          <th>Plan nacional</th>
+          <th>Plan regular</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for fila in genero_tipo %}
+        <tr>
+          <td>{{ fila.estudiante__sexo__nombre }}</td>
+          <td class="total-col">{{ fila.total }}</td>
+          <td>{{ fila.pn }}</td>
+          <td>{{ fila.pr }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4">No hay matrículas para los filtros seleccionados.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h2 class="section-title">Distribución por nivel</h2>
+    <table class="tabla-resumen">
+      <thead>
+        <tr>
+          <th>Nivel</th>
+          <th>Total</th>
+          <th>Plan nacional</th>
+          <th>Plan regular</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for fila in niveles %}
+        <tr>
+          <td>{{ fila.nivel__nombre }}</td>
+          <td class="total-col">{{ fila.total }}</td>
+          <td>{{ fila.pn }}</td>
+          <td>{{ fila.pr }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4">No hay matrículas por nivel para mostrar.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h2 class="section-title">Distribución por especialidad</h2>
+    <table class="tabla-resumen">
+      <thead>
+        <tr>
+          <th>Especialidad</th>
+          <th>Total</th>
+          <th>Plan nacional</th>
+          <th>Plan regular</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for fila in especialidades %}
+        <tr>
+          <td>{{ fila.especialidad_nombre }}</td>
+          <td class="total-col">{{ fila.total }}</td>
+          <td>{{ fila.pn }}</td>
+          <td>{{ fila.pr }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4">No hay especialidades asociadas a las matrículas.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h2 class="section-title">Estado de las matrículas (todos los estados)</h2>
+    <table class="tabla-resumen">
+      <thead>
+        <tr>
+          <th>Estado</th>
+          <th>Total</th>
+          <th>Plan nacional</th>
+          <th>Plan regular</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for fila in estados %}
+        <tr>
+          <td>{{ fila.estado|upper }}</td>
+          <td class="total-col">{{ fila.total }}</td>
+          <td>{{ fila.pn }}</td>
+          <td>{{ fila.pr }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4">No hay registros de matrícula para los filtros seleccionados.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h2 class="section-title">Activos sin matrícula (detalle por género)</h2>
+    <table class="tabla-resumen">
+      <thead>
+        <tr>
+          <th>Género</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for fila in sin_matricula_genero %}
+        <tr>
+          <td>{{ fila.sexo__nombre }}</td>
+          <td class="total-col">{{ fila.total }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="2">No hay estudiantes activos sin matrícula.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  {% endif %}
+</div>
+{% endblock %}
+
