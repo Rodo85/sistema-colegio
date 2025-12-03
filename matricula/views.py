@@ -59,105 +59,127 @@ def consulta_estudiante(request):
                 pass
     
     if request.method == 'POST':
+        accion = request.POST.get('accion', 'buscar')
         curso_lectivo_id = request.POST.get('curso_lectivo')
         identificacion = request.POST.get('identificacion', '').strip()
         institucion_id = request.POST.get('institucion')
-        
-        if not curso_lectivo_id or not identificacion:
-            error = 'Debe seleccionar un curso lectivo e ingresar la identificación del estudiante.'
-        elif request.user.is_superuser and not institucion_id:
-            error = 'Debe seleccionar una institución.'
+
+        if accion == 'limpiar':
+            if curso_lectivo_id:
+                curso_lectivo = CursoLectivo.objects.filter(pk=curso_lectivo_id).first()
+            if request.user.is_superuser and institucion_id:
+                institucion = Institucion.objects.filter(pk=institucion_id).first()
+            elif not request.user.is_superuser:
+                institucion_activa_id = getattr(request, 'institucion_activa_id', None)
+                if institucion_activa_id:
+                    institucion = Institucion.objects.filter(pk=institucion_activa_id).first()
+
+            identificacion = ''
+            estudiante = None
+            matricula = None
+            encargados = []
+            edad_estudiante = ""
+            error = ''
         else:
-            try:
-                curso_lectivo = CursoLectivo.objects.get(pk=curso_lectivo_id)
-                
-                # Determinar la institución según el tipo de usuario
-                if request.user.is_superuser:
-                    institucion = Institucion.objects.get(pk=institucion_id)
-                else:
-                    # Usuario normal: usar institución activa
-                    institucion_id = getattr(request, 'institucion_activa_id', None)
-                    if not institucion_id:
-                        error = 'No se pudo determinar la institución activa.'
-                        return render(request, 'matricula/consulta_estudiante.html', {
-                            'error': error,
-                            'cursos_lectivos': cursos_lectivos,
-                            'instituciones': instituciones,
-                            'es_superusuario': request.user.is_superuser,
-                            'plantilla': plantilla,
-                        })
-                    institucion = Institucion.objects.get(pk=institucion_id)
-                
-                # Buscar estudiante por identificación
+            if not curso_lectivo_id or not identificacion:
+                error = 'Debe seleccionar un curso lectivo e ingresar la identificación del estudiante.'
+            elif request.user.is_superuser and not institucion_id:
+                error = 'Debe seleccionar una institución.'
+            else:
                 try:
-                    estudiante = Estudiante.objects.get(identificacion=identificacion)
+                    curso_lectivo = CursoLectivo.objects.get(pk=curso_lectivo_id)
                     
-                    # Verificar que tenga relación activa con la institución
-                    relacion_activa = estudiante.instituciones_estudiante.filter(
-                        institucion=institucion,
-                        estado='activo'
-                    ).exists()
+                    # Determinar la institución según el tipo de usuario
+                    if request.user.is_superuser:
+                        institucion = Institucion.objects.get(pk=institucion_id)
+                    else:
+                        # Usuario normal: usar institución activa
+                        institucion_id = getattr(request, 'institucion_activa_id', None)
+                        if not institucion_id:
+                            error = 'No se pudo determinar la institución activa.'
+                            return render(request, 'matricula/consulta_estudiante.html', {
+                                'error': error,
+                                'cursos_lectivos': cursos_lectivos,
+                                'instituciones': instituciones,
+                                'es_superusuario': request.user.is_superuser,
+                                'plantilla': plantilla,
+                            })
+                        institucion = Institucion.objects.get(pk=institucion_id)
                     
-                    if not relacion_activa:
-                        error = f'El estudiante {identificacion} no pertenece a la institución seleccionada o no está activo en ella.'
+                    # Buscar estudiante por identificación
+                    try:
+                        estudiante = Estudiante.objects.get(identificacion=identificacion)
+                        
+                        # Verificar que tenga relación activa con la institución
+                        relacion_activa = estudiante.instituciones_estudiante.filter(
+                            institucion=institucion,
+                            estado='activo'
+                        ).exists()
+                        
+                        if not relacion_activa:
+                            error = f'El estudiante {identificacion} no pertenece a la institución seleccionada o no está activo en ella.'
+                            estudiante = None
+                    except Estudiante.DoesNotExist:
+                        error = f'No se encontró ningún estudiante con la identificación {identificacion}.'
                         estudiante = None
+                    
+                    # Buscar matrícula activa para el curso seleccionado solo si estudiante es válido
+                    matricula = None
+                    if estudiante:
+                        matricula = MatriculaAcademica.objects.filter(
+                            estudiante=estudiante,
+                            curso_lectivo=curso_lectivo,
+                            estado__iexact='activo'
+                        ).first()
+                    
+                    if matricula and estudiante:
+                        # Si hay matrícula activa, obtener encargados
+                        encargados = estudiante.encargadoestudiante_set.select_related(
+                            'persona_contacto', 'parentesco'
+                        ).all()
+                        
+                        # Calcular edad del estudiante
+                        if estudiante.fecha_nacimiento:
+                            from datetime import date
+                            today = date.today()
+                            years = today.year - estudiante.fecha_nacimiento.year
+                            months = today.month - estudiante.fecha_nacimiento.month
+                            days = today.day - estudiante.fecha_nacimiento.day
+
+                            # Ajustar meses y años si todavía no cumple años este mes
+                            if days < 0:
+                                months -= 1
+
+                            if months < 0:
+                                years -= 1
+                                months += 12
+
+                            # Formatear la edad
+                            if years == 0:
+                                edad_estudiante = f"{months} meses"
+                            elif months == 0:
+                                edad_estudiante = f"{years} años"
+                            else:
+                                edad_estudiante = f"{years} años y {months} meses"
+                    else:
+                        # No hay matrícula activa, mostrar error
+                        estudiante = None
+                        institucion = None
+                        encargados = []
+                        error = f'No existe matrícula activa para el estudiante con identificación {identificacion} en el curso lectivo {curso_lectivo.nombre}.'
+                        
+                except CursoLectivo.DoesNotExist:
+                    error = 'El curso lectivo seleccionado no existe.'
+                except Institucion.DoesNotExist:
+                    error = 'La institución seleccionada no existe.'
                 except Estudiante.DoesNotExist:
-                    error = f'No se encontró ningún estudiante con la identificación {identificacion}.'
-                    estudiante = None
-                
-                # Buscar matrícula activa para el curso seleccionado solo si estudiante es válido
-                matricula = None
-                if estudiante:
-                    matricula = MatriculaAcademica.objects.filter(
-                        estudiante=estudiante,
-                        curso_lectivo=curso_lectivo,
-                        estado__iexact='activo'
-                    ).first()
-                
-                if matricula and estudiante:
-                    # Si hay matrícula activa, obtener encargados
-                    encargados = estudiante.encargadoestudiante_set.select_related(
-                        'persona_contacto', 'parentesco'
-                    ).all()
-                    
-                    # Calcular edad del estudiante
-                    if estudiante.fecha_nacimiento:
-                        from datetime import date
-                        today = date.today()
-                        years = today.year - estudiante.fecha_nacimiento.year
-                        months = today.month - estudiante.fecha_nacimiento.month
-                        
-                        # Ajustar si el mes actual es menor que el mes de nacimiento
-                        if months < 0:
-                            years -= 1
-                            months += 12
-                        
-                        # Formatear la edad
-                        if years == 0:
-                            edad_estudiante = f"{months} meses"
-                        elif months == 0:
-                            edad_estudiante = f"{years} años"
-                        else:
-                            edad_estudiante = f"{years} años y {months} meses"
-                else:
-                    # No hay matrícula activa, mostrar error
-                    estudiante = None
-                    institucion = None
-                    encargados = []
-                    error = f'No existe matrícula activa para el estudiante con identificación {identificacion} en el curso lectivo {curso_lectivo.nombre}.'
-                    
-            except CursoLectivo.DoesNotExist:
-                error = 'El curso lectivo seleccionado no existe.'
-            except Institucion.DoesNotExist:
-                error = 'La institución seleccionada no existe.'
-            except Estudiante.DoesNotExist:
-                error = f'No se encontró ningún estudiante con la identificación {identificacion} en la institución {institucion.nombre}.'
-            except Exception as e:
-                # Log del error para debugging
-                import logging
-                logger = logging.getLogger(__name__)
-                logger.error(f"Error inesperado en consulta_estudiante: {e}")
-                error = 'Error interno del sistema. Contacte al administrador.'
+                    error = f'No se encontró ningún estudiante con la identificación {identificacion} en la institución {institucion.nombre}.'
+                except Exception as e:
+                    # Log del error para debugging
+                    import logging
+                    logger = logging.getLogger(__name__)
+                    logger.error(f"Error inesperado en consulta_estudiante: {e}")
+                    error = 'Error interno del sistema. Contacte al administrador.'
     
     context = {
         'estudiante': estudiante,
