@@ -73,6 +73,15 @@ JAZZMIN_SETTINGS = {
                 "icon": "fas fa-search",
                 "permissions": ["matricula.access_consulta_estudiante"],
             },
+            {
+                "name": "Reporte de Matrícula",
+                "url": "matricula:reporte_matricula",
+                "icon": "fas fa-chart-pie",
+                "permissions": [
+                    "matricula.access_asignacion_grupos",
+                    "matricula.access_reporte_matricula",
+                ],
+            },
         ]
     },
     
