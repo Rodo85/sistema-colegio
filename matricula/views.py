@@ -202,7 +202,6 @@ def consulta_estudiante(request):
 
 
 @login_required
-@permission_required('matricula.access_asignacion_grupos', raise_exception=True)
 @permission_required('matricula.access_reporte_matricula', raise_exception=True)
 def reporte_matricula(request):
     cursos_lectivos = CursoLectivo.objects.all().order_by('-anio')

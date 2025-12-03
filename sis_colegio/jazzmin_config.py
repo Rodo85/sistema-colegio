@@ -78,7 +78,6 @@ JAZZMIN_SETTINGS = {
                 "url": "matricula:reporte_matricula",
                 "icon": "fas fa-chart-pie",
                 "permissions": [
-                    "matricula.access_asignacion_grupos",
                     "matricula.access_reporte_matricula",
                 ],
             },
