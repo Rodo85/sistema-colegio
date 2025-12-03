@@ -1190,6 +1190,23 @@ class MatriculaAcademicaAdmin(AccentInsensitiveAdminMixin, InstitucionScopedAdmi
     
     def get_queryset(self, request):
         qs = super().get_queryset(request)
+        
+        resolver = getattr(request, 'resolver_match', None)
+        if resolver and resolver.url_name == f"{self.model._meta.app_label}_{self.model._meta.model_name}_changelist":
+            ignored_keys = {'o', 'ot', 'p', '_changelist_filters', '_to_field', '_popup'}
+            filters_preservados = request.GET.get('_changelist_filters')
+            has_filters = False
+            if filters_preservados and filters_preservados.strip():
+                has_filters = True
+            else:
+                has_filters = any(
+                    value
+                    for key, value in request.GET.items()
+                    if key not in ignored_keys and str(value).strip() != ''
+                )
+            if not has_filters:
+                return qs.none()
+
         if request.user.is_superuser:
             return qs
         # Usuarios normales solo ven matrículas de su institución
