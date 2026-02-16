@@ -186,6 +186,7 @@ class Estudiante(models.Model):
             ("print_ficha_estudiante", "Puede imprimir ficha del estudiante"),
             ("print_comprobante_matricula", "Puede imprimir comprobante de matrícula"),
             ("print_pas_estudiante", "Puede imprimir PAS del estudiante"),
+            ("access_reporte_pas_seccion", "Puede acceder a Reporte PAS por Sección"),
             ("access_asignacion_grupos", "Puede acceder a Asignación de Grupos"),
             ("only_search_estudiante", "Solo puede buscar estudiantes (no ve lista completa)"),
         ]

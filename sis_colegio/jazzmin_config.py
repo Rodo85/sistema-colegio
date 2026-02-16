@@ -81,6 +81,12 @@ JAZZMIN_SETTINGS = {
                     "matricula.access_reporte_matricula",
                 ],
             },
+            {
+                "name": "Reporte PAS por Sección",
+                "url": "matricula:reporte_pas_seccion",
+                "icon": "fas fa-id-card-alt",
+                "permissions": ["matricula.access_reporte_pas_seccion"],
+            },
         ]
     },
     

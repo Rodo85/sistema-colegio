@@ -612,6 +612,145 @@ def pas_estudiante(request):
         logger.error(f"Error en pas_estudiante: {str(e)}")
         return HttpResponse('Error interno del sistema', status=500)
 
+
+@login_required
+@permission_required('matricula.print_pas_estudiante', raise_exception=True)
+def pas_seccion(request):
+    """
+    Genera un PDF con múltiples PAS para todos los estudiantes de una sección o subgrupo.
+    Parámetros: curso_lectivo_id, seccion_id O subgrupo_id, institucion_id (si superuser)
+    """
+    curso_lectivo_id = request.GET.get('curso_lectivo_id')
+    seccion_id = request.GET.get('seccion_id')
+    subgrupo_id = request.GET.get('subgrupo_id')
+    institucion_id = request.GET.get('institucion_id') if request.user.is_superuser else getattr(request, 'institucion_activa_id', None)
+
+    if not curso_lectivo_id or (not seccion_id and not subgrupo_id):
+        return HttpResponse('Parámetros insuficientes: requiere curso_lectivo_id y (seccion_id o subgrupo_id)', status=400)
+
+    try:
+        curso_lectivo = CursoLectivo.objects.get(pk=curso_lectivo_id)
+
+        # Determinar institución
+        if request.user.is_superuser:
+            if not institucion_id:
+                return HttpResponse('Institución requerida para superusuarios', status=400)
+            institucion = Institucion.objects.get(pk=institucion_id)
+        else:
+            if not institucion_id:
+                return HttpResponse('No se pudo determinar la institución activa', status=400)
+            institucion = Institucion.objects.get(pk=institucion_id)
+
+        # Filtrar matrículas según sección o subgrupo
+        filtros = {
+            'curso_lectivo': curso_lectivo,
+            'institucion': institucion,
+            'estado__iexact': 'activo'
+        }
+
+        if subgrupo_id:
+            filtros['subgrupo_id'] = subgrupo_id
+            grupo_nombre = f"Subgrupo {Subgrupo.objects.get(pk=subgrupo_id)}"
+        elif seccion_id:
+            filtros['seccion_id'] = seccion_id
+            grupo_nombre = f"Sección {Seccion.objects.get(pk=seccion_id)}"
+
+        # Obtener estudiantes ordenados alfabéticamente
+        matriculas = MatriculaAcademica.objects.filter(**filtros).select_related(
+            'estudiante', 'nivel', 'especialidad__especialidad'
+        ).order_by(
+            'estudiante__primer_apellido',
+            'estudiante__segundo_apellido',
+            'estudiante__nombres'
+        )
+
+        if not matriculas.exists():
+            return HttpResponse(f'No se encontraron estudiantes en {grupo_nombre}', status=404)
+
+        # Preparar datos para cada estudiante
+        estudiantes_data = []
+        for matricula in matriculas:
+            # Generar código QR
+            qr = qrcode.QRCode(
+                version=1,
+                error_correction=qrcode.constants.ERROR_CORRECT_L,
+                box_size=10,
+                border=1,
+            )
+            qr.add_data(matricula.estudiante.identificacion)
+            qr.make(fit=True)
+            qr_img = qr.make_image(fill_color="black", back_color="white")
+            
+            buffered = BytesIO()
+            qr_img.save(buffered, format="PNG")
+            qr_base64 = base64.b64encode(buffered.getvalue()).decode()
+
+            # Encargado principal
+            contacto_principal = (
+                matricula.estudiante.encargadoestudiante_set
+                .select_related('persona_contacto', 'parentesco')
+                .filter(principal=True)
+                .first()
+            )
+            if not contacto_principal:
+                contacto_principal = (
+                    matricula.estudiante.encargadoestudiante_set
+                    .select_related('persona_contacto', 'parentesco')
+                    .first()
+                )
+
+            estudiantes_data.append({
+                'estudiante': matricula.estudiante,
+                'matricula': matricula,
+                'qr_code_base64': qr_base64,
+                'contacto_principal': contacto_principal,
+            })
+
+        context = {
+            'institucion': institucion,
+            'estudiantes_data': estudiantes_data,
+            'grupo_nombre': grupo_nombre,
+            'total_estudiantes': len(estudiantes_data),
+        }
+        return render(request, 'matricula/pas_seccion.html', context)
+    except (CursoLectivo.DoesNotExist, Institucion.DoesNotExist, Seccion.DoesNotExist, Subgrupo.DoesNotExist):
+        return HttpResponse('Recurso no encontrado', status=404)
+    except Exception as e:
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.error(f"Error en pas_seccion: {str(e)}")
+        return HttpResponse('Error interno del sistema', status=500)
+
+@login_required
+@permission_required('matricula.access_reporte_pas_seccion', raise_exception=True)
+def reporte_pas_seccion(request):
+    """
+    Interfaz para seleccionar y generar PAS por sección o subgrupo.
+    """
+    cursos_lectivos = CursoLectivo.objects.all().order_by('-anio')
+    niveles = Nivel.objects.all().order_by('numero')
+    
+    # Obtener instituciones si es superusuario
+    instituciones = []
+    institucion = None
+    if request.user.is_superuser:
+        instituciones = Institucion.objects.all().order_by('nombre')
+    else:
+        institucion_id = getattr(request, 'institucion_activa_id', None)
+        if institucion_id:
+            institucion = Institucion.objects.get(pk=institucion_id)
+    
+    context = {
+        'cursos_lectivos': cursos_lectivos,
+        'niveles': niveles,
+        'instituciones': instituciones,
+        'institucion': institucion,
+        'es_superusuario': request.user.is_superuser,
+    }
+    
+    return render(request, 'matricula/reporte_pas_seccion.html', context)
+
+
 @csrf_exempt
 @login_required
 def get_especialidades_disponibles(request):

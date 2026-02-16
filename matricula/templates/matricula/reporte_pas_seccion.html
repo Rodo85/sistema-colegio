@@ -1,0 +1,257 @@
+{% extends 'admin/base_site.html' %}
+
+{% block extrahead %}
+  {{ block.super }}
+  <style>
+    .reporte-container {
+      background: #fff;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 12px 32px rgba(44, 62, 80, 0.12);
+      margin-bottom: 2rem;
+    }
+    .reporte-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #2c3e50;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .reporte-filtros {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      align-items: flex-end;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+    .reporte-filtros .form-group {
+      display: flex;
+      flex-direction: column;
+      min-width: 220px;
+    }
+    .reporte-filtros label {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #495057;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .reporte-filtros select {
+      padding: 0.75rem 1rem;
+      border: 2px solid #e9ecef;
+      border-radius: 8px;
+      font-size: 1rem;
+      background: #fff;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    .reporte-filtros select:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+    }
+    .btn-generar {
+      background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);
+      color: white;
+      border: none;
+      padding: 0.75rem 2rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(233, 30, 99, 0.3);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .btn-generar:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(233, 30, 99, 0.4);
+      background: linear-gradient(135deg, #d81b60 0%, #ad1457 100%);
+    }
+    .btn-generar:active {
+      transform: translateY(0);
+    }
+    .btn-generar:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .alert {
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+    }
+    .alert-info {
+      background: #e3f2fd;
+      color: #1976d2;
+      border: 1px solid #bbdefb;
+    }
+    .alert-warning {
+      background: #fff3e0;
+      color: #f57c00;
+      border: 1px solid #ffe0b2;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+<div class="reporte-container">
+  <h1 class="reporte-title">Imprimir PAS por Sección/Subgrupo</h1>
+  
+  <div class="alert alert-info">
+    <strong>ℹ️ Información:</strong> Seleccione curso lectivo, nivel y sección/subgrupo para generar PAS de todos los estudiantes en formato PDF.
+  </div>
+
+  <form method="get" action="{% url 'matricula:pas_seccion' %}" target="_blank" id="formPAS">
+    <div class="reporte-filtros">
+      <!-- Curso Lectivo -->
+      <div class="form-group">
+        <label for="id_curso_lectivo">Curso Lectivo *</label>
+        <select name="curso_lectivo_id" id="id_curso_lectivo" required>
+          <option value="">Seleccione...</option>
+          {% for curso in cursos_lectivos %}
+            <option value="{{ curso.pk }}">{{ curso.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Institución (solo para superusuario) -->
+      {% if es_superusuario %}
+      <div class="form-group">
+        <label for="id_institucion">Institución *</label>
+        <select name="institucion_id" id="id_institucion" required>
+          <option value="">Seleccione...</option>
+          {% for inst in instituciones %}
+            <option value="{{ inst.pk }}">{{ inst.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      {% endif %}
+
+      <!-- Nivel -->
+      <div class="form-group">
+        <label for="id_nivel">Nivel *</label>
+        <select id="id_nivel" required>
+          <option value="">Seleccione...</option>
+          {% for nivel in niveles %}
+            <option value="{{ nivel.pk }}">{{ nivel.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Sección -->
+      <div class="form-group">
+        <label for="id_seccion">Sección</label>
+        <select name="seccion_id" id="id_seccion">
+          <option value="">Todas las secciones</option>
+        </select>
+      </div>
+
+      <!-- Subgrupo -->
+      <div class="form-group">
+        <label for="id_subgrupo">Subgrupo</label>
+        <select name="subgrupo_id" id="id_subgrupo">
+          <option value="">Todos los subgrupos</option>
+        </select>
+      </div>
+
+      <!-- Botón Generar -->
+      <div class="form-group">
+        <button type="submit" class="btn-generar" id="btnGenerar">
+          🎫 Generar PAS
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <div class="alert alert-warning" id="alertValidacion" style="display: none;">
+    <strong>⚠️ Atención:</strong> Debe seleccionar al menos una sección o un subgrupo.
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const cursoSelect = document.getElementById('id_curso_lectivo');
+  const institucionSelect = document.getElementById('id_institucion');
+  const nivelSelect = document.getElementById('id_nivel');
+  const seccionSelect = document.getElementById('id_seccion');
+  const subgrupoSelect = document.getElementById('id_subgrupo');
+  const formPAS = document.getElementById('formPAS');
+  const btnGenerar = document.getElementById('btnGenerar');
+  const alertValidacion = document.getElementById('alertValidacion');
+
+  // Cargar secciones cuando cambia el nivel
+  nivelSelect.addEventListener('change', function() {
+    const cursoId = cursoSelect.value;
+    const nivelId = nivelSelect.value;
+    
+    // Limpiar selects
+    seccionSelect.innerHTML = '<option value="">Todas las secciones</option>';
+    subgrupoSelect.innerHTML = '<option value="">Todos los subgrupos</option>';
+    
+    if (!cursoId || !nivelId) return;
+    
+    // Cargar secciones
+    fetch(`/matricula/api/secciones/?curso_lectivo_id=${cursoId}&nivel_id=${nivelId}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          data.secciones.forEach(seccion => {
+            const option = document.createElement('option');
+            option.value = seccion.id;
+            option.textContent = seccion.nombre;
+            seccionSelect.appendChild(option);
+          });
+        }
+      })
+      .catch(error => console.error('Error cargando secciones:', error));
+  });
+
+  // Cargar subgrupos cuando cambia la sección
+  seccionSelect.addEventListener('change', function() {
+    const cursoId = cursoSelect.value;
+    const seccionId = seccionSelect.value;
+    
+    subgrupoSelect.innerHTML = '<option value="">Todos los subgrupos</option>';
+    
+    if (!cursoId || !seccionId) return;
+    
+    fetch(`/matricula/api/subgrupos/?curso_lectivo_id=${cursoId}&seccion_id=${seccionId}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          data.subgrupos.forEach(subgrupo => {
+            const option = document.createElement('option');
+            option.value = subgrupo.id;
+            option.textContent = subgrupo.nombre;
+            subgrupoSelect.appendChild(option);
+          });
+        }
+      })
+      .catch(error => console.error('Error cargando subgrupos:', error));
+  });
+
+  // Validar antes de enviar
+  formPAS.addEventListener('submit', function(e) {
+    const seccionId = seccionSelect.value;
+    const subgrupoId = subgrupoSelect.value;
+    
+    if (!seccionId && !subgrupoId) {
+      e.preventDefault();
+      alertValidacion.style.display = 'block';
+      setTimeout(() => {
+        alertValidacion.style.display = 'none';
+      }, 5000);
+    } else {
+      alertValidacion.style.display = 'none';
+    }
+  });
+});
+</script>
+{% endblock %}

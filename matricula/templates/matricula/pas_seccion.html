@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PAS - {{ estudiante.identificacion }}</title>
+  <title>PAS - {{ grupo_nombre }}</title>
   <style>
     * {
       margin: 0;
@@ -30,6 +30,11 @@
       padding: 0;
       margin: 0 auto;
       background: white;
+      page-break-after: always;
+    }
+
+    .pas-container:last-child {
+      page-break-after: auto;
     }
 
     /* Bloque superior con logo y datos - con borde gris opaco */
@@ -72,6 +77,15 @@
       font-size: 13pt;
       font-weight: 700;
       margin-bottom: 3mm;
+      text-transform: uppercase;
+    }
+
+    /* Identificación del estudiante */
+    .identificacion-estudiante {
+      text-align: center;
+      font-size: 11pt;
+      font-weight: 700;
+      margin-bottom: 8mm;
       text-transform: uppercase;
     }
 
@@ -185,15 +199,6 @@
       text-transform: uppercase;
     }
 
-    /* Identificación del estudiante */
-    .identificacion-estudiante {
-      text-align: center;
-      font-size: 11pt;
-      font-weight: 700;
-      margin-bottom: 8mm;
-      text-transform: uppercase;
-    }
-
     /* Sección final */
     .seccion-final {
       padding: 5mm;
@@ -236,6 +241,7 @@
   </style>
 </head>
 <body onload="window.print();">
+  {% for data in estudiantes_data %}
   <div class="pas-container">
     <!-- Bloque superior con borde gris -->
     <div class="bloque-superior">
@@ -248,8 +254,8 @@
 
       <!-- Foto del estudiante -->
       <div class="foto-container">
-        {% if estudiante.foto %}
-          <img src="{{ estudiante.foto.url }}" alt="Foto">
+        {% if data.estudiante.foto %}
+          <img src="{{ data.estudiante.foto.url }}" alt="Foto">
         {% else %}
           <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='240'%3E%3Crect fill='%23eee' width='200' height='240'/%3E%3Ctext x='50%25' y='50%25' font-size='16' text-anchor='middle' fill='%23999'%3ESin foto%3C/text%3E%3C/svg%3E" alt="Sin foto">
         {% endif %}
@@ -257,17 +263,17 @@
 
       <!-- Nombre del estudiante -->
       <div class="nombre-estudiante">
-        {{ estudiante.nombres }} {{ estudiante.primer_apellido }} {{ estudiante.segundo_apellido|default:"" }}
+        {{ data.estudiante.nombres }} {{ data.estudiante.primer_apellido }} {{ data.estudiante.segundo_apellido|default:"" }}
       </div>
 
       <!-- Identificación del estudiante -->
       <div class="identificacion-estudiante">
-        IDENTIFICACIÓN: {{ estudiante.identificacion }}
+        IDENTIFICACIÓN: {{ data.estudiante.identificacion }}
       </div>
 
       <!-- Fecha de nacimiento -->
       <div class="fecha-nacimiento">
-        <strong>FECHA DE NACIMIENTO:</strong> {% if estudiante.fecha_nacimiento %}{{ estudiante.fecha_nacimiento|date:"j \d\e F \d\e\l Y" }}{% else %}---{% endif %}
+        <strong>FECHA DE NACIMIENTO:</strong> {% if data.estudiante.fecha_nacimiento %}{{ data.estudiante.fecha_nacimiento|date:"j \d\e F \d\e\l Y" }}{% else %}---{% endif %}
       </div>
 
       <!-- QR y datos -->
@@ -277,16 +283,16 @@
           <span class="qr-esquina-tr"></span>
           <span class="qr-esquina-bl"></span>
           <div class="qr-code">
-            <img src="data:image/png;base64,{{ qr_code_base64 }}" alt="QR">
+            <img src="data:image/png;base64,{{ data.qr_code_base64 }}" alt="QR">
           </div>
         </div>
 
         <!-- Datos a la derecha -->
         <div class="datos-derecha">
-          <p><strong>Domicilio:</strong> {{ estudiante.provincia.nombre|default:"---" }}, {{ estudiante.canton.nombre|default:"---" }}, {{ estudiante.distrito.nombre|default:"---" }}</p>
-          {% if contacto_principal %}
-          <p><strong>Encargado:</strong> {{ contacto_principal.persona_contacto }} ({{ contacto_principal.parentesco }})</p>
-          <p><strong>Teléfono:</strong> {{ contacto_principal.persona_contacto.celular_avisos|default:"---" }}</p>
+          <p><strong>Domicilio:</strong> {{ data.estudiante.provincia.nombre|default:"---" }}, {{ data.estudiante.canton.nombre|default:"---" }}, {{ data.estudiante.distrito.nombre|default:"---" }}</p>
+          {% if data.contacto_principal %}
+          <p><strong>Encargado:</strong> {{ data.contacto_principal.persona_contacto }} ({{ data.contacto_principal.parentesco }})</p>
+          <p><strong>Teléfono:</strong> {{ data.contacto_principal.persona_contacto.celular_avisos|default:"---" }}</p>
           {% else %}
           <p><strong>Encargado:</strong> No registrado</p>
           <p><strong>Teléfono:</strong> ---</p>
@@ -297,7 +303,7 @@
 
     <!-- Bloque de especialidad con background celeste -->
     <div class="bloque-especialidad">
-      {% if matricula.especialidad %}{{ matricula.especialidad.especialidad.nombre }}{% endif %}
+      {% if data.matricula.especialidad %}{{ data.matricula.especialidad.especialidad.nombre }}{% endif %}
     </div>
 
     <!-- Sección final con campo centrado -->
@@ -307,5 +313,6 @@
       </div>
     </div>
   </div>
+  {% endfor %}
 </body>
 </html>

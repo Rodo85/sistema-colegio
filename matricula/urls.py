@@ -4,7 +4,7 @@ from .views import (
     EspecialidadAutocomplete, SeccionAutocomplete, SubgrupoAutocomplete,
     asignacion_grupos, ejecutar_asignacion_grupos,
     exportar_listas_clase_excel,
-    comprobante_matricula, pas_estudiante,
+    comprobante_matricula, pas_estudiante, pas_seccion, reporte_pas_seccion,
     reporte_matricula,
     api_secciones_por_curso_nivel, api_subgrupos_por_curso_seccion,
     buscar_estudiante_existente, agregar_estudiante_a_institucion,
@@ -17,6 +17,8 @@ urlpatterns = [
     path('reporte-matricula/', reporte_matricula, name='reporte_matricula'),
     path('comprobante-matricula/', comprobante_matricula, name='comprobante_matricula'),
     path('pas-estudiante/', pas_estudiante, name='pas_estudiante'),
+    path('pas-seccion/', pas_seccion, name='pas_seccion'),
+    path('reporte-pas-seccion/', reporte_pas_seccion, name='reporte_pas_seccion'),
     path('get-especialidades-disponibles/', get_especialidades_disponibles, name='get_especialidades_disponibles'),
     
     # Django Autocomplete Light (DAL)
