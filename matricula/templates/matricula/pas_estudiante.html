@@ -185,27 +185,36 @@
       text-transform: uppercase;
     }
 
+    /* Identificación del estudiante */
+    .identificacion-estudiante {
+      text-align: center;
+      font-size: 11pt;
+      font-weight: 700;
+      margin-bottom: 8mm;
+      text-transform: uppercase;
+    }
+
     /* Sección final */
     .seccion-final {
       padding: 5mm;
+      text-align: center;
     }
 
     .campo-seccion {
-      margin-bottom: 8mm;
+      display: inline-block;
     }
 
     .campo-seccion strong {
       font-weight: 700;
       text-transform: uppercase;
-      font-size: 10pt;
-      display: block;
-      margin-bottom: 2mm;
+      font-size: 11pt;
+      margin-right: 3mm;
     }
 
-    .campo-seccion hr {
-      border: none;
+    .linea-seccion {
+      display: inline-block;
       border-bottom: 1px solid #333;
-      margin: 0;
+      width: 60mm;
     }
 
     /* Impresión */
@@ -251,6 +260,11 @@
         {{ estudiante.nombres }} {{ estudiante.primer_apellido }} {{ estudiante.segundo_apellido|default:"" }}
       </div>
 
+      <!-- Identificación del estudiante -->
+      <div class="identificacion-estudiante">
+        <strong>IDENTIFICACIÓN:</strong> {{ estudiante.identificacion }}
+      </div>
+
       <!-- Fecha de nacimiento -->
       <div class="fecha-nacimiento">
         <strong>FECHA DE NACIMIENTO:</strong> {% if estudiante.fecha_nacimiento %}{{ estudiante.fecha_nacimiento|date:"j \d\e F \d\e\l Y" }}{% else %}---{% endif %}
@@ -286,15 +300,10 @@
       {% if matricula.especialidad %}{{ matricula.especialidad.especialidad.nombre }}{% endif %}
     </div>
 
-    <!-- Sección final con HR debajo de nivel y sección -->
+    <!-- Sección final con campo centrado -->
     <div class="seccion-final">
       <div class="campo-seccion">
-        <strong>Nivel:</strong>
-        <hr>
-      </div>
-      <div class="campo-seccion">
-        <strong>Sección:</strong>
-        <hr>
+        <strong>Sección:</strong><span class="linea-seccion"></span>
       </div>
     </div>
   </div>
