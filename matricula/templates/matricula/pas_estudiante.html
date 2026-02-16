@@ -12,48 +12,54 @@
     }
 
     @page {
-      size: 115mm 190mm;
-      margin: 5mm;
+      size: 150mm 250mm;
+      margin: 0;
     }
 
     body {
       font-family: Arial, sans-serif;
-      font-size: 9pt;
-      line-height: 1.3;
+      font-size: 10pt;
+      line-height: 1.4;
       background: #fff;
       color: #000;
     }
 
     .pas-container {
-      width: 105mm;
-      height: 180mm;
-      padding: 4mm;
-      border: 1px solid #ccc;
+      width: 150mm;
+      height: 250mm;
+      padding: 0;
       margin: 0 auto;
       background: white;
+    }
+
+    /* Bloque superior con logo y datos - con borde gris opaco */
+    .bloque-superior {
+      border: 1px solid rgba(128, 128, 128, 0.2);
+      padding: 5mm;
+      margin-bottom: 5mm;
     }
 
     /* Logo institucional centrado */
     .logo-container {
       text-align: center;
-      margin-bottom: 3mm;
+      margin-bottom: 4mm;
     }
 
     .logo-container img {
-      max-width: 60mm;
-      max-height: 30mm;
+      max-width: 70mm;
+      max-height: 35mm;
       object-fit: contain;
     }
 
     /* Foto del estudiante centrada */
     .foto-container {
       text-align: center;
-      margin-bottom: 3mm;
+      margin-bottom: 4mm;
     }
 
     .foto-container img {
-      width: 40mm;
-      height: 50mm;
+      width: 45mm;
+      height: 55mm;
       object-fit: cover;
       border: 1px solid #666;
       border-radius: 2mm;
@@ -63,30 +69,29 @@
     /* Nombre del estudiante */
     .nombre-estudiante {
       text-align: center;
-      font-size: 12pt;
+      font-size: 13pt;
       font-weight: 700;
-      margin-bottom: 2mm;
+      margin-bottom: 3mm;
       text-transform: uppercase;
     }
 
     /* Fecha nacimiento */
     .fecha-nacimiento {
       text-align: center;
-      font-size: 9pt;
-      margin-bottom: 4mm;
+      font-size: 10pt;
+      margin-bottom: 8mm;
     }
 
     /* Sección QR y datos */
     .qr-datos-container {
       display: flex;
-      gap: 3mm;
-      margin-bottom: 4mm;
+      gap: 5mm;
       align-items: flex-start;
     }
 
     /* QR con bordes celestes en esquinas */
     .qr-wrapper {
-      flex: 0 0 35mm;
+      flex: 0 0 40mm;
       position: relative;
       padding: 2mm;
     }
@@ -95,8 +100,8 @@
     .qr-wrapper::after {
       content: '';
       position: absolute;
-      width: 8mm;
-      height: 8mm;
+      width: 10mm;
+      height: 10mm;
       border: 2px solid #4fc3f7;
     }
 
@@ -117,8 +122,8 @@
     .qr-esquina-tr,
     .qr-esquina-bl {
       position: absolute;
-      width: 8mm;
-      height: 8mm;
+      width: 10mm;
+      height: 10mm;
       border: 2px solid #4fc3f7;
     }
 
@@ -143,8 +148,8 @@
     }
 
     .qr-code img {
-      width: 30mm;
-      height: 30mm;
+      width: 35mm;
+      height: 35mm;
       display: block;
       margin: 0 auto;
     }
@@ -152,12 +157,12 @@
     /* Datos a la derecha del QR */
     .datos-derecha {
       flex: 1;
-      font-size: 8.5pt;
-      line-height: 1.6;
+      font-size: 9.5pt;
+      line-height: 1.8;
     }
 
     .datos-derecha p {
-      margin-bottom: 2mm;
+      margin-bottom: 3mm;
     }
 
     .datos-derecha strong {
@@ -165,44 +170,42 @@
       text-transform: uppercase;
     }
 
-    /* Franja de especialidad */
-    .franja-especialidad {
-      background: #e1f5fe;
-      padding: 2mm;
-      margin-bottom: 3mm;
+    /* Bloque de especialidad */
+    .bloque-especialidad {
+      background: #E8F9FF;
+      padding: 4mm;
+      margin-bottom: 5mm;
       text-align: center;
-      min-height: 8mm;
+      min-height: 12mm;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 10pt;
+      font-size: 11pt;
       font-weight: 700;
       text-transform: uppercase;
     }
 
     /* Sección final */
     .seccion-final {
-      margin-top: 3mm;
-      padding-top: 3mm;
-      border-top: 1px solid #ccc;
-      font-size: 9pt;
-      line-height: 1.8;
+      padding: 5mm;
     }
 
-    .seccion-final p {
+    .campo-seccion {
+      margin-bottom: 8mm;
+    }
+
+    .campo-seccion strong {
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 10pt;
+      display: block;
       margin-bottom: 2mm;
     }
 
-    .seccion-final strong {
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-
-    .linea-manual {
-      display: inline-block;
-      border-bottom: 1px solid #000;
-      width: 50mm;
-      margin-left: 2mm;
+    .campo-seccion hr {
+      border: none;
+      border-bottom: 1px solid #333;
+      margin: 0;
     }
 
     /* Impresión */
@@ -212,79 +215,87 @@
       }
 
       .pas-container {
-        border: none;
-        width: 105mm;
-        height: 180mm;
+        width: 150mm;
+        height: 250mm;
       }
 
       @page {
-        size: 115mm 190mm;
-        margin: 5mm;
+        size: 150mm 250mm;
+        margin: 0;
       }
     }
   </style>
 </head>
 <body onload="window.print();">
   <div class="pas-container">
-    <!-- Logo institucional -->
-    <div class="logo-container">
-      {% if institucion.logo %}
-        <img src="{{ institucion.logo.url }}" alt="Logo">
-      {% endif %}
-    </div>
-
-    <!-- Foto del estudiante -->
-    <div class="foto-container">
-      {% if estudiante.foto %}
-        <img src="{{ estudiante.foto.url }}" alt="Foto">
-      {% else %}
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='240'%3E%3Crect fill='%23eee' width='200' height='240'/%3E%3Ctext x='50%25' y='50%25' font-size='16' text-anchor='middle' fill='%23999'%3ESin foto%3C/text%3E%3C/svg%3E" alt="Sin foto">
-      {% endif %}
-    </div>
-
-    <!-- Nombre del estudiante -->
-    <div class="nombre-estudiante">
-      {{ estudiante.nombres }} {{ estudiante.primer_apellido }} {{ estudiante.segundo_apellido|default:"" }}
-    </div>
-
-    <!-- Fecha de nacimiento -->
-    <div class="fecha-nacimiento">
-      <strong>FECHA DE NACIMIENTO:</strong> {% if estudiante.fecha_nacimiento %}{{ estudiante.fecha_nacimiento|date:"j \d\e F \d\e\l Y" }}{% else %}---{% endif %}
-    </div>
-
-    <!-- QR y datos -->
-    <div class="qr-datos-container">
-      <!-- QR con bordes celestes -->
-      <div class="qr-wrapper">
-        <span class="qr-esquina-tr"></span>
-        <span class="qr-esquina-bl"></span>
-        <div class="qr-code">
-          <img src="data:image/png;base64,{{ qr_code_base64 }}" alt="QR">
-        </div>
-      </div>
-
-      <!-- Datos a la derecha -->
-      <div class="datos-derecha">
-        <p><strong>Domicilio:</strong> {{ estudiante.provincia.nombre|default:"---" }}, {{ estudiante.canton.nombre|default:"---" }}, {{ estudiante.distrito.nombre|default:"---" }}</p>
-        {% if contacto_principal %}
-        <p><strong>Encargado:</strong> {{ contacto_principal.persona_contacto }} ({{ contacto_principal.parentesco }})</p>
-        <p><strong>Teléfono:</strong> {{ contacto_principal.persona_contacto.celular_avisos|default:"---" }}</p>
-        {% else %}
-        <p><strong>Encargado:</strong> No registrado</p>
-        <p><strong>Teléfono:</strong> ---</p>
+    <!-- Bloque superior con borde gris -->
+    <div class="bloque-superior">
+      <!-- Logo institucional -->
+      <div class="logo-container">
+        {% if institucion.logo %}
+          <img src="{{ institucion.logo.url }}" alt="Logo">
         {% endif %}
       </div>
+
+      <!-- Foto del estudiante -->
+      <div class="foto-container">
+        {% if estudiante.foto %}
+          <img src="{{ estudiante.foto.url }}" alt="Foto">
+        {% else %}
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='240'%3E%3Crect fill='%23eee' width='200' height='240'/%3E%3Ctext x='50%25' y='50%25' font-size='16' text-anchor='middle' fill='%23999'%3ESin foto%3C/text%3E%3C/svg%3E" alt="Sin foto">
+        {% endif %}
+      </div>
+
+      <!-- Nombre del estudiante -->
+      <div class="nombre-estudiante">
+        {{ estudiante.nombres }} {{ estudiante.primer_apellido }} {{ estudiante.segundo_apellido|default:"" }}
+      </div>
+
+      <!-- Fecha de nacimiento -->
+      <div class="fecha-nacimiento">
+        <strong>FECHA DE NACIMIENTO:</strong> {% if estudiante.fecha_nacimiento %}{{ estudiante.fecha_nacimiento|date:"j \d\e F \d\e\l Y" }}{% else %}---{% endif %}
+      </div>
+
+      <!-- QR y datos -->
+      <div class="qr-datos-container">
+        <!-- QR con bordes celestes -->
+        <div class="qr-wrapper">
+          <span class="qr-esquina-tr"></span>
+          <span class="qr-esquina-bl"></span>
+          <div class="qr-code">
+            <img src="data:image/png;base64,{{ qr_code_base64 }}" alt="QR">
+          </div>
+        </div>
+
+        <!-- Datos a la derecha -->
+        <div class="datos-derecha">
+          <p><strong>Domicilio:</strong> {{ estudiante.provincia.nombre|default:"---" }}, {{ estudiante.canton.nombre|default:"---" }}, {{ estudiante.distrito.nombre|default:"---" }}</p>
+          {% if contacto_principal %}
+          <p><strong>Encargado:</strong> {{ contacto_principal.persona_contacto }} ({{ contacto_principal.parentesco }})</p>
+          <p><strong>Teléfono:</strong> {{ contacto_principal.persona_contacto.celular_avisos|default:"---" }}</p>
+          {% else %}
+          <p><strong>Encargado:</strong> No registrado</p>
+          <p><strong>Teléfono:</strong> ---</p>
+          {% endif %}
+        </div>
+      </div>
     </div>
 
-    <!-- Franja de especialidad -->
-    <div class="franja-especialidad">
+    <!-- Bloque de especialidad con background celeste -->
+    <div class="bloque-especialidad">
       {% if matricula.especialidad %}{{ matricula.especialidad.especialidad.nombre }}{% endif %}
     </div>
 
-    <!-- Sección final -->
+    <!-- Sección final con HR debajo de nivel y sección -->
     <div class="seccion-final">
-      <p><strong>Nivel:</strong><span class="linea-manual"></span></p>
-      <p><strong>Sección:</strong><span class="linea-manual"></span></p>
+      <div class="campo-seccion">
+        <strong>Nivel:</strong>
+        <hr>
+      </div>
+      <div class="campo-seccion">
+        <strong>Sección:</strong>
+        <hr>
+      </div>
     </div>
   </div>
 </body>
