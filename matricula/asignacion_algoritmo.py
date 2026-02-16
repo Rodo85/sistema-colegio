@@ -43,7 +43,7 @@ def ejecutar_asignacion_completa(institucion, curso_lectivo, nivel, usuario, sim
     try:
         # 1. OBTENER ESTUDIANTES ELEGIBLES
         filtros = {
-            'estudiante__institucion': institucion,
+            'institucion': institucion,
             'curso_lectivo': curso_lectivo,
             'estado__iexact': 'activo',
             'seccion__isnull': True,
