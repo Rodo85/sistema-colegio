@@ -40,8 +40,8 @@
     }
 
     .logo-container img {
-      max-width: 40mm;
-      max-height: 20mm;
+      max-width: 60mm;
+      max-height: 30mm;
       object-fit: contain;
     }
 
@@ -162,15 +162,31 @@
 
     .datos-derecha strong {
       font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    /* Franja de especialidad */
+    .franja-especialidad {
+      background: #e1f5fe;
+      padding: 2mm;
+      margin-bottom: 3mm;
+      text-align: center;
+      min-height: 8mm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10pt;
+      font-weight: 700;
+      text-transform: uppercase;
     }
 
     /* Sección final */
     .seccion-final {
-      margin-top: 4mm;
+      margin-top: 3mm;
       padding-top: 3mm;
       border-top: 1px solid #ccc;
       font-size: 9pt;
-      line-height: 1.6;
+      line-height: 1.8;
     }
 
     .seccion-final p {
@@ -179,12 +195,13 @@
 
     .seccion-final strong {
       font-weight: 700;
+      text-transform: uppercase;
     }
 
     .linea-manual {
       display: inline-block;
       border-bottom: 1px solid #000;
-      width: 40mm;
+      width: 50mm;
       margin-left: 2mm;
     }
 
@@ -232,7 +249,7 @@
 
     <!-- Fecha de nacimiento -->
     <div class="fecha-nacimiento">
-      {{ estudiante.fecha_nacimiento|date:"d/m/Y"|default:"---" }}
+      <strong>FECHA DE NACIMIENTO:</strong> {% if estudiante.fecha_nacimiento %}{{ estudiante.fecha_nacimiento|date:"j \d\e F \d\e\l Y" }}{% else %}---{% endif %}
     </div>
 
     <!-- QR y datos -->
@@ -250,21 +267,23 @@
       <div class="datos-derecha">
         <p><strong>Domicilio:</strong> {{ estudiante.provincia.nombre|default:"---" }}, {{ estudiante.canton.nombre|default:"---" }}, {{ estudiante.distrito.nombre|default:"---" }}</p>
         {% if contacto_principal %}
-        <p><strong>Encargado:</strong> {{ contacto_principal.persona_contacto.nombres }} {{ contacto_principal.persona_contacto.primer_apellido }} {{ contacto_principal.persona_contacto.segundo_apellido|default:"" }}</p>
-        <p><strong>Parentesco:</strong> {{ contacto_principal.parentesco.nombre|default:"---" }}</p>
+        <p><strong>Encargado:</strong> {{ contacto_principal.persona_contacto }} ({{ contacto_principal.parentesco }})</p>
         <p><strong>Teléfono:</strong> {{ contacto_principal.persona_contacto.celular_avisos|default:"---" }}</p>
         {% else %}
         <p><strong>Encargado:</strong> No registrado</p>
-        <p><strong>Parentesco:</strong> ---</p>
         <p><strong>Teléfono:</strong> ---</p>
         {% endif %}
       </div>
     </div>
 
+    <!-- Franja de especialidad -->
+    <div class="franja-especialidad">
+      {% if matricula.especialidad %}{{ matricula.especialidad.especialidad.nombre }}{% endif %}
+    </div>
+
     <!-- Sección final -->
     <div class="seccion-final">
-      <p><strong>Nivel:</strong> {{ matricula.nivel.nombre|default:"---" }}</p>
-      <p><strong>Especialidad:</strong> {% if matricula.especialidad %}{{ matricula.especialidad.especialidad.nombre }}{% else %}---{% endif %}</p>
+      <p><strong>Nivel:</strong><span class="linea-manual"></span></p>
       <p><strong>Sección:</strong><span class="linea-manual"></span></p>
     </div>
   </div>
