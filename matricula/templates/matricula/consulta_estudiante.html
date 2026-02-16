@@ -308,6 +308,13 @@
       </button>
     </div>
     {% endif %}
+    {% if perms.matricula.print_pas_estudiante %}
+    <div class="form-group">
+      <button type="button" class="btn-buscar" onclick="imprimirPAS()" style="background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);">
+        <span style="font-size:1.2em;">🎫</span> Imprimir PAS
+      </button>
+    </div>
+    {% endif %}
     {% endif %}
   </form>
   {% if error %}<div class="error-message">{{ error }}</div>{% endif %}
@@ -595,6 +602,24 @@ function imprimirComprobanteMatricula() {
     .catch(err => {
       alert('Error al cargar el comprobante: ' + err.message);
     });
+}
+
+function imprimirPAS() {
+  const cursoInput = document.getElementById('id_curso_lectivo');
+  const cursoId = cursoInput ? cursoInput.value : '';
+  const identificacion = document.getElementById('id_identificacion')?.value || '';
+  if (!cursoId || !identificacion) {
+    alert('Faltan datos para imprimir el PAS.');
+    return;
+  }
+  let url = '{% url "matricula:pas_estudiante" %}?curso_lectivo_id=' + encodeURIComponent(cursoId) + '&identificacion=' + encodeURIComponent(identificacion);
+  const instSel = document.getElementById('id_institucion');
+  if (instSel && instSel.value) {
+    url += '&institucion_id=' + encodeURIComponent(instSel.value);
+  }
+  
+  // Abrir en nueva ventana para impresión directa
+  window.open(url, '_blank');
 }
 
 // (Se eliminó lógica de asignación de grupo en esta pantalla)

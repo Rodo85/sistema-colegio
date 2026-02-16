@@ -13,6 +13,9 @@ from .models import Estudiante, EstudianteInstitucion, MatriculaAcademica, Plant
 from dal import autocomplete
 import json
 import io
+import qrcode
+from io import BytesIO
+import base64
 
 try:
     import openpyxl
@@ -512,6 +515,101 @@ def comprobante_matricula(request):
         import logging
         logger = logging.getLogger(__name__)
         logger.error(f"Error en comprobante_matricula: {str(e)}")
+        return HttpResponse('Error interno del sistema', status=500)
+
+
+@login_required
+@permission_required('matricula.print_pas_estudiante', raise_exception=True)
+def pas_estudiante(request):
+    """
+    Genera un PAS (Pase de Asistencia del Estudiante) en formato PDF compacto (11.5cm x 19cm).
+    Incluye: foto, código QR, escudo institucional, datos básicos del estudiante y encargado principal.
+    """
+    curso_lectivo_id = request.GET.get('curso_lectivo_id')
+    identificacion = (request.GET.get('identificacion') or '').strip()
+    institucion_id = request.GET.get('institucion_id') if request.user.is_superuser else getattr(request, 'institucion_activa_id', None)
+
+    if not curso_lectivo_id or not identificacion:
+        return HttpResponse('Parámetros insuficientes', status=400)
+
+    try:
+        curso_lectivo = CursoLectivo.objects.get(pk=curso_lectivo_id)
+
+        # Determinar institución
+        if request.user.is_superuser:
+            if not institucion_id:
+                return HttpResponse('Institución requerida para superusuarios', status=400)
+            institucion = Institucion.objects.get(pk=institucion_id)
+        else:
+            if not institucion_id:
+                return HttpResponse('No se pudo determinar la institución activa', status=400)
+            institucion = Institucion.objects.get(pk=institucion_id)
+
+        # Buscar estudiante
+        estudiante = Estudiante.objects.filter(
+            identificacion=identificacion,
+            instituciones_estudiante__institucion=institucion,
+            instituciones_estudiante__estado='activo'
+        ).first()
+        
+        if not estudiante:
+            return HttpResponse('Estudiante no encontrado en la institución indicada', status=404)
+        
+        matricula = MatriculaAcademica.objects.filter(
+            estudiante=estudiante,
+            curso_lectivo=curso_lectivo,
+            estado__iexact='activo'
+        ).select_related('nivel', 'especialidad__especialidad').first()
+
+        if not matricula:
+            return HttpResponse('No existe matrícula activa para este estudiante y curso lectivo', status=404)
+
+        # Generar código QR con la identificación del estudiante
+        qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_L,
+            box_size=10,
+            border=1,
+        )
+        qr.add_data(estudiante.identificacion)
+        qr.make(fit=True)
+        qr_img = qr.make_image(fill_color="black", back_color="white")
+        
+        # Convertir QR a base64
+        buffered = BytesIO()
+        qr_img.save(buffered, format="PNG")
+        qr_base64 = base64.b64encode(buffered.getvalue()).decode()
+
+        # Encargado principal
+        contacto_principal = (
+            estudiante.encargadoestudiante_set
+            .select_related('persona_contacto', 'parentesco')
+            .filter(principal=True)
+            .first()
+        )
+        if not contacto_principal:
+            contacto_principal = (
+                estudiante.encargadoestudiante_set
+                .select_related('persona_contacto', 'parentesco')
+                .first()
+            )
+
+        context = {
+            'estudiante': estudiante,
+            'matricula': matricula,
+            'institucion': institucion,
+            'qr_code_base64': qr_base64,
+            'contacto_principal': contacto_principal,
+        }
+        return render(request, 'matricula/pas_estudiante.html', context)
+    except CursoLectivo.DoesNotExist:
+        return HttpResponse('Curso lectivo no encontrado', status=404)
+    except Institucion.DoesNotExist:
+        return HttpResponse('Institución no encontrada', status=404)
+    except Exception as e:
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.error(f"Error en pas_estudiante: {str(e)}")
         return HttpResponse('Error interno del sistema', status=500)
 
 @csrf_exempt

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PAS - {{ estudiante.identificacion }}</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    @page {
+      size: 115mm 190mm;
+      margin: 5mm;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 9pt;
+      line-height: 1.3;
+      background: #fff;
+      color: #000;
+    }
+
+    .pas-container {
+      width: 105mm;
+      height: 180mm;
+      padding: 4mm;
+      border: 1px solid #ccc;
+      margin: 0 auto;
+      background: white;
+    }
+
+    /* Encabezado con logo institucional */
+    .header {
+      text-align: center;
+      margin-bottom: 3mm;
+      padding-bottom: 2mm;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .header img {
+      max-width: 50mm;
+      max-height: 15mm;
+      object-fit: contain;
+    }
+
+    .header h1 {
+      font-size: 11pt;
+      font-weight: 700;
+      margin-top: 1mm;
+      text-transform: uppercase;
+    }
+
+    /* Contenedor de foto y QR */
+    .foto-qr-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 3mm;
+      gap: 3mm;
+    }
+
+    .foto-estudiante {
+      flex: 0 0 45mm;
+    }
+
+    .foto-estudiante img {
+      width: 45mm;
+      height: 55mm;
+      object-fit: cover;
+      border: 1px solid #666;
+      border-radius: 2mm;
+      display: block;
+    }
+
+    .qr-code {
+      flex: 0 0 30mm;
+      text-align: center;
+    }
+
+    .qr-code img {
+      width: 30mm;
+      height: 30mm;
+      border: 1px solid #ddd;
+    }
+
+    .qr-code p {
+      font-size: 7pt;
+      margin-top: 1mm;
+      color: #555;
+    }
+
+    /* Datos del estudiante */
+    .datos-estudiante {
+      margin-bottom: 3mm;
+      padding: 2mm;
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 2mm;
+    }
+
+    .datos-estudiante h2 {
+      font-size: 10pt;
+      font-weight: 700;
+      margin-bottom: 2mm;
+      color: #333;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 1mm;
+    }
+
+    .datos-estudiante p {
+      margin-bottom: 1.5mm;
+      font-size: 8.5pt;
+    }
+
+    .datos-estudiante p strong {
+      font-weight: 700;
+      display: inline-block;
+      min-width: 30mm;
+    }
+
+    /* Datos del encargado */
+    .datos-encargado {
+      padding: 2mm;
+      background: #f0f0f0;
+      border: 1px solid #ddd;
+      border-radius: 2mm;
+    }
+
+    .datos-encargado h2 {
+      font-size: 10pt;
+      font-weight: 700;
+      margin-bottom: 2mm;
+      color: #333;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 1mm;
+    }
+
+    .datos-encargado p {
+      margin-bottom: 1.5mm;
+      font-size: 8.5pt;
+    }
+
+    .datos-encargado p strong {
+      font-weight: 700;
+      display: inline-block;
+      min-width: 25mm;
+    }
+
+    /* Impresión */
+    @media print {
+      body {
+        background: white;
+      }
+
+      .pas-container {
+        border: none;
+        width: 105mm;
+        height: 180mm;
+      }
+
+      @page {
+        size: 115mm 190mm;
+        margin: 5mm;
+      }
+    }
+  </style>
+</head>
+<body onload="window.print();">
+  <div class="pas-container">
+    <!-- Encabezado con logo institucional -->
+    <div class="header">
+      {% if institucion.logo %}
+        <img src="{{ institucion.logo.url }}" alt="Logo {{ institucion.nombre }}">
+      {% endif %}
+      <h1>{{ institucion.nombre }}</h1>
+    </div>
+
+    <!-- Foto del estudiante y código QR -->
+    <div class="foto-qr-container">
+      <div class="foto-estudiante">
+        {% if estudiante.foto %}
+          <img src="{{ estudiante.foto.url }}" alt="Foto de {{ estudiante.nombres }}">
+        {% else %}
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='240'%3E%3Crect fill='%23eee' width='200' height='240'/%3E%3Ctext x='50%25' y='50%25' font-size='16' text-anchor='middle' fill='%23999'%3ESin foto%3C/text%3E%3C/svg%3E" alt="Sin foto">
+        {% endif %}
+      </div>
+      <div class="qr-code">
+        <img src="data:image/png;base64,{{ qr_code_base64 }}" alt="Código QR {{ estudiante.identificacion }}">
+        <p>{{ estudiante.identificacion }}</p>
+      </div>
+    </div>
+
+    <!-- Datos del estudiante -->
+    <div class="datos-estudiante">
+      <h2>Datos del Estudiante</h2>
+      <p><strong>Nombre:</strong> {{ estudiante.nombres }} {{ estudiante.primer_apellido }} {{ estudiante.segundo_apellido }}</p>
+      <p><strong>Fecha nacimiento:</strong> {{ estudiante.fecha_nacimiento|date:"d/m/Y"|default:"---" }}</p>
+      <p><strong>Domicilio:</strong> {{ estudiante.provincia.nombre|default:"---" }}, {{ estudiante.canton.nombre|default:"---" }}, {{ estudiante.distrito.nombre|default:"---" }}</p>
+      <p><strong>Enfermedad:</strong> {% if estudiante.presenta_enfermedad %}{{ estudiante.detalle_enfermedad|default:"Sí" }}{% else %}No presenta{% endif %}</p>
+    </div>
+
+    <!-- Datos del encargado principal -->
+    <div class="datos-encargado">
+      <h2>Encargado Principal</h2>
+      {% if contacto_principal %}
+        <p><strong>Nombre:</strong> {{ contacto_principal.persona_contacto.nombres }} {{ contacto_principal.persona_contacto.primer_apellido }} {{ contacto_principal.persona_contacto.segundo_apellido|default:"" }}</p>
+        <p><strong>Parentesco:</strong> {{ contacto_principal.parentesco.nombre|default:"---" }}</p>
+        <p><strong>Celular:</strong> {{ contacto_principal.persona_contacto.celular_avisos|default:"---" }}</p>
+      {% else %}
+        <p>No hay encargado registrado.</p>
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>
