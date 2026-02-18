@@ -455,9 +455,9 @@ class SeccionCursoLectivoAdmin(InstitucionScopedAdmin):
 class SubgrupoCursoLectivoAdmin(InstitucionScopedAdmin):
     """Admin para gestionar los subgrupos disponibles por curso lectivo."""
     
-    list_display = ('subgrupo', 'tipo_estudiante', 'institucion', 'curso_lectivo', 'especialidad_curso', 'activa')
+    list_display = ('subgrupo', 'institucion', 'curso_lectivo', 'especialidad_curso', 'activa')
     list_display_links = ('subgrupo',)
-    list_filter = ('institucion', 'curso_lectivo__anio', 'subgrupo__seccion__nivel', 'tipo_estudiante', 'activa', 'especialidad_curso')
+    list_filter = ('institucion', 'curso_lectivo__anio', 'subgrupo__seccion__nivel', 'activa', 'especialidad_curso')
     search_fields = ('institucion__nombre', 'curso_lectivo__nombre', 'subgrupo__letra')
     ordering = ('institucion__nombre', '-curso_lectivo__anio', 'subgrupo__seccion__nivel__numero', 'subgrupo__letra')
     autocomplete_fields = ('institucion', 'curso_lectivo', 'subgrupo')  # especialidad_curso usa autocomplete personalizado
@@ -471,10 +471,10 @@ class SubgrupoCursoLectivoAdmin(InstitucionScopedAdmin):
     def get_fields(self, request, obj=None):
         """Personalizar campos según el tipo de usuario"""
         if request.user.is_superuser:
-            return ('institucion', 'curso_lectivo', 'subgrupo', 'tipo_estudiante', 'especialidad_curso', 'activa')
+            return ('institucion', 'curso_lectivo', 'subgrupo', 'especialidad_curso', 'activa')
         else:
             # Incluir 'institucion' para que el formulario la procese (se ocultará en get_form)
-            return ('institucion', 'curso_lectivo', 'subgrupo', 'tipo_estudiante', 'especialidad_curso', 'activa')
+            return ('institucion', 'curso_lectivo', 'subgrupo', 'especialidad_curso', 'activa')
 
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):

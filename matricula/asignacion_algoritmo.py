@@ -122,8 +122,17 @@ def ejecutar_asignacion_completa(institucion, curso_lectivo, nivel, usuario, sim
         # 5.1 DIVIDIR SUBGRUPOS PARA ESTUDIANTES SIN ESPECIALIDAD SEGÚN SU SECCIÓN (p. ej. 7-1 → 7-1A, 7-1B)
         # Para niveles sin especialidad (p. ej. 7º), si existen subgrupos configurados (sin especialidad) por sección,
         # repartir equitativamente los alumnos ya asignados a esa sección entre dichos subgrupos
+        # VALIDANDO que el tipo de estudiante de la SeccionCursoLectivo coincida
         if asignaciones_secciones and subgrupos_disponibles:
             for seccion_id, matriculas_asignadas in asignaciones_secciones.items():
+                # Obtener la SeccionCursoLectivo para conocer su tipo_estudiante
+                seccion_config = next(
+                    (s for s in secciones_disponibles if s.seccion.id == seccion_id), 
+                    None
+                )
+                if not seccion_config:
+                    continue
+                
                 # Subgrupos activos de esta sección y sin especialidad (niveles distintos a 10-12)
                 subgrupos_seccion = [
                     s for s in subgrupos_disponibles
@@ -212,25 +221,31 @@ def procesar_estudiantes_sin_especialidad(estudiantes, secciones_disponibles):
     Returns:
         tuple: (asignaciones_dict, hermanos_count)
     """
-    # Agrupar por nivel
-    estudiantes_por_nivel = defaultdict(list)
+    # Agrupar por nivel Y tipo de estudiante
+    estudiantes_por_nivel_tipo = defaultdict(list)
     for matricula in estudiantes:
-        estudiantes_por_nivel[matricula.nivel.id].append(matricula)
+        tipo_est = matricula.estudiante.tipo_estudiante or 'PR'  # Default PR si no está definido
+        key = (matricula.nivel.id, tipo_est)
+        estudiantes_por_nivel_tipo[key].append(matricula)
     
     asignaciones_finales = defaultdict(list)
     total_hermanos = 0
     
-    for nivel_id, estudiantes_nivel in estudiantes_por_nivel.items():
-        # Obtener secciones para este nivel
-        secciones_nivel = [s for s in secciones_disponibles if s.seccion.nivel_id == nivel_id]
+    for (nivel_id, tipo_estudiante), estudiantes_grupo in estudiantes_por_nivel_tipo.items():
+        # Obtener secciones para este nivel Y tipo de estudiante
+        secciones_compatibles = [
+            s for s in secciones_disponibles 
+            if s.seccion.nivel_id == nivel_id 
+            and (s.tipo_estudiante == tipo_estudiante or s.tipo_estudiante is None)
+        ]
         
-        if not secciones_nivel:
+        if not secciones_compatibles:
             continue
         
         # Aplicar algoritmo de distribución
         asignaciones_nivel, hermanos_nivel = distribuir_estudiantes_equitativamente(
-            estudiantes_nivel, 
-            secciones_nivel, 
+            estudiantes_grupo, 
+            secciones_compatibles, 
             'seccion'
         )
         
@@ -264,21 +279,42 @@ def procesar_estudiantes_con_especialidad(estudiantes_por_especialidad, subgrupo
         if not subgrupos_especialidad:
             continue
         
-        # Agrupar por nivel (10, 11, 12) y distribuir primero por subgrupos de la especialidad
-        estudiantes_por_nivel = defaultdict(list)
+        # Agrupar por nivel Y tipo de estudiante
+        estudiantes_por_nivel_tipo = defaultdict(list)
         for matricula in estudiantes:
-            estudiantes_por_nivel[matricula.nivel.id].append(matricula)
+            tipo_est = matricula.estudiante.tipo_estudiante or 'PR'  # Default PR si no está definido
+            key = (matricula.nivel.id, tipo_est)
+            estudiantes_por_nivel_tipo[key].append(matricula)
 
-        for nivel_id, estudiantes_nivel in estudiantes_por_nivel.items():
-            # Subgrupos de este nivel y especialidad
-            subgrupos_nivel = [s for s in subgrupos_especialidad if s.subgrupo.seccion.nivel_id == nivel_id]
-            if not subgrupos_nivel:
+        for (nivel_id, tipo_estudiante), estudiantes_grupo in estudiantes_por_nivel_tipo.items():
+            # Obtener la SeccionCursoLectivo para verificar tipo_estudiante
+            # Los subgrupos se validan contra la SeccionCursoLectivo de su sección padre
+            from config_institucional.models import SeccionCursoLectivo
+            
+            # Subgrupos de este nivel y especialidad, filtrando por tipo de estudiante de la sección
+            subgrupos_compatibles = []
+            for s in subgrupos_especialidad:
+                if s.subgrupo.seccion.nivel_id != nivel_id:
+                    continue
+                # Buscar la SeccionCursoLectivo correspondiente para verificar tipo
+                try:
+                    seccion_config = SeccionCursoLectivo.objects.get(
+                        institucion=s.institucion,
+                        curso_lectivo=s.curso_lectivo,
+                        seccion=s.subgrupo.seccion
+                    )
+                    if seccion_config.tipo_estudiante == tipo_estudiante or seccion_config.tipo_estudiante is None:
+                        subgrupos_compatibles.append(s)
+                except SeccionCursoLectivo.DoesNotExist:
+                    continue
+            
+            if not subgrupos_compatibles:
                 continue
 
             # Distribuir equitativamente por subgrupo (con nuestra lógica por género/apellidos)
             asignaciones_nivel, hermanos_nivel = distribuir_estudiantes_equitativamente(
-                estudiantes_nivel,
-                subgrupos_nivel,
+                estudiantes_grupo,
+                subgrupos_compatibles,
                 'subgrupo'
             )
 
