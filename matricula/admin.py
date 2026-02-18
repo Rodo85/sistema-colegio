@@ -1670,7 +1670,7 @@ class AsignacionGruposAdmin(InstitucionScopedAdmin):
         ('Estadísticas de Asignación', {
             'fields': (
                 'total_estudiantes', 'total_mujeres', 'total_hombres', 'total_otros',
-                'secciones_utilizadas', 'subgrupos_utilizadas', 'hermanos_agrupados'
+                'secciones_utilizadas', 'subgrupos_utilizados', 'hermanos_agrupados'
             )
         }),
         ('Detalles Técnicos', {
