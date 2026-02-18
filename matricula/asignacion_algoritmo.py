@@ -170,6 +170,13 @@ def ejecutar_asignacion_completa(institucion, curso_lectivo, nivel, usuario, sim
                 # Crear registro de asignación
                 if total_asignados > 0:
                     stats = calcular_estadisticas_completas(matriculas)
+                    
+                    # Contar secciones utilizadas (directas + las de subgrupos)
+                    secciones_utilizadas_ids = set(asignaciones_secciones.keys())
+                    for subgrupo_id in asignaciones_subgrupos.keys():
+                        subgrupo = Subgrupo.objects.get(id=subgrupo_id)
+                        secciones_utilizadas_ids.add(subgrupo.seccion.id)
+                    
                     AsignacionGrupos.objects.create(
                         institucion=institucion,
                         curso_lectivo=curso_lectivo,
@@ -179,15 +186,24 @@ def ejecutar_asignacion_completa(institucion, curso_lectivo, nivel, usuario, sim
                         total_mujeres=stats['mujeres'],
                         total_hombres=stats['hombres'],
                         total_otros=stats['otros'],
-                        secciones_utilizadas=len(asignaciones_secciones),
+                        secciones_utilizadas=len(secciones_utilizadas_ids),
                         subgrupos_utilizados=len(asignaciones_subgrupos),
                         hermanos_agrupados=hermanos_secciones + hermanos_subgrupos,
-                        observaciones=f"Asignación automática: {len(asignaciones_secciones)} secciones, {len(asignaciones_subgrupos)} subgrupos"
+                        observaciones=f"Asignación automática: {len(secciones_utilizadas_ids)} secciones, {len(asignaciones_subgrupos)} subgrupos"
                     )
         else:
             # Simulación: solo contar
             total_asignados = sum(len(m) for m in asignaciones_secciones.values())
             total_asignados += sum(len(m) for m in asignaciones_subgrupos.values())
+        
+        # Contar secciones utilizadas totales (directas + las de subgrupos)
+        secciones_utilizadas_ids = set(asignaciones_secciones.keys())
+        for subgrupo_id in asignaciones_subgrupos.keys():
+            try:
+                subgrupo = Subgrupo.objects.get(id=subgrupo_id)
+                secciones_utilizadas_ids.add(subgrupo.seccion.id)
+            except Subgrupo.DoesNotExist:
+                continue
         
         # 7. PREPARAR RESULTADO
         resultado['success'] = True
@@ -195,7 +211,7 @@ def ejecutar_asignacion_completa(institucion, curso_lectivo, nivel, usuario, sim
         resultado['estadisticas'] = {
             'total_estudiantes': len(matriculas),
             'total_asignados': total_asignados,
-            'secciones_utilizadas': len(asignaciones_secciones),
+            'secciones_utilizadas': len(secciones_utilizadas_ids),
             'subgrupos_utilizados': len(asignaciones_subgrupos),
             'estudiantes_sin_especialidad': len(estudiantes_sin_especialidad),
             'estudiantes_con_especialidad': sum(len(v) for v in estudiantes_con_especialidad.values()),
