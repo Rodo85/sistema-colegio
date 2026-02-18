@@ -230,9 +230,22 @@ class SeccionCursoLectivo(models.Model):
     Permite que cada institución configure qué secciones estarán disponibles
     para cada curso lectivo específico.
     """
+    TIPO_ESTUDIANTE_CHOICES = [
+        ('PR', 'Plan Regular'),
+        ('PN', 'Plan Nacional'),
+    ]
+    
     institucion = models.ForeignKey('core.Institucion', on_delete=models.CASCADE, verbose_name="Institución")
     curso_lectivo = models.ForeignKey(CursoLectivo, on_delete=models.CASCADE, verbose_name="Curso Lectivo")
     seccion = models.ForeignKey(Seccion, on_delete=models.PROTECT, verbose_name="Sección")
+    tipo_estudiante = models.CharField(
+        "Tipo de estudiante",
+        max_length=2,
+        choices=TIPO_ESTUDIANTE_CHOICES,
+        null=True,
+        blank=True,
+        help_text="Plan Regular (PR) o Plan Nacional (PN) para estudiantes con discapacidad"
+    )
     activa = models.BooleanField(default=True, verbose_name="Sección activa para este curso")
 
     class Meta:
@@ -242,7 +255,8 @@ class SeccionCursoLectivo(models.Model):
         verbose_name_plural = "Secciones por Curso Lectivo"
 
     def __str__(self):
-        return f"Sección {self.seccion.numero}"
+        tipo = f" ({self.get_tipo_estudiante_display()})" if self.tipo_estudiante else ""
+        return f"Sección {self.seccion.numero}{tipo}"
 
     def clean(self):
         from django.core.exceptions import ValidationError
@@ -270,9 +284,22 @@ class SubgrupoCursoLectivo(models.Model):
     Permite que cada institución configure qué subgrupos estarán disponibles
     para cada curso lectivo específico.
     """
+    TIPO_ESTUDIANTE_CHOICES = [
+        ('PR', 'Plan Regular'),
+        ('PN', 'Plan Nacional'),
+    ]
+    
     institucion = models.ForeignKey('core.Institucion', on_delete=models.CASCADE, verbose_name="Institución")
     curso_lectivo = models.ForeignKey(CursoLectivo, on_delete=models.CASCADE, verbose_name="Curso Lectivo")
     subgrupo = models.ForeignKey(Subgrupo, on_delete=models.PROTECT, verbose_name="Subgrupo")
+    tipo_estudiante = models.CharField(
+        "Tipo de estudiante",
+        max_length=2,
+        choices=TIPO_ESTUDIANTE_CHOICES,
+        null=True,
+        blank=True,
+        help_text="Plan Regular (PR) o Plan Nacional (PN) para estudiantes con discapacidad"
+    )
     activa = models.BooleanField(default=True, verbose_name="Subgrupo activo para este curso")
 
     # Nueva relación opcional para niveles con especialidad (10, 11, 12)
@@ -291,7 +318,8 @@ class SubgrupoCursoLectivo(models.Model):
         verbose_name_plural = "Subgrupos por Curso Lectivo"
 
     def __str__(self):
-        return f"{self.subgrupo.letra}"
+        tipo = f" ({self.get_tipo_estudiante_display()})" if self.tipo_estudiante else ""
+        return f"{self.subgrupo.letra}{tipo}"
 
     def clean(self):
         from django.core.exceptions import ValidationError
