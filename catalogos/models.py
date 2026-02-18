@@ -225,8 +225,21 @@ class Seccion(models.Model):
     Catálogo global de secciones.
     Las instituciones seleccionan de este catálogo cuáles usar por año.
     """
+    TIPO_ESTUDIANTE_CHOICES = [
+        ('PR', 'Plan Regular'),
+        ('PN', 'Plan Nacional'),
+    ]
+    
     nivel = models.ForeignKey(Nivel, on_delete=models.PROTECT, verbose_name="Nivel", related_name="secciones_globales")
     numero = models.PositiveSmallIntegerField(verbose_name="Número de sección")
+    tipo_estudiante = models.CharField(
+        "Tipo de estudiante",
+        max_length=2,
+        choices=TIPO_ESTUDIANTE_CHOICES,
+        null=True,
+        blank=True,
+        help_text="Indica si la sección es para Plan Regular (PR) o Plan Nacional (PN)"
+    )
 
     class Meta:
         verbose_name = "Sección"
@@ -235,7 +248,8 @@ class Seccion(models.Model):
         ordering = ("nivel__numero", "numero")
 
     def __str__(self):
-        return f"{self.nivel.numero}-{self.numero}"
+        tipo = f" ({self.get_tipo_estudiante_display()})" if self.tipo_estudiante else ""
+        return f"{self.nivel.numero}-{self.numero}{tipo}"
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -246,8 +260,21 @@ class Subgrupo(models.Model):
     Catálogo global de subgrupos.
     Las instituciones seleccionan de este catálogo cuáles usar por año.
     """
+    TIPO_ESTUDIANTE_CHOICES = [
+        ('PR', 'Plan Regular'),
+        ('PN', 'Plan Nacional'),
+    ]
+    
     seccion = models.ForeignKey(Seccion, on_delete=models.PROTECT, related_name="subgrupos", verbose_name="Sección")
     letra = models.CharField("Letra de subgrupo", max_length=2)
+    tipo_estudiante = models.CharField(
+        "Tipo de estudiante",
+        max_length=2,
+        choices=TIPO_ESTUDIANTE_CHOICES,
+        null=True,
+        blank=True,
+        help_text="Indica si el subgrupo es para Plan Regular (PR) o Plan Nacional (PN)"
+    )
 
     class Meta:
         verbose_name = "Subgrupo"
@@ -256,7 +283,8 @@ class Subgrupo(models.Model):
         ordering = ("seccion__nivel__numero", "seccion__numero", "letra")
 
     def __str__(self):
-        return f"{self.seccion.nivel.numero}-{self.seccion.numero}{self.letra}"
+        tipo = f" ({self.get_tipo_estudiante_display()})" if self.tipo_estudiante else ""
+        return f"{self.seccion.nivel.numero}-{self.seccion.numero}{self.letra}{tipo}"
 
     @property
     def codigo(self):

@@ -1130,6 +1130,7 @@ class MatriculaAcademicaAdmin(AccentInsensitiveAdminMixin, InstitucionScopedAdmi
             SubgrupoInstitucionFilter,
             CursoLectivoFilter,
             "estado",
+            'estudiante__tipo_estudiante',
             EspecialidadInstitucionFilter,
         ]
         
