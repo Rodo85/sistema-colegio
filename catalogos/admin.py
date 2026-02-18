@@ -109,12 +109,12 @@ def _nivel_num(obj):
 @admin.register(Seccion)
 class SeccionAdmin(admin.ModelAdmin):
     # ==> Cambie las columnas para que sí aparezcan 7-1 y 7-1A, 7-1B...
-    list_display = ("codigo", "tipo_estudiante", "subgrupos_codigos")
+    list_display = ("codigo", "subgrupos_codigos")
     list_display_links = ("codigo",)
-    list_filter = ("nivel", "tipo_estudiante")
+    list_filter = ("nivel",)
     search_fields = ("nivel__nombre", "numero")
     ordering = ("nivel__numero", "numero")
-    fields = ("nivel", "numero", "tipo_estudiante")
+    fields = ("nivel", "numero")
 
     @admin.display(description="Sección", ordering=("nivel__numero", "numero"))
     def codigo(self, obj):
@@ -139,11 +139,10 @@ class SeccionAdmin(admin.ModelAdmin):
 
 @admin.register(Subgrupo)
 class SubgrupoAdmin(admin.ModelAdmin):
-    list_display = ("codigo", "letra", "tipo_estudiante")
-    list_filter = ("seccion__nivel", "tipo_estudiante")
+    list_display = ("codigo", "letra")
     ordering = ("seccion__nivel__numero", "seccion__numero", "letra")
     search_fields = ("seccion__nivel__nombre", "seccion__numero", "letra")
-    fields = ("seccion", "letra", "tipo_estudiante")
+    fields = ("seccion", "letra")
     autocomplete_fields = ("seccion",)
 
     @admin.display(description="Subgrupo", ordering=("seccion__nivel__numero", "seccion__numero", "letra"))
