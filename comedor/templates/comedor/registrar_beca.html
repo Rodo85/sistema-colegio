@@ -172,23 +172,36 @@
 <div class="beca-container">
   <h1 class="beca-title">Registrar Beca de Comedor</h1>
 
-  {% if not curso_lectivo %}
-    <div class="warn-banner">No existe un curso lectivo activo. Contacte al administrador.</div>
-  {% else %}
+  {% if error %}
+    <div class="warn-banner">{{ error }}</div>
+  {% endif %}
+
+  {% if messages %}
+    {% for msg in messages %}
+      <div class="info-banner" style="background:#d4edda;border-color:#c3e6cb;color:#155724;">{{ msg }}</div>
+    {% endfor %}
+  {% endif %}
+
+  {% if not error or es_superusuario %}
+    {% if curso_lectivo %}
     <div class="info-banner">
-      Curso lectivo activo: <strong>{{ curso_lectivo.nombre }}</strong> &nbsp;|&nbsp;
+      Curso lectivo: <strong>{{ curso_lectivo.nombre }}</strong> &nbsp;|&nbsp;
       Seleccione nivel, sección y/o subgrupo para listar los estudiantes.
     </div>
-
-    {% if messages %}
-      {% for msg in messages %}
-        <div class="info-banner" style="background:#d4edda;border-color:#c3e6cb;color:#155724;">{{ msg }}</div>
-      {% endfor %}
     {% endif %}
 
     <!-- FILTROS -->
     <form method="get" id="form-filtros" class="beca-filtros">
       {% if es_superusuario %}
+      <div class="form-group">
+        <label for="id_curso_lectivo">Curso Lectivo *</label>
+        <select name="curso_lectivo_id" id="id_curso_lectivo" required>
+          <option value="">Seleccione...</option>
+          {% for cl in todos_cursos %}
+            <option value="{{ cl.pk }}" {% if curso_lectivo_id == cl.pk|stringformat:"s" %}selected{% endif %}>{{ cl.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
       <div class="form-group">
         <label for="id_institucion">Institución *</label>
         <select name="institucion" id="id_institucion" required>
@@ -230,10 +243,11 @@
     </form>
 
     <!-- TABLA DE RESULTADOS -->
-    {% if mostrar_tabla %}
+    {% if mostrar_tabla and not error %}
       <form method="post" id="form-becas">
         {% csrf_token %}
         <input type="hidden" name="accion" value="guardar">
+        <input type="hidden" name="curso_lectivo_id" value="{{ curso_lectivo_id }}">
         <input type="hidden" name="nivel_id" value="{{ nivel_id }}">
         <input type="hidden" name="seccion_id" value="{{ seccion_id }}">
         <input type="hidden" name="subgrupo_id" value="{{ subgrupo_id }}">
@@ -314,7 +328,10 @@ document.addEventListener('DOMContentLoaded', function () {
     return instSel ? instSel.value : null;
   }
 
+  const cursoSel = document.getElementById('id_curso_lectivo');
+
   function getCursoId() {
+    if (cursoSel) return cursoSel.value;
     return "{{ curso_lectivo.pk|default:'' }}";
   }
 
@@ -366,6 +383,14 @@ document.addEventListener('DOMContentLoaded', function () {
           if (seleccionarId) subgrupoSel.value = seleccionarId;
         }
       });
+  }
+
+  if (cursoSel) {
+    cursoSel.addEventListener('change', function () {
+      nivelSel.value = '';
+      seccionSel.innerHTML = '<option value="">Todas las secciones</option>';
+      subgrupoSel.innerHTML = '<option value="">Todos los subgrupos</option>';
+    });
   }
 
   nivelSel.addEventListener('change', function () {

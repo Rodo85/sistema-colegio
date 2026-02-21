@@ -32,24 +32,48 @@ def _resolver_institucion(request, institucion_param=None):
 def registrar_beca_comedor(request):
     from config_institucional.models import Nivel
 
-    curso_lectivo = CursoLectivo.get_activo()
+    todos_cursos = CursoLectivo.objects.all().order_by("-anio")
     instituciones = Institucion.objects.all().order_by("nombre") if request.user.is_superuser else []
     niveles = Nivel.objects.all().order_by("numero")
+    error = ""
 
-    # Resolver institución activa
+    # Resolver curso lectivo: superadmin puede elegir cualquiera; normal usa el activo
+    curso_lectivo_id = (
+        request.POST.get("curso_lectivo_id") or request.GET.get("curso_lectivo_id") or ""
+    ).strip()
+
+    if request.user.is_superuser:
+        if curso_lectivo_id:
+            curso_lectivo = CursoLectivo.objects.filter(pk=curso_lectivo_id).first()
+        else:
+            # Pre-seleccionar el activo si existe, si no el primero disponible
+            curso_lectivo = CursoLectivo.get_activo() or todos_cursos.first()
+            if curso_lectivo:
+                curso_lectivo_id = str(curso_lectivo.pk)
+    else:
+        curso_lectivo = CursoLectivo.get_activo()
+        if curso_lectivo:
+            curso_lectivo_id = str(curso_lectivo.pk)
+        else:
+            error = "No existe un curso lectivo activo."
+
+    # Resolver institución
     institucion_param = request.POST.get("institucion") if request.method == "POST" else request.GET.get("institucion")
     institucion = _resolver_institucion(request, institucion_param)
 
+    if not request.user.is_superuser and not institucion:
+        error = "No se pudo determinar la institución activa."
+
     # Filtros de la pantalla de selección
-    nivel_id   = (request.POST.get("nivel_id")   or request.GET.get("nivel_id")   or "").strip()
-    seccion_id = (request.POST.get("seccion_id") or request.GET.get("seccion_id") or "").strip()
+    nivel_id    = (request.POST.get("nivel_id")    or request.GET.get("nivel_id")    or "").strip()
+    seccion_id  = (request.POST.get("seccion_id")  or request.GET.get("seccion_id")  or "").strip()
     subgrupo_id = (request.POST.get("subgrupo_id") or request.GET.get("subgrupo_id") or "").strip()
 
     matriculas = []
     becas_ids = set()
     mostrar_tabla = False
 
-    if curso_lectivo and institucion and (seccion_id or subgrupo_id):
+    if not error and curso_lectivo and institucion and (seccion_id or subgrupo_id):
         filtros_qs = {
             "curso_lectivo": curso_lectivo,
             "institucion": institucion,
@@ -133,7 +157,9 @@ def registrar_beca_comedor(request):
             )
 
     context = {
+        "todos_cursos": todos_cursos,
         "curso_lectivo": curso_lectivo,
+        "curso_lectivo_id": curso_lectivo_id,
         "instituciones": instituciones,
         "institucion": institucion,
         "niveles": niveles,
@@ -144,6 +170,7 @@ def registrar_beca_comedor(request):
         "matriculas": matriculas,
         "becas_ids": becas_ids,
         "mostrar_tabla": mostrar_tabla,
+        "error": error,
     }
     return render(request, "comedor/registrar_beca.html", context)
 
