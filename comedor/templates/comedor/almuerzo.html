@@ -1,92 +1,374 @@
-{% extends "admin/base_site.html" %}
+{% extends 'admin/base_site.html' %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+  .almuerzo-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 2rem 1rem;
+    min-height: 80vh;
+  }
+  .almuerzo-card {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 16px 48px rgba(44,62,80,.14);
+    padding: 2.5rem 3rem;
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+  }
+  .almuerzo-title {
+    font-size: 1.9rem;
+    font-weight: 800;
+    color: #1a202c;
+    margin-bottom: .3rem;
+    letter-spacing: .5px;
+  }
+  .almuerzo-subtitle {
+    font-size: 1rem;
+    color: #718096;
+    margin-bottom: 1.8rem;
+  }
+  .almuerzo-badge {
+    display: inline-block;
+    background: #ebf8ff;
+    color: #2b6cb0;
+    border-radius: 20px;
+    padding: .3rem .9rem;
+    font-size: .85rem;
+    font-weight: 600;
+    margin-bottom: 1.6rem;
+  }
+
+  /* Selector institución */
+  .almuerzo-select-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 1.4rem;
+    width: 100%;
+  }
+  .almuerzo-select-group label {
+    font-size: .85rem;
+    font-weight: 700;
+    color: #4a5568;
+    margin-bottom: .4rem;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+  }
+  .almuerzo-select-group select {
+    width: 100%;
+    padding: .7rem 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 1rem;
+    background: #f7fafc;
+    transition: border-color .2s;
+  }
+  .almuerzo-select-group select:focus {
+    outline: none;
+    border-color: #4299e1;
+    background: #fff;
+  }
+
+  /* Input de identificación */
+  .almuerzo-input-wrap {
+    position: relative;
+    margin-bottom: 1.4rem;
+  }
+  .almuerzo-input-wrap label {
+    display: block;
+    font-size: .85rem;
+    font-weight: 700;
+    color: #4a5568;
+    margin-bottom: .5rem;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    text-align: left;
+  }
+  #id_identificacion {
+    width: 100%;
+    padding: 1rem 1.2rem;
+    font-size: 1.8rem;
+    font-weight: 600;
+    border: 2.5px solid #e2e8f0;
+    border-radius: 12px;
+    text-align: center;
+    letter-spacing: 3px;
+    color: #2d3748;
+    background: #f7fafc;
+    transition: border-color .2s, box-shadow .2s;
+    box-sizing: border-box;
+  }
+  #id_identificacion:focus {
+    outline: none;
+    border-color: #4299e1;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(66,153,225,.15);
+  }
+  #id_identificacion::placeholder {
+    color: #cbd5e0;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+  }
+
+  /* Resultado */
+  #resultado {
+    display: none;
+    border-radius: 14px;
+    padding: 1.4rem 1.6rem;
+    margin-top: .5rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.4;
+    transition: all .25s;
+  }
+  #resultado.estado-ok {
+    background: #f0fff4;
+    border: 2px solid #68d391;
+    color: #276749;
+  }
+  #resultado.estado-no-beca {
+    background: #fff5f5;
+    border: 2px solid #fc8181;
+    color: #9b2c2c;
+  }
+  #resultado.estado-duplicado {
+    background: #fffbeb;
+    border: 2px solid #f6ad55;
+    color: #7b341e;
+  }
+  #resultado.estado-error {
+    background: #fff5f5;
+    border: 2px solid #fc8181;
+    color: #9b2c2c;
+  }
+  .resultado-icon {
+    font-size: 2.2rem;
+    display: block;
+    margin-bottom: .4rem;
+  }
+
+  /* Últimos registros */
+  .ultimos-title {
+    font-size: .9rem;
+    font-weight: 700;
+    color: #718096;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    margin: 1.8rem 0 .6rem;
+    text-align: left;
+  }
+  #lista-recientes {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .9rem;
+  }
+  #lista-recientes thead tr {
+    background: #edf2f7;
+  }
+  #lista-recientes th, #lista-recientes td {
+    padding: .5rem .7rem;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  #lista-recientes tbody tr:hover { background: #f7fafc; }
+  .tag-ok   { background:#c6f6d5; color:#276749; border-radius:6px; padding:.15rem .5rem; font-size:.78rem; font-weight:700; }
+  .tag-dup  { background:#fef3c7; color:#92400e; border-radius:6px; padding:.15rem .5rem; font-size:.78rem; font-weight:700; }
+  .tag-err  { background:#fed7d7; color:#9b2c2c; border-radius:6px; padding:.15rem .5rem; font-size:.78rem; font-weight:700; }
+
+  /* Config badge */
+  .config-info {
+    font-size: .82rem;
+    color: #a0aec0;
+    margin-top: 1rem;
+  }
+
+  @media(max-width:640px) {
+    .almuerzo-card { padding: 1.5rem 1.2rem; }
+    #id_identificacion { font-size: 1.3rem; }
+  }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="module" style="padding:1rem;max-width:900px;">
-  <h1>Registro de almuerzo</h1>
-  <p>Escanee el QR o escriba la identificación y presione Enter.</p>
+<div class="almuerzo-wrapper">
+  <div class="almuerzo-card">
 
-  {% if not curso_lectivo %}
-    <p style="color:#b91c1c;font-weight:700;">No existe curso lectivo activo.</p>
-  {% endif %}
+    <div class="almuerzo-title">Registro de Almuerzo</div>
+    <div class="almuerzo-subtitle">Escanee el QR del pase del estudiante o escriba la identificación y presione Enter.</div>
 
-  {% if es_superusuario %}
-    <div style="margin-bottom:1rem;">
-      <label for="institucion_id">Institución</label>
-      <select id="institucion_id" style="width:100%;max-width:420px;">
-        <option value="">Seleccione</option>
-        {% for item in instituciones %}
-          <option value="{{ item.id }}" {% if institucion and item.id == institucion.id %}selected{% endif %}>{{ item.nombre }}</option>
-        {% endfor %}
-      </select>
-    </div>
-  {% endif %}
+    {% if curso_lectivo %}
+      <span class="almuerzo-badge">📅 {{ curso_lectivo.nombre }}</span>
+    {% endif %}
 
-  <form id="form_almuerzo">
-    {% csrf_token %}
-    <input
-      type="text"
-      id="identificacion"
-      name="identificacion"
-      placeholder="Identificación del estudiante"
-      autocomplete="off"
-      style="width:100%;font-size:2rem;padding:1rem;border:2px solid #9ca3af;border-radius:12px;"
-      {% if not curso_lectivo %}disabled{% endif %}
-    >
-  </form>
+    {% if not curso_lectivo %}
+      <div id="resultado" class="estado-error" style="display:block;">
+        <span class="resultado-icon">⚠️</span>
+        No hay curso lectivo activo. Contacte al administrador.
+      </div>
+    {% else %}
 
-  <div id="resultado" style="margin-top:1rem;padding:1rem;border-radius:10px;display:none;font-size:1.35rem;font-weight:700;"></div>
+      {% if es_superusuario %}
+      <div class="almuerzo-select-group">
+        <label for="id_institucion">Institución</label>
+        <select id="id_institucion">
+          <option value="">Seleccione una institución...</option>
+          {% for inst in instituciones %}
+            <option value="{{ inst.pk }}" {% if institucion and inst.pk == institucion.pk %}selected{% endif %}>{{ inst.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      {% endif %}
+
+      <form id="form-almuerzo" autocomplete="off">
+        {% csrf_token %}
+        <div class="almuerzo-input-wrap">
+          <label for="id_identificacion">Identificación del estudiante</label>
+          <input
+            type="text"
+            id="id_identificacion"
+            inputmode="numeric"
+            placeholder="000000000"
+            {% if not curso_lectivo %}disabled{% endif %}
+          >
+        </div>
+      </form>
+
+      <div id="resultado"></div>
+
+      <p class="config-info">
+        Intervalo mínimo entre registros: <strong>{{ intervalo_minutos }} minutos</strong>
+      </p>
+
+      <p class="ultimos-title">Últimos registros de esta sesión</p>
+      <table id="lista-recientes">
+        <thead>
+          <tr>
+            <th>Hora</th>
+            <th>Identificación</th>
+            <th>Nombre</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody id="cuerpo-recientes">
+          <tr id="fila-vacia"><td colspan="4" style="color:#a0aec0;text-align:center;">Sin registros aún</td></tr>
+        </tbody>
+      </table>
+
+    {% endif %}
+  </div>
 </div>
 
 <script>
-  const form = document.getElementById("form_almuerzo");
-  const input = document.getElementById("identificacion");
-  const resultado = document.getElementById("resultado");
-  const institucionSelect = document.getElementById("institucion_id");
+document.addEventListener('DOMContentLoaded', function () {
+  const inputId      = document.getElementById('id_identificacion');
+  const instSelect   = document.getElementById('id_institucion');
+  const resultado    = document.getElementById('resultado');
+  const cuerpoTabla  = document.getElementById('cuerpo-recientes');
+  const filaVacia    = document.getElementById('fila-vacia');
+  const csrfToken    = document.querySelector('[name=csrfmiddlewaretoken]')?.value || '';
+  const cursoId      = "{{ curso_lectivo.pk|default:'' }}";
 
-  function mostrarResultado(tipo, mensaje) {
-    resultado.style.display = "block";
-    resultado.textContent = mensaje;
-    if (tipo === "ok") {
-      resultado.style.background = "#dcfce7";
-      resultado.style.color = "#166534";
-    } else if (tipo === "duplicado") {
-      resultado.style.background = "#fef3c7";
-      resultado.style.color = "#92400e";
-    } else {
-      resultado.style.background = "#fee2e2";
-      resultado.style.color = "#991b1b";
+  const ICONOS = {
+    ok:          '✅',
+    no_beca:     '🚫',
+    sin_matricula:'❌',
+    duplicado:   '⚠️',
+    error:       '❌',
+  };
+  const CLASES = {
+    ok:           'estado-ok',
+    no_beca:      'estado-no-beca',
+    sin_matricula:'estado-no-beca',
+    duplicado:    'estado-duplicado',
+    error:        'estado-error',
+  };
+  const TAG_CLASES = {
+    ok:           'tag-ok',
+    no_beca:      'tag-err',
+    sin_matricula:'tag-err',
+    duplicado:    'tag-dup',
+    error:        'tag-err',
+  };
+
+  let timeoutLimpiar = null;
+
+  function mostrar(status, mensaje) {
+    resultado.className = CLASES[status] || 'estado-error';
+    resultado.style.display = 'block';
+    resultado.innerHTML = `<span class="resultado-icon">${ICONOS[status] || '❌'}</span>${mensaje}`;
+
+    clearTimeout(timeoutLimpiar);
+    timeoutLimpiar = setTimeout(() => {
+      resultado.style.display = 'none';
+    }, 5000);
+  }
+
+  function agregarFila(hora, identificacion, nombre, status) {
+    if (filaVacia) filaVacia.remove();
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${hora}</td>
+      <td>${identificacion}</td>
+      <td>${nombre || '—'}</td>
+      <td><span class="${TAG_CLASES[status] || 'tag-err'}">${status.toUpperCase()}</span></td>
+    `;
+    cuerpoTabla.insertBefore(tr, cuerpoTabla.firstChild);
+    // Máx 15 filas
+    while (cuerpoTabla.rows.length > 15) cuerpoTabla.deleteRow(cuerpoTabla.rows.length - 1);
+  }
+
+  function getInstitucionId() {
+    {% if es_superusuario %}
+    return instSelect ? instSelect.value : '';
+    {% else %}
+    return '';
+    {% endif %}
+  }
+
+  async function registrar(identificacion) {
+    const body = new FormData();
+    body.append('identificacion', identificacion);
+    body.append('csrfmiddlewaretoken', csrfToken);
+    {% if es_superusuario %}
+    body.append('institucion', getInstitucionId());
+    {% endif %}
+
+    try {
+      const resp = await fetch(window.location.href, { method: 'POST', body });
+      const data = await resp.json();
+      const status = data.status || 'error';
+      mostrar(status, data.message || 'Error desconocido.');
+      const ahora = new Date().toLocaleTimeString('es-CR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      agregarFila(ahora, data.identificacion || identificacion, data.nombre || '', status);
+    } catch (e) {
+      mostrar('error', 'Error de comunicación con el servidor.');
     }
   }
 
-  form.addEventListener("submit", async function (event) {
-    event.preventDefault();
-    const identificacion = input.value.trim();
-    if (!identificacion) return;
-
-    const data = new FormData();
-    data.append("identificacion", identificacion);
-    {% if es_superusuario %}
-      data.append("institucion", institucionSelect ? institucionSelect.value : "");
-    {% endif %}
-
-    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
-    const response = await fetch("", {
-      method: "POST",
-      headers: { "X-CSRFToken": csrfToken },
-      body: data
+  if (inputId) {
+    const form = document.getElementById('form-almuerzo');
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const val = inputId.value.trim();
+      if (!val) return;
+      {% if es_superusuario %}
+      if (!getInstitucionId()) {
+        mostrar('error', 'Debe seleccionar una institución primero.');
+        return;
+      }
+      {% endif %}
+      await registrar(val);
+      inputId.value = '';
+      inputId.focus();
     });
 
-    const payload = await response.json();
-    if (!response.ok || !payload.ok) {
-      mostrarResultado("error", payload.message || "Error al registrar almuerzo.");
-    } else {
-      mostrarResultado(payload.status, payload.message);
-    }
-    input.value = "";
-    input.focus();
-  });
-
-  input.focus();
+    inputId.focus();
+  }
+});
 </script>
 {% endblock %}
-

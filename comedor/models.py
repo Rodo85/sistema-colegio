@@ -2,6 +2,30 @@ from django.db import models
 from django.utils import timezone
 
 
+class ConfiguracionComedor(models.Model):
+    institucion = models.OneToOneField(
+        "core.Institucion",
+        on_delete=models.CASCADE,
+        related_name="configuracion_comedor",
+        verbose_name="Institución",
+    )
+    intervalo_minutos = models.PositiveIntegerField(
+        default=1200,
+        verbose_name="Intervalo mínimo entre registros (minutos)",
+        help_text=(
+            "Tiempo mínimo en minutos que debe pasar entre dos registros del mismo estudiante. "
+            "Ejemplo: 120 = puede registrar desayuno y almuerzo. 1200 = prácticamente una vez al día."
+        ),
+    )
+
+    class Meta:
+        verbose_name = "Configuración de comedor"
+        verbose_name_plural = "Configuraciones de comedor"
+
+    def __str__(self):
+        return f"{self.institucion.nombre} – {self.intervalo_minutos} min"
+
+
 class BecaComedor(models.Model):
     institucion = models.ForeignKey(
         "core.Institucion",
@@ -88,14 +112,9 @@ class RegistroAlmuerzo(models.Model):
         verbose_name = "Registro de almuerzo"
         verbose_name_plural = "Registros de almuerzo"
         ordering = ("-fecha_hora",)
-        constraints = [
-            models.UniqueConstraint(
-                fields=["institucion", "curso_lectivo", "estudiante", "fecha"],
-                name="uniq_almuerzo_diario_por_estudiante",
-            )
-        ]
         indexes = [
             models.Index(fields=["institucion", "curso_lectivo", "fecha"]),
+            models.Index(fields=["institucion", "curso_lectivo", "estudiante", "fecha_hora"]),
         ]
 
     def __str__(self):

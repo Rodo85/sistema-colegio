@@ -2,7 +2,13 @@ from django.contrib import admin
 
 from core.mixins import InstitucionScopedAdmin
 
-from .models import BecaComedor, RegistroAlmuerzo
+from .models import BecaComedor, ConfiguracionComedor, RegistroAlmuerzo
+
+
+@admin.register(ConfiguracionComedor)
+class ConfiguracionComedorAdmin(InstitucionScopedAdmin):
+    list_display = ("institucion", "intervalo_minutos")
+    search_fields = ("institucion__nombre",)
 
 
 @admin.register(BecaComedor)
@@ -21,7 +27,6 @@ class BecaComedorAdmin(InstitucionScopedAdmin):
         "estudiante__segundo_apellido",
         "estudiante__nombres",
     )
-    autocomplete_fields = ("institucion", "curso_lectivo", "estudiante")
 
 
 @admin.register(RegistroAlmuerzo)
@@ -40,5 +45,4 @@ class RegistroAlmuerzoAdmin(InstitucionScopedAdmin):
         "estudiante__segundo_apellido",
         "estudiante__nombres",
     )
-    autocomplete_fields = ("institucion", "curso_lectivo", "estudiante")
 

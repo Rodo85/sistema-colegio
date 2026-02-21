@@ -12,7 +12,7 @@ from catalogos.models import CursoLectivo
 from core.models import Institucion
 from matricula.models import MatriculaAcademica
 
-from .models import BecaComedor, RegistroAlmuerzo
+from .models import BecaComedor, ConfiguracionComedor, RegistroAlmuerzo
 
 
 def _resolver_institucion(request, institucion_param=None):
@@ -201,6 +201,10 @@ def almuerzo_comedor(request):
                 status=400,
             )
 
+        # Obtener configuración de intervalo para esta institución
+        config = ConfiguracionComedor.objects.filter(institucion=institucion).first()
+        intervalo_minutos = config.intervalo_minutos if config else 1200
+
         matricula = (
             MatriculaAcademica.objects.filter(
                 curso_lectivo=curso_lectivo,
@@ -216,8 +220,8 @@ def almuerzo_comedor(request):
             return JsonResponse(
                 {
                     "ok": True,
-                    "status": "no_beca",
-                    "message": "El estudiante no tiene matrícula activa en el curso lectivo actual.",
+                    "status": "sin_matricula",
+                    "message": f"Identificación {identificacion} no tiene matrícula activa en este curso lectivo.",
                     "identificacion": identificacion,
                 }
             )
@@ -230,7 +234,6 @@ def almuerzo_comedor(request):
         ).exists()
 
         nombre = str(matricula.estudiante)
-        hoy = timezone.localdate()
 
         if not beca_activa:
             return JsonResponse(
@@ -243,19 +246,30 @@ def almuerzo_comedor(request):
                 }
             )
 
-        registro_existente = RegistroAlmuerzo.objects.filter(
-            institucion=institucion,
-            curso_lectivo=curso_lectivo,
-            estudiante=matricula.estudiante,
-            fecha=hoy,
-        ).first()
+        # Verificar si ya registró dentro del intervalo configurado
+        desde = timezone.now() - timedelta(minutes=intervalo_minutos)
+        registro_reciente = (
+            RegistroAlmuerzo.objects.filter(
+                institucion=institucion,
+                curso_lectivo=curso_lectivo,
+                estudiante=matricula.estudiante,
+                fecha_hora__gte=desde,
+            )
+            .order_by("-fecha_hora")
+            .first()
+        )
 
-        if registro_existente:
+        if registro_reciente:
+            mins_transcurridos = int((timezone.now() - registro_reciente.fecha_hora).total_seconds() / 60)
+            mins_restantes = intervalo_minutos - mins_transcurridos
             return JsonResponse(
                 {
                     "ok": True,
                     "status": "duplicado",
-                    "message": f"{nombre} ya registró almuerzo hoy a las {registro_existente.fecha_hora:%H:%M}.",
+                    "message": (
+                        f"{nombre} ya registró a las {registro_reciente.fecha_hora:%H:%M}. "
+                        f"Debe esperar {mins_restantes} minuto(s) más."
+                    ),
                     "nombre": nombre,
                     "identificacion": matricula.estudiante.identificacion,
                 }
@@ -265,7 +279,7 @@ def almuerzo_comedor(request):
             institucion=institucion,
             curso_lectivo=curso_lectivo,
             estudiante=matricula.estudiante,
-            fecha=hoy,
+            fecha=timezone.localdate(),
             usuario_registro=request.user,
             observacion="Registro por lector QR",
         )
@@ -281,11 +295,17 @@ def almuerzo_comedor(request):
         )
 
     institucion = _resolver_institucion(request, request.GET.get("institucion"))
+    # Configuración de intervalo para mostrar en pantalla
+    config = None
+    if institucion:
+        config = ConfiguracionComedor.objects.filter(institucion=institucion).first()
+
     context = {
         "curso_lectivo": curso_lectivo,
         "instituciones": instituciones,
         "institucion": institucion,
         "es_superusuario": request.user.is_superuser,
+        "intervalo_minutos": config.intervalo_minutos if config else 1200,
     }
     return render(request, "comedor/almuerzo.html", context)
 
