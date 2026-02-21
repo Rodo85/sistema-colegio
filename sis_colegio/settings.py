@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     # Apps del proyecto multi-tenant
     "core.apps.CoreConfig",
     "matricula.apps.MatriculaConfig",
+    "comedor.apps.ComedorConfig",
     "catalogos.apps.CatalogosConfig",
     "config_institucional",
     "django_extensions",

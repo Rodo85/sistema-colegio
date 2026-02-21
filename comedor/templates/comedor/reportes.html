@@ -1,0 +1,104 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<div class="module" style="padding:1rem;">
+  <h1>Reportes de comedor</h1>
+  <p>Resumen de becas y uso de almuerzo.</p>
+
+  <form method="get" style="display:flex;flex-wrap:wrap;gap:0.75rem;align-items:end;margin-bottom:1rem;">
+    {% if es_superusuario %}
+      <div>
+        <label>Institución</label><br>
+        <select name="institucion" required>
+          <option value="">Seleccione</option>
+          {% for item in instituciones %}
+            <option value="{{ item.id }}" {% if institucion and item.id == institucion.id %}selected{% endif %}>{{ item.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    {% endif %}
+    <div>
+      <label>Periodo</label><br>
+      <select name="periodo" id="periodo">
+        <option value="dia" {% if periodo == "dia" %}selected{% endif %}>Día</option>
+        <option value="semana" {% if periodo == "semana" %}selected{% endif %}>Semana</option>
+        <option value="mes" {% if periodo == "mes" %}selected{% endif %}>Mes</option>
+        <option value="rango" {% if periodo == "rango" %}selected{% endif %}>Fecha a fecha</option>
+      </select>
+    </div>
+    <div>
+      <label>Fecha inicio</label><br>
+      <input type="date" name="fecha_inicio" value="{{ fecha_inicio|date:'Y-m-d' }}">
+    </div>
+    <div>
+      <label>Fecha fin</label><br>
+      <input type="date" name="fecha_fin" value="{{ fecha_fin|date:'Y-m-d' }}">
+    </div>
+    <div>
+      <button type="submit" class="button default">Aplicar</button>
+    </div>
+  </form>
+
+  {% if curso_lectivo and institucion %}
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(180px,1fr));gap:0.75rem;margin-bottom:1rem;">
+      <div style="padding:1rem;border-radius:10px;background:#dbeafe;">
+        <div>Becados activos</div>
+        <div style="font-size:2rem;font-weight:700;">{{ total_becados }}</div>
+      </div>
+      <div style="padding:1rem;border-radius:10px;background:#dcfce7;">
+        <div>Registros en periodo</div>
+        <div style="font-size:2rem;font-weight:700;">{{ total_registros }}</div>
+      </div>
+      <div style="padding:1rem;border-radius:10px;background:#fef3c7;">
+        <div>Estudiantes únicos</div>
+        <div style="font-size:2rem;font-weight:700;">{{ total_estudiantes_unicos }}</div>
+      </div>
+    </div>
+
+    <h2>Asistencia por día</h2>
+    <table style="width:100%;border-collapse:collapse;margin-bottom:1rem;">
+      <thead>
+        <tr style="background:#f3f4f6;">
+          <th style="padding:8px;border:1px solid #ddd;">Fecha</th>
+          <th style="padding:8px;border:1px solid #ddd;">Registros</th>
+          <th style="padding:8px;border:1px solid #ddd;">Estudiantes únicos</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in por_dia %}
+          <tr>
+            <td style="padding:8px;border:1px solid #ddd;">{{ item.fecha|date:"d/m/Y" }}</td>
+            <td style="padding:8px;border:1px solid #ddd;">{{ item.total_registros }}</td>
+            <td style="padding:8px;border:1px solid #ddd;">{{ item.total_estudiantes }}</td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="3" style="padding:8px;border:1px solid #ddd;">No hay registros en el periodo seleccionado.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h2>Becados sin uso en el periodo</h2>
+    <table style="width:100%;border-collapse:collapse;">
+      <thead>
+        <tr style="background:#f3f4f6;">
+          <th style="padding:8px;border:1px solid #ddd;">Cédula</th>
+          <th style="padding:8px;border:1px solid #ddd;">Nombre</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for beca in becados_sin_uso %}
+          <tr>
+            <td style="padding:8px;border:1px solid #ddd;">{{ beca.estudiante.identificacion }}</td>
+            <td style="padding:8px;border:1px solid #ddd;">{{ beca.estudiante }}</td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="2" style="padding:8px;border:1px solid #ddd;">Todos los becados usaron comedor en este periodo.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p style="color:#b91c1c;font-weight:700;">Debe seleccionar una institución válida y tener curso lectivo activo.</p>
+  {% endif %}
+</div>
+{% endblock %}
+

@@ -1,0 +1,134 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<div class="module" style="padding: 1rem;">
+  <h1>Registrar beca de comedor</h1>
+  <p>Solo se listan estudiantes con matrícula activa en el curso lectivo activo.</p>
+
+  {% if not curso_lectivo %}
+    <p style="color:#b91c1c;font-weight:700;">No existe un curso lectivo activo.</p>
+  {% endif %}
+
+  <form method="get" style="display:grid;grid-template-columns:repeat(6,minmax(150px,1fr));gap:0.75rem;align-items:end;margin-bottom:1rem;">
+    {% if es_superusuario %}
+      <div>
+        <label>Institución</label>
+        <select name="institucion" required style="width:100%;">
+          <option value="">Seleccione</option>
+          {% for item in instituciones %}
+            <option value="{{ item.id }}" {% if institucion and item.id == institucion.id %}selected{% endif %}>{{ item.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    {% endif %}
+    <div>
+      <label>Cédula</label>
+      <input type="text" name="cedula" value="{{ filtros.cedula }}" style="width:100%;">
+    </div>
+    <div>
+      <label>Nombre</label>
+      <input type="text" name="nombre" value="{{ filtros.nombre }}" style="width:100%;">
+    </div>
+    <div>
+      <label>Sección</label>
+      <select name="seccion" style="width:100%;">
+        <option value="">Todas</option>
+        {% for sec in secciones %}
+          <option value="{{ sec }}" {% if filtros.seccion == sec|stringformat:"s" %}selected{% endif %}>{{ sec }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div>
+      <label>Subgrupo</label>
+      <select name="subgrupo" style="width:100%;">
+        <option value="">Todos</option>
+        {% for sub in subgrupos %}
+          <option value="{{ sub }}" {% if filtros.subgrupo == sub %}selected{% endif %}>{{ sub }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div>
+      <label>Becado</label>
+      <select name="becado" style="width:100%;">
+        <option value="">Todos</option>
+        <option value="si" {% if filtros.becado == "si" %}selected{% endif %}>Sí</option>
+        <option value="no" {% if filtros.becado == "no" %}selected{% endif %}>No</option>
+      </select>
+    </div>
+    <div>
+      <button type="submit" class="button default">Buscar</button>
+    </div>
+  </form>
+
+  {% if page_obj %}
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="accion" value="guardar">
+      {% if es_superusuario and institucion %}
+        <input type="hidden" name="institucion" value="{{ institucion.id }}">
+      {% endif %}
+      <input type="hidden" name="cedula" value="{{ filtros.cedula }}">
+      <input type="hidden" name="nombre" value="{{ filtros.nombre }}">
+      <input type="hidden" name="seccion" value="{{ filtros.seccion }}">
+      <input type="hidden" name="subgrupo" value="{{ filtros.subgrupo }}">
+      <input type="hidden" name="becado" value="{{ filtros.becado }}">
+
+      <p><strong>Total en página:</strong> {{ page_obj.object_list|length }}</p>
+      <table style="width:100%;border-collapse:collapse;">
+        <thead>
+          <tr style="background:#f3f4f6;">
+            <th style="padding:8px;border:1px solid #ddd;"><input type="checkbox" id="marcar_todos"></th>
+            <th style="padding:8px;border:1px solid #ddd;">Cédula</th>
+            <th style="padding:8px;border:1px solid #ddd;">Nombre</th>
+            <th style="padding:8px;border:1px solid #ddd;">Nivel</th>
+            <th style="padding:8px;border:1px solid #ddd;">Sección</th>
+            <th style="padding:8px;border:1px solid #ddd;">Subgrupo</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for matricula in page_obj.object_list %}
+            <tr>
+              <td style="padding:8px;border:1px solid #ddd;text-align:center;">
+                <input type="checkbox" name="becados" value="{{ matricula.estudiante_id }}" {% if matricula.estudiante_id in becas_pagina_ids %}checked{% endif %}>
+              </td>
+              <td style="padding:8px;border:1px solid #ddd;">{{ matricula.estudiante.identificacion }}</td>
+              <td style="padding:8px;border:1px solid #ddd;">{{ matricula.estudiante }}</td>
+              <td style="padding:8px;border:1px solid #ddd;">{{ matricula.nivel }}</td>
+              <td style="padding:8px;border:1px solid #ddd;">{{ matricula.seccion|default:"-" }}</td>
+              <td style="padding:8px;border:1px solid #ddd;">{{ matricula.subgrupo|default:"-" }}</td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="6" style="padding:8px;border:1px solid #ddd;">No hay registros para los filtros seleccionados.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <div style="margin-top:1rem;display:flex;gap:0.75rem;align-items:center;">
+        <button type="submit" class="button default">Agregar al comedor / Guardar</button>
+      </div>
+    </form>
+
+    <div style="margin-top:1rem;">
+      {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}{% if es_superusuario and institucion %}&institucion={{ institucion.id }}{% endif %}&cedula={{ filtros.cedula }}&nombre={{ filtros.nombre }}&seccion={{ filtros.seccion }}&subgrupo={{ filtros.subgrupo }}&becado={{ filtros.becado }}">Anterior</a>
+      {% endif %}
+      <span style="margin:0 0.75rem;">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{% if es_superusuario and institucion %}&institucion={{ institucion.id }}{% endif %}&cedula={{ filtros.cedula }}&nombre={{ filtros.nombre }}&seccion={{ filtros.seccion }}&subgrupo={{ filtros.subgrupo }}&becado={{ filtros.becado }}">Siguiente</a>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>
+
+<script>
+  const marcarTodos = document.getElementById("marcar_todos");
+  if (marcarTodos) {
+    marcarTodos.addEventListener("change", function () {
+      document.querySelectorAll('input[name="becados"]').forEach((item) => {
+        item.checked = marcarTodos.checked;
+      });
+    });
+  }
+</script>
+{% endblock %}
+

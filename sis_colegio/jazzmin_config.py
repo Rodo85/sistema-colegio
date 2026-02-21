@@ -14,6 +14,7 @@ JAZZMIN_SETTINGS = {
     "order_with_respect_to": [
         "core",
         "matricula", 
+        "comedor",
         "catalogos",
         "config_institucional",
         "auth",
@@ -31,6 +32,8 @@ JAZZMIN_SETTINGS = {
         "matricula.encargadoestudiante": "fas fa-user-friends",
         "matricula.matriculaacademica": "fas fa-clipboard-list",
         "matricula.plantillaimpresionmatricula": "fas fa-file-alt",
+        "comedor.becacomedor": "fas fa-utensils",
+        "comedor.registroalmuerzo": "fas fa-qrcode",
         
         "catalogos.adecuacion": "fas fa-wheelchair",
         "catalogos.canton": "fas fa-map-marker-alt",
@@ -61,6 +64,7 @@ JAZZMIN_SETTINGS = {
     "topmenu_links": [
         {"app": "core"},
         {"app": "matricula"},
+        {"app": "comedor"},
         {"app": "catalogos"},
         {"app": "config_institucional"},
     ],
@@ -87,7 +91,27 @@ JAZZMIN_SETTINGS = {
                 "icon": "fas fa-id-card-alt",
                 "permissions": ["matricula.access_reporte_pas_seccion"],
             },
-        ]
+        ],
+        "comedor": [
+            {
+                "name": "Registrar beca",
+                "url": "comedor:registrar_beca",
+                "icon": "fas fa-user-check",
+                "permissions": ["comedor.access_registro_beca_comedor"],
+            },
+            {
+                "name": "Almuerzo",
+                "url": "comedor:almuerzo",
+                "icon": "fas fa-qrcode",
+                "permissions": ["comedor.access_almuerzo_comedor"],
+            },
+            {
+                "name": "Reportes comedor",
+                "url": "comedor:reportes",
+                "icon": "fas fa-chart-bar",
+                "permissions": ["comedor.access_reportes_comedor"],
+            },
+        ],
     },
     
     "show_ui_builder": False,
