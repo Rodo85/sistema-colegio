@@ -2,13 +2,20 @@ from django.contrib import admin
 
 from core.mixins import InstitucionScopedAdmin
 
+from .forms import ConfiguracionComedorForm
 from .models import BecaComedor, ConfiguracionComedor, RegistroAlmuerzo
 
 
 @admin.register(ConfiguracionComedor)
 class ConfiguracionComedorAdmin(InstitucionScopedAdmin):
-    list_display = ("institucion", "intervalo_minutos")
+    form = ConfiguracionComedorForm
+    list_display = ("institucion", "intervalo_horas_display")
     search_fields = ("institucion__nombre",)
+
+    @admin.display(description="Intervalo (horas)")
+    def intervalo_horas_display(self, obj):
+        horas = round(obj.intervalo_minutos / 60, 1)
+        return f"{horas} h"
 
 
 @admin.register(BecaComedor)

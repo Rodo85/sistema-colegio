@@ -295,17 +295,16 @@ def almuerzo_comedor(request):
         )
 
     institucion = _resolver_institucion(request, request.GET.get("institucion"))
-    # Configuración de intervalo para mostrar en pantalla
-    config = None
-    if institucion:
-        config = ConfiguracionComedor.objects.filter(institucion=institucion).first()
+    config = ConfiguracionComedor.objects.filter(institucion=institucion).first() if institucion else None
+    intervalo_minutos = config.intervalo_minutos if config else 1200
 
     context = {
         "curso_lectivo": curso_lectivo,
         "instituciones": instituciones,
         "institucion": institucion,
         "es_superusuario": request.user.is_superuser,
-        "intervalo_minutos": config.intervalo_minutos if config else 1200,
+        "intervalo_minutos": intervalo_minutos,
+        "intervalo_horas": round(intervalo_minutos / 60, 1),
     }
     return render(request, "comedor/almuerzo.html", context)
 

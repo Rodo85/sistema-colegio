@@ -91,14 +91,14 @@
   }
   #id_identificacion {
     width: 100%;
-    padding: 1rem 1.2rem;
-    font-size: 1.8rem;
-    font-weight: 600;
-    border: 2.5px solid #e2e8f0;
-    border-radius: 12px;
+    padding: 1.1rem 1.2rem;
+    font-size: 2.6rem;
+    font-weight: 700;
+    border: 3px solid #e2e8f0;
+    border-radius: 14px;
     text-align: center;
-    letter-spacing: 3px;
-    color: #2d3748;
+    letter-spacing: 5px;
+    color: #1a202c;
     background: #f7fafc;
     transition: border-color .2s, box-shadow .2s;
     box-sizing: border-box;
@@ -107,49 +107,63 @@
     outline: none;
     border-color: #4299e1;
     background: #fff;
-    box-shadow: 0 0 0 4px rgba(66,153,225,.15);
+    box-shadow: 0 0 0 5px rgba(66,153,225,.18);
   }
   #id_identificacion::placeholder {
     color: #cbd5e0;
-    font-size: 1.2rem;
-    letter-spacing: 1px;
+    font-size: 1.6rem;
+    letter-spacing: 2px;
   }
 
   /* Resultado */
   #resultado {
     display: none;
-    border-radius: 14px;
-    padding: 1.4rem 1.6rem;
-    margin-top: .5rem;
-    font-size: 1.25rem;
-    font-weight: 700;
-    line-height: 1.4;
+    border-radius: 16px;
+    padding: 1.6rem 1.8rem;
+    margin-top: .8rem;
+    line-height: 1.35;
     transition: all .25s;
   }
   #resultado.estado-ok {
     background: #f0fff4;
-    border: 2px solid #68d391;
-    color: #276749;
+    border: 3px solid #48bb78;
+    color: #22543d;
   }
   #resultado.estado-no-beca {
     background: #fff5f5;
-    border: 2px solid #fc8181;
+    border: 3px solid #fc8181;
+    color: #9b2c2c;
+  }
+  #resultado.estado-sin-matricula {
+    background: #fff5f5;
+    border: 3px solid #fc8181;
     color: #9b2c2c;
   }
   #resultado.estado-duplicado {
     background: #fffbeb;
-    border: 2px solid #f6ad55;
+    border: 3px solid #f6ad55;
     color: #7b341e;
   }
   #resultado.estado-error {
     background: #fff5f5;
-    border: 2px solid #fc8181;
+    border: 3px solid #fc8181;
     color: #9b2c2c;
   }
   .resultado-icon {
-    font-size: 2.2rem;
+    font-size: 2.8rem;
     display: block;
-    margin-bottom: .4rem;
+    margin-bottom: .5rem;
+  }
+  .resultado-nombre {
+    font-size: 1.7rem;
+    font-weight: 800;
+    display: block;
+    margin-bottom: .25rem;
+  }
+  .resultado-msg {
+    font-size: 1.1rem;
+    font-weight: 500;
+    opacity: .9;
   }
 
   /* Últimos registros */
@@ -241,7 +255,7 @@
       <div id="resultado"></div>
 
       <p class="config-info">
-        Intervalo mínimo entre registros: <strong>{{ intervalo_minutos }} minutos</strong>
+        Intervalo mínimo entre registros: <strong>{{ intervalo_horas }} hora(s)</strong>
       </p>
 
       <p class="ultimos-title">Últimos registros de esta sesión</p>
@@ -281,11 +295,11 @@ document.addEventListener('DOMContentLoaded', function () {
     error:       '❌',
   };
   const CLASES = {
-    ok:           'estado-ok',
-    no_beca:      'estado-no-beca',
-    sin_matricula:'estado-no-beca',
-    duplicado:    'estado-duplicado',
-    error:        'estado-error',
+    ok:            'estado-ok',
+    no_beca:       'estado-no-beca',
+    sin_matricula: 'estado-sin-matricula',
+    duplicado:     'estado-duplicado',
+    error:         'estado-error',
   };
   const TAG_CLASES = {
     ok:           'tag-ok',
@@ -297,15 +311,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
   let timeoutLimpiar = null;
 
-  function mostrar(status, mensaje) {
+  function mostrar(status, mensaje, nombre) {
     resultado.className = CLASES[status] || 'estado-error';
     resultado.style.display = 'block';
-    resultado.innerHTML = `<span class="resultado-icon">${ICONOS[status] || '❌'}</span>${mensaje}`;
-
+    const nombreHtml = nombre
+      ? `<span class="resultado-nombre">${nombre}</span>`
+      : '';
+    resultado.innerHTML = `
+      <span class="resultado-icon">${ICONOS[status] || '❌'}</span>
+      ${nombreHtml}
+      <span class="resultado-msg">${mensaje}</span>
+    `;
     clearTimeout(timeoutLimpiar);
     timeoutLimpiar = setTimeout(() => {
       resultado.style.display = 'none';
-    }, 5000);
+    }, 6000);
   }
 
   function agregarFila(hora, identificacion, nombre, status) {
@@ -342,7 +362,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const resp = await fetch(window.location.href, { method: 'POST', body });
       const data = await resp.json();
       const status = data.status || 'error';
-      mostrar(status, data.message || 'Error desconocido.');
+      mostrar(status, data.message || 'Error desconocido.', data.nombre || null);
       const ahora = new Date().toLocaleTimeString('es-CR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
       agregarFila(ahora, data.identificacion || identificacion, data.nombre || '', status);
     } catch (e) {
