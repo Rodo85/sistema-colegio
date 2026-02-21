@@ -1,0 +1,147 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block title %}Imprimir Tiquetes QR – Comedor{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+  /* ── Controles de pantalla (ocultos al imprimir) ── */
+  .screen-only {
+    max-width: 900px;
+    margin: 24px auto;
+    padding: 0 16px;
+    font-family: "Segoe UI", system-ui, sans-serif;
+  }
+  .page-title  { font-size: 1.5rem; font-weight: 700; color: #145591; margin-bottom: 6px; }
+  .page-sub    { color: #6c757d; margin-bottom: 24px; font-size: .93rem; }
+  .print-bar   { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 20px; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 18px; font-size: .9rem; font-weight: 600;
+         border-radius: 6px; border: none; cursor: pointer; text-decoration: none; transition: filter .15s; }
+  .btn:hover { filter: brightness(1.08); }
+  .btn-primary { background: #1a6eb5; color: #fff; }
+  .btn-outline { background: #fff; color: #1a6eb5; border: 1px solid #1a6eb5; }
+  .info-box {
+    background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px;
+    padding: 12px 16px; font-size: .9rem; color: #1e40af; margin-bottom: 20px;
+  }
+
+  /* ── Hoja de impresión ── */
+  .print-sheet {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .qr-grid {
+    display: grid;
+    gap: 0;
+  }
+  .qr-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .qr-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+  .qr-grid.cols-6 { grid-template-columns: repeat(6, 1fr); }
+
+  .qr-card {
+    border: 1px dashed #aaa;
+    padding: 10px 8px;
+    text-align: center;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    background: #fff;
+  }
+  .qr-card img {
+    width: 100%;
+    max-width: 120px;
+    height: auto;
+    display: block;
+    margin: 0 auto 6px;
+  }
+  .qr-tipo {
+    font-size: .78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: #1e3a5f;
+    margin-bottom: 3px;
+  }
+  .qr-tipo.profesor { color: #5b21b6; }
+  .qr-codigo {
+    font-family: "Courier New", monospace;
+    font-size: .7rem;
+    color: #6c757d;
+  }
+
+  /* ── Print media ── */
+  @media print {
+    .screen-only { display: none !important; }
+    body { margin: 0; padding: 0; }
+    .print-sheet { max-width: 100%; }
+    .qr-card { border-color: #ccc; }
+    @page { margin: 10mm; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Controles (sólo en pantalla) -->
+<div class="screen-only">
+  <div class="page-title"><i class="fas fa-print"></i> Vista previa de impresión</div>
+  <p class="page-sub">
+    {{ tiquetes_con_qr|length }} tiquete{% if tiquetes_con_qr|length != 1 %}s{% endif %} listo{% if tiquetes_con_qr|length != 1 %}s{% endif %} para imprimir.
+    Los bordes punteados son guías de corte.
+  </p>
+
+  <div class="print-bar">
+    <button onclick="window.print()" class="btn btn-primary">
+      <i class="fas fa-print"></i> Imprimir / Guardar PDF
+    </button>
+    <a href="{% url 'comedor:tiquetes' %}{% if es_superusuario and institucion %}?institucion={{ institucion.pk }}{% endif %}"
+       class="btn btn-outline">
+      <i class="fas fa-arrow-left"></i> Volver a tiquetes
+    </a>
+
+    <!-- Selector de columnas -->
+    <div style="display:flex;align-items:center;gap:8px;margin-left:auto;">
+      <label style="font-size:.85rem;color:#6c757d;font-weight:600;">QR por fila:</label>
+      <select id="cols-select" class="btn btn-outline" style="padding:7px 10px;">
+        <option value="3" {% if por_hoja == 3 %}selected{% endif %}>3</option>
+        <option value="4" {% if por_hoja == 4 %}selected{% endif %}>4</option>
+        <option value="6" {% if por_hoja == 6 %}selected{% endif %}>6</option>
+      </select>
+    </div>
+  </div>
+
+  {% if not tiquetes_con_qr %}
+  <div class="info-box">
+    <i class="fas fa-info-circle"></i> No hay tiquetes que coincidan con los filtros seleccionados.
+    <a href="{% url 'comedor:tiquetes' %}">Volver</a>
+  </div>
+  {% endif %}
+</div>
+
+<!-- Hoja de impresión -->
+<div class="print-sheet">
+  <div class="qr-grid cols-{{ por_hoja }}" id="qr-grid">
+    {% for item in tiquetes_con_qr %}
+    <div class="qr-card">
+      <img src="data:image/png;base64,{{ item.qr_b64 }}" alt="QR {{ item.tiquete.codigo }}">
+      <div class="qr-tipo {% if item.tiquete.tipo == 'PROFESOR' %}profesor{% endif %}">
+        {% if item.tiquete.tipo == 'ALUMNO_TIQ' %}
+          <i class="fas fa-user-graduate"></i> Alumno c/tiquete
+        {% else %}
+          <i class="fas fa-chalkboard-teacher"></i> Profesor
+        {% endif %}
+      </div>
+      <div class="qr-codigo">{{ item.tiquete.codigo }}</div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+document.getElementById("cols-select").addEventListener("change", function () {
+  const grid = document.getElementById("qr-grid");
+  grid.className = "qr-grid cols-" + this.value;
+});
+</script>
+{% endblock %}

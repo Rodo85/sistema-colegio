@@ -34,6 +34,8 @@ JAZZMIN_SETTINGS = {
         "matricula.plantillaimpresionmatricula": "fas fa-file-alt",
         "comedor.becacomedor": "fas fa-utensils",
         "comedor.registroalmuerzo": "fas fa-qrcode",
+        "comedor.tiquetecomedor": "fas fa-ticket-alt",
+        "comedor.registroalmuerzoTiquete": "fas fa-receipt",
         
         "catalogos.adecuacion": "fas fa-wheelchair",
         "catalogos.canton": "fas fa-map-marker-alt",
@@ -110,6 +112,12 @@ JAZZMIN_SETTINGS = {
                 "url": "comedor:reportes",
                 "icon": "fas fa-chart-bar",
                 "permissions": ["comedor.access_reportes_comedor"],
+            },
+            {
+                "name": "Tiquetes",
+                "url": "comedor:tiquetes",
+                "icon": "fas fa-ticket-alt",
+                "permissions": ["comedor.access_tiquetes_comedor"],
             },
         ],
     },

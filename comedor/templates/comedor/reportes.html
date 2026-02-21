@@ -1,104 +1,362 @@
 {% extends "admin/base_site.html" %}
 
-{% block content %}
-<div class="module" style="padding:1rem;">
-  <h1>Reportes de comedor</h1>
-  <p>Resumen de becas y uso de almuerzo.</p>
+{% block extrahead %}
+{{ block.super }}
+<style>
+  .reporte-container {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 12px 32px rgba(44,62,80,.12);
+    margin-bottom: 2rem;
+  }
+  .reporte-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  /* ── Filtros ── */
+  .reporte-filtros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: flex-end;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+  .reporte-filtros .form-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
+  }
+  .reporte-filtros label {
+    font-size: .9rem;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: .5rem;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+  }
+  .reporte-filtros select,
+  .reporte-filtros input[type="date"] {
+    padding: .75rem 1rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: #fff;
+    transition: border-color .2s, box-shadow .2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,.05);
+  }
+  .reporte-filtros select:focus,
+  .reporte-filtros input[type="date"]:focus {
+    outline: none;
+    border-color: #1976d2;
+    box-shadow: 0 0 0 3px rgba(25,118,210,.2);
+  }
+  .btn-aplicar {
+    background: linear-gradient(135deg,#1976d2,#115293);
+    color: #fff;
+    border: none;
+    padding: .8rem 1.8rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    box-shadow: 0 6px 18px rgba(25,118,210,.35);
+  }
+  .btn-aplicar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(25,118,210,.45);
+  }
+  /* ── Alerta ── */
+  .alerta {
+    background: #fdecea;
+    color: #b71c1c;
+    border: 1px solid #f5c6cb;
+    border-radius: 10px;
+    padding: .9rem 1.1rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  .info-banner {
+    background: #e3f2fd;
+    border: 1px solid #bbdefb;
+    border-radius: 10px;
+    padding: .85rem 1.2rem;
+    color: #1565c0;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  /* ── Tarjetas resumen ── */
+  .resumen-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+    margin-bottom: 2.5rem;
+  }
+  .resumen-card {
+    border-radius: 14px;
+    padding: 1.5rem;
+    color: #fff;
+    box-shadow: 0 10px 24px rgba(0,0,0,.14);
+    position: relative;
+    overflow: hidden;
+  }
+  .resumen-card .label {
+    font-size: .95rem;
+    font-weight: 600;
+    opacity: .92;
+  }
+  .resumen-card .valor {
+    display: block;
+    font-size: 2.6rem;
+    font-weight: 800;
+    margin-top: .4rem;
+  }
+  .resumen-card.card-azul  { background: linear-gradient(135deg,#1abc9c,#16a085); }
+  .resumen-card.card-verde { background: linear-gradient(135deg,#2ecc71,#27ae60); }
+  .resumen-card.card-naranja { background: linear-gradient(135deg,#f39c12,#d35400); }
+  /* ── Sección título ── */
+  .section-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 2.5rem 0 1rem;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    border-left: 4px solid #1976d2;
+    padding-left: .8rem;
+  }
+  /* ── Tablas ── */
+  .tabla-reporte {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,.08);
+    margin-bottom: 2rem;
+  }
+  .tabla-reporte thead { background: #1976d2; color: #fff; }
+  .tabla-reporte th,
+  .tabla-reporte td {
+    padding: .85rem 1rem;
+    text-align: center;
+    font-weight: 600;
+    font-size: .95rem;
+  }
+  .tabla-reporte td:first-child { text-align: left; }
+  .tabla-reporte tbody tr:nth-child(even) { background: #f5f8fc; }
+  .tabla-reporte tbody tr:hover { background: #e9f3ff; transition: background .15s; }
+  .tabla-reporte tbody td { font-weight: 400; }
+  .tabla-reporte .total-col { font-weight: 700; color: #1565c0; }
+  /* ── Sin datos ── */
+  .sin-datos td {
+    color: #718096 !important;
+    font-style: italic;
+    text-align: center !important;
+    padding: 1.2rem !important;
+  }
+  @media(max-width:768px) {
+    .reporte-container { padding: 1.2rem; }
+    .reporte-filtros { flex-direction: column; align-items: stretch; }
+    .resumen-card .valor { font-size: 2rem; }
+  }
+</style>
+{% endblock %}
 
-  <form method="get" style="display:flex;flex-wrap:wrap;gap:0.75rem;align-items:end;margin-bottom:1rem;">
+{% block content %}
+<div class="reporte-container">
+  <h1 class="reporte-title">Reportes de Comedor</h1>
+
+  <!-- FILTROS -->
+  <form method="get" class="reporte-filtros">
     {% if es_superusuario %}
-      <div>
-        <label>Institución</label><br>
-        <select name="institucion" required>
-          <option value="">Seleccione</option>
-          {% for item in instituciones %}
-            <option value="{{ item.id }}" {% if institucion and item.id == institucion.id %}selected{% endif %}>{{ item.nombre }}</option>
-          {% endfor %}
-        </select>
-      </div>
-    {% endif %}
-    <div>
-      <label>Periodo</label><br>
-      <select name="periodo" id="periodo">
-        <option value="dia" {% if periodo == "dia" %}selected{% endif %}>Día</option>
-        <option value="semana" {% if periodo == "semana" %}selected{% endif %}>Semana</option>
-        <option value="mes" {% if periodo == "mes" %}selected{% endif %}>Mes</option>
-        <option value="rango" {% if periodo == "rango" %}selected{% endif %}>Fecha a fecha</option>
+    <div class="form-group">
+      <label>Institución</label>
+      <select name="institucion" required>
+        <option value="">Seleccione...</option>
+        {% for inst in instituciones %}
+          <option value="{{ inst.pk }}" {% if institucion and inst.pk == institucion.pk %}selected{% endif %}>{{ inst.nombre }}</option>
+        {% endfor %}
       </select>
     </div>
-    <div>
-      <label>Fecha inicio</label><br>
+    {% endif %}
+
+    <div class="form-group">
+      <label>Periodo</label>
+      <select name="periodo" id="id_periodo">
+        <option value="dia"    {% if periodo == "dia"    %}selected{% endif %}>Hoy</option>
+        <option value="semana" {% if periodo == "semana" %}selected{% endif %}>Esta semana</option>
+        <option value="mes"    {% if periodo == "mes"    %}selected{% endif %}>Este mes</option>
+        <option value="rango"  {% if periodo == "rango"  %}selected{% endif %}>Fecha a fecha</option>
+      </select>
+    </div>
+
+    <div class="form-group" id="grupo-fecha-inicio" {% if periodo != "rango" %}style="display:none;"{% endif %}>
+      <label>Fecha inicio</label>
       <input type="date" name="fecha_inicio" value="{{ fecha_inicio|date:'Y-m-d' }}">
     </div>
-    <div>
-      <label>Fecha fin</label><br>
+
+    <div class="form-group" id="grupo-fecha-fin" {% if periodo != "rango" %}style="display:none;"{% endif %}>
+      <label>Fecha fin</label>
       <input type="date" name="fecha_fin" value="{{ fecha_fin|date:'Y-m-d' }}">
     </div>
-    <div>
-      <button type="submit" class="button default">Aplicar</button>
+
+    <div class="form-group" style="justify-content:flex-end;">
+      <button type="submit" class="btn-aplicar">Aplicar</button>
     </div>
   </form>
 
-  {% if curso_lectivo and institucion %}
-    <div style="display:grid;grid-template-columns:repeat(3,minmax(180px,1fr));gap:0.75rem;margin-bottom:1rem;">
-      <div style="padding:1rem;border-radius:10px;background:#dbeafe;">
-        <div>Becados activos</div>
-        <div style="font-size:2rem;font-weight:700;">{{ total_becados }}</div>
+  {% if not curso_lectivo %}
+    <div class="alerta">No existe un curso lectivo activo.</div>
+  {% elif not institucion %}
+    <div class="alerta">{% if es_superusuario %}Seleccione una institución para ver el reporte.{% else %}No se pudo determinar la institución activa.{% endif %}</div>
+  {% else %}
+
+    <div class="info-banner">
+      <strong>{{ curso_lectivo.nombre }}</strong> &nbsp;|&nbsp;
+      Periodo: <strong>
+        {% if periodo == "dia" %}Hoy ({{ fecha_inicio|date:"d/m/Y" }})
+        {% elif periodo == "semana" %}Semana ({{ fecha_inicio|date:"d/m/Y" }} – {{ fecha_fin|date:"d/m/Y" }})
+        {% elif periodo == "mes" %}Mes actual ({{ fecha_inicio|date:"d/m/Y" }} – {{ fecha_fin|date:"d/m/Y" }})
+        {% else %}{{ fecha_inicio|date:"d/m/Y" }} – {{ fecha_fin|date:"d/m/Y" }}{% endif %}
+      </strong>
+    </div>
+
+    <!-- TARJETAS RESUMEN — BECAS -->
+    <div class="section-title" style="margin-top:0;">Resumen — Alumnos becados</div>
+    <div class="resumen-grid">
+      <div class="resumen-card card-azul">
+        <div class="label">Becados activos</div>
+        <span class="valor">{{ total_becados }}</span>
       </div>
-      <div style="padding:1rem;border-radius:10px;background:#dcfce7;">
-        <div>Registros en periodo</div>
-        <div style="font-size:2rem;font-weight:700;">{{ total_registros }}</div>
+      <div class="resumen-card card-verde">
+        <div class="label">Registros (becas) en periodo</div>
+        <span class="valor">{{ total_registros }}</span>
       </div>
-      <div style="padding:1rem;border-radius:10px;background:#fef3c7;">
-        <div>Estudiantes únicos</div>
-        <div style="font-size:2rem;font-weight:700;">{{ total_estudiantes_unicos }}</div>
+      <div class="resumen-card card-naranja">
+        <div class="label">Estudiantes únicos</div>
+        <span class="valor">{{ total_estudiantes_unicos }}</span>
       </div>
     </div>
 
-    <h2>Asistencia por día</h2>
-    <table style="width:100%;border-collapse:collapse;margin-bottom:1rem;">
+    <!-- TARJETAS RESUMEN — TIQUETES -->
+    <div class="section-title">Resumen — Tiquetes</div>
+    <div class="resumen-grid">
+      <div class="resumen-card card-azul">
+        <div class="label">Tiquetes activos</div>
+        <span class="valor">{{ total_tiquetes_activos }}</span>
+      </div>
+      <div class="resumen-card card-verde">
+        <div class="label">Usos de tiquete en periodo</div>
+        <span class="valor">{{ total_usos_tiquete }}</span>
+      </div>
+      {% for item in usos_por_tipo_tiquete %}
+      <div class="resumen-card card-naranja">
+        <div class="label">{{ item.tipo_display }}</div>
+        <span class="valor">{{ item.total }}</span>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- ASISTENCIA POR DÍA -->
+    <div class="section-title">Asistencia por día</div>
+    <table class="tabla-reporte">
       <thead>
-        <tr style="background:#f3f4f6;">
-          <th style="padding:8px;border:1px solid #ddd;">Fecha</th>
-          <th style="padding:8px;border:1px solid #ddd;">Registros</th>
-          <th style="padding:8px;border:1px solid #ddd;">Estudiantes únicos</th>
+        <tr>
+          <th>Fecha</th>
+          <th>Registros totales</th>
+          <th>Estudiantes únicos</th>
         </tr>
       </thead>
       <tbody>
         {% for item in por_dia %}
           <tr>
-            <td style="padding:8px;border:1px solid #ddd;">{{ item.fecha|date:"d/m/Y" }}</td>
-            <td style="padding:8px;border:1px solid #ddd;">{{ item.total_registros }}</td>
-            <td style="padding:8px;border:1px solid #ddd;">{{ item.total_estudiantes }}</td>
+            <td>{{ item.fecha|date:"l d/m/Y"|capfirst }}</td>
+            <td class="total-col">{{ item.total_registros }}</td>
+            <td>{{ item.total_estudiantes }}</td>
           </tr>
         {% empty %}
-          <tr><td colspan="3" style="padding:8px;border:1px solid #ddd;">No hay registros en el periodo seleccionado.</td></tr>
+          <tr class="sin-datos"><td colspan="3">No hay registros en el periodo seleccionado.</td></tr>
         {% endfor %}
       </tbody>
     </table>
 
-    <h2>Becados sin uso en el periodo</h2>
-    <table style="width:100%;border-collapse:collapse;">
+    <!-- USO DE TIQUETES POR DÍA -->
+    <div class="section-title">Uso de tiquetes por día</div>
+    <table class="tabla-reporte">
       <thead>
-        <tr style="background:#f3f4f6;">
-          <th style="padding:8px;border:1px solid #ddd;">Cédula</th>
-          <th style="padding:8px;border:1px solid #ddd;">Nombre</th>
+        <tr>
+          <th>Fecha</th>
+          <th>Tipo</th>
+          <th>Usos</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in por_dia_tiquete %}
+          <tr>
+            <td>{{ item.fecha|date:"l d/m/Y"|capfirst }}</td>
+            <td>{{ item.tipo_display }}</td>
+            <td class="total-col">{{ item.total }}</td>
+          </tr>
+        {% empty %}
+          <tr class="sin-datos"><td colspan="3">No hay registros de tiquetes en el periodo.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <!-- BECADOS SIN USO -->
+    <div class="section-title">Becados sin uso en el periodo ({{ becados_sin_uso|length }})</div>
+    <table class="tabla-reporte">
+      <thead>
+        <tr>
+          <th>Identificación</th>
+          <th>1° Apellido</th>
+          <th>2° Apellido</th>
+          <th>Nombre(s)</th>
         </tr>
       </thead>
       <tbody>
         {% for beca in becados_sin_uso %}
           <tr>
-            <td style="padding:8px;border:1px solid #ddd;">{{ beca.estudiante.identificacion }}</td>
-            <td style="padding:8px;border:1px solid #ddd;">{{ beca.estudiante }}</td>
+            <td>{{ beca.estudiante.identificacion }}</td>
+            <td>{{ beca.estudiante.primer_apellido }}</td>
+            <td>{{ beca.estudiante.segundo_apellido }}</td>
+            <td>{{ beca.estudiante.nombres }}</td>
           </tr>
         {% empty %}
-          <tr><td colspan="2" style="padding:8px;border:1px solid #ddd;">Todos los becados usaron comedor en este periodo.</td></tr>
+          <tr class="sin-datos"><td colspan="4">Todos los becados usaron el comedor en este periodo.</td></tr>
         {% endfor %}
       </tbody>
     </table>
-  {% else %}
-    <p style="color:#b91c1c;font-weight:700;">Debe seleccionar una institución válida y tener curso lectivo activo.</p>
+
   {% endif %}
 </div>
-{% endblock %}
 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const periodoSel = document.getElementById('id_periodo');
+  const grupoInicio = document.getElementById('grupo-fecha-inicio');
+  const grupoFin    = document.getElementById('grupo-fecha-fin');
+
+  function toggleFechas() {
+    const mostrar = periodoSel.value === 'rango';
+    grupoInicio.style.display = mostrar ? '' : 'none';
+    grupoFin.style.display    = mostrar ? '' : 'none';
+  }
+
+  periodoSel.addEventListener('change', toggleFechas);
+  toggleFechas();
+});
+</script>
+{% endblock %}

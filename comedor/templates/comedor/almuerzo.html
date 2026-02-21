@@ -213,7 +213,7 @@
   <div class="almuerzo-card">
 
     <div class="almuerzo-title">Registro de Almuerzo</div>
-    <div class="almuerzo-subtitle">Escanee el QR del pase del estudiante o escriba la identificación y presione Enter.</div>
+    <div class="almuerzo-subtitle">Escanee el QR del pase (identificación de alumno o código de tiquete) y presione Enter.</div>
 
     {% if curso_lectivo %}
       <span class="almuerzo-badge">📅 {{ curso_lectivo.nombre }}</span>
@@ -241,12 +241,12 @@
       <form id="form-almuerzo" autocomplete="off">
         {% csrf_token %}
         <div class="almuerzo-input-wrap">
-          <label for="id_identificacion">Identificación del estudiante</label>
+          <label for="id_identificacion">Identificación / Código de tiquete</label>
           <input
             type="text"
             id="id_identificacion"
-            inputmode="numeric"
-            placeholder="000000000"
+            inputmode="text"
+            placeholder="000000000 / TIQ-XXXXXXXX"
             {% if not curso_lectivo %}disabled{% endif %}
           >
         </div>
@@ -288,25 +288,31 @@ document.addEventListener('DOMContentLoaded', function () {
   const cursoId      = "{{ curso_lectivo.pk|default:'' }}";
 
   const ICONOS = {
-    ok:          '✅',
-    no_beca:     '🚫',
-    sin_matricula:'❌',
-    duplicado:   '⚠️',
-    error:       '❌',
+    ok:            '✅',
+    no_beca:       '🚫',
+    sin_matricula: '❌',
+    duplicado:     '⚠️',
+    no_encontrado: '❌',
+    inactivo:      '🚫',
+    error:         '❌',
   };
   const CLASES = {
     ok:            'estado-ok',
     no_beca:       'estado-no-beca',
     sin_matricula: 'estado-sin-matricula',
     duplicado:     'estado-duplicado',
+    no_encontrado: 'estado-no-beca',
+    inactivo:      'estado-no-beca',
     error:         'estado-error',
   };
   const TAG_CLASES = {
-    ok:           'tag-ok',
-    no_beca:      'tag-err',
-    sin_matricula:'tag-err',
-    duplicado:    'tag-dup',
-    error:        'tag-err',
+    ok:            'tag-ok',
+    no_beca:       'tag-err',
+    sin_matricula: 'tag-err',
+    duplicado:     'tag-dup',
+    no_encontrado: 'tag-err',
+    inactivo:      'tag-err',
+    error:         'tag-err',
   };
 
   let timeoutLimpiar = null;

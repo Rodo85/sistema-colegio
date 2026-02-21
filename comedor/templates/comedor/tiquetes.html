@@ -1,0 +1,440 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block title %}Gestión de Tiquetes – Comedor{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+  :root {
+    --primary: #1a6eb5;
+    --primary-dark: #145591;
+    --success: #198754;
+    --danger: #dc3545;
+    --warning: #ffc107;
+    --surface: #f8f9fc;
+    --border: #dee2e6;
+    --text: #212529;
+    --muted: #6c757d;
+  }
+
+  .page-wrapper {
+    max-width: 1100px;
+    margin: 28px auto;
+    padding: 0 16px;
+    font-family: "Segoe UI", system-ui, sans-serif;
+  }
+
+  .page-title {
+    font-size: 1.65rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+  }
+  .page-subtitle {
+    color: var(--muted);
+    margin-bottom: 28px;
+    font-size: 0.95rem;
+  }
+
+  /* ── Card ── */
+  .card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    margin-bottom: 24px;
+  }
+  .card-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 20px;
+    border-radius: 10px 10px 0 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card-header h2 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--primary-dark);
+  }
+  .card-body { padding: 20px; }
+
+  /* ── Form ── */
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 14px;
+    align-items: end;
+  }
+  .form-group label {
+    display: block;
+    font-size: .82rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    margin-bottom: 5px;
+  }
+  .form-control {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: .95rem;
+    color: var(--text);
+    background: #fff;
+    box-sizing: border-box;
+  }
+  .form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(26,110,181,.15); }
+
+  /* ── Buttons ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 18px;
+    font-size: .9rem;
+    font-weight: 600;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: filter .15s;
+  }
+  .btn:hover { filter: brightness(1.08); }
+  .btn-primary  { background: var(--primary);  color: #fff; }
+  .btn-success  { background: var(--success);  color: #fff; }
+  .btn-danger   { background: var(--danger);   color: #fff; }
+  .btn-warning  { background: var(--warning);  color: #212529; }
+  .btn-outline  { background: #fff; color: var(--primary); border: 1px solid var(--primary); }
+  .btn-sm { padding: 5px 11px; font-size: .82rem; }
+
+  /* ── Table ── */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+  thead th {
+    background: var(--surface);
+    color: var(--muted);
+    font-size: .75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    padding: 10px 14px;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  tbody tr:hover { background: #f0f5fb; }
+  tbody td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+
+  /* ── Badge ── */
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 50px;
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .3px;
+  }
+  .badge-success { background: #d1fae5; color: #065f46; }
+  .badge-danger  { background: #fee2e2; color: #991b1b; }
+  .badge-alumno  { background: #dbeafe; color: #1e40af; }
+  .badge-profesor{ background: #ede9fe; color: #5b21b6; }
+
+  /* ── Toggle switch ── */
+  .toggle-btn { cursor: pointer; }
+
+  /* ── Alerts ── */
+  .alert { padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; font-size: .92rem; }
+  .alert-info    { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+  .alert-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+  .alert-danger  { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+
+  /* ── Action bar ── */
+  .action-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .spacer { flex: 1; }
+
+  /* ── Print link ── */
+  #print-selected-link { display: none; }
+  #print-selected-link.visible { display: inline-flex; }
+
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: flex-end;
+    margin-bottom: 18px;
+  }
+  .filter-bar .form-group { margin: 0; min-width: 140px; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+
+  <div class="page-title"><i class="fas fa-ticket-alt"></i> Gestión de Tiquetes</div>
+  <p class="page-subtitle">Crea y administra tiquetes de comedor para profesores y alumnos sin beca.</p>
+
+  {% if messages %}
+    {% for msg in messages %}
+      <div class="alert alert-{{ msg.tags|default:'info' }}">{{ msg }}</div>
+    {% endfor %}
+  {% endif %}
+
+  {% if error %}
+    <div class="alert alert-danger"><i class="fas fa-exclamation-circle"></i> {{ error }}</div>
+  {% endif %}
+
+  <!-- ── Formulario de creación masiva ─────────────────────────────────── -->
+  <div class="card">
+    <div class="card-header">
+      <i class="fas fa-plus-circle" style="color:var(--success)"></i>
+      <h2>Crear lote de tiquetes</h2>
+    </div>
+    <div class="card-body">
+      <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="accion" value="crear_lote">
+        <div class="form-grid">
+          {% if es_superusuario %}
+          <div class="form-group">
+            <label>Institución</label>
+            <select name="institucion" class="form-control" required>
+              <option value="">— Seleccione —</option>
+              {% for inst in instituciones %}
+                <option value="{{ inst.pk }}" {% if institucion and inst.pk == institucion.pk %}selected{% endif %}>
+                  {{ inst.nombre }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+          {% else %}
+            <input type="hidden" name="institucion" value="{{ institucion.pk }}">
+          {% endif %}
+
+          <div class="form-group">
+            <label>Tipo</label>
+            <select name="tipo" class="form-control" required>
+              {% for val, label in tipos %}
+                <option value="{{ val }}">{{ label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Monto (₡)</label>
+            <input type="number" name="monto" class="form-control" min="0" step="50" value="700" required>
+          </div>
+
+          <div class="form-group">
+            <label>Cantidad a generar</label>
+            <input type="number" name="cantidad" class="form-control" min="1" max="500" value="10" required>
+          </div>
+
+          <div class="form-group" style="display:flex; align-items:flex-end;">
+            <button type="submit" class="btn btn-success" {% if not institucion and not es_superusuario %}disabled{% endif %}>
+              <i class="fas fa-magic"></i> Generar tiquetes
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── Lista de tiquetes ─────────────────────────────────────────────── -->
+  <div class="card">
+    <div class="card-header">
+      <i class="fas fa-list" style="color:var(--primary)"></i>
+      <h2>Tiquetes registrados</h2>
+    </div>
+    <div class="card-body">
+
+      <!-- Filtros -->
+      <form method="get" class="filter-bar">
+        {% if es_superusuario %}
+        <div class="form-group">
+          <label>Institución</label>
+          <select name="institucion" class="form-control" onchange="this.form.submit()">
+            <option value="">— Todas —</option>
+            {% for inst in instituciones %}
+              <option value="{{ inst.pk }}" {% if institucion and inst.pk == institucion.pk %}selected{% endif %}>
+                {{ inst.nombre }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+        {% endif %}
+        <div class="form-group">
+          <label>Tipo</label>
+          <select name="filtro_tipo" class="form-control" onchange="this.form.submit()">
+            <option value="">— Todos —</option>
+            {% for val, label in tipos %}
+              <option value="{{ val }}" {% if filtro_tipo == val %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Estado</label>
+          <select name="filtro_estado" class="form-control" onchange="this.form.submit()">
+            <option value="">— Todos —</option>
+            <option value="activo"   {% if filtro_estado == 'activo'   %}selected{% endif %}>Activo</option>
+            <option value="inactivo" {% if filtro_estado == 'inactivo' %}selected{% endif %}>Inactivo</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Código</label>
+          <input type="text" name="filtro_codigo" class="form-control" value="{{ filtro_codigo }}" placeholder="Buscar…">
+        </div>
+        <div class="form-group" style="display:flex;align-items:flex-end;gap:8px;">
+          <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-search"></i> Filtrar</button>
+          <a href="?" class="btn btn-outline btn-sm"><i class="fas fa-times"></i> Limpiar</a>
+        </div>
+      </form>
+
+      <!-- Barra de acciones masivas -->
+      <div class="action-bar">
+        <label style="font-size:.88rem; color:var(--muted);">
+          <input type="checkbox" id="chk-all"> Seleccionar todos
+        </label>
+        <div class="spacer"></div>
+        <a id="print-selected-link"
+           class="btn btn-outline btn-sm"
+           href="#"
+           target="_blank">
+          <i class="fas fa-print"></i> Imprimir seleccionados
+        </a>
+        {% if institucion %}
+        <a href="{% url 'comedor:imprimir_tiquetes' %}?{% if es_superusuario %}institucion={{ institucion.pk }}&{% endif %}{% if filtro_tipo %}tipo={{ filtro_tipo }}{% endif %}"
+           class="btn btn-outline btn-sm"
+           target="_blank">
+          <i class="fas fa-print"></i> Imprimir vista actual
+        </a>
+        {% endif %}
+      </div>
+
+      <div class="table-wrap">
+        <table id="tabla-tiquetes">
+          <thead>
+            <tr>
+              <th style="width:36px"></th>
+              <th>Código</th>
+              <th>Tipo</th>
+              <th>Monto</th>
+              <th>Estado</th>
+              {% if es_superusuario %}<th>Institución</th>{% endif %}
+              <th>Creado</th>
+              <th style="text-align:center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for t in tiquetes %}
+            <tr data-id="{{ t.pk }}" data-activo="{{ t.activo|lower }}">
+              <td><input type="checkbox" class="chk-row" value="{{ t.pk }}"></td>
+              <td><code style="font-size:.9rem; font-weight:700;">{{ t.codigo }}</code></td>
+              <td>
+                {% if t.tipo == 'ALUMNO_TIQ' %}
+                  <span class="badge badge-alumno"><i class="fas fa-user-graduate"></i> Alumno c/tiquete</span>
+                {% else %}
+                  <span class="badge badge-profesor"><i class="fas fa-chalkboard-teacher"></i> Profesor</span>
+                {% endif %}
+              </td>
+              <td>₡{{ t.monto|floatformat:0 }}</td>
+              <td>
+                <button class="btn btn-sm toggle-btn {% if t.activo %}btn-success{% else %}btn-danger{% endif %}"
+                        data-id="{{ t.pk }}"
+                        data-inst="{{ institucion.pk }}"
+                        title="Clic para cambiar estado">
+                  {% if t.activo %}
+                    <i class="fas fa-check-circle"></i> Activo
+                  {% else %}
+                    <i class="fas fa-times-circle"></i> Inactivo
+                  {% endif %}
+                </button>
+              </td>
+              {% if es_superusuario %}
+              <td style="font-size:.82rem; color:var(--muted);">{{ t.institucion.nombre }}</td>
+              {% endif %}
+              <td style="font-size:.82rem; color:var(--muted);">{{ t.created_at|date:"d/m/Y" }}</td>
+              <td style="text-align:center; white-space:nowrap;">
+                <a href="{% url 'comedor:imprimir_tiquetes' %}?ids={{ t.pk }}"
+                   target="_blank"
+                   class="btn btn-outline btn-sm"
+                   title="Imprimir QR">
+                  <i class="fas fa-qrcode"></i>
+                </a>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="8" style="text-align:center; color:var(--muted); padding:32px;">
+                <i class="fas fa-inbox" style="font-size:2rem;display:block;margin-bottom:8px;"></i>
+                No hay tiquetes que coincidan con los filtros.
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const TOGGLE_URL = "{% url 'comedor:toggle_tiquete' tiquete_id=0 %}".replace("/0/", "/{id}/");
+  const CSRF = document.cookie.match(/csrftoken=([^;]+)/)?.[1] || "";
+
+  // ── Toggle activo / inactivo ────────────────────────────────────────────
+  document.querySelectorAll(".toggle-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      const id   = btn.dataset.id;
+      const inst = btn.dataset.inst;
+      const url  = TOGGLE_URL.replace("{id}", id);
+      fetch(url, {
+        method: "POST",
+        headers: { "X-CSRFToken": CSRF, "Content-Type": "application/x-www-form-urlencoded" },
+        body: "institucion=" + encodeURIComponent(inst),
+      })
+        .then(r => r.json())
+        .then(data => {
+          if (data.ok) {
+            const row = btn.closest("tr");
+            if (data.activo) {
+              btn.className = "btn btn-sm toggle-btn btn-success";
+              btn.innerHTML = '<i class="fas fa-check-circle"></i> Activo';
+            } else {
+              btn.className = "btn btn-sm toggle-btn btn-danger";
+              btn.innerHTML = '<i class="fas fa-times-circle"></i> Inactivo';
+            }
+          }
+        });
+    });
+  });
+
+  // ── Seleccionar todos / imprimir seleccionados ──────────────────────────
+  const chkAll   = document.getElementById("chk-all");
+  const printLink = document.getElementById("print-selected-link");
+  const BASE_PRINT = "{% url 'comedor:imprimir_tiquetes' %}";
+
+  function updatePrintLink() {
+    const ids = [...document.querySelectorAll(".chk-row:checked")].map(c => c.value);
+    if (ids.length) {
+      printLink.href = BASE_PRINT + "?ids=" + ids.join(",");
+      printLink.classList.add("visible");
+    } else {
+      printLink.classList.remove("visible");
+    }
+  }
+
+  chkAll.addEventListener("change", function () {
+    document.querySelectorAll(".chk-row").forEach(c => c.checked = chkAll.checked);
+    updatePrintLink();
+  });
+
+  document.querySelectorAll(".chk-row").forEach(c => c.addEventListener("change", updatePrintLink));
+});
+</script>
+{% endblock %}
