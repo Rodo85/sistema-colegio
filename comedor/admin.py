@@ -1,10 +1,12 @@
 from django.contrib import admin
 
+from core.mixins import InstitucionScopedAdmin
+
 from .models import BecaComedor, RegistroAlmuerzo
 
 
 @admin.register(BecaComedor)
-class BecaComedorAdmin(admin.ModelAdmin):
+class BecaComedorAdmin(InstitucionScopedAdmin):
     list_display = (
         "estudiante",
         "institucion",
@@ -23,7 +25,7 @@ class BecaComedorAdmin(admin.ModelAdmin):
 
 
 @admin.register(RegistroAlmuerzo)
-class RegistroAlmuerzoAdmin(admin.ModelAdmin):
+class RegistroAlmuerzoAdmin(InstitucionScopedAdmin):
     list_display = (
         "estudiante",
         "institucion",
