@@ -30,110 +30,83 @@ def _resolver_institucion(request, institucion_param=None):
 @login_required
 @permission_required("comedor.access_registro_beca_comedor", raise_exception=True)
 def registrar_beca_comedor(request):
+    from config_institucional.models import Nivel
+
     curso_lectivo = CursoLectivo.get_activo()
     instituciones = Institucion.objects.all().order_by("nombre") if request.user.is_superuser else []
-    data = request.POST if request.method == "POST" else request.GET
-    institucion = _resolver_institucion(request, data.get("institucion"))
+    niveles = Nivel.objects.all().order_by("numero")
 
-    filtros = {
-        "cedula": (data.get("cedula") or "").strip().upper(),
-        "nombre": (data.get("nombre") or "").strip(),
-        "seccion": (data.get("seccion") or "").strip(),
-        "subgrupo": (data.get("subgrupo") or "").strip(),
-        "becado": (data.get("becado") or "").strip(),
-    }
+    # Resolver institución activa
+    institucion_param = request.POST.get("institucion") if request.method == "POST" else request.GET.get("institucion")
+    institucion = _resolver_institucion(request, institucion_param)
 
-    matriculas_qs = MatriculaAcademica.objects.none()
-    secciones = []
-    subgrupos = []
+    # Filtros de la pantalla de selección
+    nivel_id   = (request.POST.get("nivel_id")   or request.GET.get("nivel_id")   or "").strip()
+    seccion_id = (request.POST.get("seccion_id") or request.GET.get("seccion_id") or "").strip()
+    subgrupo_id = (request.POST.get("subgrupo_id") or request.GET.get("subgrupo_id") or "").strip()
 
-    if curso_lectivo and institucion:
-        base_qs = (
-            MatriculaAcademica.objects.filter(
-                curso_lectivo=curso_lectivo,
-                institucion=institucion,
-                estado__iexact=MatriculaAcademica.ACTIVO,
-            )
-            .select_related("estudiante", "nivel", "seccion", "subgrupo")
+    matriculas = []
+    becas_ids = set()
+    mostrar_tabla = False
+
+    if curso_lectivo and institucion and (seccion_id or subgrupo_id):
+        filtros_qs = {
+            "curso_lectivo": curso_lectivo,
+            "institucion": institucion,
+            "estado__iexact": MatriculaAcademica.ACTIVO,
+        }
+        if subgrupo_id:
+            filtros_qs["subgrupo_id"] = subgrupo_id
+        elif seccion_id:
+            filtros_qs["seccion_id"] = seccion_id
+
+        qs = (
+            MatriculaAcademica.objects.filter(**filtros_qs)
+            .select_related("estudiante", "seccion", "subgrupo", "nivel")
             .order_by(
                 "estudiante__primer_apellido",
                 "estudiante__segundo_apellido",
                 "estudiante__nombres",
             )
         )
+        matriculas = list(qs)
+        mostrar_tabla = True
 
-        secciones = (
-            base_qs.exclude(seccion__isnull=True)
-            .values_list("seccion__numero", flat=True)
-            .distinct()
-            .order_by("seccion__numero")
-        )
-        subgrupos = (
-            base_qs.exclude(subgrupo__isnull=True)
-            .values_list("subgrupo__letra", flat=True)
-            .distinct()
-            .order_by("subgrupo__letra")
-        )
-
-        if filtros["cedula"]:
-            base_qs = base_qs.filter(estudiante__identificacion__icontains=filtros["cedula"])
-        if filtros["nombre"]:
-            base_qs = base_qs.filter(
-                Q(estudiante__nombres__icontains=filtros["nombre"])
-                | Q(estudiante__primer_apellido__icontains=filtros["nombre"])
-                | Q(estudiante__segundo_apellido__icontains=filtros["nombre"])
-            )
-        if filtros["seccion"]:
-            base_qs = base_qs.filter(seccion__numero=filtros["seccion"])
-        if filtros["subgrupo"]:
-            base_qs = base_qs.filter(subgrupo__letra=filtros["subgrupo"])
-
-        becas_activas_ids = set(
+        ids_estudiantes = [m.estudiante_id for m in matriculas]
+        becas_ids = set(
             BecaComedor.objects.filter(
                 institucion=institucion,
                 curso_lectivo=curso_lectivo,
                 activa=True,
-                estudiante_id__in=base_qs.values_list("estudiante_id", flat=True),
+                estudiante_id__in=ids_estudiantes,
             ).values_list("estudiante_id", flat=True)
         )
 
-        if filtros["becado"] == "si":
-            base_qs = base_qs.filter(estudiante_id__in=becas_activas_ids)
-        elif filtros["becado"] == "no":
-            base_qs = base_qs.exclude(estudiante_id__in=becas_activas_ids)
-
-        matriculas_qs = base_qs
-
-        if request.method == "POST" and data.get("accion") == "guardar":
-            ids_visibles = list(matriculas_qs.values_list("estudiante_id", flat=True))
+        if request.method == "POST" and request.POST.get("accion") == "guardar":
             ids_marcados = {int(x) for x in request.POST.getlist("becados") if x.isdigit()}
             becas_existentes = {
                 beca.estudiante_id: beca
                 for beca in BecaComedor.objects.filter(
                     institucion=institucion,
                     curso_lectivo=curso_lectivo,
-                    estudiante_id__in=ids_visibles,
+                    estudiante_id__in=ids_estudiantes,
                 )
             }
+            creadas = activadas = desactivadas = 0
 
-            creadas = 0
-            activadas = 0
-            desactivadas = 0
-
-            for estudiante_id in ids_visibles:
-                debe_estar_activa = estudiante_id in ids_marcados
+            for estudiante_id in ids_estudiantes:
+                debe_activa = estudiante_id in ids_marcados
                 beca = becas_existentes.get(estudiante_id)
-
                 if beca:
-                    if beca.activa != debe_estar_activa:
-                        beca.activa = debe_estar_activa
+                    if beca.activa != debe_activa:
+                        beca.activa = debe_activa
                         beca.usuario_actualizacion = request.user
                         beca.save(update_fields=["activa", "usuario_actualizacion", "fecha_actualizacion"])
-                        if debe_estar_activa:
+                        if debe_activa:
                             activadas += 1
                         else:
                             desactivadas += 1
-                elif debe_estar_activa:
+                elif debe_activa:
                     BecaComedor.objects.create(
                         institucion=institucion,
                         curso_lectivo=curso_lectivo,
@@ -146,42 +119,31 @@ def registrar_beca_comedor(request):
 
             messages.success(
                 request,
-                f"Proceso completado. Creadas: {creadas}, activadas: {activadas}, desactivadas: {desactivadas}.",
+                f"Guardado. Becas nuevas: {creadas} | Activadas: {activadas} | Desactivadas: {desactivadas}.",
             )
 
-            becas_activas_ids = set(
+            # Refrescar becas tras guardar
+            becas_ids = set(
                 BecaComedor.objects.filter(
                     institucion=institucion,
                     curso_lectivo=curso_lectivo,
                     activa=True,
-                    estudiante_id__in=matriculas_qs.values_list("estudiante_id", flat=True),
+                    estudiante_id__in=ids_estudiantes,
                 ).values_list("estudiante_id", flat=True)
             )
-
-    page_number = request.GET.get("page") if request.method == "GET" else 1
-    paginator = Paginator(list(matriculas_qs), 80)
-    page_obj = paginator.get_page(page_number)
-    becas_pagina_ids = set()
-    if curso_lectivo and institucion and page_obj.object_list:
-        becas_pagina_ids = set(
-            BecaComedor.objects.filter(
-                institucion=institucion,
-                curso_lectivo=curso_lectivo,
-                activa=True,
-                estudiante_id__in=[m.estudiante_id for m in page_obj.object_list],
-            ).values_list("estudiante_id", flat=True)
-        )
 
     context = {
         "curso_lectivo": curso_lectivo,
         "instituciones": instituciones,
         "institucion": institucion,
+        "niveles": niveles,
         "es_superusuario": request.user.is_superuser,
-        "filtros": filtros,
-        "secciones": secciones,
-        "subgrupos": subgrupos,
-        "page_obj": page_obj,
-        "becas_pagina_ids": becas_pagina_ids,
+        "nivel_id": nivel_id,
+        "seccion_id": seccion_id,
+        "subgrupo_id": subgrupo_id,
+        "matriculas": matriculas,
+        "becas_ids": becas_ids,
+        "mostrar_tabla": mostrar_tabla,
     }
     return render(request, "comedor/registrar_beca.html", context)
 

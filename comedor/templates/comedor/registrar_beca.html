@@ -1,134 +1,393 @@
-{% extends "admin/base_site.html" %}
+{% extends 'admin/base_site.html' %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+  .beca-container {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 12px 32px rgba(44,62,80,.12);
+    margin-bottom: 2rem;
+  }
+  .beca-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .beca-filtros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: flex-end;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+  .beca-filtros .form-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
+  }
+  .beca-filtros label {
+    font-size: .9rem;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: .4rem;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+  }
+  .beca-filtros select {
+    padding: .7rem 1rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: #fff;
+    transition: border-color .2s;
+  }
+  .beca-filtros select:focus {
+    outline: none;
+    border-color: #1976d2;
+    box-shadow: 0 0 0 3px rgba(25,118,210,.15);
+  }
+  .btn-buscar {
+    background: linear-gradient(135deg,#1976d2,#115293);
+    color: #fff;
+    border: none;
+    padding: .75rem 2rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    box-shadow: 0 4px 12px rgba(25,118,210,.3);
+  }
+  .btn-buscar:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(25,118,210,.4); }
+  .btn-guardar {
+    background: linear-gradient(135deg,#28a745,#19692c);
+    color: #fff;
+    border: none;
+    padding: .75rem 2.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    box-shadow: 0 4px 12px rgba(40,167,69,.3);
+  }
+  .btn-guardar:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(40,167,69,.4); }
+  .info-banner {
+    background: #e3f2fd;
+    border: 1px solid #bbdefb;
+    border-radius: 8px;
+    padding: .85rem 1.2rem;
+    margin-bottom: 1.5rem;
+    color: #1565c0;
+    font-weight: 500;
+    text-align: center;
+  }
+  .warn-banner {
+    background: #fff3e0;
+    border: 1px solid #ffe0b2;
+    border-radius: 8px;
+    padding: .85rem 1.2rem;
+    margin-bottom: 1.5rem;
+    color: #e65100;
+    font-weight: 500;
+    text-align: center;
+  }
+  .tabla-becas {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,.08);
+  }
+  .tabla-becas thead tr {
+    background: #1976d2;
+    color: #fff;
+  }
+  .tabla-becas th, .tabla-becas td {
+    padding: .75rem 1rem;
+    text-align: left;
+    font-size: .95rem;
+  }
+  .tabla-becas th { font-weight: 600; white-space: nowrap; }
+  .tabla-becas tbody tr:nth-child(even) { background: #f5f8fc; }
+  .tabla-becas tbody tr:hover { background: #e3f2fd; transition: background .15s; }
+  .beca-si {
+    background: #d4edda;
+    color: #155724;
+    font-weight: 700;
+    border-radius: 6px;
+    padding: .2rem .7rem;
+    font-size: .88rem;
+    white-space: nowrap;
+  }
+  .beca-no {
+    background: #f8d7da;
+    color: #721c24;
+    font-weight: 700;
+    border-radius: 6px;
+    padding: .2rem .7rem;
+    font-size: .88rem;
+    white-space: nowrap;
+  }
+  .acciones-tabla {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 1.2rem;
+    flex-wrap: wrap;
+  }
+  .total-badge {
+    background: #e3f2fd;
+    color: #1565c0;
+    border-radius: 8px;
+    padding: .4rem .9rem;
+    font-weight: 600;
+    font-size: .95rem;
+  }
+  input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: #1976d2;
+  }
+  @media(max-width:768px) {
+    .beca-filtros { flex-direction: column; align-items: stretch; }
+    .beca-container { padding: 1rem; }
+  }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="module" style="padding: 1rem;">
-  <h1>Registrar beca de comedor</h1>
-  <p>Solo se listan estudiantes con matrícula activa en el curso lectivo activo.</p>
+<div class="beca-container">
+  <h1 class="beca-title">Registrar Beca de Comedor</h1>
 
   {% if not curso_lectivo %}
-    <p style="color:#b91c1c;font-weight:700;">No existe un curso lectivo activo.</p>
-  {% endif %}
+    <div class="warn-banner">No existe un curso lectivo activo. Contacte al administrador.</div>
+  {% else %}
+    <div class="info-banner">
+      Curso lectivo activo: <strong>{{ curso_lectivo.nombre }}</strong> &nbsp;|&nbsp;
+      Seleccione nivel, sección y/o subgrupo para listar los estudiantes.
+    </div>
 
-  <form method="get" style="display:grid;grid-template-columns:repeat(6,minmax(150px,1fr));gap:0.75rem;align-items:end;margin-bottom:1rem;">
-    {% if es_superusuario %}
-      <div>
-        <label>Institución</label>
-        <select name="institucion" required style="width:100%;">
-          <option value="">Seleccione</option>
-          {% for item in instituciones %}
-            <option value="{{ item.id }}" {% if institucion and item.id == institucion.id %}selected{% endif %}>{{ item.nombre }}</option>
+    {% if messages %}
+      {% for msg in messages %}
+        <div class="info-banner" style="background:#d4edda;border-color:#c3e6cb;color:#155724;">{{ msg }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <!-- FILTROS -->
+    <form method="get" id="form-filtros" class="beca-filtros">
+      {% if es_superusuario %}
+      <div class="form-group">
+        <label for="id_institucion">Institución *</label>
+        <select name="institucion" id="id_institucion" required>
+          <option value="">Seleccione...</option>
+          {% for inst in instituciones %}
+            <option value="{{ inst.pk }}" {% if institucion and inst.pk == institucion.pk %}selected{% endif %}>{{ inst.nombre }}</option>
           {% endfor %}
         </select>
       </div>
-    {% endif %}
-    <div>
-      <label>Cédula</label>
-      <input type="text" name="cedula" value="{{ filtros.cedula }}" style="width:100%;">
-    </div>
-    <div>
-      <label>Nombre</label>
-      <input type="text" name="nombre" value="{{ filtros.nombre }}" style="width:100%;">
-    </div>
-    <div>
-      <label>Sección</label>
-      <select name="seccion" style="width:100%;">
-        <option value="">Todas</option>
-        {% for sec in secciones %}
-          <option value="{{ sec }}" {% if filtros.seccion == sec|stringformat:"s" %}selected{% endif %}>{{ sec }}</option>
-        {% endfor %}
-      </select>
-    </div>
-    <div>
-      <label>Subgrupo</label>
-      <select name="subgrupo" style="width:100%;">
-        <option value="">Todos</option>
-        {% for sub in subgrupos %}
-          <option value="{{ sub }}" {% if filtros.subgrupo == sub %}selected{% endif %}>{{ sub }}</option>
-        {% endfor %}
-      </select>
-    </div>
-    <div>
-      <label>Becado</label>
-      <select name="becado" style="width:100%;">
-        <option value="">Todos</option>
-        <option value="si" {% if filtros.becado == "si" %}selected{% endif %}>Sí</option>
-        <option value="no" {% if filtros.becado == "no" %}selected{% endif %}>No</option>
-      </select>
-    </div>
-    <div>
-      <button type="submit" class="button default">Buscar</button>
-    </div>
-  </form>
-
-  {% if page_obj %}
-    <form method="post">
-      {% csrf_token %}
-      <input type="hidden" name="accion" value="guardar">
-      {% if es_superusuario and institucion %}
-        <input type="hidden" name="institucion" value="{{ institucion.id }}">
       {% endif %}
-      <input type="hidden" name="cedula" value="{{ filtros.cedula }}">
-      <input type="hidden" name="nombre" value="{{ filtros.nombre }}">
-      <input type="hidden" name="seccion" value="{{ filtros.seccion }}">
-      <input type="hidden" name="subgrupo" value="{{ filtros.subgrupo }}">
-      <input type="hidden" name="becado" value="{{ filtros.becado }}">
 
-      <p><strong>Total en página:</strong> {{ page_obj.object_list|length }}</p>
-      <table style="width:100%;border-collapse:collapse;">
-        <thead>
-          <tr style="background:#f3f4f6;">
-            <th style="padding:8px;border:1px solid #ddd;"><input type="checkbox" id="marcar_todos"></th>
-            <th style="padding:8px;border:1px solid #ddd;">Cédula</th>
-            <th style="padding:8px;border:1px solid #ddd;">Nombre</th>
-            <th style="padding:8px;border:1px solid #ddd;">Nivel</th>
-            <th style="padding:8px;border:1px solid #ddd;">Sección</th>
-            <th style="padding:8px;border:1px solid #ddd;">Subgrupo</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for matricula in page_obj.object_list %}
-            <tr>
-              <td style="padding:8px;border:1px solid #ddd;text-align:center;">
-                <input type="checkbox" name="becados" value="{{ matricula.estudiante_id }}" {% if matricula.estudiante_id in becas_pagina_ids %}checked{% endif %}>
-              </td>
-              <td style="padding:8px;border:1px solid #ddd;">{{ matricula.estudiante.identificacion }}</td>
-              <td style="padding:8px;border:1px solid #ddd;">{{ matricula.estudiante }}</td>
-              <td style="padding:8px;border:1px solid #ddd;">{{ matricula.nivel }}</td>
-              <td style="padding:8px;border:1px solid #ddd;">{{ matricula.seccion|default:"-" }}</td>
-              <td style="padding:8px;border:1px solid #ddd;">{{ matricula.subgrupo|default:"-" }}</td>
-            </tr>
-          {% empty %}
-            <tr><td colspan="6" style="padding:8px;border:1px solid #ddd;">No hay registros para los filtros seleccionados.</td></tr>
+      <div class="form-group">
+        <label for="id_nivel">Nivel *</label>
+        <select name="nivel_id" id="id_nivel" required>
+          <option value="">Seleccione...</option>
+          {% for nivel in niveles %}
+            <option value="{{ nivel.pk }}" {% if nivel_id == nivel.pk|stringformat:"s" %}selected{% endif %}>{{ nivel.nombre }}</option>
           {% endfor %}
-        </tbody>
-      </table>
+        </select>
+      </div>
 
-      <div style="margin-top:1rem;display:flex;gap:0.75rem;align-items:center;">
-        <button type="submit" class="button default">Agregar al comedor / Guardar</button>
+      <div class="form-group">
+        <label for="id_seccion">Sección</label>
+        <select name="seccion_id" id="id_seccion">
+          <option value="">Todas las secciones</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="id_subgrupo">Subgrupo</label>
+        <select name="subgrupo_id" id="id_subgrupo">
+          <option value="">Todos los subgrupos</option>
+        </select>
+      </div>
+
+      <div class="form-group" style="justify-content:flex-end;">
+        <button type="submit" class="btn-buscar">Buscar</button>
       </div>
     </form>
 
-    <div style="margin-top:1rem;">
-      {% if page_obj.has_previous %}
-        <a href="?page={{ page_obj.previous_page_number }}{% if es_superusuario and institucion %}&institucion={{ institucion.id }}{% endif %}&cedula={{ filtros.cedula }}&nombre={{ filtros.nombre }}&seccion={{ filtros.seccion }}&subgrupo={{ filtros.subgrupo }}&becado={{ filtros.becado }}">Anterior</a>
-      {% endif %}
-      <span style="margin:0 0.75rem;">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
-      {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}{% if es_superusuario and institucion %}&institucion={{ institucion.id }}{% endif %}&cedula={{ filtros.cedula }}&nombre={{ filtros.nombre }}&seccion={{ filtros.seccion }}&subgrupo={{ filtros.subgrupo }}&becado={{ filtros.becado }}">Siguiente</a>
-      {% endif %}
-    </div>
+    <!-- TABLA DE RESULTADOS -->
+    {% if mostrar_tabla %}
+      <form method="post" id="form-becas">
+        {% csrf_token %}
+        <input type="hidden" name="accion" value="guardar">
+        <input type="hidden" name="nivel_id" value="{{ nivel_id }}">
+        <input type="hidden" name="seccion_id" value="{{ seccion_id }}">
+        <input type="hidden" name="subgrupo_id" value="{{ subgrupo_id }}">
+        {% if es_superusuario and institucion %}
+          <input type="hidden" name="institucion" value="{{ institucion.pk }}">
+        {% endif %}
+
+        {% if matriculas %}
+          <table class="tabla-becas">
+            <thead>
+              <tr>
+                <th style="width:46px;text-align:center;">
+                  <input type="checkbox" id="cb_todos" title="Seleccionar todos">
+                </th>
+                <th>Identificación</th>
+                <th>1° Apellido</th>
+                <th>2° Apellido</th>
+                <th>Nombre(s)</th>
+                <th>Sección</th>
+                <th>Subgrupo</th>
+                <th style="text-align:center;">¿Tiene beca?</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for mat in matriculas %}
+              <tr>
+                <td style="text-align:center;">
+                  <input type="checkbox"
+                         name="becados"
+                         value="{{ mat.estudiante_id }}"
+                         class="cb-beca"
+                         {% if mat.estudiante_id in becas_ids %}checked{% endif %}>
+                </td>
+                <td>{{ mat.estudiante.identificacion }}</td>
+                <td>{{ mat.estudiante.primer_apellido }}</td>
+                <td>{{ mat.estudiante.segundo_apellido }}</td>
+                <td>{{ mat.estudiante.nombres }}</td>
+                <td>{% if mat.seccion %}{{ mat.nivel.numero }}-{{ mat.seccion.numero }}{% else %}-{% endif %}</td>
+                <td>{% if mat.subgrupo %}{{ mat.subgrupo.letra }}{% else %}-{% endif %}</td>
+                <td style="text-align:center;">
+                  {% if mat.estudiante_id in becas_ids %}
+                    <span class="beca-si">Sí</span>
+                  {% else %}
+                    <span class="beca-no">No</span>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+          <div class="acciones-tabla">
+            <span class="total-badge">Total: {{ matriculas|length }} estudiantes</span>
+            <button type="submit" class="btn-guardar">Guardar becas</button>
+          </div>
+
+        {% else %}
+          <div class="warn-banner">No se encontraron estudiantes con matrícula activa para los filtros seleccionados.</div>
+        {% endif %}
+      </form>
+    {% endif %}
+
   {% endif %}
 </div>
 
 <script>
-  const marcarTodos = document.getElementById("marcar_todos");
-  if (marcarTodos) {
-    marcarTodos.addEventListener("change", function () {
-      document.querySelectorAll('input[name="becados"]').forEach((item) => {
-        item.checked = marcarTodos.checked;
+document.addEventListener('DOMContentLoaded', function () {
+  const nivelSel    = document.getElementById('id_nivel');
+  const seccionSel  = document.getElementById('id_seccion');
+  const subgrupoSel = document.getElementById('id_subgrupo');
+  const instSel     = document.getElementById('id_institucion');
+
+  const nivelIdActual    = "{{ nivel_id }}";
+  const seccionIdActual  = "{{ seccion_id }}";
+  const subgrupoIdActual = "{{ subgrupo_id }}";
+
+  function getInstitucionId() {
+    return instSel ? instSel.value : null;
+  }
+
+  function getCursoId() {
+    return "{{ curso_lectivo.pk|default:'' }}";
+  }
+
+  function cargarSecciones(nivelId, seleccionarId) {
+    seccionSel.innerHTML = '<option value="">Todas las secciones</option>';
+    subgrupoSel.innerHTML = '<option value="">Todos los subgrupos</option>';
+    if (!nivelId || !getCursoId()) return;
+
+    const params = new URLSearchParams({ curso_lectivo_id: getCursoId(), nivel_id: nivelId });
+    {% if es_superusuario %}
+    const instId = getInstitucionId();
+    if (instId) params.append('institucion_id', instId);
+    {% endif %}
+
+    fetch('/matricula/api/secciones/?' + params.toString())
+      .then(r => r.json())
+      .then(data => {
+        if (data.success) {
+          data.secciones.forEach(s => {
+            const opt = new Option(s.nombre, s.id);
+            seccionSel.appendChild(opt);
+          });
+          if (seleccionarId) {
+            seccionSel.value = seleccionarId;
+            if (seccionSel.value) cargarSubgrupos(seccionSel.value, subgrupoIdActual);
+          }
+        }
       });
+  }
+
+  function cargarSubgrupos(seccionId, seleccionarId) {
+    subgrupoSel.innerHTML = '<option value="">Todos los subgrupos</option>';
+    if (!seccionId || !getCursoId()) return;
+
+    const params = new URLSearchParams({ curso_lectivo_id: getCursoId(), seccion_id: seccionId });
+    {% if es_superusuario %}
+    const instId = getInstitucionId();
+    if (instId) params.append('institucion_id', instId);
+    {% endif %}
+
+    fetch('/matricula/api/subgrupos/?' + params.toString())
+      .then(r => r.json())
+      .then(data => {
+        if (data.success) {
+          data.subgrupos.forEach(s => {
+            const opt = new Option(s.nombre, s.id);
+            subgrupoSel.appendChild(opt);
+          });
+          if (seleccionarId) subgrupoSel.value = seleccionarId;
+        }
+      });
+  }
+
+  nivelSel.addEventListener('change', function () {
+    cargarSecciones(this.value, null);
+  });
+
+  seccionSel.addEventListener('change', function () {
+    cargarSubgrupos(this.value, null);
+  });
+
+  // Restaurar selects si hay filtros activos (ej: después de un POST)
+  if (nivelIdActual) {
+    cargarSecciones(nivelIdActual, seccionIdActual);
+  }
+
+  // Checkbox "seleccionar todos"
+  const cbTodos = document.getElementById('cb_todos');
+  if (cbTodos) {
+    cbTodos.addEventListener('change', function () {
+      document.querySelectorAll('.cb-beca').forEach(cb => cb.checked = cbTodos.checked);
     });
   }
+});
 </script>
 {% endblock %}
-
