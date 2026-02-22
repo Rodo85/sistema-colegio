@@ -167,10 +167,19 @@ class EsquemaEvalComponente(models.Model):
         return f"{self.componente.codigo}: {self.porcentaje}%"
 
     def clean(self):
-        if self.esquema_id and self.esquema.locked:
-            raise ValidationError(
-                "El esquema está bloqueado; no se pueden agregar ni modificar sus componentes."
+        if self.esquema_id:
+            # Consultar la BD directamente para evitar un falso positivo cuando
+            # el padre está transitando de unlocked→locked en la misma petición
+            # (Django actualiza la instancia en memoria antes de validar los inlines).
+            db_locked = (
+                EsquemaEval.objects.filter(pk=self.esquema_id)
+                .values_list("locked", flat=True)
+                .first()
             )
+            if db_locked:
+                raise ValidationError(
+                    "El esquema está bloqueado; no se pueden agregar ni modificar sus componentes."
+                )
         if self.porcentaje is not None:
             if self.porcentaje < 0 or self.porcentaje > 100:
                 raise ValidationError("El porcentaje debe estar entre 0 y 100.")
