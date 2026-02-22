@@ -261,13 +261,39 @@
         <div class="label">Usos de tiquete en periodo</div>
         <span class="valor">{{ total_usos_tiquete }}</span>
       </div>
-      {% for item in usos_por_tipo_tiquete %}
-      <div class="resumen-card card-naranja">
-        <div class="label">{{ item.tipo_display }}</div>
-        <span class="valor">{{ item.total }}</span>
+      <div class="resumen-card" style="border-top:4px solid #16a34a; background:linear-gradient(135deg,#f0fdf4,#dcfce7);">
+        <div class="label" style="color:#166534;">Total recaudado</div>
+        <span class="valor" style="color:#15803d;">₡{{ recaudacion_total|floatformat:0 }}</span>
       </div>
-      {% endfor %}
     </div>
+
+    <!-- DESGLOSE DE RECAUDACIÓN POR TIPO -->
+    {% if usos_por_tipo_tiquete %}
+    <div class="section-title">Recaudación por tipo de tiquete</div>
+    <table class="tabla-reporte">
+      <thead>
+        <tr>
+          <th>Tipo</th>
+          <th>Usos</th>
+          <th>Monto recaudado</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in usos_por_tipo_tiquete %}
+        <tr>
+          <td>{{ item.tipo_display }}</td>
+          <td class="total-col">{{ item.total }}</td>
+          <td class="total-col" style="color:#15803d;">₡{{ item.monto_total|floatformat:0 }}</td>
+        </tr>
+        {% endfor %}
+        <tr style="background:#f0fdf4; font-weight:700; border-top:2px solid #86efac;">
+          <td>Total</td>
+          <td class="total-col">{{ total_usos_tiquete }}</td>
+          <td class="total-col" style="color:#15803d;">₡{{ recaudacion_total|floatformat:0 }}</td>
+        </tr>
+      </tbody>
+    </table>
+    {% endif %}
 
     <!-- ASISTENCIA POR DÍA -->
     <div class="section-title">Asistencia por día</div>
@@ -300,6 +326,7 @@
           <th>Fecha</th>
           <th>Tipo</th>
           <th>Usos</th>
+          <th>Monto recaudado</th>
         </tr>
       </thead>
       <tbody>
@@ -308,9 +335,10 @@
             <td>{{ item.fecha|date:"l d/m/Y"|capfirst }}</td>
             <td>{{ item.tipo_display }}</td>
             <td class="total-col">{{ item.total }}</td>
+            <td class="total-col" style="color:#15803d;">₡{{ item.monto_total|floatformat:0 }}</td>
           </tr>
         {% empty %}
-          <tr class="sin-datos"><td colspan="3">No hay registros de tiquetes en el periodo.</td></tr>
+          <tr class="sin-datos"><td colspan="4">No hay registros de tiquetes en el periodo.</td></tr>
         {% endfor %}
       </tbody>
     </table>

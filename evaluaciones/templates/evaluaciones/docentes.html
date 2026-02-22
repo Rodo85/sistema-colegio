@@ -1,0 +1,190 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block title %}Asignaciones Docentes{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+:root{--primary:#1a6eb5;--primary-dark:#145591;--success:#198754;--danger:#dc3545;--border:#dee2e6;--surface:#f8f9fc;--muted:#6c757d;}
+.page-wrap{max-width:1150px;margin:28px auto;padding:0 16px;font-family:"Segoe UI",system-ui,sans-serif;}
+.page-title{font-size:1.65rem;font-weight:700;color:var(--primary-dark);margin-bottom:4px;}
+.page-sub{color:var(--muted);margin-bottom:28px;font-size:.95rem;}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;}
+.card-header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 20px;border-radius:10px 10px 0 0;display:flex;align-items:center;gap:10px;}
+.card-header h2{margin:0;font-size:1rem;font-weight:600;color:var(--primary-dark);}
+.card-body{padding:20px;}
+.filter-bar{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin-bottom:20px;}
+.fg{display:flex;flex-direction:column;min-width:180px;}
+.fg label{font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;}
+.form-control{width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-size:.93rem;box-sizing:border-box;}
+.form-control:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(26,110,181,.15);}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;font-size:.9rem;font-weight:600;border-radius:6px;border:none;cursor:pointer;text-decoration:none;transition:filter .15s;}
+.btn:hover{filter:brightness(1.08);}
+.btn-primary{background:var(--primary);color:#fff;}
+.btn-success{background:var(--success);color:#fff;}
+.btn-danger{background:var(--danger);color:#fff;}
+.btn-sm{padding:5px 11px;font-size:.82rem;}
+.alert{padding:12px 16px;border-radius:8px;margin-bottom:18px;font-size:.92rem;}
+.alert-danger{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;}
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:.88rem;}
+thead th{background:var(--surface);color:var(--muted);font-size:.72rem;font-weight:700;text-transform:uppercase;padding:10px 12px;border-bottom:2px solid var(--border);white-space:nowrap;}
+tbody td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:middle;}
+tbody tr:hover{background:#f0f5fb;}
+.badge{display:inline-block;padding:3px 9px;border-radius:50px;font-size:.72rem;font-weight:700;}
+.badge-acad{background:#dbeafe;color:#1e40af;}
+.badge-tec{background:#ede9fe;color:#5b21b6;}
+.badge-on{background:#d1fae5;color:#065f46;}
+.badge-off{background:#fee2e2;color:#991b1b;}
+.toggle-btn{cursor:pointer;border:none;}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-wrap">
+  <div class="page-title"><i class="fas fa-chalkboard-teacher"></i> Asignaciones Docentes</div>
+  <p class="page-sub">Gestione qué docente imparte cada materia por sección o subgrupo en el año lectivo.</p>
+
+  {% if messages %}
+    {% for m in messages %}
+      <div class="alert alert-{{ m.tags|default:'success' }}">{{ m }}</div>
+    {% endfor %}
+  {% endif %}
+  {% if error %}<div class="alert alert-danger">{{ error }}</div>{% endif %}
+
+  <!-- Filtros -->
+  <div class="card">
+    <div class="card-header"><i class="fas fa-filter" style="color:var(--primary)"></i><h2>Filtros</h2></div>
+    <div class="card-body">
+      <form method="get" class="filter-bar">
+        {% if es_superusuario %}
+        <div class="fg">
+          <label>Institución</label>
+          <select name="institucion" class="form-control" onchange="this.form.submit()">
+            <option value="">— Seleccione —</option>
+            {% for inst in instituciones %}
+              <option value="{{ inst.pk }}" {% if institucion and inst.pk == institucion.pk %}selected{% endif %}>{{ inst.nombre }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        {% endif %}
+        <div class="fg">
+          <label>Curso Lectivo</label>
+          <select name="curso_lectivo" class="form-control" onchange="this.form.submit()">
+            {% for cl in todos_cursos %}
+              <option value="{{ cl.pk }}" {% if curso_lectivo and cl.pk == curso_lectivo.pk %}selected{% endif %}>{{ cl.nombre }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="fg" style="justify-content:flex-end;">
+          {% if institucion and curso_lectivo %}
+          <a href="{% url 'evaluaciones:crear_asignacion' %}?{% if es_superusuario %}institucion={{ institucion.pk }}&{% endif %}curso_lectivo={{ curso_lectivo.pk }}"
+             class="btn btn-primary">
+            <i class="fas fa-plus"></i> Nueva asignación
+          </a>
+          {% endif %}
+        </div>
+      </form>
+    </div>
+  </div>
+
+  {% if institucion and curso_lectivo %}
+  <div class="card">
+    <div class="card-header">
+      <i class="fas fa-list" style="color:var(--primary)"></i>
+      <h2>{{ institucion.nombre }} — {{ curso_lectivo.nombre }} ({{ asignaciones|length }} asignación{% if asignaciones|length != 1 %}es{% endif %})</h2>
+    </div>
+    <div class="card-body">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Docente</th>
+              <th>Materia</th>
+              <th>Tipo</th>
+              <th>Sección / Subgrupo</th>
+              <th>Esquema (snapshot)</th>
+              <th>Estado</th>
+              <th style="text-align:center;">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for a in asignaciones %}
+            <tr>
+              <td><strong>{{ a.docente.usuario.full_name }}</strong></td>
+              <td>{{ a.subarea_curso.subarea.nombre }}</td>
+              <td>
+                {% if a.subarea_curso.subarea.es_academica %}
+                  <span class="badge badge-acad">Académica</span>
+                {% else %}
+                  <span class="badge badge-tec">Técnica</span>
+                {% endif %}
+              </td>
+              <td>
+                {% if a.seccion_id %}
+                  Secc. {{ a.seccion }}
+                {% elif a.subgrupo_id %}
+                  Subgr. {{ a.subgrupo }}
+                {% else %}—{% endif %}
+              </td>
+              <td style="font-size:.82rem;color:var(--muted);">
+                {% if a.eval_scheme_snapshot %}{{ a.eval_scheme_snapshot.nombre }}{% else %}—{% endif %}
+              </td>
+              <td>
+                <button class="btn btn-sm toggle-btn {% if a.activo %}btn-success badge-on{% else %}btn-danger badge-off{% endif %}"
+                        data-id="{{ a.pk }}"
+                        data-inst="{{ institucion.pk }}">
+                  {% if a.activo %}<i class="fas fa-check-circle"></i> Activo{% else %}<i class="fas fa-times-circle"></i> Inactivo{% endif %}
+                </button>
+              </td>
+              <td style="text-align:center;white-space:nowrap;">
+                <a href="{% url 'evaluaciones:editar_asignacion' a.pk %}"
+                   class="btn btn-sm btn-primary">
+                  <i class="fas fa-edit"></i>
+                </a>
+              </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7" style="text-align:center;color:var(--muted);padding:28px;"><i class="fas fa-inbox" style="font-size:1.8rem;display:block;margin-bottom:8px;"></i>No hay asignaciones para este período.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const TOGGLE_URL = "{% url 'evaluaciones:toggle_asignacion' asignacion_id=0 %}".replace("/0/", "/{id}/");
+  const CSRF = document.cookie.match(/csrftoken=([^;]+)/)?.[1] || "";
+
+  document.querySelectorAll(".toggle-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      const id = btn.dataset.id;
+      const inst = btn.dataset.inst;
+      const url = TOGGLE_URL.replace("{id}", id);
+      fetch(url, {
+        method: "POST",
+        headers: { "X-CSRFToken": CSRF, "Content-Type": "application/x-www-form-urlencoded" },
+        body: "institucion=" + encodeURIComponent(inst),
+      })
+        .then(r => r.json())
+        .then(data => {
+          if (data.ok) {
+            if (data.activo) {
+              btn.className = "btn btn-sm toggle-btn btn-success badge-on";
+              btn.innerHTML = '<i class="fas fa-check-circle"></i> Activo';
+            } else {
+              btn.className = "btn btn-sm toggle-btn btn-danger badge-off";
+              btn.innerHTML = '<i class="fas fa-times-circle"></i> Inactivo';
+            }
+          }
+        });
+    });
+  });
+});
+</script>
+{% endblock %}

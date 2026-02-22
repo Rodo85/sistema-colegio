@@ -31371,3 +31371,35 @@ Traceback (most recent call last):
 django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
 WARNING 2025-11-11 20:40:43,098 basehttp 73432 74736 "GET /favicon.ico HTTP/1.1" 400 85309
 INFO 2025-11-13 10:51:29,194 autoreload 30076 30100 Watching for file changes with StatReloader
+INFO 2026-02-21 11:49:04,314 autoreload 216688 214812 Watching for file changes with StatReloader
+INFO 2026-02-21 12:39:17,865 autoreload 216688 214812 D:\Proyecto Colegio\sistema_colegio\comedor\admin.py changed, reloading.
+INFO 2026-02-21 12:39:18,755 autoreload 220196 223580 Watching for file changes with StatReloader
+INFO 2026-02-21 13:30:09,222 autoreload 220196 223580 D:\Proyecto Colegio\sistema_colegio\comedor\models.py changed, reloading.
+INFO 2026-02-21 13:30:10,152 autoreload 224212 205236 Watching for file changes with StatReloader
+INFO 2026-02-21 13:30:14,801 autoreload 224212 205236 D:\Proyecto Colegio\sistema_colegio\comedor\models.py changed, reloading.
+INFO 2026-02-21 13:30:15,809 autoreload 205616 223760 Watching for file changes with StatReloader
+INFO 2026-02-21 13:30:23,595 autoreload 205616 223760 D:\Proyecto Colegio\sistema_colegio\comedor\admin.py changed, reloading.
+INFO 2026-02-21 13:30:24,579 autoreload 220036 224148 Watching for file changes with StatReloader
+INFO 2026-02-21 13:46:26,368 autoreload 220036 224148 D:\Proyecto Colegio\sistema_colegio\comedor\admin.py changed, reloading.
+INFO 2026-02-21 13:46:27,237 autoreload 224140 121412 Watching for file changes with StatReloader
+INFO 2026-02-21 16:07:17,243 autoreload 224140 121412 D:\Proyecto Colegio\sistema_colegio\comedor\models.py changed, reloading.
+INFO 2026-02-21 16:07:18,331 autoreload 195952 226720 Watching for file changes with StatReloader
+INFO 2026-02-21 16:07:20,732 autoreload 195952 226720 D:\Proyecto Colegio\sistema_colegio\comedor\models.py changed, reloading.
+INFO 2026-02-21 16:07:21,641 autoreload 226796 229684 Watching for file changes with StatReloader
+INFO 2026-02-21 16:07:37,990 autoreload 226796 229684 D:\Proyecto Colegio\sistema_colegio\comedor\models.py changed, reloading.
+INFO 2026-02-21 16:07:39,124 autoreload 231680 218016 Watching for file changes with StatReloader
+INFO 2026-02-21 16:08:37,007 autoreload 231680 218016 D:\Proyecto Colegio\sistema_colegio\comedor\admin.py changed, reloading.
+INFO 2026-02-21 16:08:38,012 autoreload 217500 206364 Watching for file changes with StatReloader
+INFO 2026-02-21 16:12:22,775 autoreload 217500 206364 D:\Proyecto Colegio\sistema_colegio\sis_colegio\jazzmin_config.py changed, reloading.
+INFO 2026-02-21 16:12:23,750 autoreload 212848 232192 Watching for file changes with StatReloader
+INFO 2026-02-21 16:12:27,376 autoreload 212848 232192 D:\Proyecto Colegio\sistema_colegio\sis_colegio\jazzmin_config.py changed, reloading.
+INFO 2026-02-21 16:12:28,285 autoreload 232752 232560 Watching for file changes with StatReloader
+INFO 2026-02-21 23:00:00,302 autoreload 232752 232560 D:\Proyecto Colegio\sistema_colegio\sis_colegio\settings.py changed, reloading.
+INFO 2026-02-21 23:00:02,211 autoreload 248356 244952 Watching for file changes with StatReloader
+INFO 2026-02-21 23:00:06,993 autoreload 248356 244952 D:\Proyecto Colegio\sistema_colegio\sis_colegio\jazzmin_config.py changed, reloading.
+INFO 2026-02-21 23:00:07,942 autoreload 250520 250588 Watching for file changes with StatReloader
+INFO 2026-02-21 23:00:12,546 autoreload 250520 250588 D:\Proyecto Colegio\sistema_colegio\sis_colegio\jazzmin_config.py changed, reloading.
+INFO 2026-02-21 23:00:13,506 autoreload 251064 248752 Watching for file changes with StatReloader
+INFO 2026-02-21 23:00:15,957 autoreload 251064 248752 D:\Proyecto Colegio\sistema_colegio\sis_colegio\jazzmin_config.py changed, reloading.
+INFO 2026-02-21 23:00:17,022 autoreload 37792 243848 Watching for file changes with StatReloader
+INFO 2026-02-21 23:00:20,529 autoreload 37792 243848 D:\Proyecto Colegio\sistema_colegio\sis_colegio\jazzmin_config.py changed, reloading.

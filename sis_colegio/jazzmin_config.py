@@ -13,8 +13,9 @@ JAZZMIN_SETTINGS = {
     
     "order_with_respect_to": [
         "core",
-        "matricula", 
+        "matricula",
         "comedor",
+        "evaluaciones",
         "catalogos",
         "config_institucional",
         "auth",
@@ -36,6 +37,14 @@ JAZZMIN_SETTINGS = {
         "comedor.registroalmuerzo": "fas fa-qrcode",
         "comedor.tiquetecomedor": "fas fa-ticket-alt",
         "comedor.registroalmuerzoTiquete": "fas fa-receipt",
+
+        "evaluaciones.componenteeval": "fas fa-puzzle-piece",
+        "evaluaciones.esquemaeval": "fas fa-clipboard-list",
+        "evaluaciones.esquemaevalcomponente": "fas fa-percent",
+        "evaluaciones.periodo": "fas fa-calendar-alt",
+        "evaluaciones.subareacursolectivo": "fas fa-book-open",
+        "evaluaciones.periodocursolectivo": "fas fa-calendar-check",
+        "evaluaciones.docenteasignacion": "fas fa-chalkboard-teacher",
         
         "catalogos.adecuacion": "fas fa-wheelchair",
         "catalogos.canton": "fas fa-map-marker-alt",
@@ -67,6 +76,7 @@ JAZZMIN_SETTINGS = {
         {"app": "core"},
         {"app": "matricula"},
         {"app": "comedor"},
+        {"app": "evaluaciones"},
         {"app": "catalogos"},
         {"app": "config_institucional"},
     ],
@@ -92,6 +102,26 @@ JAZZMIN_SETTINGS = {
                 "url": "matricula:reporte_pas_seccion",
                 "icon": "fas fa-id-card-alt",
                 "permissions": ["matricula.access_reporte_pas_seccion"],
+            },
+        ],
+        "evaluaciones": [
+            {
+                "name": "Subáreas por curso",
+                "url": "evaluaciones:subareas",
+                "icon": "fas fa-book-open",
+                "permissions": ["evaluaciones.access_subareas_curso"],
+            },
+            {
+                "name": "Períodos por curso",
+                "url": "evaluaciones:periodos",
+                "icon": "fas fa-calendar-check",
+                "permissions": ["evaluaciones.access_periodos_curso"],
+            },
+            {
+                "name": "Asignaciones docentes",
+                "url": "evaluaciones:docentes",
+                "icon": "fas fa-chalkboard-teacher",
+                "permissions": ["evaluaciones.access_docente_asignacion"],
             },
         ],
         "comedor": [

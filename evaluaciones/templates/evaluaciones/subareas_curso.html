@@ -1,0 +1,155 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block title %}Subáreas por Curso Lectivo{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+:root{--primary:#1a6eb5;--primary-dark:#145591;--success:#198754;--danger:#dc3545;--surface:#f8f9fc;--border:#dee2e6;--text:#212529;--muted:#6c757d;}
+.page-wrap{max-width:1150px;margin:28px auto;padding:0 16px;font-family:"Segoe UI",system-ui,sans-serif;}
+.page-title{font-size:1.65rem;font-weight:700;color:var(--primary-dark);margin-bottom:4px;}
+.page-sub{color:var(--muted);margin-bottom:28px;font-size:.95rem;}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;}
+.card-header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 20px;border-radius:10px 10px 0 0;display:flex;align-items:center;gap:10px;}
+.card-header h2{margin:0;font-size:1rem;font-weight:600;color:var(--primary-dark);}
+.card-body{padding:20px;}
+.filter-bar{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin-bottom:20px;}
+.fg{display:flex;flex-direction:column;min-width:180px;}
+.fg label{font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;}
+.form-control{width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-size:.93rem;box-sizing:border-box;}
+.form-control:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(26,110,181,.15);}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;font-size:.9rem;font-weight:600;border-radius:6px;border:none;cursor:pointer;text-decoration:none;transition:filter .15s;}
+.btn:hover{filter:brightness(1.08);}
+.btn-primary{background:var(--primary);color:#fff;}
+.btn-success{background:var(--success);color:#fff;}
+.btn-sm{padding:5px 11px;font-size:.82rem;}
+.alert{padding:12px 16px;border-radius:8px;margin-bottom:18px;font-size:.92rem;}
+.alert-danger{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;}
+.alert-success{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;}
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:.9rem;}
+thead th{background:var(--surface);color:var(--muted);font-size:.73rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:10px 14px;border-bottom:2px solid var(--border);white-space:nowrap;}
+tbody tr:hover{background:#f0f5fb;}
+tbody td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.badge{display:inline-block;padding:3px 9px;border-radius:50px;font-size:.73rem;font-weight:700;}
+.badge-acad{background:#dbeafe;color:#1e40af;}
+.badge-tec{background:#ede9fe;color:#5b21b6;}
+.chk-activa{transform:scale(1.3);cursor:pointer;}
+select.esquema-sel{min-width:200px;font-size:.85rem;padding:5px 8px;border:1px solid var(--border);border-radius:6px;}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-wrap">
+  <div class="page-title"><i class="fas fa-book-open"></i> Subáreas por Curso Lectivo</div>
+  <p class="page-sub">Activa las materias disponibles para cada institución y año, y asigna su esquema de evaluación.</p>
+
+  {% if messages %}
+    {% for m in messages %}
+      <div class="alert alert-{{ m.tags|default:'success' }}">{{ m }}</div>
+    {% endfor %}
+  {% endif %}
+  {% if error %}<div class="alert alert-danger"><i class="fas fa-exclamation-circle"></i> {{ error }}</div>{% endif %}
+
+  <!-- Filtros de contexto -->
+  <div class="card">
+    <div class="card-header"><i class="fas fa-filter" style="color:var(--primary)"></i><h2>Filtros</h2></div>
+    <div class="card-body">
+      <form method="get" class="filter-bar">
+        {% if es_superusuario %}
+        <div class="fg">
+          <label>Institución</label>
+          <select name="institucion" class="form-control" onchange="this.form.submit()">
+            <option value="">— Seleccione —</option>
+            {% for inst in instituciones %}
+              <option value="{{ inst.pk }}" {% if institucion and inst.pk == institucion.pk %}selected{% endif %}>{{ inst.nombre }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        {% endif %}
+        <div class="fg">
+          <label>Curso Lectivo</label>
+          <select name="curso_lectivo" class="form-control" onchange="this.form.submit()">
+            {% for cl in todos_cursos %}
+              <option value="{{ cl.pk }}" {% if curso_lectivo and cl.pk == curso_lectivo.pk %}selected{% endif %}>{{ cl.nombre }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  {% if institucion and curso_lectivo %}
+  <form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="accion" value="guardar">
+    {% if es_superusuario %}
+    <input type="hidden" name="institucion" value="{{ institucion.pk }}">
+    {% endif %}
+    <input type="hidden" name="curso_lectivo" value="{{ curso_lectivo.pk }}">
+
+    <div class="card">
+      <div class="card-header">
+        <i class="fas fa-list-check" style="color:var(--success)"></i>
+        <h2>{{ institucion.nombre }} — {{ curso_lectivo.nombre }}</h2>
+        <div style="margin-left:auto;">
+          <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Guardar cambios</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Materia / Subárea</th>
+                <th>Tipo</th>
+                <th style="text-align:center;">Activa</th>
+                <th>Esquema de evaluación</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in subareas_activadas %}
+              <tr>
+                <td><strong>{{ item.subarea.nombre }}</strong></td>
+                <td>
+                  {% if item.subarea.es_academica %}
+                    <span class="badge badge-acad">Académica</span>
+                  {% else %}
+                    <span class="badge badge-tec">Técnica</span>
+                  {% endif %}
+                </td>
+                <td style="text-align:center;">
+                  <input type="checkbox"
+                         class="chk-activa"
+                         name="activas"
+                         value="{{ item.subarea.pk }}"
+                         {% if item.activa %}checked{% endif %}>
+                </td>
+                <td>
+                  <select name="esquema_{{ item.subarea.pk }}" class="esquema-sel">
+                    <option value="">— Sin esquema —</option>
+                    {% for esq in esquemas %}
+                      <option value="{{ esq.pk }}"
+                        {% if item.config and item.config.eval_scheme_id == esq.pk %}selected{% endif %}>
+                        {{ esq }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </td>
+              </tr>
+              {% empty %}
+              <tr><td colspan="4" style="text-align:center;color:var(--muted);padding:24px;">No hay subáreas en el catálogo.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div style="margin-top:16px;display:flex;justify-content:flex-end;">
+          <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Guardar cambios</button>
+        </div>
+      </div>
+    </div>
+  </form>
+  {% endif %}
+</div>
+{% endblock %}

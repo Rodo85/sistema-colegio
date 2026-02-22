@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 import qrcode
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
-from django.db.models import Count, Q
+from django.db.models import Count, Q, Sum
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
@@ -587,6 +587,7 @@ def reportes_comedor(request):
 
     total_tiquetes_activos = 0
     total_usos_tiquete = 0
+    recaudacion_total = 0
     usos_por_tipo_tiquete = []
     por_dia_tiquete = []
 
@@ -647,20 +648,23 @@ def reportes_comedor(request):
             fecha__range=(fecha_inicio, fecha_fin),
         )
         total_usos_tiquete = registros_tiq_qs.count()
+        recaudacion_total = registros_tiq_qs.aggregate(
+            total=Sum("tiquete__monto")
+        )["total"] or 0
+
+        tipo_labels = dict(TiqueteComedor.TIPO_CHOICES)
 
         usos_por_tipo_tiquete = list(
             registros_tiq_qs.values("tiquete__tipo")
-            .annotate(total=Count("id"))
+            .annotate(total=Count("id"), monto_total=Sum("tiquete__monto"))
             .order_by("tiquete__tipo")
         )
-        # Añadir label legible
-        tipo_labels = dict(TiqueteComedor.TIPO_CHOICES)
         for item in usos_por_tipo_tiquete:
             item["tipo_display"] = tipo_labels.get(item["tiquete__tipo"], item["tiquete__tipo"])
 
         por_dia_tiquete = list(
             registros_tiq_qs.values("fecha", "tiquete__tipo")
-            .annotate(total=Count("id"))
+            .annotate(total=Count("id"), monto_total=Sum("tiquete__monto"))
             .order_by("fecha", "tiquete__tipo")
         )
         for item in por_dia_tiquete:
@@ -683,6 +687,7 @@ def reportes_comedor(request):
         # tiquetes
         "total_tiquetes_activos": total_tiquetes_activos,
         "total_usos_tiquete": total_usos_tiquete,
+        "recaudacion_total": recaudacion_total,
         "usos_por_tipo_tiquete": usos_por_tipo_tiquete,
         "por_dia_tiquete": por_dia_tiquete,
     }
