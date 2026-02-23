@@ -2,7 +2,7 @@ from datetime import date
 from decimal import Decimal
 
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.db import transaction
 from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404, redirect, render
@@ -203,6 +203,7 @@ def _calcular_resumen(asignacion, periodo, matriculas):
 # ═══════════════════════════════════════════════════════════════════════
 
 @login_required
+@permission_required("libro_docente.access_libro_docente", raise_exception=True)
 def home_docente(request):
     """Home del docente: tarjetas por cada DocenteAsignacion activa."""
     profesor = _get_profesor(request)
@@ -271,6 +272,7 @@ def home_docente(request):
 
 
 @login_required
+@permission_required("libro_docente.access_libro_docente", raise_exception=True)
 def asistencia_view(request, asignacion_id):
     """
     Pantalla de asistencia: selector de fecha + sesión, lista de estudiantes
@@ -420,6 +422,7 @@ def asistencia_view(request, asignacion_id):
 
 
 @login_required
+@permission_required("libro_docente.access_libro_docente", raise_exception=True)
 def resumen_view(request, asignacion_id):
     """Resumen de asistencia por período para una asignación."""
     profesor = _get_profesor(request)
