@@ -57,12 +57,19 @@ def _get_estudiantes(asignacion):
     """
     Devuelve MatriculaAcademica activas del grupo de la asignación,
     ordenadas por apellido.
+
+    Regla: si hay subgrupo_id (materia técnica o asignación por subgrupo),
+    filtrar SOLO por subgrupo. Si solo hay seccion_id (materia académica),
+    filtrar por sección completa. Nunca mezclar 9-1A y 9-1B cuando
+    la asignación es a un subgrupo específico.
     """
     filtros = {"curso_lectivo": asignacion.curso_lectivo, "estado": "activo"}
-    if asignacion.seccion_id:
+    if asignacion.subgrupo_id:
+        filtros["subgrupo_id"] = asignacion.subgrupo_id
+    elif asignacion.seccion_id:
         filtros["seccion_id"] = asignacion.seccion_id
     else:
-        filtros["subgrupo_id"] = asignacion.subgrupo_id
+        return MatriculaAcademica.objects.none()
     return (
         MatriculaAcademica.objects
         .filter(**filtros)

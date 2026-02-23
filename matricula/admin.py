@@ -800,15 +800,17 @@ class EstudianteAdmin(AccentInsensitiveAdminMixin, InstitucionScopedAdmin):
         else:
             return qs.none()
         
-        # Si el usuario tiene el permiso de "solo búsqueda", no mostrar nada por defecto
+        # Permiso "only_search_estudiante": lista vacía por defecto, solo resultados al buscar
         if request.user.has_perm('matricula.only_search_estudiante'):
-            # Verificar si hay término de búsqueda
-            search_term = request.GET.get('q', '').strip()
-            if not search_term:
-                # No hay búsqueda, retornar queryset vacío
-                resolver = getattr(request, 'resolver_match', None)
-                if resolver and resolver.kwargs.get('object_id'):
-                    return qs
+            # Término de búsqueda: Django admin usa 'q' en GET
+            search_term = (request.GET.get('q') or request.POST.get('q') or '').strip()
+            # Si estamos editando un estudiante (change_view), necesitamos el queryset completo
+            is_change_view = bool(
+                getattr(request, 'resolver_match', None)
+                and request.resolver_match.kwargs.get('object_id')
+                and str(request.resolver_match.kwargs.get('object_id', '')).isdigit()
+            )
+            if not search_term and not is_change_view:
                 return qs.none()
         
         return qs
