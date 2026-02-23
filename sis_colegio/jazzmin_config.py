@@ -16,6 +16,7 @@ JAZZMIN_SETTINGS = {
         "matricula",
         "comedor",
         "evaluaciones",
+        "libro_docente",
         "catalogos",
         "config_institucional",
         "auth",
@@ -45,6 +46,9 @@ JAZZMIN_SETTINGS = {
         "evaluaciones.subareacursolectivo": "fas fa-book-open",
         "evaluaciones.periodocursolectivo": "fas fa-calendar-check",
         "evaluaciones.docenteasignacion": "fas fa-chalkboard-teacher",
+
+        "libro_docente.asistenciasesion": "fas fa-clipboard-check",
+        "libro_docente.asistenciaregistro": "fas fa-user-check",
         
         "catalogos.adecuacion": "fas fa-wheelchair",
         "catalogos.canton": "fas fa-map-marker-alt",
@@ -122,6 +126,14 @@ JAZZMIN_SETTINGS = {
                 "url": "evaluaciones:docentes",
                 "icon": "fas fa-chalkboard-teacher",
                 "permissions": ["evaluaciones.access_docente_asignacion"],
+            },
+        ],
+        "libro_docente": [
+            {
+                "name": "Mis asignaciones (Hoy)",
+                "url": "libro_docente:home",
+                "icon": "fas fa-clipboard-check",
+                "permissions": ["libro_docente.access_libro_docente"],
             },
         ],
         "comedor": [
