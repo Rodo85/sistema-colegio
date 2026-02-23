@@ -263,11 +263,11 @@ def home_docente(request):
                 docente_asignacion=a, fecha=hoy
             ).count()
 
-            # Etiqueta del grupo
-            if a.seccion_id:
-                grupo_label = f"Sección {a.seccion}"
-            elif a.subgrupo_id:
-                grupo_label = f"Subgrupo {a.subgrupo}"
+            # Etiqueta del grupo: subgrupo completo (7-1A) o sección (7-1)
+            if a.subgrupo_id:
+                grupo_label = str(a.subgrupo)  # ej. 7-1A, 8-3B
+            elif a.seccion_id:
+                grupo_label = str(a.seccion)   # ej. 7-1
             else:
                 grupo_label = "—"
 

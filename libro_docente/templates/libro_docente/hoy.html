@@ -13,8 +13,11 @@
 .page-title{font-size:1.6rem;font-weight:700;color:var(--primary-dark);margin:0;}
 .page-date{color:var(--muted);font-size:.9rem;}
 
-/* Cards grid */
-.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px;}
+/* Cards grid - responsive */
+.cards-grid{display:grid;gap:20px;grid-template-columns:1fr;}
+@media (min-width:576px){.cards-grid{grid-template-columns:repeat(2,1fr);}}
+@media (min-width:768px){.cards-grid{grid-template-columns:repeat(3,1fr);}}
+@media (min-width:1200px){.cards-grid{grid-template-columns:repeat(4,1fr);}}
 .assignment-card{background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.07);display:flex;flex-direction:column;transition:box-shadow .2s;}
 .assignment-card:hover{box-shadow:0 6px 20px rgba(26,110,181,.15);}
 .ac-header{background:linear-gradient(135deg,var(--primary-dark) 0%,var(--primary) 100%);border-radius:12px 12px 0 0;padding:16px 18px;}
@@ -88,14 +91,13 @@
               </span>
             </p>
             <p class="ac-grupo">{{ item.grupo_label }}</p>
-            <p class="ac-curso">{{ a.curso_lectivo }}</p>
           </div>
 
           <div class="ac-body">
             {% if item.componentes %}
               <div class="ac-chips">
                 {% for c in item.componentes %}
-                  {% if c.componente.codigo|upper == "ASISTENCIA" %}
+                  {% if c.componente.codigo|upper == "ASISTENCIA" or c.componente.codigo|upper == "ASIS" %}
                     <a href="{% url 'libro_docente:asistencia' a.id %}" class="chip chip-active">
                       ✓ {{ c.componente.codigo }} ({{ c.porcentaje }}%)
                     </a>
