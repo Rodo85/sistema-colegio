@@ -19,27 +19,29 @@ from matricula.models import MatriculaAcademica
 
 from .models import AsistenciaRegistro, AsistenciaSesion
 
-# ─── Tabla MEP: % ausencias injustificadas → nota 0-10 ─────────────────────
-# Cada tupla: (limite_inf_pct, limite_sup_pct, nota)
-_MEP_TABLE = [
-    (0,  0,   10),
-    (1,  5,   9),
-    (6,  10,  8),
-    (11, 15,  7),
-    (16, 20,  6),
-    (21, 25,  5),
-    (26, 30,  4),
-    (31, 35,  3),
-    (36, 40,  2),
-    (41, 45,  1),
-    (46, 100, 0),
+# ─── Tabla: % ausencias injustificadas → puntaje base (0-10) ─────────────────
+# Rangos: [min_inclusive, max_exclusive) → puntaje
+# 0% a <1% => 10, 1% a <10% => 9, 10% a <20% => 8, ..., 90% a 100% => 0
+_MEP_RANGES = [
+    (0, 1, 10),
+    (1, 10, 9),
+    (10, 20, 8),
+    (20, 30, 7),
+    (30, 40, 6),
+    (40, 50, 5),
+    (50, 60, 4),
+    (60, 70, 3),
+    (70, 80, 2),
+    (80, 90, 1),
+    (90, 100.01, 0),  # 90% a 100% inclusive
 ]
 
 
 def _nota_mep(pct: float) -> int:
+    """Convierte % ausencias injustificadas a puntaje base 0-10."""
     pct = round(pct, 4)
-    for lo, hi, nota in _MEP_TABLE:
-        if lo <= pct <= hi:
+    for min_pct, max_pct, nota in _MEP_RANGES:
+        if min_pct <= pct < max_pct:
             return nota
     return 0
 
@@ -172,9 +174,12 @@ def _calcular_resumen(asignacion, periodo, matriculas):
         total_equiv = ai_total + tardia_equiv
 
         pct = (total_equiv / sesiones_desde_ingreso * 100) if sesiones_desde_ingreso > 0 else 0
-        nota_mep = _nota_mep(pct)
-
-        aporte_real = Decimal(str(nota_mep)) * peso_asistencia / Decimal("100") if peso_asistencia else Decimal("0")
+        puntaje_base = _nota_mep(pct)
+        # aporte_real = (puntaje_base / 10) * peso_asistencia_esquema
+        aporte_real = (
+            Decimal(str(puntaje_base)) / Decimal("10") * peso_asistencia
+            if peso_asistencia else Decimal("0")
+        )
 
         # Indicador visual
         if pct == 0:
@@ -194,7 +199,7 @@ def _calcular_resumen(asignacion, periodo, matriculas):
             "total_equiv": total_equiv,
             "sesiones_consideradas": sesiones_desde_ingreso,
             "pct": round(pct, 1),
-            "nota_mep": nota_mep,
+            "nota_mep": puntaje_base,
             "peso_asistencia": peso_asistencia,
             "aporte_real": round(aporte_real, 2),
             "nivel_alerta": nivel_alerta,
@@ -227,7 +232,7 @@ def home_docente(request):
     if not profesor:
         error = "No tienes perfil de docente registrado en esta institución."
     else:
-        raw = (
+        raw = list(
             DocenteAsignacion.objects
             .filter(docente=profesor, activo=True)
             .select_related(
@@ -237,8 +242,21 @@ def home_docente(request):
                 "subgrupo__seccion__nivel",
                 "eval_scheme_snapshot",
             )
-            .order_by("curso_lectivo__anio", "subarea_curso__subarea__nombre")
         )
+
+        def _sort_key(a):
+            if a.subgrupo_id:
+                n = a.subgrupo.seccion.nivel.numero
+                s = a.subgrupo.seccion.numero
+                l = (a.subgrupo.letra or "").upper()
+                return (n, s, l)
+            if a.seccion_id:
+                n = a.seccion.nivel.numero
+                s = a.seccion.numero
+                return (n, s, "")
+            return (999, 999, "")
+
+        raw.sort(key=lambda a: (_sort_key(a), a.subarea_curso.subarea.nombre))
 
         hoy = timezone.localdate()
         for a in raw:
