@@ -12,8 +12,8 @@
 .asgn-banner{background:linear-gradient(135deg,#145591 0%,#1a6eb5 100%);border-radius:12px;padding:16px 22px;color:#fff;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px;}
 .asgn-title{font-size:1.1rem;font-weight:700;margin:0;}
 .asgn-meta{font-size:.83rem;opacity:.85;margin:3px 0 0;}
-.back-btn{display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,.85);font-size:.83rem;text-decoration:none;border:1px solid rgba(255,255,255,.4);border-radius:6px;padding:5px 12px;}
-.back-btn:hover{background:rgba(255,255,255,.15);}
+.back-btn{display:inline-flex;align-items:center;gap:6px;color:#fff !important;font-size:.83rem;text-decoration:none !important;border:1px solid rgba(255,255,255,.4);border-radius:6px;padding:5px 12px;opacity:.9;}
+.back-btn:hover{background:rgba(255,255,255,.15);opacity:1;}
 
 .card{background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:18px;}
 .card-header{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 18px;border-radius:10px 10px 0 0;display:flex;align-items:center;gap:8px;}
@@ -22,10 +22,10 @@
 
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;font-size:.85rem;font-weight:600;border-radius:7px;border:none;cursor:pointer;text-decoration:none;transition:filter .15s;}
 .btn:hover{filter:brightness(1.08);}
-.btn-primary{background:var(--primary);color:#fff;}
-.btn-outline{background:#fff;border:1.5px solid var(--border);color:var(--text);}
-.periodo-btn{padding:7px 16px;border-radius:7px;border:1.5px solid var(--border);background:#fff;font-size:.85rem;font-weight:600;color:var(--text);text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
-.periodo-btn.active,.periodo-btn:hover{background:var(--primary);color:#fff;border-color:var(--primary);}
+.btn-primary{background:var(--primary);color:#fff !important;}
+.btn-outline{background:#fff;border:1.5px solid var(--border);color:var(--text) !important;}
+.periodo-btn{padding:7px 16px;border-radius:7px;border:1.5px solid var(--border);background:#fff;font-size:.85rem;font-weight:600;color:var(--primary-dark) !important;text-decoration:none !important;display:inline-flex;align-items:center;gap:6px;transition:all .15s;}
+.periodo-btn.active,.periodo-btn:hover{background:var(--primary);color:#fff !important;border-color:var(--primary);}
 
 /* Resumen global */
 .resumen-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:20px;}
@@ -121,7 +121,7 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
         </div>
         <div class="res-card">
           <div class="rc-val">{{ resumen.peso_asistencia }}%</div>
-          <div class="rc-lbl">Peso asistencia</div>
+          <div class="rc-lbl">{{ resumen.nombre_componente }}</div>
         </div>
         {% if not resumen.tiene_componente %}
         <div class="res-card" style="border-color:#fde68a;background:#fffbeb;">

@@ -109,15 +109,18 @@ def _calcular_resumen(asignacion, periodo, matriculas):
     total_sesiones = sesiones.count()
     sesion_ids = list(sesiones.values_list("id", flat=True))
 
-    # Peso del componente ASISTENCIA en el esquema snapshot
+    # Peso del componente ASISTENCIA en el esquema snapshot.
+    # Se busca por código exacto "ASISTENCIA" o "ASIS", y también por
+    # nombre que contenga "asistencia" — sin distinción de mayúsculas.
     peso_asistencia = Decimal("0")
     comp_asistencia = None
     if asignacion.eval_scheme_snapshot_id:
         comp_asistencia = (
             EsquemaEvalComponente.objects
+            .filter(esquema=asignacion.eval_scheme_snapshot)
             .filter(
-                esquema=asignacion.eval_scheme_snapshot,
-                componente__codigo__iexact="ASISTENCIA",
+                Q(componente__codigo__iregex=r"^asis(tencia)?$") |
+                Q(componente__nombre__icontains="asistencia")
             )
             .select_related("componente")
             .first()
@@ -190,10 +193,14 @@ def _calcular_resumen(asignacion, periodo, matriculas):
             "nivel_alerta": nivel_alerta,
         })
 
+    nombre_componente = (
+        comp_asistencia.componente.nombre if comp_asistencia else "Asistencia"
+    )
     return {
         "total_sesiones": total_sesiones,
         "peso_asistencia": peso_asistencia,
         "tiene_componente": comp_asistencia is not None,
+        "nombre_componente": nombre_componente,
         "estudiantes": resultados,
     }
 
@@ -239,7 +246,9 @@ def home_docente(request):
                 )
 
             tiene_asistencia = any(
-                c.componente.codigo.upper() == "ASISTENCIA" for c in componentes
+                c.componente.codigo.upper() in ("ASISTENCIA", "ASIS") or
+                "ASISTENCIA" in c.componente.nombre.upper()
+                for c in componentes
             )
 
             # Sesiones ya registradas hoy
