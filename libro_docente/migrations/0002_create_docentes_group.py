@@ -18,15 +18,24 @@ def crear_grupo_docentes(apps, schema_editor):
 
     group, _ = Group.objects.get_or_create(name="Docentes")
 
-    # Permiso principal del Libro del Docente
     try:
         ct = ContentType.objects.get(app_label="libro_docente", model="asistenciasesion")
-        perm = Permission.objects.get(content_type=ct, codename="access_libro_docente")
-        group.permissions.add(perm)
-    except (ContentType.DoesNotExist, Permission.DoesNotExist):
-        # Las migraciones se ejecutan antes de que post_migrate cree los permisos;
-        # en ese caso, correr manage.py migrate dos veces lo resuelve, o bien
-        # asignar el permiso manualmente desde el admin.
+        # Permiso custom: acceso al módulo
+        for codename in ("access_libro_docente", "view_asistenciasesion"):
+            try:
+                perm = Permission.objects.get(content_type=ct, codename=codename)
+                group.permissions.add(perm)
+            except Permission.DoesNotExist:
+                pass
+        # Permiso view en registro (necesario para que el sidebar muestre el app)
+        ct_reg = ContentType.objects.get(app_label="libro_docente", model="asistenciaregistro")
+        try:
+            perm_reg = Permission.objects.get(content_type=ct_reg, codename="view_asistenciaregistro")
+            group.permissions.add(perm_reg)
+        except Permission.DoesNotExist:
+            pass
+    except ContentType.DoesNotExist:
+        # Si los ContentTypes no existen aún, re-ejecutar migrate los creará.
         pass
 
 
