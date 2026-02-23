@@ -1,0 +1,131 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block title %}Mis Asignaciones – Libro del Docente{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+:root{--primary:#1a6eb5;--primary-dark:#145591;--success:#198754;--warning:#f59e0b;--danger:#dc3545;--surface:#f8f9fc;--border:#dee2e6;--text:#212529;--muted:#6c757d;}
+*{box-sizing:border-box;}
+.page-wrap{max-width:1200px;margin:24px auto;padding:0 16px;font-family:"Segoe UI",system-ui,sans-serif;}
+.page-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:28px;}
+.page-title{font-size:1.6rem;font-weight:700;color:var(--primary-dark);margin:0;}
+.page-date{color:var(--muted);font-size:.9rem;}
+
+/* Cards grid */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px;}
+.assignment-card{background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.07);display:flex;flex-direction:column;transition:box-shadow .2s;}
+.assignment-card:hover{box-shadow:0 6px 20px rgba(26,110,181,.15);}
+.ac-header{background:linear-gradient(135deg,var(--primary-dark) 0%,var(--primary) 100%);border-radius:12px 12px 0 0;padding:16px 18px;}
+.ac-subarea{color:#fff;font-size:1.05rem;font-weight:700;margin:0 0 4px;}
+.ac-grupo{color:rgba(255,255,255,.85);font-size:.85rem;margin:0;}
+.ac-curso{color:rgba(255,255,255,.7);font-size:.78rem;margin:2px 0 0;}
+.ac-body{padding:16px 18px;flex:1;display:flex;flex-direction:column;gap:12px;}
+.ac-chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:.72rem;font-weight:700;letter-spacing:.3px;border:1px solid transparent;}
+.chip-active{background:#d1fae5;color:#065f46;border-color:#6ee7b7;cursor:pointer;}
+.chip-disabled{background:#f1f5f9;color:#94a3b8;border-color:#e2e8f0;cursor:default;opacity:.7;}
+.ac-footer{padding:14px 18px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.sesiones-badge{font-size:.78rem;color:var(--muted);}
+.sesiones-badge b{color:var(--primary);font-size:.95rem;}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 20px;font-size:.88rem;font-weight:600;border-radius:8px;border:none;cursor:pointer;text-decoration:none;transition:all .15s;}
+.btn:hover{filter:brightness(1.08);}
+.btn-primary{background:var(--primary);color:#fff;}
+.btn-success{background:var(--success);color:#fff;}
+.btn-sm{padding:6px 14px;font-size:.82rem;}
+
+/* Alert / empty state */
+.alert{padding:14px 18px;border-radius:10px;margin-bottom:20px;font-size:.93rem;}
+.alert-danger{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;}
+.alert-info{background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;}
+.empty-state{text-align:center;padding:60px 20px;color:var(--muted);}
+.empty-state svg{opacity:.3;margin-bottom:16px;}
+.empty-state p{font-size:1rem;}
+
+/* Tipo badge */
+.tipo-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.7rem;font-weight:700;text-transform:uppercase;}
+.tipo-acad{background:#dbeafe;color:#1e40af;}
+.tipo-tec{background:#ede9fe;color:#5b21b6;}
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div class="page-wrap">
+
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">📋 Mis Asignaciones</h1>
+      <p class="page-date">Hoy: <strong>{{ hoy|date:"l, d \d\e F \d\e Y" }}</strong>
+        {% if profesor %} · {{ profesor.usuario.full_name }}{% endif %}
+      </p>
+    </div>
+  </div>
+
+  {% if error %}
+    <div class="alert alert-danger"><i class="fas fa-exclamation-circle"></i> {{ error }}</div>
+  {% endif %}
+
+  {% if not asignaciones %}
+    <div class="empty-state">
+      <svg width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+      <p>No tienes asignaciones activas en este período.</p>
+    </div>
+  {% else %}
+    <div class="cards-grid">
+      {% for item in asignaciones %}
+        {% with a=item.obj %}
+        <div class="assignment-card">
+          <div class="ac-header">
+            <p class="ac-subarea">
+              {{ a.subarea_curso.subarea.nombre }}
+              <span class="tipo-badge {% if a.subarea_curso.subarea.es_academica %}tipo-acad{% else %}tipo-tec{% endif %}">
+                {% if a.subarea_curso.subarea.es_academica %}Académica{% else %}Técnica{% endif %}
+              </span>
+            </p>
+            <p class="ac-grupo">{{ item.grupo_label }}</p>
+            <p class="ac-curso">{{ a.curso_lectivo }}</p>
+          </div>
+
+          <div class="ac-body">
+            {% if item.componentes %}
+              <div class="ac-chips">
+                {% for c in item.componentes %}
+                  {% if c.componente.codigo|upper == "ASISTENCIA" %}
+                    <a href="{% url 'libro_docente:asistencia' a.id %}" class="chip chip-active">
+                      ✓ {{ c.componente.codigo }} ({{ c.porcentaje }}%)
+                    </a>
+                  {% else %}
+                    <span class="chip chip-disabled" title="Próximamente">
+                      {{ c.componente.codigo }} ({{ c.porcentaje }}%)
+                    </span>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            {% else %}
+              <p style="font-size:.82rem;color:var(--muted);margin:0;">Sin esquema asignado</p>
+            {% endif %}
+          </div>
+
+          <div class="ac-footer">
+            <span class="sesiones-badge">
+              Hoy: <b>{{ item.sesiones_hoy }}</b>
+              sesión{% if item.sesiones_hoy != 1 %}es{% endif %} registrada{% if item.sesiones_hoy != 1 %}s{% endif %}
+            </span>
+            <a href="{% url 'libro_docente:asistencia' a.id %}" class="btn btn-success btn-sm">
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+              Pasar lista
+            </a>
+          </div>
+        </div>
+        {% endwith %}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

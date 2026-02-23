@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     "matricula.apps.MatriculaConfig",
     "comedor.apps.ComedorConfig",
     "evaluaciones.apps.EvaluacionesConfig",
+    "libro_docente.apps.LibroDocenteConfig",
     "catalogos.apps.CatalogosConfig",
     "config_institucional",
     "django_extensions",

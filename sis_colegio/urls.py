@@ -28,6 +28,7 @@ urlpatterns = [
     path('matricula/', include('matricula.urls')),
     path('comedor/', include('comedor.urls')),
     path('evaluaciones/', include('evaluaciones.urls')),
+    path('docente/', include('libro_docente.urls')),
     path('ingreso/', include('ingreso_clases.urls')),
     path('config/', include('config_institucional.urls')),
     path('seleccionar-institucion/', core_views.seleccionar_institucion, name='seleccionar_institucion'),

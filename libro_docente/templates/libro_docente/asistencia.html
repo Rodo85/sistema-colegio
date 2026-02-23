@@ -1,0 +1,305 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block title %}Asistencia – {{ asignacion.subarea_curso.subarea.nombre }}{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+:root{--primary:#1a6eb5;--primary-dark:#145591;--success:#198754;--warning:#f59e0b;--danger:#dc3545;--surface:#f8f9fc;--border:#dee2e6;--text:#212529;--muted:#6c757d;}
+*{box-sizing:border-box;}
+body{background:#f0f4f8;}
+.page-wrap{max-width:980px;margin:20px auto;padding:0 14px;font-family:"Segoe UI",system-ui,sans-serif;}
+
+/* Banner de la asignación */
+.asgn-banner{background:linear-gradient(135deg,#145591 0%,#1a6eb5 100%);border-radius:12px;padding:16px 22px;color:#fff;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px;}
+.asgn-title{font-size:1.15rem;font-weight:700;margin:0;}
+.asgn-meta{font-size:.83rem;opacity:.85;margin:3px 0 0;}
+.back-btn{display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,.85);font-size:.83rem;text-decoration:none;border:1px solid rgba(255,255,255,.4);border-radius:6px;padding:5px 12px;}
+.back-btn:hover{background:rgba(255,255,255,.15);}
+
+/* Card */
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:18px;}
+.card-header{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 18px;border-radius:10px 10px 0 0;display:flex;align-items:center;gap:8px;}
+.card-header h3{margin:0;font-size:.92rem;font-weight:700;color:var(--primary-dark);}
+.card-body{padding:16px 18px;}
+
+/* Toolbar: fecha + período */
+.toolbar{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;}
+.fg{display:flex;flex-direction:column;gap:4px;}
+.fg label{font-size:.73rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;}
+.form-control{padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-size:.9rem;}
+.form-control:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(26,110,181,.15);}
+.btn-toolbar{align-self:flex-end;}
+
+/* Selector de sesión */
+.sesion-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;}
+.sesion-label{font-size:.8rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;}
+.sesion-btn{width:44px;height:44px;border-radius:8px;border:2px solid var(--border);background:#fff;font-size:1rem;font-weight:700;cursor:pointer;color:var(--text);text-decoration:none;display:inline-flex;align-items:center;justify-content:center;transition:all .15s;}
+.sesion-btn:hover{border-color:var(--primary);color:var(--primary);}
+.sesion-btn.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+.sesion-btn.new-btn{background:#f0fdf4;border-color:#86efac;color:#166534;font-size:.85rem;}
+.sesion-btn.new-btn:hover{background:#dcfce7;}
+
+/* Acciones rápidas */
+.quick-row{display:flex;flex-wrap:wrap;gap:8px;}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;font-size:.85rem;font-weight:600;border-radius:7px;border:none;cursor:pointer;text-decoration:none;transition:filter .15s;}
+.btn:hover{filter:brightness(1.08);}
+.btn-primary{background:var(--primary);color:#fff;}
+.btn-success{background:var(--success);color:#fff;}
+.btn-warning{background:var(--warning);color:#fff;}
+.btn-danger{background:var(--danger);color:#fff;}
+.btn-outline{background:#fff;border:1.5px solid var(--border);color:var(--text);}
+.btn-outline:hover{border-color:var(--primary);color:var(--primary);}
+.btn-lg{padding:11px 28px;font-size:.95rem;}
+.btn-sm{padding:5px 12px;font-size:.78rem;}
+
+/* Tabla de estudiantes */
+.table-wrap{overflow-x:auto;}
+table.student-table{width:100%;border-collapse:collapse;font-size:.88rem;}
+thead th{background:var(--surface);color:var(--muted);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:9px 12px;border-bottom:2px solid var(--border);white-space:nowrap;}
+tbody tr{border-bottom:1px solid var(--border);}
+tbody tr:hover{background:#f8faff;}
+tbody td{padding:8px 12px;vertical-align:middle;}
+.student-name{font-weight:600;color:var(--text);}
+.student-id{font-size:.78rem;color:var(--muted);}
+
+/* Radio toggle P / T / AI / AJ */
+.estado-group{display:flex;gap:4px;}
+.estado-group input[type=radio]{display:none;}
+.estado-group label{padding:5px 11px;border-radius:6px;border:1.5px solid var(--border);font-size:.78rem;font-weight:700;cursor:pointer;transition:all .12s;user-select:none;white-space:nowrap;}
+.estado-group input[value=P]:checked+label{background:#d1fae5;border-color:#34d399;color:#065f46;}
+.estado-group input[value=T]:checked+label{background:#fef3c7;border-color:#fbbf24;color:#92400e;}
+.estado-group input[value=AI]:checked+label{background:#fee2e2;border-color:#f87171;color:#991b1b;}
+.estado-group input[value=AJ]:checked+label{background:#e0e7ff;border-color:#818cf8;color:#3730a3;}
+.estado-group label:hover{border-color:var(--primary);}
+
+/* Observación */
+.obs-input{font-size:.8rem;padding:4px 8px;border:1px solid var(--border);border-radius:5px;width:100%;max-width:200px;}
+.obs-input:focus{outline:none;border-color:var(--primary);}
+
+/* Footer de guardado */
+.save-bar{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;position:sticky;bottom:12px;box-shadow:0 4px 20px rgba(0,0,0,.12);}
+.save-count{font-size:.85rem;color:var(--muted);}
+.save-count b{color:var(--primary);}
+
+/* Alertas */
+.alert{padding:11px 16px;border-radius:8px;margin-bottom:16px;font-size:.9rem;}
+.alert-success{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;}
+.alert-danger{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;}
+.alert-info{background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;}
+
+/* Sesión sin datos */
+.no-session-notice{text-align:center;padding:20px;color:var(--muted);font-size:.88rem;font-style:italic;}
+
+/* Resumen link */
+.resumen-link{display:inline-flex;align-items:center;gap:5px;color:var(--primary);font-size:.83rem;text-decoration:none;font-weight:600;}
+.resumen-link:hover{text-decoration:underline;}
+
+/* Stats bar */
+.stats-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px;}
+.stat-pill{padding:5px 13px;border-radius:20px;font-size:.78rem;font-weight:700;}
+.stat-p{background:#d1fae5;color:#065f46;}
+.stat-t{background:#fef3c7;color:#92400e;}
+.stat-ai{background:#fee2e2;color:#991b1b;}
+.stat-aj{background:#e0e7ff;color:#3730a3;}
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div class="page-wrap">
+
+  <!-- Banner -->
+  <div class="asgn-banner">
+    <div>
+      <p class="asgn-title">
+        {{ asignacion.subarea_curso.subarea.nombre }}
+        &nbsp;·&nbsp;
+        {{ asignacion.seccion|default:asignacion.subgrupo }}
+      </p>
+      <p class="asgn-meta">{{ asignacion.curso_lectivo }}
+        {% if periodo %} · {{ periodo.nombre }}{% endif %}
+      </p>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <a href="{% url 'libro_docente:resumen' asignacion.id %}?periodo={% if periodo %}{{ periodo.id }}{% endif %}" class="resumen-link" style="color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.4);padding:5px 12px;border-radius:6px;">
+        📊 Ver resumen
+      </a>
+      <a href="{% url 'libro_docente:home' %}" class="back-btn">← Mis asignaciones</a>
+    </div>
+  </div>
+
+  {% for m in messages %}
+    <div class="alert alert-{{ m.tags|default:'success' }}">{{ m }}</div>
+  {% endfor %}
+
+  <form method="post" id="asistencia-form">
+    {% csrf_token %}
+    <input type="hidden" name="sesion" id="hidden-sesion" value="{{ sesion_num }}">
+
+    <!-- Fecha + Período -->
+    <div class="card">
+      <div class="card-header"><i class="fas fa-calendar-alt" style="color:var(--primary)"></i><h3>Fecha y Período</h3></div>
+      <div class="card-body">
+        <div class="toolbar">
+          <div class="fg">
+            <label for="fecha-input">Fecha</label>
+            <input type="date" id="fecha-input" name="fecha" value="{{ fecha|date:'Y-m-d' }}" max="{{ hoy|date:'Y-m-d' }}" class="form-control" onchange="cambiarFecha(this.value)">
+          </div>
+          {% if periodos_cl %}
+          <div class="fg">
+            <label>Período inferido</label>
+            <div style="padding:8px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;font-size:.88rem;color:var(--primary-dark);font-weight:600;">
+              {% if periodo %}{{ periodo.nombre }}{% else %}Sin período activo{% endif %}
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Selector de sesión -->
+    <div class="card">
+      <div class="card-header"><i class="fas fa-list-ol" style="color:var(--primary)"></i><h3>Sesión</h3></div>
+      <div class="card-body">
+        <div class="sesion-row">
+          <span class="sesion-label">Seleccionar:</span>
+          {% for n in numeros %}
+            <a href="?fecha={{ fecha|date:'Y-m-d' }}&sesion={{ n }}"
+               class="sesion-btn {% if n == sesion_num %}active{% endif %}">{{ n }}</a>
+          {% endfor %}
+          <!-- Botón nueva sesión -->
+          <a href="?fecha={{ fecha|date:'Y-m-d' }}&sesion={{ siguiente_num }}"
+             class="sesion-btn new-btn" title="Crear sesión {{ siguiente_num }}">
+            + {{ siguiente_num }}
+          </a>
+        </div>
+        {% if sesion_actual %}
+          <p style="margin:10px 0 0;font-size:.8rem;color:var(--muted);">
+            ✔ Sesión {{ sesion_num }} ya registrada el {{ sesion_actual.fecha|date:"d/m/Y" }} — puedes editarla arriba.
+          </p>
+        {% else %}
+          <p style="margin:10px 0 0;font-size:.8rem;color:var(--muted);">
+            Sesión {{ sesion_num }} — nueva (aún no guardada).
+          </p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Estudiantes -->
+    <div class="card">
+      <div class="card-header">
+        <i class="fas fa-users" style="color:var(--primary)"></i>
+        <h3>Estudiantes <span style="font-weight:400;color:var(--muted);">({{ total_estudiantes }})</span></h3>
+      </div>
+      <div class="card-body" style="padding-bottom:8px;">
+
+        <!-- Acciones rápidas -->
+        <div class="quick-row" style="margin-bottom:14px;">
+          <button type="button" class="btn btn-success btn-sm" onclick="marcarTodos('{{ PRESENTE }}')">✓ Todos presentes</button>
+          <button type="button" class="btn btn-warning btn-sm" onclick="marcarTodos('{{ TARDIA }}')">⏱ Todos tardíos</button>
+          <button type="button" class="btn btn-danger btn-sm" onclick="marcarTodos('{{ AI }}')">✗ Todos ausentes</button>
+        </div>
+
+        <!-- Stats en tiempo real -->
+        <div class="stats-row" id="stats-row">
+          <span class="stat-pill stat-p">P: <b id="cnt-p">0</b></span>
+          <span class="stat-pill stat-t">T: <b id="cnt-t">0</b></span>
+          <span class="stat-pill stat-ai">AI: <b id="cnt-ai">0</b></span>
+          <span class="stat-pill stat-aj">AJ: <b id="cnt-aj">0</b></span>
+        </div>
+
+        {% if estudiantes %}
+        <div class="table-wrap">
+          <table class="student-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Estudiante</th>
+                <th>Estado</th>
+                <th>Observación</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for est in estudiantes %}
+              <tr>
+                <td style="color:var(--muted);font-size:.8rem;">{{ forloop.counter }}</td>
+                <td>
+                  <div class="student-name">{{ est.nombre }}</div>
+                  <div class="student-id">{{ est.identificacion }}</div>
+                </td>
+                <td>
+                  <div class="estado-group" id="grupo-{{ est.id }}">
+                    <input type="radio" name="estado_{{ est.id }}" id="p-{{ est.id }}" value="{{ PRESENTE }}" {% if est.estado == PRESENTE %}checked{% endif %} onchange="actualizarStats()">
+                    <label for="p-{{ est.id }}">P</label>
+
+                    <input type="radio" name="estado_{{ est.id }}" id="t-{{ est.id }}" value="{{ TARDIA }}" {% if est.estado == TARDIA %}checked{% endif %} onchange="actualizarStats()">
+                    <label for="t-{{ est.id }}">T</label>
+
+                    <input type="radio" name="estado_{{ est.id }}" id="ai-{{ est.id }}" value="{{ AI }}" {% if est.estado == AI %}checked{% endif %} onchange="actualizarStats()">
+                    <label for="ai-{{ est.id }}">AI</label>
+
+                    <input type="radio" name="estado_{{ est.id }}" id="aj-{{ est.id }}" value="{{ AJ }}" {% if est.estado == AJ %}checked{% endif %} onchange="actualizarStats()">
+                    <label for="aj-{{ est.id }}">AJ</label>
+                  </div>
+                </td>
+                <td>
+                  <input type="text" name="obs_{{ est.id }}" class="obs-input" value="{{ est.observacion }}" placeholder="Observación…" maxlength="255">
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+          <div class="no-session-notice">No hay estudiantes matriculados activos en este grupo.</div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Barra de guardado -->
+    {% if estudiantes %}
+    <div class="save-bar">
+      <span class="save-count">Sesión <b>{{ sesion_num }}</b> · {{ fecha|date:"d/m/Y" }} · <b>{{ total_estudiantes }}</b> estudiante{% if total_estudiantes != 1 %}s{% endif %}</span>
+      <button type="submit" class="btn btn-primary btn-lg">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        Guardar sesión {{ sesion_num }}
+      </button>
+    </div>
+    {% endif %}
+
+  </form>
+</div>
+
+<script>
+function cambiarFecha(val) {
+  window.location.href = '?fecha=' + val + '&sesion={{ sesion_num }}';
+}
+
+function marcarTodos(estado) {
+  document.querySelectorAll('input[type=radio][value="' + estado + '"]').forEach(r => {
+    r.checked = true;
+  });
+  actualizarStats();
+}
+
+function actualizarStats() {
+  let p = 0, t = 0, ai = 0, aj = 0;
+  document.querySelectorAll('input[type=radio]:checked').forEach(r => {
+    if (r.value === '{{ PRESENTE }}') p++;
+    else if (r.value === '{{ TARDIA }}') t++;
+    else if (r.value === '{{ AI }}') ai++;
+    else if (r.value === '{{ AJ }}') aj++;
+  });
+  document.getElementById('cnt-p').textContent  = p;
+  document.getElementById('cnt-t').textContent  = t;
+  document.getElementById('cnt-ai').textContent = ai;
+  document.getElementById('cnt-aj').textContent = aj;
+}
+
+// Inicializar stats al cargar
+document.addEventListener('DOMContentLoaded', actualizarStats);
+</script>
+{% endblock %}
