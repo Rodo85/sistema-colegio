@@ -76,10 +76,18 @@ tbody td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:m
           </a>
         {% endfor %}
         <span style="margin-left:12px;color:var(--muted);font-size:.8rem;">|</span>
-        <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=TAREA{% if orden %}&orden={{ orden }}{% endif %}" class="{% if tipo == 'TAREA' %}active{% endif %}">Tareas</a>
-        <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=COTIDIANO{% if orden %}&orden={{ orden }}{% endif %}" class="{% if tipo == 'COTIDIANO' %}active{% endif %}">Cotidianos</a>
-        <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=PRUEBA{% if orden %}&orden={{ orden }}{% endif %}" class="{% if tipo == 'PRUEBA' %}active{% endif %}">Pruebas</a>
-        <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=PROYECTO{% if orden %}&orden={{ orden }}{% endif %}" class="{% if tipo == 'PROYECTO' %}active{% endif %}">Proyecto</a>
+        {% if 'TAREA' in available_tipos %}
+          <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=TAREA{% if orden %}&orden={{ orden }}{% endif %}" class="{% if tipo == 'TAREA' %}active{% endif %}">Tareas</a>
+        {% endif %}
+        {% if 'COTIDIANO' in available_tipos %}
+          <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=COTIDIANO{% if orden %}&orden={{ orden }}{% endif %}" class="{% if tipo == 'COTIDIANO' %}active{% endif %}">Cotidianos</a>
+        {% endif %}
+        {% if 'PRUEBA' in available_tipos %}
+          <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=PRUEBA{% if orden %}&orden={{ orden }}{% endif %}" class="{% if tipo == 'PRUEBA' %}active{% endif %}">Pruebas</a>
+        {% endif %}
+        {% if 'PROYECTO' in available_tipos %}
+          <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=PROYECTO{% if orden %}&orden={{ orden }}{% endif %}" class="{% if tipo == 'PROYECTO' %}active{% endif %}">Proyecto</a>
+        {% endif %}
         <a href="?periodo={{ periodo_id }}{% if orden %}&orden={{ orden }}{% endif %}" class="{% if not tipo %}active{% endif %}">Todos</a>
         <span style="margin-left:12px;color:var(--muted);">| Orden:</span>
         <a href="?periodo={{ periodo_id }}{% if tipo %}&tipo={{ tipo }}{% endif %}&orden=fecha" class="{% if orden == 'fecha' or not orden %}active{% endif %}">Fecha</a>
@@ -90,10 +98,18 @@ tbody td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:m
 
       {% if periodo_id %}
         <p style="margin-bottom:12px;">
-          <a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=TAREA" class="btn btn-primary">+ Nueva tarea</a>
-          <a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=COTIDIANO" class="btn btn-outline">+ Nuevo cotidiano</a>
-          <a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=PRUEBA" class="btn btn-outline">+ Nueva prueba</a>
-          <a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=PROYECTO" class="btn btn-outline">+ Nuevo proyecto</a>
+          {% if 'TAREA' in available_tipos %}
+            <a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=TAREA" class="btn btn-primary">+ Nueva tarea</a>
+          {% endif %}
+          {% if 'COTIDIANO' in available_tipos %}
+            <a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=COTIDIANO" class="btn btn-outline">+ Nuevo cotidiano</a>
+          {% endif %}
+          {% if 'PRUEBA' in available_tipos %}
+            <a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=PRUEBA" class="btn btn-outline">+ Nueva prueba</a>
+          {% endif %}
+          {% if 'PROYECTO' in available_tipos %}
+            <a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=PROYECTO" class="btn btn-outline">+ Nuevo proyecto</a>
+          {% endif %}
           <a href="{% url 'libro_docente:asignacion_estudiantes' asignacion.id %}" class="btn btn-outline">Estudiantes</a>
         </p>
       {% endif %}
@@ -144,25 +160,33 @@ tbody td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:m
       {% else %}
         <div class="empty">
           {% if periodo_id %}
-            {% if tipo == 'COTIDIANO' %}
+            {% if tipo == 'COTIDIANO' and 'COTIDIANO' in available_tipos %}
               <p>No hay actividades de <strong>Cotidiano</strong> todavía.</p>
               <p style="margin-top:10px;"><a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=COTIDIANO" class="btn btn-primary">Crear primera actividad</a></p>
-            {% elif tipo == 'TAREA' %}
+            {% elif tipo == 'TAREA' and 'TAREA' in available_tipos %}
               <p>No hay actividades de <strong>Tarea</strong> todavía.</p>
               <p style="margin-top:10px;"><a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=TAREA" class="btn btn-primary">Crear primera actividad</a></p>
-            {% elif tipo == 'PRUEBA' %}
+            {% elif tipo == 'PRUEBA' and 'PRUEBA' in available_tipos %}
               <p>No hay actividades de <strong>Prueba</strong> todavía.</p>
               <p style="margin-top:10px;"><a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=PRUEBA" class="btn btn-primary">Crear primera prueba</a></p>
-            {% elif tipo == 'PROYECTO' %}
+            {% elif tipo == 'PROYECTO' and 'PROYECTO' in available_tipos %}
               <p>No hay actividades de <strong>Proyecto</strong> todavía.</p>
               <p style="margin-top:10px;"><a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=PROYECTO" class="btn btn-primary">Crear primer proyecto</a></p>
             {% else %}
               No hay actividades en este período.
               <p style="margin-top:10px;">
-                <a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=TAREA" class="btn btn-primary">Crear tarea</a>
-                <a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=COTIDIANO" class="btn btn-outline">Crear cotidiano</a>
-                <a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=PRUEBA" class="btn btn-outline">Crear prueba</a>
-                <a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=PROYECTO" class="btn btn-outline">Crear proyecto</a>
+                {% if 'TAREA' in available_tipos %}
+                  <a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=TAREA" class="btn btn-primary">Crear tarea</a>
+                {% endif %}
+                {% if 'COTIDIANO' in available_tipos %}
+                  <a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=COTIDIANO" class="btn btn-outline">Crear cotidiano</a>
+                {% endif %}
+                {% if 'PRUEBA' in available_tipos %}
+                  <a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=PRUEBA" class="btn btn-outline">Crear prueba</a>
+                {% endif %}
+                {% if 'PROYECTO' in available_tipos %}
+                  <a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=PROYECTO" class="btn btn-outline">Crear proyecto</a>
+                {% endif %}
               </p>
             {% endif %}
           {% else %}

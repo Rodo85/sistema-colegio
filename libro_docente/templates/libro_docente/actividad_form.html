@@ -53,13 +53,15 @@ input.form-control,select.form-control,textarea.form-control{width:100%;}
     <div class="card-body">
         <input type="hidden" name="tipo_componente" value="{{ tipo }}">
         {% for field in form %}
-          {% if field.name == "tipo_componente" %}{% continue %}{% endif %}
-          {% if es_prueba_proyecto and field.name in "descripcion,fecha_asignacion,fecha_entrega" %}{% continue %}{% endif %}
-          <div class="form-group">
-            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-            {{ field }}
-            {% if field.errors %}<ul class="errorlist">{% for e in field.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
-          </div>
+          {% if field.name != "tipo_componente" %}
+            {% if not es_prueba_proyecto or field.name != "descripcion" and field.name != "fecha_asignacion" and field.name != "fecha_entrega" and field.name != "estado" %}
+              <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}<ul class="errorlist">{% for e in field.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+              </div>
+            {% endif %}
+          {% endif %}
         {% endfor %}
         {% if not formset %}<button type="submit" class="btn btn-primary">Guardar actividad</button>{% endif %}
     </div>
@@ -160,10 +162,10 @@ input.form-control,select.form-control,textarea.form-control{width:100%;}
       if (!inp.name) return;
       inp.name = inp.name.replace(/-(\d+)-/, '-' + nextIdx + '-');
       if (inp.id) inp.id = inp.id.replace(/-(\d+)-/, '-' + nextIdx + '-');
-      if (inp.type === 'checkbox' && inp.name.indexOf('DELETE') !== -1) {
-        inp.checked = false;
-      } else if (inp.type !== 'checkbox' && inp.type !== 'hidden') {
+      if (inp.name.indexOf('-id') !== -1 && inp.type === 'hidden') {
         inp.value = '';
+      } else if (inp.type === 'checkbox' && inp.name.indexOf('DELETE') !== -1) {
+        inp.checked = false;
       } else if (inp.name.indexOf('orden') !== -1 && inp.type === 'number') {
         inp.value = nextIdx + 1;
       } else if (inp.name.indexOf('activo') !== -1 && inp.type === 'checkbox') {
@@ -172,6 +174,8 @@ input.form-control,select.form-control,textarea.form-control{width:100%;}
         inp.value = '0';
       } else if (inp.name.indexOf('escala_max') !== -1) {
         inp.value = '5';
+      } else if (inp.type !== 'checkbox' && inp.type !== 'hidden') {
+        inp.value = '';
       }
     });
     clone.querySelectorAll('label').forEach(function(lbl) {

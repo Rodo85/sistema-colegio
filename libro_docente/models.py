@@ -276,16 +276,14 @@ class PuntajeSimple(models.Model):
         return f"{self.estudiante} – {self.actividad_id}: {self.puntos_obtenidos}"
 
     def clean(self):
-        if self.puntaje_obtenido is not None and self.indicador_id:
-            ind = self.indicador
-            if ind.escala_min is not None and self.puntaje_obtenido < ind.escala_min:
-                raise ValidationError(
-                    f"El puntaje {self.puntaje_obtenido} debe ser >= {ind.escala_min}."
-                )
-            if ind.escala_max is not None and self.puntaje_obtenido > ind.escala_max:
-                raise ValidationError(
-                    f"El puntaje {self.puntaje_obtenido} debe ser <= {ind.escala_max}."
-                )
+        if self.puntaje_obtenido is not None:
+            if self.puntaje_obtenido < 0:
+                raise ValidationError("El puntaje obtenido debe ser >= 0.")
+            if self.actividad_id and self.actividad.puntaje_total is not None:
+                if self.puntaje_obtenido > self.actividad.puntaje_total:
+                    raise ValidationError(
+                        f"El puntaje {self.puntaje_obtenido} debe ser <= {self.actividad.puntaje_total}."
+                    )
         super().clean()
 
 

@@ -833,10 +833,32 @@ def actividad_list_view(request, asignacion_id):
         .order_by("periodo__numero")
     )
 
+    # Tipos habilitados según esquema de la asignación (solo mostrar lo que exista).
+    available_tipos = []
+    if asignacion.eval_scheme_snapshot_id:
+        componentes = list(
+            EsquemaEvalComponente.objects.filter(esquema=asignacion.eval_scheme_snapshot)
+            .select_related("componente")
+        )
+        for comp in componentes:
+            cod = (comp.componente.codigo or "").strip().upper()
+            if cod in ("TAR", "TAREAS", "TAREA") and ActividadEvaluacion.TAREA not in available_tipos:
+                available_tipos.append(ActividadEvaluacion.TAREA)
+            elif cod in ("COT", "COTIDIANO") and ActividadEvaluacion.COTIDIANO not in available_tipos:
+                available_tipos.append(ActividadEvaluacion.COTIDIANO)
+            elif cod in ("PRU", "PRUEBA", "PRUEBAS") and ActividadEvaluacion.PRUEBA not in available_tipos:
+                available_tipos.append(ActividadEvaluacion.PRUEBA)
+            elif cod in ("PRO", "PROYECTO", "PROYECTOS") and ActividadEvaluacion.PROYECTO not in available_tipos:
+                available_tipos.append(ActividadEvaluacion.PROYECTO)
+    if not available_tipos:
+        available_tipos = list(TIPOS_EVALUACION)
+
     periodo_id_raw = request.GET.get("periodo")
     periodo_id = int(periodo_id_raw) if periodo_id_raw and str(periodo_id_raw).isdigit() else None
     tipo = request.GET.get("tipo", "").upper()
     orden = request.GET.get("orden", "fecha")
+    if tipo and tipo not in available_tipos:
+        tipo = ""
 
     # Si viene tipo desde chip (COT/TAR) pero no período, auto-seleccionar primer período
     if tipo in TIPOS_EVALUACION and not periodo_id and periodos_cl:
@@ -889,6 +911,7 @@ def actividad_list_view(request, asignacion_id):
         "periodo_id": str(periodo_id) if periodo_id else None,
         "tipo": tipo,
         "orden": orden,
+        "available_tipos": available_tipos,
     })
 
 
@@ -1113,15 +1136,24 @@ def _asignaciones_destino_para_copiar(actividad, request):
     ).exists()
     if not pcl_existe:
         return []
-    asignaciones = list(
-        qs.filter(
+    qs = qs.filter(
             subarea_curso__institucion_id=inst_id,
             subarea_curso__subarea_id=subarea_id,
             curso_lectivo_id=curso_lectivo_id,
         )
-        .exclude(id=asignacion_actual.id)
+    if asignacion_actual.subgrupo_id or not asignacion_actual.subarea_curso.subarea.es_academica:
+        # Para materias con subgrupos, solo listar subgrupos reales (ej. 9-2 A, 9-2 B).
+        qs = qs.filter(subgrupo_id__isnull=False)
+    asignaciones = list(
+        qs.exclude(id=asignacion_actual.id)
         .select_related("subarea_curso__subarea", "seccion__nivel", "subgrupo__seccion__nivel")
-        .order_by("subgrupo__seccion__nivel__numero", "seccion__nivel__numero", "subgrupo__seccion__numero", "seccion__numero", "subgrupo__letra")
+        .order_by(
+            "subgrupo__seccion__nivel__numero",
+            "seccion__nivel__numero",
+            "subgrupo__seccion__numero",
+            "seccion__numero",
+            "subgrupo__letra",
+        )
     )
     # Formato: "7-1 A Programación" o "7-2 B Tics"
     for da in asignaciones:
@@ -1191,8 +1223,6 @@ def actividad_calificar_view(request, actividad_id):
     Grilla de calificación por estudiante e indicador (TAREA/COTIDIANO)
     o por estudiante con puntos obtenidos (PRUEBA/PROYECTO).
     """
-    from decimal import Decimal, InvalidOperation
-
     actividad = get_object_or_404(
         ActividadEvaluacion.objects.select_related(
             "docente_asignacion__subarea_curso",
@@ -1288,6 +1318,7 @@ def _calificar_prueba_proyecto(request, actividad, asignacion, matriculas):
         "filas": filas,
         "puntaje_total": puntaje_total,
         "porcentaje_actividad": porcentaje_act,
+    # Cargar puntajes existentes
         "total_estudiantes": len(filas),
     })
 
@@ -1297,6 +1328,7 @@ def _calificar_indicadores(request, actividad, asignacion, matriculas):
     indicadores = list(actividad.indicadores.filter(activo=True).order_by("orden", "id"))
     total_maximo = calcular_total_maximo_actividad(actividad)
 
+    # POST: guardar puntajes
     puntajes_existentes = {}
     if indicadores and matriculas:
         ind_ids = [ind.id for ind in indicadores]
@@ -1322,6 +1354,7 @@ def _calificar_indicadores(request, actividad, asignacion, matriculas):
                 [m.estudiante_id for m in matriculas],
                 datos,
                 indicadores_ids={ind.id for ind in indicadores},
+    # Construir filas para la grilla: cada fila tiene indicador_puntajes = [(ind, valor), ...]
             )
         if errores:
             for e in errores:
@@ -1336,6 +1369,7 @@ def _calificar_indicadores(request, actividad, asignacion, matriculas):
     for m in matriculas:
         est = m.estudiante
         indicador_puntajes = [
+    # Orden por apellido (primer_apellido, segundo_apellido, nombres)
             (ind, puntajes_existentes.get((ind.id, est.id)))
             for ind in indicadores
         ]
