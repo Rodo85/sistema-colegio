@@ -11,11 +11,19 @@ class _AdminOnlyEditMixin:
       - No pueden agregar, editar ni eliminar registros.
     Superusuarios tienen acceso completo.
     """
+    def _puede_ver_modulo(self, request):
+        return request.user.is_superuser or request.user.has_perm("libro_docente.access_libro_docente")
+
+    def has_module_permission(self, request):
+        return self._puede_ver_modulo(request)
+
+    def has_view_permission(self, request, obj=None):
+        return self._puede_ver_modulo(request)
+
     def get_model_perms(self, request):
         if request.user.is_superuser:
             return super().get_model_perms(request)
-        # Docentes con access_libro_docente ven los modelos en el submenú
-        if request.user.has_perm("libro_docente.access_libro_docente"):
+        if self._puede_ver_modulo(request):
             return {"view": True}
         return {}
 
