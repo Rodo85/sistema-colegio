@@ -294,16 +294,6 @@ def home_docente(request):
             ).values("docente_asignacion_id").annotate(cnt=Count("id")).values_list("docente_asignacion_id", "cnt")
         )
 
-        # Primer período por (inst, curso) para dropdown Evaluación
-        inst_curso_keys = {(a.subarea_curso.institucion_id, a.curso_lectivo_id) for a in raw}
-        first_periods = {}
-        for inst_id, cur_id in inst_curso_keys:
-            pcl = PeriodoCursoLectivo.objects.filter(
-                institucion_id=inst_id, curso_lectivo_id=cur_id, activo=True
-            ).select_related("periodo").order_by("periodo__numero").first()
-            if pcl:
-                first_periods[(inst_id, cur_id)] = pcl.periodo_id
-
         hoy = timezone.localdate()
         for a in raw:
             componentes_raw = list(a.eval_scheme_snapshot.componentes_esquema.all()) if a.eval_scheme_snapshot_id else []
@@ -338,15 +328,12 @@ def home_docente(request):
             else:
                 grupo_label = "—"
 
-            primer_periodo_id = first_periods.get((a.subarea_curso.institucion_id, a.curso_lectivo_id))
-
             asignaciones_data.append({
                 "obj": a,
                 "componentes": componentes,
                 "tiene_asistencia": tiene_asistencia,
                 "sesiones_hoy": sesiones_hoy,
                 "grupo_label": grupo_label,
-                "primer_periodo_id": primer_periodo_id,
             })
 
     return render(request, "libro_docente/hoy.html", {

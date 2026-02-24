@@ -40,8 +40,6 @@
 .btn-outline{background:#fff;border:1.5px solid var(--border);color:var(--primary-dark);}
 .btn-outline:hover{background:var(--surface);}
 .btn-sm{padding:6px 14px;font-size:.82rem;}
-.dropdown-eval{position:relative;}
-.dropdown-eval .dropdown-menu{min-width:180px;}
 
 /* Alert / empty state */
 .alert{padding:14px 18px;border-radius:10px;margin-bottom:20px;font-size:.93rem;}
@@ -126,20 +124,10 @@
               sesión{% if item.sesiones_hoy != 1 %}es{% endif %} registrada{% if item.sesiones_hoy != 1 %}s{% endif %}
             </span>
             <div style="display:flex;gap:6px;align-items:center;">
-              {% if item.primer_periodo_id %}
-              <div class="dropdown dropdown-eval">
-                <button type="button" class="btn btn-outline btn-sm dropdown-eval-btn" data-bs-toggle="dropdown" aria-expanded="false" title="Evaluación">
-                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                  Evaluar
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end">
-                  <li><a class="dropdown-item" href="{% url 'libro_docente:actividad_create' a.id %}?periodo={{ item.primer_periodo_id }}&tipo=TAREA">Nueva Tarea</a></li>
-                  <li><a class="dropdown-item" href="{% url 'libro_docente:actividad_create' a.id %}?periodo={{ item.primer_periodo_id }}&tipo=COTIDIANO">Nuevo Cotidiano</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="{% url 'libro_docente:resumen_evaluacion' a.id %}">Ver Resumen</a></li>
-                </ul>
-              </div>
-              {% endif %}
+              <a href="{% url 'libro_docente:actividad_list' a.id %}" class="btn btn-outline btn-sm" title="Evaluación: actividades, calificar, resumen">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                Evaluar
+              </a>
               <a href="{% url 'libro_docente:asistencia' a.id %}" class="btn btn-success btn-sm">
                 <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
                 Pasar lista
