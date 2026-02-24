@@ -36,6 +36,9 @@ tbody td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:m
 .badge-cerrada{background:#e5e7eb;color:#4b5563;}
 .empty{color:var(--muted);text-align:center;padding:40px 20px;}
 .total-max{font-weight:700;color:var(--primary-dark);}
+.tipo-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.7rem;font-weight:700;text-transform:uppercase;margin-left:6px;opacity:.95;}
+.tipo-acad{background:rgba(255,255,255,.3);color:#fff;}
+.tipo-tec{background:rgba(255,255,255,.25);color:#fff;}
 </style>
 {% endblock %}
 
@@ -45,8 +48,15 @@ tbody td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:m
 <div class="page-wrap">
   <div class="asgn-banner">
     <div>
-      <p class="asgn-title">📋 Actividades · {{ asignacion.subarea_curso.subarea.nombre }}</p>
-      <p style="font-size:.83rem;opacity:.9;margin:2px 0 0;">{{ asignacion.seccion|default:asignacion.subgrupo }} · {{ asignacion.curso_lectivo }}</p>
+      <p class="asgn-title">📋 Evaluación · {{ asignacion.subarea_curso.subarea.nombre }}</p>
+      <p style="font-size:.83rem;opacity:.9;margin:2px 0 0;">
+        {{ asignacion.seccion|default:asignacion.subgrupo }} · {{ asignacion.curso_lectivo }}
+        {% if asignacion.subarea_curso.subarea.es_academica %}
+          <span class="tipo-badge tipo-acad">Académica</span>
+        {% else %}
+          <span class="tipo-badge tipo-tec">Técnica</span>
+        {% endif %}
+      </p>
     </div>
     <div style="display:flex;gap:8px;align-items:center;">
       <a href="{% url 'libro_docente:resumen_evaluacion' asignacion.id %}" class="back-btn" title="Resumen acumulado (Fase 3)">Ver resumen</a>
@@ -120,11 +130,19 @@ tbody td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:m
       {% else %}
         <div class="empty">
           {% if periodo_id %}
-            No hay actividades en este período{% if tipo %} ({{ tipo }}){% endif %}.
-            <p style="margin-top:10px;">
-              <a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=TAREA" class="btn btn-primary">Crear tarea</a>
-              <a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=COTIDIANO" class="btn btn-outline">Crear cotidiano</a>
-            </p>
+            {% if tipo == 'COTIDIANO' %}
+              <p>No hay actividades de <strong>Cotidiano</strong> todavía.</p>
+              <p style="margin-top:10px;"><a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=COTIDIANO" class="btn btn-primary">Crear primera actividad</a></p>
+            {% elif tipo == 'TAREA' %}
+              <p>No hay actividades de <strong>Tarea</strong> todavía.</p>
+              <p style="margin-top:10px;"><a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=TAREA" class="btn btn-primary">Crear primera actividad</a></p>
+            {% else %}
+              No hay actividades en este período.
+              <p style="margin-top:10px;">
+                <a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=TAREA" class="btn btn-primary">Crear tarea</a>
+                <a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=COTIDIANO" class="btn btn-outline">Crear cotidiano</a>
+              </p>
+            {% endif %}
           {% else %}
             Seleccione un período para ver o crear actividades.
           {% endif %}

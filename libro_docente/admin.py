@@ -148,8 +148,15 @@ class PuntajeIndicadorInline(admin.TabularInline):
     autocomplete_fields = ("estudiante",)
 
 
+class _AdminEvaluacionSoloSuperuserMixin:
+    """Oculta ActividadEvaluacion, IndicadorActividad, PuntajeIndicador del sidebar para docentes.
+    Solo superadmin los ve; docentes usan el flujo Mis Asignaciones."""
+    def has_module_permission(self, request):
+        return request.user.is_superuser
+
+
 @admin.register(ActividadEvaluacion)
-class ActividadEvaluacionAdmin(HideInstitucionFilterMixin, admin.ModelAdmin):
+class ActividadEvaluacionAdmin(_AdminEvaluacionSoloSuperuserMixin, HideInstitucionFilterMixin, admin.ModelAdmin):
     list_display = (
         "titulo",
         "tipo_componente",
@@ -190,7 +197,7 @@ class ActividadEvaluacionAdmin(HideInstitucionFilterMixin, admin.ModelAdmin):
 
 
 @admin.register(IndicadorActividad)
-class IndicadorActividadAdmin(admin.ModelAdmin):
+class IndicadorActividadAdmin(_AdminEvaluacionSoloSuperuserMixin, admin.ModelAdmin):
     list_display = ("actividad", "orden", "descripcion", "escala_min", "escala_max", "activo", "created_at")
     list_filter = ("activo", "actividad__tipo_componente")
     search_fields = ("descripcion",)
@@ -210,7 +217,7 @@ class IndicadorActividadAdmin(admin.ModelAdmin):
 
 
 @admin.register(PuntajeIndicador)
-class PuntajeIndicadorAdmin(admin.ModelAdmin):
+class PuntajeIndicadorAdmin(_AdminEvaluacionSoloSuperuserMixin, admin.ModelAdmin):
     list_display = ("indicador", "estudiante", "puntaje_obtenido", "observacion", "updated_at")
     list_filter = ("indicador__actividad__tipo_componente",)
     search_fields = ("estudiante__primer_apellido", "estudiante__nombres", "estudiante__identificacion")

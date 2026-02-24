@@ -294,13 +294,37 @@ def home_docente(request):
             ).values("docente_asignacion_id").annotate(cnt=Count("id")).values_list("docente_asignacion_id", "cnt")
         )
 
+        # Primer período por (inst, curso) para dropdown Evaluación
+        inst_curso_keys = {(a.subarea_curso.institucion_id, a.curso_lectivo_id) for a in raw}
+        first_periods = {}
+        for inst_id, cur_id in inst_curso_keys:
+            pcl = PeriodoCursoLectivo.objects.filter(
+                institucion_id=inst_id, curso_lectivo_id=cur_id, activo=True
+            ).select_related("periodo").order_by("periodo__numero").first()
+            if pcl:
+                first_periods[(inst_id, cur_id)] = pcl.periodo_id
+
         hoy = timezone.localdate()
         for a in raw:
-            componentes = list(a.eval_scheme_snapshot.componentes_esquema.all()) if a.eval_scheme_snapshot_id else []
+            componentes_raw = list(a.eval_scheme_snapshot.componentes_esquema.all()) if a.eval_scheme_snapshot_id else []
+            componentes = []
+            for c in componentes_raw:
+                cod = (c.componente.codigo or "").strip().upper()
+                if cod in ("TAR", "TAREAS", "TAREA"):
+                    tipo_param = "TAREA"
+                elif cod in ("COT", "COTIDIANO"):
+                    tipo_param = "COTIDIANO"
+                else:
+                    tipo_param = None
+                componentes.append({
+                    "componente": c.componente,
+                    "porcentaje": c.porcentaje,
+                    "tipo_param": tipo_param,
+                })
 
             tiene_asistencia = any(
-                c.componente.codigo.upper() in ("ASISTENCIA", "ASIS") or
-                "ASISTENCIA" in (c.componente.nombre or "").upper()
+                (c["componente"].codigo or "").upper() in ("ASISTENCIA", "ASIS") or
+                "ASISTENCIA" in (c["componente"].nombre or "").upper()
                 for c in componentes
             )
 
@@ -314,12 +338,15 @@ def home_docente(request):
             else:
                 grupo_label = "—"
 
+            primer_periodo_id = first_periods.get((a.subarea_curso.institucion_id, a.curso_lectivo_id))
+
             asignaciones_data.append({
                 "obj": a,
                 "componentes": componentes,
                 "tiene_asistencia": tiene_asistencia,
                 "sesiones_hoy": sesiones_hoy,
                 "grupo_label": grupo_label,
+                "primer_periodo_id": primer_periodo_id,
             })
 
     return render(request, "libro_docente/hoy.html", {
@@ -716,6 +743,14 @@ def actividad_list_view(request, asignacion_id):
     periodo_id_raw = request.GET.get("periodo")
     periodo_id = int(periodo_id_raw) if periodo_id_raw and str(periodo_id_raw).isdigit() else None
     tipo = request.GET.get("tipo", "").upper()
+
+    # Si viene tipo desde chip (COT/TAR) pero no período, auto-seleccionar primer período
+    if tipo in ("TAREA", "COTIDIANO") and not periodo_id and periodos_cl:
+        first_pcl = periodos_cl[0]
+        return redirect(
+            reverse("libro_docente:actividad_list", args=[asignacion_id])
+            + f"?periodo={first_pcl.periodo_id}&tipo={tipo}"
+        )
 
     qs = ActividadEvaluacion.objects.filter(
         docente_asignacion=asignacion,
