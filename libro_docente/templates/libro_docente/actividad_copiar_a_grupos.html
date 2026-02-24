@@ -46,7 +46,7 @@
         {% for da in asignaciones_destino %}
         <label class="check-item">
           <input type="checkbox" name="asignacion_id" value="{{ da.id }}">
-          <span><strong>{{ da.seccion|default:da.subgrupo }}</strong> · {{ da.curso_lectivo }}</span>
+          <span><strong>{{ da.grupo_label }}</strong></span>
         </label>
         {% endfor %}
         <p style="margin-top:16px;">

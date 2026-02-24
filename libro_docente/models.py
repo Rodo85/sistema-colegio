@@ -63,6 +63,22 @@ class ActividadEvaluacion(models.Model):
     )
     titulo = models.CharField("Título", max_length=200)
     descripcion = models.TextField("Descripción", blank=True)
+    puntaje_total = models.DecimalField(
+        "Puntaje total",
+        max_digits=6,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        help_text="Solo para Prueba/Proyecto: puntos máximos de la evaluación.",
+    )
+    porcentaje_actividad = models.DecimalField(
+        "Porcentaje total",
+        max_digits=5,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        help_text="Solo para Prueba/Proyecto: % que aporta al componente.",
+    )
     fecha_asignacion = models.DateField("Fecha asignación", null=True, blank=True)
     fecha_entrega = models.DateField("Fecha entrega", null=True, blank=True)
     estado = models.CharField(
@@ -213,6 +229,51 @@ class PuntajeIndicador(models.Model):
 
     def __str__(self):
         return f"{self.estudiante} – {self.indicador_id}: {self.puntaje_obtenido}"
+
+
+class PuntajeSimple(models.Model):
+    """
+    Puntaje obtenido en Prueba o Proyecto (sin indicadores).
+    Solo almacena puntos_obtenidos; nota y % se calculan.
+    """
+    actividad = models.ForeignKey(
+        ActividadEvaluacion,
+        on_delete=models.CASCADE,
+        related_name="puntajes_simples",
+        verbose_name="Actividad",
+    )
+    estudiante = models.ForeignKey(
+        "matricula.Estudiante",
+        on_delete=models.PROTECT,
+        related_name="puntajes_simples",
+        verbose_name="Estudiante",
+    )
+    puntos_obtenidos = models.DecimalField(
+        "Puntos obtenidos",
+        max_digits=6,
+        decimal_places=2,
+        null=True,
+        blank=True,
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "evaluacion_puntaje_simple"
+        verbose_name = "Puntaje simple (Prueba/Proyecto)"
+        verbose_name_plural = "Puntajes simples"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["actividad", "estudiante"],
+                name="uniq_puntaje_simple_act_est",
+            ),
+        ]
+        indexes = [
+            models.Index(fields=["actividad", "estudiante"], name="eval_ps_act_est_idx"),
+        ]
+
+    def __str__(self):
+        return f"{self.estudiante} – {self.actividad_id}: {self.puntos_obtenidos}"
 
     def clean(self):
         if self.puntaje_obtenido is not None and self.indicador_id:

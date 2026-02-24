@@ -25,7 +25,7 @@ from .models import (
     AsistenciaSesion,
     ExclusionEstudianteAsignacion,
 )
-from .models import PuntajeIndicador
+from .models import PuntajeIndicador, PuntajeSimple
 from .services import (
     actividad_pertenece_a_institucion,
     calcular_resumen_evaluacion_completo,
@@ -868,11 +868,17 @@ def actividad_list_view(request, asignacion_id):
     actividades_raw = list(qs)
     actividades = []
     for a in actividades_raw:
-        indicadores_activos = [i for i in a.indicadores.all() if i.activo]
-        total_max = sum(i.escala_max for i in indicadores_activos)
+        es_simple = a.tipo_componente in (ActividadEvaluacion.PRUEBA, ActividadEvaluacion.PROYECTO)
+        if es_simple:
+            total_max = a.puntaje_total or 0
+            total_indicadores = 1 if total_max else 0
+        else:
+            indicadores_activos = [i for i in a.indicadores.all() if i.activo]
+            total_max = sum(i.escala_max for i in indicadores_activos)
+            total_indicadores = len(indicadores_activos)
         actividades.append({
             "obj": a,
-            "total_indicadores": len(indicadores_activos),
+            "total_indicadores": total_indicadores,
             "total_maximo": total_max,
         })
 
@@ -920,7 +926,9 @@ def actividad_create_view(request, asignacion_id):
     periodo = pcl.periodo
 
     if request.method == "POST":
-        form = ActividadEvaluacionForm(request.POST)
+        post_data = request.POST.copy()
+        post_data.setdefault("tipo_componente", tipo)
+        form = ActividadEvaluacionForm(post_data)
         if form.is_valid():
             with transaction.atomic():
                 obj = form.save(commit=False)
@@ -931,6 +939,9 @@ def actividad_create_view(request, asignacion_id):
                 obj.tipo_componente = tipo
                 obj.created_by = request.user
                 obj.save()
+            if tipo in (ActividadEvaluacion.PRUEBA, ActividadEvaluacion.PROYECTO):
+                messages.success(request, "Actividad creada. Puede calificar ahora.")
+                return redirect(reverse("libro_docente:actividad_calificar", args=[obj.id]))
             messages.success(request, "Actividad creada. Agregue indicadores a continuación.")
             return redirect(reverse("libro_docente:actividad_edit", args=[obj.id]))
     else:
@@ -940,6 +951,7 @@ def actividad_create_view(request, asignacion_id):
         })
 
     tipo_display = dict(ActividadEvaluacion.TIPO_CHOICES).get(tipo, tipo.title())
+    es_prueba_proyecto = tipo in (ActividadEvaluacion.PRUEBA, ActividadEvaluacion.PROYECTO)
     return render(request, "libro_docente/actividad_form.html", {
         "form": form,
         "formset": None,
@@ -949,6 +961,7 @@ def actividad_create_view(request, asignacion_id):
         "tipo": tipo,
         "tipo_display": tipo_display,
         "actividad": None,
+        "es_prueba_proyecto": es_prueba_proyecto,
     })
 
 
@@ -976,22 +989,27 @@ def actividad_edit_view(request, actividad_id):
         messages.error(request, "No puedes editar actividades de otra institución.")
         return redirect("libro_docente:home")
 
+    es_prueba_proyecto = actividad.tipo_componente in (ActividadEvaluacion.PRUEBA, ActividadEvaluacion.PROYECTO)
+    formset = None
     if request.method == "POST":
         form = ActividadEvaluacionForm(request.POST, instance=actividad)
-        formset = IndicadorActividadFormSet(request.POST, instance=actividad)
-        if form.is_valid() and formset.is_valid():
+        if not es_prueba_proyecto:
+            formset = IndicadorActividadFormSet(request.POST, instance=actividad)
+        if form.is_valid() and (es_prueba_proyecto or formset.is_valid()):
             with transaction.atomic():
                 form.save()
-                formset.save()
+                if formset:
+                    formset.save()
             messages.success(request, "Actividad actualizada.")
             return redirect(reverse("libro_docente:actividad_edit", args=[actividad_id]))
-        else:
+        if not es_prueba_proyecto and formset is None:
             formset = IndicadorActividadFormSet(request.POST, instance=actividad)
     else:
         form = ActividadEvaluacionForm(instance=actividad)
-        formset = IndicadorActividadFormSet(instance=actividad)
+        if not es_prueba_proyecto:
+            formset = IndicadorActividadFormSet(instance=actividad)
 
-    total_maximo = calcular_total_maximo_actividad(actividad)
+    total_maximo = calcular_total_maximo_actividad(actividad) if not es_prueba_proyecto else actividad.puntaje_total or 0
 
     return render(request, "libro_docente/actividad_form.html", {
         "form": form,
@@ -1003,6 +1021,7 @@ def actividad_edit_view(request, actividad_id):
         "tipo_display": actividad.get_tipo_componente_display(),
         "actividad": actividad,
         "total_maximo": total_maximo,
+        "es_prueba_proyecto": es_prueba_proyecto,
     })
 
 
@@ -1094,16 +1113,27 @@ def _asignaciones_destino_para_copiar(actividad, request):
     ).exists()
     if not pcl_existe:
         return []
-    return list(
+    asignaciones = list(
         qs.filter(
             subarea_curso__institucion_id=inst_id,
             subarea_curso__subarea_id=subarea_id,
             curso_lectivo_id=curso_lectivo_id,
         )
         .exclude(id=asignacion_actual.id)
-        .select_related("subarea_curso__subarea", "seccion", "subgrupo__seccion")
-        .order_by("seccion__nivel__numero", "seccion__numero", "subgrupo__letra")
+        .select_related("subarea_curso__subarea", "seccion__nivel", "subgrupo__seccion__nivel")
+        .order_by("subgrupo__seccion__nivel__numero", "seccion__nivel__numero", "subgrupo__seccion__numero", "seccion__numero", "subgrupo__letra")
     )
+    # Formato: "7-1 A Programación" o "7-2 B Tics"
+    for da in asignaciones:
+        if da.subgrupo_id:
+            sg = da.subgrupo
+            da.grupo_label = f"{sg.seccion.nivel.numero}-{sg.seccion.numero} {sg.letra} {da.subarea_curso.subarea.nombre}"
+        elif da.seccion_id:
+            s = da.seccion
+            da.grupo_label = f"{s.nivel.numero}-{s.numero} {da.subarea_curso.subarea.nombre}"
+        else:
+            da.grupo_label = str(da.subarea_curso.subarea.nombre)
+    return asignaciones
 
 
 @login_required
@@ -1158,9 +1188,8 @@ def actividad_copiar_a_grupos_view(request, actividad_id):
 @permission_required("libro_docente.access_libro_docente", raise_exception=True)
 def actividad_calificar_view(request, actividad_id):
     """
-    Grilla de calificación por estudiante e indicador.
-    GET: muestra grilla con puntajes existentes.
-    POST: guardado masivo de puntajes.
+    Grilla de calificación por estudiante e indicador (TAREA/COTIDIANO)
+    o por estudiante con puntos obtenidos (PRUEBA/PROYECTO).
     """
     from decimal import Decimal, InvalidOperation
 
@@ -1182,11 +1211,92 @@ def actividad_calificar_view(request, actividad_id):
         return redirect("libro_docente:home")
 
     asignacion = actividad.docente_asignacion
-    indicadores = list(actividad.indicadores.filter(activo=True).order_by("orden", "id"))
     matriculas = _get_estudiantes(asignacion)
+    es_prueba_proyecto = actividad.tipo_componente in (ActividadEvaluacion.PRUEBA, ActividadEvaluacion.PROYECTO)
+
+    if es_prueba_proyecto:
+        return _calificar_prueba_proyecto(request, actividad, asignacion, matriculas)
+    return _calificar_indicadores(request, actividad, asignacion, matriculas)
+
+
+def _calificar_prueba_proyecto(request, actividad, asignacion, matriculas):
+    """Calificación para Prueba/Proyecto: solo puntos obtenidos."""
+    puntaje_total = actividad.puntaje_total or Decimal("0")
+    porcentaje_act = actividad.porcentaje_actividad or Decimal("0")
+    if puntaje_total <= 0:
+        messages.error(request, "Configure el puntaje total de la actividad antes de calificar.")
+        return redirect(reverse("libro_docente:actividad_edit", args=[actividad.id]))
+
+    puntajes_existentes = {
+        p.estudiante_id: p.puntos_obtenidos
+        for p in PuntajeSimple.objects.filter(
+            actividad=actividad,
+            estudiante_id__in=[m.estudiante_id for m in matriculas],
+        )
+    }
+
+    if request.method == "POST":
+        guardados = 0
+        with transaction.atomic():
+            for m in matriculas:
+                key = f"ps_{m.estudiante_id}"
+                val = request.POST.get(key)
+                pts = None
+                if val is not None and str(val).strip():
+                    try:
+                        pts = Decimal(str(val).strip().replace(",", "."))
+                        if pts < 0 or (puntaje_total and pts > puntaje_total):
+                            messages.warning(request, f"{m.estudiante}: valor fuera de rango [0-{puntaje_total}].")
+                            continue
+                    except Exception:
+                        continue
+                obj, created = PuntajeSimple.objects.update_or_create(
+                    actividad=actividad,
+                    estudiante_id=m.estudiante_id,
+                    defaults={"puntos_obtenidos": pts},
+                )
+                guardados += 1
+        if guardados > 0:
+            messages.success(request, "Puntajes guardados.")
+        return redirect(reverse("libro_docente:actividad_calificar", args=[actividad.id]))
+
+    filas = []
+    for m in matriculas:
+        est = m.estudiante
+        pts = puntajes_existentes.get(est.id)
+        nota = (pts / puntaje_total * Decimal("10")) if puntaje_total and pts is not None else None
+        pct = (pts / puntaje_total * porcentaje_act) if puntaje_total and pts is not None else None
+        filas.append({
+            "matricula": m,
+            "estudiante": est,
+            "puntos_obtenidos": pts,
+            "nota": nota,
+            "porcentaje": pct,
+        })
+
+    filas.sort(
+        key=lambda f: (
+            (f["estudiante"].primer_apellido or "").upper(),
+            (f["estudiante"].segundo_apellido or "").upper(),
+            (f["estudiante"].nombres or "").upper(),
+        )
+    )
+
+    return render(request, "libro_docente/calificacion_simple.html", {
+        "actividad": actividad,
+        "asignacion": asignacion,
+        "filas": filas,
+        "puntaje_total": puntaje_total,
+        "porcentaje_actividad": porcentaje_act,
+        "total_estudiantes": len(filas),
+    })
+
+
+def _calificar_indicadores(request, actividad, asignacion, matriculas):
+    """Calificación para TAREA/COTIDIANO con indicadores."""
+    indicadores = list(actividad.indicadores.filter(activo=True).order_by("orden", "id"))
     total_maximo = calcular_total_maximo_actividad(actividad)
 
-    # Cargar puntajes existentes
     puntajes_existentes = {}
     if indicadores and matriculas:
         ind_ids = [ind.id for ind in indicadores]
@@ -1198,7 +1308,6 @@ def actividad_calificar_view(request, actividad_id):
             if p.puntaje_obtenido is not None:
                 puntajes_existentes[(p.indicador_id, p.estudiante_id)] = p.puntaje_obtenido
 
-    # POST: guardar puntajes
     if request.method == "POST":
         datos = {}
         for ind in indicadores:
@@ -1221,9 +1330,8 @@ def actividad_calificar_view(request, actividad_id):
             messages.success(request, f"Se guardaron {guardados} puntaje(s).")
         else:
             messages.info(request, "No hubo cambios que guardar.")
-        return redirect(reverse("libro_docente:actividad_calificar", args=[actividad_id]))
+        return redirect(reverse("libro_docente:actividad_calificar", args=[actividad.id]))
 
-    # Construir filas para la grilla: cada fila tiene indicador_puntajes = [(ind, valor), ...]
     filas = []
     for m in matriculas:
         est = m.estudiante
@@ -1231,14 +1339,8 @@ def actividad_calificar_view(request, actividad_id):
             (ind, puntajes_existentes.get((ind.id, est.id)))
             for ind in indicadores
         ]
-        total_obt = sum(
-            (p or Decimal("0")) for _, p in indicador_puntajes
-        )
-        pct = (
-            (total_obt / total_maximo * Decimal("100"))
-            if total_maximo and total_maximo > 0
-            else Decimal("0")
-        )
+        total_obt = sum((p or Decimal("0")) for _, p in indicador_puntajes)
+        pct = (total_obt / total_maximo * Decimal("100")) if total_maximo and total_maximo > 0 else Decimal("0")
         filas.append({
             "matricula": m,
             "estudiante": est,
@@ -1247,7 +1349,6 @@ def actividad_calificar_view(request, actividad_id):
             "porcentaje_logro": pct,
         })
 
-    # Orden por apellido (primer_apellido, segundo_apellido, nombres)
     filas.sort(
         key=lambda f: (
             (f["estudiante"].primer_apellido or "").upper(),
@@ -1264,6 +1365,8 @@ def actividad_calificar_view(request, actividad_id):
         "total_maximo": total_maximo,
         "total_estudiantes": len(filas),
     })
+
+
 
 
 @login_required

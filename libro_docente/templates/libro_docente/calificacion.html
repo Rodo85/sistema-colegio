@@ -28,6 +28,12 @@
 .puntaje-input{width:52px;padding:6px 8px;text-align:center;font-size:.9rem;border:1px solid var(--border);border-radius:4px;}
 .puntaje-input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 2px rgba(26,110,181,.2);}
 .puntaje-input.error{border-color:var(--danger);background:#fef2f2;box-shadow:0 0 0 1px var(--danger);}
+.errores-puntaje{position:fixed;bottom:16px;right:16px;max-width:320px;background:#fff;border:2px solid var(--danger);border-radius:10px;padding:12px 16px;box-shadow:0 4px 20px rgba(0,0,0,.2);z-index:100;display:none;}
+.errores-puntaje.show{display:block;}
+.errores-puntaje h4{margin:0 0 8px;font-size:.9rem;color:var(--danger);}
+.errores-puntaje ul{margin:0;padding-left:18px;font-size:.82rem;max-height:120px;overflow:auto;}
+.errores-puntaje li{cursor:pointer;margin-bottom:4px;}
+.errores-puntaje li:hover{text-decoration:underline;}
 .ind-header.quick-fill{cursor:pointer;position:relative;}
 .ind-header.quick-fill:hover{background:#e0f2fe;}
 .quick-fill-popover{position:absolute;top:100%;left:50%;transform:translateX(-50%);margin-top:4px;background:#fff;border:1px solid var(--border);border-radius:8px;padding:10px 12px;box-shadow:0 4px 12px rgba(0,0,0,.15);z-index:10;display:none;min-width:180px;}
@@ -88,7 +94,7 @@
             <tr>
               <th class="student-col">Estudiante</th>
               {% for ind in indicadores %}
-              <th class="ind-header quick-fill" title="{{ ind.descripcion }} — Clic para rellenar columna" data-ind-id="{{ ind.id }}" data-min="{{ ind.escala_min }}" data-max="{{ ind.escala_max }}">
+              <th class="ind-header quick-fill" title="{{ ind.descripcion }} — Clic para rellenar columna" data-ind-id="{{ ind.id }}" data-min="{{ ind.escala_min }}" data-max="{{ ind.escala_max }}" data-ind-label="I{{ forloop.counter }}">
                 I{{ forloop.counter }}<br><span class="ind-scale">[{{ ind.escala_min }}-{{ ind.escala_max }}]</span><br><span style="font-size:.65rem;opacity:.7;">Rápido</span>
                 <span class="quick-fill-popover" id="qf-{{ ind.id }}">
                   <div class="qf-row">
@@ -132,6 +138,10 @@
       </form>
     </div>
   </div>
+  <div id="errores-puntaje" class="errores-puntaje" aria-live="polite">
+    <h4>⚠ Valores fuera de rango</h4>
+    <ul id="errores-lista"></ul>
+  </div>
   {% endif %}
 </div>
 
@@ -156,9 +166,12 @@
       var max = parseFloat(inp.getAttribute('data-max')) || 5;
       var val = parseVal(inp.value);
       inp.classList.remove('error');
+      inp.removeAttribute('data-error-msg');
       if (val !== null) {
         if (val < min || val > max) {
           inp.classList.add('error');
+          var msg = val < min ? 'Mín ' + min : 'Máx ' + max;
+          inp.setAttribute('data-error-msg', 'Valor ' + val + ' fuera de rango [' + min + '-' + max + ']');
         } else {
           total += val;
         }
@@ -173,6 +186,31 @@
     }
   }
 
+  function actualizarPanelErrores() {
+    var panel = document.getElementById('errores-puntaje');
+    var lista = document.getElementById('errores-lista');
+    if (!panel || !lista) return;
+    var errInputs = document.querySelectorAll('.puntaje-input.error');
+    lista.innerHTML = '';
+    if (errInputs.length === 0) {
+      panel.classList.remove('show');
+      return;
+    }
+    panel.classList.add('show');
+    errInputs.forEach(function(inp) {
+      var li = document.createElement('li');
+      var row = inp.closest('.fila-estudiante');
+      var estName = row ? row.querySelector('.student-col') : null;
+      var estText = estName ? estName.textContent.trim() : '?';
+      var th = document.querySelector('th[data-ind-id="' + inp.getAttribute('data-ind-id') + '"]');
+      var indLabel = th ? (th.getAttribute('data-ind-label') || th.textContent.split('\n')[0] || 'I?').trim() : 'I?';
+      var msg = inp.getAttribute('data-error-msg') || 'Fuera de rango';
+      li.textContent = estText + ' · ' + indLabel + ': ' + msg;
+      li.onclick = function() { inp.focus(); inp.scrollIntoView({behavior:'smooth',block:'center'}); };
+      lista.appendChild(li);
+    });
+  }
+
   function updateAll() {
     document.querySelectorAll('.fila-estudiante').forEach(updateRow);
   }
@@ -184,15 +222,18 @@
       if (e.target.classList.contains('puntaje-input')) {
         var row = e.target.closest('.fila-estudiante');
         if (row) updateRow(row);
+        actualizarPanelErrores();
       }
     });
     container.addEventListener('change', function(e) {
       if (e.target.classList.contains('puntaje-input')) {
         var row = e.target.closest('.fila-estudiante');
         if (row) updateRow(row);
+        actualizarPanelErrores();
       }
     });
     updateAll();
+    actualizarPanelErrores();
 
     // Puntajes rápidos: rellenar columna
     document.querySelectorAll('.ind-header.quick-fill').forEach(function(th) {
@@ -267,6 +308,19 @@
         });
       }
     });
+
+    var form = document.getElementById('calificacion-form');
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        actualizarPanelErrores();
+        var errs = document.querySelectorAll('.puntaje-input.error');
+        if (errs.length > 0) {
+          e.preventDefault();
+          errs[0].focus();
+          errs[0].scrollIntoView({behavior:'smooth',block:'center'});
+        }
+      });
+    }
   });
 })();
 </script>

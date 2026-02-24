@@ -139,7 +139,7 @@ JAZZMIN_SETTINGS = {
         ],
         "libro_docente": [
             {
-                "name": "Mis asignaciones (Hoy)",
+                "name": "Mis asignaciones",
                 "url": "libro_docente:home",
                 "icon": "fas fa-clipboard-check",
                 "permissions": ["libro_docente.access_libro_docente"],

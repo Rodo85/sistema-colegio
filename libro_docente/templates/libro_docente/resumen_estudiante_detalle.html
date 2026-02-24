@@ -72,7 +72,7 @@ th{background:var(--surface);font-weight:700;}
             <td>{{ d.actividad.titulo }}</td>
             <td>
               {% for di in d.detalle_indicadores %}
-              <span class="ind-badge" title="{{ di.indicador.descripcion }}">[{{ di.escala_max }}] {% if di.puntaje %}{{ di.puntaje|floatformat:0 }}{% else %}—{% endif %}</span>
+              <span class="ind-badge" title="{% if di.indicador %}{{ di.indicador.descripcion }}{% else %}Puntos obtenidos{% endif %}">[{{ di.escala_max }}] {% if di.puntaje %}{{ di.puntaje|floatformat:0 }}{% else %}—{% endif %}</span>
               {% endfor %}
             </td>
             <td style="text-align:center;">{{ d.obtenido|floatformat:1 }}</td>
@@ -120,7 +120,7 @@ th{background:var(--surface);font-weight:700;}
             <td>{{ d.actividad.titulo }}</td>
             <td>
               {% for di in d.detalle_indicadores %}
-              <span class="ind-badge" title="{{ di.indicador.descripcion }}">[{{ di.escala_max }}] {% if di.puntaje %}{{ di.puntaje|floatformat:0 }}{% else %}—{% endif %}</span>
+              <span class="ind-badge" title="{% if di.indicador %}{{ di.indicador.descripcion }}{% else %}Puntos obtenidos{% endif %}">[{{ di.escala_max }}] {% if di.puntaje %}{{ di.puntaje|floatformat:0 }}{% else %}—{% endif %}</span>
               {% endfor %}
             </td>
             <td style="text-align:center;">{{ d.obtenido|floatformat:1 }}</td>
@@ -168,7 +168,7 @@ th{background:var(--surface);font-weight:700;}
             <td>{{ d.actividad.titulo }}</td>
             <td>
               {% for di in d.detalle_indicadores %}
-              <span class="ind-badge" title="{{ di.indicador.descripcion }}">[{{ di.escala_max }}] {% if di.puntaje %}{{ di.puntaje|floatformat:0 }}{% else %}—{% endif %}</span>
+              <span class="ind-badge" title="{% if di.indicador %}{{ di.indicador.descripcion }}{% else %}Puntos obtenidos{% endif %}">[{{ di.escala_max }}] {% if di.puntaje %}{{ di.puntaje|floatformat:0 }}{% else %}—{% endif %}</span>
               {% endfor %}
             </td>
             <td style="text-align:center;">{{ d.obtenido|floatformat:1 }}</td>
@@ -216,7 +216,7 @@ th{background:var(--surface);font-weight:700;}
             <td>{{ d.actividad.titulo }}</td>
             <td>
               {% for di in d.detalle_indicadores %}
-              <span class="ind-badge" title="{{ di.indicador.descripcion }}">[{{ di.escala_max }}] {% if di.puntaje %}{{ di.puntaje|floatformat:0 }}{% else %}—{% endif %}</span>
+              <span class="ind-badge" title="{% if di.indicador %}{{ di.indicador.descripcion }}{% else %}Puntos obtenidos{% endif %}">[{{ di.escala_max }}] {% if di.puntaje %}{{ di.puntaje|floatformat:0 }}{% else %}—{% endif %}</span>
               {% endfor %}
             </td>
             <td style="text-align:center;">{{ d.obtenido|floatformat:1 }}</td>
