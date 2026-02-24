@@ -1,6 +1,7 @@
 from django.urls import path
 
 from .views import (
+    asignacion_estudiantes_view,
     actividad_calificar_view,
     actividad_copiar_a_grupos_view,
     actividad_create_view,
@@ -20,6 +21,11 @@ app_name = "libro_docente"
 
 urlpatterns = [
     path("hoy/", home_docente, name="home"),
+    path(
+        "asignacion/<int:asignacion_id>/estudiantes/",
+        asignacion_estudiantes_view,
+        name="asignacion_estudiantes",
+    ),
     path("asistencia/<int:asignacion_id>/", asistencia_view, name="asistencia"),
     path("asistencia/<int:asignacion_id>/resumen/", resumen_view, name="resumen"),
     path(

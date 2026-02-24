@@ -7,14 +7,19 @@ from decimal import Decimal
 
 from django.test import TestCase
 
-from .models import ActividadEvaluacion, IndicadorActividad, PuntajeIndicador
+from .models import (
+    ActividadEvaluacion,
+    ExclusionEstudianteAsignacion,
+    IndicadorActividad,
+    PuntajeIndicador,
+)
 from .services import (
     calcular_porcentaje_logro,
     calcular_total_maximo_actividad,
     calcular_total_obtenido_estudiante,
     validar_puntaje_en_rango,
 )
-from .views import _nota_mep
+from .views import _get_estudiantes, _nota_mep
 
 
 class NotaMepTests(TestCase):
@@ -256,3 +261,26 @@ class EvaluacionIndicadoresTests(TestCase):
             validar_puntaje_en_rango(ind, Decimal("4"))
         self.assertIn("4", str(ctx.exception))
         self.assertIn("<=", str(ctx.exception) or "3" in str(ctx.exception))
+
+    def test_tipo_prueba_valido(self):
+        """Debe permitir crear actividad tipo PRUEBA."""
+        actividad = ActividadEvaluacion.objects.create(
+            docente_asignacion=self.asignacion,
+            institucion=self.institucion,
+            curso_lectivo=self.curso_lectivo,
+            periodo=self.periodo,
+            tipo_componente=ActividadEvaluacion.PRUEBA,
+            titulo="Prueba corta 1",
+            estado=ActividadEvaluacion.ACTIVA,
+        )
+        self.assertEqual(actividad.tipo_componente, ActividadEvaluacion.PRUEBA)
+
+    def test_exclusion_estudiante_no_sale_en_lista_docente(self):
+        """Estudiante excluido no debe mostrarse en _get_estudiantes."""
+        ExclusionEstudianteAsignacion.objects.create(
+            docente_asignacion=self.asignacion,
+            estudiante=self.estudiante,
+            created_by=self.user,
+        )
+        estudiantes = list(_get_estudiantes(self.asignacion))
+        self.assertFalse(any(m.estudiante_id == self.estudiante.id for m in estudiantes))

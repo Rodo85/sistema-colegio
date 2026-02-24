@@ -19,7 +19,12 @@ from config_institucional.models import Profesor
 from matricula.models import MatriculaAcademica
 
 from .forms import ActividadEvaluacionForm, IndicadorActividadFormSet
-from .models import ActividadEvaluacion, AsistenciaRegistro, AsistenciaSesion
+from .models import (
+    ActividadEvaluacion,
+    AsistenciaRegistro,
+    AsistenciaSesion,
+    ExclusionEstudianteAsignacion,
+)
 from .models import PuntajeIndicador
 from .services import (
     actividad_pertenece_a_institucion,
@@ -47,6 +52,13 @@ _MEP_RANGES = [
     (80, 90, 1),
     (90, 100.01, 0),  # 90% a 100% inclusive
 ]
+
+TIPOS_EVALUACION = (
+    ActividadEvaluacion.TAREA,
+    ActividadEvaluacion.COTIDIANO,
+    ActividadEvaluacion.PRUEBA,
+    ActividadEvaluacion.PROYECTO,
+)
 
 
 def _nota_mep(pct: float) -> int:
@@ -84,9 +96,13 @@ def _get_estudiantes(asignacion):
         filtros["seccion_id"] = asignacion.seccion_id
     else:
         return MatriculaAcademica.objects.none()
+    excluidos_ids = ExclusionEstudianteAsignacion.objects.filter(
+        docente_asignacion=asignacion
+    ).values_list("estudiante_id", flat=True)
     return (
         MatriculaAcademica.objects
         .filter(**filtros)
+        .exclude(estudiante_id__in=excluidos_ids)
         .select_related("estudiante")
         .order_by("estudiante__primer_apellido", "estudiante__segundo_apellido", "estudiante__nombres")
     )
@@ -305,6 +321,10 @@ def home_docente(request):
                     tipo_param = "TAREA"
                 elif cod in ("COT", "COTIDIANO"):
                     tipo_param = "COTIDIANO"
+                elif cod in ("PRU", "PRUEBA", "PRUEBAS"):
+                    tipo_param = "PRUEBA"
+                elif cod in ("PRO", "PROYECTO", "PROYECTOS"):
+                    tipo_param = "PROYECTO"
                 else:
                     tipo_param = None
                 componentes.append({
@@ -467,8 +487,6 @@ def asistencia_view(request, asignacion_id):
             "estado": estado,
             "observacion": obs_guardadas.get(est.id, ""),
         })
-    estudiantes.sort(key=lambda e: e["nombre"])
-
     periodo = _infer_periodo(asignacion, fecha)
     periodos_cl = (
         PeriodoCursoLectivo.objects
@@ -522,6 +540,93 @@ def _obtener_asignacion_con_permiso(request, asignacion_id):
             "seccion__nivel", "subgrupo__seccion__nivel",
         ),
         id=asignacion_id, docente=profesor, activo=True,
+    )
+
+
+@login_required
+@permission_required("libro_docente.access_libro_docente", raise_exception=True)
+def asignacion_estudiantes_view(request, asignacion_id):
+    """
+    Permite ocultar/mostrar estudiantes para una asignación en Libro del Docente.
+    No afecta la matrícula global.
+    """
+    asignacion = _obtener_asignacion_con_permiso(request, asignacion_id)
+    if asignacion is None:
+        messages.error(request, "No tienes acceso a esta asignación.")
+        return redirect("libro_docente:home")
+
+    filtros = {"curso_lectivo": asignacion.curso_lectivo, "estado": "activo"}
+    if asignacion.subgrupo_id:
+        filtros["subgrupo_id"] = asignacion.subgrupo_id
+    elif asignacion.seccion_id:
+        filtros["seccion_id"] = asignacion.seccion_id
+    else:
+        filtros["id__in"] = []
+
+    matriculas = list(
+        MatriculaAcademica.objects.filter(**filtros)
+        .select_related("estudiante")
+        .order_by(
+            "estudiante__primer_apellido",
+            "estudiante__segundo_apellido",
+            "estudiante__nombres",
+        )
+    )
+    estudiantes_ids = [m.estudiante_id for m in matriculas]
+
+    if request.method == "POST":
+        ocultos_sel = {
+            int(x) for x in request.POST.getlist("oculto_estudiante_id") if str(x).isdigit()
+        }
+        ocultos_sel &= set(estudiantes_ids)
+
+        actuales_qs = ExclusionEstudianteAsignacion.objects.filter(
+            docente_asignacion=asignacion, estudiante_id__in=estudiantes_ids
+        )
+        actuales_ids = set(actuales_qs.values_list("estudiante_id", flat=True))
+
+        a_crear = ocultos_sel - actuales_ids
+        a_eliminar = actuales_ids - ocultos_sel
+
+        if a_eliminar:
+            actuales_qs.filter(estudiante_id__in=a_eliminar).delete()
+        if a_crear:
+            ExclusionEstudianteAsignacion.objects.bulk_create(
+                [
+                    ExclusionEstudianteAsignacion(
+                        docente_asignacion=asignacion,
+                        estudiante_id=est_id,
+                        created_by=request.user,
+                    )
+                    for est_id in a_crear
+                ],
+                ignore_conflicts=True,
+            )
+        messages.success(request, "Lista de trabajo actualizada.")
+        return redirect(reverse("libro_docente:asignacion_estudiantes", args=[asignacion_id]))
+
+    ocultos_ids = set(
+        ExclusionEstudianteAsignacion.objects.filter(
+            docente_asignacion=asignacion, estudiante_id__in=estudiantes_ids
+        ).values_list("estudiante_id", flat=True)
+    )
+    filas = [
+        {
+            "matricula": m,
+            "estudiante": m.estudiante,
+            "oculto": m.estudiante_id in ocultos_ids,
+        }
+        for m in matriculas
+    ]
+    return render(
+        request,
+        "libro_docente/asignacion_estudiantes.html",
+        {
+            "asignacion": asignacion,
+            "filas": filas,
+            "total": len(filas),
+            "ocultos": len(ocultos_ids),
+        },
     )
 
 
@@ -734,7 +839,7 @@ def actividad_list_view(request, asignacion_id):
     orden = request.GET.get("orden", "fecha")
 
     # Si viene tipo desde chip (COT/TAR) pero no período, auto-seleccionar primer período
-    if tipo in ("TAREA", "COTIDIANO") and not periodo_id and periodos_cl:
+    if tipo in TIPOS_EVALUACION and not periodo_id and periodos_cl:
         first_pcl = periodos_cl[0]
         return redirect(
             reverse("libro_docente:actividad_list", args=[asignacion_id])
@@ -748,7 +853,7 @@ def actividad_list_view(request, asignacion_id):
 
     if periodo_id:
         qs = qs.filter(periodo_id=periodo_id)
-    if tipo in ("TAREA", "COTIDIANO"):
+    if tipo in TIPOS_EVALUACION:
         qs = qs.filter(tipo_componente=tipo)
 
     if orden == "titulo":
@@ -800,8 +905,8 @@ def actividad_create_view(request, asignacion_id):
 
     periodo_id = request.GET.get("periodo")
     tipo = request.GET.get("tipo", "").upper()
-    if not periodo_id or tipo not in ("TAREA", "COTIDIANO"):
-        messages.error(request, "Debe indicar periodo y tipo (TAREA o COTIDIANO).")
+    if not periodo_id or tipo not in TIPOS_EVALUACION:
+        messages.error(request, "Debe indicar periodo y tipo válido.")
         return redirect(reverse("libro_docente:actividad_list", args=[asignacion_id]))
 
     pcl = get_object_or_404(
@@ -834,7 +939,7 @@ def actividad_create_view(request, asignacion_id):
             "estado": ActividadEvaluacion.BORRADOR,
         })
 
-    tipo_display = "Tarea" if tipo == "TAREA" else "Cotidiano"
+    tipo_display = dict(ActividadEvaluacion.TIPO_CHOICES).get(tipo, tipo.title())
     return render(request, "libro_docente/actividad_form.html", {
         "form": form,
         "formset": None,
@@ -1189,7 +1294,7 @@ def resumen_evaluacion_view(request, asignacion_id):
     periodo_id_raw = request.GET.get("periodo")
     periodo_id = int(periodo_id_raw) if periodo_id_raw and str(periodo_id_raw).isdigit() else None
     tipo = request.GET.get("tipo", "").upper()
-    if tipo not in ("TAREA", "COTIDIANO"):
+    if tipo not in TIPOS_EVALUACION:
         tipo = None
     if not periodo_id and periodos_cl:
         periodo_id = periodos_cl[0].periodo_id
@@ -1228,7 +1333,7 @@ def resumen_estudiante_detalle_view(request, asignacion_id, estudiante_id):
     periodo_id_raw = request.GET.get("periodo")
     periodo_id = int(periodo_id_raw) if periodo_id_raw and str(periodo_id_raw).isdigit() else None
     tipo = request.GET.get("tipo", "").upper()
-    if tipo not in ("TAREA", "COTIDIANO"):
+    if tipo not in TIPOS_EVALUACION:
         tipo = None
     inst_id = asignacion.subarea_curso.institucion_id
     periodos_cl = list(
@@ -1265,6 +1370,20 @@ def resumen_estudiante_detalle_view(request, asignacion_id, estudiante_id):
         if periodo_id
         else _empty_resumen
     )
+    pruebas = (
+        calcular_resumen_componente_estudiante(
+            asignacion, periodo_id, ActividadEvaluacion.PRUEBA, estudiante_id
+        )
+        if periodo_id
+        else _empty_resumen
+    )
+    proyectos = (
+        calcular_resumen_componente_estudiante(
+            asignacion, periodo_id, ActividadEvaluacion.PROYECTO, estudiante_id
+        )
+        if periodo_id
+        else _empty_resumen
+    )
 
     return render(request, "libro_docente/resumen_estudiante_detalle.html", {
         "asignacion": asignacion,
@@ -1274,4 +1393,6 @@ def resumen_estudiante_detalle_view(request, asignacion_id, estudiante_id):
         "tipo": tipo,
         "tareas": tareas,
         "cotidianos": cotidianos,
+        "pruebas": pruebas,
+        "proyectos": proyectos,
     })

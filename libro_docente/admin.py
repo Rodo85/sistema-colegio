@@ -4,7 +4,14 @@ from django.contrib import admin
 from django.db.models import Q
 
 from core.mixins import HideInstitucionFilterMixin
-from .models import ActividadEvaluacion, AsistenciaRegistro, AsistenciaSesion, IndicadorActividad, PuntajeIndicador
+from .models import (
+    ActividadEvaluacion,
+    AsistenciaRegistro,
+    AsistenciaSesion,
+    ExclusionEstudianteAsignacion,
+    IndicadorActividad,
+    PuntajeIndicador,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -233,3 +240,15 @@ class PuntajeIndicadorAdmin(_AdminEvaluacionSoloSuperuserMixin, admin.ModelAdmin
         if inst_id:
             qs = qs.filter(indicador__actividad__institucion_id=inst_id)
         return qs
+
+
+@admin.register(ExclusionEstudianteAsignacion)
+class ExclusionEstudianteAsignacionAdmin(_AdminEvaluacionSoloSuperuserMixin, admin.ModelAdmin):
+    list_display = ("docente_asignacion", "estudiante", "created_by", "created_at")
+    search_fields = (
+        "estudiante__primer_apellido",
+        "estudiante__segundo_apellido",
+        "estudiante__nombres",
+        "estudiante__identificacion",
+    )
+    autocomplete_fields = ("docente_asignacion", "estudiante")

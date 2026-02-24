@@ -1,0 +1,87 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block title %}Estudiantes de asignación{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+:root{--primary:#1a6eb5;--primary-dark:#145591;--border:#dee2e6;--surface:#f8f9fc;--muted:#6c757d;}
+.page-wrap{max-width:980px;margin:20px auto;padding:0 14px;font-family:"Segoe UI",system-ui,sans-serif;}
+.asgn-banner{background:linear-gradient(135deg,#145591 0%,#1a6eb5 100%);border-radius:12px;padding:16px 22px;color:#fff;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:20px;}
+.back-btn{color:#fff !important;font-size:.83rem;text-decoration:none !important;border:1px solid rgba(255,255,255,.4);border-radius:6px;padding:5px 12px;}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.card-header{background:var(--surface);padding:12px 18px;border-bottom:1px solid var(--border);font-weight:700;color:var(--primary-dark);}
+.card-body{padding:16px 18px;}
+.muted{color:var(--muted);font-size:.85rem;}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;font-size:.85rem;font-weight:600;border-radius:7px;border:none;cursor:pointer;text-decoration:none;}
+.btn-primary{background:var(--primary);color:#fff !important;}
+table{width:100%;border-collapse:collapse;font-size:.88rem;}
+th,td{padding:8px 10px;border:1px solid var(--border);}
+th{background:var(--surface);text-align:left;}
+.text-center{text-align:center;}
+.pill-hidden{background:#fee2e2;color:#991b1b;border-radius:4px;padding:2px 8px;font-size:.75rem;font-weight:700;}
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div class="page-wrap">
+  <div class="asgn-banner">
+    <div>
+      <strong>{{ asignacion.subarea_curso.subarea.nombre }}</strong> · {{ asignacion.seccion|default:asignacion.subgrupo }}
+      <div style="font-size:.82rem;opacity:.9;">{{ asignacion.curso_lectivo }}</div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <a href="{% url 'libro_docente:actividad_list' asignacion.id %}" class="back-btn">Actividades</a>
+      <a href="{% url 'libro_docente:asistencia' asignacion.id %}" class="back-btn">Asistencia</a>
+      <a href="{% url 'libro_docente:home' %}" class="back-btn">Mis asignaciones</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      Lista de trabajo del docente
+      <span class="muted">({{ total }} estudiantes, {{ ocultos }} ocultos)</span>
+    </div>
+    <div class="card-body">
+      <p class="muted">
+        Marca "Ocultar" para estudiantes que no pertenecen a esta materia. Esto solo los oculta en tu espacio de trabajo.
+      </p>
+      <form method="post">
+        {% csrf_token %}
+        <div style="overflow:auto;max-height:65vh;">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Estudiante</th>
+                <th>Identificación</th>
+                <th class="text-center">Ocultar</th>
+                <th class="text-center">Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for f in filas %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ f.estudiante.primer_apellido }} {{ f.estudiante.segundo_apellido|default:"" }} {{ f.estudiante.nombres }}</td>
+                <td>{{ f.estudiante.identificacion }}</td>
+                <td class="text-center">
+                  <input type="checkbox" name="oculto_estudiante_id" value="{{ f.estudiante.id }}" {% if f.oculto %}checked{% endif %}>
+                </td>
+                <td class="text-center">{% if f.oculto %}<span class="pill-hidden">Oculto</span>{% else %}Visible{% endif %}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div style="margin-top:14px;">
+          <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -212,6 +212,8 @@ ACTIVIDADES_ACUMULADO_ESTADOS = (ActividadEvaluacion.ACTIVA, ActividadEvaluacion
 TIPO_TO_CODIGO_ESQUEMA = {
     ActividadEvaluacion.TAREA: ["TAREAS", "TAREA"],
     ActividadEvaluacion.COTIDIANO: ["COTIDIANO"],
+    ActividadEvaluacion.PRUEBA: ["PRUEBA", "PRUEBAS", "PRU"],
+    ActividadEvaluacion.PROYECTO: ["PROYECTO", "PROYECTOS", "PRO"],
 }
 
 
@@ -315,7 +317,7 @@ def calcular_resumen_componente_estudiante(asignacion, periodo_id, tipo_componen
 
 def calcular_resumen_evaluacion_completo(asignacion, periodo_id, matriculas):
     """
-    Resumen por estudiante con TAREAS y COTIDIANOS.
+    Resumen por estudiante con TAREAS, COTIDIANOS, PRUEBAS y PROYECTO.
     Retorna lista de dicts con estudiante y datos por componente.
     Optimizado: prefetch actividades e indicadores, una query de puntajes por tipo.
     """
@@ -391,6 +393,8 @@ def calcular_resumen_evaluacion_completo(asignacion, periodo_id, matriculas):
 
     resumen_tareas = _resumen_por_tipo(ActividadEvaluacion.TAREA)
     resumen_cotidianos = _resumen_por_tipo(ActividadEvaluacion.COTIDIANO)
+    resumen_pruebas = _resumen_por_tipo(ActividadEvaluacion.PRUEBA)
+    resumen_proyectos = _resumen_por_tipo(ActividadEvaluacion.PROYECTO)
 
     filas = []
     for m in matriculas:
@@ -400,6 +404,8 @@ def calcular_resumen_evaluacion_completo(asignacion, periodo_id, matriculas):
             "estudiante": est,
             "tareas": resumen_tareas.get(est.id, {}),
             "cotidianos": resumen_cotidianos.get(est.id, {}),
+            "pruebas": resumen_pruebas.get(est.id, {}),
+            "proyectos": resumen_proyectos.get(est.id, {}),
         })
     return filas
 
@@ -474,6 +480,7 @@ def copiar_actividad_a_asignaciones(actividad_origen, asignacion_ids, created_by
     creadas = []
     with transaction.atomic():
         indicadores = list(actividad_origen.indicadores.filter(activo=True).order_by("orden", "id"))
+        actividades_nuevas = []
         for da in asignaciones:
             # Verificar periodo para esta asignación (mismo curso_lectivo)
             pcl = PeriodoCursoLectivo.objects.filter(
@@ -484,7 +491,8 @@ def copiar_actividad_a_asignaciones(actividad_origen, asignacion_ids, created_by
             ).first()
             if not pcl:
                 continue
-            nueva = ActividadEvaluacion.objects.create(
+            actividades_nuevas.append(
+                ActividadEvaluacion(
                 docente_asignacion=da,
                 institucion=da.subarea_curso.institucion,
                 curso_lectivo=da.curso_lectivo,
@@ -496,15 +504,22 @@ def copiar_actividad_a_asignaciones(actividad_origen, asignacion_ids, created_by
                 fecha_entrega=actividad_origen.fecha_entrega,
                 estado=ActividadEvaluacion.BORRADOR,
                 created_by=created_by or actividad_origen.created_by,
-            )
-            for ind in indicadores:
-                IndicadorActividad.objects.create(
-                    actividad=nueva,
-                    orden=ind.orden,
-                    descripcion=ind.descripcion,
-                    escala_min=ind.escala_min,
-                    escala_max=ind.escala_max,
-                    activo=True,
                 )
-            creadas.append(nueva)
+            )
+        creadas = list(ActividadEvaluacion.objects.bulk_create(actividades_nuevas))
+        indicadores_nuevos = []
+        for nueva in creadas:
+            for ind in indicadores:
+                indicadores_nuevos.append(
+                    IndicadorActividad(
+                        actividad=nueva,
+                        orden=ind.orden,
+                        descripcion=ind.descripcion,
+                        escala_min=ind.escala_min,
+                        escala_max=ind.escala_max,
+                        activo=True,
+                    )
+                )
+        if indicadores_nuevos:
+            IndicadorActividad.objects.bulk_create(indicadores_nuevos)
     return creadas

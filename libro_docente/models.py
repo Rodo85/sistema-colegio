@@ -15,9 +15,13 @@ class ActividadEvaluacion(models.Model):
     """
     TAREA = "TAREA"
     COTIDIANO = "COTIDIANO"
+    PRUEBA = "PRUEBA"
+    PROYECTO = "PROYECTO"
     TIPO_CHOICES = [
         (TAREA, "Tarea"),
         (COTIDIANO, "Cotidiano"),
+        (PRUEBA, "Prueba"),
+        (PROYECTO, "Proyecto"),
     ]
     BORRADOR = "BORRADOR"
     ACTIVA = "ACTIVA"
@@ -350,3 +354,52 @@ class AsistenciaRegistro(models.Model):
 
     def __str__(self):
         return f"{self.estudiante} – {self.get_estado_display()} ({self.sesion.fecha})"
+
+
+class ExclusionEstudianteAsignacion(models.Model):
+    """
+    Permite ocultar estudiantes del espacio de trabajo de una asignación docente
+    sin afectar su matrícula global en el grupo.
+    """
+    docente_asignacion = models.ForeignKey(
+        "evaluaciones.DocenteAsignacion",
+        on_delete=models.CASCADE,
+        related_name="exclusiones_estudiantes_libro",
+        verbose_name="Asignación docente",
+    )
+    estudiante = models.ForeignKey(
+        "matricula.Estudiante",
+        on_delete=models.CASCADE,
+        related_name="exclusiones_asignacion_libro",
+        verbose_name="Estudiante",
+    )
+    motivo = models.CharField("Motivo", max_length=255, blank=True)
+    created_by = models.ForeignKey(
+        "core.User",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="exclusiones_estudiantes_creadas",
+        verbose_name="Creado por",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "libro_exclusion_estudiante_asignacion"
+        verbose_name = "Exclusión de estudiante por asignación"
+        verbose_name_plural = "Exclusiones de estudiantes por asignación"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["docente_asignacion", "estudiante"],
+                name="uniq_libro_exclusion_asig_est",
+            ),
+        ]
+        indexes = [
+            models.Index(
+                fields=["docente_asignacion", "estudiante"],
+                name="libro_excl_asig_est_idx",
+            ),
+        ]
+
+    def __str__(self):
+        return f"{self.docente_asignacion_id} - {self.estudiante_id}"
