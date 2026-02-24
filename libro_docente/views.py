@@ -507,11 +507,8 @@ def detalle_estudiante_view(request, asignacion_id, estudiante_id):
     Detalle de asistencia de un estudiante en un período.
     Historial de registros + resumen acumulado (reutiliza _calcular_resumen).
     """
-    try:
-        asignacion = _obtener_asignacion_con_permiso(request, asignacion_id)
-    except Exception:
-        asignacion = None
-    if not asignacion:
+    asignacion = _obtener_asignacion_con_permiso(request, asignacion_id)
+    if asignacion is None:
         messages.error(request, "No tienes acceso a esta asignación.")
         return redirect("libro_docente:home")
 
@@ -612,6 +609,11 @@ def detalle_estudiante_view(request, asignacion_id, estudiante_id):
         "nombre_componente": nombre_componente,
         "ESTADO_CHOICES": dict(AsistenciaRegistro.ESTADO_CHOICES),
     })
+
+
+@login_required
+@permission_required("libro_docente.access_libro_docente", raise_exception=True)
+def resumen_view(request, asignacion_id):
     """Resumen de asistencia por período para una asignación."""
     profesor = _get_profesor(request)
     if not profesor:
