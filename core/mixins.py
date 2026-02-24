@@ -1,10 +1,33 @@
 # core/mixins.py
 from django.contrib import admin
 
-class InstitucionScopedAdmin(admin.ModelAdmin):
+
+def _filter_refers_to_institucion(f):
+    """True si el filtro es o incluye el campo institución."""
+    if isinstance(f, str):
+        return "institucion" in f.lower()
+    if isinstance(f, (list, tuple)) and len(f) > 0:
+        return _filter_refers_to_institucion(f[0])
+    return False
+
+
+class HideInstitucionFilterMixin:
+    """
+    Mixin reutilizable: oculta el filtro de institución en list_filter
+    para usuarios no superusuarios (no pueden cambiar institución).
+    """
+    def get_list_filter(self, request):
+        filters = super().get_list_filter(request)
+        if request.user.is_superuser:
+            return filters
+        return [f for f in filters if not _filter_refers_to_institucion(f)]
+
+
+class InstitucionScopedAdmin(HideInstitucionFilterMixin, admin.ModelAdmin):
     """
     Mixin para que los ModelAdmin filtren y asignen automáticamente
     el campo 'institucion' según request.institucion_activa_id.
+    Incluye HideInstitucionFilterMixin: usuarios normales no ven el filtro de institución.
     """
     def get_queryset(self, request):
         qs = super().get_queryset(request)

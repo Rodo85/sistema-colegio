@@ -3,6 +3,7 @@ import logging
 from django.contrib import admin
 from django.db.models import Q
 
+from core.mixins import HideInstitucionFilterMixin
 from .models import AsistenciaRegistro, AsistenciaSesion
 
 logger = logging.getLogger(__name__)
@@ -13,7 +14,8 @@ class _AdminOnlyEditMixin:
     Para usuarios no-superusuarios:
       - El modelo aparece en el sidebar si tienen access_libro_docente.
       - Ven solo sus sesiones/registros (filtradas por docente_asignacion o created_by).
-      - No pueden agregar, editar ni eliminar registros.
+      - Pueden eliminar sus propias sesiones (has_delete_permission).
+      - No pueden agregar ni editar registros.
     Superusuarios tienen acceso completo.
     """
     def _puede_ver_modulo(self, request):
@@ -39,7 +41,24 @@ class _AdminOnlyEditMixin:
         return request.user.is_superuser
 
     def has_delete_permission(self, request, obj=None):
-        return request.user.is_superuser
+        if request.user.is_superuser:
+            return True
+        if not self._puede_ver_modulo(request):
+            return False
+        if obj is None:
+            return True  # Lista: get_queryset ya filtra
+        # Objeto concreto: verificar que pertenece al usuario
+        from .models import AsistenciaSesion
+        if isinstance(obj, AsistenciaSesion):
+            es_docente = obj.docente_asignacion.docente.usuario_id == request.user.pk
+            es_creador = obj.created_by_id == request.user.pk
+            return es_docente or es_creador
+        if hasattr(obj, "sesion"):
+            sesion = obj.sesion
+            es_docente = sesion.docente_asignacion.docente.usuario_id == request.user.pk
+            es_creador = sesion.created_by_id == request.user.pk
+            return es_docente or es_creador
+        return False
 
 
 class AsistenciaRegistroInline(admin.TabularInline):
@@ -50,7 +69,7 @@ class AsistenciaRegistroInline(admin.TabularInline):
 
 
 @admin.register(AsistenciaSesion)
-class AsistenciaSesionAdmin(_AdminOnlyEditMixin, admin.ModelAdmin):
+class AsistenciaSesionAdmin(HideInstitucionFilterMixin, _AdminOnlyEditMixin, admin.ModelAdmin):
     list_display = ("id", "docente_asignacion", "fecha", "sesion_numero", "periodo", "institucion", "curso_lectivo", "created_by", "created_at")
     list_filter = ("institucion", "curso_lectivo", "periodo", "fecha")
     search_fields = ("docente_asignacion__docente__usuario__last_name", "docente_asignacion__docente__usuario__first_name")
@@ -87,7 +106,7 @@ class AsistenciaSesionAdmin(_AdminOnlyEditMixin, admin.ModelAdmin):
 
 
 @admin.register(AsistenciaRegistro)
-class AsistenciaRegistroAdmin(_AdminOnlyEditMixin, admin.ModelAdmin):
+class AsistenciaRegistroAdmin(HideInstitucionFilterMixin, _AdminOnlyEditMixin, admin.ModelAdmin):
     list_display = ("sesion", "estudiante", "estado", "updated_at")
     list_filter = ("estado", "sesion__fecha", "sesion__institucion")
     search_fields = ("estudiante__primer_apellido", "estudiante__nombres", "estudiante__identificacion")
