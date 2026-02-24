@@ -30,7 +30,11 @@ class ComponenteEvalAdmin(admin.ModelAdmin):
 #  Esquemas de evaluación (global – solo superusuario)
 # ─────────────────────────────────────────────────────────────────────────────
 
-class EsquemaEvalComponenteInline(admin.TabularInline):
+class EsquemaEvalComponenteInline(admin.StackedInline):
+    """
+    StackedInline evita KeyError en empty_form.fields cuando has_add_permission=False
+    (Django #29637 afecta TabularInline; StackedInline no tiene ese bug).
+    """
     model = EsquemaEvalComponente
     extra = 1
     fields = ("componente", "porcentaje", "reglas_json")
