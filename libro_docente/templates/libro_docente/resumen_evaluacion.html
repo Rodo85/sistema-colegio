@@ -49,10 +49,14 @@
     <div class="card-header">
       <div class="toolbar">
         {% for pcl in periodos_cl %}
-          <a href="?periodo={{ pcl.periodo_id }}" class="{% if periodo_id == pcl.periodo_id|stringformat:'s' %}active{% endif %}">
+          <a href="?periodo={{ pcl.periodo_id }}{% if tipo %}&tipo={{ tipo }}{% endif %}" class="{% if periodo_id == pcl.periodo_id|stringformat:'s' %}active{% endif %}">
             {{ pcl.periodo.nombre }}
           </a>
         {% endfor %}
+        <span style="margin-left:12px;color:var(--muted);">|</span>
+        <a href="?periodo={{ periodo_id }}" class="{% if not tipo %}active{% endif %}">Todos</a>
+        <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=TAREA" class="{% if tipo == 'TAREA' %}active{% endif %}">Solo Tareas</a>
+        <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=COTIDIANO" class="{% if tipo == 'COTIDIANO' %}active{% endif %}">Solo Cotidianos</a>
       </div>
     </div>
     <div class="card-body" style="padding:0;">
@@ -70,41 +74,53 @@
           <thead>
             <tr>
               <th class="student-col">Estudiante</th>
-              <th colspan="4" style="background:#dbeafe;">TAREAS</th>
-              <th colspan="4" style="background:#d1fae5;">COTIDIANOS</th>
+              {% if not tipo or tipo == 'TAREA' %}
+              <th colspan="5" style="background:#dbeafe;">TAREAS</th>
+              {% endif %}
+              {% if not tipo or tipo == 'COTIDIANO' %}
+              <th colspan="5" style="background:#d1fae5;">COTIDIANOS</th>
+              {% endif %}
             </tr>
             <tr>
               <th class="student-col"></th>
+              {% if not tipo or tipo == 'TAREA' %}
               <th class="comp-section">Obtenidos</th>
               <th class="comp-section">Máximos</th>
               <th class="comp-section">% logro</th>
               <th class="comp-section">% comp.</th>
               <th class="comp-section">Aporte</th>
+              {% endif %}
+              {% if not tipo or tipo == 'COTIDIANO' %}
               <th class="comp-section">Obtenidos</th>
               <th class="comp-section">Máximos</th>
               <th class="comp-section">% logro</th>
               <th class="comp-section">% comp.</th>
               <th class="comp-section">Aporte</th>
+              {% endif %}
             </tr>
           </thead>
           <tbody>
             {% for fila in filas %}
             <tr>
               <td class="student-col">
-                <a href="{% url 'libro_docente:resumen_estudiante_detalle' asignacion.id fila.estudiante.id %}?periodo={{ periodo_id }}" title="Ver desglose por actividad">
+                <a href="{% url 'libro_docente:resumen_estudiante_detalle' asignacion.id fila.estudiante.id %}?periodo={{ periodo_id }}{% if tipo %}&tipo={{ tipo }}{% endif %}" title="Ver desglose por actividad">
                   {{ fila.estudiante.primer_apellido }} {{ fila.estudiante.segundo_apellido|default:"" }} {{ fila.estudiante.nombres }}
                 </a>
               </td>
+              {% if not tipo or tipo == 'TAREA' %}
               <td class="num-cell">{{ fila.tareas.puntos_obtenidos|floatformat:1 }}</td>
               <td class="num-cell">{{ fila.tareas.puntos_maximos|floatformat:1 }}</td>
               <td class="num-cell">{{ fila.tareas.porcentaje_logro|floatformat:1 }}%</td>
               <td class="num-cell">{{ fila.tareas.porcentaje_componente|floatformat:1 }}%</td>
               <td class="num-cell aporte-cell">{{ fila.tareas.aporte|floatformat:1 }}</td>
+              {% endif %}
+              {% if not tipo or tipo == 'COTIDIANO' %}
               <td class="num-cell">{{ fila.cotidianos.puntos_obtenidos|floatformat:1 }}</td>
               <td class="num-cell">{{ fila.cotidianos.puntos_maximos|floatformat:1 }}</td>
               <td class="num-cell">{{ fila.cotidianos.porcentaje_logro|floatformat:1 }}%</td>
               <td class="num-cell">{{ fila.cotidianos.porcentaje_componente|floatformat:1 }}%</td>
               <td class="num-cell aporte-cell">{{ fila.cotidianos.aporte|floatformat:1 }}</td>
+              {% endif %}
             </tr>
             {% endfor %}
           </tbody>

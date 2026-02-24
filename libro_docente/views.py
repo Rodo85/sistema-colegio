@@ -25,6 +25,7 @@ from .services import (
     actividad_pertenece_a_institucion,
     calcular_resumen_evaluacion_completo,
     calcular_total_maximo_actividad,
+    copiar_actividad_a_asignaciones,
     duplicar_actividad,
     guardar_puntajes_masivo,
     puede_usuario_editar_actividad,
@@ -730,6 +731,7 @@ def actividad_list_view(request, asignacion_id):
     periodo_id_raw = request.GET.get("periodo")
     periodo_id = int(periodo_id_raw) if periodo_id_raw and str(periodo_id_raw).isdigit() else None
     tipo = request.GET.get("tipo", "").upper()
+    orden = request.GET.get("orden", "fecha")
 
     # Si viene tipo desde chip (COT/TAR) pero no período, auto-seleccionar primer período
     if tipo in ("TAREA", "COTIDIANO") and not periodo_id and periodos_cl:
@@ -742,12 +744,21 @@ def actividad_list_view(request, asignacion_id):
     qs = ActividadEvaluacion.objects.filter(
         docente_asignacion=asignacion,
         institucion_id=inst_id,
-    ).select_related("periodo").prefetch_related("indicadores").order_by("-created_at")
+    ).select_related("periodo").prefetch_related("indicadores")
 
     if periodo_id:
         qs = qs.filter(periodo_id=periodo_id)
     if tipo in ("TAREA", "COTIDIANO"):
         qs = qs.filter(tipo_componente=tipo)
+
+    if orden == "titulo":
+        qs = qs.order_by("titulo")
+    elif orden == "estado":
+        qs = qs.order_by("estado", "-created_at")
+    elif orden == "tipo":
+        qs = qs.order_by("tipo_componente", "-created_at")
+    else:
+        qs = qs.order_by("-created_at")
 
     actividades_raw = list(qs)
     actividades = []
@@ -766,6 +777,7 @@ def actividad_list_view(request, asignacion_id):
         "periodos_cl": periodos_cl,
         "periodo_id": str(periodo_id) if periodo_id else None,
         "tipo": tipo,
+        "orden": orden,
     })
 
 
@@ -945,8 +957,96 @@ def actividad_duplicar_view(request, actividad_id):
     nueva = duplicar_actividad(actividad)
     nueva.created_by = request.user
     nueva.save(update_fields=["created_by"])
-    messages.success(request, f"Actividad duplicada: «{nueva.titulo}».")
+    messages.success(request, f"Copia creada: «{nueva.titulo}».")
     return redirect(reverse("libro_docente:actividad_edit", args=[nueva.id]))
+
+
+def _asignaciones_destino_para_copiar(actividad, request):
+    """
+    Otras asignaciones del mismo docente, misma materia (subarea), mismo curso_lectivo,
+    misma institución, distintas del grupo actual. Solo las que tienen el periodo.
+    """
+    asignacion_actual = actividad.docente_asignacion
+    profesor = _get_profesor(request)
+    if not profesor:
+        return []
+    if request.user.is_superuser:
+        qs = DocenteAsignacion.objects.filter(activo=True)
+    else:
+        qs = DocenteAsignacion.objects.filter(docente=profesor, activo=True)
+    inst_id = asignacion_actual.subarea_curso.institucion_id
+    inst_activa = getattr(request, "institucion_activa_id", None)
+    if inst_activa and inst_id != inst_activa:
+        return []
+    subarea_id = asignacion_actual.subarea_curso.subarea_id
+    curso_lectivo_id = asignacion_actual.curso_lectivo_id
+    periodo = actividad.periodo
+    pcl_existe = PeriodoCursoLectivo.objects.filter(
+        institucion_id=inst_id,
+        curso_lectivo_id=curso_lectivo_id,
+        periodo=periodo,
+        activo=True,
+    ).exists()
+    if not pcl_existe:
+        return []
+    return list(
+        qs.filter(
+            subarea_curso__institucion_id=inst_id,
+            subarea_curso__subarea_id=subarea_id,
+            curso_lectivo_id=curso_lectivo_id,
+        )
+        .exclude(id=asignacion_actual.id)
+        .select_related("subarea_curso__subarea", "seccion", "subgrupo__seccion")
+        .order_by("seccion__nivel__numero", "seccion__numero", "subgrupo__letra")
+    )
+
+
+@login_required
+@permission_required("libro_docente.access_libro_docente", raise_exception=True)
+def actividad_copiar_a_grupos_view(request, actividad_id):
+    """
+    Copiar actividad a otros grupos/asignaciones (misma materia, mismo curso lectivo).
+    """
+    actividad = get_object_or_404(
+        ActividadEvaluacion.objects.select_related(
+            "docente_asignacion__subarea_curso",
+            "periodo",
+        ).prefetch_related("indicadores"),
+        pk=actividad_id,
+    )
+
+    if not puede_usuario_editar_actividad(actividad, request):
+        messages.error(request, "No tienes permiso para copiar esta actividad.")
+        return redirect("libro_docente:home")
+
+    inst_activa = getattr(request, "institucion_activa_id", None)
+    if inst_activa and not actividad_pertenece_a_institucion(actividad, inst_activa):
+        messages.error(request, "No puedes copiar actividades de otra institución.")
+        return redirect("libro_docente:home")
+
+    asignaciones_destino = _asignaciones_destino_para_copiar(actividad, request)
+
+    if request.method == "POST":
+        ids_str = request.POST.getlist("asignacion_id")
+        asignacion_ids = [int(x) for x in ids_str if str(x).isdigit()]
+        if asignacion_ids:
+            creadas = copiar_actividad_a_asignaciones(actividad, asignacion_ids, created_by=request.user)
+            if creadas:
+                messages.success(
+                    request,
+                    f"Actividad copiada a {len(creadas)} grupo(s): «{actividad.titulo}».",
+                )
+            else:
+                messages.warning(request, "No se pudo copiar a ningún grupo. Verifique los destinos.")
+        else:
+            messages.warning(request, "Seleccione al menos un grupo destino.")
+        return redirect(reverse("libro_docente:actividad_list", args=[actividad.docente_asignacion_id]))
+
+    return render(request, "libro_docente/actividad_copiar_a_grupos.html", {
+        "actividad": actividad,
+        "asignacion": actividad.docente_asignacion,
+        "asignaciones_destino": asignaciones_destino,
+    })
 
 
 @login_required
@@ -1042,6 +1142,15 @@ def actividad_calificar_view(request, actividad_id):
             "porcentaje_logro": pct,
         })
 
+    # Orden por apellido (primer_apellido, segundo_apellido, nombres)
+    filas.sort(
+        key=lambda f: (
+            (f["estudiante"].primer_apellido or "").upper(),
+            (f["estudiante"].segundo_apellido or "").upper(),
+            (f["estudiante"].nombres or "").upper(),
+        )
+    )
+
     return render(request, "libro_docente/calificacion.html", {
         "actividad": actividad,
         "asignacion": asignacion,
@@ -1079,6 +1188,9 @@ def resumen_evaluacion_view(request, asignacion_id):
 
     periodo_id_raw = request.GET.get("periodo")
     periodo_id = int(periodo_id_raw) if periodo_id_raw and str(periodo_id_raw).isdigit() else None
+    tipo = request.GET.get("tipo", "").upper()
+    if tipo not in ("TAREA", "COTIDIANO"):
+        tipo = None
     if not periodo_id and periodos_cl:
         periodo_id = periodos_cl[0].periodo_id
 
@@ -1091,6 +1203,7 @@ def resumen_evaluacion_view(request, asignacion_id):
         "asignacion": asignacion,
         "periodos_cl": periodos_cl,
         "periodo_id": str(periodo_id) if periodo_id else None,
+        "tipo": tipo,
         "filas": filas,
     })
 
@@ -1114,6 +1227,9 @@ def resumen_estudiante_detalle_view(request, asignacion_id, estudiante_id):
 
     periodo_id_raw = request.GET.get("periodo")
     periodo_id = int(periodo_id_raw) if periodo_id_raw and str(periodo_id_raw).isdigit() else None
+    tipo = request.GET.get("tipo", "").upper()
+    if tipo not in ("TAREA", "COTIDIANO"):
+        tipo = None
     inst_id = asignacion.subarea_curso.institucion_id
     periodos_cl = list(
         PeriodoCursoLectivo.objects
@@ -1155,6 +1271,7 @@ def resumen_estudiante_detalle_view(request, asignacion_id, estudiante_id):
         "estudiante": matricula.estudiante,
         "periodos_cl": periodos_cl,
         "periodo_id": str(periodo_id) if periodo_id else None,
+        "tipo": tipo,
         "tareas": tareas,
         "cotidianos": cotidianos,
     })

@@ -2,6 +2,7 @@ from django.urls import path
 
 from .views import (
     actividad_calificar_view,
+    actividad_copiar_a_grupos_view,
     actividad_create_view,
     actividad_delete_view,
     actividad_duplicar_view,
@@ -32,6 +33,7 @@ urlpatterns = [
     path("actividad/<int:actividad_id>/editar/", actividad_edit_view, name="actividad_edit"),
     path("actividad/<int:actividad_id>/eliminar/", actividad_delete_view, name="actividad_delete"),
     path("actividad/<int:actividad_id>/duplicar/", actividad_duplicar_view, name="actividad_duplicar"),
+    path("actividad/<int:actividad_id>/copiar-a-grupos/", actividad_copiar_a_grupos_view, name="actividad_copiar_a_grupos"),
     path("actividad/<int:actividad_id>/calificar/", actividad_calificar_view, name="actividad_calificar"),
     path("asignacion/<int:asignacion_id>/resumen-evaluacion/", resumen_evaluacion_view, name="resumen_evaluacion"),
     path(

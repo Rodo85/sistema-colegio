@@ -279,7 +279,25 @@ def calcular_resumen_componente_estudiante(asignacion, periodo_id, tipo_componen
         )
         puntos_maximos += max_act
         puntos_obtenidos += obt_act
-        detalle.append({"actividad": act, "maximo": max_act, "obtenido": obt_act})
+        indicadores_act = list(act.indicadores.filter(activo=True).order_by("orden", "id"))
+        puntajes_raw = list(
+            PuntajeIndicador.objects.filter(
+                indicador_id__in=ind_ids, estudiante_id=estudiante_id
+            ).values("indicador_id", "puntaje_obtenido")
+        )
+        puntajes_ind = {p["indicador_id"]: p["puntaje_obtenido"] for p in puntajes_raw}
+        detalle_indicadores = [
+            {"indicador": ind, "puntaje": puntajes_ind.get(ind.id), "escala_max": ind.escala_max}
+            for ind in indicadores_act
+        ]
+        pct_act = (obt_act / max_act * Decimal("100")) if max_act > 0 else Decimal("0")
+        detalle.append({
+            "actividad": act,
+            "maximo": max_act,
+            "obtenido": obt_act,
+            "porcentaje_logro": pct_act,
+            "detalle_indicadores": detalle_indicadores,
+        })
 
     pct_logro = (puntos_obtenidos / puntos_maximos * Decimal("100")) if puntos_maximos > 0 else Decimal("0")
     pct_comp = obtener_porcentaje_componente_esquema(asignacion, tipo_componente)
@@ -427,3 +445,66 @@ def duplicar_actividad(actividad_origen, titulo_nuevo=None):
                 activo=True,
             )
     return nueva
+
+
+def copiar_actividad_a_asignaciones(actividad_origen, asignacion_ids, created_by=None):
+    """
+    Copia una actividad (datos + indicadores) a otras asignaciones.
+    NO copia puntajes. Cada asignación destino debe tener el mismo periodo disponible.
+    Retorna lista de actividades creadas.
+    """
+    from django.db import transaction
+    from evaluaciones.models import DocenteAsignacion, PeriodoCursoLectivo
+
+    periodo = actividad_origen.periodo
+    inst_id = actividad_origen.institucion_id
+    curso_lectivo_id = actividad_origen.curso_lectivo_id
+    subarea_id = actividad_origen.docente_asignacion.subarea_curso.subarea_id
+
+    asignaciones = list(
+        DocenteAsignacion.objects.select_related("subarea_curso").filter(
+            id__in=asignacion_ids,
+            activo=True,
+            subarea_curso__institucion_id=inst_id,
+            subarea_curso__subarea_id=subarea_id,
+            curso_lectivo_id=curso_lectivo_id,
+        )
+    )
+
+    creadas = []
+    with transaction.atomic():
+        indicadores = list(actividad_origen.indicadores.filter(activo=True).order_by("orden", "id"))
+        for da in asignaciones:
+            # Verificar periodo para esta asignación (mismo curso_lectivo)
+            pcl = PeriodoCursoLectivo.objects.filter(
+                institucion_id=da.subarea_curso.institucion_id,
+                curso_lectivo_id=da.curso_lectivo_id,
+                periodo=periodo,
+                activo=True,
+            ).first()
+            if not pcl:
+                continue
+            nueva = ActividadEvaluacion.objects.create(
+                docente_asignacion=da,
+                institucion=da.subarea_curso.institucion,
+                curso_lectivo=da.curso_lectivo,
+                periodo=periodo,
+                tipo_componente=actividad_origen.tipo_componente,
+                titulo=actividad_origen.titulo,
+                descripcion=actividad_origen.descripcion or "",
+                fecha_asignacion=actividad_origen.fecha_asignacion,
+                fecha_entrega=actividad_origen.fecha_entrega,
+                estado=ActividadEvaluacion.BORRADOR,
+                created_by=created_by or actividad_origen.created_by,
+            )
+            for ind in indicadores:
+                IndicadorActividad.objects.create(
+                    actividad=nueva,
+                    orden=ind.orden,
+                    descripcion=ind.descripcion,
+                    escala_min=ind.escala_min,
+                    escala_max=ind.escala_max,
+                    activo=True,
+                )
+            creadas.append(nueva)
+    return creadas

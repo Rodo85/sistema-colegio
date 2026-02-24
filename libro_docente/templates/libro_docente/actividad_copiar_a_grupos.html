@@ -1,0 +1,66 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block title %}Copiar a otros grupos – {{ actividad.titulo }}{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+:root{--primary:#1a6eb5;--primary-dark:#145591;--border:#dee2e6;--surface:#f8f9fc;--muted:#6c757d;}
+.page-wrap{max-width:600px;margin:20px auto;padding:0 14px;font-family:"Segoe UI",system-ui,sans-serif;}
+.asgn-banner{background:linear-gradient(135deg,#145591 0%,#1a6eb5 100%);border-radius:12px;padding:16px 22px;color:#fff;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;}
+.back-btn{color:#fff !important;font-size:.83rem;text-decoration:none !important;border:1px solid rgba(255,255,255,.4);border-radius:6px;padding:5px 12px;}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:18px;}
+.card-header{background:var(--surface);padding:12px 18px;border-bottom:1px solid var(--border);font-weight:700;color:var(--primary-dark);}
+.card-body{padding:16px 18px;}
+.check-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--border);border-radius:8px;margin-bottom:8px;cursor:pointer;}
+.check-item:hover{background:#f8faff;}
+.check-item input{width:18px;height:18px;cursor:pointer;}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;font-size:.9rem;font-weight:600;border-radius:7px;border:none;cursor:pointer;text-decoration:none;}
+.btn-primary{background:var(--primary);color:#fff !important;}
+.btn-outline{background:#fff;border:1.5px solid var(--border);color:#333 !important;}
+.empty-dest{color:var(--muted);text-align:center;padding:24px;}
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div class="page-wrap">
+  <div class="asgn-banner">
+    <span>Copiar «{{ actividad.titulo }}» a otros grupos</span>
+    <a href="{% url 'libro_docente:actividad_list' asignacion.id %}" class="back-btn">← Volver</a>
+  </div>
+
+  <div class="card">
+    <div class="card-header">Seleccione grupos destino</div>
+    <div class="card-body">
+      <p style="margin-bottom:16px;font-size:.9rem;color:var(--muted);">
+        Se copiará la actividad e indicadores (sin puntajes) a los grupos seleccionados.
+        Solo se muestran asignaciones donde imparte la misma materia ({{ asignacion.subarea_curso.subarea.nombre }}) en el mismo curso lectivo.
+      </p>
+
+      {% if asignaciones_destino %}
+      <form method="post">
+        {% csrf_token %}
+        {% for da in asignaciones_destino %}
+        <label class="check-item">
+          <input type="checkbox" name="asignacion_id" value="{{ da.id }}">
+          <span><strong>{{ da.seccion|default:da.subgrupo }}</strong> · {{ da.curso_lectivo }}</span>
+        </label>
+        {% endfor %}
+        <p style="margin-top:16px;">
+          <button type="submit" class="btn btn-primary">Copiar a grupos seleccionados</button>
+          <a href="{% url 'libro_docente:actividad_list' asignacion.id %}" class="btn btn-outline" style="margin-left:8px;">Cancelar</a>
+        </p>
+      </form>
+      {% else %}
+      <div class="empty-dest">
+        <p>No hay otros grupos donde imparta esta materia en el mismo curso lectivo.</p>
+        <p style="margin-top:8px;"><a href="{% url 'libro_docente:actividad_list' asignacion.id %}" class="btn btn-outline">Volver</a></p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

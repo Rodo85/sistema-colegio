@@ -27,7 +27,17 @@
 .cal-table tbody tr:hover td{background:#f8faff;}
 .puntaje-input{width:52px;padding:6px 8px;text-align:center;font-size:.9rem;border:1px solid var(--border);border-radius:4px;}
 .puntaje-input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 2px rgba(26,110,181,.2);}
-.puntaje-input.error{border-color:var(--danger);background:#fef2f2;}
+.puntaje-input.error{border-color:var(--danger);background:#fef2f2;box-shadow:0 0 0 1px var(--danger);}
+.ind-header.quick-fill{cursor:pointer;position:relative;}
+.ind-header.quick-fill:hover{background:#e0f2fe;}
+.quick-fill-popover{position:absolute;top:100%;left:50%;transform:translateX(-50%);margin-top:4px;background:#fff;border:1px solid var(--border);border-radius:8px;padding:10px 12px;box-shadow:0 4px 12px rgba(0,0,0,.15);z-index:10;display:none;min-width:180px;}
+.quick-fill-popover.show{display:block;}
+.qf-row{display:flex;gap:6px;align-items:center;margin-bottom:6px;}
+.qf-row:last-child{margin-bottom:0;}
+.quick-fill-popover input{width:55px;padding:4px 8px;text-align:center;}
+.quick-fill-popover .qf-btn{padding:4px 10px;font-size:.75rem;cursor:pointer;border:1px solid var(--border);border-radius:4px;background:#fff;}
+.quick-fill-popover .qf-btn:hover{background:var(--surface);}
+.quick-fill-popover .qf-btn-all{background:var(--primary);color:#fff;border-color:var(--primary);}
 .total-cell{font-weight:700;color:var(--primary-dark);text-align:center;}
 .pct-cell{font-weight:700;text-align:center;}
 .ind-header{font-size:.75rem;cursor:help;}
@@ -78,8 +88,21 @@
             <tr>
               <th class="student-col">Estudiante</th>
               {% for ind in indicadores %}
-              <th class="ind-header" title="{{ ind.descripcion }}">
-                I{{ forloop.counter }}<br><span class="ind-scale">[{{ ind.escala_min }}-{{ ind.escala_max }}]</span>
+              <th class="ind-header quick-fill" title="{{ ind.descripcion }} — Clic para rellenar columna" data-ind-id="{{ ind.id }}" data-min="{{ ind.escala_min }}" data-max="{{ ind.escala_max }}">
+                I{{ forloop.counter }}<br><span class="ind-scale">[{{ ind.escala_min }}-{{ ind.escala_max }}]</span><br><span style="font-size:.65rem;opacity:.7;">Rápido</span>
+                <span class="quick-fill-popover" id="qf-{{ ind.id }}">
+                  <div class="qf-row">
+                    <input type="text" inputmode="decimal" placeholder="Valor" class="qf-input">
+                    <button type="button" class="qf-btn qf-btn-all">Todos</button>
+                  </div>
+                  <div class="qf-row">
+                    <button type="button" class="qf-btn qf-btn-vacios">Solo vacíos</button>
+                    <button type="button" class="qf-btn qf-btn-limpiar">Limpiar</button>
+                  </div>
+                  <div class="qf-row">
+                    <button type="button" class="qf-btn qf-btn-copiar">Copiar hacia abajo</button>
+                  </div>
+                </span>
               </th>
               {% endfor %}
               <th>Total obt.</th>
@@ -170,6 +193,80 @@
       }
     });
     updateAll();
+
+    // Puntajes rápidos: rellenar columna
+    document.querySelectorAll('.ind-header.quick-fill').forEach(function(th) {
+      var indId = th.getAttribute('data-ind-id');
+      var min = parseFloat(th.getAttribute('data-min')) || 0;
+      var max = parseFloat(th.getAttribute('data-max')) || 5;
+      var popover = th.querySelector('.quick-fill-popover');
+      var input = th.querySelector('.qf-input');
+      var btnAll = th.querySelector('.qf-btn-all');
+      var btnVacios = th.querySelector('.qf-btn-vacios');
+      var btnLimpiar = th.querySelector('.qf-btn-limpiar');
+      var btnCopiar = th.querySelector('.qf-btn-copiar');
+      if (!popover || !input) return;
+
+      function fillColumn(onlyEmpty) {
+        var val = input.value.trim().replace(',', '.');
+        var n = parseFloat(val);
+        if (isNaN(n) || n < min || n > max) {
+          alert('El valor debe estar entre ' + min + ' y ' + max + '.');
+          return;
+        }
+        document.querySelectorAll('.puntaje-input[data-ind-id="' + indId + '"]').forEach(function(inp) {
+          if (onlyEmpty && inp.value.trim() !== '') return;
+          inp.value = n;
+          var row = inp.closest('.fila-estudiante');
+          if (row) updateRow(row);
+        });
+        popover.classList.remove('show');
+        input.value = '';
+      }
+
+      th.addEventListener('click', function(e) {
+        if (e.target.closest('.quick-fill-popover')) return;
+        document.querySelectorAll('.quick-fill-popover.show').forEach(function(p) {
+          if (p !== popover) p.classList.remove('show');
+        });
+        popover.classList.toggle('show');
+        if (popover.classList.contains('show')) input.focus();
+      });
+
+      if (btnAll) btnAll.addEventListener('click', function() { fillColumn(false); });
+      if (btnVacios) btnVacios.addEventListener('click', function() { fillColumn(true); });
+      if (btnCopiar) btnCopiar.addEventListener('click', function() {
+        var inputs = Array.from(document.querySelectorAll('.puntaje-input[data-ind-id="' + indId + '"]'));
+        for (var i = 1; i < inputs.length; i++) {
+          if (inputs[i].value.trim() === '' && inputs[i-1].value.trim() !== '') {
+            inputs[i].value = inputs[i-1].value;
+            var row = inputs[i].closest('.fila-estudiante');
+            if (row) updateRow(row);
+          }
+        }
+        popover.classList.remove('show');
+      });
+      if (btnLimpiar) btnLimpiar.addEventListener('click', function() {
+        document.querySelectorAll('.puntaje-input[data-ind-id="' + indId + '"]').forEach(function(inp) {
+          inp.value = '';
+          var row = inp.closest('.fila-estudiante');
+          if (row) updateRow(row);
+        });
+        popover.classList.remove('show');
+      });
+
+      input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') { e.preventDefault(); if (btnAll) btnAll.click(); }
+      });
+    });
+
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.quick-fill')) {
+        document.querySelectorAll('.quick-fill-popover.show').forEach(function(p) {
+          p.classList.remove('show');
+        });
+      }
+    });
   });
 })();
 </script>

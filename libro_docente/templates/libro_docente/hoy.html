@@ -23,14 +23,13 @@
 .ac-subarea{color:#fff;font-size:1.05rem;font-weight:700;margin:0 0 4px;}
 .ac-grupo{color:rgba(255,255,255,.95);font-size:1.15rem;font-weight:700;margin:0;letter-spacing:.5px;}
 .ac-curso{color:rgba(255,255,255,.7);font-size:.78rem;margin:2px 0 0;}
-.ac-body{padding:16px 18px;flex:1;display:flex;flex-direction:column;gap:12px;}
+.ac-body{padding:16px 18px 18px;flex:1;display:flex;flex-direction:column;gap:12px;}
 .ac-chips{display:flex;flex-wrap:wrap;gap:6px;}
-.chip{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:.72rem;font-weight:700;letter-spacing:.3px;border:1px solid transparent;}
+.chip{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:.72rem;font-weight:700;letter-spacing:.3px;border:1px solid transparent;text-decoration:none;transition:all .2s ease;}
 .chip-active{background:#d1fae5;color:#065f46;border-color:#6ee7b7;cursor:pointer;}
+.chip-active:hover{background:#a7f3d0;border-color:#34d399;transform:translateY(-1px);box-shadow:0 2px 6px rgba(5,46,22,.15);}
+.chip-active:focus{outline:2px solid #34d399;outline-offset:2px;}
 .chip-disabled{background:#f1f5f9;color:#94a3b8;border-color:#e2e8f0;cursor:default;opacity:.7;}
-.ac-footer{padding:14px 18px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px;}
-.sesiones-badge{font-size:.78rem;color:var(--muted);}
-.sesiones-badge b{color:var(--primary);font-size:.95rem;}
 
 /* Buttons */
 .btn{display:inline-flex;align-items:center;gap:7px;padding:9px 20px;font-size:.88rem;font-weight:600;border-radius:8px;border:none;cursor:pointer;text-decoration:none;transition:all .15s;}
@@ -116,23 +115,6 @@
             {% else %}
               <p style="font-size:.82rem;color:var(--muted);margin:0;">Sin esquema asignado</p>
             {% endif %}
-          </div>
-
-          <div class="ac-footer">
-            <span class="sesiones-badge">
-              Hoy: <b>{{ item.sesiones_hoy }}</b>
-              sesión{% if item.sesiones_hoy != 1 %}es{% endif %} registrada{% if item.sesiones_hoy != 1 %}s{% endif %}
-            </span>
-            <div style="display:flex;gap:6px;align-items:center;">
-              <a href="{% url 'libro_docente:actividad_list' a.id %}" class="btn btn-outline btn-sm" title="Evaluación: actividades, calificar, resumen">
-                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                Evaluar
-              </a>
-              <a href="{% url 'libro_docente:asistencia' a.id %}" class="btn btn-success btn-sm">
-                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
-                Pasar lista
-              </a>
-            </div>
           </div>
         </div>
         {% endwith %}

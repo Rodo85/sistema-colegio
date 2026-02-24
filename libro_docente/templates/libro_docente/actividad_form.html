@@ -26,6 +26,13 @@ input.form-control,select.form-control,textarea.form-control{width:100%;}
 .btn-outline{background:#fff;border:1.5px solid var(--border);color:#333 !important;}
 .btn-sm{padding:5px 12px;font-size:.8rem;}
 .add-ind{background:#d1fae5;color:#065f46;border-color:#6ee7b7;}
+.ind-table{width:100%;margin-bottom:16px;border-collapse:collapse;}
+.ind-table th,.ind-table td{padding:10px 12px;border:1px solid var(--border);vertical-align:middle;}
+.ind-table th{background:var(--surface);font-weight:600;text-align:left;}
+.ind-table .ind-descripcion input{min-width:200px;}
+.ind-table .ind-orden input{width:50px;text-align:center;}
+.ind-table .escala-min-cell input,.ind-table .escala-max-cell input{width:70px;text-align:center;}
+.ind-table .has-error input,.indicador-row.has-error .escala-min-cell input,.indicador-row.has-error .escala-max-cell input{border-color:#dc3545;background:#fef2f2;}
 </style>
 {% if formset %}{{ formset.media }}{% endif %}
 {% endblock %}
@@ -63,7 +70,7 @@ input.form-control,select.form-control,textarea.form-control{width:100%;}
     </div>
     <div class="card-body">
         {{ formset.management_form }}
-        <table style="width:100%;margin-bottom:16px;">
+        <table class="ind-table">
           <thead>
             <tr>
               <th style="width:60px;">Orden</th>
@@ -76,14 +83,20 @@ input.form-control,select.form-control,textarea.form-control{width:100%;}
           </thead>
           <tbody id="indicadores-container">
             {% for form in formset %}
-            <tr class="indicador-row">
+            <tr class="indicador-row" data-form-index="{{ forloop.counter0 }}">
               {% for field in form.hidden_fields %}{{ field }}{% endfor %}
-              <td>{{ form.orden }}</td>
-              <td>{{ form.descripcion }}{% if form.descripcion.errors %}<ul class="errorlist">{% for e in form.descripcion.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}</td>
-              <td class="escala-min-cell">{{ form.escala_min }}</td>
-              <td class="escala-max-cell">{{ form.escala_max }}</td>
-              <td>{{ form.activo }}</td>
-              <td>{{ form.DELETE }}</td>
+              <td class="ind-orden">{{ form.orden }}</td>
+              <td class="ind-descripcion">
+                {{ form.descripcion }}
+                {% if form.descripcion.errors %}<ul class="errorlist">{% for e in form.descripcion.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+              </td>
+              <td class="escala-min-cell {% if form.escala_min.errors or form.escala_max.errors or form.non_field_errors %}has-error{% endif %}">{{ form.escala_min }}{% if form.escala_min.errors %}<ul class="errorlist">{% for e in form.escala_min.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}</td>
+              <td class="escala-max-cell {% if form.escala_min.errors or form.escala_max.errors or form.non_field_errors %}has-error{% endif %}">{{ form.escala_max }}{% if form.escala_max.errors %}<ul class="errorlist">{% for e in form.escala_max.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}{% if form.non_field_errors %}<ul class="errorlist">{% for e in form.non_field_errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}</td>
+              <td class="ind-activo">{{ form.activo }}</td>
+              <td>
+                {{ form.DELETE }}
+                <button type="button" class="btn-duplicar-ind" title="Duplicar indicador" style="margin-left:4px;padding:2px 6px;font-size:.7rem;">Dup</button>
+              </td>
             </tr>
             {% endfor %}
           </tbody>
@@ -117,6 +130,52 @@ input.form-control,select.form-control,textarea.form-control{width:100%;}
       container.addEventListener('input', updateTotalMaximo);
       container.addEventListener('change', updateTotalMaximo);
       updateTotalMaximo();
+      container.addEventListener('input', function(e) {
+        var minCell = e.target.closest('.escala-min-cell');
+        var maxCell = e.target.closest('.escala-max-cell');
+        if (minCell || maxCell) {
+          var row = e.target.closest('tr');
+          var minInp = row.querySelector('.escala-min-cell input');
+          var maxInp = row.querySelector('.escala-max-cell input');
+          row.classList.remove('has-error');
+          if (minInp && maxInp) {
+            var min = parseFloat(minInp.value);
+            var max = parseFloat(maxInp.value);
+            if (!isNaN(min) && !isNaN(max) && max < min) row.classList.add('has-error');
+          }
+        }
+      });
+      container.querySelectorAll('.btn-duplicar-ind').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var row = this.closest('tr');
+          var delCheck = row.querySelector('input[name*="DELETE"]');
+          if (delCheck && delCheck.checked) return;
+          var desc = row.querySelector('.ind-descripcion input');
+          var minInp = row.querySelector('.escala-min-cell input');
+          var maxInp = row.querySelector('.escala-max-cell input');
+          var ordenInp = row.querySelector('.ind-orden input');
+          var actCheck = row.querySelector('.ind-activo input');
+          var rows = Array.from(container.querySelectorAll('tr.indicador-row'));
+          var targetRow = rows.find(function(r) {
+            var d = r.querySelector('.ind-descripcion input');
+            return d && d.value.trim() === '' && (!r.querySelector('input[name*="DELETE"]') || !r.querySelector('input[name*="DELETE"]').checked);
+          }) || rows[rows.length - 1];
+          if (targetRow && targetRow !== row) {
+            var nd = targetRow.querySelector('.ind-descripcion input');
+            var nm = targetRow.querySelector('.escala-min-cell input');
+            var nx = targetRow.querySelector('.escala-max-cell input');
+            var no = targetRow.querySelector('.ind-orden input');
+            var na = targetRow.querySelector('.ind-activo input');
+            if (nd && desc) nd.value = desc.value;
+            if (nm && minInp) nm.value = minInp.value;
+            if (nx && maxInp) nx.value = maxInp.value;
+            if (no && ordenInp) no.value = (parseInt(ordenInp.value, 10) || 0) + 1;
+            if (na && actCheck) na.checked = actCheck.checked;
+            nd.focus();
+            updateTotalMaximo();
+          }
+        });
+      });
     }
   });
 })();
