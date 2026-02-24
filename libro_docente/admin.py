@@ -1,13 +1,18 @@
+import logging
+
 from django.contrib import admin
+from django.db.models import Q
 
 from .models import AsistenciaRegistro, AsistenciaSesion
+
+logger = logging.getLogger(__name__)
 
 
 class _AdminOnlyEditMixin:
     """
     Para usuarios no-superusuarios:
       - El modelo aparece en el sidebar si tienen access_libro_docente.
-      - Al entrar a la lista ven una tabla vacía (get_queryset devuelve .none()).
+      - Ven solo sus sesiones/registros (filtradas por docente_asignacion o created_by).
       - No pueden agregar, editar ni eliminar registros.
     Superusuarios tienen acceso completo.
     """
@@ -26,11 +31,6 @@ class _AdminOnlyEditMixin:
         if self._puede_ver_modulo(request):
             return {"view": True}
         return {}
-
-    def get_queryset(self, request):
-        if not request.user.is_superuser:
-            return super().get_queryset(request).none()
-        return super().get_queryset(request)
 
     def has_add_permission(self, request):
         return request.user.is_superuser
@@ -58,6 +58,33 @@ class AsistenciaSesionAdmin(_AdminOnlyEditMixin, admin.ModelAdmin):
     inlines = [AsistenciaRegistroInline]
     date_hierarchy = "fecha"
 
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        # Diagnóstico: registros antes de filtros (solo en DEBUG)
+        if logger.isEnabledFor(logging.DEBUG):
+            total_antes = qs.count()
+        # Usuario normal: solo sesiones donde es el docente asignado o el creador
+        filtro_docente = Q(docente_asignacion__docente__usuario=request.user) | Q(created_by=request.user)
+        qs = qs.filter(filtro_docente)
+        if logger.isEnabledFor(logging.DEBUG):
+            despues_docente = qs.count()
+            logger.debug(
+                "AsistenciaSesion get_queryset: total_antes=%s, despues_filtro_docente=%s, user=%s",
+                total_antes, despues_docente, request.user.email,
+            )
+        # Restringir por institución activa si está definida
+        inst_id = getattr(request, "institucion_activa_id", None)
+        if inst_id:
+            qs = qs.filter(institucion_id=inst_id)
+            if logger.isEnabledFor(logging.DEBUG):
+                logger.debug(
+                    "AsistenciaSesion get_queryset: despues_filtro_institucion=%s, inst_id=%s",
+                    qs.count(), inst_id,
+                )
+        return qs
+
 
 @admin.register(AsistenciaRegistro)
 class AsistenciaRegistroAdmin(_AdminOnlyEditMixin, admin.ModelAdmin):
@@ -65,3 +92,18 @@ class AsistenciaRegistroAdmin(_AdminOnlyEditMixin, admin.ModelAdmin):
     list_filter = ("estado", "sesion__fecha", "sesion__institucion")
     search_fields = ("estudiante__primer_apellido", "estudiante__nombres", "estudiante__identificacion")
     readonly_fields = ("updated_at",)
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        # Usuario normal: solo registros de sesiones donde es el docente o creador
+        filtro_sesion = (
+            Q(sesion__docente_asignacion__docente__usuario=request.user) |
+            Q(sesion__created_by=request.user)
+        )
+        qs = qs.filter(filtro_sesion)
+        inst_id = getattr(request, "institucion_activa_id", None)
+        if inst_id:
+            qs = qs.filter(sesion__institucion_id=inst_id)
+        return qs
