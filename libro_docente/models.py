@@ -120,7 +120,10 @@ class AsistenciaRegistro(models.Model):
             )
         ]
         indexes = [
-            models.Index(fields=["sesion", "estudiante"], name="asis_reg_sesion_est_idx"),
+            models.Index(
+                fields=["sesion", "estudiante", "estado"],
+                name="asis_reg_sesion_est_estado_idx",
+            ),
         ]
 
     def __str__(self):
