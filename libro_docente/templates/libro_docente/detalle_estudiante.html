@@ -1,0 +1,184 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block title %}Detalle Asistencia – {{ estudiante }}{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+:root{--primary:#1a6eb5;--primary-dark:#145591;--success:#198754;--warning:#f59e0b;--danger:#dc3545;--surface:#f8f9fc;--border:#dee2e6;--text:#212529;--muted:#6c757d;}
+*{box-sizing:border-box;}
+.page-wrap{max-width:900px;margin:20px auto;padding:0 14px;font-family:"Segoe UI",system-ui,sans-serif;}
+.asgn-banner{background:linear-gradient(135deg,#145591 0%,#1a6eb5 100%);border-radius:12px;padding:16px 22px;color:#fff;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px;}
+.asgn-title{font-size:1.1rem;font-weight:700;margin:0;}
+.asgn-meta{font-size:.83rem;opacity:.85;margin:3px 0 0;}
+.back-btn{display:inline-flex;align-items:center;gap:6px;color:#fff !important;font-size:.83rem;text-decoration:none !important;border:1px solid rgba(255,255,255,.4);border-radius:6px;padding:5px 12px;opacity:.9;}
+.back-btn:hover{background:rgba(255,255,255,.15);opacity:1;}
+
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:18px;}
+.card-header{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 18px;border-radius:10px 10px 0 0;display:flex;align-items:center;gap:8px;}
+.card-header h3{margin:0;font-size:.92rem;font-weight:700;color:var(--primary-dark);}
+.card-body{padding:16px 18px;}
+
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;font-size:.85rem;font-weight:600;border-radius:7px;border:none;cursor:pointer;text-decoration:none;transition:filter .15s;}
+.btn:hover{filter:brightness(1.08);}
+.btn-primary{background:var(--primary);color:#fff !important;}
+.btn-outline{background:#fff;border:1.5px solid var(--border);color:var(--text) !important;}
+
+.periodo-btn{padding:7px 16px;border-radius:7px;border:1.5px solid var(--border);background:#fff;font-size:.85rem;font-weight:600;color:var(--primary-dark) !important;text-decoration:none !important;display:inline-flex;align-items:center;gap:6px;transition:all .15s;}
+.periodo-btn.active,.periodo-btn:hover{background:var(--primary);color:#fff !important;border-color:var(--primary);}
+
+.resumen-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-bottom:16px;}
+.res-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 14px;text-align:center;}
+.res-card .rc-val{font-size:1.3rem;font-weight:800;color:var(--primary-dark);}
+.res-card .rc-lbl{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;}
+
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:.85rem;}
+thead th{background:var(--surface);color:var(--muted);font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:9px 11px;border-bottom:2px solid var(--border);white-space:nowrap;}
+tbody tr:hover{background:#f8faff;}
+tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:middle;}
+
+.badge-p{color:#065f46;background:#d1fae5;padding:2px 8px;border-radius:4px;font-weight:700;font-size:.75rem;}
+.badge-t{color:#92400e;background:#fef3c7;padding:2px 8px;border-radius:4px;font-weight:700;font-size:.75rem;}
+.badge-ai{color:#991b1b;background:#fee2e2;padding:2px 8px;border-radius:4px;font-weight:700;font-size:.75rem;}
+.badge-aj{color:#3730a3;background:#e0e7ff;padding:2px 8px;border-radius:4px;font-weight:700;font-size:.75rem;}
+
+.alert{padding:11px 16px;border-radius:8px;margin-bottom:16px;font-size:.9rem;}
+.alert-info{background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;}
+.alert-warning{background:#fffbeb;border:1px solid #fde68a;color:#92400e;}
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div class="page-wrap">
+
+  <!-- Banner -->
+  <div class="asgn-banner">
+    <div>
+      <p class="asgn-title">📋 Detalle Asistencia · {{ estudiante }}</p>
+      <p class="asgn-meta">{{ asignacion.subarea_curso.subarea.nombre }} · {{ asignacion.seccion|default:asignacion.subgrupo }} · {{ asignacion.curso_lectivo }}</p>
+    </div>
+    <a href="{% url 'libro_docente:resumen' asignacion.id %}?periodo={{ periodo_id }}" class="back-btn">← Ver resumen</a>
+  </div>
+
+  <!-- Selector de período -->
+  <div class="card">
+    <div class="card-header"><i class="fas fa-calendar" style="color:var(--primary)"></i><h3>Período</h3></div>
+    <div class="card-body">
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        {% for pcl in periodos_cl %}
+          <a href="?periodo={{ pcl.periodo_id }}"
+             class="periodo-btn {% if pcl.periodo_id == periodo_id %}active{% endif %}">
+            {{ pcl.periodo.nombre }}
+            {% if pcl.fecha_inicio and pcl.fecha_fin %}
+              <small style="opacity:.7;">({{ pcl.fecha_inicio|date:"d/m" }}–{{ pcl.fecha_fin|date:"d/m" }})</small>
+            {% endif %}
+          </a>
+        {% empty %}
+          <span style="color:var(--muted);font-size:.88rem;">No hay períodos configurados.</span>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  {% if not periodo_sel %}
+    <div class="alert alert-info"><i class="fas fa-info-circle"></i> Selecciona un período para ver el detalle.</div>
+  {% else %}
+
+    {% if resumen %}
+      <!-- Resumen acumulado -->
+      <div class="card">
+        <div class="card-header"><i class="fas fa-calculator" style="color:var(--primary)"></i><h3>Resumen del período · {{ periodo_sel.nombre }}</h3></div>
+        <div class="card-body">
+          <div class="resumen-grid">
+            <div class="res-card">
+              <div class="rc-val">{{ resumen.sesiones_consideradas }}</div>
+              <div class="rc-lbl">Sesiones consideradas</div>
+            </div>
+            <div class="res-card">
+              <div class="rc-val" style="color:#065f46;">{{ resumen.presentes }}</div>
+              <div class="rc-lbl">Presentes</div>
+            </div>
+            <div class="res-card">
+              <div class="rc-val" style="color:#92400e;">{{ resumen.tardias }}</div>
+              <div class="rc-lbl">Tardías</div>
+            </div>
+            <div class="res-card">
+              <div class="rc-val" style="color:#991b1b;">{{ resumen.ausentes_inj }}</div>
+              <div class="rc-lbl">Ausencias injustif.</div>
+            </div>
+            <div class="res-card">
+              <div class="rc-val" style="color:#3730a3;">{{ resumen.ausentes_just }}</div>
+              <div class="rc-lbl">Ausencias justif.</div>
+            </div>
+            <div class="res-card">
+              <div class="rc-val">{{ resumen.total_equiv }}</div>
+              <div class="rc-lbl">Equiv. (T÷3 + AI)</div>
+            </div>
+            <div class="res-card">
+              <div class="rc-val">{{ resumen.pct }}%</div>
+              <div class="rc-lbl">% Ausencias injustif.</div>
+            </div>
+            <div class="res-card">
+              <div class="rc-val">{{ resumen.nota_mep }}</div>
+              <div class="rc-lbl">Nota base (0-10)</div>
+            </div>
+            <div class="res-card">
+              <div class="rc-val">{{ resumen.peso_asistencia }}%</div>
+              <div class="rc-lbl">{{ nombre_componente }}</div>
+            </div>
+            <div class="res-card">
+              <div class="rc-val">{{ resumen.aporte_real }}</div>
+              <div class="rc-lbl">Aporte real</div>
+            </div>
+          </div>
+          <p style="font-size:.78rem;color:var(--muted);margin:0;">
+            Cada 3 tardías = 1 AI. Aporte = (Nota base ÷ 10) × Peso asistencia.
+          </p>
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- Historial de asistencia -->
+    <div class="card">
+      <div class="card-header"><i class="fas fa-list" style="color:var(--primary)"></i><h3>Historial de asistencia · {{ periodo_sel.nombre }}</h3></div>
+      <div class="card-body" style="padding:0;">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Fecha</th>
+                <th>Sesión</th>
+                <th>Estado</th>
+                <th>Observación</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for h in historial %}
+              <tr>
+                <td style="color:var(--muted);font-size:.75rem;">{{ forloop.counter }}</td>
+                <td>{{ h.fecha|date:"d/m/Y" }}</td>
+                <td>{{ h.sesion_numero }}</td>
+                <td>
+                  <span class="badge-{% if h.estado == 'P' %}p{% elif h.estado == 'T' %}t{% elif h.estado == 'AI' %}ai{% else %}aj{% endif %}">
+                    {{ h.estado_display }}
+                  </span>
+                </td>
+                <td style="font-size:.82rem;color:var(--muted);">{{ h.observacion|default:"—" }}</td>
+              </tr>
+              {% empty %}
+              <tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px;">No hay registros en este período.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}
