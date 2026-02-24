@@ -1,0 +1,123 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block title %}Detalle – {{ estudiante }}{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+:root{--primary:#1a6eb5;--primary-dark:#145591;--border:#dee2e6;--surface:#f8f9fc;--muted:#6c757d;}
+.page-wrap{max-width:900px;margin:20px auto;padding:0 14px;font-family:"Segoe UI",system-ui,sans-serif;}
+.asgn-banner{background:linear-gradient(135deg,#145591 0%,#1a6eb5 100%);border-radius:12px;padding:16px 22px;color:#fff;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;}
+.back-btn{color:#fff !important;font-size:.83rem;text-decoration:none !important;border:1px solid rgba(255,255,255,.4);border-radius:6px;padding:5px 12px;}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:18px;}
+.card-header{background:var(--surface);padding:12px 18px;border-bottom:1px solid var(--border);font-weight:700;color:var(--primary-dark);}
+.card-body{padding:16px 18px;}
+.toolbar{margin-bottom:16px;}
+.toolbar a{padding:6px 14px;border-radius:6px;font-size:.85rem;text-decoration:none;font-weight:600;}
+.toolbar a.active{background:var(--primary);color:#fff !important;}
+.toolbar a:not(.active){background:var(--surface);color:var(--primary-dark) !important;border:1px solid var(--border);}
+table{width:100%;border-collapse:collapse;font-size:.88rem;}
+th,td{padding:8px 12px;border:1px solid var(--border);text-align:left;}
+th{background:var(--surface);font-weight:700;}
+.resumen-row{font-weight:700;background:#f8faff;}
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div class="page-wrap">
+  <div class="asgn-banner">
+    <span>{{ asignacion.subarea_curso.subarea.nombre }} · {{ estudiante }}</span>
+    <a href="{% url 'libro_docente:resumen_evaluacion' asignacion.id %}?periodo={{ periodo_id }}" class="back-btn">← Resumen</a>
+  </div>
+
+  <div class="card">
+    <div class="card-header">Filtro</div>
+    <div class="card-body">
+      <div class="toolbar">
+        {% for pcl in periodos_cl %}
+          <a href="?periodo={{ pcl.periodo_id }}" class="{% if periodo_id == pcl.periodo_id|stringformat:'s' %}active{% endif %}">{{ pcl.periodo.nombre }}</a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">TAREAS – Desglose por actividad</div>
+    <div class="card-body">
+      {% if tareas.detalle_actividades %}
+      <table>
+        <thead>
+          <tr>
+            <th>Actividad</th>
+            <th style="text-align:center;">Obtenido</th>
+            <th style="text-align:center;">Máximo</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for d in tareas.detalle_actividades %}
+          <tr>
+            <td>{{ d.actividad.titulo }}</td>
+            <td style="text-align:center;">{{ d.obtenido|floatformat:1 }}</td>
+            <td style="text-align:center;">{{ d.maximo|floatformat:1 }}</td>
+          </tr>
+          {% endfor %}
+          <tr class="resumen-row">
+            <td>Total</td>
+            <td style="text-align:center;">{{ tareas.puntos_obtenidos|floatformat:1 }}</td>
+            <td style="text-align:center;">{{ tareas.puntos_maximos|floatformat:1 }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="margin-top:12px;font-size:.9rem;">
+        % logro: <strong>{{ tareas.porcentaje_logro|floatformat:1 }}%</strong> ·
+        % componente: <strong>{{ tareas.porcentaje_componente|floatformat:1 }}%</strong> ·
+        Aporte: <strong>{{ tareas.aporte|floatformat:1 }}</strong>
+      </p>
+      {% else %}
+      <p style="color:var(--muted);">Sin actividades TAREAS en este período.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">COTIDIANOS – Desglose por actividad</div>
+    <div class="card-body">
+      {% if cotidianos.detalle_actividades %}
+      <table>
+        <thead>
+          <tr>
+            <th>Actividad</th>
+            <th style="text-align:center;">Obtenido</th>
+            <th style="text-align:center;">Máximo</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for d in cotidianos.detalle_actividades %}
+          <tr>
+            <td>{{ d.actividad.titulo }}</td>
+            <td style="text-align:center;">{{ d.obtenido|floatformat:1 }}</td>
+            <td style="text-align:center;">{{ d.maximo|floatformat:1 }}</td>
+          </tr>
+          {% endfor %}
+          <tr class="resumen-row">
+            <td>Total</td>
+            <td style="text-align:center;">{{ cotidianos.puntos_obtenidos|floatformat:1 }}</td>
+            <td style="text-align:center;">{{ cotidianos.puntos_maximos|floatformat:1 }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="margin-top:12px;font-size:.9rem;">
+        % logro: <strong>{{ cotidianos.porcentaje_logro|floatformat:1 }}%</strong> ·
+        % componente: <strong>{{ cotidianos.porcentaje_componente|floatformat:1 }}%</strong> ·
+        Aporte: <strong>{{ cotidianos.aporte|floatformat:1 }}</strong>
+      </p>
+      {% else %}
+      <p style="color:var(--muted);">Sin actividades COTIDIANOS en este período.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

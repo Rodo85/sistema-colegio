@@ -79,7 +79,16 @@ JAZZMIN_SETTINGS = {
     "topmenu_links": [
         {"app": "core"},
         {"app": "matricula"},
-        {"app": "comedor"},
+        {
+            "name": "Comedor",
+            "icon": "fas fa-utensils",
+            "children": [
+                {"name": "Registrar beca", "url": "comedor:registrar_beca", "icon": "fas fa-user-check"},
+                {"name": "Almuerzo", "url": "comedor:almuerzo", "icon": "fas fa-qrcode"},
+                {"name": "Reportes", "url": "comedor:reportes", "icon": "fas fa-chart-bar"},
+                {"name": "Tiquetes", "url": "comedor:tiquetes", "icon": "fas fa-ticket-alt"},
+            ],
+        },
         {"app": "evaluaciones"},
         {"app": "catalogos"},
         {"app": "config_institucional"},

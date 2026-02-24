@@ -1,0 +1,37 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block title %}Eliminar actividad – {{ actividad.titulo }}{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+:root{--primary:#1a6eb5;--danger:#dc3545;--border:#dee2e6;--muted:#6c757d;}
+.page-wrap{max-width:500px;margin:40px auto;padding:0 14px;font-family:"Segoe UI",system-ui,sans-serif;}
+.card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:24px;}
+.card h2{color:var(--danger);margin:0 0 12px;font-size:1.1rem;}
+.card p{color:var(--muted);margin:0 0 20px;}
+.btn-group{display:flex;gap:10px;}
+.btn{padding:10px 20px;border-radius:7px;font-weight:600;text-decoration:none;display:inline-block;border:none;cursor:pointer;}
+.btn-danger{background:var(--danger);color:#fff !important;}
+.btn-outline{background:#fff;border:1px solid var(--border);color:#333 !important;}
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div class="page-wrap">
+  <div class="card">
+    <h2>¿Eliminar actividad?</h2>
+    <p>Se eliminará «<strong>{{ actividad.titulo }}</strong>» y todos sus indicadores. Los puntajes de estudiantes también se eliminarán. Esta acción no se puede deshacer.</p>
+    <form method="post">
+      {% csrf_token %}
+      <div class="btn-group">
+        <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+        <a href="{% url 'libro_docente:actividad_edit' actividad.id %}" class="btn btn-outline">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

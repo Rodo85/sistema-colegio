@@ -1,0 +1,124 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block title %}{% if actividad %}Editar{% else %}Nueva{% endif %} actividad – {{ asignacion.subarea_curso.subarea.nombre }}{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+:root{--primary:#1a6eb5;--primary-dark:#145591;--border:#dee2e6;--surface:#f8f9fc;--muted:#6c757d;}
+.page-wrap{max-width:800px;margin:20px auto;padding:0 14px;font-family:"Segoe UI",system-ui,sans-serif;}
+.asgn-banner{background:linear-gradient(135deg,#145591 0%,#1a6eb5 100%);border-radius:12px;padding:16px 22px;color:#fff;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;}
+.back-btn{color:#fff !important;font-size:.83rem;text-decoration:none !important;border:1px solid rgba(255,255,255,.4);border-radius:6px;padding:5px 12px;}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:18px;}
+.card-header{background:var(--surface);padding:12px 18px;border-bottom:1px solid var(--border);font-weight:700;color:var(--primary-dark);display:flex;justify-content:space-between;align-items:center;}
+.card-body{padding:16px 18px;}
+.form-group{margin-bottom:14px;}
+.form-group label{display:block;font-size:.8rem;font-weight:600;color:var(--muted);margin-bottom:4px;}
+.form-control{width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:6px;}
+input.form-control,select.form-control,textarea.form-control{width:100%;}
+.ind-row{display:grid;grid-template-columns:60px 1fr 80px 80px 50px 40px;gap:8px;align-items:start;margin-bottom:10px;}
+.ind-row .form-group{margin-bottom:0;}
+.total-max-badge{background:var(--primary);color:#fff;padding:6px 14px;border-radius:8px;font-weight:700;font-size:1rem;}
+.errorlist{color:#dc3545;font-size:.82rem;margin:4px 0 0;list-style:none;padding:0;}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;font-size:.85rem;font-weight:600;border-radius:7px;border:none;cursor:pointer;text-decoration:none;}
+.btn-primary{background:var(--primary);color:#fff !important;}
+.btn-outline{background:#fff;border:1.5px solid var(--border);color:#333 !important;}
+.btn-sm{padding:5px 12px;font-size:.8rem;}
+.add-ind{background:#d1fae5;color:#065f46;border-color:#6ee7b7;}
+</style>
+{% if formset %}{{ formset.media }}{% endif %}
+{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div class="page-wrap">
+  <div class="asgn-banner">
+    <span>{{ asignacion.subarea_curso.subarea.nombre }} · {{ tipo_display }} · {{ periodo.nombre }}</span>
+    <a href="{% url 'libro_docente:actividad_list' asignacion.id %}?periodo={{ periodo.id }}" class="back-btn">← Volver</a>
+  </div>
+
+  <form method="post" id="actividad-form">
+  {% csrf_token %}
+  <div class="card">
+    <div class="card-header">{% if actividad %}Editar actividad{% else %}Nueva actividad{% endif %}</div>
+    <div class="card-body">
+        {% for field in form %}
+          <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}<ul class="errorlist">{% for e in field.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+          </div>
+        {% endfor %}
+        {% if not formset %}<button type="submit" class="btn btn-primary">Guardar actividad</button>{% endif %}
+    </div>
+  </div>
+
+  {% if formset %}
+  <div class="card">
+    <div class="card-header" style="display:flex;justify-content:space-between;align-items:center;">
+      <span>Indicadores</span>
+      <span id="total-maximo-display" class="total-max-badge">Total máximo: {{ total_maximo|default:0 }}</span>
+    </div>
+    <div class="card-body">
+        {{ formset.management_form }}
+        <table style="width:100%;margin-bottom:16px;">
+          <thead>
+            <tr>
+              <th style="width:60px;">Orden</th>
+              <th>Descripción</th>
+              <th style="width:90px;">Mín</th>
+              <th style="width:90px;">Máx</th>
+              <th style="width:60px;">Activo</th>
+              <th style="width:70px;">Eliminar</th>
+            </tr>
+          </thead>
+          <tbody id="indicadores-container">
+            {% for form in formset %}
+            <tr class="indicador-row">
+              {% for field in form.hidden_fields %}{{ field }}{% endfor %}
+              <td>{{ form.orden }}</td>
+              <td>{{ form.descripcion }}{% if form.descripcion.errors %}<ul class="errorlist">{% for e in form.descripcion.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}</td>
+              <td class="escala-min-cell">{{ form.escala_min }}</td>
+              <td class="escala-max-cell">{{ form.escala_max }}</td>
+              <td>{{ form.activo }}</td>
+              <td>{{ form.DELETE }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary">Guardar actividad e indicadores</button>
+    </div>
+  </div>
+  {% endif %}
+  </form>
+</div>
+
+<script>
+(function() {
+  function updateTotalMaximo() {
+    var total = 0;
+    document.querySelectorAll('#indicadores-container tr.indicador-row').forEach(function(row) {
+      var del = row.querySelector('input[name*="DELETE"]');
+      if (del && del.checked) return;
+      var maxInp = row.querySelector('.escala-max-cell input');
+      if (maxInp) {
+        var val = parseFloat(maxInp.value);
+        if (!isNaN(val)) total += val;
+      }
+    });
+    var el = document.getElementById('total-maximo-display');
+    if (el) el.textContent = 'Total máximo: ' + total;
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    var container = document.getElementById('indicadores-container');
+    if (container) {
+      container.addEventListener('input', updateTotalMaximo);
+      container.addEventListener('change', updateTotalMaximo);
+      updateTotalMaximo();
+    }
+  });
+})();
+</script>
+{% endblock %}

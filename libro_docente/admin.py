@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.db.models import Q
 
 from core.mixins import HideInstitucionFilterMixin
-from .models import AsistenciaRegistro, AsistenciaSesion
+from .models import ActividadEvaluacion, AsistenciaRegistro, AsistenciaSesion, IndicadorActividad, PuntajeIndicador
 
 logger = logging.getLogger(__name__)
 
@@ -125,4 +125,104 @@ class AsistenciaRegistroAdmin(HideInstitucionFilterMixin, _AdminOnlyEditMixin, a
         inst_id = getattr(request, "institucion_activa_id", None)
         if inst_id:
             qs = qs.filter(sesion__institucion_id=inst_id)
+        return qs
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  EVALUACIÓN POR INDICADORES (TAREAS / COTIDIANOS)
+# ═══════════════════════════════════════════════════════════════════════════
+
+
+class IndicadorActividadInline(admin.TabularInline):
+    model = IndicadorActividad
+    extra = 1
+    fields = ("orden", "descripcion", "escala_min", "escala_max", "activo")
+    ordering = ("orden", "id")
+
+
+class PuntajeIndicadorInline(admin.TabularInline):
+    model = PuntajeIndicador
+    extra = 0
+    fields = ("estudiante", "puntaje_obtenido", "observacion", "updated_at")
+    readonly_fields = ("updated_at",)
+    autocomplete_fields = ("estudiante",)
+
+
+@admin.register(ActividadEvaluacion)
+class ActividadEvaluacionAdmin(HideInstitucionFilterMixin, admin.ModelAdmin):
+    list_display = (
+        "titulo",
+        "tipo_componente",
+        "estado",
+        "docente_asignacion",
+        "periodo",
+        "institucion",
+        "created_at",
+    )
+    list_filter = ("tipo_componente", "estado", "institucion", "periodo")
+    search_fields = ("titulo", "descripcion")
+    readonly_fields = ("created_at", "updated_at")
+    inlines = [IndicadorActividadInline]
+    date_hierarchy = "fecha_asignacion"
+    autocomplete_fields = ("docente_asignacion",)
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        # Docente: solo sus asignaciones
+        qs = qs.filter(docente_asignacion__docente__usuario=request.user)
+        inst_id = getattr(request, "institucion_activa_id", None)
+        if inst_id:
+            qs = qs.filter(institucion_id=inst_id)
+        return qs
+
+    def save_model(self, request, obj, form, change):
+        if not change and obj.docente_asignacion_id:
+            da = obj.docente_asignacion
+            if not obj.institucion_id:
+                obj.institucion_id = da.subarea_curso.institucion_id
+            if not obj.curso_lectivo_id:
+                obj.curso_lectivo_id = da.curso_lectivo_id
+        if not obj.created_by_id:
+            obj.created_by = request.user
+        super().save_model(request, obj, form, change)
+
+
+@admin.register(IndicadorActividad)
+class IndicadorActividadAdmin(admin.ModelAdmin):
+    list_display = ("actividad", "orden", "descripcion", "escala_min", "escala_max", "activo", "created_at")
+    list_filter = ("activo", "actividad__tipo_componente")
+    search_fields = ("descripcion",)
+    readonly_fields = ("created_at", "updated_at")
+    inlines = [PuntajeIndicadorInline]
+    autocomplete_fields = ("actividad",)
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        qs = qs.filter(actividad__docente_asignacion__docente__usuario=request.user)
+        inst_id = getattr(request, "institucion_activa_id", None)
+        if inst_id:
+            qs = qs.filter(actividad__institucion_id=inst_id)
+        return qs
+
+
+@admin.register(PuntajeIndicador)
+class PuntajeIndicadorAdmin(admin.ModelAdmin):
+    list_display = ("indicador", "estudiante", "puntaje_obtenido", "observacion", "updated_at")
+    list_filter = ("indicador__actividad__tipo_componente",)
+    search_fields = ("estudiante__primer_apellido", "estudiante__nombres", "estudiante__identificacion")
+    readonly_fields = ("created_at", "updated_at")
+    autocomplete_fields = ("indicador", "estudiante")
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        qs = qs.filter(indicador__actividad__docente_asignacion__docente__usuario=request.user)
+        inst_id = getattr(request, "institucion_activa_id", None)
+        if inst_id:
+            qs = qs.filter(indicador__actividad__institucion_id=inst_id)
         return qs

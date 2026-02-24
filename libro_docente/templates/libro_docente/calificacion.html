@@ -1,0 +1,176 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block title %}Calificar – {{ actividad.titulo }}{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+:root{--primary:#1a6eb5;--primary-dark:#145591;--success:#198754;--danger:#dc3545;--border:#dee2e6;--surface:#f8f9fc;--muted:#6c757d;}
+.page-wrap{max-width:100%;margin:20px auto;padding:0 14px;font-family:"Segoe UI",system-ui,sans-serif;}
+.asgn-banner{background:linear-gradient(135deg,#145591 0%,#1a6eb5 100%);border-radius:12px;padding:16px 22px;color:#fff;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:20px;}
+.asgn-title{font-size:1.1rem;font-weight:700;margin:0;}
+.back-btn{color:#fff !important;font-size:.83rem;text-decoration:none !important;border:1px solid rgba(255,255,255,.4);border-radius:6px;padding:5px 12px;}
+.back-btn:hover{background:rgba(255,255,255,.15);}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:18px;overflow:hidden;}
+.card-header{background:var(--surface);padding:12px 18px;border-bottom:1px solid var(--border);font-weight:700;color:var(--primary-dark);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;font-size:.85rem;font-weight:600;border-radius:7px;border:none;cursor:pointer;text-decoration:none;}
+.btn-primary{background:var(--primary);color:#fff !important;}
+.btn-outline{background:#fff;border:1.5px solid var(--border);color:#333 !important;}
+.grid-wrap{overflow:auto;max-height:70vh;}
+.cal-table{width:100%;border-collapse:collapse;font-size:.85rem;min-width:600px;}
+.cal-table th{background:var(--surface);padding:8px 10px;border:1px solid var(--border);text-align:center;font-weight:700;white-space:nowrap;position:sticky;top:0;z-index:3;box-shadow:0 1px 0 var(--border);}
+.cal-table th.student-col{text-align:left;min-width:180px;left:0;z-index:4;}
+.cal-table td{padding:4px 6px;border:1px solid var(--border);vertical-align:middle;}
+.cal-table td.student-col{position:sticky;left:0;background:#fff;font-weight:600;z-index:1;}
+.cal-table tbody tr:hover td.student-col{background:#f8faff;}
+.cal-table tbody tr:hover td{background:#f8faff;}
+.puntaje-input{width:52px;padding:6px 8px;text-align:center;font-size:.9rem;border:1px solid var(--border);border-radius:4px;}
+.puntaje-input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 2px rgba(26,110,181,.2);}
+.puntaje-input.error{border-color:var(--danger);background:#fef2f2;}
+.total-cell{font-weight:700;color:var(--primary-dark);text-align:center;}
+.pct-cell{font-weight:700;text-align:center;}
+.ind-header{font-size:.75rem;cursor:help;}
+.ind-scale{font-size:.7rem;color:var(--muted);}
+.empty-msg{text-align:center;padding:40px 20px;color:var(--muted);}
+.status-bar{font-size:.82rem;color:var(--muted);}
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div class="page-wrap">
+  <div class="asgn-banner">
+    <div>
+      <p class="asgn-title">📝 Calificar · {{ actividad.titulo }}</p>
+      <p style="font-size:.83rem;opacity:.9;margin:2px 0 0;">{{ asignacion.subarea_curso.subarea.nombre }} · {{ asignacion.seccion|default:asignacion.subgrupo }} · {{ actividad.periodo.nombre }}</p>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <a href="{% url 'libro_docente:actividad_edit' actividad.id %}" class="back-btn">← Editar actividad</a>
+      <a href="{% url 'libro_docente:actividad_list' asignacion.id %}" class="back-btn">Lista actividades</a>
+    </div>
+  </div>
+
+  {% if not indicadores %}
+  <div class="card">
+    <div class="empty-msg">
+      Esta actividad no tiene indicadores. <a href="{% url 'libro_docente:actividad_edit' actividad.id %}">Agregue indicadores</a> antes de calificar.
+    </div>
+  </div>
+  {% elif not filas %}
+  <div class="card">
+    <div class="empty-msg">
+      No hay estudiantes en este grupo. Verifique la asignación.
+    </div>
+  </div>
+  {% else %}
+  <div class="card">
+    <div class="card-header">
+      <span class="status-bar">{{ total_estudiantes }} estudiante{{ total_estudiantes|pluralize }} · Total máximo: {{ total_maximo }}</span>
+      <button type="submit" form="calificacion-form" class="btn btn-primary">Guardar todo</button>
+    </div>
+    <div class="grid-wrap">
+      <form method="post" id="calificacion-form">
+        {% csrf_token %}
+        <table class="cal-table">
+          <thead>
+            <tr>
+              <th class="student-col">Estudiante</th>
+              {% for ind in indicadores %}
+              <th class="ind-header" title="{{ ind.descripcion }}">
+                I{{ forloop.counter }}<br><span class="ind-scale">[{{ ind.escala_min }}-{{ ind.escala_max }}]</span>
+              </th>
+              {% endfor %}
+              <th>Total obt.</th>
+              <th>Total máx.</th>
+              <th>% logro</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for fila in filas %}
+            <tr class="fila-estudiante" data-est-id="{{ fila.estudiante.id }}">
+              <td class="student-col">{{ fila.estudiante.primer_apellido }} {{ fila.estudiante.segundo_apellido|default:"" }} {{ fila.estudiante.nombres }}</td>
+              {% for ind, p in fila.indicador_puntajes %}
+              <td>
+                <input type="text" inputmode="decimal" name="p_{{ ind.id }}_{{ fila.estudiante.id }}"
+                  class="puntaje-input" data-ind-id="{{ ind.id }}" data-min="{{ ind.escala_min }}" data-max="{{ ind.escala_max }}"
+                  value="{% if p %}{{ p }}{% endif %}"
+                  placeholder="—" title="Escala {{ ind.escala_min }}-{{ ind.escala_max }}">
+              </td>
+              {% endfor %}
+              <td class="total-cell total-obt-cell">{{ fila.total_obtenido|floatformat:2 }}</td>
+              <td class="total-cell">{{ total_maximo }}</td>
+              <td class="pct-cell pct-cell-val">{{ fila.porcentaje_logro|floatformat:1 }}%</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </form>
+    </div>
+  </div>
+  {% endif %}
+</div>
+
+<script>
+(function() {
+  var totalMax = {{ total_maximo|default:0 }};
+
+  function parseVal(v) {
+    if (v === null || v === undefined || v === '') return null;
+    var s = String(v).trim().replace(',', '.');
+    if (s === '') return null;
+    var n = parseFloat(s);
+    return isNaN(n) ? null : n;
+  }
+
+  function updateRow(row) {
+    var inputs = row.querySelectorAll('.puntaje-input');
+    var total = 0;
+    for (var i = 0; i < inputs.length; i++) {
+      var inp = inputs[i];
+      var min = parseFloat(inp.getAttribute('data-min')) || 0;
+      var max = parseFloat(inp.getAttribute('data-max')) || 5;
+      var val = parseVal(inp.value);
+      inp.classList.remove('error');
+      if (val !== null) {
+        if (val < min || val > max) {
+          inp.classList.add('error');
+        } else {
+          total += val;
+        }
+      }
+    }
+    var obtCell = row.querySelector('.total-obt-cell');
+    var pctCell = row.querySelector('.pct-cell-val');
+    if (obtCell) obtCell.textContent = Number(total).toFixed(2);
+    if (pctCell) {
+      var pct = totalMax > 0 ? Math.round((total / totalMax) * 1000) / 10 : 0;
+      pctCell.textContent = pct + '%';
+    }
+  }
+
+  function updateAll() {
+    document.querySelectorAll('.fila-estudiante').forEach(updateRow);
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var container = document.querySelector('.grid-wrap');
+    if (!container) return;
+    container.addEventListener('input', function(e) {
+      if (e.target.classList.contains('puntaje-input')) {
+        var row = e.target.closest('.fila-estudiante');
+        if (row) updateRow(row);
+      }
+    });
+    container.addEventListener('change', function(e) {
+      if (e.target.classList.contains('puntaje-input')) {
+        var row = e.target.closest('.fila-estudiante');
+        if (row) updateRow(row);
+      }
+    });
+    updateAll();
+  });
+})();
+</script>
+{% endblock %}

@@ -18,7 +18,17 @@ from evaluaciones.models import (
 from config_institucional.models import Profesor
 from matricula.models import MatriculaAcademica
 
-from .models import AsistenciaRegistro, AsistenciaSesion
+from .forms import ActividadEvaluacionForm, IndicadorActividadFormSet
+from .models import ActividadEvaluacion, AsistenciaRegistro, AsistenciaSesion
+from .models import PuntajeIndicador
+from .services import (
+    actividad_pertenece_a_institucion,
+    calcular_resumen_evaluacion_completo,
+    calcular_total_maximo_actividad,
+    duplicar_actividad,
+    guardar_puntajes_masivo,
+    puede_usuario_editar_actividad,
+)
 
 # ─── Tabla: % ausencias injustificadas → puntaje base (0-10) ─────────────────
 # Rangos: [min_inclusive, max_exclusive) → puntaje
@@ -670,4 +680,459 @@ def resumen_view(request, asignacion_id):
         "periodo_id": periodo_id,
         "periodo_sel": periodo_sel,
         "resumen": resumen,
+    })
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  EVALUACIÓN POR INDICADORES (TAREAS / COTIDIANOS)
+# ═══════════════════════════════════════════════════════════════════════════
+
+
+@login_required
+@permission_required("libro_docente.access_libro_docente", raise_exception=True)
+def actividad_list_view(request, asignacion_id):
+    """
+    Lista actividades de evaluación de una asignación.
+    Filtra por periodo y tipo_componente (opcionales por GET).
+    """
+    asignacion = _obtener_asignacion_con_permiso(request, asignacion_id)
+    if asignacion is None:
+        messages.error(request, "No tienes acceso a esta asignación.")
+        return redirect("libro_docente:home")
+
+    inst_id = asignacion.subarea_curso.institucion_id
+    inst_activa = getattr(request, "institucion_activa_id", None)
+    if inst_activa and inst_id != inst_activa:
+        messages.error(request, "No puedes acceder a actividades de otra institución.")
+        return redirect("libro_docente:home")
+
+    periodos_cl = list(
+        PeriodoCursoLectivo.objects
+        .filter(institucion_id=inst_id, curso_lectivo=asignacion.curso_lectivo, activo=True)
+        .select_related("periodo")
+        .order_by("periodo__numero")
+    )
+
+    periodo_id_raw = request.GET.get("periodo")
+    periodo_id = int(periodo_id_raw) if periodo_id_raw and str(periodo_id_raw).isdigit() else None
+    tipo = request.GET.get("tipo", "").upper()
+
+    qs = ActividadEvaluacion.objects.filter(
+        docente_asignacion=asignacion,
+        institucion_id=inst_id,
+    ).select_related("periodo").prefetch_related("indicadores").order_by("-created_at")
+
+    if periodo_id:
+        qs = qs.filter(periodo_id=periodo_id)
+    if tipo in ("TAREA", "COTIDIANO"):
+        qs = qs.filter(tipo_componente=tipo)
+
+    actividades_raw = list(qs)
+    actividades = []
+    for a in actividades_raw:
+        indicadores_activos = [i for i in a.indicadores.all() if i.activo]
+        total_max = sum(i.escala_max for i in indicadores_activos)
+        actividades.append({
+            "obj": a,
+            "total_indicadores": len(indicadores_activos),
+            "total_maximo": total_max,
+        })
+
+    return render(request, "libro_docente/actividad_list.html", {
+        "asignacion": asignacion,
+        "actividades": actividades,
+        "periodos_cl": periodos_cl,
+        "periodo_id": str(periodo_id) if periodo_id else None,
+        "tipo": tipo,
+    })
+
+
+@login_required
+@permission_required("libro_docente.access_libro_docente", raise_exception=True)
+def actividad_create_view(request, asignacion_id):
+    """
+    Crear actividad de evaluación.
+    Requiere periodo y tipo por GET.
+    """
+    asignacion = _obtener_asignacion_con_permiso(request, asignacion_id)
+    if asignacion is None:
+        messages.error(request, "No tienes acceso a esta asignación.")
+        return redirect("libro_docente:home")
+
+    inst_id = asignacion.subarea_curso.institucion_id
+    if getattr(request, "institucion_activa_id", None) and inst_id != request.institucion_activa_id:
+        messages.error(request, "No puedes crear actividades en otra institución.")
+        return redirect("libro_docente:home")
+
+    periodo_id = request.GET.get("periodo")
+    tipo = request.GET.get("tipo", "").upper()
+    if not periodo_id or tipo not in ("TAREA", "COTIDIANO"):
+        messages.error(request, "Debe indicar periodo y tipo (TAREA o COTIDIANO).")
+        return redirect(reverse("libro_docente:actividad_list", args=[asignacion_id]))
+
+    pcl = get_object_or_404(
+        PeriodoCursoLectivo.objects.filter(
+            institucion_id=inst_id,
+            curso_lectivo=asignacion.curso_lectivo,
+            activo=True,
+        ).select_related("periodo"),
+        periodo_id=int(periodo_id),
+    )
+    periodo = pcl.periodo
+
+    if request.method == "POST":
+        form = ActividadEvaluacionForm(request.POST)
+        if form.is_valid():
+            with transaction.atomic():
+                obj = form.save(commit=False)
+                obj.docente_asignacion = asignacion
+                obj.institucion_id = inst_id
+                obj.curso_lectivo = asignacion.curso_lectivo
+                obj.periodo = periodo
+                obj.tipo_componente = tipo
+                obj.created_by = request.user
+                obj.save()
+            messages.success(request, "Actividad creada. Agregue indicadores a continuación.")
+            return redirect(reverse("libro_docente:actividad_edit", args=[obj.id]))
+    else:
+        form = ActividadEvaluacionForm(initial={
+            "tipo_componente": tipo,
+            "estado": ActividadEvaluacion.BORRADOR,
+        })
+
+    tipo_display = "Tarea" if tipo == "TAREA" else "Cotidiano"
+    return render(request, "libro_docente/actividad_form.html", {
+        "form": form,
+        "formset": None,
+        "asignacion": asignacion,
+        "periodo": periodo,
+        "periodo_id": periodo_id,
+        "tipo": tipo,
+        "tipo_display": tipo_display,
+        "actividad": None,
+    })
+
+
+@login_required
+@permission_required("libro_docente.access_libro_docente", raise_exception=True)
+def actividad_edit_view(request, actividad_id):
+    """
+    Editar actividad e indicadores.
+    """
+    actividad = get_object_or_404(
+        ActividadEvaluacion.objects.select_related(
+            "docente_asignacion__subarea_curso",
+            "periodo",
+            "institucion",
+        ),
+        pk=actividad_id,
+    )
+
+    if not puede_usuario_editar_actividad(actividad, request):
+        messages.error(request, "No tienes permiso para editar esta actividad.")
+        return redirect("libro_docente:home")
+
+    inst_activa = getattr(request, "institucion_activa_id", None)
+    if inst_activa and not actividad_pertenece_a_institucion(actividad, inst_activa):
+        messages.error(request, "No puedes editar actividades de otra institución.")
+        return redirect("libro_docente:home")
+
+    if request.method == "POST":
+        form = ActividadEvaluacionForm(request.POST, instance=actividad)
+        formset = IndicadorActividadFormSet(request.POST, instance=actividad)
+        if form.is_valid() and formset.is_valid():
+            with transaction.atomic():
+                form.save()
+                formset.save()
+            messages.success(request, "Actividad actualizada.")
+            return redirect(reverse("libro_docente:actividad_edit", args=[actividad_id]))
+        else:
+            formset = IndicadorActividadFormSet(request.POST, instance=actividad)
+    else:
+        form = ActividadEvaluacionForm(instance=actividad)
+        formset = IndicadorActividadFormSet(instance=actividad)
+
+    total_maximo = calcular_total_maximo_actividad(actividad)
+
+    return render(request, "libro_docente/actividad_form.html", {
+        "form": form,
+        "formset": formset,
+        "asignacion": actividad.docente_asignacion,
+        "periodo": actividad.periodo,
+        "periodo_id": actividad.periodo_id,
+        "tipo": actividad.tipo_componente,
+        "tipo_display": actividad.get_tipo_componente_display(),
+        "actividad": actividad,
+        "total_maximo": total_maximo,
+    })
+
+
+@login_required
+@permission_required("libro_docente.access_libro_docente", raise_exception=True)
+def actividad_delete_view(request, actividad_id):
+    """
+    Eliminar actividad (con confirmación por POST).
+    """
+    actividad = get_object_or_404(
+        ActividadEvaluacion.objects.select_related("docente_asignacion"),
+        pk=actividad_id,
+    )
+
+    if not puede_usuario_editar_actividad(actividad, request):
+        messages.error(request, "No tienes permiso para eliminar esta actividad.")
+        return redirect("libro_docente:home")
+
+    inst_activa = getattr(request, "institucion_activa_id", None)
+    if inst_activa and not actividad_pertenece_a_institucion(actividad, inst_activa):
+        messages.error(request, "No puedes eliminar actividades de otra institución.")
+        return redirect("libro_docente:home")
+
+    asignacion_id = actividad.docente_asignacion_id
+
+    if request.method == "POST":
+        actividad.delete()
+        messages.success(request, "Actividad eliminada.")
+        return redirect(reverse("libro_docente:actividad_list", args=[asignacion_id]))
+
+    return render(request, "libro_docente/actividad_confirm_delete.html", {
+        "actividad": actividad,
+        "asignacion": actividad.docente_asignacion,
+    })
+
+
+@login_required
+@permission_required("libro_docente.access_libro_docente", raise_exception=True)
+def actividad_duplicar_view(request, actividad_id):
+    """
+    Duplicar actividad con sus indicadores (sin puntajes).
+    """
+    actividad = get_object_or_404(
+        ActividadEvaluacion.objects.select_related("docente_asignacion").prefetch_related("indicadores"),
+        pk=actividad_id,
+    )
+
+    if not puede_usuario_editar_actividad(actividad, request):
+        messages.error(request, "No tienes permiso para duplicar esta actividad.")
+        return redirect("libro_docente:home")
+
+    inst_activa = getattr(request, "institucion_activa_id", None)
+    if inst_activa and not actividad_pertenece_a_institucion(actividad, inst_activa):
+        messages.error(request, "No puedes duplicar actividades de otra institución.")
+        return redirect("libro_docente:home")
+
+    nueva = duplicar_actividad(actividad)
+    nueva.created_by = request.user
+    nueva.save(update_fields=["created_by"])
+    messages.success(request, f"Actividad duplicada: «{nueva.titulo}».")
+    return redirect(reverse("libro_docente:actividad_edit", args=[nueva.id]))
+
+
+@login_required
+@permission_required("libro_docente.access_libro_docente", raise_exception=True)
+def actividad_calificar_view(request, actividad_id):
+    """
+    Grilla de calificación por estudiante e indicador.
+    GET: muestra grilla con puntajes existentes.
+    POST: guardado masivo de puntajes.
+    """
+    from decimal import Decimal, InvalidOperation
+
+    actividad = get_object_or_404(
+        ActividadEvaluacion.objects.select_related(
+            "docente_asignacion__subarea_curso",
+            "periodo",
+        ).prefetch_related("indicadores"),
+        pk=actividad_id,
+    )
+
+    if not puede_usuario_editar_actividad(actividad, request):
+        messages.error(request, "No tienes permiso para calificar esta actividad.")
+        return redirect("libro_docente:home")
+
+    inst_activa = getattr(request, "institucion_activa_id", None)
+    if inst_activa and not actividad_pertenece_a_institucion(actividad, inst_activa):
+        messages.error(request, "No puedes calificar actividades de otra institución.")
+        return redirect("libro_docente:home")
+
+    asignacion = actividad.docente_asignacion
+    indicadores = list(actividad.indicadores.filter(activo=True).order_by("orden", "id"))
+    matriculas = _get_estudiantes(asignacion)
+    total_maximo = calcular_total_maximo_actividad(actividad)
+
+    # Cargar puntajes existentes
+    puntajes_existentes = {}
+    if indicadores and matriculas:
+        ind_ids = [ind.id for ind in indicadores]
+        est_ids = [m.estudiante_id for m in matriculas]
+        for p in PuntajeIndicador.objects.filter(
+            indicador_id__in=ind_ids,
+            estudiante_id__in=est_ids,
+        ).select_related("indicador"):
+            if p.puntaje_obtenido is not None:
+                puntajes_existentes[(p.indicador_id, p.estudiante_id)] = p.puntaje_obtenido
+
+    # POST: guardar puntajes
+    if request.method == "POST":
+        datos = {}
+        for ind in indicadores:
+            for m in matriculas:
+                key = f"p_{ind.id}_{m.estudiante_id}"
+                val = request.POST.get(key)
+                if val is not None:
+                    datos[(ind.id, m.estudiante_id)] = val
+        with transaction.atomic():
+            guardados, errores = guardar_puntajes_masivo(
+                actividad,
+                [m.estudiante_id for m in matriculas],
+                datos,
+                indicadores_ids={ind.id for ind in indicadores},
+            )
+        if errores:
+            for e in errores:
+                messages.error(request, e)
+        elif guardados > 0:
+            messages.success(request, f"Se guardaron {guardados} puntaje(s).")
+        else:
+            messages.info(request, "No hubo cambios que guardar.")
+        return redirect(reverse("libro_docente:actividad_calificar", args=[actividad_id]))
+
+    # Construir filas para la grilla: cada fila tiene indicador_puntajes = [(ind, valor), ...]
+    filas = []
+    for m in matriculas:
+        est = m.estudiante
+        indicador_puntajes = [
+            (ind, puntajes_existentes.get((ind.id, est.id)))
+            for ind in indicadores
+        ]
+        total_obt = sum(
+            (p or Decimal("0")) for _, p in indicador_puntajes
+        )
+        pct = (
+            (total_obt / total_maximo * Decimal("100"))
+            if total_maximo and total_maximo > 0
+            else Decimal("0")
+        )
+        filas.append({
+            "matricula": m,
+            "estudiante": est,
+            "indicador_puntajes": indicador_puntajes,
+            "total_obtenido": total_obt,
+            "porcentaje_logro": pct,
+        })
+
+    return render(request, "libro_docente/calificacion.html", {
+        "actividad": actividad,
+        "asignacion": asignacion,
+        "indicadores": indicadores,
+        "filas": filas,
+        "total_maximo": total_maximo,
+        "total_estudiantes": len(filas),
+    })
+
+
+@login_required
+@permission_required("libro_docente.access_libro_docente", raise_exception=True)
+def resumen_evaluacion_view(request, asignacion_id):
+    """
+    Resumen acumulado por componente (TAREAS / COTIDIANOS) por estudiante.
+    Muestra obtenidos, máximos, % logro, % componente y aporte a nota final.
+    """
+    asignacion = _obtener_asignacion_con_permiso(request, asignacion_id)
+    if asignacion is None:
+        messages.error(request, "No tienes acceso.")
+        return redirect("libro_docente:home")
+
+    inst_id = asignacion.subarea_curso.institucion_id
+    inst_activa = getattr(request, "institucion_activa_id", None)
+    if inst_activa and inst_id != inst_activa:
+        messages.error(request, "No puedes acceder a otra institución.")
+        return redirect("libro_docente:home")
+
+    periodos_cl = list(
+        PeriodoCursoLectivo.objects
+        .filter(institucion_id=inst_id, curso_lectivo=asignacion.curso_lectivo, activo=True)
+        .select_related("periodo")
+        .order_by("periodo__numero")
+    )
+
+    periodo_id_raw = request.GET.get("periodo")
+    periodo_id = int(periodo_id_raw) if periodo_id_raw and str(periodo_id_raw).isdigit() else None
+    if not periodo_id and periodos_cl:
+        periodo_id = periodos_cl[0].periodo_id
+
+    matriculas = _get_estudiantes(asignacion)
+    filas = []
+    if periodo_id:
+        filas = calcular_resumen_evaluacion_completo(asignacion, periodo_id, matriculas)
+
+    return render(request, "libro_docente/resumen_evaluacion.html", {
+        "asignacion": asignacion,
+        "periodos_cl": periodos_cl,
+        "periodo_id": str(periodo_id) if periodo_id else None,
+        "filas": filas,
+    })
+
+
+@login_required
+@permission_required("libro_docente.access_libro_docente", raise_exception=True)
+def resumen_estudiante_detalle_view(request, asignacion_id, estudiante_id):
+    """
+    Detalle del resumen por estudiante: desglose por actividad.
+    """
+    asignacion = _obtener_asignacion_con_permiso(request, asignacion_id)
+    if asignacion is None:
+        messages.error(request, "No tienes acceso.")
+        return redirect("libro_docente:home")
+
+    matriculas = _get_estudiantes(asignacion)
+    matricula = next((m for m in matriculas if m.estudiante_id == estudiante_id), None)
+    if not matricula:
+        messages.error(request, "El estudiante no pertenece a este grupo.")
+        return redirect(reverse("libro_docente:resumen_evaluacion", args=[asignacion_id]))
+
+    periodo_id_raw = request.GET.get("periodo")
+    periodo_id = int(periodo_id_raw) if periodo_id_raw and str(periodo_id_raw).isdigit() else None
+    inst_id = asignacion.subarea_curso.institucion_id
+    periodos_cl = list(
+        PeriodoCursoLectivo.objects
+        .filter(institucion_id=inst_id, curso_lectivo=asignacion.curso_lectivo, activo=True)
+        .select_related("periodo")
+        .order_by("periodo__numero")
+    )
+    if not periodo_id and periodos_cl:
+        periodo_id = periodos_cl[0].periodo_id
+
+    from decimal import Decimal
+    from .services import calcular_resumen_componente_estudiante
+
+    _empty_resumen = {
+        "puntos_obtenidos": Decimal("0"),
+        "puntos_maximos": Decimal("0"),
+        "porcentaje_logro": Decimal("0"),
+        "porcentaje_componente": Decimal("0"),
+        "aporte": Decimal("0"),
+        "detalle_actividades": [],
+    }
+    tareas = (
+        calcular_resumen_componente_estudiante(
+            asignacion, periodo_id, ActividadEvaluacion.TAREA, estudiante_id
+        )
+        if periodo_id
+        else _empty_resumen
+    )
+    cotidianos = (
+        calcular_resumen_componente_estudiante(
+            asignacion, periodo_id, ActividadEvaluacion.COTIDIANO, estudiante_id
+        )
+        if periodo_id
+        else _empty_resumen
+    )
+
+    return render(request, "libro_docente/resumen_estudiante_detalle.html", {
+        "asignacion": asignacion,
+        "estudiante": matricula.estudiante,
+        "periodos_cl": periodos_cl,
+        "periodo_id": str(periodo_id) if periodo_id else None,
+        "tareas": tareas,
+        "cotidianos": cotidianos,
     })

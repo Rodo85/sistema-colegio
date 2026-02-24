@@ -1,0 +1,117 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block title %}Resumen evaluación – {{ asignacion.subarea_curso.subarea.nombre }}{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+:root{--primary:#1a6eb5;--primary-dark:#145591;--border:#dee2e6;--surface:#f8f9fc;--muted:#6c757d;}
+.page-wrap{max-width:100%;margin:20px auto;padding:0 14px;font-family:"Segoe UI",system-ui,sans-serif;}
+.asgn-banner{background:linear-gradient(135deg,#145591 0%,#1a6eb5 100%);border-radius:12px;padding:16px 22px;color:#fff;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:20px;}
+.asgn-title{font-size:1.1rem;font-weight:700;margin:0;}
+.back-btn{color:#fff !important;font-size:.83rem;text-decoration:none !important;border:1px solid rgba(255,255,255,.4);border-radius:6px;padding:5px 12px;}
+.back-btn:hover{background:rgba(255,255,255,.15);}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px;}
+.toolbar a{padding:6px 14px;border-radius:6px;font-size:.85rem;text-decoration:none;font-weight:600;}
+.toolbar a.active{background:var(--primary);color:#fff !important;}
+.toolbar a:not(.active){background:var(--surface);color:var(--primary-dark) !important;border:1px solid var(--border);}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:18px;overflow:hidden;}
+.card-header{background:var(--surface);padding:12px 18px;border-bottom:1px solid var(--border);font-weight:700;color:var(--primary-dark);}
+.grid-wrap{overflow:auto;max-height:70vh;}
+.res-table{width:100%;border-collapse:collapse;font-size:.85rem;min-width:700px;}
+.res-table th{background:var(--surface);padding:8px 10px;border:1px solid var(--border);text-align:center;font-weight:700;white-space:nowrap;}
+.res-table th.student-col{text-align:left;min-width:180px;position:sticky;left:0;background:var(--surface);z-index:2;}
+.res-table td{padding:6px 10px;border:1px solid var(--border);vertical-align:middle;}
+.res-table td.student-col{position:sticky;left:0;background:#fff;font-weight:600;z-index:1;}
+.res-table tbody tr:hover td{background:#f8faff;}
+.res-table tbody tr:hover td.student-col{background:#f8faff;}
+.num-cell{text-align:center;}
+.aporte-cell{font-weight:700;color:var(--primary-dark);}
+.empty-msg{text-align:center;padding:40px 20px;color:var(--muted);}
+.comp-section{font-size:.75rem;color:var(--muted);}
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div class="page-wrap">
+  <div class="asgn-banner">
+    <div>
+      <p class="asgn-title">📊 Resumen evaluación · {{ asignacion.subarea_curso.subarea.nombre }}</p>
+      <p style="font-size:.83rem;opacity:.9;margin:2px 0 0;">{{ asignacion.seccion|default:asignacion.subgrupo }} · {{ asignacion.curso_lectivo }}</p>
+    </div>
+    <a href="{% url 'libro_docente:actividad_list' asignacion.id %}" class="back-btn">← Actividades</a>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="toolbar">
+        {% for pcl in periodos_cl %}
+          <a href="?periodo={{ pcl.periodo_id }}" class="{% if periodo_id == pcl.periodo_id|stringformat:'s' %}active{% endif %}">
+            {{ pcl.periodo.nombre }}
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="card-body" style="padding:0;">
+      {% if not filas %}
+      <div class="empty-msg">
+        {% if periodo_id %}
+          No hay estudiantes en este grupo o no hay actividades en el período.
+        {% else %}
+          Seleccione un período.
+        {% endif %}
+      </div>
+      {% else %}
+      <div class="grid-wrap">
+        <table class="res-table">
+          <thead>
+            <tr>
+              <th class="student-col">Estudiante</th>
+              <th colspan="4" style="background:#dbeafe;">TAREAS</th>
+              <th colspan="4" style="background:#d1fae5;">COTIDIANOS</th>
+            </tr>
+            <tr>
+              <th class="student-col"></th>
+              <th class="comp-section">Obtenidos</th>
+              <th class="comp-section">Máximos</th>
+              <th class="comp-section">% logro</th>
+              <th class="comp-section">% comp.</th>
+              <th class="comp-section">Aporte</th>
+              <th class="comp-section">Obtenidos</th>
+              <th class="comp-section">Máximos</th>
+              <th class="comp-section">% logro</th>
+              <th class="comp-section">% comp.</th>
+              <th class="comp-section">Aporte</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for fila in filas %}
+            <tr>
+              <td class="student-col">
+                <a href="{% url 'libro_docente:resumen_estudiante_detalle' asignacion.id fila.estudiante.id %}?periodo={{ periodo_id }}" title="Ver desglose por actividad">
+                  {{ fila.estudiante.primer_apellido }} {{ fila.estudiante.segundo_apellido|default:"" }} {{ fila.estudiante.nombres }}
+                </a>
+              </td>
+              <td class="num-cell">{{ fila.tareas.puntos_obtenidos|floatformat:1 }}</td>
+              <td class="num-cell">{{ fila.tareas.puntos_maximos|floatformat:1 }}</td>
+              <td class="num-cell">{{ fila.tareas.porcentaje_logro|floatformat:1 }}%</td>
+              <td class="num-cell">{{ fila.tareas.porcentaje_componente|floatformat:1 }}%</td>
+              <td class="num-cell aporte-cell">{{ fila.tareas.aporte|floatformat:1 }}</td>
+              <td class="num-cell">{{ fila.cotidianos.puntos_obtenidos|floatformat:1 }}</td>
+              <td class="num-cell">{{ fila.cotidianos.puntos_maximos|floatformat:1 }}</td>
+              <td class="num-cell">{{ fila.cotidianos.porcentaje_logro|floatformat:1 }}%</td>
+              <td class="num-cell">{{ fila.cotidianos.porcentaje_componente|floatformat:1 }}%</td>
+              <td class="num-cell aporte-cell">{{ fila.cotidianos.aporte|floatformat:1 }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

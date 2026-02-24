@@ -100,6 +100,10 @@
                     <a href="{% url 'libro_docente:asistencia' a.id %}" class="chip chip-active">
                       ✓ {{ c.componente.codigo }} ({{ c.porcentaje }}%)
                     </a>
+                  {% elif c.componente.codigo|upper == "TAREAS" or c.componente.codigo|upper == "COTIDIANO" %}
+                    <a href="{% url 'libro_docente:actividad_list' a.id %}?tipo={{ c.componente.codigo|upper }}" class="chip chip-active">
+                      ✓ {{ c.componente.codigo }} ({{ c.porcentaje }}%)
+                    </a>
                   {% else %}
                     <span class="chip chip-disabled" title="Próximamente">
                       {{ c.componente.codigo }} ({{ c.porcentaje }}%)

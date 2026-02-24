@@ -1,0 +1,136 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block title %}Actividades – {{ asignacion.subarea_curso.subarea.nombre }}{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+:root{--primary:#1a6eb5;--primary-dark:#145591;--success:#198754;--danger:#dc3545;--warning:#f59e0b;--border:#dee2e6;--surface:#f8f9fc;--muted:#6c757d;}
+.page-wrap{max-width:1100px;margin:20px auto;padding:0 14px;font-family:"Segoe UI",system-ui,sans-serif;}
+.asgn-banner{background:linear-gradient(135deg,#145591 0%,#1a6eb5 100%);border-radius:12px;padding:16px 22px;color:#fff;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px;}
+.asgn-title{font-size:1.1rem;font-weight:700;margin:0;}
+.back-btn{color:#fff !important;font-size:.83rem;text-decoration:none !important;border:1px solid rgba(255,255,255,.4);border-radius:6px;padding:5px 12px;}
+.back-btn:hover{background:rgba(255,255,255,.15);}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:18px;}
+.card-body{padding:16px 18px;}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;font-size:.85rem;font-weight:600;border-radius:7px;border:none;cursor:pointer;text-decoration:none;}
+.btn-primary{background:var(--primary);color:#fff !important;}
+.btn-outline{background:#fff;border:1.5px solid var(--border);color:#333 !important;}
+.btn-sm{padding:5px 10px;font-size:.78rem;}
+.btn-danger{background:var(--danger);color:#fff !important;}
+.btn-warning{background:var(--warning);color:#000 !important;}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px;}
+.toolbar a{padding:6px 14px;border-radius:6px;font-size:.85rem;text-decoration:none;font-weight:600;}
+.toolbar a.active{background:var(--primary);color:#fff !important;}
+.toolbar a:not(.active){background:var(--surface);color:var(--primary-dark) !important;border:1px solid var(--border);}
+.actions-cell{display:flex;flex-wrap:wrap;gap:4px;}
+table{width:100%;border-collapse:collapse;font-size:.85rem;}
+thead th{background:var(--surface);padding:9px 12px;border-bottom:2px solid var(--border);text-align:left;}
+tbody td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.72rem;font-weight:700;}
+.badge-tarea{background:#dbeafe;color:#1e40af;}
+.badge-cotidiano{background:#d1fae5;color:#065f46;}
+.badge-borrador{background:#f3f4f6;color:#6b7280;}
+.badge-activa{background:#d1fae5;color:#065f46;}
+.badge-cerrada{background:#e5e7eb;color:#4b5563;}
+.empty{color:var(--muted);text-align:center;padding:40px 20px;}
+.total-max{font-weight:700;color:var(--primary-dark);}
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div class="page-wrap">
+  <div class="asgn-banner">
+    <div>
+      <p class="asgn-title">📋 Actividades · {{ asignacion.subarea_curso.subarea.nombre }}</p>
+      <p style="font-size:.83rem;opacity:.9;margin:2px 0 0;">{{ asignacion.seccion|default:asignacion.subgrupo }} · {{ asignacion.curso_lectivo }}</p>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <a href="{% url 'libro_docente:resumen_evaluacion' asignacion.id %}" class="back-btn" title="Resumen acumulado (Fase 3)">Ver resumen</a>
+      <a href="{% url 'libro_docente:home' %}" class="back-btn">← Mis asignaciones</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="toolbar">
+        {% for pcl in periodos_cl %}
+          <a href="?periodo={{ pcl.periodo_id }}{% if tipo %}&tipo={{ tipo }}{% endif %}" class="{% if periodo_id and periodo_id == pcl.periodo_id|stringformat:'s' %}active{% endif %}">
+            {{ pcl.periodo.nombre }}
+          </a>
+        {% endfor %}
+        <span style="margin-left:12px;color:var(--muted);font-size:.8rem;">|</span>
+        <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=TAREA" class="{% if tipo == 'TAREA' %}active{% endif %}">Tareas</a>
+        <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=COTIDIANO" class="{% if tipo == 'COTIDIANO' %}active{% endif %}">Cotidianos</a>
+        <a href="?periodo={{ periodo_id }}" class="{% if not tipo %}active{% endif %}">Todos</a>
+      </div>
+
+      {% if periodo_id %}
+        <p style="margin-bottom:12px;">
+          <a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=TAREA" class="btn btn-primary">+ Nueva tarea</a>
+          <a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=COTIDIANO" class="btn btn-outline">+ Nuevo cotidiano</a>
+        </p>
+      {% endif %}
+
+      {% if actividades %}
+        <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>Fecha / Período</th>
+              <th>Tipo</th>
+              <th>Título</th>
+              <th>Grupo</th>
+              <th>Materia</th>
+              <th>Indicadores</th>
+              <th>Total máx.</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in actividades %}
+            {% with a=item.obj %}
+            <tr>
+              <td>{{ a.fecha_asignacion|date:"d/m/Y"|default:a.periodo.nombre }}</td>
+              <td><span class="badge badge-{{ a.tipo_componente|lower }}">{{ a.get_tipo_componente_display }}</span></td>
+              <td>{{ a.titulo }}</td>
+              <td>{{ asignacion.seccion|default:asignacion.subgrupo }}</td>
+              <td>{{ asignacion.subarea_curso.subarea.nombre }}</td>
+              <td>{{ item.total_indicadores }}</td>
+              <td class="total-max">{{ item.total_maximo }}</td>
+              <td><span class="badge badge-{{ a.estado|lower }}">{{ a.get_estado_display }}</span></td>
+              <td>
+                <div class="actions-cell">
+                  <a href="{% url 'libro_docente:actividad_edit' a.id %}" class="btn btn-primary btn-sm" title="Editar">Editar</a>
+                  <a href="{% url 'libro_docente:actividad_duplicar' a.id %}" class="btn btn-warning btn-sm" title="Duplicar" onclick="return confirm('¿Duplicar esta actividad? Se creará una copia con los mismos indicadores (sin puntajes).');">Duplicar</a>
+                  <a href="{% url 'libro_docente:actividad_calificar' a.id %}" class="btn btn-outline btn-sm" title="Calificar">Calificar</a>
+                  <a href="{% url 'libro_docente:actividad_delete' a.id %}" class="btn btn-danger btn-sm" title="Eliminar">Eliminar</a>
+                </div>
+              </td>
+            </tr>
+            {% endwith %}
+            {% endfor %}
+          </tbody>
+        </table>
+        </div>
+      {% else %}
+        <div class="empty">
+          {% if periodo_id %}
+            No hay actividades en este período{% if tipo %} ({{ tipo }}){% endif %}.
+            <p style="margin-top:10px;">
+              <a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=TAREA" class="btn btn-primary">Crear tarea</a>
+              <a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=COTIDIANO" class="btn btn-outline">Crear cotidiano</a>
+            </p>
+          {% else %}
+            Seleccione un período para ver o crear actividades.
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
