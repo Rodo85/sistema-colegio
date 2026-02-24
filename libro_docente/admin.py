@@ -6,17 +6,18 @@ from .models import AsistenciaRegistro, AsistenciaSesion
 class _AdminOnlyEditMixin:
     """
     Para usuarios no-superusuarios:
-      - El modelo aparece en el sidebar (necesario para que Jazzmin muestre los custom_links del app).
+      - El modelo aparece en el sidebar si tienen access_libro_docente.
       - Al entrar a la lista ven una tabla vacía (get_queryset devuelve .none()).
       - No pueden agregar, editar ni eliminar registros.
     Superusuarios tienen acceso completo.
     """
     def get_model_perms(self, request):
-        perms = super().get_model_perms(request)
-        if not request.user.is_superuser:
-            # Devuelve solo 'view' para que el app aparezca en el sidebar
-            return {"view": perms.get("view", False)}
-        return perms
+        if request.user.is_superuser:
+            return super().get_model_perms(request)
+        # Docentes con access_libro_docente ven los modelos en el submenú
+        if request.user.has_perm("libro_docente.access_libro_docente"):
+            return {"view": True}
+        return {}
 
     def get_queryset(self, request):
         if not request.user.is_superuser:

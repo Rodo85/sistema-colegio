@@ -11,6 +11,34 @@ ALLOWED_PATH_PREFIXES = (
 )
 
 
+def _asignar_institucion_sesion(request, inst_id):
+    """Asigna institución a sesión y request."""
+    request.session["institucion_id"] = inst_id
+    request.institucion_activa_id = inst_id
+    request.session.save()
+
+
+def _obtener_institucion_default(user):
+    """
+    Obtiene la institución por defecto para el usuario.
+    Prioridad: 1 membresía → 1 Profesor → None (debe elegir).
+    """
+    membresias = list(user.membresias.select_related("institucion").all())
+    if len(membresias) == 1:
+        inst = membresias[0].institucion
+        if inst.activa:
+            return inst
+    if len(membresias) > 1:
+        # Docente con varias membresías: usar institución de su único Profesor
+        from config_institucional.models import Profesor
+        profesores = list(Profesor.objects.filter(usuario=user).select_related("institucion"))
+        if len(profesores) == 1:
+            inst = profesores[0].institucion
+            if inst.activa:
+                return inst
+    return None
+
+
 class InstitucionMiddleware(MiddlewareMixin):
 
     def process_view(self, request, view_func, view_args, view_kwargs):
@@ -59,23 +87,14 @@ class InstitucionMiddleware(MiddlewareMixin):
                 except Institucion.DoesNotExist:
                     request.session.pop("institucion_id", None)
             
-            # No hay institución activa, verificar membresías
-            membresias = user.membresias.select_related("institucion").all()
-            logger.debug(f"Usuario {user.email} tiene {membresias.count()} membresías")
+            # No hay institución en sesión: intentar asignar por defecto
+            inst_default = _obtener_institucion_default(user)
+            if inst_default:
+                logger.info(f"Asignando institución por defecto: {inst_default.nombre}")
+                _asignar_institucion_sesion(request, inst_default.pk)
+                return None
             
-            # Si tiene exactamente 1 institución válida, asignarla automáticamente
-            if membresias.count() == 1:
-                inst = membresias.first().institucion
-                if inst.activa:
-                    logger.info(f"Asignando automáticamente institución única: {inst.nombre}")
-                    request.session["institucion_id"] = inst.pk
-                    request.institucion_activa_id = inst.pk
-                    request.session.save()
-                    return None
-                else:
-                    logger.warning(f"Institución única {inst.nombre} no está activa")
-            
-            # Si tiene múltiples instituciones o ninguna válida, redirigir a selección
+            # Sin membresías o varias sin default: redirigir a selección
             logger.info("Redirigiendo a selección de institución")
             return redirect("seleccionar_institucion")
             
@@ -87,7 +106,7 @@ class InstitucionMiddleware(MiddlewareMixin):
     def process_request(self, request):
         """
         Este método se ejecuta antes de que se resuelva la vista.
-        Solo establecemos la institución activa si ya está en sesión.
+        Establece la institución activa desde sesión o asigna por defecto si aplica.
         """
         user = getattr(request, "user", None)
         
@@ -103,7 +122,6 @@ class InstitucionMiddleware(MiddlewareMixin):
         if hasattr(request, 'institucion_activa_id') and request.institucion_activa_id:
             return None
         
-        # Verificar si ya hay institución en sesión
         # Permitir rutas de salida/selector antes de imponer institución
         for prefijo in ALLOWED_PATH_PREFIXES:
             if request.path.startswith(prefijo):
@@ -123,5 +141,12 @@ class InstitucionMiddleware(MiddlewareMixin):
                     request.session.pop("institucion_id", None)
             except Institucion.DoesNotExist:
                 request.session.pop("institucion_id", None)
+        else:
+            # Sin sesión: asignar por defecto si tiene 1 membresía o 1 Profesor
+            inst_default = _obtener_institucion_default(user)
+            if inst_default:
+                request.session["institucion_id"] = inst_default.pk
+                request.institucion_activa_id = inst_default.pk
+                logger.debug(f"process_request: Institución por defecto asignada: {inst_default.nombre}")
         
         return None
