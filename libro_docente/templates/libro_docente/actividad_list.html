@@ -76,21 +76,16 @@ tbody td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:m
     <div class="card-body">
       <div class="toolbar">
         {% for pcl in periodos_cl %}
-          <a href="?periodo={{ pcl.periodo_id }}{% if tipo %}&tipo={{ tipo }}{% endif %}{% if orden %}&orden={{ orden }}{% endif %}" class="{% if periodo_id and periodo_id == pcl.periodo_id|stringformat:'s' %}active{% endif %}">
+          <a href="?periodo={{ pcl.periodo_id }}{% if tipo %}&tipo={{ tipo }}{% endif %}" class="{% if periodo_id and periodo_id == pcl.periodo_id|stringformat:'s' %}active{% endif %}">
             {{ pcl.periodo.nombre }}
           </a>
         {% endfor %}
         <span style="margin-left:12px;color:var(--muted);font-size:.8rem;">|</span>
         {% for t in available_tipos %}
-          <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo={{ t }}{% if orden %}&orden={{ orden }}{% endif %}" class="{% if tipo == t %}active{% endif %}">
+          <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo={{ t }}" class="{% if tipo == t %}active{% endif %}">
             {{ t|title }}
           </a>
         {% endfor %}
-        <span style="margin-left:12px;color:var(--muted);">| Orden:</span>
-        <a href="?periodo={{ periodo_id }}{% if tipo %}&tipo={{ tipo }}{% endif %}&orden=fecha" class="{% if orden == 'fecha' or not orden %}active{% endif %}">Fecha</a>
-        <a href="?periodo={{ periodo_id }}{% if tipo %}&tipo={{ tipo }}{% endif %}&orden=titulo" class="{% if orden == 'titulo' %}active{% endif %}">Título</a>
-        <a href="?periodo={{ periodo_id }}{% if tipo %}&tipo={{ tipo }}{% endif %}&orden=estado" class="{% if orden == 'estado' %}active{% endif %}">Estado</a>
-        <a href="?periodo={{ periodo_id }}{% if tipo %}&tipo={{ tipo }}{% endif %}&orden=tipo" class="{% if orden == 'tipo' %}active{% endif %}">Tipo</a>
       </div>
 
       {% if periodo_id %}

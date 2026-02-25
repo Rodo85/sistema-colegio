@@ -142,14 +142,17 @@ input.form-control,select.form-control,textarea.form-control{width:100%;}
 <script>
 (function() {
   var minEscalaMin = "{% if tipo == 'COTIDIANO' %}1{% else %}0{% endif %}";
+  function totalFormsInput() {
+    return document.querySelector('input[id$="-TOTAL_FORMS"]');
+  }
 
   function getTotalForms() {
-    var inp = document.getElementById('id_indicadoractividad_set-TOTAL_FORMS');
+    var inp = totalFormsInput();
     return inp ? parseInt(inp.value, 10) : 0;
   }
 
   function setTotalForms(n) {
-    var inp = document.getElementById('id_indicadoractividad_set-TOTAL_FORMS');
+    var inp = totalFormsInput();
     if (inp) inp.value = n;
   }
 
