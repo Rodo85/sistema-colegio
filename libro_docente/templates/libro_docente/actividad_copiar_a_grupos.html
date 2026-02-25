@@ -36,7 +36,7 @@
     <div class="card-header">Seleccione grupos destino</div>
     <div class="card-body">
       <p style="margin-bottom:16px;font-size:.9rem;color:var(--muted);">
-        Se copiará la actividad e indicadores (sin puntajes) a los grupos seleccionados.
+        Se copiará la actividad {% if not es_simple %}e indicadores{% endif %} (sin puntajes) a los grupos seleccionados.
         Solo se muestran asignaciones donde imparte la misma materia ({{ asignacion.subarea_curso.subarea.nombre }}) en el mismo curso lectivo.
       </p>
 

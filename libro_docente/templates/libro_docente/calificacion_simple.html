@@ -1,0 +1,155 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block title %}Calificar – {{ actividad.titulo }}{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+:root{--primary:#1a6eb5;--primary-dark:#145591;--success:#198754;--danger:#dc3545;--border:#dee2e6;--surface:#f8f9fc;--muted:#6c757d;}
+.page-wrap{max-width:100%;margin:20px auto;padding:0 14px;font-family:"Segoe UI",system-ui,sans-serif;}
+.asgn-banner{background:linear-gradient(135deg,#145591 0%,#1a6eb5 100%);border-radius:12px;padding:16px 22px;color:#fff;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:20px;}
+.asgn-title{font-size:1.1rem;font-weight:700;margin:0;}
+.back-btn{color:#fff !important;font-size:.83rem;text-decoration:none !important;border:1px solid rgba(255,255,255,.4);border-radius:6px;padding:5px 12px;}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:18px;overflow:hidden;}
+.card-header{background:var(--surface);padding:12px 18px;border-bottom:1px solid var(--border);font-weight:700;color:var(--primary-dark);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;font-size:.85rem;font-weight:600;border-radius:7px;border:none;cursor:pointer;text-decoration:none;}
+.btn-primary{background:var(--primary);color:#fff !important;}
+.btn-outline{background:#fff;border:1.5px solid var(--border);color:#333 !important;}
+.grid-wrap{overflow:auto;max-height:70vh;}
+.cal-table{width:100%;border-collapse:collapse;font-size:.85rem;min-width:680px;}
+.cal-table th{background:var(--surface);padding:8px 10px;border:1px solid var(--border);text-align:center;font-weight:700;white-space:nowrap;}
+.cal-table th.student-col{text-align:left;min-width:220px;}
+.cal-table td{padding:4px 6px;border:1px solid var(--border);vertical-align:middle;}
+.puntaje-input{width:80px;padding:6px 8px;text-align:center;font-size:.9rem;border:1px solid var(--border);border-radius:4px;}
+.puntaje-input.error{border-color:var(--danger);background:#fef2f2;box-shadow:0 0 0 1px var(--danger);}
+.fila-con-error td{background:#fff1f2 !important;}
+.nota-cell,.pct-cell{font-weight:700;text-align:center;}
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div class="page-wrap">
+  <div class="asgn-banner">
+    <div>
+      <p class="asgn-title">📝 Calificar {{ actividad.get_tipo_componente_display }} · {{ actividad.titulo }}</p>
+      <p style="font-size:.83rem;opacity:.9;margin:2px 0 0;">{{ asignacion.subarea_curso.subarea.nombre }} · {{ actividad.periodo.nombre }} · Puntos: {{ puntaje_total }} · %: {{ porcentaje_actividad }}</p>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <a href="{% url 'libro_docente:actividad_edit' actividad.id %}" class="back-btn">← Editar actividad</a>
+      <a href="{% url 'libro_docente:actividad_list' asignacion.id %}?tipo={{ actividad.tipo_componente }}" class="back-btn">Lista actividades</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span>{{ total_estudiantes }} estudiante{{ total_estudiantes|pluralize }}</span>
+      <div style="display:flex;gap:8px;">
+        <button type="button" id="btn-maximos" class="btn btn-outline">Máximo a todos</button>
+        <button type="submit" form="calificacion-simple-form" class="btn btn-primary">Guardar todo</button>
+      </div>
+    </div>
+    <div class="grid-wrap">
+      <form method="post" id="calificacion-simple-form">
+        {% csrf_token %}
+        <table class="cal-table">
+          <thead>
+            <tr>
+              <th class="student-col">Estudiante</th>
+              <th>Puntos obtenidos</th>
+              <th>Nota obtenida</th>
+              <th>Porcentaje obtenido</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for f in filas %}
+            <tr class="fila-estudiante">
+              <td class="student-col">{{ f.estudiante.primer_apellido }} {{ f.estudiante.segundo_apellido|default:"" }} {{ f.estudiante.nombres }}</td>
+              <td style="text-align:center;">
+                <input type="text" class="puntaje-input" inputmode="numeric" name="ps_{{ f.estudiante.id }}" data-max="{{ puntaje_total }}" value="{% if f.puntos is not None %}{{ f.puntos|floatformat:0 }}{% endif %}" placeholder="—">
+              </td>
+              <td class="nota-cell">{% if f.nota is not None %}{{ f.nota|floatformat:1 }}{% else %}—{% endif %}</td>
+              <td class="pct-cell">{% if f.porcentaje is not None %}{{ f.porcentaje|floatformat:1 }}{% else %}—{% endif %}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  var maxGlobal = parseFloat(String("{{ puntaje_total }}").replace(',', '.')) || 0;
+  var pctAct = parseFloat(String("{{ porcentaje_actividad }}").replace(',', '.')) || 0;
+  function parseIntVal(v) {
+    var s = String(v || '').trim();
+    if (!s) return null;
+    if (!/^\d+$/.test(s)) return null;
+    var n = parseInt(s, 10);
+    return isNaN(n) ? null : n;
+  }
+  function updateRow(row) {
+    var inp = row.querySelector('.puntaje-input');
+    var notaCell = row.querySelector('.nota-cell');
+    var pctCell = row.querySelector('.pct-cell');
+    var val = parseIntVal(inp.value);
+    inp.classList.remove('error');
+    row.classList.remove('fila-con-error');
+    if (val === null && String(inp.value || '').trim() !== '') {
+      inp.classList.add('error');
+      row.classList.add('fila-con-error');
+      notaCell.textContent = '—';
+      pctCell.textContent = '—';
+      return;
+    }
+    if (val !== null && (val < 0 || val > maxGlobal)) {
+      inp.classList.add('error');
+      row.classList.add('fila-con-error');
+      notaCell.textContent = '—';
+      pctCell.textContent = '—';
+      return;
+    }
+    if (val === null) {
+      notaCell.textContent = '—';
+      pctCell.textContent = '—';
+      return;
+    }
+    var nota = maxGlobal > 0 ? (val / maxGlobal) * 100 : 0;
+    var pct = maxGlobal > 0 ? (val / maxGlobal) * pctAct : 0;
+    notaCell.textContent = nota.toFixed(1);
+    pctCell.textContent = pct.toFixed(1);
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.fila-estudiante').forEach(updateRow);
+    var form = document.getElementById('calificacion-simple-form');
+    var btnMax = document.getElementById('btn-maximos');
+    if (btnMax) {
+      btnMax.addEventListener('click', function() {
+        document.querySelectorAll('.puntaje-input').forEach(function(inp) {
+          inp.value = String(Math.trunc(maxGlobal));
+          updateRow(inp.closest('.fila-estudiante'));
+        });
+      });
+    }
+    form.addEventListener('input', function(e) {
+      if (e.target.classList.contains('puntaje-input')) {
+        updateRow(e.target.closest('.fila-estudiante'));
+      }
+    });
+    form.addEventListener('submit', function(e) {
+      document.querySelectorAll('.fila-estudiante').forEach(updateRow);
+      var err = document.querySelector('.puntaje-input.error');
+      if (err) {
+        e.preventDefault();
+        err.focus();
+        err.scrollIntoView({behavior:'smooth', block:'center'});
+      }
+    });
+  });
+})();
+</script>
+{% endblock %}

@@ -15,9 +15,13 @@ class ActividadEvaluacion(models.Model):
     """
     TAREA = "TAREA"
     COTIDIANO = "COTIDIANO"
+    PRUEBA = "PRUEBA"
+    PROYECTO = "PROYECTO"
     TIPO_CHOICES = [
         (TAREA, "Tarea"),
         (COTIDIANO, "Cotidiano"),
+        (PRUEBA, "Prueba"),
+        (PROYECTO, "Proyecto"),
     ]
     BORRADOR = "BORRADOR"
     ACTIVA = "ACTIVA"
@@ -59,6 +63,22 @@ class ActividadEvaluacion(models.Model):
     )
     titulo = models.CharField("Título", max_length=200)
     descripcion = models.TextField("Descripción", blank=True)
+    puntaje_total = models.DecimalField(
+        "Valor en puntos",
+        max_digits=6,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        help_text="Solo para Prueba/Proyecto.",
+    )
+    porcentaje_actividad = models.DecimalField(
+        "Valor en porcentaje",
+        max_digits=5,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        help_text="Solo para Prueba/Proyecto.",
+    )
     fecha_asignacion = models.DateField("Fecha asignación", null=True, blank=True)
     fecha_entrega = models.DateField("Fecha entrega", null=True, blank=True)
     estado = models.CharField(
@@ -104,6 +124,19 @@ class ActividadEvaluacion(models.Model):
                 raise ValidationError(
                     "La institución debe coincidir con la de la asignación docente."
                 )
+        es_simple = self.tipo_componente in (self.PRUEBA, self.PROYECTO)
+        if es_simple:
+            if self.puntaje_total is None or self.puntaje_total <= 0:
+                raise ValidationError("En Prueba/Proyecto el valor en puntos debe ser mayor a 0.")
+            if self.porcentaje_actividad is None or self.porcentaje_actividad <= 0:
+                raise ValidationError("En Prueba/Proyecto el valor en porcentaje debe ser mayor a 0.")
+            if self.puntaje_total != self.puntaje_total.to_integral_value():
+                raise ValidationError("El valor en puntos debe ser entero (sin decimales).")
+            if self.porcentaje_actividad != self.porcentaje_actividad.to_integral_value():
+                raise ValidationError("El valor en porcentaje debe ser entero (sin decimales).")
+        else:
+            self.puntaje_total = None
+            self.porcentaje_actividad = None
         super().clean()
 
 
@@ -158,9 +191,12 @@ class IndicadorActividad(models.Model):
         if self.escala_max is not None and self.escala_min is not None:
             if self.escala_max < self.escala_min:
                 raise ValidationError("escala_max debe ser >= escala_min.")
+        min_permitido = 0
+        if self.actividad_id and self.actividad.tipo_componente == ActividadEvaluacion.COTIDIANO:
+            min_permitido = 1
         if self.escala_min is not None:
-            if self.escala_min < 0:
-                raise ValidationError("escala_min debe ser >= 0.")
+            if self.escala_min < min_permitido:
+                raise ValidationError(f"escala_min debe ser >= {min_permitido}.")
             if self.escala_min != self.escala_min.to_integral_value():
                 raise ValidationError("escala_min debe ser entero (sin decimales).")
         if self.escala_max is not None:
@@ -278,6 +314,63 @@ class ObservacionActividadEstudiante(models.Model):
 
     def __str__(self):
         return f"{self.estudiante} – {self.actividad_id}"
+
+
+class PuntajeSimple(models.Model):
+    """
+    Puntaje por estudiante para Prueba/Proyecto (sin indicadores).
+    """
+    actividad = models.ForeignKey(
+        ActividadEvaluacion,
+        on_delete=models.CASCADE,
+        related_name="puntajes_simples",
+        verbose_name="Actividad",
+    )
+    estudiante = models.ForeignKey(
+        "matricula.Estudiante",
+        on_delete=models.PROTECT,
+        related_name="puntajes_simples",
+        verbose_name="Estudiante",
+    )
+    puntos_obtenidos = models.DecimalField(
+        "Puntos obtenidos",
+        max_digits=6,
+        decimal_places=2,
+        null=True,
+        blank=True,
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "evaluacion_puntaje_simple"
+        verbose_name = "Puntaje simple (Prueba/Proyecto)"
+        verbose_name_plural = "Puntajes simples"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["actividad", "estudiante"],
+                name="uniq_puntaje_simple_act_est",
+            ),
+        ]
+        indexes = [
+            models.Index(fields=["actividad", "estudiante"], name="eval_ps_act_est_idx"),
+        ]
+
+    def __str__(self):
+        return f"{self.estudiante} – {self.actividad_id}: {self.puntos_obtenidos}"
+
+    def clean(self):
+        if self.puntos_obtenidos is not None:
+            if self.puntos_obtenidos < 0:
+                raise ValidationError("Los puntos obtenidos deben ser >= 0.")
+            if self.puntos_obtenidos != self.puntos_obtenidos.to_integral_value():
+                raise ValidationError("Los puntos obtenidos deben ser enteros (sin decimales).")
+            if self.actividad_id and self.actividad.puntaje_total is not None:
+                if self.puntos_obtenidos > self.actividad.puntaje_total:
+                    raise ValidationError(
+                        f"Los puntos obtenidos deben ser <= {self.actividad.puntaje_total}."
+                    )
+        super().clean()
 
 
 class AsistenciaSesion(models.Model):

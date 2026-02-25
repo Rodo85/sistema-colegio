@@ -20,6 +20,7 @@
 .btn-sm{padding:5px 10px;font-size:.78rem;}
 .btn-danger{background:var(--danger);color:#fff !important;}
 .btn-warning{background:var(--warning);color:#000 !important;}
+.btn-success{background:var(--success);color:#fff !important;}
 .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px;}
 .toolbar a{padding:6px 14px;border-radius:6px;font-size:.85rem;text-decoration:none;font-weight:600;}
 .toolbar a.active{background:var(--primary);color:#fff !important;}
@@ -31,6 +32,8 @@ tbody td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:m
 .badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.72rem;font-weight:700;}
 .badge-tarea{background:#dbeafe;color:#1e40af;}
 .badge-cotidiano{background:#d1fae5;color:#065f46;}
+.badge-prueba{background:#fde68a;color:#92400e;}
+.badge-proyecto{background:#e9d5ff;color:#6b21a8;}
 .badge-borrador{background:#f3f4f6;color:#6b7280;}
 .badge-activa{background:#d1fae5;color:#065f46;}
 .badge-cerrada{background:#e5e7eb;color:#4b5563;}
@@ -76,8 +79,11 @@ tbody td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:m
           </a>
         {% endfor %}
         <span style="margin-left:12px;color:var(--muted);font-size:.8rem;">|</span>
-        <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=TAREA{% if orden %}&orden={{ orden }}{% endif %}" class="{% if tipo == 'TAREA' %}active{% endif %}">Tareas</a>
-        <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=COTIDIANO{% if orden %}&orden={{ orden }}{% endif %}" class="{% if tipo == 'COTIDIANO' %}active{% endif %}">Cotidianos</a>
+        {% for t in available_tipos %}
+          <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo={{ t }}{% if orden %}&orden={{ orden }}{% endif %}" class="{% if tipo == t %}active{% endif %}">
+            {{ t|title }}
+          </a>
+        {% endfor %}
         <span style="margin-left:12px;color:var(--muted);">| Orden:</span>
         <a href="?periodo={{ periodo_id }}{% if tipo %}&tipo={{ tipo }}{% endif %}&orden=fecha" class="{% if orden == 'fecha' or not orden %}active{% endif %}">Fecha</a>
         <a href="?periodo={{ periodo_id }}{% if tipo %}&tipo={{ tipo }}{% endif %}&orden=titulo" class="{% if orden == 'titulo' %}active{% endif %}">Título</a>
@@ -87,8 +93,9 @@ tbody td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:m
 
       {% if periodo_id %}
         <p style="margin-bottom:12px;">
-          <a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=TAREA" class="btn btn-primary">+ Nueva tarea</a>
-          <a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=COTIDIANO" class="btn btn-outline">+ Nuevo cotidiano</a>
+          {% if tipo %}
+            <a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo={{ tipo }}" class="btn btn-primary">+ Nueva {{ tipo|lower }}</a>
+          {% endif %}
         </p>
       {% endif %}
 
@@ -102,7 +109,7 @@ tbody td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:m
               <th>Título</th>
               <th>Grupo</th>
               <th>Materia</th>
-              <th>Indicadores</th>
+              <th>Detalle</th>
               <th>Total máx.</th>
               <th>Estado</th>
               <th>Acciones</th>
@@ -117,7 +124,15 @@ tbody td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:m
               <td>{{ a.titulo }}</td>
               <td><strong>{% if asignacion.subgrupo %}{{ asignacion.subgrupo }}{% else %}{{ asignacion.seccion }}{% endif %}</strong></td>
               <td>{{ asignacion.subarea_curso.subarea.nombre }}</td>
-              <td>{% if item.total_indicadores %}{{ item.total_indicadores }}{% else %}<span class="badge-error" title="Agregue indicadores para poder calificar">0 ⚠</span>{% endif %}</td>
+              <td>
+                {% if a.tipo_componente == 'PRUEBA' or a.tipo_componente == 'PROYECTO' %}
+                  Puntos/Pct: {{ a.puntaje_total|floatformat:0 }}/{{ a.porcentaje_actividad|floatformat:0 }}%
+                {% elif item.total_indicadores %}
+                  {{ item.total_indicadores }} indicadores
+                {% else %}
+                  <span class="badge-error" title="Agregue indicadores para poder calificar">0 ⚠</span>
+                {% endif %}
+              </td>
               <td class="total-max">{{ item.total_maximo }}</td>
               <td><span class="badge badge-{{ a.estado|lower }}">{{ a.get_estado_display }}</span></td>
               <td>
@@ -125,7 +140,7 @@ tbody td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:m
                   <a href="{% url 'libro_docente:actividad_edit' a.id %}" class="btn btn-primary btn-sm" title="Editar">Editar</a>
                   <a href="{% url 'libro_docente:actividad_duplicar' a.id %}" class="btn btn-warning btn-sm" title="Duplicar en este grupo">Duplicar</a>
                   <a href="{% url 'libro_docente:actividad_copiar_a_grupos' a.id %}" class="btn btn-outline btn-sm" title="Copiar a otros grupos">A otros grupos</a>
-                  <a href="{% url 'libro_docente:actividad_calificar' a.id %}" class="btn btn-outline btn-sm" title="Calificar">Calificar</a>
+                  <a href="{% url 'libro_docente:actividad_calificar' a.id %}" class="btn btn-success btn-sm" title="Calificar">Calificar</a>
                   <a href="{% url 'libro_docente:actividad_delete' a.id %}" class="btn btn-danger btn-sm" title="Eliminar">Eliminar</a>
                 </div>
               </td>
@@ -138,13 +153,8 @@ tbody td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:m
       {% else %}
         <div class="empty">
           {% if periodo_id %}
-            {% if tipo == 'COTIDIANO' %}
-              <p>No hay actividades de <strong>Cotidiano</strong> todavía.</p>
-              <p style="margin-top:10px;"><a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=COTIDIANO" class="btn btn-primary">Crear primera actividad</a></p>
-            {% elif tipo == 'TAREA' %}
-              <p>No hay actividades de <strong>Tarea</strong> todavía.</p>
-              <p style="margin-top:10px;"><a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo=TAREA" class="btn btn-primary">Crear primera actividad</a></p>
-            {% endif %}
+            <p>No hay actividades de <strong>{{ tipo|title }}</strong> todavía.</p>
+            <p style="margin-top:10px;"><a href="{% url 'libro_docente:actividad_create' asignacion.id %}?periodo={{ periodo_id }}&tipo={{ tipo }}" class="btn btn-primary">Crear primera actividad</a></p>
           {% else %}
             Seleccione un período para ver o crear actividades.
           {% endif %}

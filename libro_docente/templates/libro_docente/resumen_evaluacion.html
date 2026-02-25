@@ -30,6 +30,9 @@
 .aporte-cell{font-weight:700;color:var(--primary-dark);}
 .empty-msg{text-align:center;padding:40px 20px;color:var(--muted);}
 .comp-section{font-size:.75rem;color:var(--muted);}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;font-size:.82rem;font-weight:600;border-radius:7px;border:none;cursor:pointer;text-decoration:none;}
+.btn-primary{background:var(--primary);color:#fff !important;}
+.btn-outline{background:#fff;border:1.5px solid var(--border);color:#333 !important;}
 </style>
 {% endblock %}
 
@@ -56,7 +59,11 @@
         <span style="margin-left:12px;color:var(--muted);">|</span>
         <a href="?periodo={{ periodo_id }}" class="{% if not tipo %}active{% endif %}">Todos</a>
         <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=TAREA" class="{% if tipo == 'TAREA' %}active{% endif %}">Solo Tareas</a>
-        <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=COTIDIANO" class="{% if tipo == 'COTIDIANO' %}active{% endif %}">Solo Cotidianos</a>
+        <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=COTIDIANO" class="{% if tipo == 'COTIDIANO' %}active{% endif %}">Solo Cotidiano</a>
+        <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=PRUEBA" class="{% if tipo == 'PRUEBA' %}active{% endif %}">Solo Pruebas</a>
+        {% if has_proyecto %}
+          <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=PROYECTO" class="{% if tipo == 'PROYECTO' %}active{% endif %}">Solo Proyecto</a>
+        {% endif %}
       </div>
     </div>
     <div class="card-body" style="padding:0;">
@@ -80,6 +87,14 @@
               {% if not tipo or tipo == 'COTIDIANO' %}
               <th colspan="5" style="background:#d1fae5;">COTIDIANOS</th>
               {% endif %}
+              {% if not tipo or tipo == 'PRUEBA' %}
+              <th colspan="5" style="background:#fde68a;">PRUEBAS</th>
+              {% endif %}
+              {% if has_proyecto %}
+              {% if not tipo or tipo == 'PROYECTO' %}
+              <th colspan="5" style="background:#e9d5ff;">PROYECTO</th>
+              {% endif %}
+              {% endif %}
             </tr>
             <tr>
               <th class="student-col"></th>
@@ -96,6 +111,22 @@
               <th class="comp-section">% logro</th>
               <th class="comp-section">% comp.</th>
               <th class="comp-section">Aporte</th>
+              {% endif %}
+              {% if not tipo or tipo == 'PRUEBA' %}
+              <th class="comp-section">Obtenidos</th>
+              <th class="comp-section">Máximos</th>
+              <th class="comp-section">% logro</th>
+              <th class="comp-section">% comp.</th>
+              <th class="comp-section">Aporte</th>
+              {% endif %}
+              {% if has_proyecto %}
+              {% if not tipo or tipo == 'PROYECTO' %}
+              <th class="comp-section">Obtenidos</th>
+              <th class="comp-section">Máximos</th>
+              <th class="comp-section">% logro</th>
+              <th class="comp-section">% comp.</th>
+              <th class="comp-section">Aporte</th>
+              {% endif %}
               {% endif %}
             </tr>
           </thead>
@@ -121,6 +152,68 @@
               <td class="num-cell">{{ fila.cotidianos.porcentaje_componente|floatformat:1 }}%</td>
               <td class="num-cell aporte-cell">{{ fila.cotidianos.aporte|floatformat:1 }}</td>
               {% endif %}
+              {% if not tipo or tipo == 'PRUEBA' %}
+              <td class="num-cell">{{ fila.pruebas.puntos_obtenidos|floatformat:1 }}</td>
+              <td class="num-cell">{{ fila.pruebas.puntos_maximos|floatformat:1 }}</td>
+              <td class="num-cell">{{ fila.pruebas.porcentaje_logro|floatformat:1 }}%</td>
+              <td class="num-cell">{{ fila.pruebas.porcentaje_componente|floatformat:1 }}%</td>
+              <td class="num-cell aporte-cell">{{ fila.pruebas.aporte|floatformat:1 }}</td>
+              {% endif %}
+              {% if has_proyecto %}
+              {% if not tipo or tipo == 'PROYECTO' %}
+              <td class="num-cell">{{ fila.proyectos.puntos_obtenidos|floatformat:1 }}</td>
+              <td class="num-cell">{{ fila.proyectos.puntos_maximos|floatformat:1 }}</td>
+              <td class="num-cell">{{ fila.proyectos.porcentaje_logro|floatformat:1 }}%</td>
+              <td class="num-cell">{{ fila.proyectos.porcentaje_componente|floatformat:1 }}%</td>
+              <td class="num-cell aporte-cell">{{ fila.proyectos.aporte|floatformat:1 }}</td>
+              {% endif %}
+              {% endif %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+      <span>Resumen general (final) y exportación</span>
+      {% if periodo_id %}
+      <span style="display:flex;gap:8px;">
+        <a class="btn btn-primary" href="{% url 'libro_docente:resumen_general_export_xlsx' asignacion.id %}?periodo={{ periodo_id }}">Exportar Excel</a>
+        <a class="btn btn-outline" href="{% url 'libro_docente:resumen_general_export_csv' asignacion.id %}?periodo={{ periodo_id }}">Exportar CSV</a>
+      </span>
+      {% endif %}
+    </div>
+    <div class="card-body" style="padding:0;">
+      {% if not filas_general %}
+        <div class="empty-msg">Sin datos para resumen general.</div>
+      {% else %}
+      <div class="grid-wrap">
+        <table class="res-table">
+          <thead>
+            <tr>
+              <th>id</th>
+              <th>Nombre</th>
+              <th>Trabajo cotidiano</th>
+              <th>Tareas</th>
+              <th>Pruebas</th>
+              {% if has_proyecto %}<th>Proyecto</th>{% endif %}
+              <th>Asistencia</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in filas_general %}
+            <tr>
+              <td class="num-cell">{{ r.id }}</td>
+              <td>{{ r.nombre }}</td>
+              <td class="num-cell">{{ r.cotidiano|floatformat:1 }}</td>
+              <td class="num-cell">{{ r.tareas|floatformat:1 }}</td>
+              <td class="num-cell">{{ r.pruebas|floatformat:1 }}</td>
+              {% if has_proyecto %}<td class="num-cell">{{ r.proyecto|floatformat:1 }}</td>{% endif %}
+              <td class="num-cell">{{ r.asistencia|floatformat:1 }}</td>
             </tr>
             {% endfor %}
           </tbody>

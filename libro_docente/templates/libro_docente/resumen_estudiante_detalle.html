@@ -45,6 +45,8 @@ th{background:var(--surface);font-weight:700;}
         <a href="?periodo={{ periodo_id }}" class="{% if not tipo %}active{% endif %}">Todos</a>
         <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=TAREA" class="{% if tipo == 'TAREA' %}active{% endif %}">Solo Tareas</a>
         <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=COTIDIANO" class="{% if tipo == 'COTIDIANO' %}active{% endif %}">Solo Cotidianos</a>
+        <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=PRUEBA" class="{% if tipo == 'PRUEBA' %}active{% endif %}">Solo Pruebas</a>
+        <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=PROYECTO" class="{% if tipo == 'PROYECTO' %}active{% endif %}">Solo Proyecto</a>
       </div>
     </div>
   </div>
@@ -140,6 +142,72 @@ th{background:var(--surface);font-weight:700;}
       </p>
       {% else %}
       <p style="color:var(--muted);">Sin actividades COTIDIANOS en este período.</p>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if not tipo or tipo == 'PRUEBA' %}
+  <div class="card">
+    <div class="card-header">PRUEBAS – Desglose por actividad</div>
+    <div class="card-body">
+      {% if pruebas.detalle_actividades %}
+      <table>
+        <thead>
+          <tr>
+            <th>Actividad</th>
+            <th style="text-align:center;">Obtenido</th>
+            <th style="text-align:center;">Máximo</th>
+            <th style="text-align:center;">% logro</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for d in pruebas.detalle_actividades %}
+          <tr>
+            <td>{{ d.actividad.titulo }}</td>
+            <td style="text-align:center;">{{ d.obtenido|floatformat:1 }}</td>
+            <td style="text-align:center;">{{ d.maximo|floatformat:1 }}</td>
+            <td style="text-align:center;">{{ d.porcentaje_logro|floatformat:1 }}%</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <p style="margin-top:12px;font-size:.9rem;">Aporte: <strong>{{ pruebas.aporte|floatformat:1 }}</strong></p>
+      {% else %}
+      <p style="color:var(--muted);">Sin actividades PRUEBAS en este período.</p>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if not tipo or tipo == 'PROYECTO' %}
+  <div class="card">
+    <div class="card-header">PROYECTO – Desglose por actividad</div>
+    <div class="card-body">
+      {% if proyectos.detalle_actividades %}
+      <table>
+        <thead>
+          <tr>
+            <th>Actividad</th>
+            <th style="text-align:center;">Obtenido</th>
+            <th style="text-align:center;">Máximo</th>
+            <th style="text-align:center;">% logro</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for d in proyectos.detalle_actividades %}
+          <tr>
+            <td>{{ d.actividad.titulo }}</td>
+            <td style="text-align:center;">{{ d.obtenido|floatformat:1 }}</td>
+            <td style="text-align:center;">{{ d.maximo|floatformat:1 }}</td>
+            <td style="text-align:center;">{{ d.porcentaje_logro|floatformat:1 }}%</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <p style="margin-top:12px;font-size:.9rem;">Aporte: <strong>{{ proyectos.aporte|floatformat:1 }}</strong></p>
+      {% else %}
+      <p style="color:var(--muted);">Sin actividades PROYECTO en este período.</p>
       {% endif %}
     </div>
   </div>

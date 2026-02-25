@@ -1,10 +1,12 @@
 from datetime import date
 from decimal import Decimal
+import csv
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.db import transaction
 from django.db.models import Count, Prefetch, Q
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
@@ -22,15 +24,24 @@ from .forms import ActividadEvaluacionForm, IndicadorActividadFormSet
 from .models import ActividadEvaluacion, AsistenciaRegistro, AsistenciaSesion
 from .models import PuntajeIndicador
 from .models import ObservacionActividadEstudiante
+from .models import PuntajeSimple
 from .services import (
     actividad_pertenece_a_institucion,
     calcular_resumen_evaluacion_completo,
+    calcular_resumen_componente_estudiante,
     calcular_total_maximo_actividad,
     copiar_actividad_a_asignaciones,
     duplicar_actividad,
     guardar_puntajes_masivo,
+    obtener_porcentaje_componente_esquema,
+    porcentaje_disponible_para_tipo,
     puede_usuario_editar_actividad,
 )
+
+try:
+    import openpyxl
+except Exception:
+    openpyxl = None
 
 # ─── Tabla: % ausencias injustificadas → puntaje base (0-10) ─────────────────
 # Rangos: [min_inclusive, max_exclusive) → puntaje
@@ -48,6 +59,13 @@ _MEP_RANGES = [
     (80, 90, 1),
     (90, 100.01, 0),  # 90% a 100% inclusive
 ]
+
+TIPOS_EVALUACION = (
+    ActividadEvaluacion.TAREA,
+    ActividadEvaluacion.COTIDIANO,
+    ActividadEvaluacion.PRUEBA,
+    ActividadEvaluacion.PROYECTO,
+)
 
 
 def _nota_mep(pct: float) -> int:
@@ -91,6 +109,31 @@ def _get_estudiantes(asignacion):
         .select_related("estudiante")
         .order_by("estudiante__primer_apellido", "estudiante__segundo_apellido", "estudiante__nombres")
     )
+
+
+def _tipos_habilitados_por_esquema(asignacion):
+    """
+    Tipos visibles según componentes del esquema de evaluación snapshot.
+    """
+    if not asignacion.eval_scheme_snapshot_id:
+        return []
+    tipos = []
+    componentes = (
+        EsquemaEvalComponente.objects
+        .filter(esquema=asignacion.eval_scheme_snapshot)
+        .select_related("componente")
+    )
+    for c in componentes:
+        cod = (c.componente.codigo or "").strip().upper()
+        if cod in ("TAR", "TAREAS", "TAREA") and ActividadEvaluacion.TAREA not in tipos:
+            tipos.append(ActividadEvaluacion.TAREA)
+        elif cod in ("COT", "COTIDIANO") and ActividadEvaluacion.COTIDIANO not in tipos:
+            tipos.append(ActividadEvaluacion.COTIDIANO)
+        elif cod in ("PRU", "PRUEBA", "PRUEBAS") and ActividadEvaluacion.PRUEBA not in tipos:
+            tipos.append(ActividadEvaluacion.PRUEBA)
+        elif cod in ("PRO", "PROYECTO", "PROYECTOS") and ActividadEvaluacion.PROYECTO not in tipos:
+            tipos.append(ActividadEvaluacion.PROYECTO)
+    return tipos
 
 
 def _infer_periodo(asignacion, fecha):
@@ -306,6 +349,10 @@ def home_docente(request):
                     tipo_param = "TAREA"
                 elif cod in ("COT", "COTIDIANO"):
                     tipo_param = "COTIDIANO"
+                elif cod in ("PRU", "PRUEBA", "PRUEBAS"):
+                    tipo_param = "PRUEBA"
+                elif cod in ("PRO", "PROYECTO", "PROYECTOS"):
+                    tipo_param = "PROYECTO"
                 else:
                     tipo_param = None
                 componentes.append({
@@ -729,17 +776,19 @@ def actividad_list_view(request, asignacion_id):
         .order_by("periodo__numero")
     )
 
+    available_tipos = _tipos_habilitados_por_esquema(asignacion)
+    if not available_tipos:
+        available_tipos = [ActividadEvaluacion.TAREA, ActividadEvaluacion.COTIDIANO]
+
     periodo_id_raw = request.GET.get("periodo")
     periodo_id = int(periodo_id_raw) if periodo_id_raw and str(periodo_id_raw).isdigit() else None
     tipo = request.GET.get("tipo", "").upper()
     orden = request.GET.get("orden", "fecha")
 
-    # Mantener tareas y cotidianos separados: si no viene tipo, abrir en TAREA.
-    if tipo not in ("TAREA", "COTIDIANO"):
-        tipo = "TAREA"
+    if tipo not in available_tipos:
+        tipo = available_tipos[0]
 
-    # Si viene tipo pero no período, auto-seleccionar primer período.
-    if tipo in ("TAREA", "COTIDIANO") and not periodo_id and periodos_cl:
+    if tipo in available_tipos and not periodo_id and periodos_cl:
         first_pcl = periodos_cl[0]
         return redirect(
             reverse("libro_docente:actividad_list", args=[asignacion_id])
@@ -767,11 +816,17 @@ def actividad_list_view(request, asignacion_id):
     actividades_raw = list(qs)
     actividades = []
     for a in actividades_raw:
-        indicadores_activos = [i for i in a.indicadores.all() if i.activo]
-        total_max = sum(i.escala_max for i in indicadores_activos)
+        es_simple = a.tipo_componente in (ActividadEvaluacion.PRUEBA, ActividadEvaluacion.PROYECTO)
+        if es_simple:
+            total_max = a.puntaje_total or 0
+            total_ind = 1 if total_max else 0
+        else:
+            indicadores_activos = [i for i in a.indicadores.all() if i.activo]
+            total_max = sum(i.escala_max for i in indicadores_activos)
+            total_ind = len(indicadores_activos)
         actividades.append({
             "obj": a,
-            "total_indicadores": len(indicadores_activos),
+            "total_indicadores": total_ind,
             "total_maximo": total_max,
         })
 
@@ -782,6 +837,7 @@ def actividad_list_view(request, asignacion_id):
         "periodo_id": str(periodo_id) if periodo_id else None,
         "tipo": tipo,
         "orden": orden,
+        "available_tipos": available_tipos,
     })
 
 
@@ -804,8 +860,12 @@ def actividad_create_view(request, asignacion_id):
 
     periodo_id = request.GET.get("periodo")
     tipo = request.GET.get("tipo", "").upper()
-    if not periodo_id or tipo not in ("TAREA", "COTIDIANO"):
-        messages.error(request, "Debe indicar periodo y tipo (TAREA o COTIDIANO).")
+    tipos_habilitados = _tipos_habilitados_por_esquema(asignacion)
+    if not periodo_id or tipo not in TIPOS_EVALUACION:
+        messages.error(request, "Debe indicar periodo y tipo válido.")
+        return redirect(reverse("libro_docente:actividad_list", args=[asignacion_id]))
+    if tipo not in tipos_habilitados:
+        messages.error(request, "Ese componente no está habilitado en el esquema de esta asignación.")
         return redirect(reverse("libro_docente:actividad_list", args=[asignacion_id]))
 
     pcl = get_object_or_404(
@@ -819,8 +879,34 @@ def actividad_create_view(request, asignacion_id):
     periodo = pcl.periodo
 
     if request.method == "POST":
-        form = ActividadEvaluacionForm(request.POST)
+        post_data = request.POST.copy()
+        post_data.setdefault("tipo_componente", tipo)
+        form = ActividadEvaluacionForm(post_data)
         if form.is_valid():
+            if tipo in (ActividadEvaluacion.PRUEBA, ActividadEvaluacion.PROYECTO):
+                disponible, pct_esquema, pct_usado = porcentaje_disponible_para_tipo(
+                    asignacion, periodo.id, tipo
+                )
+                pct_nuevo = form.cleaned_data.get("porcentaje_actividad") or Decimal("0")
+                if pct_nuevo > disponible:
+                    if disponible <= 0:
+                        form.add_error("porcentaje_actividad", f"Ya se completó el {pct_esquema}% permitido para {tipo.title()} en este período.")
+                    else:
+                        form.add_error(
+                            "porcentaje_actividad",
+                            f"Máximo disponible: {disponible}% (esquema {pct_esquema}%, usado {pct_usado}%).",
+                        )
+                    return render(request, "libro_docente/actividad_form.html", {
+                        "form": form,
+                        "formset": None,
+                        "asignacion": asignacion,
+                        "periodo": periodo,
+                        "periodo_id": periodo_id,
+                        "tipo": tipo,
+                        "tipo_display": dict(ActividadEvaluacion.TIPO_CHOICES).get(tipo, tipo.title()),
+                        "actividad": None,
+                        "es_simple": True,
+                    })
             with transaction.atomic():
                 obj = form.save(commit=False)
                 obj.docente_asignacion = asignacion
@@ -830,6 +916,9 @@ def actividad_create_view(request, asignacion_id):
                 obj.tipo_componente = tipo
                 obj.created_by = request.user
                 obj.save()
+            if tipo in (ActividadEvaluacion.PRUEBA, ActividadEvaluacion.PROYECTO):
+                messages.success(request, "Actividad creada. Puede calificar ahora.")
+                return redirect(reverse("libro_docente:actividad_calificar", args=[obj.id]))
             messages.success(request, "Actividad creada. Agregue indicadores a continuación.")
             return redirect(reverse("libro_docente:actividad_edit", args=[obj.id]))
     else:
@@ -838,7 +927,7 @@ def actividad_create_view(request, asignacion_id):
             "estado": ActividadEvaluacion.BORRADOR,
         })
 
-    tipo_display = "Tarea" if tipo == "TAREA" else "Cotidiano"
+    tipo_display = dict(ActividadEvaluacion.TIPO_CHOICES).get(tipo, tipo.title())
     return render(request, "libro_docente/actividad_form.html", {
         "form": form,
         "formset": None,
@@ -848,6 +937,7 @@ def actividad_create_view(request, asignacion_id):
         "tipo": tipo,
         "tipo_display": tipo_display,
         "actividad": None,
+        "es_simple": tipo in (ActividadEvaluacion.PRUEBA, ActividadEvaluacion.PROYECTO),
     })
 
 
@@ -875,22 +965,47 @@ def actividad_edit_view(request, actividad_id):
         messages.error(request, "No puedes editar actividades de otra institución.")
         return redirect("libro_docente:home")
 
+    es_simple = actividad.tipo_componente in (ActividadEvaluacion.PRUEBA, ActividadEvaluacion.PROYECTO)
+    formset = None
     if request.method == "POST":
         form = ActividadEvaluacionForm(request.POST, instance=actividad)
-        formset = IndicadorActividadFormSet(request.POST, instance=actividad)
-        if form.is_valid() and formset.is_valid():
-            with transaction.atomic():
-                form.save()
-                formset.save()
-            messages.success(request, "Actividad actualizada.")
-            return redirect(reverse("libro_docente:actividad_edit", args=[actividad_id]))
-        else:
+        if not es_simple:
             formset = IndicadorActividadFormSet(request.POST, instance=actividad)
+        valid = form.is_valid() and (es_simple or (formset and formset.is_valid()))
+        if valid:
+            if es_simple:
+                disponible, pct_esquema, pct_usado = porcentaje_disponible_para_tipo(
+                    actividad.docente_asignacion,
+                    actividad.periodo_id,
+                    actividad.tipo_componente,
+                    actividad_excluir_id=actividad.id,
+                )
+                pct_nuevo = form.cleaned_data.get("porcentaje_actividad") or Decimal("0")
+                if pct_nuevo > disponible:
+                    if disponible <= 0:
+                        form.add_error("porcentaje_actividad", f"Ya se completó el {pct_esquema}% permitido en este período.")
+                    else:
+                        form.add_error(
+                            "porcentaje_actividad",
+                            f"Máximo disponible: {disponible}% (esquema {pct_esquema}%, usado {pct_usado}%).",
+                        )
+                else:
+                    with transaction.atomic():
+                        form.save()
+                    messages.success(request, "Actividad actualizada.")
+                    return redirect(reverse("libro_docente:actividad_edit", args=[actividad_id]))
+            else:
+                with transaction.atomic():
+                    form.save()
+                    formset.save()
+                messages.success(request, "Actividad actualizada.")
+                return redirect(reverse("libro_docente:actividad_edit", args=[actividad_id]))
     else:
         form = ActividadEvaluacionForm(instance=actividad)
-        formset = IndicadorActividadFormSet(instance=actividad)
+        if not es_simple:
+            formset = IndicadorActividadFormSet(instance=actividad)
 
-    total_maximo = calcular_total_maximo_actividad(actividad)
+    total_maximo = (actividad.puntaje_total or 0) if es_simple else calcular_total_maximo_actividad(actividad)
 
     return render(request, "libro_docente/actividad_form.html", {
         "form": form,
@@ -902,6 +1017,7 @@ def actividad_edit_view(request, actividad_id):
         "tipo_display": actividad.get_tipo_componente_display(),
         "actividad": actividad,
         "total_maximo": total_maximo,
+        "es_simple": es_simple,
     })
 
 
@@ -957,6 +1073,20 @@ def actividad_duplicar_view(request, actividad_id):
     if inst_activa and not actividad_pertenece_a_institucion(actividad, inst_activa):
         messages.error(request, "No puedes duplicar actividades de otra institución.")
         return redirect("libro_docente:home")
+
+    if actividad.tipo_componente in (ActividadEvaluacion.PRUEBA, ActividadEvaluacion.PROYECTO):
+        disponible, pct_esquema, pct_usado = porcentaje_disponible_para_tipo(
+            actividad.docente_asignacion,
+            actividad.periodo_id,
+            actividad.tipo_componente,
+        )
+        pct_actividad = actividad.porcentaje_actividad or Decimal("0")
+        if pct_actividad > disponible:
+            messages.error(
+                request,
+                f"No se puede duplicar: disponible {disponible}% (esquema {pct_esquema}%, usado {pct_usado}%).",
+            )
+            return redirect(reverse("libro_docente:actividad_list", args=[actividad.docente_asignacion_id]))
 
     nueva = duplicar_actividad(actividad)
     nueva.created_by = request.user
@@ -1050,6 +1180,7 @@ def actividad_copiar_a_grupos_view(request, actividad_id):
         "actividad": actividad,
         "asignacion": actividad.docente_asignacion,
         "asignaciones_destino": asignaciones_destino,
+        "es_simple": actividad.tipo_componente in (ActividadEvaluacion.PRUEBA, ActividadEvaluacion.PROYECTO),
     })
 
 
@@ -1061,7 +1192,7 @@ def actividad_calificar_view(request, actividad_id):
     GET: muestra grilla con puntajes existentes.
     POST: guardado masivo de puntajes.
     """
-    from decimal import Decimal, InvalidOperation
+    from decimal import Decimal
 
     actividad = get_object_or_404(
         ActividadEvaluacion.objects.select_related(
@@ -1081,8 +1212,11 @@ def actividad_calificar_view(request, actividad_id):
         return redirect("libro_docente:home")
 
     asignacion = actividad.docente_asignacion
-    indicadores = list(actividad.indicadores.filter(activo=True).order_by("orden", "id"))
     matriculas = _get_estudiantes(asignacion)
+    es_simple = actividad.tipo_componente in (ActividadEvaluacion.PRUEBA, ActividadEvaluacion.PROYECTO)
+    if es_simple:
+        return _calificar_simple(request, actividad, asignacion, matriculas)
+    indicadores = list(actividad.indicadores.filter(activo=True).order_by("orden", "id"))
     total_maximo = calcular_total_maximo_actividad(actividad)
 
     # Cargar puntajes existentes
@@ -1188,6 +1322,92 @@ def actividad_calificar_view(request, actividad_id):
     })
 
 
+def _calificar_simple(request, actividad, asignacion, matriculas):
+    puntaje_total = actividad.puntaje_total or Decimal("0")
+    porcentaje_actividad = actividad.porcentaje_actividad or Decimal("0")
+    if puntaje_total <= 0:
+        messages.error(request, "Defina un valor en puntos válido antes de calificar.")
+        return redirect(reverse("libro_docente:actividad_edit", args=[actividad.id]))
+
+    est_ids = [m.estudiante_id for m in matriculas]
+    puntajes_existentes = {
+        p.estudiante_id: p.puntos_obtenidos
+        for p in PuntajeSimple.objects.filter(actividad=actividad, estudiante_id__in=est_ids)
+    }
+
+    if request.method == "POST":
+        errores = []
+        cambios = []
+        with transaction.atomic():
+            for m in matriculas:
+                key = f"ps_{m.estudiante_id}"
+                raw = (request.POST.get(key, "") or "").strip()
+                if raw == "":
+                    cambios.append(("delete", m.estudiante_id, None))
+                    continue
+                try:
+                    puntos = Decimal(raw.replace(",", "."))
+                except Exception:
+                    errores.append(f"{m.estudiante}: valor inválido.")
+                    continue
+                if puntos < 0 or puntos > puntaje_total or puntos != puntos.to_integral_value():
+                    errores.append(
+                        f"{m.estudiante}: puntaje fuera de rango (0 a {int(puntaje_total)})."
+                    )
+                    continue
+                cambios.append(("upsert", m.estudiante_id, puntos))
+            if errores:
+                transaction.set_rollback(True)
+            else:
+                for op, est_id, pts in cambios:
+                    if op == "delete":
+                        PuntajeSimple.objects.filter(actividad=actividad, estudiante_id=est_id).delete()
+                    else:
+                        PuntajeSimple.objects.update_or_create(
+                            actividad=actividad,
+                            estudiante_id=est_id,
+                            defaults={"puntos_obtenidos": pts},
+                        )
+        if errores:
+            for e in errores[:5]:
+                messages.error(request, e)
+            if len(errores) > 5:
+                messages.error(request, f"Se detectaron {len(errores)} errores de validación.")
+            return redirect(reverse("libro_docente:actividad_calificar", args=[actividad.id]))
+        messages.success(request, "Puntajes guardados.")
+        return redirect(reverse("libro_docente:actividad_calificar", args=[actividad.id]))
+
+    filas = []
+    for m in matriculas:
+        est = m.estudiante
+        puntos = puntajes_existentes.get(est.id)
+        nota = (puntos / puntaje_total * Decimal("100")) if (puntos is not None and puntaje_total > 0) else None
+        porcentaje = (puntos / puntaje_total * porcentaje_actividad) if (puntos is not None and puntaje_total > 0) else None
+        filas.append({
+            "matricula": m,
+            "estudiante": est,
+            "puntos": puntos,
+            "nota": nota,
+            "porcentaje": porcentaje,
+        })
+
+    filas.sort(
+        key=lambda f: (
+            (f["estudiante"].primer_apellido or "").upper(),
+            (f["estudiante"].segundo_apellido or "").upper(),
+            (f["estudiante"].nombres or "").upper(),
+        )
+    )
+    return render(request, "libro_docente/calificacion_simple.html", {
+        "actividad": actividad,
+        "asignacion": asignacion,
+        "filas": filas,
+        "puntaje_total": puntaje_total,
+        "porcentaje_actividad": porcentaje_actividad,
+        "total_estudiantes": len(filas),
+    })
+
+
 @login_required
 @permission_required("libro_docente.access_libro_docente", raise_exception=True)
 def resumen_evaluacion_view(request, asignacion_id):
@@ -1216,15 +1436,18 @@ def resumen_evaluacion_view(request, asignacion_id):
     periodo_id_raw = request.GET.get("periodo")
     periodo_id = int(periodo_id_raw) if periodo_id_raw and str(periodo_id_raw).isdigit() else None
     tipo = request.GET.get("tipo", "").upper()
-    if tipo not in ("TAREA", "COTIDIANO"):
+    if tipo not in TIPOS_EVALUACION:
         tipo = None
     if not periodo_id and periodos_cl:
         periodo_id = periodos_cl[0].periodo_id
 
     matriculas = _get_estudiantes(asignacion)
     filas = []
+    filas_general = []
+    has_proyecto = ActividadEvaluacion.PROYECTO in _tipos_habilitados_por_esquema(asignacion)
     if periodo_id:
         filas = calcular_resumen_evaluacion_completo(asignacion, periodo_id, matriculas)
+        filas_general = _construir_resumen_general(asignacion, periodo_id, matriculas, filas)
 
     return render(request, "libro_docente/resumen_evaluacion.html", {
         "asignacion": asignacion,
@@ -1232,7 +1455,125 @@ def resumen_evaluacion_view(request, asignacion_id):
         "periodo_id": str(periodo_id) if periodo_id else None,
         "tipo": tipo,
         "filas": filas,
+        "filas_general": filas_general,
+        "has_proyecto": has_proyecto,
     })
+
+
+def _construir_resumen_general(asignacion, periodo_id, matriculas, filas_eval):
+    """
+    Resumen final por estudiante para exportación.
+    """
+    periodo_sel = (
+        PeriodoCursoLectivo.objects
+        .filter(
+            institucion_id=asignacion.subarea_curso.institucion_id,
+            curso_lectivo=asignacion.curso_lectivo,
+            periodo_id=periodo_id,
+            activo=True,
+        )
+        .select_related("periodo")
+        .first()
+    )
+    asist_por_est = {}
+    if periodo_sel:
+        resumen_asis = _calcular_resumen(asignacion, periodo_sel.periodo, matriculas)
+        asist_por_est = {r["estudiante"].id: r["aporte_real"] for r in resumen_asis.get("estudiantes", [])}
+
+    filas_por_est = {f["estudiante"].id: f for f in filas_eval}
+    rows = []
+    for m in matriculas:
+        est = m.estudiante
+        fe = filas_por_est.get(est.id, {})
+        rows.append({
+            "id": est.identificacion,
+            "nombre": f"{est.primer_apellido} {est.segundo_apellido or ''} {est.nombres}".strip(),
+            "cotidiano": (fe.get("cotidianos", {}) or {}).get("aporte", Decimal("0")),
+            "tareas": (fe.get("tareas", {}) or {}).get("aporte", Decimal("0")),
+            "pruebas": (fe.get("pruebas", {}) or {}).get("aporte", Decimal("0")),
+            "proyecto": (fe.get("proyectos", {}) or {}).get("aporte", Decimal("0")),
+            "asistencia": asist_por_est.get(est.id, Decimal("0")),
+        })
+    return rows
+
+
+@login_required
+@permission_required("libro_docente.access_libro_docente", raise_exception=True)
+def resumen_general_export_xlsx(request, asignacion_id):
+    asignacion = _obtener_asignacion_con_permiso(request, asignacion_id)
+    if asignacion is None:
+        messages.error(request, "No tienes acceso.")
+        return redirect("libro_docente:home")
+    if openpyxl is None:
+        messages.error(request, "openpyxl no está disponible en el servidor.")
+        return redirect(reverse("libro_docente:resumen_evaluacion", args=[asignacion_id]))
+
+    periodo_id_raw = request.GET.get("periodo")
+    periodo_id = int(periodo_id_raw) if periodo_id_raw and str(periodo_id_raw).isdigit() else None
+    if not periodo_id:
+        messages.error(request, "Debe seleccionar período para exportar.")
+        return redirect(reverse("libro_docente:resumen_evaluacion", args=[asignacion_id]))
+
+    matriculas = _get_estudiantes(asignacion)
+    filas = calcular_resumen_evaluacion_completo(asignacion, periodo_id, matriculas)
+    filas_general = _construir_resumen_general(asignacion, periodo_id, matriculas, filas)
+    has_proyecto = ActividadEvaluacion.PROYECTO in _tipos_habilitados_por_esquema(asignacion)
+
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Resumen General"
+    headers = ["id", "Nombre", "Trabajo cotidiano", "Tareas", "Pruebas"]
+    if has_proyecto:
+        headers.append("Proyecto")
+    headers.append("Asistencia")
+    ws.append(headers)
+    for r in filas_general:
+        row = [r["id"], r["nombre"], float(r["cotidiano"]), float(r["tareas"]), float(r["pruebas"])]
+        if has_proyecto:
+            row.append(float(r["proyecto"]))
+        row.append(float(r["asistencia"]))
+        ws.append(row)
+
+    resp = HttpResponse(content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    resp["Content-Disposition"] = f'attachment; filename="resumen_general_{asignacion_id}_{periodo_id}.xlsx"'
+    wb.save(resp)
+    return resp
+
+
+@login_required
+@permission_required("libro_docente.access_libro_docente", raise_exception=True)
+def resumen_general_export_csv(request, asignacion_id):
+    asignacion = _obtener_asignacion_con_permiso(request, asignacion_id)
+    if asignacion is None:
+        messages.error(request, "No tienes acceso.")
+        return redirect("libro_docente:home")
+
+    periodo_id_raw = request.GET.get("periodo")
+    periodo_id = int(periodo_id_raw) if periodo_id_raw and str(periodo_id_raw).isdigit() else None
+    if not periodo_id:
+        messages.error(request, "Debe seleccionar período para exportar.")
+        return redirect(reverse("libro_docente:resumen_evaluacion", args=[asignacion_id]))
+
+    matriculas = _get_estudiantes(asignacion)
+    filas = calcular_resumen_evaluacion_completo(asignacion, periodo_id, matriculas)
+    filas_general = _construir_resumen_general(asignacion, periodo_id, matriculas, filas)
+    has_proyecto = ActividadEvaluacion.PROYECTO in _tipos_habilitados_por_esquema(asignacion)
+
+    resp = HttpResponse(content_type="text/csv; charset=utf-8")
+    resp["Content-Disposition"] = f'attachment; filename="resumen_general_{asignacion_id}_{periodo_id}.csv"'
+    writer = csv.writer(resp)
+    headers = ["id", "Nombre", "Trabajo cotidiano", "Tareas", "Pruebas"]
+    if has_proyecto:
+        headers.append("Proyecto")
+    headers.append("Asistencia")
+    writer.writerow(headers)
+    for r in filas_general:
+        row = [r["id"], r["nombre"], r["cotidiano"], r["tareas"], r["pruebas"]]
+        if has_proyecto:
+            row.append(r["proyecto"])
+        row.append(r["asistencia"])
+        writer.writerow(row)
+    return resp
 
 
 @login_required
@@ -1255,7 +1596,7 @@ def resumen_estudiante_detalle_view(request, asignacion_id, estudiante_id):
     periodo_id_raw = request.GET.get("periodo")
     periodo_id = int(periodo_id_raw) if periodo_id_raw and str(periodo_id_raw).isdigit() else None
     tipo = request.GET.get("tipo", "").upper()
-    if tipo not in ("TAREA", "COTIDIANO"):
+    if tipo not in TIPOS_EVALUACION:
         tipo = None
     inst_id = asignacion.subarea_curso.institucion_id
     periodos_cl = list(
@@ -1292,6 +1633,20 @@ def resumen_estudiante_detalle_view(request, asignacion_id, estudiante_id):
         if periodo_id
         else _empty_resumen
     )
+    pruebas = (
+        calcular_resumen_componente_estudiante(
+            asignacion, periodo_id, ActividadEvaluacion.PRUEBA, estudiante_id
+        )
+        if periodo_id
+        else _empty_resumen
+    )
+    proyectos = (
+        calcular_resumen_componente_estudiante(
+            asignacion, periodo_id, ActividadEvaluacion.PROYECTO, estudiante_id
+        )
+        if periodo_id
+        else _empty_resumen
+    )
 
     return render(request, "libro_docente/resumen_estudiante_detalle.html", {
         "asignacion": asignacion,
@@ -1301,4 +1656,6 @@ def resumen_estudiante_detalle_view(request, asignacion_id, estudiante_id):
         "tipo": tipo,
         "tareas": tareas,
         "cotidianos": cotidianos,
+        "pruebas": pruebas,
+        "proyectos": proyectos,
     })

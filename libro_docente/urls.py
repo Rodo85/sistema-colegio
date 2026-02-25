@@ -12,6 +12,8 @@ from .views import (
     detalle_estudiante_view,
     home_docente,
     resumen_estudiante_detalle_view,
+    resumen_general_export_csv,
+    resumen_general_export_xlsx,
     resumen_evaluacion_view,
     resumen_view,
 )
@@ -36,6 +38,8 @@ urlpatterns = [
     path("actividad/<int:actividad_id>/copiar-a-grupos/", actividad_copiar_a_grupos_view, name="actividad_copiar_a_grupos"),
     path("actividad/<int:actividad_id>/calificar/", actividad_calificar_view, name="actividad_calificar"),
     path("asignacion/<int:asignacion_id>/resumen-evaluacion/", resumen_evaluacion_view, name="resumen_evaluacion"),
+    path("asignacion/<int:asignacion_id>/resumen-evaluacion/export/xlsx/", resumen_general_export_xlsx, name="resumen_general_export_xlsx"),
+    path("asignacion/<int:asignacion_id>/resumen-evaluacion/export/csv/", resumen_general_export_csv, name="resumen_general_export_csv"),
     path(
         "asignacion/<int:asignacion_id>/resumen-evaluacion/estudiante/<int:estudiante_id>/",
         resumen_estudiante_detalle_view,
