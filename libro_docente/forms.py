@@ -69,6 +69,16 @@ class IndicadorActividadForm(forms.ModelForm):
             "activo": forms.CheckboxInput(attrs={"class": "form-check-input"}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        min_permitido = 0
+        if self.instance and self.instance.actividad_id:
+            if self.instance.actividad.tipo_componente == ActividadEvaluacion.COTIDIANO:
+                min_permitido = 1
+        self.fields["escala_min"].widget.attrs["min"] = str(min_permitido)
+        if not self.instance.pk and min_permitido == 1 and self.initial.get("escala_min") in (None, "", 0, "0"):
+            self.initial["escala_min"] = 1
+
     def clean(self):
         data = super().clean()
         emin = data.get("escala_min")

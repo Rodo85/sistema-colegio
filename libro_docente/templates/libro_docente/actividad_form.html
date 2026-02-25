@@ -115,6 +115,17 @@ input.form-control,select.form-control,textarea.form-control{width:100%;}
             {% endfor %}
           </tbody>
         </table>
+        <template id="empty-indicador-template">
+          <tr class="indicador-row" data-form-index="__prefix__">
+            {% for field in formset.empty_form.hidden_fields %}{{ field }}{% endfor %}
+            <td class="ind-orden">{{ formset.empty_form.orden }}</td>
+            <td class="ind-descripcion">{{ formset.empty_form.descripcion }}</td>
+            <td class="escala-min-cell">{{ formset.empty_form.escala_min }}</td>
+            <td class="escala-max-cell">{{ formset.empty_form.escala_max }}</td>
+            <td class="ind-activo">{{ formset.empty_form.activo }}</td>
+            <td>{{ formset.empty_form.DELETE }}</td>
+          </tr>
+        </template>
         <button type="submit" class="btn btn-primary">Guardar actividad e indicadores</button>
     </div>
   </div>
@@ -167,17 +178,17 @@ input.form-control,select.form-control,textarea.form-control{width:100%;}
   function agregarIndicador() {
     var container = document.getElementById('indicadores-container');
     if (!container) return;
-    var rows = container.querySelectorAll('tr.indicador-row');
-    var lastRow = rows[rows.length - 1];
-    if (!lastRow) return;
     var nextIdx = getTotalForms();
-    var clone = lastRow.cloneNode(true);
-    clone.classList.remove('has-error');
-    clone.setAttribute('data-form-index', nextIdx);
+    var tpl = document.getElementById('empty-indicador-template');
+    if (!tpl) return;
+    var html = tpl.innerHTML.replace(/__prefix__/g, String(nextIdx));
+    var frag = document.createElement('tbody');
+    frag.innerHTML = html.trim();
+    var clone = frag.querySelector('tr.indicador-row');
+    if (!clone) return;
+    clone.setAttribute('data-form-index', String(nextIdx));
     clone.querySelectorAll('input, textarea, select').forEach(function(inp) {
       if (!inp.name) return;
-      inp.name = inp.name.replace(/-(\d+)-/, '-' + nextIdx + '-');
-      if (inp.id) inp.id = inp.id.replace(/-(\d+)-/, '-' + nextIdx + '-');
       if (inp.type === 'hidden' && inp.name.indexOf('-id') !== -1) {
         inp.value = '';
       } else if (inp.type === 'checkbox' && inp.name.indexOf('DELETE') !== -1) {
@@ -194,7 +205,6 @@ input.form-control,select.form-control,textarea.form-control{width:100%;}
         inp.value = '';
       }
     });
-    clone.querySelectorAll('.errorlist').forEach(function(el) { el.remove(); });
     container.appendChild(clone);
     setTotalForms(nextIdx + 1);
     normalizeIntegerInputs(clone);

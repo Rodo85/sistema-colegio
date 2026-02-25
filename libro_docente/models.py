@@ -373,6 +373,54 @@ class PuntajeSimple(models.Model):
         super().clean()
 
 
+class EstudianteOcultoAsignacion(models.Model):
+    """
+    Oculta estudiantes solo para una asignación docente específica
+    (docente+materia+grupo), sin alterar matrícula oficial.
+    """
+    docente_asignacion = models.ForeignKey(
+        "evaluaciones.DocenteAsignacion",
+        on_delete=models.CASCADE,
+        related_name="estudiantes_ocultos",
+        verbose_name="Asignación docente",
+    )
+    estudiante = models.ForeignKey(
+        "matricula.Estudiante",
+        on_delete=models.PROTECT,
+        related_name="ocultamientos_libro_docente",
+        verbose_name="Estudiante",
+    )
+    created_by = models.ForeignKey(
+        "core.User",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="ocultamientos_estudiantes_libro_docente",
+        verbose_name="Creado por",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "libro_docente_estudiante_oculto"
+        verbose_name = "Estudiante oculto por asignación"
+        verbose_name_plural = "Estudiantes ocultos por asignación"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["docente_asignacion", "estudiante"],
+                name="uniq_libro_doc_est_oculto",
+            ),
+        ]
+        indexes = [
+            models.Index(
+                fields=["docente_asignacion", "estudiante"],
+                name="libro_doc_est_oc_idx",
+            ),
+        ]
+
+    def __str__(self):
+        return f"{self.docente_asignacion_id} - {self.estudiante_id}"
+
+
 class AsistenciaSesion(models.Model):
     """
     Representa una pasada de lista (sesión) de un docente para una asignación,

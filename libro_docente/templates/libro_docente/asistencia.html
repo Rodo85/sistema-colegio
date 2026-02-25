@@ -63,6 +63,7 @@ tbody tr:hover{background:#f8faff;}
 tbody td{padding:8px 12px;vertical-align:middle;}
 .student-name{font-weight:600;color:var(--text);}
 .student-id{font-size:.78rem;color:var(--muted);}
+.student-actions{margin-top:5px;}
 
 /* Radio toggle P / T / AI / AJ */
 .estado-group{display:flex;gap:4px;}
@@ -229,6 +230,9 @@ tbody td{padding:8px 12px;vertical-align:middle;}
                 <td>
                   <div class="student-name">{{ est.nombre }}</div>
                   <div class="student-id">{{ est.identificacion }}</div>
+                  <div class="student-actions">
+                    <button type="submit" class="btn btn-outline btn-sm" name="accion" value="ocultar_{{ est.id }}" title="Ocultar solo para esta clase">Ocultar</button>
+                  </div>
                 </td>
                 <td>
                   <div class="estado-group" id="grupo-{{ est.id }}">
@@ -258,6 +262,42 @@ tbody td{padding:8px 12px;vertical-align:middle;}
         {% endif %}
       </div>
     </div>
+
+    {% if ocultos %}
+    <div class="card">
+      <div class="card-header">
+        <i class="fas fa-user-slash" style="color:var(--warning)"></i>
+        <h3>Estudiantes ocultos en esta clase <span style="font-weight:400;color:var(--muted);">({{ ocultos|length }})</span></h3>
+      </div>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table class="student-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Estudiante</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for m in ocultos %}
+              <tr>
+                <td style="color:var(--muted);font-size:.8rem;">{{ forloop.counter }}</td>
+                <td>
+                  <div class="student-name">{{ m.estudiante }}</div>
+                  <div class="student-id">{{ m.estudiante.identificacion }}</div>
+                </td>
+                <td>
+                  <button type="submit" class="btn btn-warning btn-sm" name="accion" value="mostrar_{{ m.estudiante_id }}">Mostrar en clase</button>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    {% endif %}
 
     <!-- Barra de guardado -->
     {% if estudiantes %}
