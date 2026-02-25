@@ -123,7 +123,7 @@ tbody td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:m
               <td>
                 <div class="actions-cell">
                   <a href="{% url 'libro_docente:actividad_edit' a.id %}" class="btn btn-primary btn-sm" title="Editar">Editar</a>
-                  <a href="{% url 'libro_docente:actividad_duplicar' a.id %}" class="btn btn-warning btn-sm" title="Copiar en este grupo">Copiar</a>
+                  <a href="{% url 'libro_docente:actividad_duplicar' a.id %}" class="btn btn-warning btn-sm" title="Duplicar en este grupo">Duplicar</a>
                   <a href="{% url 'libro_docente:actividad_copiar_a_grupos' a.id %}" class="btn btn-outline btn-sm" title="Copiar a otros grupos">A otros grupos</a>
                   <a href="{% url 'libro_docente:actividad_calificar' a.id %}" class="btn btn-outline btn-sm" title="Calificar">Calificar</a>
                   <a href="{% url 'libro_docente:actividad_delete' a.id %}" class="btn btn-danger btn-sm" title="Eliminar">Eliminar</a>

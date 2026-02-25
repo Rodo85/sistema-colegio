@@ -214,8 +214,8 @@ ACTIVIDADES_ACUMULADO_ESTADOS = (ActividadEvaluacion.ACTIVA, ActividadEvaluacion
 
 # Mapeo tipo ActividadEvaluacion -> códigos ComponenteEval para buscar % en esquema
 TIPO_TO_CODIGO_ESQUEMA = {
-    ActividadEvaluacion.TAREA: ["TAREAS", "TAREA"],
-    ActividadEvaluacion.COTIDIANO: ["COTIDIANO"],
+    ActividadEvaluacion.TAREA: ["TAREAS", "TAREA", "TAR"],
+    ActividadEvaluacion.COTIDIANO: ["COTIDIANO", "COT"],
 }
 
 
@@ -230,12 +230,14 @@ def obtener_porcentaje_componente_esquema(asignacion, tipo_componente):
     if not asignacion or not asignacion.eval_scheme_snapshot_id:
         return Decimal("0")
     codigos = TIPO_TO_CODIGO_ESQUEMA.get(tipo_componente, [tipo_componente])
+    tipo_nombre = "tarea" if tipo_componente == ActividadEvaluacion.TAREA else "cotid"
     comp = (
         EsquemaEvalComponente.objects
         .filter(esquema=asignacion.eval_scheme_snapshot)
         .filter(
             Q(componente__codigo__in=codigos) |
-            Q(componente__codigo__iexact=tipo_componente)
+            Q(componente__codigo__iexact=tipo_componente) |
+            Q(componente__nombre__icontains=tipo_nombre)
         )
         .select_related("componente")
         .first()

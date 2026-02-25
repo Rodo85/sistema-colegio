@@ -51,6 +51,8 @@
 .errores-puntaje ul{margin:0;padding-left:18px;font-size:.82rem;max-height:140px;overflow:auto;}
 .errores-puntaje li{cursor:pointer;margin-bottom:4px;}
 .errores-puntaje li:hover{text-decoration:underline;}
+.fila-estudiante.fila-con-error td{background:#fff1f2 !important;}
+.fila-estudiante.fila-con-error .student-col{background:#ffe4e6 !important;border-left:3px solid var(--danger);}
 </style>
 {% endblock %}
 
@@ -154,7 +156,12 @@
 
 <script>
 (function() {
-  var totalMax = {{ total_maximo|default:0 }};
+  var totalMax = parseFloat(String("{{ total_maximo|default:0 }}").replace(',', '.')) || 0;
+
+  function parseAttrNumber(raw, fallback) {
+    var n = parseFloat(String(raw || '').replace(',', '.'));
+    return isNaN(n) ? fallback : n;
+  }
 
   function parseVal(v) {
     if (v === null || v === undefined || v === '') return null;
@@ -168,10 +175,11 @@
   function updateRow(row) {
     var inputs = row.querySelectorAll('.puntaje-input');
     var total = 0;
+    var rowHasError = false;
     for (var i = 0; i < inputs.length; i++) {
       var inp = inputs[i];
-      var min = parseFloat(inp.getAttribute('data-min')) || 0;
-      var max = parseFloat(inp.getAttribute('data-max')) || 5;
+      var min = parseAttrNumber(inp.getAttribute('data-min'), 0);
+      var max = parseAttrNumber(inp.getAttribute('data-max'), 5);
       var val = parseVal(inp.value);
       inp.classList.remove('error');
       inp.removeAttribute('data-error-msg');
@@ -179,14 +187,17 @@
         if (val < min || val > max) {
           inp.classList.add('error');
           inp.setAttribute('data-error-msg', 'Valor fuera de rango [' + min + '-' + max + ']');
+          rowHasError = true;
         } else {
           total += val;
         }
       } else if (String(inp.value || '').trim() !== '') {
         inp.classList.add('error');
         inp.setAttribute('data-error-msg', 'Solo se permiten números enteros (0,1,2...)');
+        rowHasError = true;
       }
     }
+    row.classList.toggle('fila-con-error', rowHasError);
     var obtCell = row.querySelector('.total-obt-cell');
     var pctCell = row.querySelector('.pct-cell-val');
     if (obtCell) obtCell.textContent = Number(total).toFixed(0);
@@ -247,8 +258,8 @@
     // Puntajes rápidos: rellenar columna
     document.querySelectorAll('.ind-header.quick-fill').forEach(function(th) {
       var indId = th.getAttribute('data-ind-id');
-      var min = parseFloat(th.getAttribute('data-min')) || 0;
-      var max = parseFloat(th.getAttribute('data-max')) || 5;
+      var min = parseAttrNumber(th.getAttribute('data-min'), 0);
+      var max = parseAttrNumber(th.getAttribute('data-max'), 5);
       var popover = th.querySelector('.quick-fill-popover');
       var input = th.querySelector('.qf-input');
       var btnAll = th.querySelector('.qf-btn-all');
@@ -315,6 +326,10 @@
       input.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') { e.preventDefault(); if (btnAll) btnAll.click(); }
       });
+      [input, btnAll, btnVacios, btnLimpiar, btnCopiar].forEach(function(el) {
+        if (!el) return;
+        el.addEventListener('click', function(e) { e.stopPropagation(); });
+      });
     });
 
     document.addEventListener('click', function(e) {
@@ -329,7 +344,8 @@
     if (maxBtn) {
       maxBtn.addEventListener('click', function() {
         document.querySelectorAll('.puntaje-input').forEach(function(inp) {
-          inp.value = String(parseInt(inp.getAttribute('data-max') || '0', 10));
+          var maxVal = parseAttrNumber(inp.getAttribute('data-max'), 0);
+          inp.value = String(Math.trunc(maxVal));
           var row = inp.closest('.fila-estudiante');
           if (row) updateRow(row);
         });
