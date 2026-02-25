@@ -38,7 +38,11 @@ class ActividadEvaluacionForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        tipo = self.initial.get("tipo_componente") or getattr(self.instance, "tipo_componente", None)
+        tipo = (
+            self.data.get("tipo_componente")
+            or self.initial.get("tipo_componente")
+            or getattr(self.instance, "tipo_componente", None)
+        )
         if tipo in (ActividadEvaluacion.TAREA, ActividadEvaluacion.COTIDIANO):
             self.fields["alcance_estudiantes"].choices = ActividadEvaluacion.ALCANCE_CHOICES
         else:

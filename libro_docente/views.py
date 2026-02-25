@@ -1096,8 +1096,8 @@ def actividad_edit_view(request, actividad_id):
     formset = None
     if request.method == "POST":
         post_data = request.POST.copy()
+        post_data.setdefault("tipo_componente", actividad.tipo_componente)
         if es_simple:
-            post_data.setdefault("tipo_componente", actividad.tipo_componente)
             post_data.setdefault("estado", actividad.estado or ActividadEvaluacion.BORRADOR)
             post_data.setdefault("descripcion", actividad.descripcion or "")
             post_data.setdefault("alcance_estudiantes", actividad.alcance_estudiantes or ActividadEvaluacion.ALCANCE_TODOS)
