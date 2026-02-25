@@ -95,6 +95,10 @@ def validar_puntaje_en_rango(indicador, valor):
     if valor is None:
         return
     ind = indicador
+    if valor < 0:
+        raise ValueError("El puntaje debe ser >= 0.")
+    if valor != valor.to_integral_value():
+        raise ValueError("El puntaje debe ser un número entero (sin decimales).")
     if ind.escala_min is not None and valor < ind.escala_min:
         raise ValueError(f"El puntaje {valor} debe ser >= {ind.escala_min}.")
     if ind.escala_max is not None and valor > ind.escala_max:

@@ -733,7 +733,11 @@ def actividad_list_view(request, asignacion_id):
     tipo = request.GET.get("tipo", "").upper()
     orden = request.GET.get("orden", "fecha")
 
-    # Si viene tipo desde chip (COT/TAR) pero no período, auto-seleccionar primer período
+    # Mantener tareas y cotidianos separados: si no viene tipo, abrir en TAREA.
+    if tipo not in ("TAREA", "COTIDIANO"):
+        tipo = "TAREA"
+
+    # Si viene tipo pero no período, auto-seleccionar primer período.
     if tipo in ("TAREA", "COTIDIANO") and not periodo_id and periodos_cl:
         first_pcl = periodos_cl[0]
         return redirect(
@@ -748,8 +752,7 @@ def actividad_list_view(request, asignacion_id):
 
     if periodo_id:
         qs = qs.filter(periodo_id=periodo_id)
-    if tipo in ("TAREA", "COTIDIANO"):
-        qs = qs.filter(tipo_componente=tipo)
+    qs = qs.filter(tipo_componente=tipo)
 
     if orden == "titulo":
         qs = qs.order_by("titulo")

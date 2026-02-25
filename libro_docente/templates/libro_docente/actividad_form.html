@@ -70,6 +70,9 @@ input.form-control,select.form-control,textarea.form-control{width:100%;}
     </div>
     <div class="card-body">
         {{ formset.management_form }}
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <button type="button" id="btn-agregar-indicador" class="btn add-ind btn-sm">+ Agregar indicador</button>
+        </div>
         <table class="ind-table">
           <thead>
             <tr>
@@ -95,7 +98,6 @@ input.form-control,select.form-control,textarea.form-control{width:100%;}
               <td class="ind-activo">{{ form.activo }}</td>
               <td>
                 {{ form.DELETE }}
-                <button type="button" class="btn-duplicar-ind" title="Duplicar indicador" style="margin-left:4px;padding:2px 6px;font-size:.7rem;">Dup</button>
               </td>
             </tr>
             {% endfor %}
@@ -110,6 +112,24 @@ input.form-control,select.form-control,textarea.form-control{width:100%;}
 
 <script>
 (function() {
+  function getTotalForms() {
+    var inp = document.getElementById('id_indicadoractividad_set-TOTAL_FORMS');
+    return inp ? parseInt(inp.value, 10) : 0;
+  }
+
+  function setTotalForms(n) {
+    var inp = document.getElementById('id_indicadoractividad_set-TOTAL_FORMS');
+    if (inp) inp.value = n;
+  }
+
+  function normalizeIntegerInputs(scope) {
+    (scope || document).querySelectorAll('.escala-min-cell input, .escala-max-cell input, .ind-orden input').forEach(function(inp) {
+      inp.setAttribute('step', '1');
+      inp.setAttribute('min', '0');
+      inp.setAttribute('inputmode', 'numeric');
+    });
+  }
+
   function updateTotalMaximo() {
     var total = 0;
     document.querySelectorAll('#indicadores-container tr.indicador-row').forEach(function(row) {
@@ -124,9 +144,57 @@ input.form-control,select.form-control,textarea.form-control{width:100%;}
     var el = document.getElementById('total-maximo-display');
     if (el) el.textContent = 'Total máximo: ' + total;
   }
+
+  function agregarIndicador() {
+    var container = document.getElementById('indicadores-container');
+    if (!container) return;
+    var rows = container.querySelectorAll('tr.indicador-row');
+    var lastRow = rows[rows.length - 1];
+    if (!lastRow) return;
+    var nextIdx = getTotalForms();
+    var clone = lastRow.cloneNode(true);
+    clone.classList.remove('has-error');
+    clone.setAttribute('data-form-index', nextIdx);
+    clone.querySelectorAll('input, textarea, select').forEach(function(inp) {
+      if (!inp.name) return;
+      inp.name = inp.name.replace(/-(\d+)-/, '-' + nextIdx + '-');
+      if (inp.id) inp.id = inp.id.replace(/-(\d+)-/, '-' + nextIdx + '-');
+      if (inp.type === 'hidden' && inp.name.indexOf('-id') !== -1) {
+        inp.value = '';
+      } else if (inp.type === 'checkbox' && inp.name.indexOf('DELETE') !== -1) {
+        inp.checked = false;
+      } else if (inp.name.indexOf('orden') !== -1) {
+        inp.value = String(nextIdx + 1);
+      } else if (inp.name.indexOf('escala_min') !== -1) {
+        inp.value = '0';
+      } else if (inp.name.indexOf('escala_max') !== -1) {
+        inp.value = '5';
+      } else if (inp.name.indexOf('activo') !== -1 && inp.type === 'checkbox') {
+        inp.checked = true;
+      } else if (inp.type !== 'checkbox' && inp.type !== 'hidden') {
+        inp.value = '';
+      }
+    });
+    clone.querySelectorAll('.errorlist').forEach(function(el) { el.remove(); });
+    container.appendChild(clone);
+    setTotalForms(nextIdx + 1);
+    normalizeIntegerInputs(clone);
+    updateTotalMaximo();
+    var descInp = clone.querySelector('.ind-descripcion textarea, .ind-descripcion input');
+    if (descInp) descInp.focus();
+  }
+
   document.addEventListener('DOMContentLoaded', function() {
     var container = document.getElementById('indicadores-container');
+    var addBtn = document.getElementById('btn-agregar-indicador');
+    normalizeIntegerInputs(document);
     if (container) {
+      if (addBtn) {
+        addBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          agregarIndicador();
+        });
+      }
       container.addEventListener('input', updateTotalMaximo);
       container.addEventListener('change', updateTotalMaximo);
       updateTotalMaximo();
@@ -144,37 +212,6 @@ input.form-control,select.form-control,textarea.form-control{width:100%;}
             if (!isNaN(min) && !isNaN(max) && max < min) row.classList.add('has-error');
           }
         }
-      });
-      container.querySelectorAll('.btn-duplicar-ind').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-          var row = this.closest('tr');
-          var delCheck = row.querySelector('input[name*="DELETE"]');
-          if (delCheck && delCheck.checked) return;
-          var desc = row.querySelector('.ind-descripcion input');
-          var minInp = row.querySelector('.escala-min-cell input');
-          var maxInp = row.querySelector('.escala-max-cell input');
-          var ordenInp = row.querySelector('.ind-orden input');
-          var actCheck = row.querySelector('.ind-activo input');
-          var rows = Array.from(container.querySelectorAll('tr.indicador-row'));
-          var targetRow = rows.find(function(r) {
-            var d = r.querySelector('.ind-descripcion input');
-            return d && d.value.trim() === '' && (!r.querySelector('input[name*="DELETE"]') || !r.querySelector('input[name*="DELETE"]').checked);
-          }) || rows[rows.length - 1];
-          if (targetRow && targetRow !== row) {
-            var nd = targetRow.querySelector('.ind-descripcion input');
-            var nm = targetRow.querySelector('.escala-min-cell input');
-            var nx = targetRow.querySelector('.escala-max-cell input');
-            var no = targetRow.querySelector('.ind-orden input');
-            var na = targetRow.querySelector('.ind-activo input');
-            if (nd && desc) nd.value = desc.value;
-            if (nm && minInp) nm.value = minInp.value;
-            if (nx && maxInp) nx.value = maxInp.value;
-            if (no && ordenInp) no.value = (parseInt(ordenInp.value, 10) || 0) + 1;
-            if (na && actCheck) na.checked = actCheck.checked;
-            nd.focus();
-            updateTotalMaximo();
-          }
-        });
       });
     }
   });

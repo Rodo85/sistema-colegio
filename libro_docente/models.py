@@ -158,6 +158,16 @@ class IndicadorActividad(models.Model):
         if self.escala_max is not None and self.escala_min is not None:
             if self.escala_max < self.escala_min:
                 raise ValidationError("escala_max debe ser >= escala_min.")
+        if self.escala_min is not None:
+            if self.escala_min < 0:
+                raise ValidationError("escala_min debe ser >= 0.")
+            if self.escala_min != self.escala_min.to_integral_value():
+                raise ValidationError("escala_min debe ser entero (sin decimales).")
+        if self.escala_max is not None:
+            if self.escala_max < 0:
+                raise ValidationError("escala_max debe ser >= 0.")
+            if self.escala_max != self.escala_max.to_integral_value():
+                raise ValidationError("escala_max debe ser entero (sin decimales).")
         super().clean()
 
 
@@ -213,6 +223,10 @@ class PuntajeIndicador(models.Model):
     def clean(self):
         if self.puntaje_obtenido is not None and self.indicador_id:
             ind = self.indicador
+            if self.puntaje_obtenido < 0:
+                raise ValidationError("El puntaje debe ser >= 0.")
+            if self.puntaje_obtenido != self.puntaje_obtenido.to_integral_value():
+                raise ValidationError("El puntaje debe ser entero (sin decimales).")
             if ind.escala_min is not None and self.puntaje_obtenido < ind.escala_min:
                 raise ValidationError(
                     f"El puntaje {self.puntaje_obtenido} debe ser >= {ind.escala_min}."

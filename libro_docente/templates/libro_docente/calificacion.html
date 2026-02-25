@@ -44,6 +44,13 @@
 .ind-scale{font-size:.7rem;color:var(--muted);}
 .empty-msg{text-align:center;padding:40px 20px;color:var(--muted);}
 .status-bar{font-size:.82rem;color:var(--muted);}
+.group-badge{display:inline-block;margin-top:6px;padding:4px 12px;border-radius:999px;background:#ffffff26;border:1px solid #ffffff55;font-size:1rem;font-weight:800;letter-spacing:.5px;}
+.errores-puntaje{position:fixed;bottom:16px;right:16px;max-width:360px;background:#fff;border:2px solid var(--danger);border-radius:10px;padding:12px 16px;box-shadow:0 4px 20px rgba(0,0,0,.2);z-index:100;display:none;}
+.errores-puntaje.show{display:block;}
+.errores-puntaje h4{margin:0 0 8px;font-size:.9rem;color:var(--danger);}
+.errores-puntaje ul{margin:0;padding-left:18px;font-size:.82rem;max-height:140px;overflow:auto;}
+.errores-puntaje li{cursor:pointer;margin-bottom:4px;}
+.errores-puntaje li:hover{text-decoration:underline;}
 </style>
 {% endblock %}
 
@@ -54,7 +61,10 @@
   <div class="asgn-banner">
     <div>
       <p class="asgn-title">📝 Calificar · {{ actividad.titulo }}</p>
-      <p style="font-size:.83rem;opacity:.9;margin:2px 0 0;">{{ asignacion.subarea_curso.subarea.nombre }} · {{ asignacion.seccion|default:asignacion.subgrupo }} · {{ actividad.periodo.nombre }}</p>
+      <p style="font-size:.83rem;opacity:.9;margin:2px 0 0;">{{ asignacion.subarea_curso.subarea.nombre }} · {{ actividad.periodo.nombre }}</p>
+      <span class="group-badge">
+        {% if asignacion.subgrupo %}{{ asignacion.subgrupo }}{% else %}{{ asignacion.seccion }}{% endif %}
+      </span>
     </div>
     <div style="display:flex;gap:8px;">
       <a href="{% url 'libro_docente:actividad_edit' actividad.id %}" class="back-btn">← Editar actividad</a>
@@ -78,7 +88,10 @@
   <div class="card">
     <div class="card-header">
       <span class="status-bar">{{ total_estudiantes }} estudiante{{ total_estudiantes|pluralize }} · Total máximo: {{ total_maximo }}</span>
-      <button type="submit" form="calificacion-form" class="btn btn-primary">Guardar todo</button>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button type="button" id="btn-maximos" class="btn btn-outline">Máximo a todos</button>
+        <button type="submit" form="calificacion-form" class="btn btn-primary">Guardar todo</button>
+      </div>
     </div>
     <div class="grid-wrap">
       <form method="post" id="calificacion-form">
@@ -88,11 +101,11 @@
             <tr>
               <th class="student-col">Estudiante</th>
               {% for ind in indicadores %}
-              <th class="ind-header quick-fill" title="{{ ind.descripcion }} — Clic para rellenar columna" data-ind-id="{{ ind.id }}" data-min="{{ ind.escala_min }}" data-max="{{ ind.escala_max }}">
+              <th class="ind-header quick-fill" title="{{ ind.descripcion }} — Clic para rellenar columna" data-ind-id="{{ ind.id }}" data-min="{{ ind.escala_min }}" data-max="{{ ind.escala_max }}" data-ind-label="I{{ forloop.counter }}">
                 I{{ forloop.counter }}<br><span class="ind-scale">[{{ ind.escala_min }}-{{ ind.escala_max }}]</span><br><span style="font-size:.65rem;opacity:.7;">Rápido</span>
                 <span class="quick-fill-popover" id="qf-{{ ind.id }}">
                   <div class="qf-row">
-                    <input type="text" inputmode="decimal" placeholder="Valor" class="qf-input">
+                    <input type="text" inputmode="numeric" placeholder="Valor" class="qf-input">
                     <button type="button" class="qf-btn qf-btn-all">Todos</button>
                   </div>
                   <div class="qf-row">
@@ -116,7 +129,7 @@
               <td class="student-col">{{ fila.estudiante.primer_apellido }} {{ fila.estudiante.segundo_apellido|default:"" }} {{ fila.estudiante.nombres }}</td>
               {% for ind, p in fila.indicador_puntajes %}
               <td>
-                <input type="text" inputmode="decimal" name="p_{{ ind.id }}_{{ fila.estudiante.id }}"
+                <input type="text" inputmode="numeric" name="p_{{ ind.id }}_{{ fila.estudiante.id }}"
                   class="puntaje-input" data-ind-id="{{ ind.id }}" data-min="{{ ind.escala_min }}" data-max="{{ ind.escala_max }}"
                   value="{% if p %}{{ p }}{% endif %}"
                   placeholder="—" title="Escala {{ ind.escala_min }}-{{ ind.escala_max }}">
@@ -132,6 +145,10 @@
       </form>
     </div>
   </div>
+  <div id="errores-puntaje" class="errores-puntaje" aria-live="polite">
+    <h4>⚠ Valores inválidos</h4>
+    <ul id="errores-lista"></ul>
+  </div>
   {% endif %}
 </div>
 
@@ -143,7 +160,8 @@
     if (v === null || v === undefined || v === '') return null;
     var s = String(v).trim().replace(',', '.');
     if (s === '') return null;
-    var n = parseFloat(s);
+    if (!/^\d+$/.test(s)) return null;
+    var n = parseInt(s, 10);
     return isNaN(n) ? null : n;
   }
 
@@ -156,21 +174,50 @@
       var max = parseFloat(inp.getAttribute('data-max')) || 5;
       var val = parseVal(inp.value);
       inp.classList.remove('error');
+      inp.removeAttribute('data-error-msg');
       if (val !== null) {
         if (val < min || val > max) {
           inp.classList.add('error');
+          inp.setAttribute('data-error-msg', 'Valor fuera de rango [' + min + '-' + max + ']');
         } else {
           total += val;
         }
+      } else if (String(inp.value || '').trim() !== '') {
+        inp.classList.add('error');
+        inp.setAttribute('data-error-msg', 'Solo se permiten números enteros (0,1,2...)');
       }
     }
     var obtCell = row.querySelector('.total-obt-cell');
     var pctCell = row.querySelector('.pct-cell-val');
-    if (obtCell) obtCell.textContent = Number(total).toFixed(2);
+    if (obtCell) obtCell.textContent = Number(total).toFixed(0);
     if (pctCell) {
       var pct = totalMax > 0 ? Math.round((total / totalMax) * 1000) / 10 : 0;
       pctCell.textContent = pct + '%';
     }
+  }
+
+  function actualizarPanelErrores() {
+    var panel = document.getElementById('errores-puntaje');
+    var lista = document.getElementById('errores-lista');
+    if (!panel || !lista) return;
+    var errInputs = document.querySelectorAll('.puntaje-input.error');
+    lista.innerHTML = '';
+    if (errInputs.length === 0) {
+      panel.classList.remove('show');
+      return;
+    }
+    panel.classList.add('show');
+    errInputs.forEach(function(inp) {
+      var li = document.createElement('li');
+      var row = inp.closest('.fila-estudiante');
+      var estName = row ? row.querySelector('.student-col') : null;
+      var estText = estName ? estName.textContent.trim() : '?';
+      var th = document.querySelector('th[data-ind-id="' + inp.getAttribute('data-ind-id') + '"]');
+      var indLabel = th ? (th.getAttribute('data-ind-label') || 'I?') : 'I?';
+      li.textContent = estText + ' · ' + indLabel + ': ' + (inp.getAttribute('data-error-msg') || 'Valor inválido');
+      li.onclick = function() { inp.focus(); inp.scrollIntoView({behavior:'smooth',block:'center'}); };
+      lista.appendChild(li);
+    });
   }
 
   function updateAll() {
@@ -184,15 +231,18 @@
       if (e.target.classList.contains('puntaje-input')) {
         var row = e.target.closest('.fila-estudiante');
         if (row) updateRow(row);
+        actualizarPanelErrores();
       }
     });
     container.addEventListener('change', function(e) {
       if (e.target.classList.contains('puntaje-input')) {
         var row = e.target.closest('.fila-estudiante');
         if (row) updateRow(row);
+        actualizarPanelErrores();
       }
     });
     updateAll();
+    actualizarPanelErrores();
 
     // Puntajes rápidos: rellenar columna
     document.querySelectorAll('.ind-header.quick-fill').forEach(function(th) {
@@ -209,8 +259,12 @@
 
       function fillColumn(onlyEmpty) {
         var val = input.value.trim().replace(',', '.');
-        var n = parseFloat(val);
-        if (isNaN(n) || n < min || n > max) {
+        if (!/^\d+$/.test(val)) {
+          alert('Solo se permiten enteros.');
+          return;
+        }
+        var n = parseInt(val, 10);
+        if (n < min || n > max) {
           alert('El valor debe estar entre ' + min + ' y ' + max + '.');
           return;
         }
@@ -220,6 +274,7 @@
           var row = inp.closest('.fila-estudiante');
           if (row) updateRow(row);
         });
+        actualizarPanelErrores();
         popover.classList.remove('show');
         input.value = '';
       }
@@ -244,6 +299,7 @@
             if (row) updateRow(row);
           }
         }
+        actualizarPanelErrores();
         popover.classList.remove('show');
       });
       if (btnLimpiar) btnLimpiar.addEventListener('click', function() {
@@ -252,6 +308,7 @@
           var row = inp.closest('.fila-estudiante');
           if (row) updateRow(row);
         });
+        actualizarPanelErrores();
         popover.classList.remove('show');
       });
 
@@ -267,6 +324,32 @@
         });
       }
     });
+
+    var maxBtn = document.getElementById('btn-maximos');
+    if (maxBtn) {
+      maxBtn.addEventListener('click', function() {
+        document.querySelectorAll('.puntaje-input').forEach(function(inp) {
+          inp.value = String(parseInt(inp.getAttribute('data-max') || '0', 10));
+          var row = inp.closest('.fila-estudiante');
+          if (row) updateRow(row);
+        });
+        actualizarPanelErrores();
+      });
+    }
+
+    var form = document.getElementById('calificacion-form');
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        updateAll();
+        actualizarPanelErrores();
+        var errs = document.querySelectorAll('.puntaje-input.error');
+        if (errs.length > 0) {
+          e.preventDefault();
+          errs[0].focus();
+          errs[0].scrollIntoView({behavior:'smooth',block:'center'});
+        }
+      });
+    }
   });
 })();
 </script>

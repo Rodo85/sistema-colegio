@@ -48,8 +48,8 @@ class IndicadorActividadForm(forms.ModelForm):
         widgets = {
             "orden": forms.NumberInput(attrs={"class": "form-control", "min": 0}),
             "descripcion": forms.Textarea(attrs={"class": "form-control", "rows": 2}),
-            "escala_min": forms.NumberInput(attrs={"class": "form-control", "step": "0.01"}),
-            "escala_max": forms.NumberInput(attrs={"class": "form-control", "step": "0.01"}),
+            "escala_min": forms.NumberInput(attrs={"class": "form-control", "step": "1", "min": "0"}),
+            "escala_max": forms.NumberInput(attrs={"class": "form-control", "step": "1", "min": "0"}),
             "activo": forms.CheckboxInput(attrs={"class": "form-check-input"}),
         }
 
@@ -57,6 +57,16 @@ class IndicadorActividadForm(forms.ModelForm):
         data = super().clean()
         emin = data.get("escala_min")
         emax = data.get("escala_max")
+        if emin is not None:
+            if emin < 0:
+                self.add_error("escala_min", "Debe ser un entero mayor o igual a 0.")
+            elif emin != emin.to_integral_value():
+                self.add_error("escala_min", "Debe ser un número entero (sin decimales).")
+        if emax is not None:
+            if emax < 0:
+                self.add_error("escala_max", "Debe ser un entero mayor o igual a 0.")
+            elif emax != emax.to_integral_value():
+                self.add_error("escala_max", "Debe ser un número entero (sin decimales).")
         if emin is not None and emax is not None and emax < emin:
             raise ValidationError("escala_max debe ser >= escala_min.")
         return data
@@ -81,7 +91,7 @@ class PuntajeIndicadorForm(forms.ModelForm):
         model = PuntajeIndicador
         fields = ["puntaje_obtenido", "observacion"]
         widgets = {
-            "puntaje_obtenido": forms.NumberInput(attrs={"class": "form-control", "step": "0.01"}),
+            "puntaje_obtenido": forms.NumberInput(attrs={"class": "form-control", "step": "1", "min": "0"}),
             "observacion": forms.TextInput(attrs={"class": "form-control", "maxlength": 255}),
         }
 
@@ -92,6 +102,10 @@ class PuntajeIndicadorForm(forms.ModelForm):
     def clean_puntaje_obtenido(self):
         valor = self.cleaned_data.get("puntaje_obtenido")
         if valor is not None and self.indicador:
+            if valor < 0:
+                raise ValidationError("Debe ser un entero mayor o igual a 0.")
+            if valor != valor.to_integral_value():
+                raise ValidationError("Debe ser un número entero (sin decimales).")
             if self.indicador.escala_min is not None and valor < self.indicador.escala_min:
                 raise ValidationError(f"Debe ser >= {self.indicador.escala_min}.")
             if self.indicador.escala_max is not None and valor > self.indicador.escala_max:
