@@ -112,9 +112,6 @@
                   {% endif %}
                 {% endfor %}
               </div>
-              <div>
-                <a href="{% url 'libro_docente:asignacion_estudiantes' a.id %}" class="btn btn-outline btn-sm">Estudiantes</a>
-              </div>
             {% else %}
               <p style="font-size:.82rem;color:var(--muted);margin:0;">Sin esquema asignado</p>
             {% endif %}

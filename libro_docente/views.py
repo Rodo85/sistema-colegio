@@ -19,13 +19,8 @@ from config_institucional.models import Profesor
 from matricula.models import MatriculaAcademica
 
 from .forms import ActividadEvaluacionForm, IndicadorActividadFormSet
-from .models import (
-    ActividadEvaluacion,
-    AsistenciaRegistro,
-    AsistenciaSesion,
-    ExclusionEstudianteAsignacion,
-)
-from .models import PuntajeIndicador, PuntajeSimple
+from .models import ActividadEvaluacion, AsistenciaRegistro, AsistenciaSesion
+from .models import PuntajeIndicador
 from .services import (
     actividad_pertenece_a_institucion,
     calcular_resumen_evaluacion_completo,
@@ -52,13 +47,6 @@ _MEP_RANGES = [
     (80, 90, 1),
     (90, 100.01, 0),  # 90% a 100% inclusive
 ]
-
-TIPOS_EVALUACION = (
-    ActividadEvaluacion.TAREA,
-    ActividadEvaluacion.COTIDIANO,
-    ActividadEvaluacion.PRUEBA,
-    ActividadEvaluacion.PROYECTO,
-)
 
 
 def _nota_mep(pct: float) -> int:
@@ -96,13 +84,9 @@ def _get_estudiantes(asignacion):
         filtros["seccion_id"] = asignacion.seccion_id
     else:
         return MatriculaAcademica.objects.none()
-    excluidos_ids = ExclusionEstudianteAsignacion.objects.filter(
-        docente_asignacion=asignacion
-    ).values_list("estudiante_id", flat=True)
     return (
         MatriculaAcademica.objects
         .filter(**filtros)
-        .exclude(estudiante_id__in=excluidos_ids)
         .select_related("estudiante")
         .order_by("estudiante__primer_apellido", "estudiante__segundo_apellido", "estudiante__nombres")
     )
@@ -321,10 +305,6 @@ def home_docente(request):
                     tipo_param = "TAREA"
                 elif cod in ("COT", "COTIDIANO"):
                     tipo_param = "COTIDIANO"
-                elif cod in ("PRU", "PRUEBA", "PRUEBAS"):
-                    tipo_param = "PRUEBA"
-                elif cod in ("PRO", "PROYECTO", "PROYECTOS"):
-                    tipo_param = "PROYECTO"
                 else:
                     tipo_param = None
                 componentes.append({
@@ -487,6 +467,8 @@ def asistencia_view(request, asignacion_id):
             "estado": estado,
             "observacion": obs_guardadas.get(est.id, ""),
         })
+    estudiantes.sort(key=lambda e: e["nombre"])
+
     periodo = _infer_periodo(asignacion, fecha)
     periodos_cl = (
         PeriodoCursoLectivo.objects
@@ -540,93 +522,6 @@ def _obtener_asignacion_con_permiso(request, asignacion_id):
             "seccion__nivel", "subgrupo__seccion__nivel",
         ),
         id=asignacion_id, docente=profesor, activo=True,
-    )
-
-
-@login_required
-@permission_required("libro_docente.access_libro_docente", raise_exception=True)
-def asignacion_estudiantes_view(request, asignacion_id):
-    """
-    Permite ocultar/mostrar estudiantes para una asignación en Libro del Docente.
-    No afecta la matrícula global.
-    """
-    asignacion = _obtener_asignacion_con_permiso(request, asignacion_id)
-    if asignacion is None:
-        messages.error(request, "No tienes acceso a esta asignación.")
-        return redirect("libro_docente:home")
-
-    filtros = {"curso_lectivo": asignacion.curso_lectivo, "estado": "activo"}
-    if asignacion.subgrupo_id:
-        filtros["subgrupo_id"] = asignacion.subgrupo_id
-    elif asignacion.seccion_id:
-        filtros["seccion_id"] = asignacion.seccion_id
-    else:
-        filtros["id__in"] = []
-
-    matriculas = list(
-        MatriculaAcademica.objects.filter(**filtros)
-        .select_related("estudiante")
-        .order_by(
-            "estudiante__primer_apellido",
-            "estudiante__segundo_apellido",
-            "estudiante__nombres",
-        )
-    )
-    estudiantes_ids = [m.estudiante_id for m in matriculas]
-
-    if request.method == "POST":
-        ocultos_sel = {
-            int(x) for x in request.POST.getlist("oculto_estudiante_id") if str(x).isdigit()
-        }
-        ocultos_sel &= set(estudiantes_ids)
-
-        actuales_qs = ExclusionEstudianteAsignacion.objects.filter(
-            docente_asignacion=asignacion, estudiante_id__in=estudiantes_ids
-        )
-        actuales_ids = set(actuales_qs.values_list("estudiante_id", flat=True))
-
-        a_crear = ocultos_sel - actuales_ids
-        a_eliminar = actuales_ids - ocultos_sel
-
-        if a_eliminar:
-            actuales_qs.filter(estudiante_id__in=a_eliminar).delete()
-        if a_crear:
-            ExclusionEstudianteAsignacion.objects.bulk_create(
-                [
-                    ExclusionEstudianteAsignacion(
-                        docente_asignacion=asignacion,
-                        estudiante_id=est_id,
-                        created_by=request.user,
-                    )
-                    for est_id in a_crear
-                ],
-                ignore_conflicts=True,
-            )
-        messages.success(request, "Lista de trabajo actualizada.")
-        return redirect(reverse("libro_docente:asignacion_estudiantes", args=[asignacion_id]))
-
-    ocultos_ids = set(
-        ExclusionEstudianteAsignacion.objects.filter(
-            docente_asignacion=asignacion, estudiante_id__in=estudiantes_ids
-        ).values_list("estudiante_id", flat=True)
-    )
-    filas = [
-        {
-            "matricula": m,
-            "estudiante": m.estudiante,
-            "oculto": m.estudiante_id in ocultos_ids,
-        }
-        for m in matriculas
-    ]
-    return render(
-        request,
-        "libro_docente/asignacion_estudiantes.html",
-        {
-            "asignacion": asignacion,
-            "filas": filas,
-            "total": len(filas),
-            "ocultos": len(ocultos_ids),
-        },
     )
 
 
@@ -833,35 +728,13 @@ def actividad_list_view(request, asignacion_id):
         .order_by("periodo__numero")
     )
 
-    # Tipos habilitados según esquema de la asignación (solo mostrar lo que exista).
-    available_tipos = []
-    if asignacion.eval_scheme_snapshot_id:
-        componentes = list(
-            EsquemaEvalComponente.objects.filter(esquema=asignacion.eval_scheme_snapshot)
-            .select_related("componente")
-        )
-        for comp in componentes:
-            cod = (comp.componente.codigo or "").strip().upper()
-            if cod in ("TAR", "TAREAS", "TAREA") and ActividadEvaluacion.TAREA not in available_tipos:
-                available_tipos.append(ActividadEvaluacion.TAREA)
-            elif cod in ("COT", "COTIDIANO") and ActividadEvaluacion.COTIDIANO not in available_tipos:
-                available_tipos.append(ActividadEvaluacion.COTIDIANO)
-            elif cod in ("PRU", "PRUEBA", "PRUEBAS") and ActividadEvaluacion.PRUEBA not in available_tipos:
-                available_tipos.append(ActividadEvaluacion.PRUEBA)
-            elif cod in ("PRO", "PROYECTO", "PROYECTOS") and ActividadEvaluacion.PROYECTO not in available_tipos:
-                available_tipos.append(ActividadEvaluacion.PROYECTO)
-    if not available_tipos:
-        available_tipos = list(TIPOS_EVALUACION)
-
     periodo_id_raw = request.GET.get("periodo")
     periodo_id = int(periodo_id_raw) if periodo_id_raw and str(periodo_id_raw).isdigit() else None
     tipo = request.GET.get("tipo", "").upper()
     orden = request.GET.get("orden", "fecha")
-    if tipo and tipo not in available_tipos:
-        tipo = ""
 
     # Si viene tipo desde chip (COT/TAR) pero no período, auto-seleccionar primer período
-    if tipo in TIPOS_EVALUACION and not periodo_id and periodos_cl:
+    if tipo in ("TAREA", "COTIDIANO") and not periodo_id and periodos_cl:
         first_pcl = periodos_cl[0]
         return redirect(
             reverse("libro_docente:actividad_list", args=[asignacion_id])
@@ -875,7 +748,7 @@ def actividad_list_view(request, asignacion_id):
 
     if periodo_id:
         qs = qs.filter(periodo_id=periodo_id)
-    if tipo in TIPOS_EVALUACION:
+    if tipo in ("TAREA", "COTIDIANO"):
         qs = qs.filter(tipo_componente=tipo)
 
     if orden == "titulo":
@@ -890,17 +763,11 @@ def actividad_list_view(request, asignacion_id):
     actividades_raw = list(qs)
     actividades = []
     for a in actividades_raw:
-        es_simple = a.tipo_componente in (ActividadEvaluacion.PRUEBA, ActividadEvaluacion.PROYECTO)
-        if es_simple:
-            total_max = a.puntaje_total or 0
-            total_indicadores = 1 if total_max else 0
-        else:
-            indicadores_activos = [i for i in a.indicadores.all() if i.activo]
-            total_max = sum(i.escala_max for i in indicadores_activos)
-            total_indicadores = len(indicadores_activos)
+        indicadores_activos = [i for i in a.indicadores.all() if i.activo]
+        total_max = sum(i.escala_max for i in indicadores_activos)
         actividades.append({
             "obj": a,
-            "total_indicadores": total_indicadores,
+            "total_indicadores": len(indicadores_activos),
             "total_maximo": total_max,
         })
 
@@ -911,7 +778,6 @@ def actividad_list_view(request, asignacion_id):
         "periodo_id": str(periodo_id) if periodo_id else None,
         "tipo": tipo,
         "orden": orden,
-        "available_tipos": available_tipos,
     })
 
 
@@ -934,8 +800,8 @@ def actividad_create_view(request, asignacion_id):
 
     periodo_id = request.GET.get("periodo")
     tipo = request.GET.get("tipo", "").upper()
-    if not periodo_id or tipo not in TIPOS_EVALUACION:
-        messages.error(request, "Debe indicar periodo y tipo válido.")
+    if not periodo_id or tipo not in ("TAREA", "COTIDIANO"):
+        messages.error(request, "Debe indicar periodo y tipo (TAREA o COTIDIANO).")
         return redirect(reverse("libro_docente:actividad_list", args=[asignacion_id]))
 
     pcl = get_object_or_404(
@@ -949,9 +815,7 @@ def actividad_create_view(request, asignacion_id):
     periodo = pcl.periodo
 
     if request.method == "POST":
-        post_data = request.POST.copy()
-        post_data.setdefault("tipo_componente", tipo)
-        form = ActividadEvaluacionForm(post_data)
+        form = ActividadEvaluacionForm(request.POST)
         if form.is_valid():
             with transaction.atomic():
                 obj = form.save(commit=False)
@@ -962,9 +826,6 @@ def actividad_create_view(request, asignacion_id):
                 obj.tipo_componente = tipo
                 obj.created_by = request.user
                 obj.save()
-            if tipo in (ActividadEvaluacion.PRUEBA, ActividadEvaluacion.PROYECTO):
-                messages.success(request, "Actividad creada. Puede calificar ahora.")
-                return redirect(reverse("libro_docente:actividad_calificar", args=[obj.id]))
             messages.success(request, "Actividad creada. Agregue indicadores a continuación.")
             return redirect(reverse("libro_docente:actividad_edit", args=[obj.id]))
     else:
@@ -973,8 +834,7 @@ def actividad_create_view(request, asignacion_id):
             "estado": ActividadEvaluacion.BORRADOR,
         })
 
-    tipo_display = dict(ActividadEvaluacion.TIPO_CHOICES).get(tipo, tipo.title())
-    es_prueba_proyecto = tipo in (ActividadEvaluacion.PRUEBA, ActividadEvaluacion.PROYECTO)
+    tipo_display = "Tarea" if tipo == "TAREA" else "Cotidiano"
     return render(request, "libro_docente/actividad_form.html", {
         "form": form,
         "formset": None,
@@ -984,7 +844,6 @@ def actividad_create_view(request, asignacion_id):
         "tipo": tipo,
         "tipo_display": tipo_display,
         "actividad": None,
-        "es_prueba_proyecto": es_prueba_proyecto,
     })
 
 
@@ -1012,27 +871,22 @@ def actividad_edit_view(request, actividad_id):
         messages.error(request, "No puedes editar actividades de otra institución.")
         return redirect("libro_docente:home")
 
-    es_prueba_proyecto = actividad.tipo_componente in (ActividadEvaluacion.PRUEBA, ActividadEvaluacion.PROYECTO)
-    formset = None
     if request.method == "POST":
         form = ActividadEvaluacionForm(request.POST, instance=actividad)
-        if not es_prueba_proyecto:
-            formset = IndicadorActividadFormSet(request.POST, instance=actividad)
-        if form.is_valid() and (es_prueba_proyecto or formset.is_valid()):
+        formset = IndicadorActividadFormSet(request.POST, instance=actividad)
+        if form.is_valid() and formset.is_valid():
             with transaction.atomic():
                 form.save()
-                if formset:
-                    formset.save()
+                formset.save()
             messages.success(request, "Actividad actualizada.")
             return redirect(reverse("libro_docente:actividad_edit", args=[actividad_id]))
-        if not es_prueba_proyecto and formset is None:
+        else:
             formset = IndicadorActividadFormSet(request.POST, instance=actividad)
     else:
         form = ActividadEvaluacionForm(instance=actividad)
-        if not es_prueba_proyecto:
-            formset = IndicadorActividadFormSet(instance=actividad)
+        formset = IndicadorActividadFormSet(instance=actividad)
 
-    total_maximo = calcular_total_maximo_actividad(actividad) if not es_prueba_proyecto else actividad.puntaje_total or 0
+    total_maximo = calcular_total_maximo_actividad(actividad)
 
     return render(request, "libro_docente/actividad_form.html", {
         "form": form,
@@ -1044,7 +898,6 @@ def actividad_edit_view(request, actividad_id):
         "tipo_display": actividad.get_tipo_componente_display(),
         "actividad": actividad,
         "total_maximo": total_maximo,
-        "es_prueba_proyecto": es_prueba_proyecto,
     })
 
 
@@ -1136,36 +989,16 @@ def _asignaciones_destino_para_copiar(actividad, request):
     ).exists()
     if not pcl_existe:
         return []
-    qs = qs.filter(
+    return list(
+        qs.filter(
             subarea_curso__institucion_id=inst_id,
             subarea_curso__subarea_id=subarea_id,
             curso_lectivo_id=curso_lectivo_id,
         )
-    if asignacion_actual.subgrupo_id or not asignacion_actual.subarea_curso.subarea.es_academica:
-        # Para materias con subgrupos, solo listar subgrupos reales (ej. 9-2 A, 9-2 B).
-        qs = qs.filter(subgrupo_id__isnull=False)
-    asignaciones = list(
-        qs.exclude(id=asignacion_actual.id)
-        .select_related("subarea_curso__subarea", "seccion__nivel", "subgrupo__seccion__nivel")
-        .order_by(
-            "subgrupo__seccion__nivel__numero",
-            "seccion__nivel__numero",
-            "subgrupo__seccion__numero",
-            "seccion__numero",
-            "subgrupo__letra",
-        )
+        .exclude(id=asignacion_actual.id)
+        .select_related("subarea_curso__subarea", "seccion", "subgrupo__seccion")
+        .order_by("seccion__nivel__numero", "seccion__numero", "subgrupo__letra")
     )
-    # Formato: "7-1 A Programación" o "7-2 B Tics"
-    for da in asignaciones:
-        if da.subgrupo_id:
-            sg = da.subgrupo
-            da.grupo_label = f"{sg.seccion.nivel.numero}-{sg.seccion.numero} {sg.letra} {da.subarea_curso.subarea.nombre}"
-        elif da.seccion_id:
-            s = da.seccion
-            da.grupo_label = f"{s.nivel.numero}-{s.numero} {da.subarea_curso.subarea.nombre}"
-        else:
-            da.grupo_label = str(da.subarea_curso.subarea.nombre)
-    return asignaciones
 
 
 @login_required
@@ -1220,9 +1053,12 @@ def actividad_copiar_a_grupos_view(request, actividad_id):
 @permission_required("libro_docente.access_libro_docente", raise_exception=True)
 def actividad_calificar_view(request, actividad_id):
     """
-    Grilla de calificación por estudiante e indicador (TAREA/COTIDIANO)
-    o por estudiante con puntos obtenidos (PRUEBA/PROYECTO).
+    Grilla de calificación por estudiante e indicador.
+    GET: muestra grilla con puntajes existentes.
+    POST: guardado masivo de puntajes.
     """
+    from decimal import Decimal, InvalidOperation
+
     actividad = get_object_or_404(
         ActividadEvaluacion.objects.select_related(
             "docente_asignacion__subarea_curso",
@@ -1241,94 +1077,11 @@ def actividad_calificar_view(request, actividad_id):
         return redirect("libro_docente:home")
 
     asignacion = actividad.docente_asignacion
-    matriculas = _get_estudiantes(asignacion)
-    es_prueba_proyecto = actividad.tipo_componente in (ActividadEvaluacion.PRUEBA, ActividadEvaluacion.PROYECTO)
-
-    if es_prueba_proyecto:
-        return _calificar_prueba_proyecto(request, actividad, asignacion, matriculas)
-    return _calificar_indicadores(request, actividad, asignacion, matriculas)
-
-
-def _calificar_prueba_proyecto(request, actividad, asignacion, matriculas):
-    """Calificación para Prueba/Proyecto: solo puntos obtenidos."""
-    puntaje_total = actividad.puntaje_total or Decimal("0")
-    porcentaje_act = actividad.porcentaje_actividad or Decimal("0")
-    if puntaje_total <= 0:
-        messages.error(request, "Configure el puntaje total de la actividad antes de calificar.")
-        return redirect(reverse("libro_docente:actividad_edit", args=[actividad.id]))
-
-    puntajes_existentes = {
-        p.estudiante_id: p.puntos_obtenidos
-        for p in PuntajeSimple.objects.filter(
-            actividad=actividad,
-            estudiante_id__in=[m.estudiante_id for m in matriculas],
-        )
-    }
-
-    if request.method == "POST":
-        guardados = 0
-        with transaction.atomic():
-            for m in matriculas:
-                key = f"ps_{m.estudiante_id}"
-                val = request.POST.get(key)
-                pts = None
-                if val is not None and str(val).strip():
-                    try:
-                        pts = Decimal(str(val).strip().replace(",", "."))
-                        if pts < 0 or (puntaje_total and pts > puntaje_total):
-                            messages.warning(request, f"{m.estudiante}: valor fuera de rango [0-{puntaje_total}].")
-                            continue
-                    except Exception:
-                        continue
-                obj, created = PuntajeSimple.objects.update_or_create(
-                    actividad=actividad,
-                    estudiante_id=m.estudiante_id,
-                    defaults={"puntos_obtenidos": pts},
-                )
-                guardados += 1
-        if guardados > 0:
-            messages.success(request, "Puntajes guardados.")
-        return redirect(reverse("libro_docente:actividad_calificar", args=[actividad.id]))
-
-    filas = []
-    for m in matriculas:
-        est = m.estudiante
-        pts = puntajes_existentes.get(est.id)
-        nota = (pts / puntaje_total * Decimal("10")) if puntaje_total and pts is not None else None
-        pct = (pts / puntaje_total * porcentaje_act) if puntaje_total and pts is not None else None
-        filas.append({
-            "matricula": m,
-            "estudiante": est,
-            "puntos_obtenidos": pts,
-            "nota": nota,
-            "porcentaje": pct,
-        })
-
-    filas.sort(
-        key=lambda f: (
-            (f["estudiante"].primer_apellido or "").upper(),
-            (f["estudiante"].segundo_apellido or "").upper(),
-            (f["estudiante"].nombres or "").upper(),
-        )
-    )
-
-    return render(request, "libro_docente/calificacion_simple.html", {
-        "actividad": actividad,
-        "asignacion": asignacion,
-        "filas": filas,
-        "puntaje_total": puntaje_total,
-        "porcentaje_actividad": porcentaje_act,
-    # Cargar puntajes existentes
-        "total_estudiantes": len(filas),
-    })
-
-
-def _calificar_indicadores(request, actividad, asignacion, matriculas):
-    """Calificación para TAREA/COTIDIANO con indicadores."""
     indicadores = list(actividad.indicadores.filter(activo=True).order_by("orden", "id"))
+    matriculas = _get_estudiantes(asignacion)
     total_maximo = calcular_total_maximo_actividad(actividad)
 
-    # POST: guardar puntajes
+    # Cargar puntajes existentes
     puntajes_existentes = {}
     if indicadores and matriculas:
         ind_ids = [ind.id for ind in indicadores]
@@ -1340,6 +1093,7 @@ def _calificar_indicadores(request, actividad, asignacion, matriculas):
             if p.puntaje_obtenido is not None:
                 puntajes_existentes[(p.indicador_id, p.estudiante_id)] = p.puntaje_obtenido
 
+    # POST: guardar puntajes
     if request.method == "POST":
         datos = {}
         for ind in indicadores:
@@ -1354,7 +1108,6 @@ def _calificar_indicadores(request, actividad, asignacion, matriculas):
                 [m.estudiante_id for m in matriculas],
                 datos,
                 indicadores_ids={ind.id for ind in indicadores},
-    # Construir filas para la grilla: cada fila tiene indicador_puntajes = [(ind, valor), ...]
             )
         if errores:
             for e in errores:
@@ -1363,18 +1116,24 @@ def _calificar_indicadores(request, actividad, asignacion, matriculas):
             messages.success(request, f"Se guardaron {guardados} puntaje(s).")
         else:
             messages.info(request, "No hubo cambios que guardar.")
-        return redirect(reverse("libro_docente:actividad_calificar", args=[actividad.id]))
+        return redirect(reverse("libro_docente:actividad_calificar", args=[actividad_id]))
 
+    # Construir filas para la grilla: cada fila tiene indicador_puntajes = [(ind, valor), ...]
     filas = []
     for m in matriculas:
         est = m.estudiante
         indicador_puntajes = [
-    # Orden por apellido (primer_apellido, segundo_apellido, nombres)
             (ind, puntajes_existentes.get((ind.id, est.id)))
             for ind in indicadores
         ]
-        total_obt = sum((p or Decimal("0")) for _, p in indicador_puntajes)
-        pct = (total_obt / total_maximo * Decimal("100")) if total_maximo and total_maximo > 0 else Decimal("0")
+        total_obt = sum(
+            (p or Decimal("0")) for _, p in indicador_puntajes
+        )
+        pct = (
+            (total_obt / total_maximo * Decimal("100"))
+            if total_maximo and total_maximo > 0
+            else Decimal("0")
+        )
         filas.append({
             "matricula": m,
             "estudiante": est,
@@ -1383,6 +1142,7 @@ def _calificar_indicadores(request, actividad, asignacion, matriculas):
             "porcentaje_logro": pct,
         })
 
+    # Orden por apellido (primer_apellido, segundo_apellido, nombres)
     filas.sort(
         key=lambda f: (
             (f["estudiante"].primer_apellido or "").upper(),
@@ -1399,8 +1159,6 @@ def _calificar_indicadores(request, actividad, asignacion, matriculas):
         "total_maximo": total_maximo,
         "total_estudiantes": len(filas),
     })
-
-
 
 
 @login_required
@@ -1431,7 +1189,7 @@ def resumen_evaluacion_view(request, asignacion_id):
     periodo_id_raw = request.GET.get("periodo")
     periodo_id = int(periodo_id_raw) if periodo_id_raw and str(periodo_id_raw).isdigit() else None
     tipo = request.GET.get("tipo", "").upper()
-    if tipo not in TIPOS_EVALUACION:
+    if tipo not in ("TAREA", "COTIDIANO"):
         tipo = None
     if not periodo_id and periodos_cl:
         periodo_id = periodos_cl[0].periodo_id
@@ -1470,7 +1228,7 @@ def resumen_estudiante_detalle_view(request, asignacion_id, estudiante_id):
     periodo_id_raw = request.GET.get("periodo")
     periodo_id = int(periodo_id_raw) if periodo_id_raw and str(periodo_id_raw).isdigit() else None
     tipo = request.GET.get("tipo", "").upper()
-    if tipo not in TIPOS_EVALUACION:
+    if tipo not in ("TAREA", "COTIDIANO"):
         tipo = None
     inst_id = asignacion.subarea_curso.institucion_id
     periodos_cl = list(
@@ -1507,20 +1265,6 @@ def resumen_estudiante_detalle_view(request, asignacion_id, estudiante_id):
         if periodo_id
         else _empty_resumen
     )
-    pruebas = (
-        calcular_resumen_componente_estudiante(
-            asignacion, periodo_id, ActividadEvaluacion.PRUEBA, estudiante_id
-        )
-        if periodo_id
-        else _empty_resumen
-    )
-    proyectos = (
-        calcular_resumen_componente_estudiante(
-            asignacion, periodo_id, ActividadEvaluacion.PROYECTO, estudiante_id
-        )
-        if periodo_id
-        else _empty_resumen
-    )
 
     return render(request, "libro_docente/resumen_estudiante_detalle.html", {
         "asignacion": asignacion,
@@ -1530,6 +1274,4 @@ def resumen_estudiante_detalle_view(request, asignacion_id, estudiante_id):
         "tipo": tipo,
         "tareas": tareas,
         "cotidianos": cotidianos,
-        "pruebas": pruebas,
-        "proyectos": proyectos,
     })

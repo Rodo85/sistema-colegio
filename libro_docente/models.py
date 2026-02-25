@@ -15,13 +15,9 @@ class ActividadEvaluacion(models.Model):
     """
     TAREA = "TAREA"
     COTIDIANO = "COTIDIANO"
-    PRUEBA = "PRUEBA"
-    PROYECTO = "PROYECTO"
     TIPO_CHOICES = [
         (TAREA, "Tarea"),
         (COTIDIANO, "Cotidiano"),
-        (PRUEBA, "Prueba"),
-        (PROYECTO, "Proyecto"),
     ]
     BORRADOR = "BORRADOR"
     ACTIVA = "ACTIVA"
@@ -63,22 +59,6 @@ class ActividadEvaluacion(models.Model):
     )
     titulo = models.CharField("Título", max_length=200)
     descripcion = models.TextField("Descripción", blank=True)
-    puntaje_total = models.DecimalField(
-        "Puntaje total",
-        max_digits=6,
-        decimal_places=2,
-        null=True,
-        blank=True,
-        help_text="Solo para Prueba/Proyecto: puntos máximos de la evaluación.",
-    )
-    porcentaje_actividad = models.DecimalField(
-        "Porcentaje total",
-        max_digits=5,
-        decimal_places=2,
-        null=True,
-        blank=True,
-        help_text="Solo para Prueba/Proyecto: % que aporta al componente.",
-    )
     fecha_asignacion = models.DateField("Fecha asignación", null=True, blank=True)
     fecha_entrega = models.DateField("Fecha entrega", null=True, blank=True)
     estado = models.CharField(
@@ -230,60 +210,17 @@ class PuntajeIndicador(models.Model):
     def __str__(self):
         return f"{self.estudiante} – {self.indicador_id}: {self.puntaje_obtenido}"
 
-
-class PuntajeSimple(models.Model):
-    """
-    Puntaje obtenido en Prueba o Proyecto (sin indicadores).
-    Solo almacena puntos_obtenidos; nota y % se calculan.
-    """
-    actividad = models.ForeignKey(
-        ActividadEvaluacion,
-        on_delete=models.CASCADE,
-        related_name="puntajes_simples",
-        verbose_name="Actividad",
-    )
-    estudiante = models.ForeignKey(
-        "matricula.Estudiante",
-        on_delete=models.PROTECT,
-        related_name="puntajes_simples",
-        verbose_name="Estudiante",
-    )
-    puntos_obtenidos = models.DecimalField(
-        "Puntos obtenidos",
-        max_digits=6,
-        decimal_places=2,
-        null=True,
-        blank=True,
-    )
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        db_table = "evaluacion_puntaje_simple"
-        verbose_name = "Puntaje simple (Prueba/Proyecto)"
-        verbose_name_plural = "Puntajes simples"
-        constraints = [
-            models.UniqueConstraint(
-                fields=["actividad", "estudiante"],
-                name="uniq_puntaje_simple_act_est",
-            ),
-        ]
-        indexes = [
-            models.Index(fields=["actividad", "estudiante"], name="eval_ps_act_est_idx"),
-        ]
-
-    def __str__(self):
-        return f"{self.estudiante} – {self.actividad_id}: {self.puntos_obtenidos}"
-
     def clean(self):
-        if self.puntaje_obtenido is not None:
-            if self.puntaje_obtenido < 0:
-                raise ValidationError("El puntaje obtenido debe ser >= 0.")
-            if self.actividad_id and self.actividad.puntaje_total is not None:
-                if self.puntaje_obtenido > self.actividad.puntaje_total:
-                    raise ValidationError(
-                        f"El puntaje {self.puntaje_obtenido} debe ser <= {self.actividad.puntaje_total}."
-                    )
+        if self.puntaje_obtenido is not None and self.indicador_id:
+            ind = self.indicador
+            if ind.escala_min is not None and self.puntaje_obtenido < ind.escala_min:
+                raise ValidationError(
+                    f"El puntaje {self.puntaje_obtenido} debe ser >= {ind.escala_min}."
+                )
+            if ind.escala_max is not None and self.puntaje_obtenido > ind.escala_max:
+                raise ValidationError(
+                    f"El puntaje {self.puntaje_obtenido} debe ser <= {ind.escala_max}."
+                )
         super().clean()
 
 
@@ -413,52 +350,3 @@ class AsistenciaRegistro(models.Model):
 
     def __str__(self):
         return f"{self.estudiante} – {self.get_estado_display()} ({self.sesion.fecha})"
-
-
-class ExclusionEstudianteAsignacion(models.Model):
-    """
-    Permite ocultar estudiantes del espacio de trabajo de una asignación docente
-    sin afectar su matrícula global en el grupo.
-    """
-    docente_asignacion = models.ForeignKey(
-        "evaluaciones.DocenteAsignacion",
-        on_delete=models.CASCADE,
-        related_name="exclusiones_estudiantes_libro",
-        verbose_name="Asignación docente",
-    )
-    estudiante = models.ForeignKey(
-        "matricula.Estudiante",
-        on_delete=models.CASCADE,
-        related_name="exclusiones_asignacion_libro",
-        verbose_name="Estudiante",
-    )
-    motivo = models.CharField("Motivo", max_length=255, blank=True)
-    created_by = models.ForeignKey(
-        "core.User",
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="exclusiones_estudiantes_creadas",
-        verbose_name="Creado por",
-    )
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        db_table = "libro_exclusion_estudiante_asignacion"
-        verbose_name = "Exclusión de estudiante por asignación"
-        verbose_name_plural = "Exclusiones de estudiantes por asignación"
-        constraints = [
-            models.UniqueConstraint(
-                fields=["docente_asignacion", "estudiante"],
-                name="uniq_libro_exclusion_asig_est",
-            ),
-        ]
-        indexes = [
-            models.Index(
-                fields=["docente_asignacion", "estudiante"],
-                name="libro_excl_asig_est_idx",
-            ),
-        ]
-
-    def __str__(self):
-        return f"{self.docente_asignacion_id} - {self.estudiante_id}"

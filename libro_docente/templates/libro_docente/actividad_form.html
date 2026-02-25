@@ -51,17 +51,12 @@ input.form-control,select.form-control,textarea.form-control{width:100%;}
   <div class="card">
     <div class="card-header">{% if actividad %}Editar actividad{% else %}Nueva actividad{% endif %}</div>
     <div class="card-body">
-        <input type="hidden" name="tipo_componente" value="{{ tipo }}">
         {% for field in form %}
-          {% if field.name != "tipo_componente" %}
-            {% if not es_prueba_proyecto or field.name != "descripcion" and field.name != "fecha_asignacion" and field.name != "fecha_entrega" and field.name != "estado" %}
-              <div class="form-group">
-                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                {{ field }}
-                {% if field.errors %}<ul class="errorlist">{% for e in field.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
-              </div>
-            {% endif %}
-          {% endif %}
+          <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}<ul class="errorlist">{% for e in field.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+          </div>
         {% endfor %}
         {% if not formset %}<button type="submit" class="btn btn-primary">Guardar actividad</button>{% endif %}
     </div>
@@ -75,9 +70,6 @@ input.form-control,select.form-control,textarea.form-control{width:100%;}
     </div>
     <div class="card-body">
         {{ formset.management_form }}
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-          <button type="button" id="btn-agregar-indicador" class="btn add-ind btn-sm">+ Agregar indicador</button>
-        </div>
         <table class="ind-table">
           <thead>
             <tr>
@@ -89,7 +81,7 @@ input.form-control,select.form-control,textarea.form-control{width:100%;}
               <th style="width:70px;">Eliminar</th>
             </tr>
           </thead>
-          <tbody id="indicadores-container" data-formset-prefix="{{ formset.prefix }}">
+          <tbody id="indicadores-container">
             {% for form in formset %}
             <tr class="indicador-row" data-form-index="{{ forloop.counter0 }}">
               {% for field in form.hidden_fields %}{{ field }}{% endfor %}
@@ -103,6 +95,7 @@ input.form-control,select.form-control,textarea.form-control{width:100%;}
               <td class="ind-activo">{{ form.activo }}</td>
               <td>
                 {{ form.DELETE }}
+                <button type="button" class="btn-duplicar-ind" title="Duplicar indicador" style="margin-left:4px;padding:2px 6px;font-size:.7rem;">Dup</button>
               </td>
             </tr>
             {% endfor %}
@@ -117,12 +110,6 @@ input.form-control,select.form-control,textarea.form-control{width:100%;}
 
 <script>
 (function() {
-  function getFormsetPrefix() {
-    var c = document.getElementById('indicadores-container');
-    return (c && c.getAttribute('data-formset-prefix')) ? c.getAttribute('data-formset-prefix').replace(/-\d+$/, '') : 'indicadores';
-  }
-  var formsetPrefix = getFormsetPrefix();
-
   function updateTotalMaximo() {
     var total = 0;
     document.querySelectorAll('#indicadores-container tr.indicador-row').forEach(function(row) {
@@ -137,62 +124,8 @@ input.form-control,select.form-control,textarea.form-control{width:100%;}
     var el = document.getElementById('total-maximo-display');
     if (el) el.textContent = 'Total máximo: ' + total;
   }
-
-  function getTotalForms() {
-    var inp = document.getElementById('id_' + formsetPrefix + '-TOTAL_FORMS');
-    return inp ? parseInt(inp.value, 10) : 0;
-  }
-
-  function setTotalForms(n) {
-    var inp = document.getElementById('id_' + formsetPrefix + '-TOTAL_FORMS');
-    if (inp) inp.value = n;
-  }
-
-  function agregarIndicador() {
-    var container = document.getElementById('indicadores-container');
-    if (!container) return;
-    var rows = container.querySelectorAll('tr.indicador-row');
-    var lastRow = rows[rows.length - 1];
-    if (!lastRow) return;
-    var nextIdx = getTotalForms();
-    var clone = lastRow.cloneNode(true);
-    clone.classList.remove('has-error');
-    clone.setAttribute('data-form-index', nextIdx);
-    clone.querySelectorAll('input, select, textarea').forEach(function(inp) {
-      if (!inp.name) return;
-      inp.name = inp.name.replace(/-(\d+)-/, '-' + nextIdx + '-');
-      if (inp.id) inp.id = inp.id.replace(/-(\d+)-/, '-' + nextIdx + '-');
-      if (inp.name.indexOf('-id') !== -1 && inp.type === 'hidden') {
-        inp.value = '';
-      } else if (inp.type === 'checkbox' && inp.name.indexOf('DELETE') !== -1) {
-        inp.checked = false;
-      } else if (inp.name.indexOf('orden') !== -1 && inp.type === 'number') {
-        inp.value = nextIdx + 1;
-      } else if (inp.name.indexOf('activo') !== -1 && inp.type === 'checkbox') {
-        inp.checked = true;
-      } else if (inp.name.indexOf('escala_min') !== -1) {
-        inp.value = '0';
-      } else if (inp.name.indexOf('escala_max') !== -1) {
-        inp.value = '5';
-      } else if (inp.type !== 'checkbox' && inp.type !== 'hidden') {
-        inp.value = '';
-      }
-    });
-    clone.querySelectorAll('label').forEach(function(lbl) {
-      if (lbl.htmlFor) lbl.htmlFor = lbl.htmlFor.replace(/_\d+_/, '_' + nextIdx + '_');
-    });
-    clone.querySelectorAll('.errorlist').forEach(function(el) { el.remove(); });
-    container.appendChild(clone);
-    setTotalForms(nextIdx + 1);
-    updateTotalMaximo();
-    var descInp = clone.querySelector('.ind-descripcion input, .ind-descripcion textarea');
-    if (descInp) { descInp.focus(); descInp.scrollIntoView({behavior:'smooth',block:'center'}); }
-  }
-
   document.addEventListener('DOMContentLoaded', function() {
     var container = document.getElementById('indicadores-container');
-    var btn = document.getElementById('btn-agregar-indicador');
-    if (btn) btn.addEventListener('click', function(e) { e.preventDefault(); agregarIndicador(); });
     if (container) {
       container.addEventListener('input', updateTotalMaximo);
       container.addEventListener('change', updateTotalMaximo);
@@ -211,6 +144,37 @@ input.form-control,select.form-control,textarea.form-control{width:100%;}
             if (!isNaN(min) && !isNaN(max) && max < min) row.classList.add('has-error');
           }
         }
+      });
+      container.querySelectorAll('.btn-duplicar-ind').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var row = this.closest('tr');
+          var delCheck = row.querySelector('input[name*="DELETE"]');
+          if (delCheck && delCheck.checked) return;
+          var desc = row.querySelector('.ind-descripcion input');
+          var minInp = row.querySelector('.escala-min-cell input');
+          var maxInp = row.querySelector('.escala-max-cell input');
+          var ordenInp = row.querySelector('.ind-orden input');
+          var actCheck = row.querySelector('.ind-activo input');
+          var rows = Array.from(container.querySelectorAll('tr.indicador-row'));
+          var targetRow = rows.find(function(r) {
+            var d = r.querySelector('.ind-descripcion input');
+            return d && d.value.trim() === '' && (!r.querySelector('input[name*="DELETE"]') || !r.querySelector('input[name*="DELETE"]').checked);
+          }) || rows[rows.length - 1];
+          if (targetRow && targetRow !== row) {
+            var nd = targetRow.querySelector('.ind-descripcion input');
+            var nm = targetRow.querySelector('.escala-min-cell input');
+            var nx = targetRow.querySelector('.escala-max-cell input');
+            var no = targetRow.querySelector('.ind-orden input');
+            var na = targetRow.querySelector('.ind-activo input');
+            if (nd && desc) nd.value = desc.value;
+            if (nm && minInp) nm.value = minInp.value;
+            if (nx && maxInp) nx.value = maxInp.value;
+            if (no && ordenInp) no.value = (parseInt(ordenInp.value, 10) || 0) + 1;
+            if (na && actCheck) na.checked = actCheck.checked;
+            nd.focus();
+            updateTotalMaximo();
+          }
+        });
       });
     }
   });

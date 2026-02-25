@@ -20,7 +20,7 @@ def _redondear(valor):
 
 from evaluaciones.models import EsquemaEvalComponente
 
-from .models import ActividadEvaluacion, IndicadorActividad, PuntajeIndicador, PuntajeSimple
+from .models import ActividadEvaluacion, IndicadorActividad, PuntajeIndicador
 
 
 def calcular_total_maximo_actividad(actividad):
@@ -212,8 +212,6 @@ ACTIVIDADES_ACUMULADO_ESTADOS = (ActividadEvaluacion.ACTIVA, ActividadEvaluacion
 TIPO_TO_CODIGO_ESQUEMA = {
     ActividadEvaluacion.TAREA: ["TAREAS", "TAREA"],
     ActividadEvaluacion.COTIDIANO: ["COTIDIANO"],
-    ActividadEvaluacion.PRUEBA: ["PRUEBA", "PRUEBAS", "PRU"],
-    ActividadEvaluacion.PROYECTO: ["PROYECTO", "PROYECTOS", "PRO"],
 }
 
 
@@ -249,7 +247,6 @@ def calcular_resumen_componente_estudiante(asignacion, periodo_id, tipo_componen
     """
     from django.db.models import Sum
 
-    es_simple = tipo_componente in (ActividadEvaluacion.PRUEBA, ActividadEvaluacion.PROYECTO)
     actividades = (
         ActividadEvaluacion.objects
         .filter(
@@ -267,59 +264,40 @@ def calcular_resumen_componente_estudiante(asignacion, periodo_id, tipo_componen
     detalle = []
 
     for act in actividades:
-        if es_simple:
-            max_act = act.puntaje_total or Decimal("0")
-            if max_act <= 0:
-                continue
-            ps = PuntajeSimple.objects.filter(
-                actividad=act, estudiante_id=estudiante_id
-            ).values("puntos_obtenidos").first()
-            obt_act = ps["puntos_obtenidos"] if ps and ps["puntos_obtenidos"] is not None else Decimal("0")
-            puntos_maximos += max_act
-            puntos_obtenidos += obt_act
-            pct_act = (obt_act / max_act * Decimal("100")) if max_act > 0 else Decimal("0")
-            detalle.append({
-                "actividad": act,
-                "maximo": max_act,
-                "obtenido": obt_act,
-                "porcentaje_logro": pct_act,
-                "detalle_indicadores": [{"indicador": None, "puntaje": obt_act, "escala_max": max_act}],
-            })
-        else:
-            ind_ids = list(act.indicadores.filter(activo=True).values_list("id", flat=True))
-            if not ind_ids:
-                continue
-            max_act = (
-                IndicadorActividad.objects.filter(actividad=act, activo=True)
-                .aggregate(s=Sum("escala_max"))["s"] or Decimal("0")
-            )
-            obt_act = (
-                PuntajeIndicador.objects
-                .filter(indicador_id__in=ind_ids, estudiante_id=estudiante_id)
-                .exclude(puntaje_obtenido__isnull=True)
-                .aggregate(s=Sum("puntaje_obtenido"))["s"] or Decimal("0")
-            )
-            puntos_maximos += max_act
-            puntos_obtenidos += obt_act
-            indicadores_act = list(act.indicadores.filter(activo=True).order_by("orden", "id"))
-            puntajes_raw = list(
-                PuntajeIndicador.objects.filter(
-                    indicador_id__in=ind_ids, estudiante_id=estudiante_id
-                ).values("indicador_id", "puntaje_obtenido")
-            )
-            puntajes_ind = {p["indicador_id"]: p["puntaje_obtenido"] for p in puntajes_raw}
-            detalle_indicadores = [
-                {"indicador": ind, "puntaje": puntajes_ind.get(ind.id), "escala_max": ind.escala_max}
-                for ind in indicadores_act
-            ]
-            pct_act = (obt_act / max_act * Decimal("100")) if max_act > 0 else Decimal("0")
-            detalle.append({
-                "actividad": act,
-                "maximo": max_act,
-                "obtenido": obt_act,
-                "porcentaje_logro": pct_act,
-                "detalle_indicadores": detalle_indicadores,
-            })
+        ind_ids = list(act.indicadores.filter(activo=True).values_list("id", flat=True))
+        if not ind_ids:
+            continue
+        max_act = (
+            IndicadorActividad.objects.filter(actividad=act, activo=True)
+            .aggregate(s=Sum("escala_max"))["s"] or Decimal("0")
+        )
+        obt_act = (
+            PuntajeIndicador.objects
+            .filter(indicador_id__in=ind_ids, estudiante_id=estudiante_id)
+            .exclude(puntaje_obtenido__isnull=True)
+            .aggregate(s=Sum("puntaje_obtenido"))["s"] or Decimal("0")
+        )
+        puntos_maximos += max_act
+        puntos_obtenidos += obt_act
+        indicadores_act = list(act.indicadores.filter(activo=True).order_by("orden", "id"))
+        puntajes_raw = list(
+            PuntajeIndicador.objects.filter(
+                indicador_id__in=ind_ids, estudiante_id=estudiante_id
+            ).values("indicador_id", "puntaje_obtenido")
+        )
+        puntajes_ind = {p["indicador_id"]: p["puntaje_obtenido"] for p in puntajes_raw}
+        detalle_indicadores = [
+            {"indicador": ind, "puntaje": puntajes_ind.get(ind.id), "escala_max": ind.escala_max}
+            for ind in indicadores_act
+        ]
+        pct_act = (obt_act / max_act * Decimal("100")) if max_act > 0 else Decimal("0")
+        detalle.append({
+            "actividad": act,
+            "maximo": max_act,
+            "obtenido": obt_act,
+            "porcentaje_logro": pct_act,
+            "detalle_indicadores": detalle_indicadores,
+        })
 
     pct_logro = (puntos_obtenidos / puntos_maximos * Decimal("100")) if puntos_maximos > 0 else Decimal("0")
     pct_comp = obtener_porcentaje_componente_esquema(asignacion, tipo_componente)
@@ -337,7 +315,7 @@ def calcular_resumen_componente_estudiante(asignacion, periodo_id, tipo_componen
 
 def calcular_resumen_evaluacion_completo(asignacion, periodo_id, matriculas):
     """
-    Resumen por estudiante con TAREAS, COTIDIANOS, PRUEBAS y PROYECTO.
+    Resumen por estudiante con TAREAS y COTIDIANOS.
     Retorna lista de dicts con estudiante y datos por componente.
     Optimizado: prefetch actividades e indicadores, una query de puntajes por tipo.
     """
@@ -346,7 +324,6 @@ def calcular_resumen_evaluacion_completo(asignacion, periodo_id, matriculas):
         return []
 
     def _resumen_por_tipo(tipo_componente):
-        es_simple = tipo_componente in (ActividadEvaluacion.PRUEBA, ActividadEvaluacion.PROYECTO)
         actividades = list(
             ActividadEvaluacion.objects.filter(
                 docente_asignacion=asignacion,
@@ -357,58 +334,40 @@ def calcular_resumen_evaluacion_completo(asignacion, periodo_id, matriculas):
             .prefetch_related("indicadores")
             .order_by("titulo")
         )
-        act_max = {}
-        act_ind_ids = {}
+        act_max = {}  # actividad_id -> max
+        act_ind_ids = {}  # actividad_id -> [ind_ids]
         for act in actividades:
-            if es_simple:
-                pt = act.puntaje_total or Decimal("0")
-                if pt <= 0:
-                    continue
-                act_max[act.id] = pt
-            else:
-                inds = [i for i in act.indicadores.all() if i.activo]
-                if not inds:
-                    continue
-                act_ind_ids[act.id] = [i.id for i in inds]
-                act_max[act.id] = sum(i.escala_max for i in inds)
+            inds = [i for i in act.indicadores.all() if i.activo]
+            if not inds:
+                continue
+            act_ind_ids[act.id] = [i.id for i in inds]
+            act_max[act.id] = sum(i.escala_max for i in inds)
 
-        if es_simple:
-            puntajes_raw = list(
-                PuntajeSimple.objects.filter(
-                    actividad_id__in=list(act_max.keys()),
+        ind_ids_flat = [iid for ids in act_ind_ids.values() for iid in ids]
+        puntajes_raw = (
+            list(
+                PuntajeIndicador.objects.filter(
+                    indicador_id__in=ind_ids_flat,
                     estudiante_id__in=est_ids,
                 )
-                .exclude(puntos_obtenidos__isnull=True)
-                .values("actividad_id", "estudiante_id", "puntos_obtenidos")
+                .exclude(puntaje_obtenido__isnull=True)
+                .values("indicador_id", "estudiante_id", "puntaje_obtenido")
             )
-            obt_por_est_act = {}
-            for p in puntajes_raw:
-                key = (p["estudiante_id"], p["actividad_id"])
-                obt_por_est_act[key] = p["puntos_obtenidos"]
-        else:
-            ind_ids_flat = [iid for ids in act_ind_ids.values() for iid in ids]
-            puntajes_raw = (
-                list(
-                    PuntajeIndicador.objects.filter(
-                        indicador_id__in=ind_ids_flat,
-                        estudiante_id__in=est_ids,
-                    )
-                    .exclude(puntaje_obtenido__isnull=True)
-                    .values("indicador_id", "estudiante_id", "puntaje_obtenido")
-                )
-                if ind_ids_flat
-                else []
-            )
-            ind_to_act = {}
-            for act_id, ind_ids in act_ind_ids.items():
-                for iid in ind_ids:
-                    ind_to_act[iid] = act_id
-            obt_por_est_act = {}
-            for p in puntajes_raw:
-                act_id = ind_to_act.get(p["indicador_id"])
-                if act_id:
-                    key = (p["estudiante_id"], act_id)
-                    obt_por_est_act[key] = obt_por_est_act.get(key, Decimal("0")) + p["puntaje_obtenido"]
+            if ind_ids_flat
+            else []
+        )
+
+        ind_to_act = {}
+        for act_id, ind_ids in act_ind_ids.items():
+            for iid in ind_ids:
+                ind_to_act[iid] = act_id
+
+        obt_por_est_act = {}  # (est_id, act_id) -> sum
+        for p in puntajes_raw:
+            act_id = ind_to_act.get(p["indicador_id"])
+            if act_id:
+                key = (p["estudiante_id"], act_id)
+                obt_por_est_act[key] = obt_por_est_act.get(key, Decimal("0")) + p["puntaje_obtenido"]
 
         pct_comp = obtener_porcentaje_componente_esquema(asignacion, tipo_componente)
         resumen = {}
@@ -432,8 +391,6 @@ def calcular_resumen_evaluacion_completo(asignacion, periodo_id, matriculas):
 
     resumen_tareas = _resumen_por_tipo(ActividadEvaluacion.TAREA)
     resumen_cotidianos = _resumen_por_tipo(ActividadEvaluacion.COTIDIANO)
-    resumen_pruebas = _resumen_por_tipo(ActividadEvaluacion.PRUEBA)
-    resumen_proyectos = _resumen_por_tipo(ActividadEvaluacion.PROYECTO)
 
     filas = []
     for m in matriculas:
@@ -443,8 +400,6 @@ def calcular_resumen_evaluacion_completo(asignacion, periodo_id, matriculas):
             "estudiante": est,
             "tareas": resumen_tareas.get(est.id, {}),
             "cotidianos": resumen_cotidianos.get(est.id, {}),
-            "pruebas": resumen_pruebas.get(est.id, {}),
-            "proyectos": resumen_proyectos.get(est.id, {}),
         })
     return filas
 
@@ -519,7 +474,6 @@ def copiar_actividad_a_asignaciones(actividad_origen, asignacion_ids, created_by
     creadas = []
     with transaction.atomic():
         indicadores = list(actividad_origen.indicadores.filter(activo=True).order_by("orden", "id"))
-        actividades_nuevas = []
         for da in asignaciones:
             # Verificar periodo para esta asignación (mismo curso_lectivo)
             pcl = PeriodoCursoLectivo.objects.filter(
@@ -530,38 +484,27 @@ def copiar_actividad_a_asignaciones(actividad_origen, asignacion_ids, created_by
             ).first()
             if not pcl:
                 continue
-            actividades_nuevas.append(
-                ActividadEvaluacion(
-                    docente_asignacion=da,
-                    institucion=da.subarea_curso.institucion,
-                    curso_lectivo=da.curso_lectivo,
-                    periodo=periodo,
-                    tipo_componente=actividad_origen.tipo_componente,
-                    titulo=actividad_origen.titulo,
-                    descripcion=actividad_origen.descripcion or "",
-                    puntaje_total=actividad_origen.puntaje_total,
-                    porcentaje_actividad=actividad_origen.porcentaje_actividad,
-                    fecha_asignacion=actividad_origen.fecha_asignacion,
-                    fecha_entrega=actividad_origen.fecha_entrega,
-                    estado=ActividadEvaluacion.BORRADOR,
-                    created_by=created_by or actividad_origen.created_by,
-                )
+            nueva = ActividadEvaluacion.objects.create(
+                docente_asignacion=da,
+                institucion=da.subarea_curso.institucion,
+                curso_lectivo=da.curso_lectivo,
+                periodo=periodo,
+                tipo_componente=actividad_origen.tipo_componente,
+                titulo=actividad_origen.titulo,
+                descripcion=actividad_origen.descripcion or "",
+                fecha_asignacion=actividad_origen.fecha_asignacion,
+                fecha_entrega=actividad_origen.fecha_entrega,
+                estado=ActividadEvaluacion.BORRADOR,
+                created_by=created_by or actividad_origen.created_by,
             )
-        creadas = list(ActividadEvaluacion.objects.bulk_create(actividades_nuevas))
-        es_simple = actividad_origen.tipo_componente in (ActividadEvaluacion.PRUEBA, ActividadEvaluacion.PROYECTO)
-        if not es_simple and indicadores:
-            indicadores_nuevos = []
-            for nueva in creadas:
-                for ind in indicadores:
-                    indicadores_nuevos.append(
-                        IndicadorActividad(
-                            actividad=nueva,
-                            orden=ind.orden,
-                            descripcion=ind.descripcion,
-                            escala_min=ind.escala_min,
-                            escala_max=ind.escala_max,
-                            activo=True,
-                        )
-                    )
-            IndicadorActividad.objects.bulk_create(indicadores_nuevos)
+            for ind in indicadores:
+                IndicadorActividad.objects.create(
+                    actividad=nueva,
+                    orden=ind.orden,
+                    descripcion=ind.descripcion,
+                    escala_min=ind.escala_min,
+                    escala_max=ind.escala_max,
+                    activo=True,
+                )
+            creadas.append(nueva)
     return creadas

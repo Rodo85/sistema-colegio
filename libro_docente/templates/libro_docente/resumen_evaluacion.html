@@ -57,8 +57,6 @@
         <a href="?periodo={{ periodo_id }}" class="{% if not tipo %}active{% endif %}">Todos</a>
         <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=TAREA" class="{% if tipo == 'TAREA' %}active{% endif %}">Solo Tareas</a>
         <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=COTIDIANO" class="{% if tipo == 'COTIDIANO' %}active{% endif %}">Solo Cotidianos</a>
-        <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=PRUEBA" class="{% if tipo == 'PRUEBA' %}active{% endif %}">Solo Pruebas</a>
-        <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=PROYECTO" class="{% if tipo == 'PROYECTO' %}active{% endif %}">Solo Proyecto</a>
       </div>
     </div>
     <div class="card-body" style="padding:0;">
@@ -82,12 +80,6 @@
               {% if not tipo or tipo == 'COTIDIANO' %}
               <th colspan="5" style="background:#d1fae5;">COTIDIANOS</th>
               {% endif %}
-              {% if not tipo or tipo == 'PRUEBA' %}
-              <th colspan="5" style="background:#fef3c7;">PRUEBAS</th>
-              {% endif %}
-              {% if not tipo or tipo == 'PROYECTO' %}
-              <th colspan="5" style="background:#ede9fe;">PROYECTO</th>
-              {% endif %}
             </tr>
             <tr>
               <th class="student-col"></th>
@@ -99,20 +91,6 @@
               <th class="comp-section">Aporte</th>
               {% endif %}
               {% if not tipo or tipo == 'COTIDIANO' %}
-              <th class="comp-section">Obtenidos</th>
-              <th class="comp-section">Máximos</th>
-              <th class="comp-section">% logro</th>
-              <th class="comp-section">% comp.</th>
-              <th class="comp-section">Aporte</th>
-              {% endif %}
-              {% if not tipo or tipo == 'PRUEBA' %}
-              <th class="comp-section">Obtenidos</th>
-              <th class="comp-section">Máximos</th>
-              <th class="comp-section">% logro</th>
-              <th class="comp-section">% comp.</th>
-              <th class="comp-section">Aporte</th>
-              {% endif %}
-              {% if not tipo or tipo == 'PROYECTO' %}
               <th class="comp-section">Obtenidos</th>
               <th class="comp-section">Máximos</th>
               <th class="comp-section">% logro</th>
@@ -142,20 +120,6 @@
               <td class="num-cell">{{ fila.cotidianos.porcentaje_logro|floatformat:1 }}%</td>
               <td class="num-cell">{{ fila.cotidianos.porcentaje_componente|floatformat:1 }}%</td>
               <td class="num-cell aporte-cell">{{ fila.cotidianos.aporte|floatformat:1 }}</td>
-              {% endif %}
-              {% if not tipo or tipo == 'PRUEBA' %}
-              <td class="num-cell">{{ fila.pruebas.puntos_obtenidos|floatformat:1 }}</td>
-              <td class="num-cell">{{ fila.pruebas.puntos_maximos|floatformat:1 }}</td>
-              <td class="num-cell">{{ fila.pruebas.porcentaje_logro|floatformat:1 }}%</td>
-              <td class="num-cell">{{ fila.pruebas.porcentaje_componente|floatformat:1 }}%</td>
-              <td class="num-cell aporte-cell">{{ fila.pruebas.aporte|floatformat:1 }}</td>
-              {% endif %}
-              {% if not tipo or tipo == 'PROYECTO' %}
-              <td class="num-cell">{{ fila.proyectos.puntos_obtenidos|floatformat:1 }}</td>
-              <td class="num-cell">{{ fila.proyectos.puntos_maximos|floatformat:1 }}</td>
-              <td class="num-cell">{{ fila.proyectos.porcentaje_logro|floatformat:1 }}%</td>
-              <td class="num-cell">{{ fila.proyectos.porcentaje_componente|floatformat:1 }}%</td>
-              <td class="num-cell aporte-cell">{{ fila.proyectos.aporte|floatformat:1 }}</td>
               {% endif %}
             </tr>
             {% endfor %}
