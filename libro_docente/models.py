@@ -238,6 +238,48 @@ class PuntajeIndicador(models.Model):
         super().clean()
 
 
+class ObservacionActividadEstudiante(models.Model):
+    """
+    Observación general por estudiante para una actividad (no por indicador).
+    Útil para revisión y respaldo ante reclamos.
+    """
+    actividad = models.ForeignKey(
+        ActividadEvaluacion,
+        on_delete=models.CASCADE,
+        related_name="observaciones_estudiantes",
+        verbose_name="Actividad",
+    )
+    estudiante = models.ForeignKey(
+        "matricula.Estudiante",
+        on_delete=models.PROTECT,
+        related_name="observaciones_actividad",
+        verbose_name="Estudiante",
+    )
+    observacion = models.TextField("Observación", blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "evaluacion_observacion_estudiante"
+        verbose_name = "Observación por estudiante en actividad"
+        verbose_name_plural = "Observaciones por estudiante en actividad"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["actividad", "estudiante"],
+                name="uniq_obs_actividad_estudiante",
+            )
+        ]
+        indexes = [
+            models.Index(
+                fields=["actividad", "estudiante"],
+                name="eval_obs_act_est_idx",
+            ),
+        ]
+
+    def __str__(self):
+        return f"{self.estudiante} – {self.actividad_id}"
+
+
 class AsistenciaSesion(models.Model):
     """
     Representa una pasada de lista (sesión) de un docente para una asignación,

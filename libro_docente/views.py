@@ -21,6 +21,7 @@ from matricula.models import MatriculaAcademica
 from .forms import ActividadEvaluacionForm, IndicadorActividadFormSet
 from .models import ActividadEvaluacion, AsistenciaRegistro, AsistenciaSesion
 from .models import PuntajeIndicador
+from .models import ObservacionActividadEstudiante
 from .services import (
     actividad_pertenece_a_institucion,
     calcular_resumen_evaluacion_completo,
@@ -1086,6 +1087,7 @@ def actividad_calificar_view(request, actividad_id):
 
     # Cargar puntajes existentes
     puntajes_existentes = {}
+    observaciones_existentes = {}
     if indicadores and matriculas:
         ind_ids = [ind.id for ind in indicadores]
         est_ids = [m.estudiante_id for m in matriculas]
@@ -1095,16 +1097,25 @@ def actividad_calificar_view(request, actividad_id):
         ).select_related("indicador"):
             if p.puntaje_obtenido is not None:
                 puntajes_existentes[(p.indicador_id, p.estudiante_id)] = p.puntaje_obtenido
+        for o in ObservacionActividadEstudiante.objects.filter(
+            actividad=actividad,
+            estudiante_id__in=est_ids,
+        ):
+            observaciones_existentes[o.estudiante_id] = o.observacion or ""
 
     # POST: guardar puntajes
     if request.method == "POST":
         datos = {}
+        observaciones_post = {}
         for ind in indicadores:
             for m in matriculas:
                 key = f"p_{ind.id}_{m.estudiante_id}"
                 val = request.POST.get(key)
                 if val is not None:
                     datos[(ind.id, m.estudiante_id)] = val
+        for m in matriculas:
+            obs_key = f"obs_{m.estudiante_id}"
+            observaciones_post[m.estudiante_id] = (request.POST.get(obs_key, "") or "").strip()
         with transaction.atomic():
             guardados, errores = guardar_puntajes_masivo(
                 actividad,
@@ -1112,6 +1123,18 @@ def actividad_calificar_view(request, actividad_id):
                 datos,
                 indicadores_ids={ind.id for ind in indicadores},
             )
+            for est_id, obs_text in observaciones_post.items():
+                if obs_text:
+                    ObservacionActividadEstudiante.objects.update_or_create(
+                        actividad=actividad,
+                        estudiante_id=est_id,
+                        defaults={"observacion": obs_text},
+                    )
+                else:
+                    ObservacionActividadEstudiante.objects.filter(
+                        actividad=actividad,
+                        estudiante_id=est_id,
+                    ).delete()
         if errores:
             for e in errores:
                 messages.error(request, e)
@@ -1143,6 +1166,7 @@ def actividad_calificar_view(request, actividad_id):
             "indicador_puntajes": indicador_puntajes,
             "total_obtenido": total_obt,
             "porcentaje_logro": pct,
+            "observacion_tarea": observaciones_existentes.get(est.id, ""),
         })
 
     # Orden por apellido (primer_apellido, segundo_apellido, nombres)

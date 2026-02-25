@@ -38,6 +38,7 @@
 .quick-fill-popover .qf-btn{padding:4px 10px;font-size:.75rem;cursor:pointer;border:1px solid var(--border);border-radius:4px;background:#fff;}
 .quick-fill-popover .qf-btn:hover{background:var(--surface);}
 .quick-fill-popover .qf-btn-all{background:var(--primary);color:#fff;border-color:var(--primary);}
+.obs-input{width:100%;min-width:220px;padding:6px 8px;border:1px solid var(--border);border-radius:4px;font-size:.82rem;}
 .total-cell{font-weight:700;color:var(--primary-dark);text-align:center;}
 .pct-cell{font-weight:700;text-align:center;}
 .ind-header{font-size:.75rem;cursor:help;}
@@ -112,14 +113,11 @@
                   </div>
                   <div class="qf-row">
                     <button type="button" class="qf-btn qf-btn-vacios">Solo vacíos</button>
-                    <button type="button" class="qf-btn qf-btn-limpiar">Limpiar</button>
-                  </div>
-                  <div class="qf-row">
-                    <button type="button" class="qf-btn qf-btn-copiar">Copiar hacia abajo</button>
                   </div>
                 </span>
               </th>
               {% endfor %}
+              <th>Observación tarea</th>
               <th>Total obt.</th>
               <th>Total máx.</th>
               <th>% logro</th>
@@ -133,10 +131,13 @@
               <td>
                 <input type="text" inputmode="numeric" name="p_{{ ind.id }}_{{ fila.estudiante.id }}"
                   class="puntaje-input" data-ind-id="{{ ind.id }}" data-min="{{ ind.escala_min }}" data-max="{{ ind.escala_max }}"
-                  value="{% if p %}{{ p }}{% endif %}"
+                  value="{% if p is not None %}{{ p|floatformat:0 }}{% endif %}"
                   placeholder="—" title="Escala {{ ind.escala_min }}-{{ ind.escala_max }}">
               </td>
               {% endfor %}
+              <td>
+                <input type="text" class="obs-input" name="obs_{{ fila.estudiante.id }}" value="{{ fila.observacion_tarea }}" maxlength="600" placeholder="Observación general de la tarea">
+              </td>
               <td class="total-cell total-obt-cell">{{ fila.total_obtenido|floatformat:2 }}</td>
               <td class="total-cell">{{ total_maximo }}</td>
               <td class="pct-cell pct-cell-val">{{ fila.porcentaje_logro|floatformat:1 }}%</td>
@@ -264,8 +265,6 @@
       var input = th.querySelector('.qf-input');
       var btnAll = th.querySelector('.qf-btn-all');
       var btnVacios = th.querySelector('.qf-btn-vacios');
-      var btnLimpiar = th.querySelector('.qf-btn-limpiar');
-      var btnCopiar = th.querySelector('.qf-btn-copiar');
       if (!popover || !input) return;
 
       function fillColumn(onlyEmpty) {
@@ -301,32 +300,11 @@
 
       if (btnAll) btnAll.addEventListener('click', function() { fillColumn(false); });
       if (btnVacios) btnVacios.addEventListener('click', function() { fillColumn(true); });
-      if (btnCopiar) btnCopiar.addEventListener('click', function() {
-        var inputs = Array.from(document.querySelectorAll('.puntaje-input[data-ind-id="' + indId + '"]'));
-        for (var i = 1; i < inputs.length; i++) {
-          if (inputs[i].value.trim() === '' && inputs[i-1].value.trim() !== '') {
-            inputs[i].value = inputs[i-1].value;
-            var row = inputs[i].closest('.fila-estudiante');
-            if (row) updateRow(row);
-          }
-        }
-        actualizarPanelErrores();
-        popover.classList.remove('show');
-      });
-      if (btnLimpiar) btnLimpiar.addEventListener('click', function() {
-        document.querySelectorAll('.puntaje-input[data-ind-id="' + indId + '"]').forEach(function(inp) {
-          inp.value = '';
-          var row = inp.closest('.fila-estudiante');
-          if (row) updateRow(row);
-        });
-        actualizarPanelErrores();
-        popover.classList.remove('show');
-      });
 
       input.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') { e.preventDefault(); if (btnAll) btnAll.click(); }
       });
-      [input, btnAll, btnVacios, btnLimpiar, btnCopiar].forEach(function(el) {
+      [input, btnAll, btnVacios].forEach(function(el) {
         if (!el) return;
         el.addEventListener('click', function(e) { e.stopPropagation(); });
       });
