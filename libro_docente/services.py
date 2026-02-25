@@ -20,7 +20,13 @@ def _redondear(valor):
 
 from evaluaciones.models import EsquemaEvalComponente
 
-from .models import ActividadEvaluacion, IndicadorActividad, PuntajeIndicador, PuntajeSimple
+from .models import (
+    ActividadEvaluacion,
+    EstudianteAdecuacionAsignacion,
+    IndicadorActividad,
+    PuntajeIndicador,
+    PuntajeSimple,
+)
 
 
 def calcular_total_maximo_actividad(actividad):
@@ -262,6 +268,10 @@ def calcular_resumen_componente_estudiante(asignacion, periodo_id, tipo_componen
     from django.db.models import Sum
 
     es_simple = tipo_componente in (ActividadEvaluacion.PRUEBA, ActividadEvaluacion.PROYECTO)
+    es_adecuacion = EstudianteAdecuacionAsignacion.objects.filter(
+        docente_asignacion=asignacion,
+        estudiante_id=estudiante_id,
+    ).exists()
     actividades = (
         ActividadEvaluacion.objects
         .filter(
@@ -279,6 +289,8 @@ def calcular_resumen_componente_estudiante(asignacion, periodo_id, tipo_componen
     detalle = []
 
     for act in actividades:
+        if not _actividad_aplica_a_estudiante(act, es_adecuacion):
+            continue
         if es_simple:
             max_act = act.puntaje_total or Decimal("0")
             if max_act <= 0:
@@ -350,6 +362,12 @@ def calcular_resumen_evaluacion_completo(asignacion, periodo_id, matriculas):
     est_ids = [m.estudiante_id for m in matriculas]
     if not est_ids:
         return []
+    adecuacion_ids = set(
+        EstudianteAdecuacionAsignacion.objects.filter(
+            docente_asignacion=asignacion,
+            estudiante_id__in=est_ids,
+        ).values_list("estudiante_id", flat=True)
+    )
 
     def _resumen_por_tipo(tipo_componente):
         es_simple = tipo_componente in (ActividadEvaluacion.PRUEBA, ActividadEvaluacion.PROYECTO)
@@ -416,11 +434,17 @@ def calcular_resumen_evaluacion_completo(asignacion, periodo_id, matriculas):
                     obt_por_est_act[key] = obt_por_est_act.get(key, Decimal("0")) + p["puntaje_obtenido"]
 
         pct_comp = obtener_porcentaje_componente_esquema(asignacion, tipo_componente)
+        actividades_map = {a.id: a for a in actividades}
         resumen = {}
         for est_id in est_ids:
             puntos_obt = Decimal("0")
             puntos_max = Decimal("0")
             for act_id, max_act in act_max.items():
+                actividad_obj = actividades_map.get(act_id)
+                if actividad_obj and not _actividad_aplica_a_estudiante(
+                    actividad_obj, est_id in adecuacion_ids
+                ):
+                    continue
                 puntos_max += max_act
                 puntos_obt += obt_por_est_act.get((est_id, act_id), Decimal("0"))
             pct_logro = (puntos_obt / puntos_max * Decimal("100")) if puntos_max > 0 else Decimal("0")
@@ -452,6 +476,26 @@ def calcular_resumen_evaluacion_completo(asignacion, periodo_id, matriculas):
             "proyectos": resumen_proyectos.get(est.id, {}),
         })
     return filas
+
+
+def _actividad_aplica_a_estudiante(actividad, es_adecuacion):
+    """
+    Determina si una actividad cuenta para el estudiante según su alcance.
+    Regla de negocio (solo TAREA/COTIDIANO):
+    - TODOS: todos los estudiantes
+    - REGULARES/GRUPO: excluye adecuación
+    - ADECUACION: solo estudiantes con adecuación
+    """
+    if actividad.tipo_componente not in (ActividadEvaluacion.TAREA, ActividadEvaluacion.COTIDIANO):
+        return True
+    alcance = actividad.alcance_estudiantes or ActividadEvaluacion.ALCANCE_TODOS
+    if alcance == "GRUPO":
+        alcance = ActividadEvaluacion.ALCANCE_REGULARES
+    if alcance == ActividadEvaluacion.ALCANCE_TODOS:
+        return True
+    if alcance == ActividadEvaluacion.ALCANCE_ADECUACION:
+        return es_adecuacion
+    return not es_adecuacion
 
 
 def porcentaje_disponible_para_tipo(asignacion, periodo_id, tipo_componente, actividad_excluir_id=None):
