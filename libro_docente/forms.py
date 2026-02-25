@@ -17,6 +17,7 @@ class ActividadEvaluacionForm(forms.ModelForm):
             "titulo",
             "descripcion",
             "tipo_componente",
+            "alcance_estudiantes",
             "puntaje_total",
             "porcentaje_actividad",
             "fecha_asignacion",
@@ -27,12 +28,23 @@ class ActividadEvaluacionForm(forms.ModelForm):
             "titulo": forms.TextInput(attrs={"class": "form-control", "maxlength": 200}),
             "descripcion": forms.Textarea(attrs={"class": "form-control", "rows": 3}),
             "tipo_componente": forms.Select(attrs={"class": "form-control"}),
+            "alcance_estudiantes": forms.Select(attrs={"class": "form-control"}),
             "puntaje_total": forms.NumberInput(attrs={"class": "form-control", "step": "1", "min": "0"}),
             "porcentaje_actividad": forms.NumberInput(attrs={"class": "form-control", "step": "1", "min": "0", "max": "100"}),
             "fecha_asignacion": forms.DateInput(attrs={"class": "form-control", "type": "date"}),
             "fecha_entrega": forms.DateInput(attrs={"class": "form-control", "type": "date"}),
             "estado": forms.Select(attrs={"class": "form-control"}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        tipo = self.initial.get("tipo_componente") or getattr(self.instance, "tipo_componente", None)
+        if tipo in (ActividadEvaluacion.TAREA, ActividadEvaluacion.COTIDIANO):
+            self.fields["alcance_estudiantes"].choices = ActividadEvaluacion.ALCANCE_CHOICES
+        else:
+            self.fields["alcance_estudiantes"].choices = [
+                (ActividadEvaluacion.ALCANCE_TODOS, "Asignar a todos")
+            ]
 
     def clean(self):
         data = super().clean()
@@ -106,7 +118,7 @@ IndicadorActividadFormSet = inlineformset_factory(
     ActividadEvaluacion,
     IndicadorActividad,
     form=IndicadorActividadForm,
-    extra=1,
+    extra=0,
     can_delete=True,
     min_num=0,
     validate_min=False,

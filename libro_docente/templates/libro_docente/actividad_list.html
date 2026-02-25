@@ -66,6 +66,7 @@ tbody td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:m
       <span class="grupo-hero">{% if asignacion.subgrupo %}{{ asignacion.subgrupo }}{% else %}{{ asignacion.seccion }}{% endif %}</span>
     </div>
     <div style="display:flex;gap:8px;align-items:center;">
+      <a href="{% url 'libro_docente:estudiantes_config' asignacion.id %}" class="back-btn">👥 Estudiantes</a>
       <a href="{% url 'libro_docente:resumen_evaluacion' asignacion.id %}" class="back-btn" title="Resumen acumulado (Fase 3)">Ver resumen</a>
       <a href="{% url 'libro_docente:home' %}" class="back-btn">← Mis asignaciones</a>
     </div>
@@ -126,6 +127,10 @@ tbody td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:m
                 {{ a.titulo }}
                 {% if a.alcance_estudiantes == 'ADECUACION' %}
                   <span class="badge-alcance">Adecuación</span>
+                {% elif a.alcance_estudiantes == 'REGULARES' or a.alcance_estudiantes == 'GRUPO' %}
+                  <span class="badge-alcance">Regulares</span>
+                {% elif a.alcance_estudiantes == 'TODOS' %}
+                  <span class="badge-alcance">Todos</span>
                 {% endif %}
               </td>
               <td><strong>{% if asignacion.subgrupo %}{{ asignacion.subgrupo }}{% else %}{{ asignacion.seccion }}{% endif %}</strong></td>

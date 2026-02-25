@@ -61,7 +61,7 @@ input.form-control,select.form-control,textarea.form-control{width:100%;}
               </div>
             {% endif %}
           {% else %}
-            {% if field.name != "puntaje_total" and field.name != "porcentaje_actividad" %}
+            {% if field.name != "puntaje_total" and field.name != "porcentaje_actividad" and field.name != "tipo_componente" %}
               <div class="form-group">
                 <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                 {{ field }}

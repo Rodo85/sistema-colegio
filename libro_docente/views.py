@@ -119,6 +119,24 @@ def _get_estudiantes(asignacion):
     )
 
 
+def _get_estudiantes_base(asignacion):
+    """
+    Lista base oficial del grupo/subgrupo sin aplicar ocultos.
+    """
+    filtros = {"curso_lectivo": asignacion.curso_lectivo, "estado": "activo"}
+    if asignacion.subgrupo_id:
+        filtros["subgrupo_id"] = asignacion.subgrupo_id
+    elif asignacion.seccion_id:
+        filtros["seccion_id"] = asignacion.seccion_id
+    else:
+        return MatriculaAcademica.objects.none()
+    return (
+        MatriculaAcademica.objects.filter(**filtros)
+        .select_related("estudiante")
+        .order_by("estudiante__primer_apellido", "estudiante__segundo_apellido", "estudiante__nombres")
+    )
+
+
 def _get_ids_adecuacion(asignacion):
     return set(
         EstudianteAdecuacionAsignacion.objects.filter(docente_asignacion=asignacion).values_list(
@@ -135,9 +153,14 @@ def _get_estudiantes_para_actividad(asignacion, actividad):
     """
     qs = _get_estudiantes(asignacion)
     ids_adecuacion = _get_ids_adecuacion(asignacion)
+    alcance = actividad.alcance_estudiantes
+    if alcance == "GRUPO":
+        alcance = ActividadEvaluacion.ALCANCE_REGULARES
+    if alcance == ActividadEvaluacion.ALCANCE_TODOS:
+        return qs
     if not ids_adecuacion:
-        return qs if actividad.alcance_estudiantes != ActividadEvaluacion.ALCANCE_ADECUACION else qs.none()
-    if actividad.alcance_estudiantes == ActividadEvaluacion.ALCANCE_ADECUACION:
+        return qs if alcance != ActividadEvaluacion.ALCANCE_ADECUACION else qs.none()
+    if alcance == ActividadEvaluacion.ALCANCE_ADECUACION:
         return qs.filter(estudiante_id__in=ids_adecuacion)
     return qs.exclude(estudiante_id__in=ids_adecuacion)
 
@@ -426,6 +449,75 @@ def home_docente(request):
 
 @login_required
 @permission_required("libro_docente.access_libro_docente", raise_exception=True)
+def estudiantes_config_view(request, asignacion_id):
+    """
+    Pantalla independiente para gestionar estudiantes ocultos y con adecuación.
+    """
+    asignacion = _obtener_asignacion_con_permiso(request, asignacion_id)
+    if asignacion is None:
+        messages.error(request, "No tienes acceso a esta asignación.")
+        return redirect("libro_docente:home")
+
+    base = list(_get_estudiantes_base(asignacion))
+    base_ids = [m.estudiante_id for m in base]
+    ocultos_actuales = set(
+        EstudianteOcultoAsignacion.objects.filter(
+            docente_asignacion=asignacion,
+            estudiante_id__in=base_ids,
+        ).values_list("estudiante_id", flat=True)
+    )
+    adecuacion_actuales = _get_ids_adecuacion(asignacion).intersection(set(base_ids))
+
+    if request.method == "POST":
+        oculto_ids = {int(x) for x in request.POST.getlist("oculto_ids") if str(x).isdigit()}
+        adecuacion_ids = {int(x) for x in request.POST.getlist("adecuacion_ids") if str(x).isdigit()}
+        oculto_ids = oculto_ids.intersection(set(base_ids))
+        adecuacion_ids = adecuacion_ids.intersection(set(base_ids))
+
+        with transaction.atomic():
+            EstudianteOcultoAsignacion.objects.filter(
+                docente_asignacion=asignacion,
+                estudiante_id__in=base_ids,
+            ).exclude(estudiante_id__in=oculto_ids).delete()
+            EstudianteAdecuacionAsignacion.objects.filter(
+                docente_asignacion=asignacion,
+                estudiante_id__in=base_ids,
+            ).exclude(estudiante_id__in=adecuacion_ids).delete()
+
+            for est_id in oculto_ids - ocultos_actuales:
+                EstudianteOcultoAsignacion.objects.get_or_create(
+                    docente_asignacion=asignacion,
+                    estudiante_id=est_id,
+                    defaults={"created_by": request.user},
+                )
+            for est_id in adecuacion_ids - adecuacion_actuales:
+                EstudianteAdecuacionAsignacion.objects.get_or_create(
+                    docente_asignacion=asignacion,
+                    estudiante_id=est_id,
+                    defaults={"created_by": request.user},
+                )
+        messages.success(request, "Configuración de estudiantes guardada.")
+        return redirect(reverse("libro_docente:estudiantes_config", args=[asignacion.id]))
+
+    filas = []
+    for m in base:
+        est = m.estudiante
+        filas.append({
+            "id": est.id,
+            "nombre": str(est),
+            "identificacion": est.identificacion,
+            "oculto": est.id in ocultos_actuales,
+            "adecuacion": est.id in adecuacion_actuales,
+        })
+    filas.sort(key=lambda x: x["nombre"])
+    return render(request, "libro_docente/estudiantes_config.html", {
+        "asignacion": asignacion,
+        "filas": filas,
+    })
+
+
+@login_required
+@permission_required("libro_docente.access_libro_docente", raise_exception=True)
 def asistencia_view(request, asignacion_id):
     """
     Pantalla de asistencia: selector de fecha + sesión, lista de estudiantes
@@ -462,58 +554,6 @@ def asistencia_view(request, asignacion_id):
 
     # ── POST: guardar sesión ─────────────────────────────────────────────
     if request.method == "POST":
-        accion = (request.POST.get("accion") or "").strip()
-        if (
-            accion.startswith("ocultar_")
-            or accion.startswith("mostrar_")
-            or accion.startswith("adecuacion_on_")
-            or accion.startswith("adecuacion_off_")
-        ):
-            try:
-                est_id = int(accion.rsplit("_", 1)[1])
-            except Exception:
-                est_id = None
-            filtros = {"curso_lectivo": asignacion.curso_lectivo, "estado": "activo"}
-            if asignacion.subgrupo_id:
-                filtros["subgrupo_id"] = asignacion.subgrupo_id
-            elif asignacion.seccion_id:
-                filtros["seccion_id"] = asignacion.seccion_id
-            matricula_obj = (
-                MatriculaAcademica.objects.filter(**filtros, estudiante_id=est_id).first()
-                if est_id
-                else None
-            )
-            if not matricula_obj:
-                messages.error(request, "Estudiante no válido para esta asignación.")
-                return redirect(f"{request.path}?fecha={fecha}&sesion={sesion_num}")
-            if accion.startswith("ocultar_"):
-                EstudianteOcultoAsignacion.objects.get_or_create(
-                    docente_asignacion=asignacion,
-                    estudiante_id=est_id,
-                    defaults={"created_by": request.user},
-                )
-                messages.success(request, "Estudiante ocultado para esta clase.")
-            elif accion.startswith("mostrar_"):
-                EstudianteOcultoAsignacion.objects.filter(
-                    docente_asignacion=asignacion,
-                    estudiante_id=est_id,
-                ).delete()
-                messages.success(request, "Estudiante visible nuevamente en esta clase.")
-            elif accion.startswith("adecuacion_on_"):
-                EstudianteAdecuacionAsignacion.objects.get_or_create(
-                    docente_asignacion=asignacion,
-                    estudiante_id=est_id,
-                    defaults={"created_by": request.user},
-                )
-                messages.success(request, "Estudiante marcado con adecuación significativa.")
-            else:
-                EstudianteAdecuacionAsignacion.objects.filter(
-                    docente_asignacion=asignacion,
-                    estudiante_id=est_id,
-                ).delete()
-                messages.success(request, "Se quitó la marca de adecuación significativa.")
-            return redirect(f"{request.path}?fecha={fecha}&sesion={sesion_num}")
-
         if sesion_num <= 0:
             sesion_num = 1
         periodo = _infer_periodo(asignacion, fecha)
@@ -586,41 +626,6 @@ def asistencia_view(request, asignacion_id):
             estados_guardados[reg.estudiante_id] = reg.estado
             obs_guardadas[reg.estudiante_id] = reg.observacion
 
-    ocultos_ids = list(
-        EstudianteOcultoAsignacion.objects.filter(docente_asignacion=asignacion).values_list(
-            "estudiante_id", flat=True
-        )
-    )
-    filtros = {"curso_lectivo": asignacion.curso_lectivo, "estado": "activo"}
-    if asignacion.subgrupo_id:
-        filtros["subgrupo_id"] = asignacion.subgrupo_id
-    elif asignacion.seccion_id:
-        filtros["seccion_id"] = asignacion.seccion_id
-    ocultos = []
-    if ocultos_ids:
-        ocultos = list(
-            MatriculaAcademica.objects.filter(**filtros, estudiante_id__in=ocultos_ids)
-            .select_related("estudiante")
-            .order_by(
-                "estudiante__primer_apellido",
-                "estudiante__segundo_apellido",
-                "estudiante__nombres",
-            )
-        )
-
-    adecuacion_ids = _get_ids_adecuacion(asignacion)
-    adecuacion = []
-    if adecuacion_ids:
-        adecuacion = list(
-            MatriculaAcademica.objects.filter(**filtros, estudiante_id__in=list(adecuacion_ids))
-            .select_related("estudiante")
-            .order_by(
-                "estudiante__primer_apellido",
-                "estudiante__segundo_apellido",
-                "estudiante__nombres",
-            )
-        )
-
     matriculas = _get_estudiantes(asignacion)
     estudiantes = []
     for m in matriculas:
@@ -632,7 +637,6 @@ def asistencia_view(request, asignacion_id):
             "identificacion": est.identificacion,
             "estado": estado,
             "observacion": obs_guardadas.get(est.id, ""),
-            "es_adecuacion": est.id in adecuacion_ids,
         })
     estudiantes.sort(key=lambda e: e["nombre"])
 
@@ -657,8 +661,6 @@ def asistencia_view(request, asignacion_id):
         "siguiente_num": siguiente_num,
         "sesion_actual": sesion_actual,
         "estudiantes": estudiantes,
-        "ocultos": ocultos,
-        "adecuacion": adecuacion,
         "total_estudiantes": len(estudiantes),
         "periodo": periodo,
         "periodos_cl": periodos_cl,
@@ -1004,6 +1006,7 @@ def actividad_create_view(request, asignacion_id):
         post_data.setdefault("tipo_componente", tipo)
         post_data.setdefault("estado", ActividadEvaluacion.BORRADOR)
         post_data.setdefault("descripcion", "")
+        post_data.setdefault("alcance_estudiantes", ActividadEvaluacion.ALCANCE_TODOS)
         form = ActividadEvaluacionForm(post_data)
         if form.is_valid():
             if tipo in (ActividadEvaluacion.PRUEBA, ActividadEvaluacion.PROYECTO):
@@ -1037,8 +1040,6 @@ def actividad_create_view(request, asignacion_id):
                 obj.curso_lectivo = asignacion.curso_lectivo
                 obj.periodo = periodo
                 obj.tipo_componente = tipo
-                if tipo in (ActividadEvaluacion.TAREA, ActividadEvaluacion.COTIDIANO):
-                    obj.alcance_estudiantes = ActividadEvaluacion.ALCANCE_GRUPO
                 obj.created_by = request.user
                 obj.save()
             if tipo in (ActividadEvaluacion.PRUEBA, ActividadEvaluacion.PROYECTO):
@@ -1050,6 +1051,7 @@ def actividad_create_view(request, asignacion_id):
         form = ActividadEvaluacionForm(initial={
             "tipo_componente": tipo,
             "estado": ActividadEvaluacion.BORRADOR,
+            "alcance_estudiantes": ActividadEvaluacion.ALCANCE_TODOS,
         })
 
     tipo_display = dict(ActividadEvaluacion.TIPO_CHOICES).get(tipo, tipo.title())
@@ -1098,6 +1100,7 @@ def actividad_edit_view(request, actividad_id):
             post_data.setdefault("tipo_componente", actividad.tipo_componente)
             post_data.setdefault("estado", actividad.estado or ActividadEvaluacion.BORRADOR)
             post_data.setdefault("descripcion", actividad.descripcion or "")
+            post_data.setdefault("alcance_estudiantes", actividad.alcance_estudiantes or ActividadEvaluacion.ALCANCE_TODOS)
         form = ActividadEvaluacionForm(post_data, instance=actividad)
         if not es_simple:
             formset = IndicadorActividadFormSet(request.POST, instance=actividad)

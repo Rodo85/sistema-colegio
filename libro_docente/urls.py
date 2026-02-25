@@ -10,6 +10,7 @@ from .views import (
     actividad_list_view,
     asistencia_view,
     detalle_estudiante_view,
+    estudiantes_config_view,
     home_docente,
     resumen_estudiante_detalle_view,
     resumen_general_export_csv,
@@ -22,6 +23,7 @@ app_name = "libro_docente"
 
 urlpatterns = [
     path("hoy/", home_docente, name="home"),
+    path("asignacion/<int:asignacion_id>/estudiantes-config/", estudiantes_config_view, name="estudiantes_config"),
     path("asistencia/<int:asignacion_id>/", asistencia_view, name="asistencia"),
     path("asistencia/<int:asignacion_id>/resumen/", resumen_view, name="resumen"),
     path(

@@ -31,10 +31,12 @@ class ActividadEvaluacion(models.Model):
         (ACTIVA, "Activa"),
         (CERRADA, "Cerrada"),
     ]
-    ALCANCE_GRUPO = "GRUPO"
+    ALCANCE_TODOS = "TODOS"
+    ALCANCE_REGULARES = "REGULARES"
     ALCANCE_ADECUACION = "ADECUACION"
     ALCANCE_CHOICES = [
-        (ALCANCE_GRUPO, "Grupo (sin adecuación)"),
+        (ALCANCE_TODOS, "Asignar a todos"),
+        (ALCANCE_REGULARES, "Asignar regulares"),
         (ALCANCE_ADECUACION, "Adecuación significativa"),
     ]
 
@@ -97,7 +99,7 @@ class ActividadEvaluacion(models.Model):
         "Alcance estudiantes",
         max_length=20,
         choices=ALCANCE_CHOICES,
-        default=ALCANCE_GRUPO,
+        default=ALCANCE_TODOS,
     )
     created_by = models.ForeignKey(
         "core.User",
