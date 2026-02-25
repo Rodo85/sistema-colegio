@@ -503,6 +503,7 @@ def duplicar_actividad(actividad_origen, titulo_nuevo=None):
             fecha_asignacion=actividad_origen.fecha_asignacion,
             fecha_entrega=actividad_origen.fecha_entrega,
             estado=ActividadEvaluacion.BORRADOR,
+            alcance_estudiantes=actividad_origen.alcance_estudiantes,
             created_by=actividad_origen.created_by,
         )
         if actividad_origen.tipo_componente not in (ActividadEvaluacion.PRUEBA, ActividadEvaluacion.PROYECTO):
@@ -585,6 +586,7 @@ def copiar_actividad_a_asignaciones(actividad_origen, asignacion_ids, created_by
                 fecha_asignacion=actividad_origen.fecha_asignacion,
                 fecha_entrega=actividad_origen.fecha_entrega,
                 estado=ActividadEvaluacion.BORRADOR,
+                alcance_estudiantes=actividad_origen.alcance_estudiantes,
                 created_by=created_by or actividad_origen.created_by,
             )
             if not es_simple:

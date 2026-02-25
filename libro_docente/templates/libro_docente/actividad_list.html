@@ -38,6 +38,7 @@ tbody td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:m
 .badge-activa{background:#d1fae5;color:#065f46;}
 .badge-cerrada{background:#e5e7eb;color:#4b5563;}
 .badge-error{background:#fef2f2;color:#dc3545;padding:2px 6px;border-radius:4px;font-size:.72rem;}
+.badge-alcance{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa;padding:2px 6px;border-radius:4px;font-size:.7rem;font-weight:700;margin-left:6px;}
 .empty{color:var(--muted);text-align:center;padding:40px 20px;}
 .total-max{font-weight:700;color:var(--primary-dark);}
 .tipo-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.7rem;font-weight:700;text-transform:uppercase;margin-left:6px;opacity:.95;}
@@ -121,7 +122,12 @@ tbody td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:m
             <tr>
               <td>{{ a.fecha_asignacion|date:"d/m/Y"|default:a.periodo.nombre }}</td>
               <td><span class="badge badge-{{ a.tipo_componente|lower }}">{{ a.get_tipo_componente_display }}</span></td>
-              <td>{{ a.titulo }}</td>
+              <td>
+                {{ a.titulo }}
+                {% if a.alcance_estudiantes == 'ADECUACION' %}
+                  <span class="badge-alcance">Adecuación</span>
+                {% endif %}
+              </td>
               <td><strong>{% if asignacion.subgrupo %}{{ asignacion.subgrupo }}{% else %}{{ asignacion.seccion }}{% endif %}</strong></td>
               <td>{{ asignacion.subarea_curso.subarea.nombre }}</td>
               <td>

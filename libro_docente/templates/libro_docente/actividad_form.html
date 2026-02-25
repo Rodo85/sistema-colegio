@@ -115,6 +115,12 @@ input.form-control,select.form-control,textarea.form-control{width:100%;}
             {% endfor %}
           </tbody>
         </table>
+        {% if actividad and tipo != 'PRUEBA' and tipo != 'PROYECTO' and actividad.alcance_estudiantes != 'ADECUACION' %}
+        <label style="display:flex;align-items:center;gap:8px;margin:8px 0 12px;font-size:.85rem;">
+          <input type="checkbox" name="crear_copia_adecuacion" value="1">
+          Crear copia para estudiantes con adecuación significativa (si existen marcados).
+        </label>
+        {% endif %}
         <template id="empty-indicador-template">
           <tr class="indicador-row" data-form-index="__prefix__">
             {% for field in formset.empty_form.hidden_fields %}{{ field }}{% endfor %}

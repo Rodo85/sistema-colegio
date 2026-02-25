@@ -31,6 +31,12 @@ class ActividadEvaluacion(models.Model):
         (ACTIVA, "Activa"),
         (CERRADA, "Cerrada"),
     ]
+    ALCANCE_GRUPO = "GRUPO"
+    ALCANCE_ADECUACION = "ADECUACION"
+    ALCANCE_CHOICES = [
+        (ALCANCE_GRUPO, "Grupo (sin adecuación)"),
+        (ALCANCE_ADECUACION, "Adecuación significativa"),
+    ]
 
     docente_asignacion = models.ForeignKey(
         "evaluaciones.DocenteAsignacion",
@@ -86,6 +92,12 @@ class ActividadEvaluacion(models.Model):
         max_length=20,
         choices=ESTADO_CHOICES,
         default=BORRADOR,
+    )
+    alcance_estudiantes = models.CharField(
+        "Alcance estudiantes",
+        max_length=20,
+        choices=ALCANCE_CHOICES,
+        default=ALCANCE_GRUPO,
     )
     created_by = models.ForeignKey(
         "core.User",
@@ -414,6 +426,53 @@ class EstudianteOcultoAsignacion(models.Model):
             models.Index(
                 fields=["docente_asignacion", "estudiante"],
                 name="libro_doc_est_oc_idx",
+            ),
+        ]
+
+    def __str__(self):
+        return f"{self.docente_asignacion_id} - {self.estudiante_id}"
+
+
+class EstudianteAdecuacionAsignacion(models.Model):
+    """
+    Marca estudiantes con adecuación significativa para una asignación docente.
+    """
+    docente_asignacion = models.ForeignKey(
+        "evaluaciones.DocenteAsignacion",
+        on_delete=models.CASCADE,
+        related_name="estudiantes_adecuacion",
+        verbose_name="Asignación docente",
+    )
+    estudiante = models.ForeignKey(
+        "matricula.Estudiante",
+        on_delete=models.PROTECT,
+        related_name="adecuaciones_libro_docente",
+        verbose_name="Estudiante",
+    )
+    created_by = models.ForeignKey(
+        "core.User",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="marcas_adecuacion_libro_docente",
+        verbose_name="Creado por",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "libro_docente_estudiante_adecuacion"
+        verbose_name = "Estudiante con adecuación por asignación"
+        verbose_name_plural = "Estudiantes con adecuación por asignación"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["docente_asignacion", "estudiante"],
+                name="uniq_libro_doc_est_adecuacion",
+            ),
+        ]
+        indexes = [
+            models.Index(
+                fields=["docente_asignacion", "estudiante"],
+                name="libro_doc_est_ad_idx",
             ),
         ]
 
