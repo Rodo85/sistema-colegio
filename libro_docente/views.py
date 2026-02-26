@@ -571,6 +571,21 @@ def asistencia_view(request, asignacion_id):
     if request.method == "POST":
         periodo = _infer_periodo(asignacion, fecha)
         inst_id = asignacion.subarea_curso.institucion_id
+        accion = (request.POST.get("accion") or "guardar").strip().lower()
+
+        if accion == "eliminar":
+            sesion_del = (
+                AsistenciaSesion.objects
+                .filter(docente_asignacion=asignacion, fecha=fecha)
+                .order_by("id")
+                .first()
+            )
+            if sesion_del:
+                sesion_del.delete()
+                messages.success(request, f"Asistencia del {fecha.strftime('%d/%m/%Y')} eliminada correctamente.")
+            else:
+                messages.warning(request, "No existe asistencia registrada para esa fecha.")
+            return redirect(f"{request.path}?fecha={fecha}&lecciones={lecciones}")
 
         try:
             with transaction.atomic():
@@ -598,26 +613,48 @@ def asistencia_view(request, asignacion_id):
                     raw_estado = request.POST.get(f"estado_{est_id}", AsistenciaRegistro.PRESENTE)
                     estado = raw_estado if raw_estado in dict(AsistenciaRegistro.ESTADO_CHOICES) else AsistenciaRegistro.PRESENTE
                     obs = request.POST.get(f"obs_{est_id}", "")[:255]
-                    raw_lecc_inj = (request.POST.get(f"inj_{est_id}", "") or "").strip().replace(",", ".")
-                    lecc_inj = None
-                    if raw_lecc_inj != "":
+                    raw_cantidad = (request.POST.get(f"inj_{est_id}", "") or "").strip().replace(",", ".")
+                    lecc_inj = Decimal("0")
+                    if estado in (AsistenciaRegistro.PRESENTE, AsistenciaRegistro.AUSENTE_JUSTIFICADA):
+                        lecc_inj = Decimal("0")
+                    elif raw_cantidad != "":
                         try:
-                            lecc_inj = Decimal(raw_lecc_inj)
+                            cantidad = Decimal(raw_cantidad)
                         except Exception:
-                            messages.error(request, f"Lecciones injustificadas inválidas para estudiante ID {est_id}.")
+                            messages.error(request, f"Cantidad inválida para estudiante ID {est_id}.")
                             return redirect(f"{request.path}?fecha={fecha}&lecciones={lecciones}")
-                        if lecc_inj < 0 or lecc_inj > Decimal(str(lecciones)):
-                            messages.error(
-                                request,
-                                f"Lecciones injustificadas fuera de rango para estudiante ID {est_id}. Debe estar entre 0 y {lecciones}.",
-                            )
+                        if cantidad < 0:
+                            messages.error(request, f"Cantidad inválida para estudiante ID {est_id}. No puede ser negativa.")
                             return redirect(f"{request.path}?fecha={fecha}&lecciones={lecciones}")
-                        if (lecc_inj * 2) != (lecc_inj * 2).to_integral_value():
-                            messages.error(
-                                request,
-                                f"Lecciones injustificadas inválidas para estudiante ID {est_id}. Use pasos de 0.5.",
-                            )
-                            return redirect(f"{request.path}?fecha={fecha}&lecciones={lecciones}")
+
+                        lecc_dia = Decimal(str(lecciones))
+                        if estado == AsistenciaRegistro.TARDIA_MEDIA:
+                            # Cantidad TM: 2 TM = 1 AI
+                            if cantidad != cantidad.to_integral_value():
+                                messages.error(request, f"Para TM, la cantidad debe ser entera (estudiante ID {est_id}).")
+                                return redirect(f"{request.path}?fecha={fecha}&lecciones={lecciones}")
+                            if cantidad > lecc_dia:
+                                messages.error(
+                                    request,
+                                    f"Para TM, la cantidad no puede exceder {lecciones} en el día (estudiante ID {est_id}).",
+                                )
+                                return redirect(f"{request.path}?fecha={fecha}&lecciones={lecciones}")
+                            lecc_inj = cantidad / Decimal("2")
+                        else:
+                            # AI / TC: cantidad en AI equivalentes (permite 0.5)
+                            if cantidad > lecc_dia:
+                                messages.error(
+                                    request,
+                                    f"Para AI/TC, la cantidad no puede exceder {lecciones} (estudiante ID {est_id}).",
+                                )
+                                return redirect(f"{request.path}?fecha={fecha}&lecciones={lecciones}")
+                            if (cantidad * 2) != (cantidad * 2).to_integral_value():
+                                messages.error(
+                                    request,
+                                    f"Para AI/TC, la cantidad debe usar pasos de 0.5 (estudiante ID {est_id}).",
+                                )
+                                return redirect(f"{request.path}?fecha={fecha}&lecciones={lecciones}")
+                            lecc_inj = cantidad
 
                     if est_id in existing:
                         reg = existing[est_id]
@@ -674,7 +711,13 @@ def asistencia_view(request, asignacion_id):
                 estado = AsistenciaRegistro.TARDIA_MEDIA
             estados_guardados[reg.estudiante_id] = estado
             obs_guardadas[reg.estudiante_id] = reg.observacion
-            inj_guardadas[reg.estudiante_id] = reg.lecciones_injustificadas
+            inj_val = reg.lecciones_injustificadas
+            if inj_val is None:
+                inj_guardadas[reg.estudiante_id] = None
+            elif estado == AsistenciaRegistro.TARDIA_MEDIA:
+                inj_guardadas[reg.estudiante_id] = (Decimal(str(inj_val)) * Decimal("2"))
+            else:
+                inj_guardadas[reg.estudiante_id] = inj_val
 
     matriculas = _get_estudiantes(asignacion)
     estudiantes = []

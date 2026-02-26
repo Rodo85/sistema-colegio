@@ -43,6 +43,8 @@ body{background:#f0f4f8;}
 .btn-danger{background:var(--danger);color:#fff;}
 .btn-outline{background:#fff;border:1.5px solid var(--border);color:var(--text);}
 .btn-outline:hover{border-color:var(--primary);color:var(--primary);}
+.btn-danger-outline{background:#fff;border:1.5px solid #fca5a5;color:#b91c1c;}
+.btn-danger-outline:hover{background:#fee2e2;border-color:#ef4444;color:#991b1b;}
 .btn-lg{padding:11px 28px;font-size:.95rem;}
 .btn-sm{padding:5px 12px;font-size:.78rem;}
 
@@ -183,7 +185,8 @@ tbody td{padding:8px 12px;vertical-align:middle;}
           <button type="button" class="btn btn-outline btn-sm" onclick="marcarTodos('{{ AJ }}')">ⓘ Todos justificados</button>
         </div>
         <p style="margin:0 0 10px;font-size:.78rem;color:var(--muted);">
-          Puedes ajustar <strong>Lecc. inj.</strong> manualmente por estudiante (0 a {{ lecciones }}, en pasos de 0.5) para casos especiales del día.
+          <strong>Cantidad</strong>: con TM es número de tardías medias (2 TM = 1 AI). Con AI/TC es AI equivalente (permite 0.5).
+          Siempre se valida contra el total de lecciones del día.
         </p>
 
         <!-- Stats en tiempo real -->
@@ -203,7 +206,7 @@ tbody td{padding:8px 12px;vertical-align:middle;}
                 <th>#</th>
                 <th>Estudiante</th>
                 <th>Estado</th>
-                <th>Lecc. inj.</th>
+                <th>Cantidad</th>
                 <th>Observación</th>
               </tr>
             </thead>
@@ -243,7 +246,7 @@ tbody td{padding:8px 12px;vertical-align:middle;}
                     max="{{ lecciones }}"
                     step="0.5"
                     value="{% if est.lecciones_injustificadas is not None %}{{ est.lecciones_injustificadas }}{% endif %}"
-                    placeholder="auto"
+                    placeholder="0"
                     oninput="actualizarStats()"
                   >
                 </td>
@@ -265,10 +268,17 @@ tbody td{padding:8px 12px;vertical-align:middle;}
     {% if estudiantes %}
     <div class="save-bar">
       <span class="save-count">{{ fecha|date:"d/m/Y" }} · <b>{{ lecciones }}</b> lección{% if lecciones != 1 %}es{% endif %} · <b>{{ total_estudiantes }}</b> estudiante{% if total_estudiantes != 1 %}s{% endif %}</span>
-      <button type="submit" class="btn btn-primary btn-lg">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-        Guardar asistencia del día
-      </button>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        {% if sesion_actual %}
+        <button type="submit" class="btn btn-danger-outline btn-lg" name="accion" value="eliminar" onclick="return confirmarEliminarDia();">
+          Eliminar día
+        </button>
+        {% endif %}
+        <button type="submit" class="btn btn-primary btn-lg" name="accion" value="guardar">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          Guardar asistencia del día
+        </button>
+      </div>
     </div>
     {% endif %}
 
@@ -278,6 +288,10 @@ tbody td{padding:8px 12px;vertical-align:middle;}
 <script>
 function cambiarFecha(val) {
   window.location.href = '?fecha=' + val;
+}
+
+function confirmarEliminarDia() {
+  return window.confirm('¿Eliminar toda la asistencia de este día? Esta acción no se puede deshacer.');
 }
 
 function marcarTodos(estado) {
@@ -303,8 +317,8 @@ function getLeccionesDia() {
 
 function valorSugeridoPorEstado(estado, leccionesDia) {
   if (estado === '{{ PRESENTE }}' || estado === '{{ AJ }}') return 0;
-  if (estado === '{{ TARDIA_MEDIA }}') return leccionesDia / 2;
-  if (estado === '{{ TARDIA_COMPLETA }}' || estado === '{{ AI }}') return leccionesDia;
+  if (estado === '{{ TARDIA_MEDIA }}') return 1;
+  if (estado === '{{ TARDIA_COMPLETA }}' || estado === '{{ AI }}') return 1;
   return 0;
 }
 
@@ -313,6 +327,20 @@ function onEstadoChange(estId) {
   const injInput = document.getElementById('inj-' + estId);
   if (!checked || !injInput) return;
   const leccionesDia = getLeccionesDia();
+  if (checked.value === '{{ PRESENTE }}' || checked.value === '{{ AJ }}') {
+    injInput.value = '0';
+    injInput.step = '0.5';
+    injInput.max = String(leccionesDia);
+    injInput.dataset.autofill = '1';
+    return;
+  }
+  if (checked.value === '{{ TARDIA_MEDIA }}') {
+    injInput.step = '1';
+    injInput.max = String(leccionesDia);
+  } else {
+    injInput.step = '0.5';
+    injInput.max = String(leccionesDia);
+  }
   const suggested = valorSugeridoPorEstado(checked.value, leccionesDia);
   if (injInput.value === '' || injInput.dataset.autofill === '1') {
     injInput.value = suggested.toFixed(1).replace('.0', '');
@@ -323,11 +351,19 @@ function onEstadoChange(estId) {
 function normalizeInjInputs() {
   const leccionesDia = getLeccionesDia();
   document.querySelectorAll('.inj-input').forEach((input) => {
+    const estId = input.id.replace('inj-', '');
+    const checked = document.querySelector('input[name="estado_' + estId + '"]:checked');
+    const estado = checked ? checked.value : '';
     input.max = String(leccionesDia);
+    input.step = (estado === '{{ TARDIA_MEDIA }}') ? '1' : '0.5';
     const val = parseNum(input.value);
     if (val === null) return;
     let v = Math.max(0, Math.min(leccionesDia, val));
-    v = Math.round(v * 2) / 2;
+    if (estado === '{{ TARDIA_MEDIA }}') {
+      v = Math.round(v);
+    } else {
+      v = Math.round(v * 2) / 2;
+    }
     input.value = String(v).replace('.0', '');
   });
 }
