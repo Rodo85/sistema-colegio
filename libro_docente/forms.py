@@ -5,8 +5,9 @@ from django import forms
 from django.forms import inlineformset_factory
 from django.core.exceptions import ValidationError
 
+from catalogos.models import SubArea
 from config_institucional.models import SeccionCursoLectivo, SubgrupoCursoLectivo
-from evaluaciones.models import DocenteAsignacion, SubareaCursoLectivo
+from evaluaciones.models import DocenteAsignacion, EsquemaEval, SubareaCursoLectivo
 from .models import ActividadEvaluacion, IndicadorActividad, PuntajeIndicador
 
 
@@ -162,9 +163,14 @@ class PuntajeIndicadorForm(forms.ModelForm):
 
 
 class AsignacionOnboardingForm(forms.Form):
-    subarea_curso = forms.ModelChoiceField(
-        queryset=SubareaCursoLectivo.objects.none(),
-        label="Materia / Subárea",
+    subarea = forms.ModelChoiceField(
+        queryset=SubArea.objects.none(),
+        label="Materia",
+        widget=forms.Select(attrs={"class": "form-control"}),
+    )
+    eval_scheme = forms.ModelChoiceField(
+        queryset=EsquemaEval.objects.none(),
+        label="Esquema de evaluación",
         widget=forms.Select(attrs={"class": "form-control"}),
     )
     seccion = forms.ModelChoiceField(
@@ -187,14 +193,17 @@ class AsignacionOnboardingForm(forms.Form):
         self.profesor = profesor
 
         if institucion and curso_lectivo:
-            self.fields["subarea_curso"].queryset = (
-                SubareaCursoLectivo.objects.filter(
-                    institucion=institucion,
-                    curso_lectivo=curso_lectivo,
-                    activa=True,
+            self.fields["subarea"].queryset = (
+                SubArea.objects.filter(
+                    subareainstitucion__institucion=institucion,
+                    subareainstitucion__activa=True,
                 )
-                .select_related("subarea", "eval_scheme")
-                .order_by("subarea__nombre")
+                .distinct()
+                .order_by("nombre")
+            )
+            self.fields["eval_scheme"].queryset = (
+                EsquemaEval.objects.filter(activo=True)
+                .order_by("tipo", "nombre")
             )
             self.fields["seccion"].queryset = (
                 SeccionCursoLectivo.objects.filter(
@@ -247,13 +256,13 @@ class AsignacionOnboardingForm(forms.Form):
 
     def clean(self):
         cleaned = super().clean()
-        scl = cleaned.get("subarea_curso")
+        subarea = cleaned.get("subarea")
         sec_cl = cleaned.get("seccion")
         sgr_cl = cleaned.get("subgrupo")
-        if not scl:
+        if not subarea:
             return cleaned
 
-        es_academica = scl.subarea.es_academica
+        es_academica = subarea.es_academica
         if es_academica:
             if not sec_cl:
                 self.add_error("seccion", "Debes seleccionar un grupo (sección) para esta materia.")
@@ -265,10 +274,10 @@ class AsignacionOnboardingForm(forms.Form):
             if sec_cl:
                 self.add_error("seccion", "Esta materia técnica se asigna por subgrupo.")
 
-        if self.profesor and scl and self.curso_lectivo:
+        if self.profesor and subarea and self.curso_lectivo:
             dup = DocenteAsignacion.objects.filter(
                 docente=self.profesor,
-                subarea_curso=scl,
+                subarea_curso__subarea=subarea,
                 curso_lectivo=self.curso_lectivo,
             )
             if sec_cl:

@@ -652,9 +652,27 @@ def asignacion_onboarding_view(request):
     )
 
     if request.method == "POST" and form.is_valid():
-        scl = form.cleaned_data["subarea_curso"]
+        subarea = form.cleaned_data["subarea"]
+        esquema = form.cleaned_data["eval_scheme"]
         sec_cl = form.cleaned_data.get("seccion")
         sgr_cl = form.cleaned_data.get("subgrupo")
+
+        scl, created = SubareaCursoLectivo.objects.get_or_create(
+            institucion=institucion,
+            curso_lectivo=curso_lectivo,
+            subarea=subarea,
+            defaults={"activa": True, "eval_scheme": esquema},
+        )
+        updates = []
+        if not scl.activa:
+            scl.activa = True
+            updates.append("activa")
+        if not scl.eval_scheme_id:
+            scl.eval_scheme = esquema
+            updates.append("eval_scheme")
+        if updates:
+            scl.save(update_fields=updates)
+
         asignacion = DocenteAsignacion(
             docente=profesor,
             subarea_curso=scl,
@@ -662,6 +680,7 @@ def asignacion_onboarding_view(request):
             seccion=sec_cl.seccion if sec_cl else None,
             subgrupo=sgr_cl.subgrupo if sgr_cl else None,
             activo=True,
+            eval_scheme_snapshot=esquema,
         )
         try:
             asignacion.full_clean()

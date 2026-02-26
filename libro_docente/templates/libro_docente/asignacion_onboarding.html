@@ -45,9 +45,14 @@
       <form method="post">
         {% csrf_token %}
         <div class="fg">
-          <label for="{{ form.subarea_curso.id_for_label }}">{{ form.subarea_curso.label }}</label>
-          {{ form.subarea_curso }}
-          {{ form.subarea_curso.errors }}
+          <label for="{{ form.subarea.id_for_label }}">{{ form.subarea.label }}</label>
+          {{ form.subarea }}
+          {{ form.subarea.errors }}
+        </div>
+        <div class="fg">
+          <label for="{{ form.eval_scheme.id_for_label }}">{{ form.eval_scheme.label }}</label>
+          {{ form.eval_scheme }}
+          {{ form.eval_scheme.errors }}
         </div>
         <div class="fg">
           <label for="{{ form.seccion.id_for_label }}">{{ form.seccion.label }}</label>
