@@ -284,8 +284,11 @@ class AsignacionOnboardingForm(forms.Form):
         else:
             if not sgr_cl:
                 self.add_error("subgrupo", "Debes seleccionar un subgrupo para esta materia técnica.")
-            if sec_cl:
-                self.add_error("seccion", "Esta materia técnica se asigna por subgrupo.")
+            # Sección puede venir seleccionada solo para filtrar visualmente subgrupos.
+            # Si viene, validamos coherencia con el subgrupo elegido y luego la ignoramos.
+            if sec_cl and sgr_cl and sec_cl.seccion_id != sgr_cl.subgrupo.seccion_id:
+                self.add_error("subgrupo", "El subgrupo elegido no pertenece al grupo seleccionado.")
+            cleaned["seccion"] = None
 
         if self.profesor and subarea and self.curso_lectivo:
             dup = DocenteAsignacion.objects.filter(
@@ -293,10 +296,10 @@ class AsignacionOnboardingForm(forms.Form):
                 subarea_curso__subarea=subarea,
                 curso_lectivo=self.curso_lectivo,
             )
-            if sec_cl:
-                dup = dup.filter(seccion=sec_cl.seccion, subgrupo__isnull=True)
             if sgr_cl:
                 dup = dup.filter(subgrupo=sgr_cl.subgrupo)
+            elif sec_cl:
+                dup = dup.filter(seccion=sec_cl.seccion, subgrupo__isnull=True)
             if dup.exists():
                 raise ValidationError("Ya tenés esta asignación creada.")
         return cleaned
