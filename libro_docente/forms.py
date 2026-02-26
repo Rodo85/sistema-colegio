@@ -215,6 +215,28 @@ class AsignacionOnboardingForm(forms.Form):
                 .order_by("subgrupo__seccion__nivel__numero", "subgrupo__seccion__numero", "subgrupo__letra")
             )
 
+        self.fields["seccion"].label_from_instance = self._label_seccion
+        self.fields["subgrupo"].label_from_instance = self._label_subgrupo
+
+        seccion_sel = self.data.get("seccion") or self.initial.get("seccion")
+        if seccion_sel:
+            try:
+                self.fields["subgrupo"].queryset = self.fields["subgrupo"].queryset.filter(
+                    subgrupo__seccion_id=int(seccion_sel)
+                )
+            except (TypeError, ValueError):
+                pass
+
+    @staticmethod
+    def _label_seccion(seccion_cl):
+        s = seccion_cl.seccion
+        return f"{s.nivel.numero}-{s.numero}"
+
+    @staticmethod
+    def _label_subgrupo(subgrupo_cl):
+        s = subgrupo_cl.subgrupo.seccion
+        return f"{s.nivel.numero}-{s.numero}{subgrupo_cl.subgrupo.letra}"
+
     def clean(self):
         cleaned = super().clean()
         scl = cleaned.get("subarea_curso")

@@ -1,7 +1,7 @@
 {% extends "admin/base_site.html" %}
 {% load i18n %}
 
-{% block title %}Crear asignación inicial{% endblock %}
+{% block title %}Crear asignación{% endblock %}
 
 {% block extrahead %}
 {{ block.super }}
@@ -27,7 +27,7 @@
 <div class="wrap">
   <div class="card">
     <div class="head">
-      <h2 style="margin:0;">Onboarding · Crear tu primera asignación</h2>
+      <h2 style="margin:0;">Crear asignación</h2>
       <div class="help">{{ institucion.nombre }} · {{ curso_lectivo.nombre }}</div>
     </div>
     <div class="body">
@@ -67,4 +67,41 @@
     </div>
   </div>
 </div>
+<script>
+  (function () {
+    var seccionSelect = document.getElementById("{{ form.seccion.id_for_label }}");
+    var subgrupoSelect = document.getElementById("{{ form.subgrupo.id_for_label }}");
+    if (!seccionSelect || !subgrupoSelect) return;
+
+    function seccionCodigo(texto) {
+      var t = (texto || "").trim();
+      if (!t) return "";
+      var m = t.match(/^\d+\-\d+/);
+      return m ? m[0] : "";
+    }
+
+    function filtrarSubgrupos() {
+      var secOpt = seccionSelect.options[seccionSelect.selectedIndex];
+      var secCode = seccionCodigo(secOpt ? secOpt.text : "");
+      var currentValue = subgrupoSelect.value;
+      var keptCurrent = false;
+
+      for (var i = 0; i < subgrupoSelect.options.length; i++) {
+        var opt = subgrupoSelect.options[i];
+        if (!opt.value) {
+          opt.hidden = false;
+          continue;
+        }
+        var match = seccionCodigo(opt.text) === secCode;
+        opt.hidden = !!secCode && !match;
+        if (!opt.hidden && opt.value === currentValue) keptCurrent = true;
+      }
+
+      if (!keptCurrent) subgrupoSelect.value = "";
+    }
+
+    seccionSelect.addEventListener("change", filtrarSubgrupos);
+    filtrarSubgrupos();
+  })();
+</script>
 {% endblock %}
