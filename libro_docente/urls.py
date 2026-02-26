@@ -8,6 +8,8 @@ from .views import (
     actividad_duplicar_view,
     actividad_edit_view,
     actividad_list_view,
+    asignacion_delete_view,
+    asignacion_onboarding_view,
     asistencia_view,
     detalle_estudiante_view,
     estudiantes_config_view,
@@ -23,6 +25,8 @@ app_name = "libro_docente"
 
 urlpatterns = [
     path("hoy/", home_docente, name="home"),
+    path("asignacion/onboarding/", asignacion_onboarding_view, name="asignacion_onboarding"),
+    path("asignacion/<int:asignacion_id>/eliminar/", asignacion_delete_view, name="asignacion_delete"),
     path("asignacion/<int:asignacion_id>/estudiantes-config/", estudiantes_config_view, name="estudiantes_config"),
     path("asistencia/<int:asignacion_id>/", asistencia_view, name="asistencia"),
     path("asistencia/<int:asignacion_id>/resumen/", resumen_view, name="resumen"),

@@ -39,6 +39,8 @@
 .btn-outline{background:#fff;border:1.5px solid var(--border);color:var(--primary-dark);}
 .btn-outline:hover{background:var(--surface);}
 .btn-sm{padding:6px 14px;font-size:.82rem;}
+.btn-danger-soft{background:#fee2e2;color:#991b1b;border:1px solid #fecaca;}
+.btn-danger-soft:hover{background:#fecaca;}
 
 /* Alert / empty state */
 .alert{padding:14px 18px;border-radius:10px;margin-bottom:20px;font-size:.93rem;}
@@ -77,6 +79,14 @@
     <div class="empty-state">
       <svg width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
       <p>No tienes asignaciones activas en este período.</p>
+      {% if show_onboarding %}
+      <p style="margin-top:8px;">
+        <a href="{% url 'libro_docente:asignacion_onboarding' %}" class="btn btn-primary">Crear mi primera asignación</a>
+      </p>
+      {% if limite_asignaciones %}
+      <p style="font-size:.85rem;color:var(--muted);">Límite actual en Institución General: {{ limite_asignaciones }} asignaciones.</p>
+      {% endif %}
+      {% endif %}
     </div>
   {% else %}
     <div class="cards-grid">
@@ -115,6 +125,9 @@
             {% else %}
               <p style="font-size:.82rem;color:var(--muted);margin:0;">Sin esquema asignado</p>
             {% endif %}
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+              <a href="{% url 'libro_docente:asignacion_delete' a.id %}" class="btn btn-sm btn-danger-soft">Eliminar asignación</a>
+            </div>
           </div>
         </div>
         {% endwith %}

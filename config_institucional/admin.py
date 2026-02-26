@@ -19,7 +19,7 @@ class ClaseInline(admin.TabularInline):
 
 @admin.register(Profesor)
 class ProfesorAdmin(InstitucionScopedAdmin):
-    list_display = ("usuario", "institucion", "identificacion")
+    list_display = ("usuario", "institucion", "identificacion", "max_asignaciones_override")
     search_fields = (
         "usuario__first_name",
         "usuario__last_name",
@@ -28,6 +28,7 @@ class ProfesorAdmin(InstitucionScopedAdmin):
         "identificacion",
     )
     autocomplete_fields = ("usuario",)
+    fields = ("institucion", "usuario", "identificacion", "telefono", "max_asignaciones_override")
 
     # ---------- Permitir al superuser editar 'institucion' ----------
     def get_readonly_fields(self, request, obj=None):

@@ -47,6 +47,12 @@ class Profesor(models.Model):
         db_index=True
     )
     telefono         = models.CharField("Teléfono", max_length=20, blank=True)
+    max_asignaciones_override = models.PositiveSmallIntegerField(
+        "Máximo de asignaciones (override)",
+        null=True,
+        blank=True,
+        help_text="Solo aplica en Institución General. Vacío = usar el límite general de la institución.",
+    )
 
     class Meta:
         verbose_name = "Profesor"

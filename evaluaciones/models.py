@@ -429,6 +429,38 @@ class DocenteAsignacion(models.Model):
                     "El curso lectivo no coincide con el del subárea-curso seleccionada."
                 )
 
+        # Anti-duplicado: mismo docente + materia + grupo/subgrupo + curso lectivo
+        if self.docente_id and self.subarea_curso_id and self.curso_lectivo_id:
+            dup_qs = DocenteAsignacion.objects.filter(
+                docente_id=self.docente_id,
+                subarea_curso_id=self.subarea_curso_id,
+                curso_lectivo_id=self.curso_lectivo_id,
+            )
+            if self.seccion_id:
+                dup_qs = dup_qs.filter(seccion_id=self.seccion_id, subgrupo__isnull=True)
+            elif self.subgrupo_id:
+                dup_qs = dup_qs.filter(subgrupo_id=self.subgrupo_id)
+            if self.pk:
+                dup_qs = dup_qs.exclude(pk=self.pk)
+            if dup_qs.exists():
+                raise ValidationError("Ya tenés esta asignación creada para ese grupo/subgrupo y materia.")
+
+        # Límite de asignaciones (solo Institución General)
+        institucion = self.subarea_curso.institucion if self.subarea_curso_id else None
+        if institucion and institucion.es_institucion_general and self.docente_id:
+            limite = self.docente.max_asignaciones_override
+            if limite is None:
+                limite = institucion.max_asignaciones_general or 10
+            if limite > 0:
+                asignadas_qs = DocenteAsignacion.objects.filter(docente_id=self.docente_id)
+                if self.pk:
+                    asignadas_qs = asignadas_qs.exclude(pk=self.pk)
+                total_actual = asignadas_qs.count()
+                if total_actual >= limite:
+                    raise ValidationError(
+                        f"Límite alcanzado: este docente tiene {total_actual} asignaciones y su máximo permitido es {limite}."
+                    )
+
         super().clean()
 
     def save(self, *args, **kwargs):

@@ -5,6 +5,8 @@ from django import forms
 from django.forms import inlineformset_factory
 from django.core.exceptions import ValidationError
 
+from config_institucional.models import SeccionCursoLectivo, SubgrupoCursoLectivo
+from evaluaciones.models import DocenteAsignacion, SubareaCursoLectivo
 from .models import ActividadEvaluacion, IndicadorActividad, PuntajeIndicador
 
 
@@ -157,3 +159,92 @@ class PuntajeIndicadorForm(forms.ModelForm):
             if self.indicador.escala_max is not None and valor > self.indicador.escala_max:
                 raise ValidationError(f"Debe ser <= {self.indicador.escala_max}.")
         return valor
+
+
+class AsignacionOnboardingForm(forms.Form):
+    subarea_curso = forms.ModelChoiceField(
+        queryset=SubareaCursoLectivo.objects.none(),
+        label="Materia / Subárea",
+        widget=forms.Select(attrs={"class": "form-control"}),
+    )
+    seccion = forms.ModelChoiceField(
+        queryset=SeccionCursoLectivo.objects.none(),
+        required=False,
+        label="Grupo (Sección)",
+        widget=forms.Select(attrs={"class": "form-control"}),
+    )
+    subgrupo = forms.ModelChoiceField(
+        queryset=SubgrupoCursoLectivo.objects.none(),
+        required=False,
+        label="Subgrupo",
+        widget=forms.Select(attrs={"class": "form-control"}),
+    )
+
+    def __init__(self, *args, institucion=None, curso_lectivo=None, profesor=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.institucion = institucion
+        self.curso_lectivo = curso_lectivo
+        self.profesor = profesor
+
+        if institucion and curso_lectivo:
+            self.fields["subarea_curso"].queryset = (
+                SubareaCursoLectivo.objects.filter(
+                    institucion=institucion,
+                    curso_lectivo=curso_lectivo,
+                    activa=True,
+                )
+                .select_related("subarea", "eval_scheme")
+                .order_by("subarea__nombre")
+            )
+            self.fields["seccion"].queryset = (
+                SeccionCursoLectivo.objects.filter(
+                    institucion=institucion,
+                    curso_lectivo=curso_lectivo,
+                    activa=True,
+                )
+                .select_related("seccion__nivel")
+                .order_by("seccion__nivel__numero", "seccion__numero")
+            )
+            self.fields["subgrupo"].queryset = (
+                SubgrupoCursoLectivo.objects.filter(
+                    institucion=institucion,
+                    curso_lectivo=curso_lectivo,
+                    activa=True,
+                )
+                .select_related("subgrupo__seccion__nivel")
+                .order_by("subgrupo__seccion__nivel__numero", "subgrupo__seccion__numero", "subgrupo__letra")
+            )
+
+    def clean(self):
+        cleaned = super().clean()
+        scl = cleaned.get("subarea_curso")
+        sec_cl = cleaned.get("seccion")
+        sgr_cl = cleaned.get("subgrupo")
+        if not scl:
+            return cleaned
+
+        es_academica = scl.subarea.es_academica
+        if es_academica:
+            if not sec_cl:
+                self.add_error("seccion", "Debes seleccionar un grupo (sección) para esta materia.")
+            if sgr_cl:
+                self.add_error("subgrupo", "Esta materia académica no debe llevar subgrupo.")
+        else:
+            if not sgr_cl:
+                self.add_error("subgrupo", "Debes seleccionar un subgrupo para esta materia técnica.")
+            if sec_cl:
+                self.add_error("seccion", "Esta materia técnica se asigna por subgrupo.")
+
+        if self.profesor and scl and self.curso_lectivo:
+            dup = DocenteAsignacion.objects.filter(
+                docente=self.profesor,
+                subarea_curso=scl,
+                curso_lectivo=self.curso_lectivo,
+            )
+            if sec_cl:
+                dup = dup.filter(seccion=sec_cl.seccion, subgrupo__isnull=True)
+            if sgr_cl:
+                dup = dup.filter(subgrupo=sgr_cl.subgrupo)
+            if dup.exists():
+                raise ValidationError("Ya tenés esta asignación creada.")
+        return cleaned

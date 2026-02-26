@@ -4,6 +4,7 @@ import csv
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
+from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.db.models import Count, Prefetch, Q
 from django.http import HttpResponse
@@ -11,16 +12,18 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
 
+from catalogos.models import CursoLectivo
 from evaluaciones.models import (
     DocenteAsignacion,
     EsquemaEvalComponente,
     Periodo,
     PeriodoCursoLectivo,
+    SubareaCursoLectivo,
 )
 from config_institucional.models import Profesor
 from matricula.models import MatriculaAcademica
 
-from .forms import ActividadEvaluacionForm, IndicadorActividadFormSet
+from .forms import ActividadEvaluacionForm, AsignacionOnboardingForm, IndicadorActividadFormSet
 from .models import ActividadEvaluacion, AsistenciaRegistro, AsistenciaSesion
 from .models import PuntajeIndicador
 from .models import ObservacionActividadEstudiante
@@ -82,6 +85,17 @@ def _get_profesor(request):
     if inst_id:
         qs = qs.filter(institucion_id=inst_id)
     return qs.first()
+
+
+def _limite_asignaciones_docente(profesor):
+    if not profesor:
+        return None
+    institucion = profesor.institucion
+    if not getattr(institucion, "es_institucion_general", False):
+        return None
+    if profesor.max_asignaciones_override is not None:
+        return profesor.max_asignaciones_override
+    return institucion.max_asignaciones_general or 10
 
 
 def _get_estudiantes(asignacion):
@@ -378,10 +392,12 @@ def home_docente(request):
     profesor = _get_profesor(request)
     error = None
     asignaciones_data = []
+    limite_asignaciones = None
 
     if not profesor:
         error = "No tienes perfil de docente registrado en esta institución."
     else:
+        limite_asignaciones = _limite_asignaciones_docente(profesor)
         componentes_prefetch = Prefetch(
             "eval_scheme_snapshot__componentes_esquema",
             queryset=EsquemaEvalComponente.objects.select_related("componente").order_by("componente__nombre"),
@@ -472,6 +488,92 @@ def home_docente(request):
         "hoy": timezone.localdate(),
         "profesor": profesor,
         "error": error,
+        "show_onboarding": bool(profesor and not asignaciones_data),
+        "limite_asignaciones": limite_asignaciones,
+    })
+
+
+@login_required
+@permission_required("libro_docente.access_libro_docente", raise_exception=True)
+def asignacion_onboarding_view(request):
+    profesor = _get_profesor(request)
+    if not profesor:
+        messages.error(request, "No tienes perfil docente para crear asignaciones.")
+        return redirect("libro_docente:home")
+
+    institucion = profesor.institucion
+    curso_lectivo = CursoLectivo.get_activo()
+    if not curso_lectivo:
+        curso_lectivo = (
+            CursoLectivo.objects
+            .order_by("-anio", "-id")
+            .first()
+        )
+    if not curso_lectivo:
+        messages.error(request, "No hay curso lectivo disponible.")
+        return redirect("libro_docente:home")
+
+    form = AsignacionOnboardingForm(
+        request.POST or None,
+        institucion=institucion,
+        curso_lectivo=curso_lectivo,
+        profesor=profesor,
+    )
+
+    if request.method == "POST" and form.is_valid():
+        scl = form.cleaned_data["subarea_curso"]
+        sec_cl = form.cleaned_data.get("seccion")
+        sgr_cl = form.cleaned_data.get("subgrupo")
+        asignacion = DocenteAsignacion(
+            docente=profesor,
+            subarea_curso=scl,
+            curso_lectivo=curso_lectivo,
+            seccion=sec_cl.seccion if sec_cl else None,
+            subgrupo=sgr_cl.subgrupo if sgr_cl else None,
+            activo=True,
+        )
+        try:
+            asignacion.full_clean()
+            asignacion.save()
+            messages.success(request, "Asignación creada correctamente. Ya puedes usar el Libro del Docente.")
+            return redirect("libro_docente:home")
+        except ValidationError as exc:
+            form.add_error(None, exc)
+
+    return render(request, "libro_docente/asignacion_onboarding.html", {
+        "form": form,
+        "curso_lectivo": curso_lectivo,
+        "institucion": institucion,
+        "limite_asignaciones": _limite_asignaciones_docente(profesor),
+    })
+
+
+@login_required
+@permission_required("libro_docente.access_libro_docente", raise_exception=True)
+def asignacion_delete_view(request, asignacion_id):
+    asignacion = _obtener_asignacion_con_permiso(request, asignacion_id)
+    if asignacion is None:
+        messages.error(request, "No tienes acceso a esta asignación.")
+        return redirect("libro_docente:home")
+
+    if request.method == "POST":
+        if request.POST.get("confirmar") != "SI":
+            messages.error(request, "Debes confirmar para eliminar la asignación.")
+            return redirect(reverse("libro_docente:asignacion_delete", args=[asignacion.id]))
+        with transaction.atomic():
+            AsistenciaSesion.objects.filter(docente_asignacion=asignacion).delete()
+            ActividadEvaluacion.objects.filter(docente_asignacion=asignacion).delete()
+            EstudianteOcultoAsignacion.objects.filter(docente_asignacion=asignacion).delete()
+            EstudianteAdecuacionAsignacion.objects.filter(docente_asignacion=asignacion).delete()
+            asignacion.delete()
+        messages.success(
+            request,
+            "Asignación eliminada. Se borraron los registros asociados del Libro del Docente, pero no los estudiantes.",
+        )
+        return redirect("libro_docente:home")
+
+    return render(request, "libro_docente/asignacion_confirm_delete.html", {
+        "asignacion": asignacion,
     })
 
 
