@@ -746,6 +746,68 @@ def asignacion_estudiantes_excel_view(request, asignacion_id):
         return redirect("libro_docente:home")
 
     form_manual = EstudianteCargaManualForm()
+    lista_actual = _obtener_lista_privada_docente(asignacion)
+
+    if request.method == "POST" and request.POST.get("accion") == "actualizar_lista":
+        estudiante_id = request.POST.get("estudiante_id")
+        if not (estudiante_id and str(estudiante_id).isdigit()):
+            messages.error(request, "No se pudo identificar al estudiante para actualizar.")
+            return redirect(reverse("libro_docente:asignacion_estudiantes_excel", args=[asignacion.id]))
+        if not lista_actual:
+            messages.error(request, "No existe una lista cargada para esta asignación.")
+            return redirect(reverse("libro_docente:asignacion_estudiantes_excel", args=[asignacion.id]))
+
+        item = ListaEstudiantesDocenteItem.objects.filter(
+            lista=lista_actual,
+            estudiante_id=int(estudiante_id),
+        ).select_related("estudiante").first()
+        if not item:
+            messages.error(request, "El estudiante no pertenece a tu lista actual.")
+            return redirect(reverse("libro_docente:asignacion_estudiantes_excel", args=[asignacion.id]))
+
+        p1 = (request.POST.get("primer_apellido") or "").strip().upper()
+        p2 = (request.POST.get("segundo_apellido") or "").strip().upper()
+        nom = (request.POST.get("nombres") or "").strip().upper()
+        if not p1 or not p2 or not nom:
+            messages.error(request, "Para actualizar, completa primer apellido, segundo apellido y nombre.")
+            return redirect(reverse("libro_docente:asignacion_estudiantes_excel", args=[asignacion.id]))
+
+        est = item.estudiante
+        updates = []
+        if est.primer_apellido != p1:
+            est.primer_apellido = p1
+            updates.append("primer_apellido")
+        if est.segundo_apellido != p2:
+            est.segundo_apellido = p2
+            updates.append("segundo_apellido")
+        if est.nombres != nom:
+            est.nombres = nom
+            updates.append("nombres")
+        if updates:
+            est.save(update_fields=updates)
+            messages.success(request, "Estudiante actualizado correctamente.")
+        else:
+            messages.info(request, "No hubo cambios para actualizar.")
+        return redirect(reverse("libro_docente:asignacion_estudiantes_excel", args=[asignacion.id]))
+
+    if request.method == "POST" and request.POST.get("accion") == "eliminar_lista":
+        estudiante_id = request.POST.get("estudiante_id")
+        if not (estudiante_id and str(estudiante_id).isdigit()):
+            messages.error(request, "No se pudo identificar al estudiante para quitar de la lista.")
+            return redirect(reverse("libro_docente:asignacion_estudiantes_excel", args=[asignacion.id]))
+        if not lista_actual:
+            messages.error(request, "No existe una lista cargada para esta asignación.")
+            return redirect(reverse("libro_docente:asignacion_estudiantes_excel", args=[asignacion.id]))
+
+        eliminado, _ = ListaEstudiantesDocenteItem.objects.filter(
+            lista=lista_actual,
+            estudiante_id=int(estudiante_id),
+        ).delete()
+        if eliminado:
+            messages.success(request, "Estudiante quitado de tu lista. No se eliminó del sistema.")
+        else:
+            messages.warning(request, "El estudiante ya no estaba en tu lista.")
+        return redirect(reverse("libro_docente:asignacion_estudiantes_excel", args=[asignacion.id]))
 
     if request.method == "POST" and request.POST.get("accion") == "agregar_manual":
         limite = 25 if asignacion.subgrupo_id else 50
@@ -1017,6 +1079,11 @@ def asignacion_estudiantes_excel_view(request, asignacion_id):
                     f"no cargados {len(errores)}."
                 ),
             )
+            max_detalle = 10
+            detalle = " | ".join(errores[:max_detalle])
+            if len(errores) > max_detalle:
+                detalle += f" | ... y {len(errores) - max_detalle} error(es) más."
+            messages.error(request, f"Detalle de no cargados: {detalle}")
         else:
             messages.success(
                 request,

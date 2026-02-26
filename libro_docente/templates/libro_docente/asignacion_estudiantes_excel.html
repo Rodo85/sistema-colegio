@@ -93,19 +93,40 @@
             <th>Primer apellido</th>
             <th>Segundo apellido</th>
             <th>Nombre</th>
+            <th class="text-end">Acciones</th>
           </tr>
         </thead>
         <tbody>
           {% for m in estudiantes %}
           <tr>
             <td>{{ m.estudiante.identificacion }}</td>
-            <td>{{ m.estudiante.primer_apellido }}</td>
-            <td>{{ m.estudiante.segundo_apellido }}</td>
-            <td>{{ m.estudiante.nombres }}</td>
+            <td>
+              <input form="edit-est-{{ m.estudiante.id }}" type="text" name="primer_apellido" class="form-control form-control-sm" value="{{ m.estudiante.primer_apellido }}" required>
+            </td>
+            <td>
+              <input form="edit-est-{{ m.estudiante.id }}" type="text" name="segundo_apellido" class="form-control form-control-sm" value="{{ m.estudiante.segundo_apellido }}" required>
+            </td>
+            <td>
+              <input form="edit-est-{{ m.estudiante.id }}" type="text" name="nombres" class="form-control form-control-sm" value="{{ m.estudiante.nombres }}" required>
+            </td>
+            <td class="text-end" style="white-space: nowrap;">
+              <form id="edit-est-{{ m.estudiante.id }}" method="post" class="d-inline">
+                {% csrf_token %}
+                <input type="hidden" name="accion" value="actualizar_lista">
+                <input type="hidden" name="estudiante_id" value="{{ m.estudiante.id }}">
+                <button type="submit" class="btn btn-sm btn-outline-primary">Actualizar</button>
+              </form>
+              <form method="post" class="d-inline" onsubmit="return confirm('¿Quitar este estudiante solo de tu lista? No se eliminará del sistema.');">
+                {% csrf_token %}
+                <input type="hidden" name="accion" value="eliminar_lista">
+                <input type="hidden" name="estudiante_id" value="{{ m.estudiante.id }}">
+                <button type="submit" class="btn btn-sm btn-outline-danger">Quitar</button>
+              </form>
+            </td>
           </tr>
           {% empty %}
           <tr>
-            <td colspan="4" class="text-muted">Todavía no has cargado estudiantes para este grupo/subgrupo.</td>
+            <td colspan="5" class="text-muted">Todavía no has cargado estudiantes para este grupo/subgrupo.</td>
           </tr>
           {% endfor %}
         </tbody>
