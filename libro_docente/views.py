@@ -151,6 +151,15 @@ def _obtener_estudiante_defaults():
     return {"tipo_identificacion": tipo_id, "sexo": sexo, "nacionalidad": nacionalidad}
 
 
+def _normalizar_identificacion(valor):
+    return re.sub(r"[\s-]+", "", str(valor or "").strip().upper())
+
+
+def _es_tipo_cedula(tipo_identificacion):
+    nombre = (getattr(tipo_identificacion, "nombre", "") or "").upper()
+    return "CÉDULA" in nombre or "CEDULA" in nombre
+
+
 def _leer_estudiantes_desde_archivo(archivo):
     nombre = (getattr(archivo, "name", "") or "").lower()
     filas = []
@@ -833,13 +842,14 @@ def asignacion_estudiantes_excel_view(request, asignacion_id):
                     )
                     return redirect(reverse("libro_docente:asignacion_estudiantes_excel", args=[asignacion.id]))
 
-                ident = form_manual.cleaned_data["identificacion"]
+                ident = _normalizar_identificacion(form_manual.cleaned_data["identificacion"])
                 p1 = form_manual.cleaned_data["primer_apellido"].strip().upper()
                 p2 = form_manual.cleaned_data["segundo_apellido"].strip().upper()
                 nom = form_manual.cleaned_data["nombres"].strip().upper()
                 tipo_id = form_manual.cleaned_data["tipo_identificacion"]
 
                 est = Estudiante.objects.filter(identificacion=ident).first()
+                estudiante_reutilizado = bool(est)
                 if est:
                     est.tipo_identificacion = tipo_id
                     est.primer_apellido = p1
@@ -907,7 +917,13 @@ def asignacion_estudiantes_excel_view(request, asignacion_id):
                     item.orden = total_actual + 1
                     item.save(update_fields=["orden"])
 
-            messages.success(request, "Estudiante agregado correctamente.")
+            if estudiante_reutilizado:
+                messages.success(
+                    request,
+                    "Estudiante agregado a tu lista usando el registro existente (sin duplicar).",
+                )
+            else:
+                messages.success(request, "Estudiante agregado correctamente.")
             return redirect(reverse("libro_docente:asignacion_estudiantes_excel", args=[asignacion.id]))
 
     if request.method == "POST" and request.POST.get("accion") == "plantilla":
@@ -943,7 +959,7 @@ def asignacion_estudiantes_excel_view(request, asignacion_id):
             messages.error(request, "El archivo no contiene filas válidas.")
             return redirect(reverse("libro_docente:asignacion_estudiantes_excel", args=[asignacion.id]))
 
-        ids = [f["identificacion"].strip().upper() for f in filas if f.get("identificacion")]
+        ids = [_normalizar_identificacion(f.get("identificacion")) for f in filas if f.get("identificacion")]
         if len(ids) != len(set(ids)):
             messages.error(request, "El archivo contiene IDs repetidos. Corrige e intenta de nuevo.")
             return redirect(reverse("libro_docente:asignacion_estudiantes_excel", args=[asignacion.id]))
@@ -974,13 +990,19 @@ def asignacion_estudiantes_excel_view(request, asignacion_id):
                 lista, _ = _obtener_o_crear_lista_privada_docente(asignacion, request.user)
                 estudiantes_lista = []
                 for idx, f in enumerate(filas, start=2):
-                    ident = (f.get("identificacion") or "").strip().upper()
+                    ident = _normalizar_identificacion(f.get("identificacion"))
                     p1 = (f.get("primer_apellido") or "").strip().upper()
                     p2 = (f.get("segundo_apellido") or "").strip().upper()
                     nom = (f.get("nombres") or "").strip().upper()
                     if not ident or not p1 or not p2 or not nom:
                         errores.append(f"Fila {idx}: faltan datos obligatorios.")
                         continue
+                    if _es_tipo_cedula(defaults_catalogo["tipo_identificacion"]):
+                        if not ident.isdigit() or len(ident) != 9:
+                            errores.append(
+                                f"Fila {idx}: cédula inválida ({ident}). Debe tener 9 dígitos sin guiones."
+                            )
+                            continue
 
                     est = Estudiante.objects.filter(identificacion=ident).first()
                     if est:

@@ -1,6 +1,8 @@
 """
 Formularios para el módulo de evaluación por indicadores.
 """
+import re
+
 from django import forms
 from django.forms import inlineformset_factory
 from django.core.exceptions import ValidationError
@@ -333,4 +335,18 @@ class EstudianteCargaManualForm(forms.Form):
     )
 
     def clean_identificacion(self):
-        return (self.cleaned_data.get("identificacion") or "").strip().upper()
+        raw = (self.cleaned_data.get("identificacion") or "").strip().upper()
+        return re.sub(r"[\s-]+", "", raw)
+
+    def clean(self):
+        cleaned = super().clean()
+        tipo = cleaned.get("tipo_identificacion")
+        identificacion = cleaned.get("identificacion") or ""
+        tipo_nombre = (getattr(tipo, "nombre", "") or "").upper()
+        if ("CÉDULA" in tipo_nombre or "CEDULA" in tipo_nombre) and identificacion:
+            if not identificacion.isdigit() or len(identificacion) != 9:
+                self.add_error(
+                    "identificacion",
+                    "Si es cédula de identidad debe tener exactamente 9 dígitos (ejemplo: 112280841).",
+                )
+        return cleaned
