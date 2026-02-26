@@ -45,21 +45,17 @@ try:
 except Exception:
     openpyxl = None
 
-# ─── Tabla: % ausencias injustificadas → puntaje base (0-10) ─────────────────
-# Rangos: [min_inclusive, max_exclusive) → puntaje
-# 0% a <1% => 10, 1% a <10% => 9, 10% a <20% => 8, ..., 90% a 100% => 0
+# ─── Tabla: % ausencias injustificadas → asignación final (0-5) ──────────────
+# Rangos: [min_inclusive, max_exclusive) → asignación
+# 0% a <10% => 5, 10% a <20% => 4, 20% a <30% => 3, 30% a <40% => 2,
+# 40% a <50% => 1, 50% o más => 0
 _MEP_RANGES = [
-    (0, 1, 10),
-    (1, 10, 9),
-    (10, 20, 8),
-    (20, 30, 7),
-    (30, 40, 6),
-    (40, 50, 5),
-    (50, 60, 4),
-    (60, 70, 3),
-    (70, 80, 2),
-    (80, 90, 1),
-    (90, 100.01, 0),  # 90% a 100% inclusive
+    (0, 10, 5),
+    (10, 20, 4),
+    (20, 30, 3),
+    (30, 40, 2),
+    (40, 50, 1),
+    (50, 100.01, 0),  # >= 50%
 ]
 
 TIPOS_EVALUACION = (
@@ -71,7 +67,7 @@ TIPOS_EVALUACION = (
 
 
 def _nota_mep(pct: float) -> int:
-    """Convierte % ausencias injustificadas a puntaje base 0-10."""
+    """Convierte % ausencias injustificadas a asignación final 0-5."""
     pct = round(pct, 4)
     for min_pct, max_pct, nota in _MEP_RANGES:
         if min_pct <= pct < max_pct:
@@ -299,9 +295,9 @@ def _calcular_resumen(asignacion, periodo, matriculas):
 
         pct = (float((ausentes_inj / Decimal(str(total_lecciones))) * Decimal("100")) if total_lecciones > 0 else 0.0)
         puntaje_base = _nota_mep(pct)
-        # aporte_real = (puntaje_base / 10) * peso_asistencia_esquema
+        # aporte_real = (asignacion_final / 5) * peso_asistencia_esquema
         aporte_real = (
-            Decimal(str(puntaje_base)) / Decimal("10") * peso_asistencia
+            Decimal(str(puntaje_base)) / Decimal("5") * peso_asistencia
             if peso_asistencia else Decimal("0")
         )
 

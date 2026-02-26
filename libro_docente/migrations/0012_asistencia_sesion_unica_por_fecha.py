@@ -93,6 +93,7 @@ def consolidar_sesiones_por_fecha(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
+    atomic = False
 
     dependencies = [
         ("libro_docente", "0011_asistencia_lecciones_y_tardias"),

@@ -155,7 +155,7 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
                   <th title="Ausencias justificadas">AJ</th>
                   <th title="% ausencias injustificadas">% Aus.</th>
                   <th title="Asignación final según regla de ausencias">Asig.</th>
-                  <th title="Aporte = (Puntaje base ÷ 10) × Peso esquema">Aporte</th>
+                  <th title="Aporte = (Asignación ÷ 5) × Peso esquema">Aporte</th>
                   <th>Alerta</th>
                 </tr>
               </thead>
@@ -208,9 +208,8 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
           <p class="mep-legend" style="padding:10px 16px;">
             <strong>Regla:</strong> el cálculo se hace por lecciones. TM suma media ausencia injustificada (50% de lecciones del día),
             TC y AI suman ausencia injustificada completa (100% de lecciones del día), AJ no suma injustificadas.
-            Asignación final: 0% a &lt;1%→10, 1% a &lt;10%→9, 10% a &lt;20%→8, 20% a &lt;30%→7, 30% a &lt;40%→6,
-            40% a &lt;50%→5, 50% a &lt;60%→4, 60% a &lt;70%→3, 70% a &lt;80%→2, 80% a &lt;90%→1, 90%-100%→0.
-            Aporte = (Asignación ÷ 10) × Peso asistencia del esquema.
+            Asignación final: 0% a &lt;10%→5, 10% a &lt;20%→4, 20% a &lt;30%→3, 30% a &lt;40%→2, 40% a &lt;50%→1, 50% o más→0.
+            Aporte = (Asignación ÷ 5) × Peso asistencia del esquema.
           </p>
         </div>
       </div>
