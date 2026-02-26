@@ -199,6 +199,7 @@ class AsignacionOnboardingForm(forms.Form):
             )
             self.fields["eval_scheme"].queryset = (
                 EsquemaEval.objects.filter(activo=True)
+                .prefetch_related("componentes_esquema__componente")
                 .order_by("tipo", "nombre")
             )
             self.fields["seccion"].queryset = (
@@ -222,6 +223,7 @@ class AsignacionOnboardingForm(forms.Form):
 
         self.fields["seccion"].label_from_instance = self._label_seccion
         self.fields["subgrupo"].label_from_instance = self._label_subgrupo
+        self.fields["eval_scheme"].label_from_instance = self._label_esquema
 
         seccion_sel = self.data.get("seccion") or self.initial.get("seccion")
         if seccion_sel:
@@ -250,6 +252,14 @@ class AsignacionOnboardingForm(forms.Form):
         s = subgrupo_cl.subgrupo.seccion
         return f"{s.nivel.numero}-{s.numero}{subgrupo_cl.subgrupo.letra}"
 
+    @staticmethod
+    def _label_esquema(esquema):
+        comps = list(getattr(esquema, "componentes_esquema", []).all()) if hasattr(esquema, "componentes_esquema") else []
+        if not comps:
+            return f"{esquema.nombre} (sin componentes)"
+        parts = [f"{c.componente.codigo}={int(c.porcentaje) if c.porcentaje == int(c.porcentaje) else c.porcentaje}" for c in comps]
+        return f"{esquema.nombre} — " + ", ".join(parts)
+
     def clean(self):
         cleaned = super().clean()
         subarea = cleaned.get("subarea")
@@ -259,6 +269,13 @@ class AsignacionOnboardingForm(forms.Form):
             return cleaned
 
         es_academica = subarea.es_academica
+        if sec_cl and self.institucion and self.curso_lectivo:
+            if sec_cl.institucion_id != self.institucion.id or sec_cl.curso_lectivo_id != self.curso_lectivo.id:
+                self.add_error("seccion", "La sección seleccionada no pertenece al catálogo institucional activo.")
+        if sgr_cl and self.institucion and self.curso_lectivo:
+            if sgr_cl.institucion_id != self.institucion.id or sgr_cl.curso_lectivo_id != self.curso_lectivo.id:
+                self.add_error("subgrupo", "El subgrupo seleccionado no pertenece al catálogo institucional activo.")
+
         if es_academica:
             if not sec_cl:
                 self.add_error("seccion", "Debes seleccionar un grupo (sección) para esta materia.")
