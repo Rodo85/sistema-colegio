@@ -96,6 +96,8 @@ class RegistroUsuarioForm(UserCreationForm):
 
     def clean_email(self):
         email = (self.cleaned_data.get("email") or "").strip().lower()
+        if not email.endswith("@mep.go.cr"):
+            raise forms.ValidationError("El correo debe ser institucional y terminar en @mep.go.cr.")
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError("Ya existe una cuenta con este correo.")
         return email

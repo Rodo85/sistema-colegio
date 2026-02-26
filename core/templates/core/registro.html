@@ -13,6 +13,17 @@
     .body{padding:20px 24px}
     .help{font-size:.85rem;color:#6c757d}
     .errorlist{color:#b42318;margin:4px 0 0;padding-left:18px}
+    .payment-highlight{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:10px;
+      border:2px solid #dc2626;
+      background:#fff1f2;
+      color:#991b1b;
+      font-size:1rem;
+      font-weight:700;
+      line-height:1.4;
+    }
   </style>
 </head>
 <body>
@@ -20,7 +31,7 @@
     <div class="head">
       <h4 class="mb-1">Registro de cuenta</h4>
       <div class="help">La cuenta quedará pendiente hasta aprobación del superadmin.</div>
-      <div class="help" style="margin-top:6px;">
+      <div class="payment-highlight">
         Comprobante de pago por ¢12.000 — SINPE: <strong>8672-4880</strong> con <strong>Rodolfo Garro M.</strong>
       </div>
     </div>
@@ -97,6 +108,9 @@
         <div class="mt-4 d-flex gap-2">
           <button type="submit" class="btn btn-primary">Enviar solicitud</button>
           <a class="btn btn-outline-secondary" href="{% url 'admin:login' %}">Volver al login</a>
+        </div>
+        <div class="payment-highlight">
+          Comprobante de pago por ¢12.000 — SINPE: <strong>8672-4880</strong> con <strong>Rodolfo Garro M.</strong>
         </div>
       </form>
     </div>
