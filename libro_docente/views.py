@@ -607,6 +607,12 @@ def home_docente(request):
                 "grupo_label": grupo_label,
             })
 
+    can_create_asignacion = bool(
+        profesor and (
+            limite_asignaciones is None or len(asignaciones_data) < limite_asignaciones
+        )
+    )
+
     return render(request, "libro_docente/hoy.html", {
         "asignaciones": asignaciones_data,
         "hoy": timezone.localdate(),
@@ -614,6 +620,7 @@ def home_docente(request):
         "error": error,
         "show_onboarding": bool(profesor and not asignaciones_data),
         "limite_asignaciones": limite_asignaciones,
+        "can_create_asignacion": can_create_asignacion,
     })
 
 

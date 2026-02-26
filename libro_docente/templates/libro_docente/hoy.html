@@ -69,6 +69,11 @@
         {% if profesor %} · {{ profesor.usuario.full_name }}{% endif %}
       </p>
     </div>
+    {% if can_create_asignacion %}
+    <div>
+      <a href="{% url 'libro_docente:asignacion_onboarding' %}" class="btn btn-primary">Crear asignación</a>
+    </div>
+    {% endif %}
   </div>
 
   {% if error %}
@@ -79,13 +84,15 @@
     <div class="empty-state">
       <svg width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
       <p>No tienes asignaciones activas en este período.</p>
-      {% if show_onboarding %}
+      {% if can_create_asignacion %}
       <p style="margin-top:8px;">
-        <a href="{% url 'libro_docente:asignacion_onboarding' %}" class="btn btn-primary">Crear mi primera asignación</a>
+        <a href="{% url 'libro_docente:asignacion_onboarding' %}" class="btn btn-primary">Crear asignación</a>
       </p>
       {% if limite_asignaciones %}
       <p style="font-size:.85rem;color:var(--muted);">Límite actual en Institución General: {{ limite_asignaciones }} asignaciones.</p>
       {% endif %}
+      {% elif limite_asignaciones %}
+      <p style="font-size:.85rem;color:var(--muted);">Alcanzaste el límite actual ({{ limite_asignaciones }} asignaciones).</p>
       {% endif %}
     </div>
   {% else %}

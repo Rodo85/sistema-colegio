@@ -221,9 +221,17 @@ class AsignacionOnboardingForm(forms.Form):
         seccion_sel = self.data.get("seccion") or self.initial.get("seccion")
         if seccion_sel:
             try:
-                self.fields["subgrupo"].queryset = self.fields["subgrupo"].queryset.filter(
-                    subgrupo__seccion_id=int(seccion_sel)
+                seccion_cl_id = int(seccion_sel)
+                seccion_catalogo_id = (
+                    self.fields["seccion"].queryset
+                    .filter(pk=seccion_cl_id)
+                    .values_list("seccion_id", flat=True)
+                    .first()
                 )
+                if seccion_catalogo_id:
+                    self.fields["subgrupo"].queryset = self.fields["subgrupo"].queryset.filter(
+                        subgrupo__seccion_id=seccion_catalogo_id
+                    )
             except (TypeError, ValueError):
                 pass
 
