@@ -35,7 +35,7 @@
       <div class="alert alert-info">Límite actual en Institución General: {{ limite_asignaciones }} asignaciones.</div>
       {% endif %}
       <div class="alert alert-info">
-        Paso A: elige grupo/subgrupo válido · Paso B: elige materia · Paso C: el esquema se asigna automáticamente.
+        Paso A: elige categoría y materia · Paso B: elige grupo/subgrupo válido · Paso C: el esquema se asigna automáticamente.
       </div>
       {% if form.non_field_errors %}
       <div class="alert alert-danger">
@@ -44,6 +44,11 @@
       {% endif %}
       <form method="post">
         {% csrf_token %}
+        <div class="fg">
+          <label for="{{ form.categoria.id_for_label }}">{{ form.categoria.label }}</label>
+          {{ form.categoria }}
+          {{ form.categoria.errors }}
+        </div>
         <div class="fg">
           <label for="{{ form.subarea.id_for_label }}">{{ form.subarea.label }}</label>
           {{ form.subarea }}
@@ -74,9 +79,42 @@
 </div>
 <script>
   (function () {
+    var categoriaSelect = document.getElementById("{{ form.categoria.id_for_label }}");
+    var subareaSelect = document.getElementById("{{ form.subarea.id_for_label }}");
     var seccionSelect = document.getElementById("{{ form.seccion.id_for_label }}");
     var subgrupoSelect = document.getElementById("{{ form.subgrupo.id_for_label }}");
-    if (!seccionSelect || !subgrupoSelect) return;
+    if (!categoriaSelect || !subareaSelect || !seccionSelect || !subgrupoSelect) return;
+
+    var subareaCategoria = {
+      {% for sa in form.fields.subarea.queryset %}
+      "{{ sa.id }}": "{% if sa.es_academica %}ACADEMICA{% else %}ESP_{{ sa.especialidad_id }}{% endif %}",
+      {% endfor %}
+    };
+    var opcionesOriginales = Array.prototype.slice.call(subareaSelect.options);
+
+    function filtrarSubareas() {
+      var categoria = categoriaSelect.value;
+      var valorActual = subareaSelect.value;
+      var mantener = false;
+      subareaSelect.innerHTML = "";
+
+      for (var i = 0; i < opcionesOriginales.length; i++) {
+        var opt = opcionesOriginales[i].cloneNode(true);
+        if (!opt.value) {
+          subareaSelect.appendChild(opt);
+          continue;
+        }
+        if (subareaCategoria[opt.value] === categoria) {
+          if (opt.value === valorActual) mantener = true;
+          subareaSelect.appendChild(opt);
+        }
+      }
+      if (mantener) {
+        subareaSelect.value = valorActual;
+      } else {
+        subareaSelect.value = "";
+      }
+    }
 
     function seccionCodigo(texto) {
       var t = (texto || "").trim();
@@ -105,7 +143,9 @@
       if (!keptCurrent) subgrupoSelect.value = "";
     }
 
+    categoriaSelect.addEventListener("change", filtrarSubareas);
     seccionSelect.addEventListener("change", filtrarSubgrupos);
+    filtrarSubareas();
     filtrarSubgrupos();
   })();
 </script>

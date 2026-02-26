@@ -7,7 +7,7 @@ from django import forms
 from django.forms import inlineformset_factory
 from django.core.exceptions import ValidationError
 
-from catalogos.models import SubArea, TipoIdentificacion
+from catalogos.models import Especialidad, SubArea, TipoIdentificacion
 from config_institucional.models import SeccionCursoLectivo, SubgrupoCursoLectivo
 from evaluaciones.models import DocenteAsignacion, EsquemaEval
 from .models import ActividadEvaluacion, IndicadorActividad, PuntajeIndicador
@@ -165,6 +165,13 @@ class PuntajeIndicadorForm(forms.ModelForm):
 
 
 class AsignacionOnboardingForm(forms.Form):
+    CATEGORIA_ACADEMICA = "ACADEMICA"
+
+    categoria = forms.ChoiceField(
+        choices=(),
+        label="Categoría",
+        widget=forms.Select(attrs={"class": "form-control"}),
+    )
     subarea = forms.ModelChoiceField(
         queryset=SubArea.objects.none(),
         label="Materia",
@@ -194,6 +201,13 @@ class AsignacionOnboardingForm(forms.Form):
         self.curso_lectivo = curso_lectivo
         self.profesor = profesor
 
+        categorias = [(self.CATEGORIA_ACADEMICA, "Académica")]
+        categorias += [
+            (f"ESP_{esp.id}", esp.nombre)
+            for esp in Especialidad.objects.order_by("nombre")
+        ]
+        self.fields["categoria"].choices = categorias
+
         if institucion and curso_lectivo:
             self.fields["subarea"].queryset = (
                 SubArea.objects.all()
@@ -222,6 +236,10 @@ class AsignacionOnboardingForm(forms.Form):
                 .select_related("subgrupo__seccion__nivel")
                 .order_by("subgrupo__seccion__nivel__numero", "subgrupo__seccion__numero", "subgrupo__letra")
             )
+
+        categoria_sel = self.data.get("categoria") or self.initial.get("categoria")
+        if not categoria_sel:
+            self.initial["categoria"] = self.CATEGORIA_ACADEMICA
 
         self.fields["seccion"].label_from_instance = self._label_seccion
         self.fields["subgrupo"].label_from_instance = self._label_subgrupo
@@ -264,11 +282,22 @@ class AsignacionOnboardingForm(forms.Form):
 
     def clean(self):
         cleaned = super().clean()
+        categoria = cleaned.get("categoria")
         subarea = cleaned.get("subarea")
         sec_cl = cleaned.get("seccion")
         sgr_cl = cleaned.get("subgrupo")
         if not subarea:
             return cleaned
+        if categoria == self.CATEGORIA_ACADEMICA and not subarea.es_academica:
+            self.add_error("subarea", "La materia seleccionada no pertenece a la categoría Académica.")
+        if categoria and categoria.startswith("ESP_"):
+            try:
+                esp_id = int(categoria.split("_", 1)[1])
+            except (TypeError, ValueError):
+                self.add_error("categoria", "La categoría seleccionada no es válida.")
+                return cleaned
+            if subarea.es_academica or subarea.especialidad_id != esp_id:
+                self.add_error("subarea", "La materia seleccionada no corresponde a la especialidad elegida.")
 
         es_academica = subarea.es_academica
         if sec_cl and self.institucion and self.curso_lectivo:
