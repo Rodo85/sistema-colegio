@@ -148,12 +148,13 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
                   <th>Estudiante</th>
                   <th></th>
                   <th title="Total de lecciones desde su ingreso">Lecc.</th>
-                  <th title="Presente completo">P</th>
-                  <th title="Tardía injustificada media ausencia">TM</th>
-                  <th title="Tardía injustificada ausencia completa">TC</th>
-                  <th title="Ausencias injustificadas acumuladas en lecciones">AI lecc.</th>
-                  <th title="Ausencias justificadas">AJ</th>
+                  <th title="Lecciones presentes">P</th>
+                  <th title="Cantidad de tardías medias">TM</th>
+                  <th title="Cantidad de tardías completas">TC</th>
+                  <th title="Ausencias injustificadas en lecciones">AI</th>
+                  <th title="Ausencias justificadas en lecciones">AJ</th>
                   <th title="% ausencias injustificadas">% Aus.</th>
+                  <th title="% de asistencia (lecciones presentes / lecciones totales)">% Asist.</th>
                   <th title="Asignación final según regla de ausencias">Asig.</th>
                   <th title="Aporte = (Asignación ÷ 5) × Peso esquema">Aporte</th>
                   <th>Alerta</th>
@@ -181,6 +182,7 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
                   <td style="color:#991b1b;font-weight:700;">{{ r.ausentes_inj_lecciones }}</td>
                   <td style="color:#3730a3;font-weight:700;">{{ r.ausentes_just }}</td>
                   <td>{{ r.pct }}%</td>
+                  <td>{{ r.pct_asistencia }}%</td>
                   <td>
                     <span class="nota-mep {% if r.nota_mep >= 8 %}nota-alto{% elif r.nota_mep >= 5 %}nota-medio{% else %}nota-bajo{% endif %}">
                       {{ r.nota_mep }}%
@@ -195,12 +197,12 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
                   </td>
                   <td>
                     <span class="nivel-{{ r.nivel_alerta }}">
-                      {% if r.nivel_alerta == "ok" %}OK{% elif r.nivel_alerta == "warning" %}Atención{% elif r.nivel_alerta == "nodata" %}Sin datos{% else %}Crítico{% endif %}
+                      {% if r.nivel_alerta == "ok" %}OK{% elif r.nivel_alerta == "nodata" %}Sin datos{% else %}Crítico{% endif %}
                     </span>
                   </td>
                 </tr>
                 {% empty %}
-                <tr><td colspan="13" style="text-align:center;color:var(--muted);padding:20px;">Sin datos.</td></tr>
+                <tr><td colspan="14" style="text-align:center;color:var(--muted);padding:20px;">Sin datos.</td></tr>
                 {% endfor %}
               </tbody>
             </table>
@@ -209,7 +211,7 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
             <strong>Regla:</strong> el cálculo se hace por lecciones. TM suma media ausencia injustificada (50% de lecciones del día),
             TC y AI suman ausencia injustificada completa (100% de lecciones del día), AJ no suma injustificadas.
             Asignación final: 0% a &lt;10%→5, 10% a &lt;20%→4, 20% a &lt;30%→3, 30% a &lt;40%→2, 40% a &lt;50%→1, 50% o más→0.
-            Aporte = (Asignación ÷ 5) × Peso asistencia del esquema.
+            Aporte = (Asignación ÷ 5) × Peso asistencia del esquema. Alerta crítica cuando % de asistencia es menor a 80%.
           </p>
         </div>
       </div>

@@ -221,19 +221,19 @@ tbody td{padding:8px 12px;vertical-align:middle;}
                 <td>
                   <div class="estado-group" id="grupo-{{ est.id }}">
                     <input type="radio" name="estado_{{ est.id }}" id="p-{{ est.id }}" value="{{ PRESENTE }}" {% if est.estado == PRESENTE %}checked{% endif %} onchange="onEstadoChange({{ est.id }}); actualizarStats()">
-                    <label for="p-{{ est.id }}">P</label>
+                    <label for="p-{{ est.id }}" title="Presente completo">P</label>
 
                     <input type="radio" name="estado_{{ est.id }}" id="tm-{{ est.id }}" value="{{ TARDIA_MEDIA }}" {% if est.estado == TARDIA_MEDIA %}checked{% endif %} onchange="onEstadoChange({{ est.id }}); actualizarStats()">
-                    <label for="tm-{{ est.id }}">TM</label>
+                    <label for="tm-{{ est.id }}" title="Tardía media (2 TM = 1 AI)">TM</label>
 
                     <input type="radio" name="estado_{{ est.id }}" id="tc-{{ est.id }}" value="{{ TARDIA_COMPLETA }}" {% if est.estado == TARDIA_COMPLETA %}checked{% endif %} onchange="onEstadoChange({{ est.id }}); actualizarStats()">
-                    <label for="tc-{{ est.id }}">TC</label>
+                    <label for="tc-{{ est.id }}" title="Tardía completa (1 TC = 1 AI)">TC</label>
 
                     <input type="radio" name="estado_{{ est.id }}" id="ai-{{ est.id }}" value="{{ AI }}" {% if est.estado == AI %}checked{% endif %} onchange="onEstadoChange({{ est.id }}); actualizarStats()">
-                    <label for="ai-{{ est.id }}">AI</label>
+                    <label for="ai-{{ est.id }}" title="Ausencia injustificada">AI</label>
 
                     <input type="radio" name="estado_{{ est.id }}" id="aj-{{ est.id }}" value="{{ AJ }}" {% if est.estado == AJ %}checked{% endif %} onchange="onEstadoChange({{ est.id }}); actualizarStats()">
-                    <label for="aj-{{ est.id }}">AJ</label>
+                    <label for="aj-{{ est.id }}" title="Ausencia justificada">AJ</label>
                   </div>
                 </td>
                 <td>
@@ -315,36 +315,40 @@ function getLeccionesDia() {
   return n && n > 0 ? n : 1;
 }
 
-function valorSugeridoPorEstado(estado, leccionesDia) {
-  if (estado === '{{ PRESENTE }}' || estado === '{{ AJ }}') return 0;
-  if (estado === '{{ TARDIA_MEDIA }}') return 1;
-  if (estado === '{{ TARDIA_COMPLETA }}' || estado === '{{ AI }}') return 1;
-  return 0;
-}
-
 function onEstadoChange(estId) {
   const checked = document.querySelector('input[name="estado_' + estId + '"]:checked');
   const injInput = document.getElementById('inj-' + estId);
   if (!checked || !injInput) return;
   const leccionesDia = getLeccionesDia();
+  // Al cambiar de estado, reinicia la cantidad y aplica valor por defecto.
+  injInput.value = '';
+  injInput.dataset.autofill = '1';
   if (checked.value === '{{ PRESENTE }}' || checked.value === '{{ AJ }}') {
-    injInput.value = '0';
+    injInput.value = '';
     injInput.step = '0.5';
     injInput.max = String(leccionesDia);
-    injInput.dataset.autofill = '1';
     return;
   }
   if (checked.value === '{{ TARDIA_MEDIA }}') {
     injInput.step = '1';
     injInput.max = String(leccionesDia);
+    injInput.value = '1';
+    return;
+  }
+  if (checked.value === '{{ TARDIA_COMPLETA }}') {
+    injInput.step = '1';
+    injInput.max = String(leccionesDia);
+    injInput.value = '1';
+    return;
+  }
+  if (checked.value === '{{ AI }}') {
+    injInput.step = '0.5';
+    injInput.max = String(leccionesDia);
+    injInput.value = String(leccionesDia).replace('.0', '');
+    return;
   } else {
     injInput.step = '0.5';
     injInput.max = String(leccionesDia);
-  }
-  const suggested = valorSugeridoPorEstado(checked.value, leccionesDia);
-  if (injInput.value === '' || injInput.dataset.autofill === '1') {
-    injInput.value = suggested.toFixed(1).replace('.0', '');
-    injInput.dataset.autofill = '1';
   }
 }
 

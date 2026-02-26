@@ -264,44 +264,58 @@ def _calcular_resumen(asignacion, periodo, matriculas):
         ]
         total_lecciones = sum((s.lecciones or 1) for s in sesiones_est)
 
-        presentes = 0
-        tardias_media = 0
-        tardias_completa = 0
+        presentes = Decimal("0")
+        tardias_media = Decimal("0")
+        tardias_completa = Decimal("0")
         ausentes_inj = Decimal("0")
-        ausentes_just = 0
+        ausentes_just = Decimal("0")
         for s in sesiones_est:
             lecciones = Decimal(str(s.lecciones or 1))
             reg = registros_map.get((est.id, s.id))
             if reg is None:
                 ausentes_inj += lecciones
                 continue
-            if reg.lecciones_injustificadas is not None:
-                valor_manual = Decimal(reg.lecciones_injustificadas)
-                if valor_manual < 0:
-                    valor_manual = Decimal("0")
-                if valor_manual > lecciones:
-                    valor_manual = lecciones
-                ausentes_inj += valor_manual
-                continue
             estado = reg.estado
             if estado == "T":
                 estado = AsistenciaRegistro.TARDIA_MEDIA
             if estado not in estados_validos:
                 estado = AsistenciaRegistro.PRESENTE
+            valor_manual = reg.lecciones_injustificadas
+            ai_lecc = Decimal(str(valor_manual)) if valor_manual is not None else None
+            if ai_lecc is not None:
+                if ai_lecc < 0:
+                    ai_lecc = Decimal("0")
+                if ai_lecc > lecciones:
+                    ai_lecc = lecciones
             if estado == AsistenciaRegistro.PRESENTE:
-                presentes += 1
+                presentes += lecciones
             elif estado == AsistenciaRegistro.TARDIA_MEDIA:
-                tardias_media += 1
-                ausentes_inj += (lecciones / Decimal("2"))
+                if ai_lecc is None:
+                    ai_lecc = lecciones / Decimal("2")
+                ausentes_inj += ai_lecc
+                tardias_media += (ai_lecc * Decimal("2"))
+                presentes += max(Decimal("0"), lecciones - ai_lecc)
             elif estado == AsistenciaRegistro.TARDIA_COMPLETA:
-                tardias_completa += 1
-                ausentes_inj += lecciones
+                if ai_lecc is None:
+                    ai_lecc = Decimal("1")
+                    if ai_lecc > lecciones:
+                        ai_lecc = lecciones
+                ausentes_inj += ai_lecc
+                tardias_completa += ai_lecc
+                presentes += max(Decimal("0"), lecciones - ai_lecc)
             elif estado == AsistenciaRegistro.AUSENTE_INJUSTIFICADA:
-                ausentes_inj += lecciones
+                if ai_lecc is None:
+                    ai_lecc = lecciones
+                ausentes_inj += ai_lecc
+                presentes += max(Decimal("0"), lecciones - ai_lecc)
             elif estado == AsistenciaRegistro.AUSENTE_JUSTIFICADA:
-                ausentes_just += 1
+                ausentes_just += lecciones
 
         pct = (float((ausentes_inj / Decimal(str(total_lecciones))) * Decimal("100")) if total_lecciones > 0 else 0.0)
+        pct_asistencia = (
+            float((presentes / Decimal(str(total_lecciones))) * Decimal("100"))
+            if total_lecciones > 0 else 0.0
+        )
         puntaje_base = _nota_mep(pct)
         # aporte_real = (asignacion_final / 5) * peso_asistencia_esquema
         aporte_real = (
@@ -309,25 +323,24 @@ def _calcular_resumen(asignacion, periodo, matriculas):
             if peso_asistencia else Decimal("0")
         )
 
-        # Indicador visual
+        # Indicador visual por cumplimiento de asistencia >= 80%
         if total_lecciones == 0:
             nivel_alerta = "nodata"
-        elif pct == 0:
+        elif pct_asistencia >= 80:
             nivel_alerta = "ok"
-        elif pct <= 15:
-            nivel_alerta = "warning"
         else:
             nivel_alerta = "danger"
 
         resultados.append({
             "estudiante": est,
-            "presentes": presentes,
-            "tardias_media": tardias_media,
-            "tardias_completa": tardias_completa,
+            "presentes": presentes.quantize(Decimal("0.1")),
+            "tardias_media": tardias_media.quantize(Decimal("0.1")),
+            "tardias_completa": tardias_completa.quantize(Decimal("0.1")),
             "ausentes_inj_lecciones": ausentes_inj.quantize(Decimal("0.01")),
-            "ausentes_just": ausentes_just,
+            "ausentes_just": ausentes_just.quantize(Decimal("0.1")),
             "total_lecciones": total_lecciones,
             "pct": round(pct, 2),
+            "pct_asistencia": round(pct_asistencia, 2),
             "nota_mep": puntaje_base,
             "peso_asistencia": peso_asistencia,
             "aporte_real": round(aporte_real, 2),
@@ -640,18 +653,30 @@ def asistencia_view(request, asignacion_id):
                                 )
                                 return redirect(f"{request.path}?fecha={fecha}&lecciones={lecciones}")
                             lecc_inj = cantidad / Decimal("2")
-                        else:
-                            # AI / TC: cantidad en AI equivalentes (permite 0.5)
+                        elif estado == AsistenciaRegistro.TARDIA_COMPLETA:
+                            # Cantidad TC: número de tardías completas (1 TC = 1 AI)
+                            if cantidad != cantidad.to_integral_value():
+                                messages.error(request, f"Para TC, la cantidad debe ser entera (estudiante ID {est_id}).")
+                                return redirect(f"{request.path}?fecha={fecha}&lecciones={lecciones}")
                             if cantidad > lecc_dia:
                                 messages.error(
                                     request,
-                                    f"Para AI/TC, la cantidad no puede exceder {lecciones} (estudiante ID {est_id}).",
+                                    f"Para TC, la cantidad no puede exceder {lecciones} en el día (estudiante ID {est_id}).",
+                                )
+                                return redirect(f"{request.path}?fecha={fecha}&lecciones={lecciones}")
+                            lecc_inj = cantidad
+                        else:
+                            # AI: cantidad en AI equivalentes (permite 0.5)
+                            if cantidad > lecc_dia:
+                                messages.error(
+                                    request,
+                                    f"Para AI, la cantidad no puede exceder {lecciones} (estudiante ID {est_id}).",
                                 )
                                 return redirect(f"{request.path}?fecha={fecha}&lecciones={lecciones}")
                             if (cantidad * 2) != (cantidad * 2).to_integral_value():
                                 messages.error(
                                     request,
-                                    f"Para AI/TC, la cantidad debe usar pasos de 0.5 (estudiante ID {est_id}).",
+                                    f"Para AI, la cantidad debe usar pasos de 0.5 (estudiante ID {est_id}).",
                                 )
                                 return redirect(f"{request.path}?fecha={fecha}&lecciones={lecciones}")
                             lecc_inj = cantidad
