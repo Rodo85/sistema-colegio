@@ -21,6 +21,42 @@
 
   <div class="card mb-3">
     <div class="card-body">
+      <h6 class="mb-3">Agregar estudiante manualmente</h6>
+      <form method="post" class="row g-2 align-items-end mb-3">
+        {% csrf_token %}
+        <input type="hidden" name="accion" value="agregar_manual">
+        <div class="col-md-3">
+          <label class="form-label">{{ form_manual.tipo_identificacion.label }}</label>
+          {{ form_manual.tipo_identificacion }}
+          {{ form_manual.tipo_identificacion.errors }}
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">{{ form_manual.identificacion.label }}</label>
+          {{ form_manual.identificacion }}
+          {{ form_manual.identificacion.errors }}
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">{{ form_manual.primer_apellido.label }}</label>
+          {{ form_manual.primer_apellido }}
+          {{ form_manual.primer_apellido.errors }}
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">{{ form_manual.segundo_apellido.label }}</label>
+          {{ form_manual.segundo_apellido }}
+          {{ form_manual.segundo_apellido.errors }}
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">{{ form_manual.nombres.label }}</label>
+          {{ form_manual.nombres }}
+          {{ form_manual.nombres.errors }}
+        </div>
+        <div class="col-12 col-md-2">
+          <button class="btn btn-primary w-100" type="submit">Agregar</button>
+        </div>
+      </form>
+      <hr>
+
+      <h6 class="mb-3">Carga masiva por Excel/CSV</h6>
       <form method="post" class="d-inline">
         {% csrf_token %}
         <input type="hidden" name="accion" value="plantilla">

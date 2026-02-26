@@ -5,7 +5,7 @@ from django import forms
 from django.forms import inlineformset_factory
 from django.core.exceptions import ValidationError
 
-from catalogos.models import SubArea
+from catalogos.models import SubArea, TipoIdentificacion
 from config_institucional.models import SeccionCursoLectivo, SubgrupoCursoLectivo
 from evaluaciones.models import DocenteAsignacion, EsquemaEval
 from .models import ActividadEvaluacion, IndicadorActividad, PuntajeIndicador
@@ -303,3 +303,34 @@ class AsignacionOnboardingForm(forms.Form):
             if dup.exists():
                 raise ValidationError("Ya tenés esta asignación creada.")
         return cleaned
+
+
+class EstudianteCargaManualForm(forms.Form):
+    tipo_identificacion = forms.ModelChoiceField(
+        queryset=TipoIdentificacion.objects.order_by("nombre"),
+        label="Tipo de identificación",
+        widget=forms.Select(attrs={"class": "form-control"}),
+    )
+    identificacion = forms.CharField(
+        label="Identificación",
+        max_length=20,
+        widget=forms.TextInput(attrs={"class": "form-control"}),
+    )
+    primer_apellido = forms.CharField(
+        label="Primer apellido",
+        max_length=50,
+        widget=forms.TextInput(attrs={"class": "form-control"}),
+    )
+    segundo_apellido = forms.CharField(
+        label="Segundo apellido",
+        max_length=50,
+        widget=forms.TextInput(attrs={"class": "form-control"}),
+    )
+    nombres = forms.CharField(
+        label="Nombre(s)",
+        max_length=100,
+        widget=forms.TextInput(attrs={"class": "form-control"}),
+    )
+
+    def clean_identificacion(self):
+        return (self.cleaned_data.get("identificacion") or "").strip().upper()

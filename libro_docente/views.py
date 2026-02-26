@@ -23,7 +23,12 @@ from evaluaciones.models import (
 from config_institucional.models import Profesor
 from matricula.models import Estudiante, EstudianteInstitucion, MatriculaAcademica
 
-from .forms import ActividadEvaluacionForm, AsignacionOnboardingForm, IndicadorActividadFormSet
+from .forms import (
+    ActividadEvaluacionForm,
+    AsignacionOnboardingForm,
+    EstudianteCargaManualForm,
+    IndicadorActividadFormSet,
+)
 from .models import ActividadEvaluacion, AsistenciaRegistro, AsistenciaSesion
 from .models import PuntajeIndicador
 from .models import ObservacionActividadEstudiante
@@ -709,6 +714,109 @@ def asignacion_estudiantes_excel_view(request, asignacion_id):
         messages.error(request, "La carga por Excel solo está disponible en Institución General.")
         return redirect("libro_docente:home")
 
+    form_manual = EstudianteCargaManualForm()
+
+    if request.method == "POST" and request.POST.get("accion") == "agregar_manual":
+        limite = 25 if asignacion.subgrupo_id else 50
+        defaults_catalogo = _obtener_estudiante_defaults()
+        if not defaults_catalogo:
+            messages.error(
+                request,
+                "Faltan catálogos mínimos (Sexo/Nacionalidad) para crear estudiantes.",
+            )
+            return redirect(reverse("libro_docente:asignacion_estudiantes_excel", args=[asignacion.id]))
+
+        form_manual = EstudianteCargaManualForm(request.POST)
+        if not form_manual.is_valid():
+            messages.error(request, "Revisa los datos del formulario manual.")
+        else:
+            with transaction.atomic():
+                lista, _ = _obtener_o_crear_lista_privada_docente(asignacion, request.user)
+                total_actual = lista.items.count()
+                if total_actual >= limite:
+                    messages.error(
+                        request,
+                        f"Se alcanzó el límite permitido para este grupo: {limite} estudiantes.",
+                    )
+                    return redirect(reverse("libro_docente:asignacion_estudiantes_excel", args=[asignacion.id]))
+
+                ident = form_manual.cleaned_data["identificacion"]
+                p1 = form_manual.cleaned_data["primer_apellido"].strip().upper()
+                p2 = form_manual.cleaned_data["segundo_apellido"].strip().upper()
+                nom = form_manual.cleaned_data["nombres"].strip().upper()
+                tipo_id = form_manual.cleaned_data["tipo_identificacion"]
+
+                est = Estudiante.objects.filter(identificacion=ident).first()
+                if est:
+                    est.tipo_identificacion = tipo_id
+                    est.primer_apellido = p1
+                    est.segundo_apellido = p2
+                    est.nombres = nom
+                    if not est.fecha_nacimiento:
+                        est.fecha_nacimiento = date(2000, 1, 1)
+                    if not est.sexo_id:
+                        est.sexo = defaults_catalogo["sexo"]
+                    if not est.nacionalidad_id:
+                        est.nacionalidad = defaults_catalogo["nacionalidad"]
+                    est.save()
+                else:
+                    est = Estudiante.objects.create(
+                        tipo_estudiante=Estudiante.PR,
+                        tipo_identificacion=tipo_id,
+                        identificacion=ident,
+                        primer_apellido=p1,
+                        segundo_apellido=p2,
+                        nombres=nom,
+                        fecha_nacimiento=date(2000, 1, 1),
+                        sexo=defaults_catalogo["sexo"],
+                        nacionalidad=defaults_catalogo["nacionalidad"],
+                        correo=f"{ident.lower()}@est.mep.go.cr",
+                    )
+
+                rel_activa = EstudianteInstitucion.objects.filter(
+                    estudiante=est,
+                    estado=EstudianteInstitucion.ACTIVO,
+                ).first()
+                if rel_activa and rel_activa.institucion_id != asignacion.subarea_curso.institucion_id:
+                    messages.error(
+                        request,
+                        f"ID {ident}: el estudiante está activo en otra institución y no puede agregarse aquí.",
+                    )
+                    return redirect(reverse("libro_docente:asignacion_estudiantes_excel", args=[asignacion.id]))
+                if not rel_activa:
+                    EstudianteInstitucion.objects.create(
+                        estudiante=est,
+                        institucion=asignacion.subarea_curso.institucion,
+                        estado=EstudianteInstitucion.ACTIVO,
+                        fecha_ingreso=timezone.now().date(),
+                        usuario_registro=request.user,
+                    )
+
+                MatriculaAcademica.objects.update_or_create(
+                    estudiante=est,
+                    curso_lectivo=asignacion.curso_lectivo,
+                    defaults={
+                        "institucion": asignacion.subarea_curso.institucion,
+                        "nivel": (asignacion.subgrupo.seccion.nivel if asignacion.subgrupo_id else asignacion.seccion.nivel),
+                        "seccion": (asignacion.subgrupo.seccion if asignacion.subgrupo_id else asignacion.seccion),
+                        "subgrupo": (asignacion.subgrupo if asignacion.subgrupo_id else None),
+                        "estado": MatriculaAcademica.ACTIVO,
+                        "origen_carga": MatriculaAcademica.ORIGEN_GENERAL_EXCEL,
+                    },
+                )
+
+                item, created = ListaEstudiantesDocenteItem.objects.get_or_create(
+                    lista=lista,
+                    estudiante=est,
+                    defaults={"orden": total_actual + 1},
+                )
+                if not created and item.orden <= 0:
+                    item.orden = total_actual + 1
+                    item.save(update_fields=["orden"])
+
+            messages.success(request, "Estudiante agregado correctamente.")
+            return redirect(reverse("libro_docente:asignacion_estudiantes_excel", args=[asignacion.id]))
+
     if request.method == "POST" and request.POST.get("accion") == "plantilla":
         if openpyxl is None:
             messages.error(request, "No se pudo generar la plantilla Excel.")
@@ -894,6 +1002,7 @@ def asignacion_estudiantes_excel_view(request, asignacion_id):
         "asignacion": asignacion,
         "estudiantes": estudiantes,
         "limite": (25 if asignacion.subgrupo_id else 50),
+        "form_manual": form_manual,
     })
 
 
