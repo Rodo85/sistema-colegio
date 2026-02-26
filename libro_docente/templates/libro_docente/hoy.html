@@ -63,7 +63,7 @@
   <div class="page-header">
     <div>
       <h1 class="page-title">📋 Mis Asignaciones</h1>
-      <p class="page-date">Hoy: <strong>{{ hoy|date:"l, d \d\e F \d\e Y" }}</strong>
+      <p class="page-date"><strong>{{ hoy|date:"l, d \d\e F \d\e Y" }}</strong>
         {% if profesor %} · {{ profesor.usuario.full_name }}{% endif %}
       </p>
     </div>

@@ -30,7 +30,7 @@ th{background:var(--surface);font-weight:700;}
 {% block content %}
 <div class="page-wrap">
   <div class="asgn-banner">
-    <span>{{ asignacion.subarea_curso.subarea.nombre }} · {{ estudiante }}</span>
+    <span>{{ asignacion.subarea_curso.subarea.nombre }} · {{ asignacion.subgrupo|default:asignacion.seccion }} · {{ estudiante }}</span>
     <a href="{% url 'libro_docente:resumen_evaluacion' asignacion.id %}?periodo={{ periodo_id }}" class="back-btn">← Resumen</a>
   </div>
 
@@ -156,18 +156,16 @@ th{background:var(--surface);font-weight:700;}
         <thead>
           <tr>
             <th>Actividad</th>
-            <th style="text-align:center;">Obtenido</th>
-            <th style="text-align:center;">Máximo</th>
-            <th style="text-align:center;">% logro</th>
+            <th style="text-align:center;">Nota</th>
+            <th style="text-align:center;">Aporte</th>
           </tr>
         </thead>
         <tbody>
           {% for d in pruebas.detalle_actividades %}
           <tr>
             <td>{{ d.actividad.titulo }}</td>
-            <td style="text-align:center;">{{ d.obtenido|floatformat:1 }}</td>
-            <td style="text-align:center;">{{ d.maximo|floatformat:1 }}</td>
-            <td style="text-align:center;">{{ d.porcentaje_logro|floatformat:1 }}%</td>
+            <td style="text-align:center;">{{ d.nota|floatformat:2 }}</td>
+            <td style="text-align:center;">{{ d.aporte_actividad|default:0|floatformat:2 }}</td>
           </tr>
           {% endfor %}
         </tbody>

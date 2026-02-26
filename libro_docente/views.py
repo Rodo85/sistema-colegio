@@ -1596,6 +1596,31 @@ def resumen_evaluacion_view(request, asignacion_id):
     if periodo_id:
         filas = calcular_resumen_evaluacion_completo(asignacion, periodo_id, matriculas)
         filas_general = _construir_resumen_general(asignacion, periodo_id, matriculas, filas)
+        periodo_sel = (
+            PeriodoCursoLectivo.objects
+            .filter(
+                institucion_id=asignacion.subarea_curso.institucion_id,
+                curso_lectivo=asignacion.curso_lectivo,
+                periodo_id=periodo_id,
+                activo=True,
+            )
+            .select_related("periodo")
+            .first()
+        )
+        asistencia_map = {}
+        if periodo_sel:
+            resumen_asis = _calcular_resumen(asignacion, periodo_sel.periodo, matriculas)
+            asistencia_map = {r["estudiante"].id: r["aporte_real"] for r in resumen_asis.get("estudiantes", [])}
+        for f in filas:
+            aporte_asistencia = asistencia_map.get(f["estudiante"].id, Decimal("0"))
+            f["asistencia"] = {"aporte": aporte_asistencia}
+            f["nota_final"] = (
+                (f.get("tareas", {}) or {}).get("aporte", Decimal("0"))
+                + (f.get("cotidianos", {}) or {}).get("aporte", Decimal("0"))
+                + (f.get("pruebas", {}) or {}).get("aporte", Decimal("0"))
+                + (f.get("proyectos", {}) or {}).get("aporte", Decimal("0"))
+                + aporte_asistencia
+            )
 
     return render(request, "libro_docente/resumen_evaluacion.html", {
         "asignacion": asignacion,
@@ -1645,6 +1670,14 @@ def _construir_resumen_general(asignacion, periodo_id, matriculas, filas_eval):
     return rows
 
 
+def _to_2_dec(valor):
+    if valor is None:
+        return Decimal("0.00")
+    if not isinstance(valor, Decimal):
+        valor = Decimal(str(valor))
+    return valor.quantize(Decimal("0.01"))
+
+
 @login_required
 @permission_required("libro_docente.access_libro_docente", raise_exception=True)
 def resumen_general_export_xlsx(request, asignacion_id):
@@ -1676,10 +1709,16 @@ def resumen_general_export_xlsx(request, asignacion_id):
     headers.append("Asistencia")
     ws.append(headers)
     for r in filas_general:
-        row = [r["id"], r["nombre"], float(r["cotidiano"]), float(r["tareas"]), float(r["pruebas"])]
+        row = [
+            r["id"],
+            r["nombre"],
+            float(_to_2_dec(r["cotidiano"])),
+            float(_to_2_dec(r["tareas"])),
+            float(_to_2_dec(r["pruebas"])),
+        ]
         if has_proyecto:
-            row.append(float(r["proyecto"]))
-        row.append(float(r["asistencia"]))
+            row.append(float(_to_2_dec(r["proyecto"])))
+        row.append(float(_to_2_dec(r["asistencia"])))
         ws.append(row)
 
     resp = HttpResponse(content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
@@ -1716,10 +1755,16 @@ def resumen_general_export_csv(request, asignacion_id):
     headers.append("Asistencia")
     writer.writerow(headers)
     for r in filas_general:
-        row = [r["id"], r["nombre"], r["cotidiano"], r["tareas"], r["pruebas"]]
+        row = [
+            r["id"],
+            r["nombre"],
+            f"{_to_2_dec(r['cotidiano']):.2f}",
+            f"{_to_2_dec(r['tareas']):.2f}",
+            f"{_to_2_dec(r['pruebas']):.2f}",
+        ]
         if has_proyecto:
-            row.append(r["proyecto"])
-        row.append(r["asistencia"])
+            row.append(f"{_to_2_dec(r['proyecto']):.2f}")
+        row.append(f"{_to_2_dec(r['asistencia']):.2f}")
         writer.writerow(row)
     return resp
 

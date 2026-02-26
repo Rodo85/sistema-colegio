@@ -331,11 +331,17 @@ def calcular_resumen_componente_estudiante(asignacion, periodo_id, tipo_componen
         puntos_maximos += max_act
         puntos_obtenidos += obt_act
         pct_act = (obt_act / max_act * Decimal("100")) if max_act > 0 else Decimal("0")
+        aporte_act = None
+        if es_simple:
+            peso_act = act.porcentaje_actividad or Decimal("0")
+            aporte_act = (pct_act / Decimal("100")) * peso_act if peso_act > 0 else Decimal("0")
         detalle.append({
             "actividad": act,
             "maximo": max_act,
             "obtenido": obt_act,
-            "porcentaje_logro": pct_act,
+            "porcentaje_logro": pct_act,  # Nota sobre 100 para pruebas/proyecto
+            "nota": pct_act,
+            "aporte_actividad": aporte_act,
             "detalle_indicadores": detalle_indicadores,
         })
 

@@ -15,6 +15,7 @@ body{background:#f0f4f8;}
 .asgn-banner{background:linear-gradient(135deg,#145591 0%,#1a6eb5 100%);border-radius:12px;padding:16px 22px;color:#fff;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px;}
 .asgn-title{font-size:1.15rem;font-weight:700;margin:0;}
 .asgn-meta{font-size:.83rem;opacity:.85;margin:3px 0 0;}
+.grupo-hero{display:inline-block;margin-top:6px;padding:4px 12px;border-radius:999px;background:#ffffff26;border:1px solid #ffffff55;font-size:1.15rem;font-weight:800;letter-spacing:.5px;}
 .back-btn{display:inline-flex;align-items:center;gap:6px;color:#fff !important;font-size:.83rem;text-decoration:none !important;border:1px solid rgba(255,255,255,.4);border-radius:6px;padding:5px 12px;opacity:.9;}
 .back-btn:hover{background:rgba(255,255,255,.15);opacity:1;}
 
@@ -116,9 +117,8 @@ tbody td{padding:8px 12px;vertical-align:middle;}
     <div>
       <p class="asgn-title">
         {{ asignacion.subarea_curso.subarea.nombre }}
-        &nbsp;·&nbsp;
-        {{ asignacion.seccion|default:asignacion.subgrupo }}
       </p>
+      <span class="grupo-hero">{{ asignacion.subgrupo|default:asignacion.seccion }}</span>
       <p class="asgn-meta">{{ asignacion.curso_lectivo }}
         {% if periodo %} · {{ periodo.nombre }}{% endif %}
       </p>

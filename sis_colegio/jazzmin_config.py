@@ -139,7 +139,7 @@ JAZZMIN_SETTINGS = {
         ],
         "libro_docente": [
             {
-                "name": "Mis asignaciones (Hoy)",
+                "name": "Mis asignaciones",
                 "url": "libro_docente:home",
                 "icon": "fas fa-clipboard-check",
                 "permissions": ["libro_docente.access_libro_docente"],
@@ -186,6 +186,10 @@ JAZZMIN_SETTINGS = {
     "login_logo_dark": "sis_colegio/img/Logo-School-Smart.png",
     
     "menu_title": "Menú Principal",
+    "hide_models": [
+        "libro_docente.asistenciasesion",
+        "libro_docente.asistenciaregistro",
+    ],
     
     "menu_groups": [
         {

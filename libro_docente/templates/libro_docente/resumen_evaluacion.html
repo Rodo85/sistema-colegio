@@ -10,6 +10,7 @@
 .page-wrap{max-width:100%;margin:20px auto;padding:0 14px;font-family:"Segoe UI",system-ui,sans-serif;}
 .asgn-banner{background:linear-gradient(135deg,#145591 0%,#1a6eb5 100%);border-radius:12px;padding:16px 22px;color:#fff;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:20px;}
 .asgn-title{font-size:1.1rem;font-weight:700;margin:0;}
+.grupo-hero{display:inline-block;margin-top:6px;padding:4px 12px;border-radius:999px;background:#ffffff26;border:1px solid #ffffff55;font-size:1.15rem;font-weight:800;letter-spacing:.5px;}
 .back-btn{color:#fff !important;font-size:.83rem;text-decoration:none !important;border:1px solid rgba(255,255,255,.4);border-radius:6px;padding:5px 12px;}
 .back-btn:hover{background:rgba(255,255,255,.15);}
 .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px;}
@@ -43,7 +44,8 @@
   <div class="asgn-banner">
     <div>
       <p class="asgn-title">📊 Resumen evaluación · {{ asignacion.subarea_curso.subarea.nombre }}</p>
-      <p style="font-size:.83rem;opacity:.9;margin:2px 0 0;">{{ asignacion.seccion|default:asignacion.subgrupo }} · {{ asignacion.curso_lectivo }}</p>
+      <span class="grupo-hero">{{ asignacion.subgrupo|default:asignacion.seccion }}</span>
+      <p style="font-size:.83rem;opacity:.9;margin:2px 0 0;">{{ asignacion.curso_lectivo }}</p>
     </div>
     <a href="{% url 'libro_docente:actividad_list' asignacion.id %}" class="back-btn">← Actividades</a>
   </div>
@@ -95,6 +97,8 @@
               <th colspan="5" style="background:#e9d5ff;">PROYECTO</th>
               {% endif %}
               {% endif %}
+              <th colspan="1" style="background:#eff6ff;">ASISTENCIA</th>
+              <th colspan="1" style="background:#ecfeff;">NOTA FINAL</th>
             </tr>
             <tr>
               <th class="student-col"></th>
@@ -128,6 +132,8 @@
               <th class="comp-section">Aporte</th>
               {% endif %}
               {% endif %}
+              <th class="comp-section">Aporte</th>
+              <th class="comp-section">Final</th>
             </tr>
           </thead>
           <tbody>
@@ -168,6 +174,8 @@
               <td class="num-cell aporte-cell">{{ fila.proyectos.aporte|floatformat:1 }}</td>
               {% endif %}
               {% endif %}
+              <td class="num-cell aporte-cell">{{ fila.asistencia.aporte|floatformat:2 }}</td>
+              <td class="num-cell aporte-cell">{{ fila.nota_final|floatformat:2 }}</td>
             </tr>
             {% endfor %}
           </tbody>
