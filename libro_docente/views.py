@@ -905,6 +905,8 @@ def asignacion_estudiantes_excel_view(request, asignacion_id):
         creados = 0
         actualizados = 0
         errores = []
+        agregados_lista = 0
+        ya_en_lista = 0
         try:
             with transaction.atomic():
                 lista, _ = _obtener_o_crear_lista_privada_docente(asignacion, request.user)
@@ -983,20 +985,22 @@ def asignacion_estudiantes_excel_view(request, asignacion_id):
                 if not estudiantes_lista and errores:
                     raise ValidationError("No se pudo cargar ningún estudiante válido.")
 
-                ListaEstudiantesDocenteItem.objects.filter(lista=lista).exclude(
-                    estudiante_id__in=estudiantes_lista
-                ).delete()
                 existentes = set(
                     ListaEstudiantesDocenteItem.objects.filter(lista=lista).values_list("estudiante_id", flat=True)
                 )
+                ya_en_lista = sum(1 for est_id in estudiantes_lista if est_id in existentes)
                 nuevos_items = []
-                for orden, est_id in enumerate(estudiantes_lista, start=1):
-                    if est_id in existentes:
-                        ListaEstudiantesDocenteItem.objects.filter(lista=lista, estudiante_id=est_id).update(orden=orden)
-                    else:
+                base_orden = ListaEstudiantesDocenteItem.objects.filter(lista=lista).count()
+                for offset, est_id in enumerate(estudiantes_lista, start=1):
+                    if est_id not in existentes:
                         nuevos_items.append(
-                            ListaEstudiantesDocenteItem(lista=lista, estudiante_id=est_id, orden=orden)
+                            ListaEstudiantesDocenteItem(
+                                lista=lista,
+                                estudiante_id=est_id,
+                                orden=base_orden + offset,
+                            )
                         )
+                agregados_lista = len(nuevos_items)
                 if nuevos_items:
                     ListaEstudiantesDocenteItem.objects.bulk_create(nuevos_items)
         except ValidationError as exc:
@@ -1006,12 +1010,22 @@ def asignacion_estudiantes_excel_view(request, asignacion_id):
         if errores:
             messages.warning(
                 request,
-                f"Carga parcial: creados {creados}, actualizados {actualizados}. Errores: {len(errores)}.",
+                (
+                    f"Carga parcial: agregados a la lista {agregados_lista}, "
+                    f"ya existentes en la lista {ya_en_lista}, "
+                    f"creados {creados}, actualizados {actualizados}, "
+                    f"no cargados {len(errores)}."
+                ),
             )
         else:
             messages.success(
                 request,
-                f"Carga completada: creados {creados}, actualizados {actualizados}, total {len(filas)}.",
+                (
+                    f"Carga completada: agregados a la lista {agregados_lista}, "
+                    f"ya existentes en la lista {ya_en_lista}, "
+                    f"creados {creados}, actualizados {actualizados}, "
+                    f"procesados {len(filas)}."
+                ),
             )
         return redirect(reverse("libro_docente:asignacion_estudiantes_excel", args=[asignacion.id]))
 
