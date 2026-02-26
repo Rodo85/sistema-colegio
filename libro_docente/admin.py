@@ -64,7 +64,7 @@ class _AdminOnlyEditMixin:
 class AsistenciaRegistroInline(admin.TabularInline):
     model = AsistenciaRegistro
     extra = 0
-    fields = ("estudiante", "estado", "observacion", "updated_at")
+    fields = ("estudiante", "estado", "lecciones_injustificadas", "observacion", "updated_at")
     readonly_fields = ("updated_at",)
 
 
@@ -107,7 +107,7 @@ class AsistenciaSesionAdmin(HideInstitucionFilterMixin, _AdminOnlyEditMixin, adm
 
 @admin.register(AsistenciaRegistro)
 class AsistenciaRegistroAdmin(HideInstitucionFilterMixin, _AdminOnlyEditMixin, admin.ModelAdmin):
-    list_display = ("sesion", "estudiante", "estado", "updated_at")
+    list_display = ("sesion", "estudiante", "estado", "lecciones_injustificadas", "updated_at")
     list_filter = ("estado", "sesion__fecha", "sesion__institucion")
     search_fields = ("estudiante__primer_apellido", "estudiante__nombres", "estudiante__identificacion")
     readonly_fields = ("updated_at",)

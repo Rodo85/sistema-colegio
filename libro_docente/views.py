@@ -275,6 +275,14 @@ def _calcular_resumen(asignacion, periodo, matriculas):
             if reg is None:
                 ausentes_inj += lecciones
                 continue
+            if reg.lecciones_injustificadas is not None:
+                valor_manual = Decimal(reg.lecciones_injustificadas)
+                if valor_manual < 0:
+                    valor_manual = Decimal("0")
+                if valor_manual > lecciones:
+                    valor_manual = lecciones
+                ausentes_inj += valor_manual
+                continue
             estado = reg.estado
             if estado == "T":
                 estado = AsistenciaRegistro.TARDIA_MEDIA
@@ -590,21 +598,51 @@ def asistencia_view(request, asignacion_id):
                     raw_estado = request.POST.get(f"estado_{est_id}", AsistenciaRegistro.PRESENTE)
                     estado = raw_estado if raw_estado in dict(AsistenciaRegistro.ESTADO_CHOICES) else AsistenciaRegistro.PRESENTE
                     obs = request.POST.get(f"obs_{est_id}", "")[:255]
+                    raw_lecc_inj = (request.POST.get(f"inj_{est_id}", "") or "").strip().replace(",", ".")
+                    lecc_inj = None
+                    if raw_lecc_inj != "":
+                        try:
+                            lecc_inj = Decimal(raw_lecc_inj)
+                        except Exception:
+                            messages.error(request, f"Lecciones injustificadas inválidas para estudiante ID {est_id}.")
+                            return redirect(f"{request.path}?fecha={fecha}&lecciones={lecciones}")
+                        if lecc_inj < 0 or lecc_inj > Decimal(str(lecciones)):
+                            messages.error(
+                                request,
+                                f"Lecciones injustificadas fuera de rango para estudiante ID {est_id}. Debe estar entre 0 y {lecciones}.",
+                            )
+                            return redirect(f"{request.path}?fecha={fecha}&lecciones={lecciones}")
+                        if (lecc_inj * 2) != (lecc_inj * 2).to_integral_value():
+                            messages.error(
+                                request,
+                                f"Lecciones injustificadas inválidas para estudiante ID {est_id}. Use pasos de 0.5.",
+                            )
+                            return redirect(f"{request.path}?fecha={fecha}&lecciones={lecciones}")
 
                     if est_id in existing:
                         reg = existing[est_id]
                         reg.estado = estado
+                        reg.lecciones_injustificadas = lecc_inj
                         reg.observacion = obs
                         bulk_update.append(reg)
                     else:
                         bulk_create.append(
-                            AsistenciaRegistro(sesion=sesion, estudiante_id=est_id, estado=estado, observacion=obs)
+                            AsistenciaRegistro(
+                                sesion=sesion,
+                                estudiante_id=est_id,
+                                estado=estado,
+                                lecciones_injustificadas=lecc_inj,
+                                observacion=obs,
+                            )
                         )
 
                 if bulk_create:
                     AsistenciaRegistro.objects.bulk_create(bulk_create)
                 if bulk_update:
-                    AsistenciaRegistro.objects.bulk_update(bulk_update, ["estado", "observacion"])
+                    AsistenciaRegistro.objects.bulk_update(
+                        bulk_update,
+                        ["estado", "lecciones_injustificadas", "observacion"],
+                    )
 
             messages.success(
                 request,
@@ -628,6 +666,7 @@ def asistencia_view(request, asignacion_id):
     # Estados guardados de la fecha seleccionada
     estados_guardados = {}
     obs_guardadas = {}
+    inj_guardadas = {}
     if sesion_actual:
         for reg in sesion_actual.registros.select_related("estudiante"):
             estado = reg.estado
@@ -635,6 +674,7 @@ def asistencia_view(request, asignacion_id):
                 estado = AsistenciaRegistro.TARDIA_MEDIA
             estados_guardados[reg.estudiante_id] = estado
             obs_guardadas[reg.estudiante_id] = reg.observacion
+            inj_guardadas[reg.estudiante_id] = reg.lecciones_injustificadas
 
     matriculas = _get_estudiantes(asignacion)
     estudiantes = []
@@ -646,6 +686,7 @@ def asistencia_view(request, asignacion_id):
             "nombre": str(est),
             "identificacion": est.identificacion,
             "estado": estado,
+            "lecciones_injustificadas": inj_guardadas.get(est.id),
             "observacion": obs_guardadas.get(est.id, ""),
         })
     estudiantes.sort(key=lambda e: e["nombre"])
@@ -780,6 +821,7 @@ def detalle_estudiante_view(request, asignacion_id, estudiante_id):
                 "lecciones": reg.sesion.lecciones or 1,
                 "estado": estado,
                 "estado_display": estado_display,
+                "lecciones_injustificadas": reg.lecciones_injustificadas,
                 "observacion": reg.observacion or "",
             })
         # Sesiones sin registro (cuentan como AI)
@@ -792,6 +834,7 @@ def detalle_estudiante_view(request, asignacion_id, estudiante_id):
                     "lecciones": lecciones,
                     "estado": AsistenciaRegistro.AUSENTE_INJUSTIFICADA,
                     "estado_display": "Ausente injustificada",
+                    "lecciones_injustificadas": lecciones,
                     "observacion": "(sin registro)",
                 })
         historial.sort(key=lambda x: x["fecha"])

@@ -70,6 +70,8 @@ tbody td{padding:8px 12px;vertical-align:middle;}
 /* Observación */
 .obs-input{font-size:.8rem;padding:4px 8px;border:1px solid var(--border);border-radius:5px;width:100%;max-width:200px;}
 .obs-input:focus{outline:none;border-color:var(--primary);}
+.inj-input{font-size:.8rem;padding:4px 8px;border:1px solid var(--border);border-radius:5px;width:110px;}
+.inj-input:focus{outline:none;border-color:var(--primary);}
 
 /* Footer de guardado */
 .save-bar{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;position:sticky;bottom:12px;box-shadow:0 4px 20px rgba(0,0,0,.12);}
@@ -180,6 +182,9 @@ tbody td{padding:8px 12px;vertical-align:middle;}
           <button type="button" class="btn btn-danger btn-sm" onclick="marcarTodos('{{ AI }}')">✗ Todos ausentes</button>
           <button type="button" class="btn btn-outline btn-sm" onclick="marcarTodos('{{ AJ }}')">ⓘ Todos justificados</button>
         </div>
+        <p style="margin:0 0 10px;font-size:.78rem;color:var(--muted);">
+          Puedes ajustar <strong>Lecc. inj.</strong> manualmente por estudiante (0 a {{ lecciones }}, en pasos de 0.5) para casos especiales del día.
+        </p>
 
         <!-- Stats en tiempo real -->
         <div class="stats-row" id="stats-row">
@@ -198,6 +203,7 @@ tbody td{padding:8px 12px;vertical-align:middle;}
                 <th>#</th>
                 <th>Estudiante</th>
                 <th>Estado</th>
+                <th>Lecc. inj.</th>
                 <th>Observación</th>
               </tr>
             </thead>
@@ -211,21 +217,35 @@ tbody td{padding:8px 12px;vertical-align:middle;}
                 </td>
                 <td>
                   <div class="estado-group" id="grupo-{{ est.id }}">
-                    <input type="radio" name="estado_{{ est.id }}" id="p-{{ est.id }}" value="{{ PRESENTE }}" {% if est.estado == PRESENTE %}checked{% endif %} onchange="actualizarStats()">
+                    <input type="radio" name="estado_{{ est.id }}" id="p-{{ est.id }}" value="{{ PRESENTE }}" {% if est.estado == PRESENTE %}checked{% endif %} onchange="onEstadoChange({{ est.id }}); actualizarStats()">
                     <label for="p-{{ est.id }}">P</label>
 
-                    <input type="radio" name="estado_{{ est.id }}" id="tm-{{ est.id }}" value="{{ TARDIA_MEDIA }}" {% if est.estado == TARDIA_MEDIA %}checked{% endif %} onchange="actualizarStats()">
+                    <input type="radio" name="estado_{{ est.id }}" id="tm-{{ est.id }}" value="{{ TARDIA_MEDIA }}" {% if est.estado == TARDIA_MEDIA %}checked{% endif %} onchange="onEstadoChange({{ est.id }}); actualizarStats()">
                     <label for="tm-{{ est.id }}">TM</label>
 
-                    <input type="radio" name="estado_{{ est.id }}" id="tc-{{ est.id }}" value="{{ TARDIA_COMPLETA }}" {% if est.estado == TARDIA_COMPLETA %}checked{% endif %} onchange="actualizarStats()">
+                    <input type="radio" name="estado_{{ est.id }}" id="tc-{{ est.id }}" value="{{ TARDIA_COMPLETA }}" {% if est.estado == TARDIA_COMPLETA %}checked{% endif %} onchange="onEstadoChange({{ est.id }}); actualizarStats()">
                     <label for="tc-{{ est.id }}">TC</label>
 
-                    <input type="radio" name="estado_{{ est.id }}" id="ai-{{ est.id }}" value="{{ AI }}" {% if est.estado == AI %}checked{% endif %} onchange="actualizarStats()">
+                    <input type="radio" name="estado_{{ est.id }}" id="ai-{{ est.id }}" value="{{ AI }}" {% if est.estado == AI %}checked{% endif %} onchange="onEstadoChange({{ est.id }}); actualizarStats()">
                     <label for="ai-{{ est.id }}">AI</label>
 
-                    <input type="radio" name="estado_{{ est.id }}" id="aj-{{ est.id }}" value="{{ AJ }}" {% if est.estado == AJ %}checked{% endif %} onchange="actualizarStats()">
+                    <input type="radio" name="estado_{{ est.id }}" id="aj-{{ est.id }}" value="{{ AJ }}" {% if est.estado == AJ %}checked{% endif %} onchange="onEstadoChange({{ est.id }}); actualizarStats()">
                     <label for="aj-{{ est.id }}">AJ</label>
                   </div>
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    name="inj_{{ est.id }}"
+                    id="inj-{{ est.id }}"
+                    class="inj-input"
+                    min="0"
+                    max="{{ lecciones }}"
+                    step="0.5"
+                    value="{% if est.lecciones_injustificadas is not None %}{{ est.lecciones_injustificadas }}{% endif %}"
+                    placeholder="auto"
+                    oninput="actualizarStats()"
+                  >
                 </td>
                 <td>
                   <input type="text" name="obs_{{ est.id }}" class="obs-input" value="{{ est.observacion }}" placeholder="Observación…" maxlength="255">
@@ -263,8 +283,53 @@ function cambiarFecha(val) {
 function marcarTodos(estado) {
   document.querySelectorAll('input[type=radio][value="' + estado + '"]').forEach(r => {
     r.checked = true;
+    const estId = r.id.split('-')[1];
+    if (estId) onEstadoChange(estId);
   });
   actualizarStats();
+}
+
+function parseNum(val) {
+  if (val === null || val === undefined || val === '') return null;
+  const n = Number(String(val).replace(',', '.'));
+  return Number.isFinite(n) ? n : null;
+}
+
+function getLeccionesDia() {
+  const el = document.getElementById('lecciones-input');
+  const n = parseNum(el ? el.value : null);
+  return n && n > 0 ? n : 1;
+}
+
+function valorSugeridoPorEstado(estado, leccionesDia) {
+  if (estado === '{{ PRESENTE }}' || estado === '{{ AJ }}') return 0;
+  if (estado === '{{ TARDIA_MEDIA }}') return leccionesDia / 2;
+  if (estado === '{{ TARDIA_COMPLETA }}' || estado === '{{ AI }}') return leccionesDia;
+  return 0;
+}
+
+function onEstadoChange(estId) {
+  const checked = document.querySelector('input[name="estado_' + estId + '"]:checked');
+  const injInput = document.getElementById('inj-' + estId);
+  if (!checked || !injInput) return;
+  const leccionesDia = getLeccionesDia();
+  const suggested = valorSugeridoPorEstado(checked.value, leccionesDia);
+  if (injInput.value === '' || injInput.dataset.autofill === '1') {
+    injInput.value = suggested.toFixed(1).replace('.0', '');
+    injInput.dataset.autofill = '1';
+  }
+}
+
+function normalizeInjInputs() {
+  const leccionesDia = getLeccionesDia();
+  document.querySelectorAll('.inj-input').forEach((input) => {
+    input.max = String(leccionesDia);
+    const val = parseNum(input.value);
+    if (val === null) return;
+    let v = Math.max(0, Math.min(leccionesDia, val));
+    v = Math.round(v * 2) / 2;
+    input.value = String(v).replace('.0', '');
+  });
 }
 
 function actualizarStats() {
@@ -285,5 +350,27 @@ function actualizarStats() {
 
 // Inicializar stats al cargar
 document.addEventListener('DOMContentLoaded', actualizarStats);
+document.addEventListener('DOMContentLoaded', () => {
+  normalizeInjInputs();
+  document.querySelectorAll('.inj-input').forEach((el) => {
+    el.addEventListener('input', () => { el.dataset.autofill = '0'; });
+  });
+  document.querySelectorAll('input[type=radio][name^="estado_"]').forEach((r) => {
+    if (r.checked) {
+      const estId = r.id.split('-')[1];
+      if (estId) onEstadoChange(estId);
+    }
+  });
+  const lecc = document.getElementById('lecciones-input');
+  if (lecc) {
+    lecc.addEventListener('input', () => {
+      normalizeInjInputs();
+      document.querySelectorAll('input[type=radio][name^="estado_"]:checked').forEach((r) => {
+        const estId = r.id.split('-')[1];
+        if (estId) onEstadoChange(estId);
+      });
+    });
+  }
+});
 </script>
 {% endblock %}

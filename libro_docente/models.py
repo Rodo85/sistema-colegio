@@ -597,6 +597,14 @@ class AsistenciaRegistro(models.Model):
         choices=ESTADO_CHOICES,
         default=AUSENTE_INJUSTIFICADA,
     )
+    lecciones_injustificadas = models.DecimalField(
+        "Lecciones injustificadas",
+        max_digits=5,
+        decimal_places=1,
+        null=True,
+        blank=True,
+        help_text="Permite ajustar el cálculo exacto por estudiante en el día (pasos de 0.5).",
+    )
     observacion = models.CharField("Observación", max_length=255, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -619,3 +627,17 @@ class AsistenciaRegistro(models.Model):
 
     def __str__(self):
         return f"{self.estudiante} – {self.get_estado_display()} ({self.sesion.fecha})"
+
+    def clean(self):
+        super().clean()
+        if self.lecciones_injustificadas is None:
+            return
+        valor = self.lecciones_injustificadas
+        if valor < 0:
+            raise ValidationError("Las lecciones injustificadas no pueden ser negativas.")
+        lecciones_dia = (self.sesion.lecciones or 1) if self.sesion_id else 1
+        if valor > lecciones_dia:
+            raise ValidationError(f"Las lecciones injustificadas no pueden exceder {lecciones_dia}.")
+        # Acepta incrementos de 0.5
+        if (valor * 2) != (valor * 2).to_integral_value():
+            raise ValidationError("Las lecciones injustificadas deben avanzar en pasos de 0.5.")

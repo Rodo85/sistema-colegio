@@ -153,6 +153,7 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
                 <th>Fecha</th>
                 <th>Lecciones</th>
                 <th>Estado</th>
+                <th>Lecc. inj.</th>
                 <th>Observación</th>
               </tr>
             </thead>
@@ -167,10 +168,11 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
                     {{ h.estado_display }}
                   </span>
                 </td>
+                <td>{{ h.lecciones_injustificadas|default:"—" }}</td>
                 <td style="font-size:.82rem;color:var(--muted);">{{ h.observacion|default:"—" }}</td>
               </tr>
               {% empty %}
-              <tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px;">No hay registros en este período.</td></tr>
+              <tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px;">No hay registros en este período.</td></tr>
               {% endfor %}
             </tbody>
           </table>
