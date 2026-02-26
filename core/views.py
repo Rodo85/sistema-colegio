@@ -64,17 +64,18 @@ def _notificar_estado_solicitud(solicitud, fue_aprobada):
     if not solicitud or not solicitud.usuario_id:
         return
     usuario = solicitud.usuario
+    nombre = (usuario.full_name() or usuario.first_name or usuario.email).strip()
     asunto = "Actualización de tu solicitud - Sistema Colegio"
     if fue_aprobada:
         cuerpo = (
-            "Hola,\n\n"
+            f"Hola {nombre},\n\n"
             "Tu solicitud fue aprobada. Ya puedes iniciar sesión en el sistema.\n\n"
             "Saludos."
         )
     else:
         motivo = (solicitud.motivo_revision or "").strip()
         cuerpo = (
-            "Hola,\n\n"
+            f"Hola {nombre},\n\n"
             "Tu solicitud fue rechazada. Contacta al administrador si crees que es un error.\n"
         )
         if motivo:
@@ -94,7 +95,15 @@ def _notificar_estado_solicitud(solicitud, fue_aprobada):
 
 @transaction.atomic
 def aprobar_solicitud_registro(solicitud, revisado_por):
-    if solicitud.estado == SolicitudRegistro.APROBADA:
+    if solicitud.pk:
+        estado_actual = (
+            SolicitudRegistro.objects.filter(pk=solicitud.pk)
+            .values_list("estado", flat=True)
+            .first()
+        )
+        if estado_actual == SolicitudRegistro.APROBADA:
+            return
+    elif solicitud.estado == SolicitudRegistro.APROBADA:
         return
     institucion = solicitud.institucion_solicitada
     if not institucion or not institucion.activa:
@@ -178,7 +187,7 @@ def registro_view(request):
                 institucion_solicitada=institucion,
                 telefono_whatsapp=form.cleaned_data["telefono_whatsapp"],
                 mensaje=form.cleaned_data.get("mensaje", ""),
-                comprobante_pago=form.cleaned_data["comprobante_pago"],
+                comprobante_pago=form.cleaned_data.get("comprobante_pago"),
                 estado=SolicitudRegistro.PENDIENTE,
             )
             messages.success(

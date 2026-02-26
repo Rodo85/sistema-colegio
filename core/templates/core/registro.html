@@ -55,6 +55,9 @@
             <label class="form-label">{{ form.password1.label }}</label>
             {{ form.password1 }}
             {{ form.password1.errors }}
+            {% if form.password1.help_text %}
+            <div class="help">{{ form.password1.help_text }}</div>
+            {% endif %}
           </div>
           <div class="col-md-3">
             <label class="form-label">{{ form.password2.label }}</label>
@@ -88,6 +91,7 @@
             <label class="form-label">{{ form.comprobante_pago.label }}</label>
             {{ form.comprobante_pago }}
             {{ form.comprobante_pago.errors }}
+            <div class="help">Opcional.</div>
           </div>
         </div>
         <div class="mt-4 d-flex gap-2">

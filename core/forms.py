@@ -57,7 +57,7 @@ class RegistroUsuarioForm(UserCreationForm):
         help_text="Ejemplo: +50686724880",
     )
     comprobante_pago = forms.ImageField(
-        required=True,
+        required=False,
         label="Comprobante de pago",
     )
 
@@ -84,6 +84,7 @@ class RegistroUsuarioForm(UserCreationForm):
         ).order_by("nombre")
         self.fields["password1"].label = "Contraseña"
         self.fields["password2"].label = "Confirmar contraseña"
+        self.fields["password1"].help_text = "Mínimo 8 caracteres, con letras y al menos un número."
         for name, field in self.fields.items():
             css = "form-control"
             if name == "colegio_opcion":
@@ -106,3 +107,16 @@ class RegistroUsuarioForm(UserCreationForm):
         if opcion == self.OPCION_LISTA and not institucion:
             self.add_error("institucion", "Debes seleccionar un colegio de la lista.")
         return cleaned
+
+    def clean_password1(self):
+        password = self.cleaned_data.get("password1") or ""
+        errores = []
+        if len(password) < 8:
+            errores.append("Debe tener al menos 8 caracteres.")
+        if not any(ch.isdigit() for ch in password):
+            errores.append("Debe incluir al menos un número.")
+        if not any(ch.isalpha() for ch in password):
+            errores.append("Debe incluir al menos una letra.")
+        if errores:
+            raise forms.ValidationError(" ".join(errores))
+        return password

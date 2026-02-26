@@ -171,6 +171,8 @@ class SolicitudRegistro(models.Model):
     comprobante_pago = models.ImageField(
         "Comprobante de pago",
         upload_to="solicitudes/comprobantes/",
+        null=True,
+        blank=True,
     )
     estado = models.CharField(
         "Estado",
