@@ -18,11 +18,26 @@ class UserManager(BaseUserManager):
         return self.create_user(email, password, **extra)
 
 class User(AbstractBaseUser, PermissionsMixin):
+    ESTADO_PENDIENTE = "PENDIENTE"
+    ESTADO_ACTIVA = "ACTIVA"
+    ESTADO_RECHAZADA = "RECHAZADA"
+    ESTADO_SOLICITUD_CHOICES = [
+        (ESTADO_PENDIENTE, "Pendiente"),
+        (ESTADO_ACTIVA, "Activa"),
+        (ESTADO_RECHAZADA, "Rechazada"),
+    ]
+
     id         = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email      = models.EmailField(unique=True)
     first_name = models.CharField("Nombre", max_length=50, blank=True)
     last_name  = models.CharField("1° Apellido", max_length=100, blank=True)
     second_last_name  = models.CharField("2° Apellido", max_length=50, blank=True)
+    estado_solicitud = models.CharField(
+        "Estado de solicitud",
+        max_length=20,
+        choices=ESTADO_SOLICITUD_CHOICES,
+        default=ESTADO_ACTIVA,
+    )
     is_active  = models.BooleanField(default=True)
     is_staff   = models.BooleanField(default=False)
     objects    = UserManager()
@@ -59,6 +74,21 @@ class Institucion(models.Model):
     whatsapp_token = models.CharField("Token API WhatsApp", max_length=255, blank=True)
     whatsapp_from_id = models.CharField("WhatsApp From (ID/phone)", max_length=50, blank=True,
                                         help_text="ID del teléfono o phone_number_id según proveedor")
+    matricula_activa = models.BooleanField(
+        "Matrícula activa",
+        default=True,
+        help_text="Determina si la institución trabaja con listas reales de matrícula.",
+    )
+    es_institucion_general = models.BooleanField(
+        "Es institución general",
+        default=False,
+        help_text="Marca la institución genérica para docentes sin matrícula activa.",
+    )
+    max_asignaciones_general = models.PositiveSmallIntegerField(
+        "Máximo de asignaciones (Institución General)",
+        default=10,
+        help_text="Límite por defecto aplicado a docentes de la Institución General.",
+    )
     def save(self, *args, **kwargs):
         for campo in ("nombre", "correo", "telefono", "direccion"):
             valor = getattr(self, campo, None)
@@ -108,3 +138,59 @@ class Miembro(models.Model):
         
     def __str__(self):
         return f"{self.usuario.email} – {self.get_rol_display()} @ {self.institucion}"
+
+
+class SolicitudRegistro(models.Model):
+    PENDIENTE = "PENDIENTE"
+    APROBADA = "APROBADA"
+    RECHAZADA = "RECHAZADA"
+    ESTADO_CHOICES = [
+        (PENDIENTE, "Pendiente"),
+        (APROBADA, "Aprobada"),
+        (RECHAZADA, "Rechazada"),
+    ]
+
+    usuario = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="solicitud_registro",
+    )
+    institucion_solicitada = models.ForeignKey(
+        "core.Institucion",
+        on_delete=models.PROTECT,
+        related_name="solicitudes_registro",
+        null=True,
+        blank=True,
+    )
+    mensaje = models.TextField("Mensaje del solicitante", blank=True)
+    comprobante_pago = models.ImageField(
+        "Comprobante de pago",
+        upload_to="solicitudes/comprobantes/",
+    )
+    estado = models.CharField(
+        "Estado",
+        max_length=20,
+        choices=ESTADO_CHOICES,
+        default=PENDIENTE,
+    )
+    motivo_revision = models.TextField(
+        "Motivo de revisión/rechazo",
+        blank=True,
+    )
+    revisado_por = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="solicitudes_revisadas",
+    )
+    fecha_solicitud = models.DateTimeField(auto_now_add=True)
+    fecha_revision = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        ordering = ("-fecha_solicitud",)
+        verbose_name = "Solicitud de registro"
+        verbose_name_plural = "Solicitudes de registro"
+
+    def __str__(self):
+        return f"{self.usuario.email} - {self.estado}"

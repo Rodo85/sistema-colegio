@@ -1,18 +1,21 @@
 # core/admin.py
 from django.contrib import admin
-from .models import Miembro, Institucion, User
+from .models import Miembro, Institucion, SolicitudRegistro, User
 from core.mixins import InstitucionScopedAdmin
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from django.utils.translation import gettext_lazy as _
+from core.forms import PendingAwareAdminAuthenticationForm
+from core.views import aprobar_solicitud_registro, rechazar_solicitud_registro
 # ----------- Institución -----------
 @admin.register(Institucion)
 class InstitucionAdmin(admin.ModelAdmin):
-    list_display  = ("nombre", "tipo", "correo", "telefono", "fecha_inicio", "fecha_fin", "activa")
+    list_display  = ("nombre", "tipo", "correo", "matricula_activa", "es_institucion_general", "max_asignaciones_general", "telefono", "fecha_inicio", "fecha_fin", "activa")
     search_fields = ("nombre", "correo")
-    list_filter   = ("tipo", "fecha_fin")
+    list_filter   = ("tipo", "matricula_activa", "es_institucion_general", "fecha_fin")
     fields = (
         "nombre", "tipo", "correo", "telefono", "direccion",
         "fecha_inicio", "fecha_fin", "logo",
+        "matricula_activa", "es_institucion_general", "max_asignaciones_general",
         "whatsapp_phone", "whatsapp_from_id", "whatsapp_token",
     )
     # Ambas fechas editables; si deseas mantenerlas iguales, la lógica se maneja en save()
@@ -51,6 +54,7 @@ class UserAdmin(DjangoUserAdmin):
     fieldsets = (
         (None, {"fields": ("email", "password")}),
         (_("Información personal"), {"fields": ("first_name", "last_name","second_last_name")}),
+        (_("Estado de cuenta"), {"fields": ("estado_solicitud",)}),
         (_("Permisos"), {
             "fields": (
                 "is_active",
@@ -68,7 +72,7 @@ class UserAdmin(DjangoUserAdmin):
             "fields": ("email", "password1", "password2"),
         }),
     )
-    list_display = ("email", "first_name", "last_name","second_last_name","is_staff", "is_superuser")
+    list_display = ("email", "first_name", "last_name","second_last_name","estado_solicitud", "is_staff", "is_superuser")
     search_fields = ("email", "first_name", "last_name")
     ordering = ("email",)
     
@@ -91,3 +95,55 @@ class UserAdmin(DjangoUserAdmin):
                 return
         
         super().save_model(request, obj, form, change)
+
+
+@admin.register(SolicitudRegistro)
+class SolicitudRegistroAdmin(admin.ModelAdmin):
+    list_display = (
+        "usuario",
+        "institucion_solicitada",
+        "estado",
+        "fecha_solicitud",
+        "revisado_por",
+        "fecha_revision",
+    )
+    list_filter = ("estado", "institucion_solicitada", "fecha_solicitud")
+    search_fields = ("usuario__email", "usuario__first_name", "usuario__last_name")
+    readonly_fields = ("fecha_solicitud", "fecha_revision", "revisado_por")
+    fields = (
+        "usuario",
+        "institucion_solicitada",
+        "mensaje",
+        "comprobante_pago",
+        "estado",
+        "motivo_revision",
+        "fecha_solicitud",
+        "revisado_por",
+        "fecha_revision",
+    )
+    actions = ("aprobar", "rechazar")
+
+    @admin.action(description="Aprobar solicitudes seleccionadas")
+    def aprobar(self, request, queryset):
+        total = 0
+        for solicitud in queryset.select_related("usuario"):
+            if solicitud.estado == SolicitudRegistro.PENDIENTE:
+                aprobar_solicitud_registro(solicitud, request.user)
+                total += 1
+        self.message_user(request, f"Solicitudes aprobadas: {total}")
+
+    @admin.action(description="Rechazar solicitudes seleccionadas")
+    def rechazar(self, request, queryset):
+        total = 0
+        for solicitud in queryset.select_related("usuario"):
+            if solicitud.estado == SolicitudRegistro.PENDIENTE:
+                rechazar_solicitud_registro(
+                    solicitud,
+                    request.user,
+                    motivo=solicitud.motivo_revision or "",
+                )
+                total += 1
+        self.message_user(request, f"Solicitudes rechazadas: {total}")
+
+
+admin.site.login_form = PendingAwareAdminAuthenticationForm

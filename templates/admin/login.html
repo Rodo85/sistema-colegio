@@ -94,6 +94,14 @@
       text-align:center;
       font-size:.875rem;
     }
+    .aux-links{
+      margin-top: 12px;
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      font-size:.88rem;
+    }
+    .aux-links a{text-decoration:none}
 
     /* Logo responsive */
     .login-logo-ss{
@@ -120,7 +128,11 @@
       {% if form.errors %}
         <div class="error-message">
           <i class="fas fa-exclamation-triangle"></i>
-          Usuario o contraseña incorrectos. Por favor, inténtelo de nuevo.
+          {% if form.non_field_errors %}
+            {{ form.non_field_errors|striptags }}
+          {% else %}
+            Usuario o contraseña incorrectos. Por favor, inténtelo de nuevo.
+          {% endif %}
         </div>
       {% endif %}
 
@@ -147,6 +159,10 @@
           <button type="submit" class="btn btn-login w-100">
             <i class="fas fa-sign-in-alt me-1"></i> Iniciar Sesión
           </button>
+        </div>
+        <div class="aux-links">
+          <a href="{% url 'password_reset' %}">Olvidé mi contraseña</a>
+          <a href="{% url 'registro' %}">Registrarse</a>
         </div>
 
         {% if next %}
