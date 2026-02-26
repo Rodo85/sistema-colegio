@@ -101,6 +101,7 @@ class UserAdmin(DjangoUserAdmin):
 class SolicitudRegistroAdmin(admin.ModelAdmin):
     list_display = (
         "usuario",
+        "telefono_whatsapp",
         "institucion_solicitada",
         "estado",
         "fecha_solicitud",
@@ -112,6 +113,7 @@ class SolicitudRegistroAdmin(admin.ModelAdmin):
     readonly_fields = ("fecha_solicitud", "fecha_revision", "revisado_por")
     fields = (
         "usuario",
+        "telefono_whatsapp",
         "institucion_solicitada",
         "mensaje",
         "comprobante_pago",

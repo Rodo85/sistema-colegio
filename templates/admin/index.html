@@ -7,5 +7,22 @@
         <h2>Bienvenido al Sistema Integral de Gestión Administrativa y Educativa</h2>
         <p>Seleccione una opción del menú lateral para comenzar.</p>
     </div>
+    {% if request.user.is_superuser %}
+      {% pending_solicitudes_count as pendientes %}
+      {% if pendientes > 0 %}
+      <div class="module" style="border-left:4px solid #f59e0b;">
+        <h2 style="display:flex;align-items:center;gap:8px;">
+          <span>🔔</span>
+          <span>Solicitudes pendientes: {{ pendientes }}</span>
+        </h2>
+        <p>Tienes solicitudes de acceso por revisar.</p>
+        <p>
+          <a href="{% url 'admin:core_solicitudregistro_changelist' %}?estado__exact=PENDIENTE">
+            Ir a la bandeja de solicitudes
+          </a>
+        </p>
+      </div>
+      {% endif %}
+    {% endif %}
 </div>
 {% endblock %}

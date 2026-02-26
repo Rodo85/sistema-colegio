@@ -50,6 +50,12 @@ class RegistroUsuarioForm(UserCreationForm):
         widget=forms.Textarea(attrs={"rows": 3}),
         label="Mensaje (opcional)",
     )
+    telefono_whatsapp = forms.CharField(
+        required=True,
+        max_length=30,
+        label="Número de WhatsApp",
+        help_text="Ejemplo: +50686724880",
+    )
     comprobante_pago = forms.ImageField(
         required=True,
         label="Comprobante de pago",

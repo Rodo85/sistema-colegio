@@ -3,6 +3,8 @@ from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from django.db import transaction
+from django.core.mail import send_mail
+from django.conf import settings
 from datetime import timedelta
 
 from core.models import Institucion
@@ -57,11 +59,45 @@ def _identificacion_auto_docente(user):
     return base[:20]
 
 
+def _notificar_estado_solicitud(solicitud, fue_aprobada):
+    if not solicitud or not solicitud.usuario_id:
+        return
+    usuario = solicitud.usuario
+    asunto = "Actualización de tu solicitud - Sistema Colegio"
+    if fue_aprobada:
+        cuerpo = (
+            "Hola,\n\n"
+            "Tu solicitud fue aprobada. Ya puedes iniciar sesión en el sistema.\n\n"
+            "Saludos."
+        )
+    else:
+        motivo = (solicitud.motivo_revision or "").strip()
+        cuerpo = (
+            "Hola,\n\n"
+            "Tu solicitud fue rechazada. Contacta al administrador si crees que es un error.\n"
+        )
+        if motivo:
+            cuerpo += f"\nMotivo: {motivo}\n"
+        cuerpo += "\nSaludos."
+    try:
+        send_mail(
+            asunto,
+            cuerpo,
+            getattr(settings, "DEFAULT_FROM_EMAIL", "no-reply@colesmart.local"),
+            [usuario.email],
+            fail_silently=True,
+        )
+    except Exception:
+        pass
+
+
 @transaction.atomic
 def aprobar_solicitud_registro(solicitud, revisado_por):
     if solicitud.estado == SolicitudRegistro.APROBADA:
         return
-    institucion = solicitud.institucion_solicitada or _get_or_create_institucion_general()
+    institucion = solicitud.institucion_solicitada
+    if not institucion or not institucion.activa:
+        institucion = _get_or_create_institucion_general()
     user = solicitud.usuario
     user.estado_solicitud = User.ESTADO_ACTIVA
     user.is_active = True
@@ -86,6 +122,7 @@ def aprobar_solicitud_registro(solicitud, revisado_por):
     solicitud.save(
         update_fields=["estado", "revisado_por", "fecha_revision", "motivo_revision"]
     )
+    _notificar_estado_solicitud(solicitud, fue_aprobada=True)
 
 
 @transaction.atomic
@@ -102,6 +139,7 @@ def rechazar_solicitud_registro(solicitud, revisado_por, motivo=""):
     solicitud.save(
         update_fields=["estado", "revisado_por", "fecha_revision", "motivo_revision"]
     )
+    _notificar_estado_solicitud(solicitud, fue_aprobada=False)
 
 
 def registro_view(request):
@@ -126,6 +164,7 @@ def registro_view(request):
             SolicitudRegistro.objects.create(
                 usuario=user,
                 institucion_solicitada=institucion,
+                telefono_whatsapp=form.cleaned_data["telefono_whatsapp"],
                 mensaje=form.cleaned_data.get("mensaje", ""),
                 comprobante_pago=form.cleaned_data["comprobante_pago"],
                 estado=SolicitudRegistro.PENDIENTE,

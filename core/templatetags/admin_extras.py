@@ -1,5 +1,6 @@
 # core/templatetags/admin_extras.py
 from django import template
+from core.models import SolicitudRegistro
 
 register = template.Library()
 
@@ -18,3 +19,8 @@ def user_role(context):
         institucion_id=request.institucion_activa_id
     ).first()
     return membresia.get_rol_display() if membresia else ""
+
+
+@register.simple_tag
+def pending_solicitudes_count():
+    return SolicitudRegistro.objects.filter(estado=SolicitudRegistro.PENDIENTE).count()

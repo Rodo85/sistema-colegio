@@ -20,6 +20,9 @@
     <div class="head">
       <h4 class="mb-1">Registro de cuenta</h4>
       <div class="help">La cuenta quedará pendiente hasta aprobación del superadmin.</div>
+      <div class="help" style="margin-top:6px;">
+        Comprobante de pago por ¢12.000 — SINPE: <strong>8672-4880</strong> con <strong>Rodolfo Garro M.</strong>
+      </div>
     </div>
     <div class="body">
       {% for message in messages %}
@@ -67,6 +70,14 @@
             <label class="form-label">{{ form.institucion.label }}</label>
             {{ form.institucion }}
             {{ form.institucion.errors }}
+          </div>
+          <div class="col-12">
+            <label class="form-label">{{ form.telefono_whatsapp.label }}</label>
+            {{ form.telefono_whatsapp }}
+            {{ form.telefono_whatsapp.errors }}
+            {% if form.telefono_whatsapp.help_text %}
+            <div class="help">{{ form.telefono_whatsapp.help_text }}</div>
+            {% endif %}
           </div>
           <div class="col-12">
             <label class="form-label">{{ form.mensaje.label }}</label>

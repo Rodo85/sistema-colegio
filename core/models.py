@@ -162,6 +162,11 @@ class SolicitudRegistro(models.Model):
         null=True,
         blank=True,
     )
+    telefono_whatsapp = models.CharField(
+        "WhatsApp de contacto",
+        max_length=30,
+        help_text="Número de contacto por WhatsApp para verificación.",
+    )
     mensaje = models.TextField("Mensaje del solicitante", blank=True)
     comprobante_pago = models.ImageField(
         "Comprobante de pago",
