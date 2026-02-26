@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 
 from catalogos.models import SubArea
 from config_institucional.models import SeccionCursoLectivo, SubgrupoCursoLectivo
-from evaluaciones.models import DocenteAsignacion, EsquemaEval, SubareaCursoLectivo
+from evaluaciones.models import DocenteAsignacion, EsquemaEval
 from .models import ActividadEvaluacion, IndicadorActividad, PuntajeIndicador
 
 
@@ -194,11 +194,7 @@ class AsignacionOnboardingForm(forms.Form):
 
         if institucion and curso_lectivo:
             self.fields["subarea"].queryset = (
-                SubArea.objects.filter(
-                    subareainstitucion__institucion=institucion,
-                    subareainstitucion__activa=True,
-                )
-                .distinct()
+                SubArea.objects.all()
                 .order_by("nombre")
             )
             self.fields["eval_scheme"].queryset = (
