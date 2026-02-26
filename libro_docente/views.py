@@ -1,6 +1,8 @@
 from datetime import date
 from decimal import Decimal
 import csv
+import re
+import unicodedata
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
@@ -173,15 +175,44 @@ def _leer_estudiantes_desde_archivo(archivo):
 
 def _normalizar_filas_estudiantes(filas):
     mapping = {
-        "identificacion": ["identificacion", "identificación", "id", "cedula", "cédula"],
-        "primer_apellido": ["primer apellido", "1er apellido", "apellido1", "apellido_1"],
-        "segundo_apellido": ["segundo apellido", "2do apellido", "apellido2", "apellido_2"],
-        "nombres": ["nombre", "nombres", "nombre(s)"],
+        "identificacion": {
+            "identificacion",
+            "identificacion id",
+            "id",
+            "cedula",
+        },
+        "primer_apellido": {
+            "primer apellido",
+            "primerapellido",
+            "1er apellido",
+            "apellido1",
+            "apellido 1",
+        },
+        "segundo_apellido": {
+            "segundo apellido",
+            "segundoapellido",
+            "2do apellido",
+            "apellido2",
+            "apellido 2",
+        },
+        "nombres": {
+            "nombre",
+            "nombres",
+        },
     }
+
+    def normalize_header(text):
+        text = str(text or "").strip().lower()
+        text = "".join(
+            ch for ch in unicodedata.normalize("NFD", text)
+            if unicodedata.category(ch) != "Mn"
+        )
+        text = re.sub(r"[^a-z0-9]+", " ", text)
+        return re.sub(r"\s+", " ", text).strip()
 
     def pick(row, keys):
         for k in row.keys():
-            k_norm = str(k or "").strip().lower()
+            k_norm = normalize_header(k)
             if k_norm in keys:
                 return str(row.get(k) or "").strip()
         return ""
