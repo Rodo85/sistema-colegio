@@ -40,7 +40,8 @@ tbody tr:hover{background:#f8faff;}
 tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:middle;}
 
 .badge-p{color:#065f46;background:#d1fae5;padding:2px 8px;border-radius:4px;font-weight:700;font-size:.75rem;}
-.badge-t{color:#92400e;background:#fef3c7;padding:2px 8px;border-radius:4px;font-weight:700;font-size:.75rem;}
+.badge-tm{color:#92400e;background:#fef3c7;padding:2px 8px;border-radius:4px;font-weight:700;font-size:.75rem;}
+.badge-tc{color:#78350f;background:#fde68a;padding:2px 8px;border-radius:4px;font-weight:700;font-size:.75rem;}
 .badge-ai{color:#991b1b;background:#fee2e2;padding:2px 8px;border-radius:4px;font-weight:700;font-size:.75rem;}
 .badge-aj{color:#3730a3;background:#e0e7ff;padding:2px 8px;border-radius:4px;font-weight:700;font-size:.75rem;}
 
@@ -95,36 +96,32 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
         <div class="card-body">
           <div class="resumen-grid">
             <div class="res-card">
-              <div class="rc-val">{{ resumen.sesiones_consideradas }}</div>
-              <div class="rc-lbl">Sesiones consideradas</div>
+              <div class="rc-val">{{ resumen.total_lecciones }}</div>
+              <div class="rc-lbl">Lecciones del período</div>
             </div>
             <div class="res-card">
               <div class="rc-val" style="color:#065f46;">{{ resumen.presentes }}</div>
-              <div class="rc-lbl">Presentes</div>
+              <div class="rc-lbl">Presente completo</div>
             </div>
             <div class="res-card">
-              <div class="rc-val" style="color:#92400e;">{{ resumen.tardias }}</div>
-              <div class="rc-lbl">Tardías</div>
+              <div class="rc-val" style="color:#92400e;">{{ resumen.tardias_media }}</div>
+              <div class="rc-lbl">Tardía media</div>
             </div>
             <div class="res-card">
-              <div class="rc-val" style="color:#991b1b;">{{ resumen.ausentes_inj }}</div>
-              <div class="rc-lbl">Ausencias injustif.</div>
+              <div class="rc-val" style="color:#78350f;">{{ resumen.tardias_completa }}</div>
+              <div class="rc-lbl">Tardía completa</div>
             </div>
             <div class="res-card">
-              <div class="rc-val" style="color:#3730a3;">{{ resumen.ausentes_just }}</div>
-              <div class="rc-lbl">Ausencias justif.</div>
-            </div>
-            <div class="res-card">
-              <div class="rc-val">{{ resumen.total_equiv }}</div>
-              <div class="rc-lbl">Equiv. (T÷3 + AI)</div>
+              <div class="rc-val" style="color:#991b1b;">{{ resumen.ausentes_inj_lecciones }}</div>
+              <div class="rc-lbl">AI en lecciones</div>
             </div>
             <div class="res-card">
               <div class="rc-val">{{ resumen.pct }}%</div>
               <div class="rc-lbl">% Ausencias injustif.</div>
             </div>
             <div class="res-card">
-              <div class="rc-val">{{ resumen.nota_mep }}</div>
-              <div class="rc-lbl">Nota base (0-10)</div>
+              <div class="rc-val">{{ resumen.nota_mep }}%</div>
+              <div class="rc-lbl">Asignación final</div>
             </div>
             <div class="res-card">
               <div class="rc-val">{{ resumen.peso_asistencia }}%</div>
@@ -136,7 +133,8 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
             </div>
           </div>
           <p style="font-size:.78rem;color:var(--muted);margin:0;">
-            Cada 3 tardías = 1 AI. Aporte = (Nota base ÷ 10) × Peso asistencia.
+            El cálculo usa lecciones del período: TM suma media ausencia, TC y AI suma completa, AJ no suma injustificada.
+            Aporte = (Asignación ÷ 10) × Peso asistencia.
           </p>
         </div>
       </div>
@@ -152,7 +150,7 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
               <tr>
                 <th>#</th>
                 <th>Fecha</th>
-                <th>Sesión</th>
+                <th>Lecciones</th>
                 <th>Estado</th>
                 <th>Observación</th>
               </tr>
@@ -162,9 +160,9 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
               <tr>
                 <td style="color:var(--muted);font-size:.75rem;">{{ forloop.counter }}</td>
                 <td>{{ h.fecha|date:"d/m/Y" }}</td>
-                <td>{{ h.sesion_numero }}</td>
+                <td>{{ h.lecciones }}</td>
                 <td>
-                  <span class="badge-{% if h.estado == 'P' %}p{% elif h.estado == 'T' %}t{% elif h.estado == 'AI' %}ai{% else %}aj{% endif %}">
+                  <span class="badge-{% if h.estado == 'P' %}p{% elif h.estado == 'TM' %}tm{% elif h.estado == 'TC' %}tc{% elif h.estado == 'AI' %}ai{% else %}aj{% endif %}">
                     {{ h.estado_display }}
                   </span>
                 </td>

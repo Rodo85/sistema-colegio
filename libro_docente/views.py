@@ -218,29 +218,24 @@ def _infer_periodo(asignacion, fecha):
 def _calcular_resumen(asignacion, periodo, matriculas):
     """
     Calcula resumen de asistencia por estudiante en un período.
-    Retorna dict con 'total_sesiones', 'peso_asistencia', 'estudiantes'.
-    Optimizado: 1 query para sesiones, 1 para agregados por estudiante.
+    Regla vigente: el período se calcula por lecciones, no por cantidad
+    de sesiones.
     """
     sesiones = AsistenciaSesion.objects.filter(
         docente_asignacion=asignacion,
         periodo=periodo,
     ).order_by("fecha", "sesion_numero")
-
-    total_sesiones = sesiones.count()
-    sesion_ids = list(sesiones.values_list("id", flat=True))
-    fechas_sesion = dict(sesiones.values_list("id", "fecha"))
-
-    # Agregados P/T/AI/AJ por estudiante en una sola query
-    agregados = {
-        row["estudiante_id"]: row
-        for row in AsistenciaRegistro.objects.filter(sesion_id__in=sesion_ids)
-        .values("estudiante_id")
-        .annotate(
-            presentes=Count("id", filter=Q(estado=AsistenciaRegistro.PRESENTE)),
-            tardias=Count("id", filter=Q(estado=AsistenciaRegistro.TARDIA)),
-            ausentes_inj=Count("id", filter=Q(estado=AsistenciaRegistro.AUSENTE_INJUSTIFICADA)),
-            ausentes_just=Count("id", filter=Q(estado=AsistenciaRegistro.AUSENTE_JUSTIFICADA)),
-        )
+    sesiones = list(sesiones)
+    total_sesiones = len(sesiones)
+    sesion_ids = [s.id for s in sesiones]
+    matricula_est_ids = [m.estudiante_id for m in matriculas]
+    registros_raw = AsistenciaRegistro.objects.filter(
+        sesion_id__in=sesion_ids,
+        estudiante_id__in=matricula_est_ids,
+    )
+    registros_map = {
+        (r.estudiante_id, r.sesion_id): r
+        for r in registros_raw
     }
 
     # Peso del componente ASISTENCIA en el esquema snapshot.
@@ -263,32 +258,46 @@ def _calcular_resumen(asignacion, periodo, matriculas):
             peso_asistencia = comp_asistencia.porcentaje
 
     resultados = []
+    estados_validos = {k for k, _ in AsistenciaRegistro.ESTADO_CHOICES}
     for m in matriculas:
         est = m.estudiante
-        # Fecha de ingreso al grupo: usar fecha_asignacion de la matrícula
         fecha_ingreso_grupo = m.fecha_asignacion
+        sesiones_est = [
+            s for s in sesiones
+            if (not fecha_ingreso_grupo or s.fecha >= fecha_ingreso_grupo)
+        ]
+        total_lecciones = sum((s.lecciones or 1) for s in sesiones_est)
 
-        # Contar sesiones desde que ingresó (en memoria, sin query)
-        sesiones_desde_ingreso = (
-            sum(1 for sid in sesion_ids if fechas_sesion.get(sid) >= fecha_ingreso_grupo)
-            if fecha_ingreso_grupo else total_sesiones
-        )
+        presentes = 0
+        tardias_media = 0
+        tardias_completa = 0
+        ausentes_inj = Decimal("0")
+        ausentes_just = 0
+        for s in sesiones_est:
+            lecciones = Decimal(str(s.lecciones or 1))
+            reg = registros_map.get((est.id, s.id))
+            if reg is None:
+                ausentes_inj += lecciones
+                continue
+            estado = reg.estado
+            if estado == "T":
+                estado = AsistenciaRegistro.TARDIA_MEDIA
+            if estado not in estados_validos:
+                estado = AsistenciaRegistro.PRESENTE
+            if estado == AsistenciaRegistro.PRESENTE:
+                presentes += 1
+            elif estado == AsistenciaRegistro.TARDIA_MEDIA:
+                tardias_media += 1
+                ausentes_inj += (lecciones / Decimal("2"))
+            elif estado == AsistenciaRegistro.TARDIA_COMPLETA:
+                tardias_completa += 1
+                ausentes_inj += lecciones
+            elif estado == AsistenciaRegistro.AUSENTE_INJUSTIFICADA:
+                ausentes_inj += lecciones
+            elif estado == AsistenciaRegistro.AUSENTE_JUSTIFICADA:
+                ausentes_just += 1
 
-        agg = agregados.get(est.id, {})
-        p   = agg.get("presentes", 0) or 0
-        t   = agg.get("tardias", 0) or 0
-        ai  = agg.get("ausentes_inj", 0) or 0
-        aj  = agg.get("ausentes_just", 0) or 0
-
-        # Sesiones sin registro cuentan como AI
-        registradas = p + t + ai + aj
-        ai_total = ai + max(0, sesiones_desde_ingreso - registradas)
-
-        # Regla: cada 3 tardías = 1 ausencia equivalente
-        tardia_equiv = t // 3
-        total_equiv = ai_total + tardia_equiv
-
-        pct = (total_equiv / sesiones_desde_ingreso * 100) if sesiones_desde_ingreso > 0 else 0
+        pct = (float((ausentes_inj / Decimal(str(total_lecciones))) * Decimal("100")) if total_lecciones > 0 else 0.0)
         puntaje_base = _nota_mep(pct)
         # aporte_real = (puntaje_base / 10) * peso_asistencia_esquema
         aporte_real = (
@@ -297,7 +306,9 @@ def _calcular_resumen(asignacion, periodo, matriculas):
         )
 
         # Indicador visual
-        if pct == 0:
+        if total_lecciones == 0:
+            nivel_alerta = "nodata"
+        elif pct == 0:
             nivel_alerta = "ok"
         elif pct <= 15:
             nivel_alerta = "warning"
@@ -306,14 +317,13 @@ def _calcular_resumen(asignacion, periodo, matriculas):
 
         resultados.append({
             "estudiante": est,
-            "presentes": p,
-            "tardias": t,
-            "ausentes_inj": ai_total,
-            "ausentes_just": aj,
-            "tardia_equiv": tardia_equiv,
-            "total_equiv": total_equiv,
-            "sesiones_consideradas": sesiones_desde_ingreso,
-            "pct": round(pct, 1),
+            "presentes": presentes,
+            "tardias_media": tardias_media,
+            "tardias_completa": tardias_completa,
+            "ausentes_inj_lecciones": ausentes_inj.quantize(Decimal("0.01")),
+            "ausentes_just": ausentes_just,
+            "total_lecciones": total_lecciones,
+            "pct": round(pct, 2),
             "nota_mep": puntaje_base,
             "peso_asistencia": peso_asistencia,
             "aporte_real": round(aporte_real, 2),
@@ -332,6 +342,7 @@ def _calcular_resumen(asignacion, periodo, matriculas):
     )
     return {
         "total_sesiones": total_sesiones,
+        "total_lecciones_periodo": sum((s.lecciones or 1) for s in sesiones),
         "peso_asistencia": peso_asistencia,
         "tiene_componente": comp_asistencia is not None,
         "nombre_componente": nombre_componente,
@@ -520,8 +531,8 @@ def estudiantes_config_view(request, asignacion_id):
 @permission_required("libro_docente.access_libro_docente", raise_exception=True)
 def asistencia_view(request, asignacion_id):
     """
-    Pantalla de asistencia: selector de fecha + sesión, lista de estudiantes
-    con toggles P/T/AI/AJ. Maneja GET (mostrar) y POST (guardar).
+    Pantalla de asistencia diaria: una sola sesión por fecha, con cantidad
+    de lecciones del día y marcas rápidas por estudiante.
     """
     profesor = _get_profesor(request)
     if not profesor:
@@ -544,18 +555,16 @@ def asistencia_view(request, asignacion_id):
     except ValueError:
         fecha = hoy
 
-    # ── Sesión ───────────────────────────────────────────────────────────
+    # ── Lecciones del día ────────────────────────────────────────────────
+    raw_lecciones = (request.POST if request.method == "POST" else request.GET).get("lecciones")
     try:
-        sesion_num = int(
-            (request.POST if request.method == "POST" else request.GET).get("sesion", 0)
-        )
-    except (ValueError, TypeError):
-        sesion_num = 0
+        lecciones = int(raw_lecciones) if raw_lecciones else 1
+    except (TypeError, ValueError):
+        lecciones = 1
+    lecciones = max(1, lecciones)
 
     # ── POST: guardar sesión ─────────────────────────────────────────────
     if request.method == "POST":
-        if sesion_num <= 0:
-            sesion_num = 1
         periodo = _infer_periodo(asignacion, fecha)
         inst_id = asignacion.subarea_curso.institucion_id
 
@@ -565,13 +574,16 @@ def asistencia_view(request, asignacion_id):
                     docente_asignacion=asignacion,
                     periodo=periodo,
                     fecha=fecha,
-                    sesion_numero=sesion_num,
+                    sesion_numero=1,
                     defaults={
                         "institucion_id": inst_id,
                         "curso_lectivo": asignacion.curso_lectivo,
+                        "lecciones": lecciones,
                         "created_by": request.user,
                     },
                 )
+                sesion.lecciones = lecciones
+                sesion.save(update_fields=["lecciones", "updated_at"])
                 matriculas = _get_estudiantes(asignacion)
                 bulk_create = []
                 bulk_update = []
@@ -598,32 +610,34 @@ def asistencia_view(request, asignacion_id):
                 if bulk_update:
                     AsistenciaRegistro.objects.bulk_update(bulk_update, ["estado", "observacion"])
 
-            messages.success(request, f"✔ Sesión {sesion_num} del {fecha.strftime('%d/%m/%Y')} guardada.")
+            messages.success(
+                request,
+                f"✔ Asistencia del {fecha.strftime('%d/%m/%Y')} guardada ({lecciones} lecciones).",
+            )
         except Exception as exc:
             messages.error(request, f"Error al guardar: {exc}")
 
-        return redirect(f"{request.path}?fecha={fecha}&sesion={sesion_num}")
+        return redirect(f"{request.path}?fecha={fecha}&lecciones={lecciones}")
 
     # ── GET ──────────────────────────────────────────────────────────────
-    sesiones_existentes = list(
+    sesion_actual = (
         AsistenciaSesion.objects
         .filter(docente_asignacion=asignacion, fecha=fecha)
         .order_by("sesion_numero")
+        .first()
     )
-    numeros = [s.sesion_numero for s in sesiones_existentes]
-    siguiente_num = (max(numeros) + 1) if numeros else 1
+    if sesion_actual:
+        lecciones = sesion_actual.lecciones or 1
 
-    if sesion_num <= 0:
-        sesion_num = numeros[0] if numeros else 1
-
-    sesion_actual = next((s for s in sesiones_existentes if s.sesion_numero == sesion_num), None)
-
-    # Estados guardados de la sesión seleccionada
+    # Estados guardados de la fecha seleccionada
     estados_guardados = {}
     obs_guardadas = {}
     if sesion_actual:
         for reg in sesion_actual.registros.select_related("estudiante"):
-            estados_guardados[reg.estudiante_id] = reg.estado
+            estado = reg.estado
+            if estado == "T":
+                estado = AsistenciaRegistro.TARDIA_MEDIA
+            estados_guardados[reg.estudiante_id] = estado
             obs_guardadas[reg.estudiante_id] = reg.observacion
 
     matriculas = _get_estudiantes(asignacion)
@@ -656,16 +670,15 @@ def asistencia_view(request, asignacion_id):
         "asignacion": asignacion,
         "fecha": fecha,
         "hoy": hoy,
-        "sesion_num": sesion_num,
-        "numeros": numeros,
-        "siguiente_num": siguiente_num,
+        "lecciones": lecciones,
         "sesion_actual": sesion_actual,
         "estudiantes": estudiantes,
         "total_estudiantes": len(estudiantes),
         "periodo": periodo,
         "periodos_cl": periodos_cl,
         "PRESENTE": AsistenciaRegistro.PRESENTE,
-        "TARDIA": AsistenciaRegistro.TARDIA,
+        "TARDIA_MEDIA": AsistenciaRegistro.TARDIA_MEDIA,
+        "TARDIA_COMPLETA": AsistenciaRegistro.TARDIA_COMPLETA,
         "AI": AsistenciaRegistro.AUSENTE_INJUSTIFICADA,
         "AJ": AsistenciaRegistro.AUSENTE_JUSTIFICADA,
     })
@@ -762,26 +775,30 @@ def detalle_estudiante_view(request, asignacion_id, estudiante_id):
             .order_by("sesion__fecha", "sesion__sesion_numero")
         )
         for reg in registros:
+            estado = reg.estado
+            if estado == "T":
+                estado = AsistenciaRegistro.TARDIA_MEDIA
+            estado_display = dict(AsistenciaRegistro.ESTADO_CHOICES).get(estado, reg.get_estado_display())
             historial.append({
                 "fecha": reg.sesion.fecha,
-                "sesion_numero": reg.sesion.sesion_numero,
-                "estado": reg.estado,
-                "estado_display": reg.get_estado_display(),
+                "lecciones": reg.sesion.lecciones or 1,
+                "estado": estado,
+                "estado_display": estado_display,
                 "observacion": reg.observacion or "",
             })
         # Sesiones sin registro (cuentan como AI)
-        sesiones_data = {s.id: (s.fecha, s.sesion_numero) for s in sesiones}
+        sesiones_data = {s.id: (s.fecha, s.lecciones or 1) for s in sesiones}
         registradas_sesion_ids = {r.sesion_id for r in registros}
-        for sid, (f, num) in sesiones_data.items():
+        for sid, (f, lecciones) in sesiones_data.items():
             if sid not in registradas_sesion_ids:
                 historial.append({
                     "fecha": f,
-                    "sesion_numero": num,
+                    "lecciones": lecciones,
                     "estado": AsistenciaRegistro.AUSENTE_INJUSTIFICADA,
                     "estado_display": "Ausente injustificada",
                     "observacion": "(sin registro)",
                 })
-        historial.sort(key=lambda x: (x["fecha"], x["sesion_numero"]))
+        historial.sort(key=lambda x: x["fecha"])
 
     # Resumen acumulado (reutilizar _calcular_resumen para un solo estudiante)
     resumen_est = None
@@ -855,7 +872,13 @@ def resumen_view(request, asignacion_id):
             periodo_sel = pcl.periodo
             break
 
-    resumen = {"total_sesiones": 0, "peso_asistencia": Decimal("0"), "tiene_componente": False, "estudiantes": []}
+    resumen = {
+        "total_sesiones": 0,
+        "total_lecciones_periodo": 0,
+        "peso_asistencia": Decimal("0"),
+        "tiene_componente": False,
+        "estudiantes": [],
+    }
     if periodo_sel:
         matriculas = _get_estudiantes(asignacion)
         resumen = _calcular_resumen(asignacion, periodo_sel, matriculas)

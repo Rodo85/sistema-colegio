@@ -70,7 +70,7 @@ class AsistenciaRegistroInline(admin.TabularInline):
 
 @admin.register(AsistenciaSesion)
 class AsistenciaSesionAdmin(HideInstitucionFilterMixin, _AdminOnlyEditMixin, admin.ModelAdmin):
-    list_display = ("id", "docente_asignacion", "fecha", "sesion_numero", "periodo", "institucion", "curso_lectivo", "created_by", "created_at")
+    list_display = ("id", "docente_asignacion", "fecha", "lecciones", "sesion_numero", "periodo", "institucion", "curso_lectivo", "created_by", "created_at")
     list_filter = ("institucion", "curso_lectivo", "periodo", "fecha")
     search_fields = ("docente_asignacion__docente__usuario__last_name", "docente_asignacion__docente__usuario__first_name")
     readonly_fields = ("created_at", "updated_at")

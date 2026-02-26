@@ -44,6 +44,7 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
 .nivel-ok{color:#065f46;background:#d1fae5;padding:2px 8px;border-radius:4px;font-weight:700;font-size:.75rem;}
 .nivel-warning{color:#92400e;background:#fef3c7;padding:2px 8px;border-radius:4px;font-weight:700;font-size:.75rem;}
 .nivel-danger{color:#991b1b;background:#fee2e2;padding:2px 8px;border-radius:4px;font-weight:700;font-size:.75rem;}
+.nivel-nodata{color:#475569;background:#e2e8f0;padding:2px 8px;border-radius:4px;font-weight:700;font-size:.75rem;}
 
 /* Nota MEP */
 .nota-mep{font-size:1.1rem;font-weight:800;}
@@ -102,18 +103,22 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
     <div class="alert alert-info"><i class="fas fa-info-circle"></i> Selecciona un período para ver el resumen.</div>
   {% else %}
 
-    {% if resumen.total_sesiones == 0 %}
+    {% if resumen.total_lecciones_periodo == 0 %}
       <div class="alert alert-warning">
         <i class="fas fa-exclamation-triangle"></i>
-        No hay sesiones registradas en el período <strong>{{ periodo_sel.nombre }}</strong> todavía.
+        No hay lecciones registradas en el período <strong>{{ periodo_sel.nombre }}</strong>.
       </div>
     {% else %}
 
       <!-- Tarjetas resumen global -->
       <div class="resumen-grid">
         <div class="res-card">
+          <div class="rc-val">{{ resumen.total_lecciones_periodo }}</div>
+          <div class="rc-lbl">Lecciones del período</div>
+        </div>
+        <div class="res-card">
           <div class="rc-val">{{ resumen.total_sesiones }}</div>
-          <div class="rc-lbl">Sesiones del período</div>
+          <div class="rc-lbl">Sesiones (días)</div>
         </div>
         <div class="res-card">
           <div class="rc-val">{{ resumen.estudiantes|length }}</div>
@@ -142,14 +147,14 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
                   <th>#</th>
                   <th>Estudiante</th>
                   <th></th>
-                  <th title="Sesiones consideradas desde su fecha de ingreso">Ses.</th>
-                  <th title="Presentes">P</th>
-                  <th title="Tardías">T</th>
-                  <th title="Ausencias injustificadas (incluyendo sin registro)">AI</th>
+                  <th title="Total de lecciones desde su ingreso">Lecc.</th>
+                  <th title="Presente completo">P</th>
+                  <th title="Tardía injustificada media ausencia">TM</th>
+                  <th title="Tardía injustificada ausencia completa">TC</th>
+                  <th title="Ausencias injustificadas acumuladas en lecciones">AI lecc.</th>
                   <th title="Ausencias justificadas">AJ</th>
-                  <th title="Equivalencia: T÷3 + AI">Equiv.</th>
                   <th title="% ausencias injustificadas">% Aus.</th>
-                  <th title="Nota MEP (0-10)">Nota</th>
+                  <th title="Asignación final según regla de ausencias">Asig.</th>
                   <th title="Aporte = (Puntaje base ÷ 10) × Peso esquema">Aporte</th>
                   <th>Alerta</th>
                 </tr>
@@ -169,16 +174,16 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
                       Ver detalle
                     </a>
                   </td>
-                  <td>{{ r.sesiones_consideradas }}</td>
+                  <td>{{ r.total_lecciones }}</td>
                   <td style="color:#065f46;font-weight:700;">{{ r.presentes }}</td>
-                  <td style="color:#92400e;font-weight:700;">{{ r.tardias }}</td>
-                  <td style="color:#991b1b;font-weight:700;">{{ r.ausentes_inj }}</td>
+                  <td style="color:#92400e;font-weight:700;">{{ r.tardias_media }}</td>
+                  <td style="color:#78350f;font-weight:700;">{{ r.tardias_completa }}</td>
+                  <td style="color:#991b1b;font-weight:700;">{{ r.ausentes_inj_lecciones }}</td>
                   <td style="color:#3730a3;font-weight:700;">{{ r.ausentes_just }}</td>
-                  <td>{{ r.total_equiv }}</td>
                   <td>{{ r.pct }}%</td>
                   <td>
                     <span class="nota-mep {% if r.nota_mep >= 8 %}nota-alto{% elif r.nota_mep >= 5 %}nota-medio{% else %}nota-bajo{% endif %}">
-                      {{ r.nota_mep }}
+                      {{ r.nota_mep }}%
                     </span>
                   </td>
                   <td>
@@ -190,7 +195,7 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
                   </td>
                   <td>
                     <span class="nivel-{{ r.nivel_alerta }}">
-                      {% if r.nivel_alerta == "ok" %}OK{% elif r.nivel_alerta == "warning" %}Atención{% else %}Crítico{% endif %}
+                      {% if r.nivel_alerta == "ok" %}OK{% elif r.nivel_alerta == "warning" %}Atención{% elif r.nivel_alerta == "nodata" %}Sin datos{% else %}Crítico{% endif %}
                     </span>
                   </td>
                 </tr>
@@ -201,10 +206,11 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
             </table>
           </div>
           <p class="mep-legend" style="padding:10px 16px;">
-            <strong>Nota:</strong> AI incluye sesiones sin registro. Cada 3 tardías (T) equivalen a 1 AI.
-            Puntaje base: 0% a &lt;1%→10, 1% a &lt;10%→9, 10% a &lt;20%→8, 20% a &lt;30%→7, 30% a &lt;40%→6,
+            <strong>Regla:</strong> el cálculo se hace por lecciones. TM suma media ausencia injustificada (50% de lecciones del día),
+            TC y AI suman ausencia injustificada completa (100% de lecciones del día), AJ no suma injustificadas.
+            Asignación final: 0% a &lt;1%→10, 1% a &lt;10%→9, 10% a &lt;20%→8, 20% a &lt;30%→7, 30% a &lt;40%→6,
             40% a &lt;50%→5, 50% a &lt;60%→4, 60% a &lt;70%→3, 70% a &lt;80%→2, 80% a &lt;90%→1, 90%-100%→0.
-            Aporte = (Puntaje base ÷ 10) × Peso asistencia del esquema.
+            Aporte = (Asignación ÷ 10) × Peso asistencia del esquema.
           </p>
         </div>
       </div>

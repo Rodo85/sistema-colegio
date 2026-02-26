@@ -484,9 +484,9 @@ class EstudianteAdecuacionAsignacion(models.Model):
 
 class AsistenciaSesion(models.Model):
     """
-    Representa una pasada de lista (sesión) de un docente para una asignación,
-    fecha y número de sesión determinados.
-    Permite múltiples sesiones el mismo día (ej. lección 1, lección 2).
+    Representa una pasada de lista diaria de un docente para una asignación.
+    La asistencia se registra una sola vez por fecha y se indica cuántas
+    lecciones se impartieron ese día.
     """
     docente_asignacion = models.ForeignKey(
         "evaluaciones.DocenteAsignacion",
@@ -520,6 +520,11 @@ class AsistenciaSesion(models.Model):
         "N.° de sesión", default=1,
         help_text="Número de la sesión dentro del día (1, 2, 3…).",
     )
+    lecciones = models.PositiveSmallIntegerField(
+        "Lecciones del día",
+        default=1,
+        help_text="Cantidad de lecciones impartidas en la fecha registrada.",
+    )
     created_by = models.ForeignKey(
         "core.User",
         on_delete=models.SET_NULL,
@@ -537,9 +542,13 @@ class AsistenciaSesion(models.Model):
         ordering = ("fecha", "sesion_numero")
         constraints = [
             models.UniqueConstraint(
-                fields=["docente_asignacion", "periodo", "fecha", "sesion_numero"],
-                name="uniq_sesion_asistencia",
-            )
+                fields=["docente_asignacion", "fecha"],
+                name="uniq_sesion_asistencia_por_fecha",
+            ),
+            models.CheckConstraint(
+                check=models.Q(sesion_numero=1),
+                name="asis_sesion_numero_unico_dia",
+            ),
         ]
         indexes = [
             models.Index(fields=["docente_asignacion", "fecha"], name="asis_ses_asig_fecha_idx"),
@@ -550,7 +559,7 @@ class AsistenciaSesion(models.Model):
         ]
 
     def __str__(self):
-        return f"Ses.{self.sesion_numero} – {self.fecha} – {self.docente_asignacion_id}"
+        return f"{self.fecha} – {self.docente_asignacion_id}"
 
 
 class AsistenciaRegistro(models.Model):
@@ -558,14 +567,16 @@ class AsistenciaRegistro(models.Model):
     Registro individual de asistencia: un estudiante en una sesión.
     """
     PRESENTE = "P"
-    TARDIA = "T"
+    TARDIA_MEDIA = "TM"
+    TARDIA_COMPLETA = "TC"
     AUSENTE_INJUSTIFICADA = "AI"
     AUSENTE_JUSTIFICADA = "AJ"
     ESTADO_CHOICES = [
-        (PRESENTE, "Presente"),
-        (TARDIA, "Tardía"),
+        (PRESENTE, "Presente completo"),
+        (TARDIA_MEDIA, "Tardía injustificada (media ausencia)"),
+        (TARDIA_COMPLETA, "Tardía injustificada (ausencia completa)"),
         (AUSENTE_INJUSTIFICADA, "Ausente injustificada"),
-        (AUSENTE_JUSTIFICADA, "Ausente justificada"),
+        (AUSENTE_JUSTIFICADA, "Ausencia justificada"),
     ]
 
     sesion = models.ForeignKey(
