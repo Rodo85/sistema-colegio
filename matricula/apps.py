@@ -20,6 +20,8 @@ class MatriculaConfig(AppConfig):
                     ("access_consulta_estudiante", "Puede acceder a Consulta de Estudiante"),
                     ("print_ficha_estudiante", "Puede imprimir ficha del estudiante"),
                     ("print_comprobante_matricula", "Puede imprimir comprobante de matrícula"),
+                    ("print_pas_estudiante", "Puede imprimir PAS del estudiante"),
+                    ("access_reporte_pas_seccion", "Puede acceder a Reporte PAS por Sección"),
                 ]
                 for codename, name in perms:
                     Permission.objects.get_or_create(codename=codename, content_type=ct, defaults={"name": name})
