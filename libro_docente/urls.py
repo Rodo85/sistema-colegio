@@ -9,6 +9,7 @@ from .views import (
     actividad_edit_view,
     actividad_list_view,
     asignacion_delete_view,
+    asignacion_estudiantes_excel_view,
     asignacion_onboarding_view,
     asistencia_view,
     detalle_estudiante_view,
@@ -26,6 +27,7 @@ app_name = "libro_docente"
 urlpatterns = [
     path("hoy/", home_docente, name="home"),
     path("asignacion/onboarding/", asignacion_onboarding_view, name="asignacion_onboarding"),
+    path("asignacion/<int:asignacion_id>/estudiantes-excel/", asignacion_estudiantes_excel_view, name="asignacion_estudiantes_excel"),
     path("asignacion/<int:asignacion_id>/eliminar/", asignacion_delete_view, name="asignacion_delete"),
     path("asignacion/<int:asignacion_id>/estudiantes-config/", estudiantes_config_view, name="estudiantes_config"),
     path("asistencia/<int:asignacion_id>/", asistencia_view, name="asistencia"),

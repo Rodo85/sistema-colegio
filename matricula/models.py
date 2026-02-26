@@ -421,6 +421,12 @@ class MatriculaAcademica(models.Model):
         (PROMOVIDO, 'Promovido'),
         (REPITENTE, 'Repitente'),
     ]
+    ORIGEN_MANUAL = "MANUAL"
+    ORIGEN_GENERAL_EXCEL = "GENERAL_EXCEL"
+    ORIGEN_CHOICES = [
+        (ORIGEN_MANUAL, "Manual"),
+        (ORIGEN_GENERAL_EXCEL, "General por Excel"),
+    ]
     estudiante = models.ForeignKey('Estudiante', on_delete=models.PROTECT, related_name='matriculas_academicas')
     institucion = models.ForeignKey(Institucion, on_delete=models.PROTECT, verbose_name="Institución")
     nivel = models.ForeignKey(Nivel, on_delete=models.PROTECT)
@@ -429,6 +435,12 @@ class MatriculaAcademica(models.Model):
     curso_lectivo = models.ForeignKey('catalogos.CursoLectivo', on_delete=models.PROTECT, verbose_name="Curso Lectivo")
     fecha_asignacion = models.DateField(auto_now_add=True)
     estado = models.CharField(max_length=15, choices=ESTADO_CHOICES, default=ACTIVO)
+    origen_carga = models.CharField(
+        "Origen de carga",
+        max_length=20,
+        choices=ORIGEN_CHOICES,
+        default=ORIGEN_MANUAL,
+    )
     especialidad = models.ForeignKey('config_institucional.EspecialidadCursoLectivo', on_delete=models.PROTECT, null=True, blank=True, verbose_name="Especialidad del curso lectivo")
     
     class Meta:

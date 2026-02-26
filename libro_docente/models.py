@@ -482,6 +482,108 @@ class EstudianteAdecuacionAsignacion(models.Model):
         return f"{self.docente_asignacion_id} - {self.estudiante_id}"
 
 
+class ListaEstudiantesDocente(models.Model):
+    """
+    Lista privada de estudiantes por docente y grupo/subgrupo (Institución General).
+    Se reutiliza entre materias del mismo grupo para el mismo docente.
+    """
+    docente = models.ForeignKey(
+        "config_institucional.Profesor",
+        on_delete=models.CASCADE,
+        related_name="listas_estudiantes_docente",
+        verbose_name="Docente",
+    )
+    institucion = models.ForeignKey(
+        "core.Institucion",
+        on_delete=models.PROTECT,
+        related_name="listas_estudiantes_docente",
+        verbose_name="Institución",
+    )
+    curso_lectivo = models.ForeignKey(
+        "catalogos.CursoLectivo",
+        on_delete=models.PROTECT,
+        related_name="listas_estudiantes_docente",
+        verbose_name="Curso lectivo",
+    )
+    seccion = models.ForeignKey(
+        "catalogos.Seccion",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="listas_estudiantes_docente",
+        verbose_name="Sección",
+    )
+    subgrupo = models.ForeignKey(
+        "catalogos.Subgrupo",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="listas_estudiantes_docente",
+        verbose_name="Subgrupo",
+    )
+    created_by = models.ForeignKey(
+        "core.User",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="listas_estudiantes_docente_creadas",
+        verbose_name="Creado por",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "libro_docente_lista_estudiantes_docente"
+        verbose_name = "Lista privada de estudiantes (docente)"
+        verbose_name_plural = "Listas privadas de estudiantes (docente)"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["docente", "curso_lectivo", "seccion"],
+                condition=models.Q(subgrupo__isnull=True, seccion__isnull=False),
+                name="uniq_libdoc_lista_doc_curso_seccion",
+            ),
+            models.UniqueConstraint(
+                fields=["docente", "curso_lectivo", "subgrupo"],
+                condition=models.Q(subgrupo__isnull=False),
+                name="uniq_libdoc_lista_doc_curso_subgrupo",
+            ),
+        ]
+
+    def __str__(self):
+        if self.subgrupo_id:
+            return f"{self.docente} · {self.subgrupo} · {self.curso_lectivo}"
+        return f"{self.docente} · {self.seccion} · {self.curso_lectivo}"
+
+
+class ListaEstudiantesDocenteItem(models.Model):
+    lista = models.ForeignKey(
+        ListaEstudiantesDocente,
+        on_delete=models.CASCADE,
+        related_name="items",
+        verbose_name="Lista",
+    )
+    estudiante = models.ForeignKey(
+        "matricula.Estudiante",
+        on_delete=models.PROTECT,
+        related_name="listas_docente_items",
+        verbose_name="Estudiante",
+    )
+    orden = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "libro_docente_lista_estudiantes_docente_item"
+        verbose_name = "Estudiante en lista privada"
+        verbose_name_plural = "Estudiantes en lista privada"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["lista", "estudiante"],
+                name="uniq_libdoc_lista_item",
+            ),
+        ]
+        ordering = ("orden", "id")
+
+
 class AsistenciaSesion(models.Model):
     """
     Representa una pasada de lista diaria de un docente para una asignación.

@@ -126,6 +126,9 @@
               <p style="font-size:.82rem;color:var(--muted);margin:0;">Sin esquema asignado</p>
             {% endif %}
             <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+              {% if a.subarea_curso.institucion.es_institucion_general %}
+                <a href="{% url 'libro_docente:asignacion_estudiantes_excel' a.id %}" class="btn btn-sm btn-outline">Estudiantes (Excel)</a>
+              {% endif %}
               <a href="{% url 'libro_docente:asignacion_delete' a.id %}" class="btn btn-sm btn-danger-soft">Eliminar asignación</a>
             </div>
           </div>

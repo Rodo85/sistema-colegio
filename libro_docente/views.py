@@ -12,7 +12,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
 
-from catalogos.models import CursoLectivo
+from catalogos.models import CursoLectivo, Nacionalidad, Sexo, TipoIdentificacion
 from evaluaciones.models import (
     DocenteAsignacion,
     EsquemaEvalComponente,
@@ -21,7 +21,7 @@ from evaluaciones.models import (
     SubareaCursoLectivo,
 )
 from config_institucional.models import Profesor
-from matricula.models import MatriculaAcademica
+from matricula.models import Estudiante, EstudianteInstitucion, MatriculaAcademica
 
 from .forms import ActividadEvaluacionForm, AsignacionOnboardingForm, IndicadorActividadFormSet
 from .models import ActividadEvaluacion, AsistenciaRegistro, AsistenciaSesion
@@ -30,6 +30,7 @@ from .models import ObservacionActividadEstudiante
 from .models import PuntajeSimple
 from .models import EstudianteOcultoAsignacion
 from .models import EstudianteAdecuacionAsignacion
+from .models import ListaEstudiantesDocente, ListaEstudiantesDocenteItem
 from .services import (
     actividad_pertenece_a_institucion,
     calcular_resumen_evaluacion_completo,
@@ -98,6 +99,107 @@ def _limite_asignaciones_docente(profesor):
     return institucion.max_asignaciones_general or 10
 
 
+def _es_institucion_general(asignacion):
+    try:
+        return bool(asignacion.subarea_curso.institucion.es_institucion_general)
+    except Exception:
+        return False
+
+
+def _obtener_lista_privada_docente(asignacion):
+    filtros = {
+        "docente": asignacion.docente,
+        "institucion": asignacion.subarea_curso.institucion,
+        "curso_lectivo": asignacion.curso_lectivo,
+    }
+    if asignacion.subgrupo_id:
+        filtros["subgrupo_id"] = asignacion.subgrupo_id
+    else:
+        filtros["seccion_id"] = asignacion.seccion_id
+    return ListaEstudiantesDocente.objects.filter(**filtros).first()
+
+
+def _obtener_o_crear_lista_privada_docente(asignacion, user):
+    filtros = {
+        "docente": asignacion.docente,
+        "institucion": asignacion.subarea_curso.institucion,
+        "curso_lectivo": asignacion.curso_lectivo,
+    }
+    if asignacion.subgrupo_id:
+        filtros["subgrupo_id"] = asignacion.subgrupo_id
+    else:
+        filtros["seccion_id"] = asignacion.seccion_id
+    return ListaEstudiantesDocente.objects.get_or_create(
+        defaults={"created_by": user},
+        **filtros,
+    )
+
+
+def _obtener_estudiante_defaults():
+    tipo_id = TipoIdentificacion.objects.order_by("id").first()
+    sexo = Sexo.objects.order_by("id").first()
+    nacionalidad = Nacionalidad.objects.order_by("id").first()
+    if not tipo_id or not sexo or not nacionalidad:
+        return None
+    return {"tipo_identificacion": tipo_id, "sexo": sexo, "nacionalidad": nacionalidad}
+
+
+def _leer_estudiantes_desde_archivo(archivo):
+    nombre = (getattr(archivo, "name", "") or "").lower()
+    filas = []
+    if nombre.endswith(".csv"):
+        contenido = archivo.read().decode("utf-8", errors="ignore").splitlines()
+        reader = csv.DictReader(contenido)
+        for row in reader:
+            filas.append(row)
+    else:
+        if openpyxl is None:
+            raise ValidationError("No se puede procesar Excel porque openpyxl no está disponible.")
+        wb = openpyxl.load_workbook(archivo, data_only=True)
+        ws = wb.active
+        headers = [str(c.value or "").strip() for c in ws[1]]
+        for r in ws.iter_rows(min_row=2, values_only=True):
+            row = {}
+            for i, h in enumerate(headers):
+                row[h] = r[i] if i < len(r) else None
+            filas.append(row)
+    return filas
+
+
+def _normalizar_filas_estudiantes(filas):
+    mapping = {
+        "identificacion": ["identificacion", "identificación", "id", "cedula", "cédula"],
+        "primer_apellido": ["primer apellido", "1er apellido", "apellido1", "apellido_1"],
+        "segundo_apellido": ["segundo apellido", "2do apellido", "apellido2", "apellido_2"],
+        "nombres": ["nombre", "nombres", "nombre(s)"],
+    }
+
+    def pick(row, keys):
+        for k in row.keys():
+            k_norm = str(k or "").strip().lower()
+            if k_norm in keys:
+                return str(row.get(k) or "").strip()
+        return ""
+
+    normalizadas = []
+    for row in filas:
+        ident = pick(row, mapping["identificacion"])
+        p1 = pick(row, mapping["primer_apellido"])
+        p2 = pick(row, mapping["segundo_apellido"])
+        nom = pick(row, mapping["nombres"])
+        if not ident and not p1 and not p2 and not nom:
+            continue
+        normalizadas.append(
+            {
+                "identificacion": ident,
+                "primer_apellido": p1,
+                "segundo_apellido": p2,
+                "nombres": nom,
+            }
+        )
+    return normalizadas
+
+
 def _get_estudiantes(asignacion):
     """
     Devuelve MatriculaAcademica activas del grupo de la asignación,
@@ -108,7 +210,11 @@ def _get_estudiantes(asignacion):
     filtrar por sección completa. Nunca mezclar 9-1A y 9-1B cuando
     la asignación es a un subgrupo específico.
     """
-    filtros = {"curso_lectivo": asignacion.curso_lectivo, "estado": "activo"}
+    filtros = {
+        "curso_lectivo": asignacion.curso_lectivo,
+        "estado": "activo",
+        "institucion": asignacion.subarea_curso.institucion,
+    }
     if asignacion.subgrupo_id:
         filtros["subgrupo_id"] = asignacion.subgrupo_id
     elif asignacion.seccion_id:
@@ -121,6 +227,14 @@ def _get_estudiantes(asignacion):
         )
     )
     qs = MatriculaAcademica.objects.filter(**filtros)
+    if _es_institucion_general(asignacion):
+        lista = _obtener_lista_privada_docente(asignacion)
+        if not lista:
+            return MatriculaAcademica.objects.none()
+        est_ids = list(lista.items.values_list("estudiante_id", flat=True))
+        if not est_ids:
+            return MatriculaAcademica.objects.none()
+        qs = qs.filter(estudiante_id__in=est_ids)
     if ocultos_ids:
         qs = qs.exclude(estudiante_id__in=ocultos_ids)
     return (
@@ -133,15 +247,25 @@ def _get_estudiantes_base(asignacion):
     """
     Lista base oficial del grupo/subgrupo sin aplicar ocultos.
     """
-    filtros = {"curso_lectivo": asignacion.curso_lectivo, "estado": "activo"}
+    filtros = {
+        "curso_lectivo": asignacion.curso_lectivo,
+        "estado": "activo",
+        "institucion": asignacion.subarea_curso.institucion,
+    }
     if asignacion.subgrupo_id:
         filtros["subgrupo_id"] = asignacion.subgrupo_id
     elif asignacion.seccion_id:
         filtros["seccion_id"] = asignacion.seccion_id
     else:
         return MatriculaAcademica.objects.none()
+    qs = MatriculaAcademica.objects.filter(**filtros)
+    if _es_institucion_general(asignacion):
+        lista = _obtener_lista_privada_docente(asignacion)
+        if not lista:
+            return MatriculaAcademica.objects.none()
+        qs = qs.filter(estudiante_id__in=lista.items.values_list("estudiante_id", flat=True))
     return (
-        MatriculaAcademica.objects.filter(**filtros)
+        qs
         .select_related("estudiante")
         .order_by("estudiante__primer_apellido", "estudiante__segundo_apellido", "estudiante__nombres")
     )
@@ -545,6 +669,205 @@ def asignacion_onboarding_view(request):
         "curso_lectivo": curso_lectivo,
         "institucion": institucion,
         "limite_asignaciones": _limite_asignaciones_docente(profesor),
+    })
+
+
+@login_required
+@permission_required("libro_docente.access_libro_docente", raise_exception=True)
+def asignacion_estudiantes_excel_view(request, asignacion_id):
+    asignacion = _obtener_asignacion_con_permiso(request, asignacion_id)
+    if asignacion is None:
+        messages.error(request, "No tienes acceso a esta asignación.")
+        return redirect("libro_docente:home")
+    if not _es_institucion_general(asignacion):
+        messages.error(request, "La carga por Excel solo está disponible en Institución General.")
+        return redirect("libro_docente:home")
+
+    if request.method == "POST" and request.POST.get("accion") == "plantilla":
+        if openpyxl is None:
+            messages.error(request, "No se pudo generar la plantilla Excel.")
+            return redirect(reverse("libro_docente:asignacion_estudiantes_excel", args=[asignacion.id]))
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = "Estudiantes"
+        ws.append(["Identificación (ID)", "Primer apellido", "Segundo apellido", "Nombre"])
+        ws.append(["123456789", "APELLIDO1", "APELLIDO2", "NOMBRE"])
+        response = HttpResponse(
+            content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+        response["Content-Disposition"] = f'attachment; filename="plantilla_estudiantes_{asignacion.id}.xlsx"'
+        wb.save(response)
+        return response
+
+    if request.method == "POST" and request.POST.get("accion") == "subir":
+        archivo = request.FILES.get("archivo_excel")
+        if not archivo:
+            messages.error(request, "Debes seleccionar un archivo Excel o CSV.")
+            return redirect(reverse("libro_docente:asignacion_estudiantes_excel", args=[asignacion.id]))
+
+        try:
+            filas_raw = _leer_estudiantes_desde_archivo(archivo)
+            filas = _normalizar_filas_estudiantes(filas_raw)
+        except Exception as exc:
+            messages.error(request, f"No se pudo leer el archivo: {exc}")
+            return redirect(reverse("libro_docente:asignacion_estudiantes_excel", args=[asignacion.id]))
+
+        if not filas:
+            messages.error(request, "El archivo no contiene filas válidas.")
+            return redirect(reverse("libro_docente:asignacion_estudiantes_excel", args=[asignacion.id]))
+
+        ids = [f["identificacion"].strip().upper() for f in filas if f.get("identificacion")]
+        if len(ids) != len(set(ids)):
+            messages.error(request, "El archivo contiene IDs repetidos. Corrige e intenta de nuevo.")
+            return redirect(reverse("libro_docente:asignacion_estudiantes_excel", args=[asignacion.id]))
+
+        limite = 25 if asignacion.subgrupo_id else 50
+        if len(filas) > limite:
+            messages.error(
+                request,
+                f"Se supera el límite permitido para este grupo: {limite} estudiantes.",
+            )
+            return redirect(reverse("libro_docente:asignacion_estudiantes_excel", args=[asignacion.id]))
+
+        defaults_catalogo = _obtener_estudiante_defaults()
+        if not defaults_catalogo:
+            messages.error(
+                request,
+                "Faltan catálogos mínimos (TipoIdentificación/Sexo/Nacionalidad) para crear estudiantes.",
+            )
+            return redirect(reverse("libro_docente:asignacion_estudiantes_excel", args=[asignacion.id]))
+
+        creados = 0
+        actualizados = 0
+        errores = []
+        try:
+            with transaction.atomic():
+                lista, _ = _obtener_o_crear_lista_privada_docente(asignacion, request.user)
+                estudiantes_lista = []
+                for idx, f in enumerate(filas, start=2):
+                    ident = (f.get("identificacion") or "").strip().upper()
+                    p1 = (f.get("primer_apellido") or "").strip().upper()
+                    p2 = (f.get("segundo_apellido") or "").strip().upper()
+                    nom = (f.get("nombres") or "").strip().upper()
+                    if not ident or not p1 or not p2 or not nom:
+                        errores.append(f"Fila {idx}: faltan datos obligatorios.")
+                        continue
+
+                    est = Estudiante.objects.filter(identificacion=ident).first()
+                    if est:
+                        cambio = False
+                        if est.primer_apellido != p1:
+                            est.primer_apellido = p1
+                            cambio = True
+                        if est.segundo_apellido != p2:
+                            est.segundo_apellido = p2
+                            cambio = True
+                        if est.nombres != nom:
+                            est.nombres = nom
+                            cambio = True
+                        if cambio:
+                            est.save()
+                            actualizados += 1
+                    else:
+                        est = Estudiante.objects.create(
+                            tipo_estudiante=Estudiante.PR,
+                            tipo_identificacion=defaults_catalogo["tipo_identificacion"],
+                            identificacion=ident,
+                            primer_apellido=p1,
+                            segundo_apellido=p2,
+                            nombres=nom,
+                            fecha_nacimiento=date(2000, 1, 1),
+                            sexo=defaults_catalogo["sexo"],
+                            nacionalidad=defaults_catalogo["nacionalidad"],
+                            correo=f"{ident.lower()}@est.mep.go.cr",
+                        )
+                        creados += 1
+
+                    rel_activa = EstudianteInstitucion.objects.filter(
+                        estudiante=est,
+                        estado=EstudianteInstitucion.ACTIVO,
+                    ).first()
+                    if rel_activa and rel_activa.institucion_id != asignacion.subarea_curso.institucion_id:
+                        errores.append(
+                            f"ID {ident}: el estudiante está activo en otra institución y no puede importarse en General."
+                        )
+                        continue
+                    if not rel_activa:
+                        EstudianteInstitucion.objects.create(
+                            estudiante=est,
+                            institucion=asignacion.subarea_curso.institucion,
+                            estado=EstudianteInstitucion.ACTIVO,
+                            fecha_ingreso=timezone.now().date(),
+                            usuario_registro=request.user,
+                        )
+
+                    MatriculaAcademica.objects.update_or_create(
+                        estudiante=est,
+                        curso_lectivo=asignacion.curso_lectivo,
+                        defaults={
+                            "institucion": asignacion.subarea_curso.institucion,
+                            "nivel": (asignacion.subgrupo.seccion.nivel if asignacion.subgrupo_id else asignacion.seccion.nivel),
+                            "seccion": (asignacion.subgrupo.seccion if asignacion.subgrupo_id else asignacion.seccion),
+                            "subgrupo": (asignacion.subgrupo if asignacion.subgrupo_id else None),
+                            "estado": MatriculaAcademica.ACTIVO,
+                            "origen_carga": MatriculaAcademica.ORIGEN_GENERAL_EXCEL,
+                        },
+                    )
+                    estudiantes_lista.append(est.id)
+
+                if not estudiantes_lista and errores:
+                    raise ValidationError("No se pudo cargar ningún estudiante válido.")
+
+                ListaEstudiantesDocenteItem.objects.filter(lista=lista).exclude(
+                    estudiante_id__in=estudiantes_lista
+                ).delete()
+                existentes = set(
+                    ListaEstudiantesDocenteItem.objects.filter(lista=lista).values_list("estudiante_id", flat=True)
+                )
+                nuevos_items = []
+                for orden, est_id in enumerate(estudiantes_lista, start=1):
+                    if est_id in existentes:
+                        ListaEstudiantesDocenteItem.objects.filter(lista=lista, estudiante_id=est_id).update(orden=orden)
+                    else:
+                        nuevos_items.append(
+                            ListaEstudiantesDocenteItem(lista=lista, estudiante_id=est_id, orden=orden)
+                        )
+                if nuevos_items:
+                    ListaEstudiantesDocenteItem.objects.bulk_create(nuevos_items)
+        except ValidationError as exc:
+            messages.error(request, str(exc))
+            return redirect(reverse("libro_docente:asignacion_estudiantes_excel", args=[asignacion.id]))
+
+        if errores:
+            messages.warning(
+                request,
+                f"Carga parcial: creados {creados}, actualizados {actualizados}. Errores: {len(errores)}.",
+            )
+        else:
+            messages.success(
+                request,
+                f"Carga completada: creados {creados}, actualizados {actualizados}, total {len(filas)}.",
+            )
+        return redirect(reverse("libro_docente:asignacion_estudiantes_excel", args=[asignacion.id]))
+
+    lista = _obtener_lista_privada_docente(asignacion)
+    estudiantes = []
+    if lista:
+        estudiantes = list(
+            MatriculaAcademica.objects.filter(
+                curso_lectivo=asignacion.curso_lectivo,
+                institucion=asignacion.subarea_curso.institucion,
+                estudiante_id__in=lista.items.values_list("estudiante_id", flat=True),
+                estado=MatriculaAcademica.ACTIVO,
+            )
+            .select_related("estudiante")
+            .order_by("estudiante__primer_apellido", "estudiante__segundo_apellido", "estudiante__nombres")
+        )
+
+    return render(request, "libro_docente/asignacion_estudiantes_excel.html", {
+        "asignacion": asignacion,
+        "estudiantes": estudiantes,
+        "limite": (25 if asignacion.subgrupo_id else 50),
     })
 
 

@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Estudiantes por Excel{% endblock %}
+{% block content %}
+<div class="container py-3">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <h4 class="mb-1">Lista de estudiantes por Excel</h4>
+      <div class="text-muted small">
+        {{ asignacion.subarea_curso.subarea.nombre }} ·
+        {% if asignacion.subgrupo %}{{ asignacion.subgrupo }}{% else %}{{ asignacion.seccion }}{% endif %}
+      </div>
+    </div>
+    <a class="btn btn-outline-secondary" href="{% url 'libro_docente:home' %}">Volver</a>
+  </div>
+
+  <div class="alert alert-info">
+    Esta opción solo aplica para <strong>Institución General</strong>.
+    Límite permitido para esta asignación: <strong>{{ limite }}</strong> estudiantes.
+    La lista se reutiliza para tus otras materias del mismo grupo/subgrupo.
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-body">
+      <form method="post" class="d-inline">
+        {% csrf_token %}
+        <input type="hidden" name="accion" value="plantilla">
+        <button class="btn btn-outline-primary" type="submit">Descargar plantilla Excel</button>
+      </form>
+      <hr>
+      <form method="post" enctype="multipart/form-data" class="row g-2 align-items-end">
+        {% csrf_token %}
+        <input type="hidden" name="accion" value="subir">
+        <div class="col-md-8">
+          <label class="form-label">Archivo (.xlsx o .csv)</label>
+          <input type="file" name="archivo_excel" class="form-control" accept=".xlsx,.csv" required>
+        </div>
+        <div class="col-md-4">
+          <button class="btn btn-success w-100" type="submit">Subir archivo</button>
+        </div>
+      </form>
+      <div class="small text-muted mt-2">
+        Columnas requeridas: Identificación (ID), Primer apellido, Segundo apellido, Nombre.
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header d-flex justify-content-between">
+      <strong>Estudiantes cargados</strong>
+      <span class="badge bg-secondary">{{ estudiantes|length }}</span>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-sm mb-0">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Primer apellido</th>
+            <th>Segundo apellido</th>
+            <th>Nombre</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for m in estudiantes %}
+          <tr>
+            <td>{{ m.estudiante.identificacion }}</td>
+            <td>{{ m.estudiante.primer_apellido }}</td>
+            <td>{{ m.estudiante.segundo_apellido }}</td>
+            <td>{{ m.estudiante.nombres }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="4" class="text-muted">Todavía no has cargado estudiantes para este grupo/subgrupo.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
