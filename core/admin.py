@@ -125,6 +125,29 @@ class SolicitudRegistroAdmin(admin.ModelAdmin):
     )
     actions = ("aprobar", "rechazar")
 
+    def save_model(self, request, obj, form, change):
+        """
+        Permite aprobar/rechazar también desde el formulario de detalle:
+        si cambian el estado manualmente, ejecuta el flujo completo
+        (activar usuario, crear membresía/permisos/notificación).
+        """
+        if change:
+            previo = SolicitudRegistro.objects.filter(pk=obj.pk).first()
+            if previo and previo.estado != obj.estado:
+                if obj.estado == SolicitudRegistro.APROBADA:
+                    aprobar_solicitud_registro(obj, request.user)
+                    self.message_user(request, "Solicitud aprobada y usuario activado.")
+                    return
+                if obj.estado == SolicitudRegistro.RECHAZADA:
+                    rechazar_solicitud_registro(
+                        obj,
+                        request.user,
+                        motivo=obj.motivo_revision or "",
+                    )
+                    self.message_user(request, "Solicitud rechazada y notificada.")
+                    return
+        super().save_model(request, obj, form, change)
+
     @admin.action(description="Aprobar solicitudes seleccionadas")
     def aprobar(self, request, queryset):
         total = 0

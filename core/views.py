@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.db import transaction
 from django.core.mail import send_mail
 from django.conf import settings
+from django.contrib.auth.models import Permission
 from datetime import timedelta
 
 from core.models import Institucion
@@ -104,11 +105,22 @@ def aprobar_solicitud_registro(solicitud, revisado_por):
     user.is_staff = True
     user.save(update_fields=["estado_solicitud", "is_active", "is_staff"])
 
-    Miembro.objects.get_or_create(
+    miembro, _ = Miembro.objects.get_or_create(
         usuario=user,
         institucion=institucion,
         defaults={"rol": Miembro.DOCENTE},
     )
+    if miembro.rol != Miembro.DOCENTE:
+        miembro.rol = Miembro.DOCENTE
+        miembro.save(update_fields=["rol"])
+
+    perm_libro = Permission.objects.filter(
+        codename="access_libro_docente",
+        content_type__app_label="libro_docente",
+    ).first()
+    if perm_libro:
+        user.user_permissions.add(perm_libro)
+
     Profesor.objects.get_or_create(
         institucion=institucion,
         usuario=user,
