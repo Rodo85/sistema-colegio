@@ -66,12 +66,10 @@ class SubAreaAdmin(admin.ModelAdmin):
     search_fields  = ("nombre",)
 
     def has_module_permission(self, request):
-        # Permitir abrir el módulo para evitar 403 en flujos de selección/consulta.
-        return bool(request.user and request.user.is_staff)
+        return bool(request.user and request.user.is_superuser)
 
     def has_view_permission(self, request, obj=None):
-        # Staff puede consultar; la edición queda reservada al superadmin.
-        return bool(request.user and request.user.is_staff)
+        return bool(request.user and request.user.is_superuser)
 
     def has_add_permission(self, request):
         return bool(request.user and request.user.is_superuser)
