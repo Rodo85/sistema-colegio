@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import ValidationError
+from django.db.models import Prefetch
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 
@@ -10,6 +11,7 @@ from core.models import Institucion
 from .forms import DocenteAsignacionForm, PeriodoCursoLectivoForm, SubareaCursoLectivoForm
 from .models import (
     DocenteAsignacion,
+    EsquemaEvalComponente,
     EsquemaEval,
     Periodo,
     PeriodoCursoLectivo,
@@ -34,6 +36,29 @@ def _resolver_curso(param=None):
     if param:
         return CursoLectivo.objects.filter(pk=param).first()
     return CursoLectivo.get_activo()
+
+
+def _formatear_porcentaje(valor):
+    try:
+        numero = float(valor)
+    except (TypeError, ValueError):
+        return str(valor)
+    if numero.is_integer():
+        return str(int(numero))
+    return f"{numero:.2f}".rstrip("0").rstrip(".")
+
+
+def _resumen_esquema(esquema):
+    if not esquema:
+        return "—"
+    componentes = list(esquema.componentes_esquema.all())
+    if not componentes:
+        return "Sin componentes"
+    partes = [
+        f"{(c.componente.codigo or c.componente.nombre or '').strip().upper()}:{_formatear_porcentaje(c.porcentaje)}"
+        for c in componentes
+    ]
+    return ", ".join(partes)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -271,11 +296,21 @@ def gestion_docentes(request):
                 "subgrupo",
                 "eval_scheme_snapshot",
             )
+            .prefetch_related(
+                Prefetch(
+                    "eval_scheme_snapshot__componentes_esquema",
+                    queryset=EsquemaEvalComponente.objects.select_related("componente").order_by(
+                        "componente__codigo", "componente__nombre"
+                    ),
+                )
+            )
             .order_by(
                 "subarea_curso__subarea__nombre",
                 "docente__usuario__last_name",
             )
         )
+        for asignacion in asignaciones:
+            asignacion.esquema_resumen = _resumen_esquema(asignacion.eval_scheme_snapshot)
 
     context = {
         "todos_cursos": todos_cursos,

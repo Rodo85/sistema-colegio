@@ -129,7 +129,12 @@ tbody tr:hover{background:#f0f5fb;}
                 {% else %}—{% endif %}
               </td>
               <td style="font-size:.82rem;color:var(--muted);">
-                {% if a.eval_scheme_snapshot %}{{ a.eval_scheme_snapshot.nombre }}{% else %}—{% endif %}
+                {% if a.eval_scheme_snapshot %}
+                  <div><strong>{{ a.eval_scheme_snapshot.nombre }}</strong></div>
+                  <div>{{ a.esquema_resumen }}</div>
+                {% else %}
+                  —
+                {% endif %}
               </td>
               <td>
                 <button class="btn btn-sm toggle-btn {% if a.activo %}btn-success badge-on{% else %}btn-danger badge-off{% endif %}"

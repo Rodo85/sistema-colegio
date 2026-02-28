@@ -1,9 +1,11 @@
 # core/admin.py
 from django.contrib import admin
+from django.contrib.auth.models import Permission
 from .models import Miembro, Institucion, SolicitudRegistro, User
 from core.mixins import InstitucionScopedAdmin
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from django.utils.translation import gettext_lazy as _
+from config_institucional.models import Profesor
 from core.forms import PendingAwareAdminAuthenticationForm
 from core.views import aprobar_solicitud_registro, rechazar_solicitud_registro
 # ----------- Institución -----------
@@ -48,6 +50,42 @@ class MiembroAdmin(InstitucionScopedAdmin):
     # --- superuser puede elegir libremente; director la ve readonly ---
     def get_readonly_fields(self, request, obj=None):
         return () if request.user.is_superuser else ("institucion",)
+
+    @staticmethod
+    def _identificacion_auto_docente(user):
+        base = f"AUTO{str(user.id).replace('-', '')[:12]}".upper()
+        return base[:20]
+
+    def _asegurar_perfil_docente(self, request, miembro):
+        if miembro.rol != Miembro.DOCENTE:
+            return
+
+        profesor = Profesor.objects.filter(
+            institucion=miembro.institucion,
+            usuario=miembro.usuario,
+        ).first()
+        if profesor is None:
+            Profesor.objects.create(
+                institucion=miembro.institucion,
+                usuario=miembro.usuario,
+                identificacion=self._identificacion_auto_docente(miembro.usuario),
+                telefono="",
+            )
+            self.message_user(
+                request,
+                "Se creó automáticamente el perfil de docente en la institución seleccionada.",
+            )
+
+        perm_libro = Permission.objects.filter(
+            codename="access_libro_docente",
+            content_type__app_label="libro_docente",
+        ).first()
+        if perm_libro:
+            miembro.usuario.user_permissions.add(perm_libro)
+
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+        self._asegurar_perfil_docente(request, obj)
 
 @admin.register(User)
 class UserAdmin(DjangoUserAdmin):

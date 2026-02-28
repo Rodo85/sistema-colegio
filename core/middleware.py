@@ -21,21 +21,14 @@ def _asignar_institucion_sesion(request, inst_id):
 def _obtener_institucion_default(user):
     """
     Obtiene la institución por defecto para el usuario.
-    Prioridad: 1 membresía → 1 Profesor → None (debe elegir).
+    Regla: solo autoseleccionar cuando existe exactamente 1 membresía activa.
+    Si tiene varias membresías, debe elegir explícitamente.
     """
     membresias = list(user.membresias.select_related("institucion").all())
     if len(membresias) == 1:
         inst = membresias[0].institucion
         if inst.activa:
             return inst
-    if len(membresias) > 1:
-        # Docente con varias membresías: usar institución de su único Profesor
-        from config_institucional.models import Profesor
-        profesores = list(Profesor.objects.filter(usuario=user).select_related("institucion"))
-        if len(profesores) == 1:
-            inst = profesores[0].institucion
-            if inst.activa:
-                return inst
     return None
 
 

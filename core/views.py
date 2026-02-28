@@ -214,9 +214,10 @@ def seleccionar_institucion(request):
         return redirect("admin:index")
 
     membresias = user.membresias.select_related("institucion")
+    membresias_activas = [m for m in membresias if m.institucion and m.institucion.activa]
 
     # 1) Sin membresías --------------► renderizar aviso
-    if not membresias.exists():
+    if not membresias_activas:
         return render(
             request,
             "core/seleccionar_institucion.html",
@@ -224,17 +225,27 @@ def seleccionar_institucion(request):
         )
 
     # 2) Una sola membresía activa ----► autoselección
-    if membresias.count() == 1:
-        inst = membresias.first().institucion
-        if inst.activa:
-            request.session["institucion_id"] = inst.id
-            return redirect("admin:index")
+    if len(membresias_activas) == 1:
+        inst = membresias_activas[0].institucion
+        request.session["institucion_id"] = inst.id
+        return redirect("admin:index")
 
     # 3) Varias membresías -------------► formulario
     if request.method == "POST":
         inst_id = request.POST.get("institucion_id")
         if inst_id:
-            request.session["institucion_id"] = inst_id
+            try:
+                inst_id_int = int(inst_id)
+            except (TypeError, ValueError):
+                messages.error(request, _("La institución seleccionada no es válida."))
+                return redirect("seleccionar_institucion")
+
+            permitidas = {m.institucion_id for m in membresias_activas}
+            if inst_id_int not in permitidas:
+                messages.error(request, _("No tienes acceso a la institución seleccionada."))
+                return redirect("seleccionar_institucion")
+
+            request.session["institucion_id"] = inst_id_int
             return redirect("admin:index")
         # Si llegó aquí es porque pulsó «Entrar» sin elegir
         messages.error(request, _("Debe seleccionar una institución."))
@@ -242,5 +253,5 @@ def seleccionar_institucion(request):
     return render(
         request,
         "core/seleccionar_institucion.html",
-        {"membresias": membresias}
+        {"membresias": membresias_activas}
     )

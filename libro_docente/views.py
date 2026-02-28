@@ -7,7 +7,7 @@ import unicodedata
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import ValidationError
-from django.db import transaction
+from django.db import connection, transaction
 from django.db.models import Count, Prefetch, Q
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -158,6 +158,27 @@ def _normalizar_identificacion(valor):
 def _es_tipo_cedula(tipo_identificacion):
     nombre = (getattr(tipo_identificacion, "nombre", "") or "").upper()
     return "CÉDULA" in nombre or "CEDULA" in nombre
+
+
+def _limpiar_exclusiones_legacy(docente_asignacion_id):
+    """
+    Compatibilidad con despliegues que aún conservan tabla legacy de exclusiones.
+    Si existe, limpiamos los registros para no bloquear el borrado de la asignación.
+    """
+    tabla_legacy = "libro_exclusion_estudiante_asignacion"
+    columnas = ("docente_asignacion_id", "asignacion_id")
+    if tabla_legacy not in connection.introspection.table_names():
+        return
+    with connection.cursor() as cursor:
+        for columna in columnas:
+            try:
+                cursor.execute(
+                    f'DELETE FROM "{tabla_legacy}" WHERE "{columna}" = %s',
+                    [docente_asignacion_id],
+                )
+                return
+            except Exception:
+                continue
 
 
 def _leer_estudiantes_desde_archivo(archivo):
@@ -1153,6 +1174,7 @@ def asignacion_delete_view(request, asignacion_id):
             messages.error(request, "Debes confirmar para eliminar la asignación.")
             return redirect(reverse("libro_docente:asignacion_delete", args=[asignacion.id]))
         with transaction.atomic():
+            _limpiar_exclusiones_legacy(asignacion.id)
             AsistenciaSesion.objects.filter(docente_asignacion=asignacion).delete()
             ActividadEvaluacion.objects.filter(docente_asignacion=asignacion).delete()
             EstudianteOcultoAsignacion.objects.filter(docente_asignacion=asignacion).delete()
