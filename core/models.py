@@ -86,6 +86,18 @@ class User(AbstractBaseUser, PermissionsMixin):
             return False
         return date.today() > self.fecha_limite_pago
 
+    def save(self, *args, **kwargs):
+        # Si cambia de "Pago pendiente" a "Al día", fijar vencimiento anual automáticamente.
+        if self.pk:
+            previo = type(self).objects.filter(pk=self.pk).values("estado_pago").first()
+            if previo:
+                if (
+                    previo["estado_pago"] != self.PAGO_AL_DIA
+                    and self.estado_pago == self.PAGO_AL_DIA
+                ):
+                    self.fecha_limite_pago = fecha_vencimiento_anual_default()
+        super().save(*args, **kwargs)
+
 # ───── 2.2  INSTITUCIÓN ────────────────────────────────────
 class Institucion(models.Model):
     ACADEMICO = "A"
