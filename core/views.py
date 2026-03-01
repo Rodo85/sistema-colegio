@@ -110,9 +110,11 @@ def aprobar_solicitud_registro(solicitud, revisado_por):
         institucion = _get_or_create_institucion_general()
     user = solicitud.usuario
     user.estado_solicitud = User.ESTADO_ACTIVA
+    user.estado_pago = User.PAGO_PENDIENTE
+    user.fecha_limite_pago = timezone.now().date() + timedelta(days=10)
     user.is_active = True
     user.is_staff = True
-    user.save(update_fields=["estado_solicitud", "is_active", "is_staff"])
+    user.save(update_fields=["estado_solicitud", "estado_pago", "fecha_limite_pago", "is_active", "is_staff"])
 
     miembro, _ = Miembro.objects.get_or_create(
         usuario=user,

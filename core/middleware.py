@@ -1,4 +1,6 @@
 from django.shortcuts import redirect
+from django.contrib import messages
+from django.contrib.auth import logout
 from django.utils.deprecation import MiddlewareMixin
 from core.models import Institucion
 import logging
@@ -142,4 +144,51 @@ class InstitucionMiddleware(MiddlewareMixin):
                 request.institucion_activa_id = inst_default.pk
                 logger.debug(f"process_request: Institución por defecto asignada: {inst_default.nombre}")
         
+        return None
+
+
+class PagoControlMiddleware(MiddlewareMixin):
+    """
+    Controla alertas de pago y bloquea acceso cuando la fecha límite vence.
+    """
+
+    RUTAS_PERMITIDAS = (
+        "/admin/login/",
+        "/admin/logout/",
+        "/password-reset/",
+        "/registro/",
+    )
+
+    def process_view(self, request, view_func, view_args, view_kwargs):
+        user = getattr(request, "user", None)
+        if not user or not user.is_authenticated or user.is_superuser:
+            return None
+
+        path = request.path or ""
+        if any(path.startswith(p) for p in self.RUTAS_PERMITIDAS):
+            return None
+
+        fecha_limite = getattr(user, "fecha_limite_pago", None)
+        if fecha_limite and user.pago_vencido():
+            logout(request)
+            messages.error(
+                request,
+                "Tu período de prueba o acceso expiró. Contacta al administrador para renovar tu pago.",
+            )
+            return redirect("admin:login")
+
+        dias = user.dias_para_vencer_pago()
+        if (
+            getattr(user, "estado_pago", None) == user.PAGO_PENDIENTE
+            and dias is not None
+            and 0 <= dias <= 3
+        ):
+            if dias == 0:
+                texto = "Tu período de prueba vence hoy."
+            elif dias == 1:
+                texto = "Tu período de prueba vence mañana."
+            else:
+                texto = f"Tu período de prueba vence en {dias} días."
+            messages.warning(request, f"{texto} Realiza el pago para evitar bloqueo.")
+
         return None

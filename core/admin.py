@@ -92,7 +92,7 @@ class UserAdmin(DjangoUserAdmin):
     fieldsets = (
         (None, {"fields": ("email", "password")}),
         (_("Información personal"), {"fields": ("first_name", "last_name","second_last_name")}),
-        (_("Estado de cuenta"), {"fields": ("estado_solicitud",)}),
+        (_("Estado de cuenta"), {"fields": ("estado_solicitud", "estado_pago", "fecha_limite_pago")}),
         (_("Permisos"), {
             "fields": (
                 "is_active",
@@ -110,7 +110,18 @@ class UserAdmin(DjangoUserAdmin):
             "fields": ("email", "password1", "password2"),
         }),
     )
-    list_display = ("email", "first_name", "last_name","second_last_name","estado_solicitud", "is_staff", "is_superuser")
+    list_display = (
+        "email",
+        "first_name",
+        "last_name",
+        "second_last_name",
+        "estado_solicitud",
+        "estado_pago",
+        "fecha_limite_pago",
+        "is_staff",
+        "is_superuser",
+    )
+    list_filter = ("estado_solicitud", "estado_pago", "is_staff", "is_superuser")
     search_fields = ("email", "first_name", "last_name")
     ordering = ("email",)
     

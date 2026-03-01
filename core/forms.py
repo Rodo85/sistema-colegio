@@ -1,4 +1,5 @@
 from django import forms
+from datetime import date
 from django.contrib.admin.forms import AdminAuthenticationForm
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
@@ -24,6 +25,13 @@ class PendingAwareAdminAuthenticationForm(AdminAuthenticationForm):
                 "Tu solicitud fue rechazada. Contacta al administrador si crees que es un error.",
                 code="rechazada",
             )
+        if not user.is_superuser:
+            fecha_limite = getattr(user, "fecha_limite_pago", None)
+            if fecha_limite and date.today() > fecha_limite:
+                raise ValidationError(
+                    "Tu período de prueba o acceso expiró. Contacta al administrador para renovar tu pago.",
+                    code="pago_vencido",
+                )
 
 
 class RegistroUsuarioForm(UserCreationForm):

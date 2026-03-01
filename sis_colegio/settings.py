@@ -91,6 +91,7 @@ MIDDLEWARE = [
 
     # Nuestro middleware debe ir DESPUÉS de AuthenticationMiddleware
     "core.middleware.InstitucionMiddleware",
+    "core.middleware.PagoControlMiddleware",
 ]
 
 # Middleware adicional para desarrollo - evitar caché del navegador

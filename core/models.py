@@ -1,7 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 import uuid
+from datetime import date
 from django.conf import settings 
+
+
+def fecha_vencimiento_anual_default():
+    hoy = date.today()
+    return date(hoy.year, 12, 20)
 # ───── 2.1  USER ────────────────────────────────────────────
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra):
@@ -26,6 +32,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         (ESTADO_ACTIVA, "Activa"),
         (ESTADO_RECHAZADA, "Rechazada"),
     ]
+    PAGO_PENDIENTE = "PENDIENTE"
+    PAGO_AL_DIA = "AL_DIA"
+    ESTADO_PAGO_CHOICES = [
+        (PAGO_PENDIENTE, "Pago pendiente"),
+        (PAGO_AL_DIA, "Al día"),
+    ]
 
     id         = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email      = models.EmailField(unique=True)
@@ -37,6 +49,17 @@ class User(AbstractBaseUser, PermissionsMixin):
         max_length=20,
         choices=ESTADO_SOLICITUD_CHOICES,
         default=ESTADO_ACTIVA,
+    )
+    estado_pago = models.CharField(
+        "Estado de pago",
+        max_length=20,
+        choices=ESTADO_PAGO_CHOICES,
+        default=PAGO_AL_DIA,
+    )
+    fecha_limite_pago = models.DateField(
+        "Fecha límite de pago",
+        default=fecha_vencimiento_anual_default,
+        help_text="Si llega esta fecha y no se renueva, el acceso se bloquea.",
     )
     is_active  = models.BooleanField(default=True)
     is_staff   = models.BooleanField(default=False)
@@ -52,6 +75,16 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = "email"
     def __str__(self):
         return self.email
+
+    def dias_para_vencer_pago(self):
+        if not self.fecha_limite_pago:
+            return None
+        return (self.fecha_limite_pago - date.today()).days
+
+    def pago_vencido(self):
+        if not self.fecha_limite_pago:
+            return False
+        return date.today() > self.fecha_limite_pago
 
 # ───── 2.2  INSTITUCIÓN ────────────────────────────────────
 class Institucion(models.Model):
