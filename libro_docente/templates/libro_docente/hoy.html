@@ -100,7 +100,7 @@
       {% for item in asignaciones %}
         {% with a=item.obj %}
         <div class="assignment-card">
-          <div class="ac-header">
+          <div class="ac-header" style="background:linear-gradient(135deg, {{ item.color_primario }} 0%, {{ item.color_secundario }} 100%);">
             <p class="ac-subarea">
               {{ a.subarea_curso.subarea.nombre }}
               <span class="tipo-badge {% if a.subarea_curso.subarea.es_academica %}tipo-acad{% else %}tipo-tec{% endif %}">

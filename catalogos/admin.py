@@ -65,6 +65,11 @@ class SubAreaAdmin(admin.ModelAdmin):
     list_filter    = ("especialidad__modalidad",)
     search_fields  = ("nombre",)
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "especialidad":
+            kwargs["queryset"] = Especialidad.objects.select_related("modalidad").order_by("nombre")
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
     def has_module_permission(self, request):
         return bool(request.user and request.user.is_superuser)
 

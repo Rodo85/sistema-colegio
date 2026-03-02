@@ -8,6 +8,13 @@ from django.conf import settings
 def fecha_vencimiento_anual_default():
     hoy = date.today()
     return date(hoy.year, 12, 20)
+
+
+def fecha_vencimiento_anual_por_base(fecha_base=None):
+    hoy = date.today()
+    anio_base = getattr(fecha_base, "year", hoy.year) or hoy.year
+    anio_objetivo = max(hoy.year, anio_base)
+    return date(anio_objetivo, 12, 20)
 # ───── 2.1  USER ────────────────────────────────────────────
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra):
@@ -61,6 +68,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         default=fecha_vencimiento_anual_default,
         help_text="Si llega esta fecha y no se renueva, el acceso se bloquea.",
     )
+    fecha_aceptacion_solicitud = models.DateField(
+        "Fecha de aceptación de solicitud",
+        null=True,
+        blank=True,
+        help_text="Fecha en que el superadmin aprobó el acceso del usuario.",
+    )
     is_active  = models.BooleanField(default=True)
     is_staff   = models.BooleanField(default=False)
     objects    = UserManager()
@@ -95,7 +108,9 @@ class User(AbstractBaseUser, PermissionsMixin):
                     previo["estado_pago"] != self.PAGO_AL_DIA
                     and self.estado_pago == self.PAGO_AL_DIA
                 ):
-                    self.fecha_limite_pago = fecha_vencimiento_anual_default()
+                    self.fecha_limite_pago = fecha_vencimiento_anual_por_base(
+                        self.fecha_aceptacion_solicitud
+                    )
         super().save(*args, **kwargs)
 
 # ───── 2.2  INSTITUCIÓN ────────────────────────────────────
@@ -228,6 +243,19 @@ class SolicitudRegistro(models.Model):
     motivo_revision = models.TextField(
         "Motivo de revisión/rechazo",
         blank=True,
+    )
+    estado_pago_aprobacion = models.CharField(
+        "Estado de pago al aprobar",
+        max_length=20,
+        choices=User.ESTADO_PAGO_CHOICES,
+        default=User.PAGO_PENDIENTE,
+        help_text="Se aplicará al usuario cuando esta solicitud sea aprobada.",
+    )
+    fecha_limite_pago_aprobacion = models.DateField(
+        "Fecha límite de pago al aprobar",
+        null=True,
+        blank=True,
+        help_text="Opcional. Si se deja vacío y queda en pago pendiente, se asignan 10 días de prueba.",
     )
     revisado_por = models.ForeignKey(
         settings.AUTH_USER_MODEL,

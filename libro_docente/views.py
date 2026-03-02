@@ -1,6 +1,7 @@
 from datetime import date
 from decimal import Decimal
 import csv
+import hashlib
 import re
 import unicodedata
 
@@ -158,6 +159,28 @@ def _normalizar_identificacion(valor):
 def _es_tipo_cedula(tipo_identificacion):
     nombre = (getattr(tipo_identificacion, "nombre", "") or "").upper()
     return "CÉDULA" in nombre or "CEDULA" in nombre
+
+
+def _colores_por_materia(nombre_materia):
+    """
+    Devuelve un par de colores consistente por nombre de materia.
+    """
+    paleta = [
+        ("#1f4e79", "#2b6ca3"),
+        ("#4b2e83", "#6d44bd"),
+        ("#0f766e", "#0f9b8e"),
+        ("#7c3aed", "#9f67ff"),
+        ("#b45309", "#d97706"),
+        ("#be123c", "#e11d48"),
+        ("#166534", "#16a34a"),
+        ("#1d4ed8", "#2563eb"),
+        ("#7f1d1d", "#b91c1c"),
+        ("#374151", "#4b5563"),
+    ]
+    base = (nombre_materia or "").strip().upper()
+    digest = hashlib.md5(base.encode("utf-8")).hexdigest()
+    idx = int(digest[:8], 16) % len(paleta)
+    return paleta[idx]
 
 
 def _limpiar_exclusiones_legacy(docente_asignacion_id):
@@ -394,7 +417,7 @@ def _infer_periodo(asignacion, fecha):
     """
     Infiere el Periodo a partir de la fecha usando PeriodoCursoLectivo.
     Devuelve el Periodo si hay coincidencia exacta por fechas;
-    si no, devuelve el primero activo o None.
+    si no hay coincidencia, devuelve None.
     """
     inst_id = asignacion.subarea_curso.institucion_id
     periodos_cl = (
@@ -402,7 +425,6 @@ def _infer_periodo(asignacion, fecha):
         .filter(
             institucion_id=inst_id,
             curso_lectivo=asignacion.curso_lectivo,
-            activo=True,
         )
         .select_related("periodo")
         .order_by("periodo__numero")
@@ -411,8 +433,30 @@ def _infer_periodo(asignacion, fecha):
         if pcl.fecha_inicio and pcl.fecha_fin:
             if pcl.fecha_inicio <= fecha <= pcl.fecha_fin:
                 return pcl.periodo
-    first = periodos_cl.first()
-    return first.periodo if first else None
+    return None
+
+
+def _sesiones_por_periodo(asignacion, periodo):
+    """
+    Obtiene sesiones de una asignación para un período, priorizando rango de fechas
+    del PeriodoCursoLectivo para incluir registros retroactivos válidos.
+    """
+    qs = AsistenciaSesion.objects.filter(docente_asignacion=asignacion)
+    if not periodo:
+        return qs.none()
+
+    pcl = (
+        PeriodoCursoLectivo.objects
+        .filter(
+            institucion_id=asignacion.subarea_curso.institucion_id,
+            curso_lectivo=asignacion.curso_lectivo,
+            periodo=periodo,
+        )
+        .first()
+    )
+    if pcl and pcl.fecha_inicio and pcl.fecha_fin:
+        return qs.filter(fecha__range=(pcl.fecha_inicio, pcl.fecha_fin)).order_by("fecha", "sesion_numero")
+    return qs.filter(periodo=periodo).order_by("fecha", "sesion_numero")
 
 
 def _calcular_resumen(asignacion, periodo, matriculas):
@@ -421,10 +465,7 @@ def _calcular_resumen(asignacion, periodo, matriculas):
     Regla vigente: el período se calcula por lecciones, no por cantidad
     de sesiones.
     """
-    sesiones = AsistenciaSesion.objects.filter(
-        docente_asignacion=asignacion,
-        periodo=periodo,
-    ).order_by("fecha", "sesion_numero")
+    sesiones = _sesiones_por_periodo(asignacion, periodo)
     sesiones = list(sesiones)
     total_sesiones = len(sesiones)
     sesion_ids = [s.id for s in sesiones]
@@ -461,11 +502,7 @@ def _calcular_resumen(asignacion, periodo, matriculas):
     estados_validos = {k for k, _ in AsistenciaRegistro.ESTADO_CHOICES}
     for m in matriculas:
         est = m.estudiante
-        fecha_ingreso_grupo = m.fecha_asignacion
-        sesiones_est = [
-            s for s in sesiones
-            if (not fecha_ingreso_grupo or s.fecha >= fecha_ingreso_grupo)
-        ]
+        sesiones_est = list(sesiones)
         total_lecciones = sum((s.lecciones or 1) for s in sesiones_est)
 
         presentes = Decimal("0")
@@ -664,6 +701,7 @@ def home_docente(request):
                 grupo_label = str(a.seccion)   # ej. 7-1
             else:
                 grupo_label = "—"
+            color_primario, color_secundario = _colores_por_materia(a.subarea_curso.subarea.nombre)
 
             asignaciones_data.append({
                 "obj": a,
@@ -671,6 +709,8 @@ def home_docente(request):
                 "tiene_asistencia": tiene_asistencia,
                 "sesiones_hoy": sesiones_hoy,
                 "grupo_label": grupo_label,
+                "color_primario": color_primario,
+                "color_secundario": color_secundario,
             })
 
     can_create_asignacion = bool(
@@ -1320,18 +1360,19 @@ def asistencia_view(request, asignacion_id):
             with transaction.atomic():
                 sesion, _ = AsistenciaSesion.objects.get_or_create(
                     docente_asignacion=asignacion,
-                    periodo=periodo,
                     fecha=fecha,
                     sesion_numero=1,
                     defaults={
+                        "periodo": periodo,
                         "institucion_id": inst_id,
                         "curso_lectivo": asignacion.curso_lectivo,
                         "lecciones": lecciones,
                         "created_by": request.user,
                     },
                 )
+                sesion.periodo = periodo
                 sesion.lecciones = lecciones
-                sesion.save(update_fields=["lecciones", "updated_at"])
+                sesion.save(update_fields=["periodo", "lecciones", "updated_at"])
                 matriculas = _get_estudiantes(asignacion)
                 bulk_create = []
                 bulk_update = []
@@ -1481,7 +1522,6 @@ def asistencia_view(request, asignacion_id):
         .filter(
             institucion_id=asignacion.subarea_curso.institucion_id,
             curso_lectivo=asignacion.curso_lectivo,
-            activo=True,
         )
         .select_related("periodo")
         .order_by("periodo__numero")
@@ -1548,7 +1588,6 @@ def detalle_estudiante_view(request, asignacion_id, estudiante_id):
         .filter(
             institucion_id=inst_id,
             curso_lectivo=asignacion.curso_lectivo,
-            activo=True,
         )
         .select_related("periodo")
         .order_by("periodo__numero")
@@ -1584,10 +1623,7 @@ def detalle_estudiante_view(request, asignacion_id, estudiante_id):
     # Historial de asistencia (registros del estudiante en el período)
     historial = []
     if periodo_sel:
-        sesiones = AsistenciaSesion.objects.filter(
-            docente_asignacion=asignacion,
-            periodo=periodo_sel,
-        ).order_by("fecha", "sesion_numero")
+        sesiones = _sesiones_por_periodo(asignacion, periodo_sel)
         sesion_ids = list(sesiones.values_list("id", flat=True))
         registros = list(
             AsistenciaRegistro.objects
@@ -1670,7 +1706,6 @@ def resumen_view(request, asignacion_id):
         .filter(
             institucion_id=inst_id,
             curso_lectivo=asignacion.curso_lectivo,
-            activo=True,
         )
         .select_related("periodo")
         .order_by("periodo__numero")

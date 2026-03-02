@@ -92,7 +92,7 @@ class UserAdmin(DjangoUserAdmin):
     fieldsets = (
         (None, {"fields": ("email", "password")}),
         (_("Información personal"), {"fields": ("first_name", "last_name","second_last_name")}),
-        (_("Estado de cuenta"), {"fields": ("estado_solicitud", "estado_pago", "fecha_limite_pago")}),
+        (_("Estado de cuenta"), {"fields": ("estado_solicitud", "estado_pago", "fecha_aceptacion_solicitud", "fecha_limite_pago")}),
         (_("Permisos"), {
             "fields": (
                 "is_active",
@@ -117,6 +117,7 @@ class UserAdmin(DjangoUserAdmin):
         "second_last_name",
         "estado_solicitud",
         "estado_pago",
+        "fecha_aceptacion_solicitud",
         "fecha_limite_pago",
         "is_staff",
         "is_superuser",
@@ -153,11 +154,13 @@ class SolicitudRegistroAdmin(admin.ModelAdmin):
         "telefono_whatsapp",
         "institucion_solicitada",
         "estado",
+        "estado_pago_aprobacion",
+        "fecha_limite_pago_aprobacion",
         "fecha_solicitud",
         "revisado_por",
         "fecha_revision",
     )
-    list_filter = ("estado", "institucion_solicitada", "fecha_solicitud")
+    list_filter = ("estado", "estado_pago_aprobacion", "institucion_solicitada", "fecha_solicitud")
     search_fields = ("usuario__email", "usuario__first_name", "usuario__last_name")
     readonly_fields = ("fecha_solicitud", "fecha_revision", "revisado_por")
     fields = (
@@ -167,6 +170,8 @@ class SolicitudRegistroAdmin(admin.ModelAdmin):
         "mensaje",
         "comprobante_pago",
         "estado",
+        "estado_pago_aprobacion",
+        "fecha_limite_pago_aprobacion",
         "motivo_revision",
         "fecha_solicitud",
         "revisado_por",

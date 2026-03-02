@@ -12,6 +12,7 @@ from core.models import Institucion
 from config_institucional.models import Profesor
 from core.forms import RegistroUsuarioForm
 from core.models import Miembro, SolicitudRegistro, User
+from core.models import fecha_vencimiento_anual_por_base
 
 
 def _get_or_create_institucion_general():
@@ -109,12 +110,36 @@ def aprobar_solicitud_registro(solicitud, revisado_por):
     if not institucion or not institucion.activa:
         institucion = _get_or_create_institucion_general()
     user = solicitud.usuario
+    fecha_aceptacion = timezone.now().date()
+    estado_pago_aprobacion = (
+        solicitud.estado_pago_aprobacion
+        if solicitud.estado_pago_aprobacion in (User.PAGO_PENDIENTE, User.PAGO_AL_DIA)
+        else User.PAGO_PENDIENTE
+    )
+    fecha_limite_aprobacion = solicitud.fecha_limite_pago_aprobacion
+    if estado_pago_aprobacion == User.PAGO_AL_DIA:
+        fecha_limite_final = fecha_vencimiento_anual_por_base(fecha_aceptacion)
+    elif fecha_limite_aprobacion:
+        fecha_limite_final = fecha_limite_aprobacion
+    else:
+        fecha_limite_final = fecha_aceptacion + timedelta(days=10)
+
     user.estado_solicitud = User.ESTADO_ACTIVA
-    user.estado_pago = User.PAGO_PENDIENTE
-    user.fecha_limite_pago = timezone.now().date() + timedelta(days=10)
+    user.estado_pago = estado_pago_aprobacion
+    user.fecha_aceptacion_solicitud = fecha_aceptacion
+    user.fecha_limite_pago = fecha_limite_final
     user.is_active = True
     user.is_staff = True
-    user.save(update_fields=["estado_solicitud", "estado_pago", "fecha_limite_pago", "is_active", "is_staff"])
+    user.save(
+        update_fields=[
+            "estado_solicitud",
+            "estado_pago",
+            "fecha_aceptacion_solicitud",
+            "fecha_limite_pago",
+            "is_active",
+            "is_staff",
+        ]
+    )
 
     miembro, _ = Miembro.objects.get_or_create(
         usuario=user,
@@ -143,7 +168,14 @@ def aprobar_solicitud_registro(solicitud, revisado_por):
     solicitud.fecha_revision = timezone.now()
     solicitud.motivo_revision = ""
     solicitud.save(
-        update_fields=["estado", "revisado_por", "fecha_revision", "motivo_revision"]
+        update_fields=[
+            "estado",
+            "revisado_por",
+            "fecha_revision",
+            "motivo_revision",
+            "estado_pago_aprobacion",
+            "fecha_limite_pago_aprobacion",
+        ]
     )
     _notificar_estado_solicitud(solicitud, fue_aprobada=True)
 

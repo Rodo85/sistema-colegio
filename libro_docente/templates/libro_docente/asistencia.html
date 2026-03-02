@@ -191,6 +191,7 @@ tbody td{padding:8px 12px;vertical-align:middle;}
 
         <!-- Stats en tiempo real -->
         <div class="stats-row" id="stats-row">
+          <span class="stat-pill stat-p">Presentes: <b id="cnt-presentes">0</b></span>
           <span class="stat-pill stat-p">P: <b id="cnt-p">0</b></span>
           <span class="stat-pill stat-tm">TM: <b id="cnt-tm">0</b></span>
           <span class="stat-pill stat-tc">TC: <b id="cnt-tc">0</b></span>
@@ -257,6 +258,9 @@ tbody td{padding:8px 12px;vertical-align:middle;}
               {% endfor %}
             </tbody>
           </table>
+        </div>
+        <div style="margin-top:10px;font-size:.85rem;color:var(--muted);font-weight:600;">
+          Presentes en la lista (P + TM + TC): <span id="presentes-footer">0</span> de {{ total_estudiantes }}
         </div>
         {% else %}
           <div class="no-session-notice">No hay estudiantes matriculados activos en este grupo.</div>
@@ -386,6 +390,11 @@ function actualizarStats() {
   document.getElementById('cnt-tc').textContent  = tc;
   document.getElementById('cnt-ai').textContent = ai;
   document.getElementById('cnt-aj').textContent = aj;
+  const presentes = p + tm + tc;
+  const presentesEl = document.getElementById('cnt-presentes');
+  if (presentesEl) presentesEl.textContent = presentes;
+  const footerEl = document.getElementById('presentes-footer');
+  if (footerEl) footerEl.textContent = presentes;
 }
 
 // Inicializar stats al cargar
@@ -395,22 +404,13 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.inj-input').forEach((el) => {
     el.addEventListener('input', () => { el.dataset.autofill = '0'; });
   });
-  document.querySelectorAll('input[type=radio][name^="estado_"]').forEach((r) => {
-    if (r.checked) {
-      const estId = r.id.split('-')[1];
-      if (estId) onEstadoChange(estId);
-    }
-  });
   const lecc = document.getElementById('lecciones-input');
   if (lecc) {
     lecc.addEventListener('input', () => {
       normalizeInjInputs();
-      document.querySelectorAll('input[type=radio][name^="estado_"]:checked').forEach((r) => {
-        const estId = r.id.split('-')[1];
-        if (estId) onEstadoChange(estId);
-      });
     });
   }
+  actualizarStats();
 });
 </script>
 {% endblock %}
