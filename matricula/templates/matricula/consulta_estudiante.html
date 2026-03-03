@@ -256,6 +256,7 @@
 {% block content %}
 <div class="consulta-container noprint">
   <h1 class="consulta-title">Consulta de Estudiante</h1>
+  {% if mostrar_form_busqueda|default:True %}
   <form method="post" class="consulta-form">{% csrf_token %}
     <div class="form-group">
       <label for="id_curso_lectivo" class="form-label">Curso Lectivo</label>
@@ -318,6 +319,13 @@
     {% endif %}
   </form>
   {% if error %}<div class="error-message">{{ error }}</div>{% endif %}
+  {% else %}
+    {% if curso_lectivo and estudiante %}
+    <div style="text-align:center;color:#495057;font-weight:600;">
+      Curso lectivo: {{ curso_lectivo.nombre }} · Estudiante: {{ estudiante.identificacion }}
+    </div>
+    {% endif %}
+  {% endif %}
 </div>
 
 {% if estudiante %}

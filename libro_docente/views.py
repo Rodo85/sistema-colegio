@@ -24,7 +24,7 @@ from evaluaciones.models import (
     SubareaCursoLectivo,
 )
 from config_institucional.models import Profesor
-from matricula.models import Estudiante, EstudianteInstitucion, MatriculaAcademica
+from matricula.models import Estudiante, EstudianteInstitucion, MatriculaAcademica, PlantillaImpresionMatricula
 
 from .forms import (
     ActividadEvaluacionForm,
@@ -1788,6 +1788,68 @@ def resumen_view(request, asignacion_id):
         "resumen": resumen,
         "institucion_activa_id": getattr(request, "institucion_activa_id", None),
     })
+
+
+@login_required
+@permission_required("libro_docente.access_libro_docente", raise_exception=True)
+def estudiante_consulta_view(request, asignacion_id, estudiante_id):
+    """
+    Vista segura de ficha de estudiante para Libro Docente:
+    solo permite ver estudiantes que pertenecen a la asignación del docente.
+    """
+    asignacion = _obtener_asignacion_con_permiso(request, asignacion_id)
+    if asignacion is None:
+        messages.error(request, "No tienes acceso a esta asignación.")
+        return redirect("libro_docente:home")
+
+    institucion = asignacion.subarea_curso.institucion
+    qs_matriculas = _get_estudiantes(asignacion)
+    matricula = qs_matriculas.filter(estudiante_id=estudiante_id).select_related("estudiante").first()
+    if not matricula:
+        messages.error(request, "El estudiante no pertenece a esta asignación.")
+        return redirect("libro_docente:resumen", asignacion_id=asignacion.id)
+
+    estudiante = matricula.estudiante
+    encargados = (
+        estudiante.encargadoestudiante_set
+        .select_related("persona_contacto", "parentesco")
+        .all()
+    )
+
+    edad_estudiante = ""
+    if estudiante.fecha_nacimiento:
+        today = date.today()
+        years = today.year - estudiante.fecha_nacimiento.year
+        months = today.month - estudiante.fecha_nacimiento.month
+        if today.day < estudiante.fecha_nacimiento.day:
+            months -= 1
+        if months < 0:
+            years -= 1
+            months += 12
+        if years == 0:
+            edad_estudiante = f"{months} meses"
+        elif months == 0:
+            edad_estudiante = f"{years} años"
+        else:
+            edad_estudiante = f"{years} años y {months} meses"
+
+    plantilla = PlantillaImpresionMatricula.objects.filter(institucion=institucion).first()
+    context = {
+        "estudiante": estudiante,
+        "matricula": matricula,
+        "encargados": encargados,
+        "curso_lectivo": asignacion.curso_lectivo,
+        "identificacion": estudiante.identificacion,
+        "error": "",
+        "institucion": institucion,
+        "edad_estudiante": edad_estudiante,
+        "cursos_lectivos": [asignacion.curso_lectivo],
+        "instituciones": [institucion],
+        "es_superusuario": request.user.is_superuser,
+        "plantilla": plantilla,
+        "mostrar_form_busqueda": False,
+    }
+    return render(request, "matricula/consulta_estudiante.html", context)
 
 
 # ═══════════════════════════════════════════════════════════════════════════

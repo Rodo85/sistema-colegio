@@ -13,6 +13,7 @@ from .views import (
     asignacion_onboarding_view,
     asistencia_view,
     detalle_estudiante_view,
+    estudiante_consulta_view,
     estudiantes_config_view,
     home_docente,
     resumen_estudiante_detalle_view,
@@ -36,6 +37,11 @@ urlpatterns = [
         "asistencia/<int:asignacion_id>/resumen/estudiante/<int:estudiante_id>/",
         detalle_estudiante_view,
         name="detalle_estudiante",
+    ),
+    path(
+        "asistencia/<int:asignacion_id>/resumen/estudiante/<int:estudiante_id>/consulta/",
+        estudiante_consulta_view,
+        name="estudiante_consulta",
     ),
     # Evaluación por indicadores (TAREAS / COTIDIANOS)
     path("asignacion/<int:asignacion_id>/actividades/", actividad_list_view, name="actividad_list"),
