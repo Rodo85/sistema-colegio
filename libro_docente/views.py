@@ -1878,8 +1878,8 @@ def resumen_view(request, asignacion_id):
 @permission_required("libro_docente.access_libro_docente", raise_exception=True)
 def estudiante_consulta_view(request, asignacion_id, estudiante_id):
     """
-    Vista segura de ficha de estudiante para Libro Docente:
-    solo permite ver estudiantes que pertenecen a la asignación del docente.
+    Vista segura de ficha imprimible (formato comprobante/PDF) para Libro Docente.
+    Solo permite ver estudiantes que pertenecen a la asignación del docente.
     """
     asignacion = _obtener_asignacion_con_permiso(request, asignacion_id)
     if asignacion is None:
@@ -1894,11 +1894,18 @@ def estudiante_consulta_view(request, asignacion_id, estudiante_id):
         return redirect("libro_docente:resumen", asignacion_id=asignacion.id)
 
     estudiante = matricula.estudiante
-    encargados = (
+    contacto_principal = (
         estudiante.encargadoestudiante_set
         .select_related("persona_contacto", "parentesco")
-        .all()
+        .filter(principal=True)
+        .first()
     )
+    if not contacto_principal:
+        contacto_principal = (
+            estudiante.encargadoestudiante_set
+            .select_related("persona_contacto", "parentesco")
+            .first()
+        )
 
     edad_estudiante = ""
     if estudiante.fecha_nacimiento:
@@ -1921,19 +1928,13 @@ def estudiante_consulta_view(request, asignacion_id, estudiante_id):
     context = {
         "estudiante": estudiante,
         "matricula": matricula,
-        "encargados": encargados,
         "curso_lectivo": asignacion.curso_lectivo,
-        "identificacion": estudiante.identificacion,
-        "error": "",
         "institucion": institucion,
-        "edad_estudiante": edad_estudiante,
-        "cursos_lectivos": [asignacion.curso_lectivo],
-        "instituciones": [institucion],
-        "es_superusuario": request.user.is_superuser,
         "plantilla": plantilla,
-        "mostrar_form_busqueda": False,
+        "edad_estudiante": edad_estudiante,
+        "contacto_principal": contacto_principal,
     }
-    return render(request, "matricula/consulta_estudiante.html", context)
+    return render(request, "matricula/comprobante_matricula.html", context)
 
 
 # ═══════════════════════════════════════════════════════════════════════════
