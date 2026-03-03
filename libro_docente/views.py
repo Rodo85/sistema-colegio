@@ -1932,8 +1932,6 @@ def estudiante_consulta_view(request, asignacion_id, estudiante_id):
         "plantilla": plantilla,
         "edad_estudiante": edad_estudiante,
         "mostrar_form_busqueda": False,
-        # Abre automáticamente el mismo flujo del botón "Imprimir ficha".
-        "auto_imprimir_ficha": True,
     }
     return render(request, "matricula/consulta_estudiante.html", context)
 
