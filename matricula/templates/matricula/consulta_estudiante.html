@@ -631,6 +631,13 @@ function imprimirPAS() {
 }
 
 // (Se eliminó lógica de asignación de grupo en esta pantalla)
+
+{% if auto_imprimir_ficha and estudiante %}
+window.addEventListener('load', function () {
+  // Reutiliza exactamente el mismo generador del botón "Imprimir ficha".
+  setTimeout(function () { imprimirFichaAislada(); }, 120);
+});
+{% endif %}
 </script>
 
 {% endblock %}

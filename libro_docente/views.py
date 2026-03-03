@@ -1878,7 +1878,7 @@ def resumen_view(request, asignacion_id):
 @permission_required("libro_docente.access_libro_docente", raise_exception=True)
 def estudiante_consulta_view(request, asignacion_id, estudiante_id):
     """
-    Vista segura de ficha imprimible (formato comprobante/PDF) para Libro Docente.
+    Vista segura de ficha de estudiante para Libro Docente.
     Solo permite ver estudiantes que pertenecen a la asignación del docente.
     """
     asignacion = _obtener_asignacion_con_permiso(request, asignacion_id)
@@ -1894,18 +1894,11 @@ def estudiante_consulta_view(request, asignacion_id, estudiante_id):
         return redirect("libro_docente:resumen", asignacion_id=asignacion.id)
 
     estudiante = matricula.estudiante
-    contacto_principal = (
+    encargados = (
         estudiante.encargadoestudiante_set
         .select_related("persona_contacto", "parentesco")
-        .filter(principal=True)
-        .first()
+        .all()
     )
-    if not contacto_principal:
-        contacto_principal = (
-            estudiante.encargadoestudiante_set
-            .select_related("persona_contacto", "parentesco")
-            .first()
-        )
 
     edad_estudiante = ""
     if estudiante.fecha_nacimiento:
@@ -1928,13 +1921,21 @@ def estudiante_consulta_view(request, asignacion_id, estudiante_id):
     context = {
         "estudiante": estudiante,
         "matricula": matricula,
+        "encargados": encargados,
         "curso_lectivo": asignacion.curso_lectivo,
+        "identificacion": estudiante.identificacion,
+        "error": "",
         "institucion": institucion,
+        "cursos_lectivos": [asignacion.curso_lectivo],
+        "instituciones": [institucion],
+        "es_superusuario": request.user.is_superuser,
         "plantilla": plantilla,
         "edad_estudiante": edad_estudiante,
-        "contacto_principal": contacto_principal,
+        "mostrar_form_busqueda": False,
+        # Abre automáticamente el mismo flujo del botón "Imprimir ficha".
+        "auto_imprimir_ficha": True,
     }
-    return render(request, "matricula/comprobante_matricula.html", context)
+    return render(request, "matricula/consulta_estudiante.html", context)
 
 
 # ═══════════════════════════════════════════════════════════════════════════
