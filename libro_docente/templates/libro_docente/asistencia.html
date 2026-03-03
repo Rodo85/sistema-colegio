@@ -259,8 +259,18 @@ tbody td{padding:8px 12px;vertical-align:middle;}
             </tbody>
           </table>
         </div>
-        <div style="margin-top:10px;font-size:.85rem;color:var(--muted);font-weight:600;">
-          Presentes en la lista (P + TM + TC): <span id="presentes-footer">0</span> de {{ total_estudiantes }}
+        <div style="margin-top:14px;">
+          <label for="minuta-input" style="display:block;margin-bottom:6px;font-size:.92rem;font-weight:800;color:#1a6eb5;">
+            Minuta
+          </label>
+          <textarea
+            id="minuta-input"
+            name="minuta"
+            class="form-control"
+            maxlength="200"
+            rows="3"
+            placeholder="Escribe una observación general del día (máximo 200 caracteres)..."
+          >{{ minuta|default_if_none:'' }}</textarea>
         </div>
         {% else %}
           <div class="no-session-notice">No hay estudiantes matriculados activos en este grupo.</div>
@@ -271,7 +281,7 @@ tbody td{padding:8px 12px;vertical-align:middle;}
     <!-- Barra de guardado -->
     {% if estudiantes %}
     <div class="save-bar">
-      <span class="save-count">{{ fecha|date:"d/m/Y" }} · <b>{{ lecciones }}</b> lección{% if lecciones != 1 %}es{% endif %} · <b>{{ total_estudiantes }}</b> estudiante{% if total_estudiantes != 1 %}s{% endif %}</span>
+      <span class="save-count">{{ fecha|date:"d/m/Y" }} · <b>{{ lecciones }}</b> lecciones · <b>{{ total_estudiantes }}</b> estudiantes · Presentes <b id="presentes-save">0</b></span>
       <div style="display:flex;gap:8px;flex-wrap:wrap;">
         {% if sesion_actual %}
         <button type="submit" class="btn btn-danger-outline btn-lg" name="accion" value="eliminar" onclick="return confirmarEliminarDia();">
@@ -393,8 +403,8 @@ function actualizarStats() {
   const presentes = p + tm + tc;
   const presentesEl = document.getElementById('cnt-presentes');
   if (presentesEl) presentesEl.textContent = presentes;
-  const footerEl = document.getElementById('presentes-footer');
-  if (footerEl) footerEl.textContent = presentes;
+  const saveEl = document.getElementById('presentes-save');
+  if (saveEl) saveEl.textContent = presentes;
 }
 
 // Inicializar stats al cargar

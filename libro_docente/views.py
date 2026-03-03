@@ -166,16 +166,14 @@ def _colores_por_materia(nombre_materia):
     Devuelve un par de colores consistente por nombre de materia.
     """
     paleta = [
-        ("#1f4e79", "#2b6ca3"),
-        ("#4b2e83", "#6d44bd"),
-        ("#0f766e", "#0f9b8e"),
-        ("#7c3aed", "#9f67ff"),
-        ("#b45309", "#d97706"),
-        ("#be123c", "#e11d48"),
-        ("#166534", "#16a34a"),
-        ("#1d4ed8", "#2563eb"),
-        ("#7f1d1d", "#b91c1c"),
-        ("#374151", "#4b5563"),
+        ("#3f7fb9", "#6fa8dc"),
+        ("#5a73b8", "#7d94d1"),
+        ("#4f8a8b", "#6db1b3"),
+        ("#6f8f5a", "#8fb87a"),
+        ("#7b6aa6", "#9a88c5"),
+        ("#5f86a1", "#7ca5c3"),
+        ("#6d8f94", "#8eb0b4"),
+        ("#6379a0", "#8198bf"),
     ]
     base = (nombre_materia or "").strip().upper()
     digest = hashlib.md5(base.encode("utf-8")).hexdigest()
@@ -655,6 +653,12 @@ def home_docente(request):
             return (999, 999, "")
 
         raw.sort(key=lambda a: (_sort_key(a), a.subarea_curso.subarea.nombre))
+        materias_distintas = {
+            (a.subarea_curso.subarea.nombre or "").strip().upper()
+            for a in raw
+            if a.subarea_curso_id and a.subarea_curso.subarea_id
+        }
+        usar_color_default = len(materias_distintas) <= 1
 
         # Sesiones hoy por asignación (1 query para todas)
         asignacion_ids = [a.id for a in raw]
@@ -701,7 +705,10 @@ def home_docente(request):
                 grupo_label = str(a.seccion)   # ej. 7-1
             else:
                 grupo_label = "—"
-            color_primario, color_secundario = _colores_por_materia(a.subarea_curso.subarea.nombre)
+            if usar_color_default:
+                color_primario, color_secundario = ("#145591", "#1a6eb5")
+            else:
+                color_primario, color_secundario = _colores_por_materia(a.subarea_curso.subarea.nombre)
 
             asignaciones_data.append({
                 "obj": a,
@@ -1335,6 +1342,7 @@ def asistencia_view(request, asignacion_id):
     except (TypeError, ValueError):
         lecciones = 1
     lecciones = max(1, lecciones)
+    minuta = (request.POST.get("minuta", "") if request.method == "POST" else "").strip()
 
     # ── POST: guardar sesión ─────────────────────────────────────────────
     if request.method == "POST":
@@ -1372,7 +1380,8 @@ def asistencia_view(request, asignacion_id):
                 )
                 sesion.periodo = periodo
                 sesion.lecciones = lecciones
-                sesion.save(update_fields=["periodo", "lecciones", "updated_at"])
+                sesion.minuta = minuta[:200]
+                sesion.save(update_fields=["periodo", "lecciones", "minuta", "updated_at"])
                 matriculas = _get_estudiantes(asignacion)
                 bulk_create = []
                 bulk_update = []
@@ -1481,6 +1490,7 @@ def asistencia_view(request, asignacion_id):
     )
     if sesion_actual:
         lecciones = sesion_actual.lecciones or 1
+        minuta = sesion_actual.minuta or ""
 
     # Estados guardados de la fecha seleccionada
     estados_guardados = {}
@@ -1537,6 +1547,7 @@ def asistencia_view(request, asignacion_id):
         "total_estudiantes": len(estudiantes),
         "periodo": periodo,
         "periodos_cl": periodos_cl,
+        "minuta": minuta,
         "PRESENTE": AsistenciaRegistro.PRESENTE,
         "TARDIA_MEDIA": AsistenciaRegistro.TARDIA_MEDIA,
         "TARDIA_COMPLETA": AsistenciaRegistro.TARDIA_COMPLETA,

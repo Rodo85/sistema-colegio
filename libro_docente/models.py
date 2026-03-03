@@ -627,6 +627,13 @@ class AsistenciaSesion(models.Model):
         default=1,
         help_text="Cantidad de lecciones impartidas en la fecha registrada.",
     )
+    minuta = models.CharField(
+        "Minuta",
+        max_length=200,
+        blank=True,
+        default="",
+        help_text="Observación general del día (máximo 200 caracteres).",
+    )
     created_by = models.ForeignKey(
         "core.User",
         on_delete=models.SET_NULL,
