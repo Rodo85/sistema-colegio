@@ -254,9 +254,9 @@
 {% endblock %}
 
 {% block content %}
+{% if mostrar_form_busqueda|default:True %}
 <div class="consulta-container noprint">
   <h1 class="consulta-title">Consulta de Estudiante</h1>
-  {% if mostrar_form_busqueda|default:True %}
   <form method="post" class="consulta-form">{% csrf_token %}
     <div class="form-group">
       <label for="id_curso_lectivo" class="form-label">Curso Lectivo</label>
@@ -319,14 +319,8 @@
     {% endif %}
   </form>
   {% if error %}<div class="error-message">{{ error }}</div>{% endif %}
-  {% else %}
-    {% if curso_lectivo and estudiante %}
-    <div style="text-align:center;color:#495057;font-weight:600;">
-      Curso lectivo: {{ curso_lectivo.nombre }} · Estudiante: {{ estudiante.identificacion }}
-    </div>
-    {% endif %}
-  {% endif %}
 </div>
+{% endif %}
 
 {% if estudiante %}
   <div id="ficha-impresion" class="print-container">
@@ -633,6 +627,10 @@ function imprimirPAS() {
 // (Se eliminó lógica de asignación de grupo en esta pantalla)
 
 {% if auto_imprimir_ficha and estudiante %}
+window.addEventListener('afterprint', function () {
+  // Si la pestaña se abrió desde "Resumen", la cerramos tras imprimir.
+  setTimeout(function () { window.close(); }, 250);
+});
 window.addEventListener('load', function () {
   // Reutiliza exactamente el mismo generador del botón "Imprimir ficha".
   setTimeout(function () { imprimirFichaAislada(); }, 120);
