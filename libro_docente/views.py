@@ -94,7 +94,13 @@ def _normalizar_estado_asistencia(estado):
     return estado if estado in estados_validos else AsistenciaRegistro.PRESENTE
 
 
-def _resolver_lecciones_injustificadas(estado, lecciones_dia, cantidad_ingresada=None, legacy_full_day_ai=True):
+def _resolver_lecciones_injustificadas(
+    estado,
+    lecciones_dia,
+    cantidad_ingresada=None,
+    legacy_full_day_ai=True,
+    cantidad_es_equivalente=False,
+):
     """
     Convierte estado + cantidad a lecciones injustificadas equivalentes.
 
@@ -122,6 +128,10 @@ def _resolver_lecciones_injustificadas(estado, lecciones_dia, cantidad_ingresada
             raise ValidationError("La cantidad no puede ser negativa.")
         if cantidad > lecciones:
             raise ValidationError(f"La cantidad no puede exceder {lecciones}.")
+        if cantidad_es_equivalente:
+            # En registros persistidos, lecciones_injustificadas ya está en
+            # equivalentes injustificadas (no en unidades TM).
+            return cantidad
         if estado in (AsistenciaRegistro.TARDIA_MEDIA, AsistenciaRegistro.TARDIA_COMPLETA):
             if cantidad != cantidad.to_integral_value():
                 raise ValidationError("Para TM y TC, la cantidad debe ser entera.")
@@ -156,7 +166,13 @@ def _calcular_porcentajes_asistencia(total_lecciones, lecciones_injustificadas):
     return pct_inasistencia, pct_asistencia
 
 
-def _calcular_detalle_dia_asistencia(estado, lecciones_dia, cantidad_ingresada=None, legacy_full_day_ai=True):
+def _calcular_detalle_dia_asistencia(
+    estado,
+    lecciones_dia,
+    cantidad_ingresada=None,
+    legacy_full_day_ai=True,
+    cantidad_es_equivalente=False,
+):
     """
     Calcula detalle por día con dos salidas separadas:
     - Cantidades capturadas por estado (TM/TC/AI/AJ)
@@ -169,6 +185,7 @@ def _calcular_detalle_dia_asistencia(estado, lecciones_dia, cantidad_ingresada=N
         lecciones_dia=lecciones,
         cantidad_ingresada=cantidad_ingresada,
         legacy_full_day_ai=legacy_full_day_ai,
+        cantidad_es_equivalente=cantidad_es_equivalente,
     )
     tm = Decimal("0")
     tc = Decimal("0")
@@ -645,6 +662,7 @@ def _calcular_resumen(asignacion, periodo, matriculas):
                     lecciones_dia=lecciones,
                     cantidad_ingresada=reg.lecciones_injustificadas,
                     legacy_full_day_ai=True,
+                    cantidad_es_equivalente=True,
                 )
             except ValidationError:
                 detalle = _calcular_detalle_dia_asistencia(
