@@ -87,6 +87,75 @@ def _nota_mep(pct: float) -> int:
     return 0
 
 
+def _normalizar_estado_asistencia(estado):
+    if estado == "T":
+        return AsistenciaRegistro.TARDIA_MEDIA
+    estados_validos = {k for k, _ in AsistenciaRegistro.ESTADO_CHOICES}
+    return estado if estado in estados_validos else AsistenciaRegistro.PRESENTE
+
+
+def _resolver_lecciones_injustificadas(estado, lecciones_dia, cantidad_ingresada=None, legacy_full_day_ai=True):
+    """
+    Convierte estado + cantidad a lecciones injustificadas equivalentes.
+
+    Regla oficial por lección:
+    - TM = 0.5 lección injustificada por unidad.
+    - TC = 1 lección injustificada por unidad.
+    - AI = 1 lección injustificada por unidad.
+    - AJ/P = 0.
+
+    Ejemplos:
+    - Día de 6 lecciones y TM=2  -> 1.0 AI equivalente.
+    - Día de 4 lecciones y AI=1  -> 1.0 AI equivalente.
+    """
+    estado = _normalizar_estado_asistencia(estado)
+    lecciones = Decimal(str(lecciones_dia or 1))
+    if lecciones < 1:
+        lecciones = Decimal("1")
+
+    if estado in (AsistenciaRegistro.PRESENTE, AsistenciaRegistro.AUSENTE_JUSTIFICADA):
+        return Decimal("0")
+
+    if cantidad_ingresada is not None:
+        cantidad = Decimal(str(cantidad_ingresada))
+        if cantidad < 0:
+            raise ValidationError("La cantidad no puede ser negativa.")
+        if cantidad > lecciones:
+            raise ValidationError(f"La cantidad no puede exceder {lecciones}.")
+        if estado in (AsistenciaRegistro.TARDIA_MEDIA, AsistenciaRegistro.TARDIA_COMPLETA):
+            if cantidad != cantidad.to_integral_value():
+                raise ValidationError("Para TM y TC, la cantidad debe ser entera.")
+        elif (cantidad * 2) != (cantidad * 2).to_integral_value():
+            raise ValidationError("Para AI, la cantidad debe usar pasos de 0.5.")
+
+        if estado == AsistenciaRegistro.TARDIA_MEDIA:
+            return cantidad / Decimal("2")
+        return cantidad
+
+    # Compatibilidad de datos legacy sin cantidad explícita:
+    if estado == AsistenciaRegistro.TARDIA_MEDIA:
+        return min(Decimal("0.5"), lecciones)
+    if estado == AsistenciaRegistro.TARDIA_COMPLETA:
+        return min(Decimal("1"), lecciones)
+    if estado == AsistenciaRegistro.AUSENTE_INJUSTIFICADA:
+        return lecciones if legacy_full_day_ai else min(Decimal("1"), lecciones)
+    return Decimal("0")
+
+
+def _calcular_porcentajes_asistencia(total_lecciones, lecciones_injustificadas):
+    total = Decimal(str(total_lecciones or 0))
+    if total <= 0:
+        return 0.0, 0.0
+    inj = Decimal(str(lecciones_injustificadas or 0))
+    if inj < 0:
+        inj = Decimal("0")
+    if inj > total:
+        inj = total
+    pct_inasistencia = float((inj / total) * Decimal("100"))
+    pct_asistencia = max(0.0, 100.0 - pct_inasistencia)
+    return pct_inasistencia, pct_asistencia
+
+
 def _get_profesor(request):
     """Devuelve el primer Profesor del usuario según la institución activa."""
     qs = Profesor.objects.filter(usuario=request.user).select_related("usuario")
@@ -511,7 +580,6 @@ def _calcular_resumen(asignacion, periodo, matriculas):
             peso_asistencia = comp_asistencia.porcentaje
 
     resultados = []
-    estados_validos = {k for k, _ in AsistenciaRegistro.ESTADO_CHOICES}
     for m in matriculas:
         est = m.estudiante
         sesiones_est = list(sesiones)
@@ -528,47 +596,38 @@ def _calcular_resumen(asignacion, periodo, matriculas):
             if reg is None:
                 ausentes_inj += lecciones
                 continue
-            estado = reg.estado
-            if estado == "T":
-                estado = AsistenciaRegistro.TARDIA_MEDIA
-            if estado not in estados_validos:
-                estado = AsistenciaRegistro.PRESENTE
-            valor_manual = reg.lecciones_injustificadas
-            ai_lecc = Decimal(str(valor_manual)) if valor_manual is not None else None
-            if ai_lecc is not None:
-                if ai_lecc < 0:
-                    ai_lecc = Decimal("0")
-                if ai_lecc > lecciones:
-                    ai_lecc = lecciones
+            estado = _normalizar_estado_asistencia(reg.estado)
+            try:
+                ai_lecc = _resolver_lecciones_injustificadas(
+                    estado=estado,
+                    lecciones_dia=lecciones,
+                    cantidad_ingresada=reg.lecciones_injustificadas,
+                    legacy_full_day_ai=True,
+                )
+            except ValidationError:
+                ai_lecc = _resolver_lecciones_injustificadas(
+                    estado=estado,
+                    lecciones_dia=lecciones,
+                    cantidad_ingresada=None,
+                    legacy_full_day_ai=True,
+                )
             if estado == AsistenciaRegistro.PRESENTE:
                 presentes += lecciones
             elif estado == AsistenciaRegistro.TARDIA_MEDIA:
-                if ai_lecc is None:
-                    ai_lecc = lecciones / Decimal("2")
                 ausentes_inj += ai_lecc
                 tardias_media += (ai_lecc * Decimal("2"))
                 presentes += max(Decimal("0"), lecciones - ai_lecc)
             elif estado == AsistenciaRegistro.TARDIA_COMPLETA:
-                if ai_lecc is None:
-                    ai_lecc = Decimal("1")
-                    if ai_lecc > lecciones:
-                        ai_lecc = lecciones
                 ausentes_inj += ai_lecc
                 tardias_completa += ai_lecc
                 presentes += max(Decimal("0"), lecciones - ai_lecc)
             elif estado == AsistenciaRegistro.AUSENTE_INJUSTIFICADA:
-                if ai_lecc is None:
-                    ai_lecc = lecciones
                 ausentes_inj += ai_lecc
                 presentes += max(Decimal("0"), lecciones - ai_lecc)
             elif estado == AsistenciaRegistro.AUSENTE_JUSTIFICADA:
                 ausentes_just += lecciones
 
-        pct = (float((ausentes_inj / Decimal(str(total_lecciones))) * Decimal("100")) if total_lecciones > 0 else 0.0)
-        pct_asistencia = (
-            float((presentes / Decimal(str(total_lecciones))) * Decimal("100"))
-            if total_lecciones > 0 else 0.0
-        )
+        pct, pct_asistencia = _calcular_porcentajes_asistencia(total_lecciones, ausentes_inj)
         puntaje_base = _nota_mep(pct)
         # aporte_real = (asignacion_final / 5) * peso_asistencia_esquema
         aporte_real = (
@@ -1417,59 +1476,24 @@ def asistencia_view(request, asignacion_id):
                     estado = raw_estado if raw_estado in dict(AsistenciaRegistro.ESTADO_CHOICES) else AsistenciaRegistro.PRESENTE
                     obs = request.POST.get(f"obs_{est_id}", "")[:255]
                     raw_cantidad = (request.POST.get(f"inj_{est_id}", "") or "").strip().replace(",", ".")
-                    lecc_inj = Decimal("0")
-                    if estado in (AsistenciaRegistro.PRESENTE, AsistenciaRegistro.AUSENTE_JUSTIFICADA):
-                        lecc_inj = Decimal("0")
-                    elif raw_cantidad != "":
+                    cantidad = None
+                    if raw_cantidad != "":
                         try:
                             cantidad = Decimal(raw_cantidad)
                         except Exception:
                             messages.error(request, f"Cantidad inválida para estudiante ID {est_id}.")
                             return redirect(f"{request.path}?fecha={fecha}&lecciones={lecciones}")
-                        if cantidad < 0:
-                            messages.error(request, f"Cantidad inválida para estudiante ID {est_id}. No puede ser negativa.")
-                            return redirect(f"{request.path}?fecha={fecha}&lecciones={lecciones}")
-
-                        lecc_dia = Decimal(str(lecciones))
-                        if estado == AsistenciaRegistro.TARDIA_MEDIA:
-                            # Cantidad TM: 2 TM = 1 AI
-                            if cantidad != cantidad.to_integral_value():
-                                messages.error(request, f"Para TM, la cantidad debe ser entera (estudiante ID {est_id}).")
-                                return redirect(f"{request.path}?fecha={fecha}&lecciones={lecciones}")
-                            if cantidad > lecc_dia:
-                                messages.error(
-                                    request,
-                                    f"Para TM, la cantidad no puede exceder {lecciones} en el día (estudiante ID {est_id}).",
-                                )
-                                return redirect(f"{request.path}?fecha={fecha}&lecciones={lecciones}")
-                            lecc_inj = cantidad / Decimal("2")
-                        elif estado == AsistenciaRegistro.TARDIA_COMPLETA:
-                            # Cantidad TC: número de tardías completas (1 TC = 1 AI)
-                            if cantidad != cantidad.to_integral_value():
-                                messages.error(request, f"Para TC, la cantidad debe ser entera (estudiante ID {est_id}).")
-                                return redirect(f"{request.path}?fecha={fecha}&lecciones={lecciones}")
-                            if cantidad > lecc_dia:
-                                messages.error(
-                                    request,
-                                    f"Para TC, la cantidad no puede exceder {lecciones} en el día (estudiante ID {est_id}).",
-                                )
-                                return redirect(f"{request.path}?fecha={fecha}&lecciones={lecciones}")
-                            lecc_inj = cantidad
-                        else:
-                            # AI: cantidad en AI equivalentes (permite 0.5)
-                            if cantidad > lecc_dia:
-                                messages.error(
-                                    request,
-                                    f"Para AI, la cantidad no puede exceder {lecciones} (estudiante ID {est_id}).",
-                                )
-                                return redirect(f"{request.path}?fecha={fecha}&lecciones={lecciones}")
-                            if (cantidad * 2) != (cantidad * 2).to_integral_value():
-                                messages.error(
-                                    request,
-                                    f"Para AI, la cantidad debe usar pasos de 0.5 (estudiante ID {est_id}).",
-                                )
-                                return redirect(f"{request.path}?fecha={fecha}&lecciones={lecciones}")
-                            lecc_inj = cantidad
+                    try:
+                        lecc_inj = _resolver_lecciones_injustificadas(
+                            estado=estado,
+                            lecciones_dia=lecciones,
+                            cantidad_ingresada=cantidad,
+                            legacy_full_day_ai=True,
+                        )
+                    except ValidationError as exc:
+                        msg = exc.messages[0] if getattr(exc, "messages", None) else str(exc)
+                        messages.error(request, f"{msg} (estudiante ID {est_id}).")
+                        return redirect(f"{request.path}?fecha={fecha}&lecciones={lecciones}")
 
                     if est_id in existing:
                         reg = existing[est_id]
