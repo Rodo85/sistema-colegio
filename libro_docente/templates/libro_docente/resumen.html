@@ -165,7 +165,7 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
                 <tr>
                   <td style="color:var(--muted);font-size:.75rem;">{{ forloop.counter }}</td>
                   <td>
-                    <a href="{% url 'matricula:comprobante_matricula' %}?curso_lectivo_id={{ asignacion.curso_lectivo_id }}&identificacion={{ r.estudiante.identificacion }}{% if institucion_activa_id %}&institucion_id={{ institucion_activa_id }}{% endif %}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;font-weight:700;">
+                    <a href="{% url 'matricula:consulta_estudiante' %}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;font-weight:700;">
                       {{ r.estudiante }}
                     </a>
                     <div style="font-size:.75rem;color:var(--muted);">{{ r.estudiante.identificacion }}</div>
@@ -173,9 +173,6 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
                   <td>
                     <a href="{% url 'libro_docente:detalle_estudiante' asignacion.id r.estudiante.id %}?periodo={{ periodo_id }}" class="btn btn-outline" style="padding:4px 10px;font-size:.75rem;">
                       Ver detalle
-                    </a>
-                    <a href="{% url 'matricula:comprobante_matricula' %}?curso_lectivo_id={{ asignacion.curso_lectivo_id }}&identificacion={{ r.estudiante.identificacion }}{% if institucion_activa_id %}&institucion_id={{ institucion_activa_id }}{% endif %}" target="_blank" rel="noopener" class="btn btn-outline" style="padding:4px 10px;font-size:.75rem;margin-left:6px;">
-                      Ficha PDF
                     </a>
                   </td>
                   <td>{{ r.total_lecciones }}</td>
