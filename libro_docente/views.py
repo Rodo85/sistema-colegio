@@ -181,6 +181,20 @@ def _colores_por_materia(nombre_materia):
     return paleta[idx]
 
 
+def _formatear_cantidad_asistencia(valor):
+    if valor is None:
+        return None
+    try:
+        dec = Decimal(str(valor))
+    except Exception:
+        return str(valor)
+    dec = dec.quantize(Decimal("0.1")) if (dec * 10) == (dec * 10).to_integral_value() else dec
+    texto = format(dec, "f")
+    if "." in texto:
+        texto = texto.rstrip("0").rstrip(".")
+    return texto or "0"
+
+
 def _limpiar_exclusiones_legacy(docente_asignacion_id):
     """
     Compatibilidad con despliegues que aún conservan tabla legacy de exclusiones.
@@ -658,7 +672,18 @@ def home_docente(request):
             for a in raw
             if a.subarea_curso_id and a.subarea_curso.subarea_id
         }
-        usar_color_default = len(materias_distintas) <= 1
+        paleta_ui = ["#4F46E5", "#F59E0B", "#06B6D4", "#10B981", "#EC4899"]
+        if materias_distintas:
+            materias_ordenadas = sorted(materias_distintas)
+            paleta_activa = paleta_ui[: min(len(paleta_ui), len(materias_ordenadas))]
+            color_por_materia = {
+                materia: paleta_activa[idx % len(paleta_activa)]
+                for idx, materia in enumerate(materias_ordenadas)
+            }
+            color_default = paleta_activa[0]
+        else:
+            color_por_materia = {}
+            color_default = paleta_ui[0]
 
         # Sesiones hoy por asignación (1 query para todas)
         asignacion_ids = [a.id for a in raw]
@@ -705,10 +730,9 @@ def home_docente(request):
                 grupo_label = str(a.seccion)   # ej. 7-1
             else:
                 grupo_label = "—"
-            if usar_color_default:
-                color_primario, color_secundario = ("#145591", "#1a6eb5")
-            else:
-                color_primario, color_secundario = _colores_por_materia(a.subarea_curso.subarea.nombre)
+            materia_key = (a.subarea_curso.subarea.nombre or "").strip().upper()
+            color = color_por_materia.get(materia_key, color_default)
+            color_primario, color_secundario = (color, color)
 
             asignaciones_data.append({
                 "obj": a,
@@ -1506,10 +1530,14 @@ def asistencia_view(request, asignacion_id):
             inj_val = reg.lecciones_injustificadas
             if inj_val is None:
                 inj_guardadas[reg.estudiante_id] = None
+            elif estado in (AsistenciaRegistro.PRESENTE, AsistenciaRegistro.AUSENTE_JUSTIFICADA):
+                inj_guardadas[reg.estudiante_id] = None
             elif estado == AsistenciaRegistro.TARDIA_MEDIA:
-                inj_guardadas[reg.estudiante_id] = (Decimal(str(inj_val)) * Decimal("2"))
+                inj_guardadas[reg.estudiante_id] = _formatear_cantidad_asistencia(
+                    Decimal(str(inj_val)) * Decimal("2")
+                )
             else:
-                inj_guardadas[reg.estudiante_id] = inj_val
+                inj_guardadas[reg.estudiante_id] = _formatear_cantidad_asistencia(inj_val)
 
     matriculas = _get_estudiantes(asignacion)
     estudiantes = []
@@ -1758,6 +1786,7 @@ def resumen_view(request, asignacion_id):
         "periodo_id": periodo_id,
         "periodo_sel": periodo_sel,
         "resumen": resumen,
+        "institucion_activa_id": getattr(request, "institucion_activa_id", None),
     })
 
 
