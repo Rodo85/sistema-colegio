@@ -156,6 +156,46 @@ def _calcular_porcentajes_asistencia(total_lecciones, lecciones_injustificadas):
     return pct_inasistencia, pct_asistencia
 
 
+def _calcular_detalle_dia_asistencia(estado, lecciones_dia, cantidad_ingresada=None, legacy_full_day_ai=True):
+    """
+    Calcula detalle por día con dos salidas separadas:
+    - Cantidades capturadas por estado (TM/TC/AI/AJ)
+    - Lecciones injustificadas equivalentes (para % y asignación)
+    """
+    estado_norm = _normalizar_estado_asistencia(estado)
+    lecciones = Decimal(str(lecciones_dia or 1))
+    lecc_inj_equiv = _resolver_lecciones_injustificadas(
+        estado=estado_norm,
+        lecciones_dia=lecciones,
+        cantidad_ingresada=cantidad_ingresada,
+        legacy_full_day_ai=legacy_full_day_ai,
+    )
+    tm = Decimal("0")
+    tc = Decimal("0")
+    ai = Decimal("0")
+    aj = Decimal("0")
+    if estado_norm == AsistenciaRegistro.TARDIA_MEDIA:
+        tm = lecc_inj_equiv * Decimal("2")
+    elif estado_norm == AsistenciaRegistro.TARDIA_COMPLETA:
+        tc = lecc_inj_equiv
+    elif estado_norm == AsistenciaRegistro.AUSENTE_INJUSTIFICADA:
+        ai = lecc_inj_equiv
+    elif estado_norm == AsistenciaRegistro.AUSENTE_JUSTIFICADA:
+        # AJ se visualiza en cantidad de lecciones justificadas.
+        aj = lecciones
+
+    presentes = max(Decimal("0"), lecciones - lecc_inj_equiv)
+    return {
+        "estado": estado_norm,
+        "tm_cantidad": tm,
+        "tc_cantidad": tc,
+        "ai_cantidad": ai,
+        "aj_cantidad": aj,
+        "lecc_inj_equiv": lecc_inj_equiv,
+        "presentes": presentes,
+    }
+
+
 def _get_profesor(request):
     """Devuelve el primer Profesor del usuario según la institución activa."""
     qs = Profesor.objects.filter(usuario=request.user).select_related("usuario")
@@ -588,6 +628,7 @@ def _calcular_resumen(asignacion, periodo, matriculas):
         presentes = Decimal("0")
         tardias_media = Decimal("0")
         tardias_completa = Decimal("0")
+        ausentes_ai = Decimal("0")
         ausentes_inj = Decimal("0")
         ausentes_just = Decimal("0")
         for s in sesiones_est:
@@ -595,37 +636,35 @@ def _calcular_resumen(asignacion, periodo, matriculas):
             reg = registros_map.get((est.id, s.id))
             if reg is None:
                 ausentes_inj += lecciones
+                ausentes_ai += lecciones
                 continue
             estado = _normalizar_estado_asistencia(reg.estado)
             try:
-                ai_lecc = _resolver_lecciones_injustificadas(
+                detalle = _calcular_detalle_dia_asistencia(
                     estado=estado,
                     lecciones_dia=lecciones,
                     cantidad_ingresada=reg.lecciones_injustificadas,
                     legacy_full_day_ai=True,
                 )
             except ValidationError:
-                ai_lecc = _resolver_lecciones_injustificadas(
+                detalle = _calcular_detalle_dia_asistencia(
                     estado=estado,
                     lecciones_dia=lecciones,
                     cantidad_ingresada=None,
                     legacy_full_day_ai=True,
                 )
-            if estado == AsistenciaRegistro.PRESENTE:
-                presentes += lecciones
-            elif estado == AsistenciaRegistro.TARDIA_MEDIA:
-                ausentes_inj += ai_lecc
-                tardias_media += (ai_lecc * Decimal("2"))
-                presentes += max(Decimal("0"), lecciones - ai_lecc)
-            elif estado == AsistenciaRegistro.TARDIA_COMPLETA:
-                ausentes_inj += ai_lecc
-                tardias_completa += ai_lecc
-                presentes += max(Decimal("0"), lecciones - ai_lecc)
-            elif estado == AsistenciaRegistro.AUSENTE_INJUSTIFICADA:
-                ausentes_inj += ai_lecc
-                presentes += max(Decimal("0"), lecciones - ai_lecc)
-            elif estado == AsistenciaRegistro.AUSENTE_JUSTIFICADA:
-                ausentes_just += lecciones
+            ausentes_inj += detalle["lecc_inj_equiv"]
+            presentes += detalle["presentes"]
+            tardias_media += detalle["tm_cantidad"]
+            tardias_completa += detalle["tc_cantidad"]
+            # AI y AJ deben reflejar la cantidad real capturada/interpretada en su estado.
+            # AI ya no mezcla TM/TC.
+            ai_cantidad = detalle["ai_cantidad"]
+            aj_cantidad = detalle["aj_cantidad"]
+            if ai_cantidad:
+                ausentes_ai += ai_cantidad
+            if aj_cantidad:
+                ausentes_just += aj_cantidad
 
         pct, pct_asistencia = _calcular_porcentajes_asistencia(total_lecciones, ausentes_inj)
         puntaje_base = _nota_mep(pct)
@@ -648,7 +687,10 @@ def _calcular_resumen(asignacion, periodo, matriculas):
             "presentes": presentes.quantize(Decimal("0.1")),
             "tardias_media": tardias_media.quantize(Decimal("0.1")),
             "tardias_completa": tardias_completa.quantize(Decimal("0.1")),
-            "ausentes_inj_lecciones": ausentes_inj.quantize(Decimal("0.01")),
+            # Cantidad real marcada de AI (sin mezclar equivalencias de TM/TC)
+            "ausentes_inj_lecciones": ausentes_ai.quantize(Decimal("0.1")),
+            # Total equivalente injustificado (se usa para % de ausencia)
+            "ausentes_inj_equiv": ausentes_inj.quantize(Decimal("0.01")),
             "ausentes_just": ausentes_just.quantize(Decimal("0.1")),
             "total_lecciones": total_lecciones,
             "pct": round(pct, 2),
