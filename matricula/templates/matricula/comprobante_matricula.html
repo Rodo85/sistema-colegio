@@ -41,7 +41,7 @@
       <div class="header-texto">
         <div class="titulo-matricula">{{ plantilla.titulo|default:"CURSO LECTIVO 2025"|cut:"MATRÍCULA " }}</div>
         <div class="texto-encabezado">{{ plantilla.encabezado|safe|linebreaksbr }}</div>
-        <div style="font-weight:800;margin-top:4px;">Comprobante de Matrícula Curso Lectivo {{ curso_lectivo.anio }}</div>
+        <div style="font-weight:800;margin-top:4px;">Curso lectivo: {{ curso_lectivo.anio }}</div>
       </div>
       <div class="header-logos-derecha">
         {% if plantilla and plantilla.logo_mep %}<img src="{{ plantilla.logo_mep.url }}" alt="Logo MEP" class="logo-grande">{% endif %}

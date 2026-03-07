@@ -2318,6 +2318,17 @@ def estudiante_consulta_view(request, asignacion_id, estudiante_id):
         "plantilla": plantilla,
         "edad_estudiante": edad_estudiante,
         "mostrar_form_busqueda": False,
+        "logo_centro_url": (
+            asignacion.centro_trabajo.logo.url
+            if getattr(asignacion, "centro_trabajo_id", None)
+            and getattr(asignacion.centro_trabajo, "logo", None)
+            else ""
+        ),
+        "nombre_centro_impresion": (
+            asignacion.centro_trabajo.nombre
+            if getattr(asignacion, "centro_trabajo_id", None)
+            else ""
+        ),
     }
     return render(request, "matricula/consulta_estudiante.html", context)
 

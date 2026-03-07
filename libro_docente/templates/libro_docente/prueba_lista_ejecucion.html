@@ -21,11 +21,22 @@
   .linea{display:block;border-bottom:1px solid #111827;height:28px;}
   .label{font-size:.85rem;color:#374151;margin-top:4px;}
   .print-btn{display:inline-block;padding:8px 14px;border-radius:8px;background:#145591;color:#fff;text-decoration:none;margin:8px 0 14px;}
+  .doc-header{display:grid;grid-template-columns:110px 1fr 110px;gap:10px;align-items:center;border:1px solid #d1d5db;border-radius:10px;padding:10px 12px;background:#fff;margin-bottom:12px;}
+  .doc-header .logo{max-height:64px;max-width:100px;object-fit:contain;}
+  .doc-header .center{text-align:center;}
+  .doc-header .title{font-size:1.02rem;font-weight:700;margin:0;}
+  .doc-header .meta-top{font-size:.86rem;color:#374151;margin-top:3px;}
+  .doc-header-spacer{display:none;}
   @media print{
     .print-btn{display:none !important;}
     body{background:#fff !important;}
     .card{border:1px solid #94a3b8;box-shadow:none;}
     .page-break{page-break-before:always;}
+    .doc-header{
+      position:fixed;top:0;left:0;right:0;z-index:20;
+      border:none;border-bottom:1px solid #94a3b8;border-radius:0;padding:8px 12mm;
+    }
+    .doc-header-spacer{display:block;height:92px;}
   }
 </style>
 {% endblock %}
@@ -35,6 +46,28 @@
 {% block content %}
 <div class="page-wrap">
   <a href="javascript:window.print();" class="print-btn">Imprimir lista</a>
+  <div class="doc-header">
+    <div>
+      {% if plantilla and plantilla.logo_mep %}
+        <img src="{{ plantilla.logo_mep.url }}" alt="Logo MEP" class="logo">
+      {% endif %}
+    </div>
+    <div class="center">
+      <p class="title">Lista de estudiantes que hacen la prueba</p>
+      <p class="meta-top">
+        Curso lectivo: {{ asignacion.curso_lectivo.anio }}
+        {% if asignacion.centro_trabajo_id and asignacion.centro_trabajo.nombre %} · {{ asignacion.centro_trabajo.nombre }}{% else %} · {{ asignacion.subarea_curso.institucion.nombre }}{% endif %}
+      </p>
+    </div>
+    <div style="text-align:right;">
+      {% if asignacion.centro_trabajo_id and asignacion.centro_trabajo.logo %}
+        <img src="{{ asignacion.centro_trabajo.logo.url }}" alt="Logo centro" class="logo">
+      {% elif asignacion.subarea_curso.institucion.logo %}
+        <img src="{{ asignacion.subarea_curso.institucion.logo.url }}" alt="Escudo colegio" class="logo">
+      {% endif %}
+    </div>
+  </div>
+  <div class="doc-header-spacer"></div>
 
   <div class="card">
     <div class="head-grid">
@@ -45,20 +78,8 @@
         <p class="meta"><strong>Prueba:</strong> {{ actividad.titulo }}</p>
         <p class="meta"><strong>Período:</strong> {{ actividad.periodo.nombre|default:"—" }} · <strong>Curso lectivo:</strong> {{ asignacion.curso_lectivo.anio }}</p>
       </div>
-      <div>
-        {% if plantilla and plantilla.logo_mep %}
-          <img src="{{ plantilla.logo_mep.url }}" alt="Logo MEP" class="logo">
-        {% else %}
-          <div style="font-weight:700;color:#374151;">LOGO MEP</div>
-        {% endif %}
-      </div>
-      <div>
-        {% if asignacion.subarea_curso.institucion.logo %}
-          <img src="{{ asignacion.subarea_curso.institucion.logo.url }}" alt="Escudo colegio" class="logo-colegio">
-        {% else %}
-          <div style="font-weight:700;color:#374151;">ESCUDO</div>
-        {% endif %}
-      </div>
+      <div></div>
+      <div></div>
     </div>
   </div>
 

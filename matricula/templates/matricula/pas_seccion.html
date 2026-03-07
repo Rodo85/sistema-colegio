@@ -33,6 +33,30 @@
       page-break-after: always;
     }
 
+    .doc-header {
+      display: grid;
+      grid-template-columns: 30mm 1fr 30mm;
+      align-items: center;
+      gap: 3mm;
+      border-bottom: 1px solid #bbb;
+      padding: 2mm 4mm;
+      margin-bottom: 2mm;
+    }
+    .doc-header .logo {
+      max-width: 28mm;
+      max-height: 14mm;
+      object-fit: contain;
+    }
+    .doc-header .logo-right {
+      justify-self: end;
+    }
+    .doc-header .center {
+      text-align: center;
+      font-size: 8.8pt;
+      line-height: 1.2;
+      font-weight: 700;
+    }
+
     .pas-container:last-child {
       page-break-after: auto;
     }
@@ -243,6 +267,22 @@
 <body onload="window.print();">
   {% for data in estudiantes_data %}
   <div class="pas-container">
+    <div class="doc-header">
+      <div>
+        {% if plantilla and plantilla.logo_mep %}
+        <img src="{{ plantilla.logo_mep.url }}" alt="Logo MEP" class="logo">
+        {% endif %}
+      </div>
+      <div class="center">
+        {{ institucion.nombre }}<br>
+        Curso lectivo: {{ curso_lectivo.anio }}
+      </div>
+      <div class="logo-right">
+        {% if institucion.logo %}
+        <img src="{{ institucion.logo.url }}" alt="Logo institución" class="logo">
+        {% endif %}
+      </div>
+    </div>
     <!-- Bloque superior con borde gris -->
     <div class="bloque-superior">
       <!-- Logo institucional -->
