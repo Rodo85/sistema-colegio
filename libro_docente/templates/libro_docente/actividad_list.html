@@ -146,6 +146,9 @@ tbody td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:m
                   <a href="{% url 'libro_docente:actividad_edit' a.id %}" class="btn btn-primary btn-sm" title="Editar">Editar</a>
                   <a href="{% url 'libro_docente:actividad_duplicar' a.id %}" class="btn btn-warning btn-sm" title="Duplicar en este grupo">Duplicar</a>
                   <a href="{% url 'libro_docente:actividad_copiar_a_grupos' a.id %}" class="btn btn-outline btn-sm" title="Copiar a otros grupos">A otros grupos</a>
+                  {% if a.tipo_componente == 'PRUEBA' %}
+                    <a href="{% url 'libro_docente:prueba_lista_ejecucion' a.id %}" class="btn btn-outline btn-sm" title="Lista para aplicar prueba" target="_blank" rel="noopener">Lista prueba</a>
+                  {% endif %}
                   <a href="{% url 'libro_docente:actividad_calificar' a.id %}" class="btn btn-success btn-sm" title="Calificar">Calificar</a>
                   <a href="{% url 'libro_docente:actividad_delete' a.id %}" class="btn btn-danger btn-sm" title="Eliminar">Eliminar</a>
                 </div>

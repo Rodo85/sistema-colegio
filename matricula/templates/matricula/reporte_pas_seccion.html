@@ -190,6 +190,7 @@ document.addEventListener('DOMContentLoaded', function() {
   nivelSelect.addEventListener('change', function() {
     const cursoId = cursoSelect.value;
     const nivelId = nivelSelect.value;
+    const institucionId = institucionSelect ? institucionSelect.value : '';
     
     // Limpiar selects
     seccionSelect.innerHTML = '<option value="">Todas las secciones</option>';
@@ -198,7 +199,11 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!cursoId || !nivelId) return;
     
     // Cargar secciones
-    fetch(`/matricula/api/secciones/?curso_lectivo_id=${cursoId}&nivel_id=${nivelId}`)
+    let urlSecciones = `/matricula/api/secciones/?curso_lectivo_id=${encodeURIComponent(cursoId)}&nivel_id=${encodeURIComponent(nivelId)}`;
+    if (institucionId) {
+      urlSecciones += `&institucion_id=${encodeURIComponent(institucionId)}`;
+    }
+    fetch(urlSecciones)
       .then(response => response.json())
       .then(data => {
         if (data.success) {
@@ -217,12 +222,17 @@ document.addEventListener('DOMContentLoaded', function() {
   seccionSelect.addEventListener('change', function() {
     const cursoId = cursoSelect.value;
     const seccionId = seccionSelect.value;
+    const institucionId = institucionSelect ? institucionSelect.value : '';
     
     subgrupoSelect.innerHTML = '<option value="">Todos los subgrupos</option>';
     
     if (!cursoId || !seccionId) return;
     
-    fetch(`/matricula/api/subgrupos/?curso_lectivo_id=${cursoId}&seccion_id=${seccionId}`)
+    let urlSubgrupos = `/matricula/api/subgrupos/?curso_lectivo_id=${encodeURIComponent(cursoId)}&seccion_id=${encodeURIComponent(seccionId)}`;
+    if (institucionId) {
+      urlSubgrupos += `&institucion_id=${encodeURIComponent(institucionId)}`;
+    }
+    fetch(urlSubgrupos)
       .then(response => response.json())
       .then(data => {
         if (data.success) {
@@ -236,6 +246,17 @@ document.addEventListener('DOMContentLoaded', function() {
       })
       .catch(error => console.error('Error cargando subgrupos:', error));
   });
+
+  if (institucionSelect) {
+    institucionSelect.addEventListener('change', function() {
+      // Al cambiar institución, limpiar opciones dependientes.
+      seccionSelect.innerHTML = '<option value="">Todas las secciones</option>';
+      subgrupoSelect.innerHTML = '<option value="">Todos los subgrupos</option>';
+      if (nivelSelect.value) {
+        nivelSelect.dispatchEvent(new Event('change'));
+      }
+    });
+  }
 
   // Validar antes de enviar
   formPAS.addEventListener('submit', function(e) {

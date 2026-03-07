@@ -1329,6 +1329,7 @@ def api_secciones_por_curso_nivel(request):
     """Devuelve secciones activas (SeccionCursoLectivo) para curso_lectivo y nivel dados."""
     curso_lectivo_id = request.GET.get('curso_lectivo_id')
     nivel_id = request.GET.get('nivel_id')
+    institucion_id_param = request.GET.get('institucion_id')
     if not curso_lectivo_id or not nivel_id:
         return JsonResponse({'success': False, 'error': 'Parámetros incompletos'}, status=400)
     try:
@@ -1339,12 +1340,27 @@ def api_secciones_por_curso_nivel(request):
             activa=True,
             seccion__nivel_id=nivel_id
         )
-        if not request.user.is_superuser:
+        if request.user.is_superuser:
+            if institucion_id_param:
+                qs = qs.filter(institucion_id=institucion_id_param)
+        else:
             institucion_id = getattr(request, 'institucion_activa_id', None)
             if not institucion_id:
                 return JsonResponse({'success': False, 'error': 'No se pudo determinar la institución'}, status=400)
             qs = qs.filter(institucion_id=institucion_id)
-        data = [{'id': sc.seccion.id, 'nombre': f"{sc.seccion.nivel.numero}-{sc.seccion.numero}", 'numero': sc.seccion.numero} for sc in qs]
+
+        # Evita secciones duplicadas cuando hay múltiples configuraciones internas.
+        secciones = {}
+        for sc in qs.order_by('seccion__nivel__numero', 'seccion__numero', 'seccion_id'):
+            sid = sc.seccion_id
+            if sid in secciones:
+                continue
+            secciones[sid] = {
+                'id': sid,
+                'nombre': f"{sc.seccion.nivel.numero}-{sc.seccion.numero}",
+                'numero': sc.seccion.numero,
+            }
+        data = list(secciones.values())
         return JsonResponse({'success': True, 'secciones': data})
     except Exception as e:
         return JsonResponse({'success': False, 'error': str(e)}, status=500)
@@ -1355,6 +1371,7 @@ def api_subgrupos_por_curso_seccion(request):
     """Devuelve subgrupos activos (SubgrupoCursoLectivo) para curso_lectivo y seccion dados."""
     curso_lectivo_id = request.GET.get('curso_lectivo_id')
     seccion_id = request.GET.get('seccion_id')
+    institucion_id_param = request.GET.get('institucion_id')
     if not curso_lectivo_id or not seccion_id:
         return JsonResponse({'success': False, 'error': 'Parámetros incompletos'}, status=400)
     try:
@@ -1365,12 +1382,27 @@ def api_subgrupos_por_curso_seccion(request):
             activa=True,
             subgrupo__seccion_id=seccion_id
         )
-        if not request.user.is_superuser:
+        if request.user.is_superuser:
+            if institucion_id_param:
+                qs = qs.filter(institucion_id=institucion_id_param)
+        else:
             institucion_id = getattr(request, 'institucion_activa_id', None)
             if not institucion_id:
                 return JsonResponse({'success': False, 'error': 'No se pudo determinar la institución'}, status=400)
             qs = qs.filter(institucion_id=institucion_id)
-        data = [{'id': sc.subgrupo.id, 'nombre': f"{sc.subgrupo.seccion.nivel.numero}-{sc.subgrupo.seccion.numero}{sc.subgrupo.letra}", 'letra': sc.subgrupo.letra} for sc in qs]
+
+        # Evita subgrupos duplicados por configuraciones repetidas.
+        subgrupos = {}
+        for sc in qs.order_by('subgrupo__seccion__nivel__numero', 'subgrupo__seccion__numero', 'subgrupo__letra', 'subgrupo_id'):
+            sgid = sc.subgrupo_id
+            if sgid in subgrupos:
+                continue
+            subgrupos[sgid] = {
+                'id': sgid,
+                'nombre': f"{sc.subgrupo.seccion.nivel.numero}-{sc.subgrupo.seccion.numero}{(sc.subgrupo.letra or '').upper()}",
+                'letra': (sc.subgrupo.letra or '').upper(),
+            }
+        data = list(subgrupos.values())
         return JsonResponse({'success': True, 'subgrupos': data})
     except Exception as e:
         return JsonResponse({'success': False, 'error': str(e)}, status=500)

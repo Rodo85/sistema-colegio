@@ -42,6 +42,7 @@ th{background:var(--surface);}
         <p class="help">
           Marca <strong>Oculto</strong> para no mostrar al estudiante en tu libro de clase.
           Marca <strong>Adecuación significativa</strong> para usar asignación diferenciada.
+          Marca <strong>Adecuación no significativa</strong> para reportes (no modifica tareas/cotidianos).
         </p>
         <table>
           <thead>
@@ -51,6 +52,7 @@ th{background:var(--surface);}
               <th>Identificación</th>
               <th>Oculto</th>
               <th>Adecuación significativa</th>
+              <th>Adecuación no significativa</th>
             </tr>
           </thead>
           <tbody>
@@ -61,6 +63,7 @@ th{background:var(--surface);}
               <td>{{ f.identificacion }}</td>
               <td><input type="checkbox" name="oculto_ids" value="{{ f.id }}" {% if f.oculto %}checked{% endif %}></td>
               <td><input type="checkbox" name="adecuacion_ids" value="{{ f.id }}" {% if f.adecuacion %}checked{% endif %}></td>
+              <td><input type="checkbox" name="adecuacion_no_sig_ids" value="{{ f.id }}" {% if f.adecuacion_no_sig %}checked{% endif %}></td>
             </tr>
             {% endfor %}
           </tbody>

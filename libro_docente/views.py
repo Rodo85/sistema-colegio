@@ -38,6 +38,7 @@ from .models import ObservacionActividadEstudiante
 from .models import PuntajeSimple
 from .models import EstudianteOcultoAsignacion
 from .models import EstudianteAdecuacionAsignacion
+from .models import EstudianteAdecuacionNoSignificativaAsignacion
 from .models import ListaEstudiantesDocente, ListaEstudiantesDocenteItem
 from .services import (
     actividad_pertenece_a_institucion,
@@ -504,6 +505,21 @@ def _get_ids_adecuacion(asignacion):
             "estudiante_id", flat=True
         )
     )
+
+
+def _get_ids_adecuacion_no_significativa(asignacion):
+    return set(
+        EstudianteAdecuacionNoSignificativaAsignacion.objects.filter(
+            docente_asignacion=asignacion
+        ).values_list("estudiante_id", flat=True)
+    )
+
+
+def _get_ids_adecuacion_reporte(asignacion):
+    """
+    Adecuación para reportes: significativa + no significativa.
+    """
+    return _get_ids_adecuacion(asignacion).union(_get_ids_adecuacion_no_significativa(asignacion))
 
 
 def _get_estudiantes_para_actividad(asignacion, actividad):
@@ -1369,6 +1385,7 @@ def asignacion_delete_view(request, asignacion_id):
             ActividadEvaluacion.objects.filter(docente_asignacion=asignacion).delete()
             EstudianteOcultoAsignacion.objects.filter(docente_asignacion=asignacion).delete()
             EstudianteAdecuacionAsignacion.objects.filter(docente_asignacion=asignacion).delete()
+            EstudianteAdecuacionNoSignificativaAsignacion.objects.filter(docente_asignacion=asignacion).delete()
             asignacion.delete()
         messages.success(
             request,
@@ -1401,12 +1418,17 @@ def estudiantes_config_view(request, asignacion_id):
         ).values_list("estudiante_id", flat=True)
     )
     adecuacion_actuales = _get_ids_adecuacion(asignacion).intersection(set(base_ids))
+    adecuacion_no_sig_actuales = _get_ids_adecuacion_no_significativa(asignacion).intersection(set(base_ids))
 
     if request.method == "POST":
         oculto_ids = {int(x) for x in request.POST.getlist("oculto_ids") if str(x).isdigit()}
         adecuacion_ids = {int(x) for x in request.POST.getlist("adecuacion_ids") if str(x).isdigit()}
+        adecuacion_no_sig_ids = {
+            int(x) for x in request.POST.getlist("adecuacion_no_sig_ids") if str(x).isdigit()
+        }
         oculto_ids = oculto_ids.intersection(set(base_ids))
         adecuacion_ids = adecuacion_ids.intersection(set(base_ids))
+        adecuacion_no_sig_ids = adecuacion_no_sig_ids.intersection(set(base_ids))
 
         with transaction.atomic():
             EstudianteOcultoAsignacion.objects.filter(
@@ -1417,6 +1439,10 @@ def estudiantes_config_view(request, asignacion_id):
                 docente_asignacion=asignacion,
                 estudiante_id__in=base_ids,
             ).exclude(estudiante_id__in=adecuacion_ids).delete()
+            EstudianteAdecuacionNoSignificativaAsignacion.objects.filter(
+                docente_asignacion=asignacion,
+                estudiante_id__in=base_ids,
+            ).exclude(estudiante_id__in=adecuacion_no_sig_ids).delete()
 
             for est_id in oculto_ids - ocultos_actuales:
                 EstudianteOcultoAsignacion.objects.get_or_create(
@@ -1426,6 +1452,12 @@ def estudiantes_config_view(request, asignacion_id):
                 )
             for est_id in adecuacion_ids - adecuacion_actuales:
                 EstudianteAdecuacionAsignacion.objects.get_or_create(
+                    docente_asignacion=asignacion,
+                    estudiante_id=est_id,
+                    defaults={"created_by": request.user},
+                )
+            for est_id in adecuacion_no_sig_ids - adecuacion_no_sig_actuales:
+                EstudianteAdecuacionNoSignificativaAsignacion.objects.get_or_create(
                     docente_asignacion=asignacion,
                     estudiante_id=est_id,
                     defaults={"created_by": request.user},
@@ -1442,11 +1474,79 @@ def estudiantes_config_view(request, asignacion_id):
             "identificacion": est.identificacion,
             "oculto": est.id in ocultos_actuales,
             "adecuacion": est.id in adecuacion_actuales,
+            "adecuacion_no_sig": est.id in adecuacion_no_sig_actuales,
         })
     filas.sort(key=lambda x: x["nombre"])
     return render(request, "libro_docente/estudiantes_config.html", {
         "asignacion": asignacion,
         "filas": filas,
+    })
+
+
+@login_required
+@permission_required("libro_docente.access_libro_docente", raise_exception=True)
+def prueba_lista_ejecucion_view(request, actividad_id):
+    """
+    Lista imprimible para ejecución de pruebas:
+    - Regulares
+    - Adecuación (significativa y no significativa)
+    """
+    actividad = get_object_or_404(
+        ActividadEvaluacion.objects.select_related(
+            "docente_asignacion__subarea_curso__subarea",
+            "docente_asignacion__curso_lectivo",
+            "docente_asignacion__subgrupo__seccion__nivel",
+            "docente_asignacion__seccion__nivel",
+            "periodo",
+        ),
+        id=actividad_id,
+    )
+    if actividad.tipo_componente != ActividadEvaluacion.PRUEBA:
+        messages.error(request, "Esta lista solo está disponible para actividades de tipo Prueba.")
+        return redirect(reverse("libro_docente:actividad_list", args=[actividad.docente_asignacion_id]))
+
+    asignacion = _obtener_asignacion_con_permiso(request, actividad.docente_asignacion_id)
+    if asignacion is None or asignacion.id != actividad.docente_asignacion_id:
+        messages.error(request, "No tienes acceso a esta actividad.")
+        return redirect("libro_docente:home")
+
+    matriculas = list(_get_estudiantes(asignacion))
+    adec_sig = _get_ids_adecuacion(asignacion)
+    adec_no_sig = _get_ids_adecuacion_no_significativa(asignacion)
+    adec_reporte = adec_sig.union(adec_no_sig)
+
+    regulares = []
+    adecuacion = []
+    for m in matriculas:
+        est = m.estudiante
+        row = {
+            "id": est.identificacion,
+            "nombre": str(est),
+            "tipo": (
+                "Adecuación significativa"
+                if est.id in adec_sig
+                else "Adecuación no significativa"
+                if est.id in adec_no_sig
+                else ""
+            ),
+        }
+        if est.id in adec_reporte:
+            adecuacion.append(row)
+        else:
+            regulares.append(row)
+
+    plantilla = PlantillaImpresionMatricula.objects.filter(
+        institucion=asignacion.subarea_curso.institucion
+    ).first()
+    grupo_label = str(asignacion.subgrupo) if asignacion.subgrupo_id else str(asignacion.seccion)
+    return render(request, "libro_docente/prueba_lista_ejecucion.html", {
+        "actividad": actividad,
+        "asignacion": asignacion,
+        "grupo_label": grupo_label,
+        "regulares": regulares,
+        "adecuacion": adecuacion,
+        "plantilla": plantilla,
+        "total_estudiantes": len(regulares) + len(adecuacion),
     })
 
 
@@ -1523,7 +1623,7 @@ def asistencia_view(request, asignacion_id):
                 )
                 sesion.periodo = periodo
                 sesion.lecciones = lecciones
-                sesion.minuta = minuta[:200]
+                sesion.minuta = minuta[:1000]
                 sesion.save(update_fields=["periodo", "lecciones", "minuta", "updated_at"])
                 matriculas = _get_estudiantes(asignacion)
                 bulk_create = []

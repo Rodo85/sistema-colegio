@@ -267,9 +267,9 @@ tbody td{padding:8px 12px;vertical-align:middle;}
             id="minuta-input"
             name="minuta"
             class="form-control"
-            maxlength="200"
+            maxlength="1000"
             rows="3"
-            placeholder="Escribe una observación general del día (máximo 200 caracteres)..."
+            placeholder="Escribe una observación general del día (máximo 1000 caracteres)..."
           >{{ minuta|default_if_none:'' }}</textarea>
         </div>
         {% else %}

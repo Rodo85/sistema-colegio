@@ -1,0 +1,140 @@
+{% extends "admin/base_site.html" %}
+
+{% block title %}Lista de ejecución de prueba{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+  .page-wrap{max-width:1000px;margin:20px auto;padding:0 14px;font-family:Arial,sans-serif;}
+  .card{background:#fff;border:1px solid #d1d5db;border-radius:10px;padding:14px 16px;margin-bottom:14px;}
+  .head-grid{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;}
+  .head-title{font-size:1.1rem;font-weight:700;margin:0 0 6px;}
+  .meta{font-size:.9rem;color:#374151;margin:0;}
+  .logo{max-height:78px;max-width:220px;object-fit:contain;}
+  .section-title{font-size:1rem;font-weight:700;margin:0 0 8px;color:#111827;}
+  table{width:100%;border-collapse:collapse;font-size:.88rem;}
+  th,td{border:1px solid #cbd5e1;padding:7px 8px;text-align:left;}
+  th{background:#f8fafc;}
+  .firma{height:28px;}
+  .footer-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;}
+  .linea{display:block;border-bottom:1px solid #111827;height:28px;}
+  .label{font-size:.85rem;color:#374151;margin-top:4px;}
+  .print-btn{display:inline-block;padding:8px 14px;border-radius:8px;background:#145591;color:#fff;text-decoration:none;margin:8px 0 14px;}
+  @media print{
+    .print-btn{display:none !important;}
+    body{background:#fff !important;}
+    .card{border:1px solid #94a3b8;box-shadow:none;}
+  }
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div class="page-wrap">
+  <a href="javascript:window.print();" class="print-btn">Imprimir lista</a>
+
+  <div class="card">
+    <div class="head-grid">
+      <div>
+        <p class="head-title">Lista de ejecución de prueba</p>
+        <p class="meta"><strong>Materia:</strong> {{ asignacion.subarea_curso.subarea.nombre }}</p>
+        <p class="meta"><strong>Grupo/Subgrupo:</strong> {{ grupo_label }}</p>
+        <p class="meta"><strong>Prueba:</strong> {{ actividad.titulo }}</p>
+        <p class="meta"><strong>Período:</strong> {{ actividad.periodo.nombre|default:"—" }} · <strong>Curso lectivo:</strong> {{ asignacion.curso_lectivo }}</p>
+      </div>
+      <div>
+        {% if plantilla and plantilla.logo_mep %}
+          <img src="{{ plantilla.logo_mep.url }}" alt="Logo MEP" class="logo">
+        {% else %}
+          <div style="font-weight:700;color:#374151;">LOGO MEP</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="section-title">Regulares ({{ regulares|length }})</p>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:42px;">#</th>
+          <th style="width:160px;">Identificación</th>
+          <th>Nombre completo</th>
+          <th style="width:190px;">Firma estudiante</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for e in regulares %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ e.id }}</td>
+          <td>{{ e.nombre }}</td>
+          <td class="firma"></td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4" style="text-align:center;color:#6b7280;">Sin estudiantes regulares.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <p class="section-title">Adecuación (significativa y no significativa) ({{ adecuacion|length }})</p>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:42px;">#</th>
+          <th style="width:160px;">Identificación</th>
+          <th>Nombre completo</th>
+          <th style="width:210px;">Tipo adecuación</th>
+          <th style="width:190px;">Firma estudiante</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for e in adecuacion %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ e.id }}</td>
+          <td>{{ e.nombre }}</td>
+          <td>{{ e.tipo }}</td>
+          <td class="firma"></td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5" style="text-align:center;color:#6b7280;">Sin estudiantes con adecuación.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <p class="section-title">Control de aplicación (llenado manual)</p>
+    <div class="footer-grid">
+      <div>
+        <span class="linea"></span>
+        <div class="label">Nombre del docente que cuida</div>
+      </div>
+      <div>
+        <span class="linea"></span>
+        <div class="label">Firma del docente que cuida</div>
+      </div>
+      <div>
+        <span class="linea"></span>
+        <div class="label">Cantidad de estudiantes que hacen la prueba</div>
+      </div>
+      <div>
+        <span class="linea"></span>
+        <div class="label">Cantidad de estudiantes que no hicieron la prueba</div>
+      </div>
+      <div>
+        <span class="linea"></span>
+        <div class="label">Fecha de ejecución</div>
+      </div>
+      <div>
+        <span class="linea"></span>
+        <div class="label">Observaciones</div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

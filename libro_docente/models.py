@@ -482,6 +482,54 @@ class EstudianteAdecuacionAsignacion(models.Model):
         return f"{self.docente_asignacion_id} - {self.estudiante_id}"
 
 
+class EstudianteAdecuacionNoSignificativaAsignacion(models.Model):
+    """
+    Marca estudiantes con adecuación no significativa para una asignación docente.
+    Se usa para reportes y logística; no cambia reglas de tareas/cotidianos.
+    """
+    docente_asignacion = models.ForeignKey(
+        "evaluaciones.DocenteAsignacion",
+        on_delete=models.CASCADE,
+        related_name="estudiantes_adecuacion_no_significativa",
+        verbose_name="Asignación docente",
+    )
+    estudiante = models.ForeignKey(
+        "matricula.Estudiante",
+        on_delete=models.PROTECT,
+        related_name="adecuaciones_no_significativas_libro_docente",
+        verbose_name="Estudiante",
+    )
+    created_by = models.ForeignKey(
+        "core.User",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="marcas_adecuacion_no_significativa_libro_docente",
+        verbose_name="Creado por",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "libro_docente_estudiante_adecuacion_no_sig"
+        verbose_name = "Estudiante con adecuación no significativa por asignación"
+        verbose_name_plural = "Estudiantes con adecuación no significativa por asignación"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["docente_asignacion", "estudiante"],
+                name="uniq_libro_doc_est_adecuacion_no_sig",
+            ),
+        ]
+        indexes = [
+            models.Index(
+                fields=["docente_asignacion", "estudiante"],
+                name="libro_doc_est_ad_no_sig_idx",
+            ),
+        ]
+
+    def __str__(self):
+        return f"{self.docente_asignacion_id} - {self.estudiante_id}"
+
+
 class ListaEstudiantesDocente(models.Model):
     """
     Lista privada de estudiantes por docente y grupo/subgrupo (Institución General).
@@ -629,10 +677,10 @@ class AsistenciaSesion(models.Model):
     )
     minuta = models.CharField(
         "Minuta",
-        max_length=200,
+        max_length=1000,
         blank=True,
         default="",
-        help_text="Observación general del día (máximo 200 caracteres).",
+        help_text="Observación general del día (máximo 1000 caracteres).",
     )
     created_by = models.ForeignKey(
         "core.User",
