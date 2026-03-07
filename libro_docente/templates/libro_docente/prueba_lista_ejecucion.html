@@ -91,7 +91,7 @@
     </div>
   </div>
 
-  <div class="card">
+  <div class="card solo-regulares section-block">
     <p class="section-title">Regulares ({{ regulares|length }})</p>
     <table>
       <thead>
@@ -168,16 +168,31 @@
   {% endif %}
 </div>
 <script>
-  function printScope(scope) {
+  function restorePrintScope(original) {
     var body = document.body;
-    var original = body.getAttribute("data-print-scope");
-    body.setAttribute("data-print-scope", scope || "all");
-    window.print();
-    if (original === null) {
+    if (original === null || typeof original === "undefined") {
       body.removeAttribute("data-print-scope");
     } else {
       body.setAttribute("data-print-scope", original);
     }
+  }
+
+  function printScope(scope) {
+    var body = document.body;
+    var original = body.getAttribute("data-print-scope");
+    body.setAttribute("data-print-scope", scope || "all");
+
+    var restored = false;
+    function cleanup() {
+      if (restored) return;
+      restored = true;
+      restorePrintScope(original);
+      window.removeEventListener("afterprint", cleanup);
+    }
+    window.addEventListener("afterprint", cleanup);
+    window.print();
+    // Fallback para navegadores que no disparan afterprint de forma confiable.
+    setTimeout(cleanup, 1200);
   }
 </script>
 {% endblock %}
