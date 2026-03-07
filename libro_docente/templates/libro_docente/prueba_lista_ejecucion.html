@@ -21,12 +21,9 @@
   .linea{display:block;border-bottom:1px solid #111827;height:28px;}
   .label{font-size:.85rem;color:#374151;margin-top:4px;}
   .print-btn{display:inline-block;padding:8px 14px;border-radius:8px;background:#145591;color:#fff;text-decoration:none;margin:8px 8px 14px 0;}
-  .doc-header{display:grid;grid-template-columns:220px 1fr 170px;gap:12px;align-items:center;border:1px solid #d1d5db;border-radius:10px;padding:12px 14px;background:#fff;margin-bottom:12px;}
-  .doc-header .logo{max-height:98px;max-width:210px;object-fit:contain;}
+  .doc-header{display:flex;justify-content:space-between;align-items:center;border:1px solid #d1d5db;border-radius:10px;padding:12px 14px;background:#fff;margin-bottom:12px;}
+  .doc-header .logo{max-height:110px;max-width:420px;object-fit:contain;}
   .doc-header .logo-right{max-height:90px;max-width:150px;object-fit:contain;}
-  .doc-header .center{text-align:center;}
-  .doc-header .title{font-size:1.16rem;font-weight:700;margin:0;}
-  .doc-header .meta-top{font-size:.95rem;color:#374151;margin-top:4px;}
   .doc-header-spacer{display:none;}
   .section-block{break-inside:avoid-page;page-break-inside:avoid;}
   @media print{
@@ -64,13 +61,6 @@
         <img src="{{ plantilla.logo_mep.url }}" alt="Logo MEP" class="logo">
       {% endif %}
     </div>
-    <div class="center">
-      <p class="title">Lista de estudiantes que hacen la prueba</p>
-      <p class="meta-top">
-        Curso lectivo: {{ asignacion.curso_lectivo.anio }}
-        {% if asignacion.centro_trabajo_id and asignacion.centro_trabajo.nombre %} · {{ asignacion.centro_trabajo.nombre }}{% else %} · {{ asignacion.subarea_curso.institucion.nombre }}{% endif %}
-      </p>
-    </div>
     <div style="text-align:right;">
       {% if asignacion.centro_trabajo_id and asignacion.centro_trabajo.logo %}
         <img src="{{ asignacion.centro_trabajo.logo.url }}" alt="Logo centro" class="logo-right">
@@ -81,7 +71,7 @@
   </div>
   <div class="doc-header-spacer"></div>
 
-  <div class="card solo-regulares section-block">
+  <div class="card section-block">
     <div class="head-grid">
       <div>
         <p class="head-title">Lista de estudiantes que hacen la prueba</p>
@@ -119,17 +109,6 @@
         {% endfor %}
       </tbody>
     </table>
-    <div class="card" style="margin-top:12px;">
-      <p class="section-title">Control de aplicación (llenado manual)</p>
-      <div class="footer-grid">
-        <div><span class="linea"></span><div class="label">Nombre del docente que cuida</div></div>
-        <div><span class="linea"></span><div class="label">Firma del docente que cuida</div></div>
-        <div><span class="linea"></span><div class="label">Cantidad de estudiantes que hacen la prueba</div></div>
-        <div><span class="linea"></span><div class="label">Cantidad de estudiantes que no hicieron la prueba</div></div>
-        <div><span class="linea"></span><div class="label">Fecha de ejecución</div></div>
-        <div><span class="linea"></span><div class="label">Observaciones</div></div>
-      </div>
-    </div>
   </div>
 
   {% if adecuacion %}
@@ -157,19 +136,20 @@
         {% endfor %}
       </tbody>
     </table>
-    <div class="card" style="margin-top:12px;">
-      <p class="section-title">Control de aplicación (llenado manual)</p>
-      <div class="footer-grid">
-        <div><span class="linea"></span><div class="label">Nombre del docente que cuida</div></div>
-        <div><span class="linea"></span><div class="label">Firma del docente que cuida</div></div>
-        <div><span class="linea"></span><div class="label">Cantidad de estudiantes que hacen la prueba</div></div>
-        <div><span class="linea"></span><div class="label">Cantidad de estudiantes que no hicieron la prueba</div></div>
-        <div><span class="linea"></span><div class="label">Fecha de ejecución</div></div>
-        <div><span class="linea"></span><div class="label">Observaciones</div></div>
-      </div>
-    </div>
   </div>
   {% endif %}
+
+  <div class="card section-block">
+    <p class="section-title">Control de aplicación (llenado manual)</p>
+    <div class="footer-grid">
+      <div><span class="linea"></span><div class="label">Nombre del docente que cuida</div></div>
+      <div><span class="linea"></span><div class="label">Firma del docente que cuida</div></div>
+      <div><span class="linea"></span><div class="label">Cantidad de estudiantes que hacen la prueba</div></div>
+      <div><span class="linea"></span><div class="label">Cantidad de estudiantes que no hicieron la prueba</div></div>
+      <div><span class="linea"></span><div class="label">Fecha de ejecución</div></div>
+      <div><span class="linea"></span><div class="label">Observaciones</div></div>
+    </div>
+  </div>
 </div>
 <script>
   function restorePrintScope(original) {
