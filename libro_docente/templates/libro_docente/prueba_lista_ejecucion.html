@@ -41,6 +41,10 @@
     .doc-header-spacer{display:block;height:132px;}
     body[data-print-scope="regulares"] .solo-adecuacion{display:none !important;}
     body[data-print-scope="adecuacion"] .solo-regulares{display:none !important;}
+    body[data-print-scope="adecuacion"] .solo-adecuacion.page-break{
+      page-break-before:auto !important;
+      break-before:auto !important;
+    }
   }
 </style>
 {% endblock %}
