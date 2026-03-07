@@ -90,3 +90,39 @@ importante, no hace falta que me expliques cambios que haces o cuando lees esta 
 No hace falta crear documentos explicativos nunca
 
 No hagas commit hasta que yo te de la instrucción
+
+---
+
+## PROTOCOLO OPERATIVO RENDER (OBLIGATORIO)
+
+### Objetivo
+Evitar caídas o errores en producción cuando ya hay usuarios activos.
+
+### Antes de commit/push
+1. Ejecutar validaciones locales:
+   - `python manage.py makemigrations --check`
+   - `python manage.py migrate --plan`
+   - `python manage.py test` (mínimo por app tocada)
+2. Probar manualmente el flujo cambiado en local.
+3. Confirmar `git status` limpio salvo cambios esperados.
+
+### Si hay migraciones nuevas
+1. Generar migración y subirla junto con el código.
+2. En Render, ejecutar:
+   - `python manage.py migrate <app>`
+   - `python manage.py migrate`
+3. Verificar:
+   - `python manage.py showmigrations <app>`
+4. Confirmar que la app levanta sin error 500.
+
+### Si NO hay migraciones nuevas
+En Render solo desplegar el nuevo commit (no correr migraciones innecesarias).
+
+### Checklist rápido post-deploy
+1. Login de usuario normal.
+2. Login de superadmin.
+3. Flujo principal del módulo tocado.
+4. Revisar logs por warnings/error críticos.
+
+### Regla de seguridad
+Nunca hacer cambios destructivos de git ni base de datos sin instrucción explícita del usuario.

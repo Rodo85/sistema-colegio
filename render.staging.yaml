@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: sistema-colegio-staging
+    env: python
+    plan: free
+    branch: develop
+    autoDeploy: false
+    buildCommand: |
+      pip install --upgrade pip
+      pip install -r requirements.txt
+      python manage.py collectstatic --noinput
+    startCommand: |
+      bash -c "mkdir -p staticfiles media && python manage.py collectstatic --noinput --no-post-process && gunicorn sis_colegio.wsgi:application"
+    preDeployCommand: |
+      python manage.py migrate --noinput
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.7
+      - key: DJANGO_SETTINGS_MODULE
+        value: sis_colegio.settings
+      - key: SECRET_KEY
+        generateValue: true
+      # IMPORTANTE:
+      # Configurar DATABASE_URL con una base de datos de staging (NO producción).
+      # Configurar ALLOWED_HOSTS y demás variables como en producción, pero separadas.
