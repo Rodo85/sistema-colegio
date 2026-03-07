@@ -594,13 +594,10 @@ def pas_estudiante(request):
                 .first()
             )
 
-        plantilla = PlantillaImpresionMatricula.objects.filter(institucion=institucion).first()
         context = {
             'estudiante': estudiante,
             'matricula': matricula,
             'institucion': institucion,
-            'curso_lectivo': curso_lectivo,
-            'plantilla': plantilla,
             'qr_code_base64': qr_base64,
             'contacto_principal': contacto_principal,
         }
@@ -709,11 +706,8 @@ def pas_seccion(request):
                 'contacto_principal': contacto_principal,
             })
 
-        plantilla = PlantillaImpresionMatricula.objects.filter(institucion=institucion).first()
         context = {
             'institucion': institucion,
-            'curso_lectivo': curso_lectivo,
-            'plantilla': plantilla,
             'estudiantes_data': estudiantes_data,
             'grupo_nombre': grupo_nombre,
             'total_estudiantes': len(estudiantes_data),

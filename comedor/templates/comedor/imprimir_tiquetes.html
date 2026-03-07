@@ -31,28 +31,6 @@
     max-width: 900px;
     margin: 0 auto;
   }
-  .doc-header {
-    display: grid;
-    grid-template-columns: 120px 1fr 120px;
-    gap: 10px;
-    align-items: center;
-    border: 1px solid #d1d5db;
-    border-radius: 10px;
-    padding: 8px 10px;
-    margin-bottom: 10px;
-    background: #fff;
-  }
-  .doc-header .logo {
-    max-width: 110px;
-    max-height: 58px;
-    object-fit: contain;
-  }
-  .doc-header .center {
-    text-align: center;
-    font-size: .9rem;
-    font-weight: 700;
-  }
-  .doc-header-spacer { display: none; }
 
   .qr-grid {
     display: grid;
@@ -98,19 +76,6 @@
     body { margin: 0; padding: 0; }
     .print-sheet { max-width: 100%; }
     .qr-card { border-color: #ccc; }
-    .doc-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      border: none;
-      border-bottom: 1px solid #cbd5e1;
-      border-radius: 0;
-      padding: 8px 10mm;
-      margin: 0;
-      z-index: 10;
-    }
-    .doc-header-spacer { display: block; height: 80px; }
     @page { margin: 10mm; }
   }
 </style>
@@ -156,23 +121,6 @@
 
 <!-- Hoja de impresión -->
 <div class="print-sheet">
-  <div class="doc-header">
-    <div>
-      {% if plantilla and plantilla.logo_mep %}
-      <img src="{{ plantilla.logo_mep.url }}" alt="Logo MEP" class="logo">
-      {% endif %}
-    </div>
-    <div class="center">
-      {{ institucion.nombre|default:"Institución" }}<br>
-      Curso lectivo: {{ curso_lectivo.anio|default:"—" }}
-    </div>
-    <div style="text-align:right;">
-      {% if institucion and institucion.logo %}
-      <img src="{{ institucion.logo.url }}" alt="Logo institución" class="logo">
-      {% endif %}
-    </div>
-  </div>
-  <div class="doc-header-spacer"></div>
   <div class="qr-grid cols-{{ por_hoja }}" id="qr-grid">
     {% for item in tiquetes_con_qr %}
     <div class="qr-card">

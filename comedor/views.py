@@ -12,7 +12,7 @@ from django.utils import timezone
 
 from catalogos.models import CursoLectivo
 from core.models import Institucion
-from matricula.models import MatriculaAcademica, PlantillaImpresionMatricula
+from matricula.models import MatriculaAcademica
 
 from .models import (
     BecaComedor,
@@ -508,11 +508,6 @@ def toggle_tiquete(request, tiquete_id):
 def imprimir_tiquetes(request):
     institucion = _resolver_institucion(request, request.GET.get("institucion"))
     instituciones = Institucion.objects.all().order_by("nombre") if request.user.is_superuser else []
-    curso_lectivo = CursoLectivo.get_activo()
-    plantilla = (
-        PlantillaImpresionMatricula.objects.filter(institucion=institucion).first()
-        if institucion else None
-    )
 
     ids_raw = request.GET.get("ids", "")
     filtro_tipo = request.GET.get("tipo", "")
@@ -540,8 +535,6 @@ def imprimir_tiquetes(request):
         "por_hoja": por_hoja,
         "instituciones": instituciones,
         "institucion": institucion,
-        "curso_lectivo": curso_lectivo,
-        "plantilla": plantilla,
         "es_superusuario": request.user.is_superuser,
         "tipos": TiqueteComedor.TIPO_CHOICES,
         "filtro_tipo": filtro_tipo,
