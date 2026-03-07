@@ -9,7 +9,7 @@ from django.core.exceptions import ValidationError
 
 from catalogos.models import Especialidad, SubArea, TipoIdentificacion
 from config_institucional.models import SeccionCursoLectivo, SubgrupoCursoLectivo
-from evaluaciones.models import DocenteAsignacion, EsquemaEval
+from evaluaciones.models import CentroTrabajo, DocenteAsignacion, EsquemaEval
 from .models import ActividadEvaluacion, IndicadorActividad, PuntajeIndicador
 
 
@@ -182,6 +182,12 @@ class AsignacionOnboardingForm(forms.Form):
         label="Esquema de evaluación",
         widget=forms.Select(attrs={"class": "form-control"}),
     )
+    centro_trabajo = forms.ModelChoiceField(
+        queryset=CentroTrabajo.objects.none(),
+        required=False,
+        label="Centro de trabajo",
+        widget=forms.Select(attrs={"class": "form-control"}),
+    )
     seccion = forms.ModelChoiceField(
         queryset=SeccionCursoLectivo.objects.none(),
         required=False,
@@ -236,6 +242,13 @@ class AsignacionOnboardingForm(forms.Form):
                 .select_related("subgrupo__seccion__nivel")
                 .order_by("subgrupo__seccion__nivel__numero", "subgrupo__seccion__numero", "subgrupo__letra")
             )
+            self.fields["centro_trabajo"].queryset = (
+                CentroTrabajo.objects.filter(
+                    docente=profesor,
+                    institucion=institucion,
+                    activo=True,
+                ).order_by("nombre")
+            )
 
         categoria_sel = self.data.get("categoria") or self.initial.get("categoria")
         if not categoria_sel:
@@ -286,6 +299,7 @@ class AsignacionOnboardingForm(forms.Form):
         subarea = cleaned.get("subarea")
         sec_cl = cleaned.get("seccion")
         sgr_cl = cleaned.get("subgrupo")
+        centro = cleaned.get("centro_trabajo")
         if not subarea:
             return cleaned
         if categoria == self.CATEGORIA_ACADEMICA and not subarea.es_academica:
@@ -321,12 +335,20 @@ class AsignacionOnboardingForm(forms.Form):
                 self.add_error("subgrupo", "El subgrupo elegido no pertenece al grupo seleccionado.")
             cleaned["seccion"] = None
 
+        if self.institucion and getattr(self.institucion, "es_institucion_general", False):
+            if not centro:
+                self.add_error("centro_trabajo", "Debes seleccionar un centro de trabajo.")
+        else:
+            cleaned["centro_trabajo"] = None
+
         if self.profesor and subarea and self.curso_lectivo:
             dup = DocenteAsignacion.objects.filter(
                 docente=self.profesor,
                 subarea_curso__subarea=subarea,
                 curso_lectivo=self.curso_lectivo,
             )
+            if self.institucion and getattr(self.institucion, "es_institucion_general", False):
+                dup = dup.filter(centro_trabajo=centro)
             if sgr_cl:
                 dup = dup.filter(subgrupo=sgr_cl.subgrupo)
             elif sec_cl:

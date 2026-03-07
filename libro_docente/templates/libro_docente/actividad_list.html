@@ -57,6 +57,7 @@ tbody td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:m
       <p class="asgn-title">📋 Evaluación · {{ asignacion.subarea_curso.subarea.nombre }}</p>
       <p style="font-size:.83rem;opacity:.9;margin:2px 0 0;">
         {{ asignacion.curso_lectivo }}
+        {% if asignacion.centro_trabajo_id %} · Centro: {{ asignacion.centro_trabajo.nombre }}{% endif %}
         {% if asignacion.subarea_curso.subarea.es_academica %}
           <span class="tipo-badge tipo-acad">Académica</span>
         {% else %}

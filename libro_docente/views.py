@@ -17,6 +17,7 @@ from django.utils import timezone
 
 from catalogos.models import CursoLectivo, Nacionalidad, Sexo, TipoIdentificacion
 from evaluaciones.models import (
+    CentroTrabajo,
     DocenteAsignacion,
     EsquemaEvalComponente,
     Periodo,
@@ -239,6 +240,29 @@ def _es_institucion_general(asignacion):
         return bool(asignacion.subarea_curso.institucion.es_institucion_general)
     except Exception:
         return False
+
+
+def _es_institucion_general_profesor(profesor):
+    return bool(profesor and getattr(profesor.institucion, "es_institucion_general", False))
+
+
+def _asegurar_centro_principal(profesor):
+    if not _es_institucion_general_profesor(profesor):
+        return None
+    centro, _ = CentroTrabajo.objects.get_or_create(
+        docente=profesor,
+        institucion=profesor.institucion,
+        nombre="Centro principal",
+        defaults={"activo": True},
+    )
+    if not centro.activo:
+        centro.activo = True
+        centro.save(update_fields=["activo", "updated_at"])
+    return centro
+
+
+def _es_centro_principal(centro):
+    return bool(centro and (centro.nombre or "").strip().lower() == "centro principal")
 
 
 def _obtener_lista_privada_docente(asignacion):
@@ -516,9 +540,6 @@ def _get_ids_adecuacion_no_significativa(asignacion):
 
 
 def _get_ids_adecuacion_reporte(asignacion):
-    """
-    Adecuación para reportes: significativa + no significativa.
-    """
     return _get_ids_adecuacion(asignacion).union(_get_ids_adecuacion_no_significativa(asignacion))
 
 
@@ -768,15 +789,55 @@ def home_docente(request):
     asignaciones_data = []
     limite_asignaciones = None
 
+    centros_trabajo = []
+    materias_filtro = []
+    niveles_filtro = []
+    grupos_filtro = []
+    centro_sel_id = 0
+    materia_sel_id = 0
+    nivel_sel_id = 0
+    grupo_sel = ""
     if not profesor:
         error = "No tienes perfil de docente registrado en esta institución."
     else:
+        es_general = _es_institucion_general_profesor(profesor)
+        if es_general:
+            _asegurar_centro_principal(profesor)
+            centros_trabajo = list(
+                CentroTrabajo.objects.filter(
+                    docente=profesor,
+                    institucion=profesor.institucion,
+                    activo=True,
+                ).order_by("nombre")
+            )
+            try:
+                centro_sel_id = int(request.GET.get("centro", "0") or "0")
+            except (TypeError, ValueError):
+                centro_sel_id = 0
+            if not request.session.get("msg_centros_trabajo_general_v1"):
+                messages.info(
+                    request,
+                    "Ahora puedes organizar tus asignaciones por Centro de trabajo. "
+                    "Tus datos actuales fueron ubicados en 'Centro principal'.",
+                )
+                request.session["msg_centros_trabajo_general_v1"] = True
+
+        try:
+            materia_sel_id = int(request.GET.get("materia", "0") or "0")
+        except (TypeError, ValueError):
+            materia_sel_id = 0
+        try:
+            nivel_sel_id = int(request.GET.get("nivel", "0") or "0")
+        except (TypeError, ValueError):
+            nivel_sel_id = 0
+        grupo_sel = (request.GET.get("grupo", "") or "").strip()
+
         limite_asignaciones = _limite_asignaciones_docente(profesor)
         componentes_prefetch = Prefetch(
             "eval_scheme_snapshot__componentes_esquema",
             queryset=EsquemaEvalComponente.objects.select_related("componente").order_by("componente__nombre"),
         )
-        raw = list(
+        raw_qs = (
             DocenteAsignacion.objects
             .filter(docente=profesor, activo=True)
             .select_related(
@@ -784,10 +845,66 @@ def home_docente(request):
                 "curso_lectivo",
                 "seccion__nivel",
                 "subgrupo__seccion__nivel",
+                "centro_trabajo",
                 "eval_scheme_snapshot",
             )
             .prefetch_related(componentes_prefetch)
         )
+        if es_general and centro_sel_id:
+            raw_qs = raw_qs.filter(centro_trabajo_id=centro_sel_id)
+
+        # Opciones de filtro (sobre el universo ya acotado por centro)
+        materias_filtro = list(
+            raw_qs.values("subarea_curso__subarea_id", "subarea_curso__subarea__nombre")
+            .distinct()
+            .order_by("subarea_curso__subarea__nombre")
+        )
+        niveles_map = {}
+        grupos_map = {}
+        for a in raw_qs:
+            if a.subgrupo_id:
+                nivel_id = a.subgrupo.seccion.nivel_id
+                nivel_numero = a.subgrupo.seccion.nivel.numero
+                nivel_label = str(nivel_numero)
+                grupo_value = f"SUB-{a.subgrupo_id}"
+                grupo_label = str(a.subgrupo)
+            elif a.seccion_id:
+                nivel_id = a.seccion.nivel_id
+                nivel_numero = a.seccion.nivel.numero
+                nivel_label = str(nivel_numero)
+                grupo_value = f"SEC-{a.seccion_id}"
+                grupo_label = str(a.seccion)
+            else:
+                continue
+            niveles_map[nivel_id] = nivel_label
+            grupos_map[grupo_value] = grupo_label
+        niveles_filtro = [
+            {"id": nid, "label": niveles_map[nid]}
+            for nid in sorted(niveles_map, key=lambda x: int(niveles_map[x]) if str(niveles_map[x]).isdigit() else 999)
+        ]
+        grupos_filtro = [
+            {"value": gval, "label": glabel}
+            for gval, glabel in sorted(grupos_map.items(), key=lambda x: x[1])
+        ]
+
+        # Aplicar filtros seleccionados
+        if materia_sel_id:
+            raw_qs = raw_qs.filter(subarea_curso__subarea_id=materia_sel_id)
+        if nivel_sel_id:
+            raw_qs = raw_qs.filter(
+                Q(seccion__nivel_id=nivel_sel_id) | Q(subgrupo__seccion__nivel_id=nivel_sel_id)
+            )
+        if grupo_sel.startswith("SEC-"):
+            try:
+                raw_qs = raw_qs.filter(seccion_id=int(grupo_sel.split("-", 1)[1]))
+            except (TypeError, ValueError):
+                pass
+        elif grupo_sel.startswith("SUB-"):
+            try:
+                raw_qs = raw_qs.filter(subgrupo_id=int(grupo_sel.split("-", 1)[1]))
+            except (TypeError, ValueError):
+                pass
+        raw = list(raw_qs)
 
         def _sort_key(a):
             if a.subgrupo_id:
@@ -875,6 +992,7 @@ def home_docente(request):
                 "tiene_asistencia": tiene_asistencia,
                 "sesiones_hoy": sesiones_hoy,
                 "grupo_label": grupo_label,
+                "centro_trabajo": a.centro_trabajo.nombre if a.centro_trabajo_id else "",
                 "color_primario": color_primario,
                 "color_secundario": color_secundario,
             })
@@ -893,6 +1011,15 @@ def home_docente(request):
         "show_onboarding": bool(profesor and not asignaciones_data),
         "limite_asignaciones": limite_asignaciones,
         "can_create_asignacion": can_create_asignacion,
+        "es_institucion_general": _es_institucion_general_profesor(profesor),
+        "centros_trabajo": centros_trabajo,
+        "centro_sel_id": centro_sel_id,
+        "materias_filtro": materias_filtro,
+        "niveles_filtro": niveles_filtro,
+        "grupos_filtro": grupos_filtro,
+        "materia_sel_id": materia_sel_id,
+        "nivel_sel_id": nivel_sel_id,
+        "grupo_sel": grupo_sel,
     })
 
 
@@ -905,6 +1032,8 @@ def asignacion_onboarding_view(request):
         return redirect("libro_docente:home")
 
     institucion = profesor.institucion
+    if _es_institucion_general_profesor(profesor):
+        _asegurar_centro_principal(profesor)
     curso_lectivo = CursoLectivo.get_activo()
     if not curso_lectivo:
         curso_lectivo = (
@@ -926,6 +1055,7 @@ def asignacion_onboarding_view(request):
     if request.method == "POST" and form.is_valid():
         subarea = form.cleaned_data["subarea"]
         esquema = form.cleaned_data["eval_scheme"]
+        centro = form.cleaned_data.get("centro_trabajo")
         sec_cl = form.cleaned_data.get("seccion")
         sgr_cl = form.cleaned_data.get("subgrupo")
 
@@ -951,6 +1081,7 @@ def asignacion_onboarding_view(request):
             curso_lectivo=curso_lectivo,
             seccion=sec_cl.seccion if sec_cl else None,
             subgrupo=sgr_cl.subgrupo if sgr_cl else None,
+            centro_trabajo=centro,
             activo=True,
             eval_scheme_snapshot=esquema,
         )
@@ -967,6 +1098,159 @@ def asignacion_onboarding_view(request):
         "curso_lectivo": curso_lectivo,
         "institucion": institucion,
         "limite_asignaciones": _limite_asignaciones_docente(profesor),
+        "es_institucion_general": _es_institucion_general_profesor(profesor),
+    })
+
+
+@login_required
+@permission_required("libro_docente.access_libro_docente", raise_exception=True)
+def centros_trabajo_view(request):
+    profesor = _get_profesor(request)
+    if not profesor:
+        messages.error(request, "No tienes perfil docente registrado en esta institución.")
+        return redirect("libro_docente:home")
+    if not _es_institucion_general_profesor(profesor):
+        messages.error(request, "Los centros de trabajo aplican solo para Institución General.")
+        return redirect("libro_docente:home")
+
+    _asegurar_centro_principal(profesor)
+    centros = list(
+        CentroTrabajo.objects.filter(
+            docente=profesor,
+            institucion=profesor.institucion,
+        ).order_by("nombre")
+    )
+    centro_editar = None
+    editar_id = request.GET.get("editar")
+    if editar_id and str(editar_id).isdigit():
+        centro_editar = CentroTrabajo.objects.filter(
+            id=int(editar_id),
+            docente=profesor,
+            institucion=profesor.institucion,
+        ).first()
+
+    if request.method == "POST":
+        accion = (request.POST.get("accion") or "crear").strip().lower()
+        if accion == "mover_asignacion":
+            asignacion_id = request.POST.get("asignacion_id")
+            destino_id = request.POST.get("centro_destino_id")
+            if not (asignacion_id and str(asignacion_id).isdigit() and destino_id and str(destino_id).isdigit()):
+                messages.error(request, "Datos inválidos para mover la asignación.")
+                return redirect("libro_docente:centros_trabajo")
+            asignacion = get_object_or_404(
+                DocenteAsignacion,
+                id=int(asignacion_id),
+                docente=profesor,
+                activo=True,
+            )
+            destino = get_object_or_404(
+                CentroTrabajo,
+                id=int(destino_id),
+                docente=profesor,
+                institucion=profesor.institucion,
+                activo=True,
+            )
+            if asignacion.centro_trabajo_id == destino.id:
+                messages.info(request, "La asignación ya estaba en ese centro.")
+                return redirect("libro_docente:centros_trabajo")
+            asignacion.centro_trabajo = destino
+            try:
+                asignacion.save()
+                messages.success(request, "Asignación movida correctamente.")
+            except ValidationError as exc:
+                messages.error(request, f"No se pudo mover la asignación: {exc}")
+            return redirect("libro_docente:centros_trabajo")
+
+        if accion == "eliminar":
+            centro_id = request.POST.get("centro_id")
+            if not (centro_id and str(centro_id).isdigit()):
+                messages.error(request, "Centro de trabajo no válido.")
+                return redirect("libro_docente:centros_trabajo")
+            centro = get_object_or_404(
+                CentroTrabajo,
+                id=int(centro_id),
+                docente=profesor,
+                institucion=profesor.institucion,
+            )
+            if _es_centro_principal(centro):
+                messages.error(request, "No se puede eliminar el Centro principal.")
+                return redirect("libro_docente:centros_trabajo")
+            total_asignaciones = DocenteAsignacion.objects.filter(
+                docente=profesor,
+                centro_trabajo=centro,
+            ).count()
+            if total_asignaciones > 0:
+                messages.error(
+                    request,
+                    f"No se puede eliminar. Este centro tiene {total_asignaciones} asignación(es). "
+                    "Muévelas primero a otro centro.",
+                )
+                return redirect("libro_docente:centros_trabajo")
+            centro.delete()
+            messages.success(request, "Centro de trabajo eliminado.")
+            return redirect("libro_docente:centros_trabajo")
+
+        nombre = (request.POST.get("nombre") or "").strip()
+        logo = request.FILES.get("logo")
+        if not nombre:
+            messages.error(request, "Debes indicar el nombre del centro de trabajo.")
+            return redirect("libro_docente:centros_trabajo")
+
+        if accion == "editar":
+            centro_id = request.POST.get("centro_id")
+            if not (centro_id and str(centro_id).isdigit()):
+                messages.error(request, "Centro de trabajo no válido.")
+                return redirect("libro_docente:centros_trabajo")
+            centro = get_object_or_404(
+                CentroTrabajo,
+                id=int(centro_id),
+                docente=profesor,
+                institucion=profesor.institucion,
+            )
+            if _es_centro_principal(centro):
+                messages.error(request, "No se puede editar el Centro principal.")
+                return redirect("libro_docente:centros_trabajo")
+            centro.nombre = nombre
+            if logo:
+                centro.logo = logo
+            centro.save()
+            messages.success(request, "Centro de trabajo actualizado.")
+            return redirect("libro_docente:centros_trabajo")
+
+        _, created = CentroTrabajo.objects.get_or_create(
+            docente=profesor,
+            institucion=profesor.institucion,
+            nombre=nombre,
+            defaults={"activo": True, "logo": logo},
+        )
+        if created:
+            messages.success(request, "Centro de trabajo creado.")
+        else:
+            messages.info(request, "Ese centro de trabajo ya existe.")
+        return redirect("libro_docente:centros_trabajo")
+
+    conteos = dict(
+        DocenteAsignacion.objects.filter(
+            docente=profesor,
+            activo=True,
+            centro_trabajo_id__in=[c.id for c in centros],
+        ).values("centro_trabajo_id").annotate(total=Count("id")).values_list("centro_trabajo_id", "total")
+    )
+    centros_info = [
+        {"obj": c, "asignaciones": conteos.get(c.id, 0), "es_principal": _es_centro_principal(c)}
+        for c in centros
+    ]
+    asignaciones = list(
+        DocenteAsignacion.objects.filter(docente=profesor, activo=True)
+        .select_related("subarea_curso__subarea", "seccion__nivel", "subgrupo__seccion__nivel", "centro_trabajo")
+        .order_by("centro_trabajo__nombre", "subarea_curso__subarea__nombre")
+    )
+    return render(request, "libro_docente/centros_trabajo.html", {
+        "profesor": profesor,
+        "centros": centros_info,
+        "centro_editar": centro_editar,
+        "asignaciones": asignaciones,
+        "centros_destino": centros,
     })
 
 
@@ -1565,7 +1849,7 @@ def asistencia_view(request, asignacion_id):
     asignacion = get_object_or_404(
         DocenteAsignacion.objects.select_related(
             "subarea_curso__subarea", "curso_lectivo",
-            "seccion__nivel", "subgrupo__seccion__nivel",
+            "seccion__nivel", "subgrupo__seccion__nivel", "centro_trabajo",
         ),
         id=asignacion_id, docente=profesor, activo=True,
     )
@@ -1779,6 +2063,7 @@ def _obtener_asignacion_con_permiso(request, asignacion_id):
             DocenteAsignacion.objects.select_related(
                 "subarea_curso__subarea", "curso_lectivo",
                 "seccion__nivel", "subgrupo__seccion__nivel",
+                "centro_trabajo",
             ),
             id=asignacion_id, activo=True,
         )
@@ -1788,6 +2073,7 @@ def _obtener_asignacion_con_permiso(request, asignacion_id):
         DocenteAsignacion.objects.select_related(
             "subarea_curso__subarea", "curso_lectivo",
             "seccion__nivel", "subgrupo__seccion__nivel",
+            "centro_trabajo",
         ),
         id=asignacion_id, docente=profesor, activo=True,
     )
@@ -1918,7 +2204,7 @@ def resumen_view(request, asignacion_id):
     asignacion = get_object_or_404(
         DocenteAsignacion.objects.select_related(
             "subarea_curso__subarea", "curso_lectivo",
-            "seccion__nivel", "subgrupo__seccion__nivel",
+            "seccion__nivel", "subgrupo__seccion__nivel", "centro_trabajo",
         ),
         id=asignacion_id, docente=profesor, activo=True,
     )

@@ -74,7 +74,10 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
   <div class="asgn-banner">
     <div>
       <p class="asgn-title">📊 Resumen Asistencia · {{ asignacion.subarea_curso.subarea.nombre }}</p>
-      <p class="asgn-meta">{{ asignacion.seccion|default:asignacion.subgrupo }} · {{ asignacion.curso_lectivo }}</p>
+      <p class="asgn-meta">
+        {{ asignacion.seccion|default:asignacion.subgrupo }} · {{ asignacion.curso_lectivo }}
+        {% if asignacion.centro_trabajo_id %} · Centro: {{ asignacion.centro_trabajo.nombre }}{% endif %}
+      </p>
     </div>
     <a href="{% url 'libro_docente:asistencia' asignacion.id %}" class="back-btn">← Pasar lista</a>
   </div>

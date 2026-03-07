@@ -45,7 +45,10 @@
     <div>
       <p class="asgn-title">📊 Resumen evaluación · {{ asignacion.subarea_curso.subarea.nombre }}</p>
       <span class="grupo-hero">{{ asignacion.subgrupo|default:asignacion.seccion }}</span>
-      <p style="font-size:.83rem;opacity:.9;margin:2px 0 0;">{{ asignacion.curso_lectivo }}</p>
+      <p style="font-size:.83rem;opacity:.9;margin:2px 0 0;">
+        {{ asignacion.curso_lectivo }}
+        {% if asignacion.centro_trabajo_id %} · Centro: {{ asignacion.centro_trabajo.nombre }}{% endif %}
+      </p>
     </div>
     <a href="{% url 'libro_docente:actividad_list' asignacion.id %}" class="back-btn">← Actividades</a>
   </div>

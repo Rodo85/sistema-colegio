@@ -320,6 +320,57 @@ class PeriodoCursoLectivo(models.Model):
         super().save(*args, **kwargs)
 
 
+class CentroTrabajo(models.Model):
+    """
+    Subdivisión interna para Institución General.
+    Permite separar asignaciones por centro educativo no matriculado.
+    """
+    docente = models.ForeignKey(
+        "config_institucional.Profesor",
+        on_delete=models.CASCADE,
+        related_name="centros_trabajo",
+        verbose_name="Docente",
+    )
+    institucion = models.ForeignKey(
+        "core.Institucion",
+        on_delete=models.CASCADE,
+        related_name="centros_trabajo",
+        verbose_name="Institución",
+    )
+    nombre = models.CharField("Nombre del centro de trabajo", max_length=150)
+    logo = models.ImageField(
+        "Logo del centro",
+        upload_to="centros_trabajo/",
+        null=True,
+        blank=True,
+    )
+    activo = models.BooleanField("Activo", default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "eval_centro_trabajo"
+        verbose_name = "Centro de trabajo"
+        verbose_name_plural = "Centros de trabajo"
+        ordering = ("nombre",)
+        unique_together = [("docente", "institucion", "nombre")]
+
+    def __str__(self):
+        return f"{self.nombre} ({self.docente})"
+
+    def clean(self):
+        if self.docente_id and self.institucion_id:
+            if self.docente.institucion_id != self.institucion_id:
+                raise ValidationError("El centro de trabajo debe pertenecer a la misma institución del docente.")
+        super().clean()
+
+    def save(self, *args, **kwargs):
+        if self.nombre:
+            self.nombre = self.nombre.strip()
+        self.full_clean()
+        super().save(*args, **kwargs)
+
+
 class DocenteAsignacion(models.Model):
     """
     Asignación anual de un docente a una materia (subárea) en una sección o subgrupo.
@@ -368,6 +419,15 @@ class DocenteAsignacion(models.Model):
         related_name="asignaciones_docente",
         help_text="Obligatorio para materias técnicas; NULL para académicas.",
     )
+    centro_trabajo = models.ForeignKey(
+        CentroTrabajo,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="asignaciones",
+        verbose_name="Centro de trabajo",
+        help_text="Obligatorio en Institución General para separar colegios/sedes.",
+    )
     activo = models.BooleanField("Activo", default=True)
     eval_scheme_snapshot = models.ForeignKey(
         EsquemaEval,
@@ -390,9 +450,10 @@ class DocenteAsignacion(models.Model):
 
     def __str__(self):
         grupo = f"Secc. {self.seccion}" if self.seccion_id else f"Subgr. {self.subgrupo}"
+        centro = f" | Centro: {self.centro_trabajo.nombre}" if self.centro_trabajo_id else ""
         return (
             f"{self.docente} → {self.subarea_curso.subarea.nombre} | "
-            f"{grupo} | {self.curso_lectivo}"
+            f"{grupo} | {self.curso_lectivo}{centro}"
         )
 
     def clean(self):
@@ -421,6 +482,17 @@ class DocenteAsignacion(models.Model):
                 raise ValidationError(
                     "El docente no pertenece a la misma institución que la asignación."
                 )
+        institucion = self.subarea_curso.institucion if self.subarea_curso_id else None
+        if institucion and institucion.es_institucion_general:
+            if not self.centro_trabajo_id:
+                raise ValidationError("Debes seleccionar un centro de trabajo para Institución General.")
+            if (
+                self.centro_trabajo.docente_id != self.docente_id
+                or self.centro_trabajo.institucion_id != institucion.id
+            ):
+                raise ValidationError("El centro de trabajo no corresponde al docente o institución de la asignación.")
+        elif self.centro_trabajo_id:
+            raise ValidationError("El centro de trabajo solo aplica para Institución General.")
 
         # El curso lectivo debe coincidir con el del subarea_curso
         if self.curso_lectivo_id and self.subarea_curso_id:
@@ -436,6 +508,8 @@ class DocenteAsignacion(models.Model):
                 subarea_curso_id=self.subarea_curso_id,
                 curso_lectivo_id=self.curso_lectivo_id,
             )
+            if institucion and institucion.es_institucion_general:
+                dup_qs = dup_qs.filter(centro_trabajo_id=self.centro_trabajo_id)
             if self.seccion_id:
                 dup_qs = dup_qs.filter(seccion_id=self.seccion_id, subgrupo__isnull=True)
             elif self.subgrupo_id:
@@ -446,7 +520,6 @@ class DocenteAsignacion(models.Model):
                 raise ValidationError("Ya tenés esta asignación creada para ese grupo/subgrupo y materia.")
 
         # Límite de asignaciones (solo Institución General)
-        institucion = self.subarea_curso.institucion if self.subarea_curso_id else None
         if institucion and institucion.es_institucion_general and self.docente_id:
             limite = self.docente.max_asignaciones_override
             if limite is None:

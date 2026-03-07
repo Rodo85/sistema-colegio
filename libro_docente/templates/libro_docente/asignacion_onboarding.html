@@ -37,6 +37,11 @@
       <div class="alert alert-info">
         Paso A: elige categoría y materia · Paso B: elige grupo/subgrupo válido · Paso C: el esquema se asigna automáticamente.
       </div>
+      {% if es_institucion_general %}
+      <div class="alert alert-info">
+        Institución General: debes vincular la asignación a un <strong>Centro de trabajo</strong> para separar colegios/sedes.
+      </div>
+      {% endif %}
       {% if form.non_field_errors %}
       <div class="alert alert-danger">
         {% for e in form.non_field_errors %}<div>{{ e }}</div>{% endfor %}
@@ -59,6 +64,16 @@
           {{ form.eval_scheme }}
           {{ form.eval_scheme.errors }}
         </div>
+        {% if es_institucion_general %}
+        <div class="fg">
+          <label for="{{ form.centro_trabajo.id_for_label }}">{{ form.centro_trabajo.label }}</label>
+          {{ form.centro_trabajo }}
+          {{ form.centro_trabajo.errors }}
+          <div class="help">
+            ¿No aparece el centro? <a href="{% url 'libro_docente:centros_trabajo' %}">Administrar centros de trabajo</a>.
+          </div>
+        </div>
+        {% endif %}
         <div class="fg">
           <label for="{{ form.seccion.id_for_label }}">{{ form.seccion.label }}</label>
           {{ form.seccion }}

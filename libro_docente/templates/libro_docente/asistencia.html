@@ -118,6 +118,7 @@ tbody td{padding:8px 12px;vertical-align:middle;}
       <span class="grupo-hero">{{ asignacion.subgrupo|default:asignacion.seccion }}</span>
       <p class="asgn-meta">{{ asignacion.curso_lectivo }}
         {% if periodo %} · {{ periodo.nombre }}{% endif %}
+        {% if asignacion.centro_trabajo_id %} · Centro: {{ asignacion.centro_trabajo.nombre }}{% endif %}
       </p>
     </div>
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">

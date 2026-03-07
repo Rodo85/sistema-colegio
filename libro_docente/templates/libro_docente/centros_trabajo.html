@@ -1,0 +1,143 @@
+{% extends "admin/base_site.html" %}
+
+{% block title %}Centros de trabajo{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+  .wrap{max-width:980px;margin:20px auto;padding:0 14px;font-family:"Segoe UI",system-ui,sans-serif;}
+  .card{background:#fff;border:1px solid #dee2e6;border-radius:12px;padding:14px 16px;margin-bottom:14px;}
+  .title{font-size:1.2rem;font-weight:700;margin:0 0 8px;color:#145591;}
+  .muted{font-size:.85rem;color:#6b7280;}
+  .grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));}
+  .item{border:1px solid #e5e7eb;border-radius:10px;padding:10px 12px;}
+  .logo{height:48px;max-width:90px;object-fit:contain;display:block;margin-bottom:6px;}
+  .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;text-decoration:none;border:none;cursor:pointer;font-weight:600}
+  .btn-primary{background:#1a6eb5;color:#fff;}
+  .btn-outline{background:#fff;color:#1a6eb5;border:1px solid #1a6eb5;}
+  .fg{margin-bottom:10px;}
+  .fg label{display:block;font-size:.8rem;font-weight:700;color:#6b7280;text-transform:uppercase;margin-bottom:5px;}
+  .form-control{width:100%;padding:8px 11px;border:1px solid #d1d5db;border-radius:8px;}
+  .badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.72rem;font-weight:700;}
+  .badge-primary{background:#dbeafe;color:#1e40af;}
+  table{width:100%;border-collapse:collapse;font-size:.85rem;}
+  thead th{background:#f8fafc;color:#6b7280;font-size:.72rem;text-transform:uppercase;padding:8px;border-bottom:1px solid #e5e7eb;text-align:left;}
+  tbody td{padding:8px;border-bottom:1px solid #eef2f7;vertical-align:middle;}
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div class="wrap">
+  <div class="card">
+    <p class="title">Centros de trabajo</p>
+    <p class="muted">Organiza tus asignaciones dentro de Institución General por colegio/sede/contexto académico.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <a href="{% url 'libro_docente:home' %}" class="btn btn-outline">Volver a Mis asignaciones</a>
+      <a href="{% url 'libro_docente:asignacion_onboarding' %}" class="btn btn-primary">Crear asignación</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="title" style="font-size:1rem;">{% if centro_editar %}Editar centro{% else %}Crear centro{% endif %}</p>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="hidden" name="accion" value="{% if centro_editar %}editar{% else %}crear{% endif %}">
+      {% if centro_editar %}
+      <input type="hidden" name="centro_id" value="{{ centro_editar.id }}">
+      {% endif %}
+      <div class="fg">
+        <label>Nombre del centro</label>
+        <input type="text" class="form-control" name="nombre" value="{% if centro_editar %}{{ centro_editar.nombre }}{% endif %}" required maxlength="150">
+      </div>
+      <div class="fg">
+        <label>Logo (opcional)</label>
+        <input type="file" class="form-control" name="logo" accept="image/*">
+      </div>
+      <button type="submit" class="btn btn-primary">Guardar</button>
+      {% if centro_editar %}
+      <a href="{% url 'libro_docente:centros_trabajo' %}" class="btn btn-outline">Cancelar edición</a>
+      {% endif %}
+    </form>
+  </div>
+
+  <div class="grid">
+    {% for c in centros %}
+    <div class="item">
+      {% if c.obj.logo %}
+      <img src="{{ c.obj.logo.url }}" alt="Logo centro" class="logo">
+      {% endif %}
+      <div style="font-weight:700;color:#111827;">{{ c.obj.nombre }}</div>
+      {% if c.es_principal %}
+      <div class="badge badge-primary" style="margin-top:4px;">Centro base protegido</div>
+      {% endif %}
+      <div class="muted">Asignaciones: {{ c.asignaciones }}</div>
+      <div style="margin-top:8px;">
+        <a href="{% url 'libro_docente:home' %}?centro={{ c.obj.id }}" class="btn btn-outline">Entrar</a>
+        {% if not c.es_principal %}
+        <a href="{% url 'libro_docente:centros_trabajo' %}?editar={{ c.obj.id }}" class="btn btn-outline">Editar</a>
+        <form method="post" style="display:inline;">
+          {% csrf_token %}
+          <input type="hidden" name="accion" value="eliminar">
+          <input type="hidden" name="centro_id" value="{{ c.obj.id }}">
+          <button
+            type="submit"
+            class="btn btn-outline"
+            onclick="return confirm('¿Eliminar este centro de trabajo? Esta acción no se puede deshacer.');"
+          >
+            Eliminar
+          </button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+    {% empty %}
+    <div class="item">
+      <div class="muted">No hay centros registrados.</div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="card">
+    <p class="title" style="font-size:1rem;">Reorganizar asignaciones entre centros</p>
+    <p class="muted" style="margin-bottom:8px;">Mueve una asignación al centro correcto sin perder su información.</p>
+    <div style="overflow-x:auto;">
+      <table>
+        <thead>
+          <tr>
+            <th>Materia</th>
+            <th>Grupo</th>
+            <th>Centro actual</th>
+            <th>Mover a</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for a in asignaciones %}
+          <tr>
+            <td>{{ a.subarea_curso.subarea.nombre }}</td>
+            <td>{% if a.subgrupo_id %}{{ a.subgrupo }}{% else %}{{ a.seccion|default:"—" }}{% endif %}</td>
+            <td>{{ a.centro_trabajo.nombre|default:"—" }}</td>
+            <td>
+              <form method="post" style="display:flex;gap:8px;align-items:center;">
+                {% csrf_token %}
+                <input type="hidden" name="accion" value="mover_asignacion">
+                <input type="hidden" name="asignacion_id" value="{{ a.id }}">
+                <select name="centro_destino_id" class="form-control" style="min-width:190px;" required>
+                  {% for c in centros_destino %}
+                  <option value="{{ c.id }}" {% if a.centro_trabajo_id == c.id %}selected{% endif %}>{{ c.nombre }}</option>
+                  {% endfor %}
+                </select>
+                <button type="submit" class="btn btn-outline">Mover</button>
+              </form>
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="4" class="muted">No hay asignaciones activas para mover.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -4,6 +4,7 @@ from django.utils.html import format_html
 from core.mixins import InstitucionScopedAdmin
 
 from .models import (
+    CentroTrabajo,
     ComponenteEval,
     DocenteAsignacion,
     EsquemaEval,
@@ -144,6 +145,7 @@ class DocenteAsignacionAdmin(InstitucionScopedAdmin):
         "tipo_materia",
         "grupo_display",
         "curso_lectivo",
+        "centro_trabajo",
         "eval_scheme_snapshot",
         "activo",
     )
@@ -151,6 +153,7 @@ class DocenteAsignacionAdmin(InstitucionScopedAdmin):
         "subarea_curso__institucion",
         "curso_lectivo",
         "activo",
+        "centro_trabajo",
         "subarea_curso__subarea__es_academica",
     )
     search_fields = (
@@ -158,7 +161,7 @@ class DocenteAsignacionAdmin(InstitucionScopedAdmin):
         "docente__usuario__last_name",
         "subarea_curso__subarea__nombre",
     )
-    autocomplete_fields = ("docente", "subarea_curso", "seccion", "subgrupo")
+    autocomplete_fields = ("docente", "subarea_curso", "seccion", "subgrupo", "centro_trabajo")
     readonly_fields = ("eval_scheme_snapshot", "created_at")
 
     @admin.display(description="Materia")
@@ -178,3 +181,11 @@ class DocenteAsignacionAdmin(InstitucionScopedAdmin):
         if obj.subgrupo_id:
             return f"Subgr. {obj.subgrupo}"
         return "—"
+
+
+@admin.register(CentroTrabajo)
+class CentroTrabajoAdmin(InstitucionScopedAdmin):
+    list_display = ("nombre", "docente", "institucion", "activo", "updated_at")
+    list_filter = ("institucion", "activo")
+    search_fields = ("nombre", "docente__usuario__first_name", "docente__usuario__last_name")
+    autocomplete_fields = ("docente",)
