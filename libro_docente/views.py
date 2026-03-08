@@ -37,6 +37,7 @@ from .models import ActividadEvaluacion, AsistenciaRegistro, AsistenciaSesion
 from .models import PuntajeIndicador
 from .models import ObservacionActividadEstudiante
 from .models import PuntajeSimple
+from .models import HorarioDocenteBloque, HorarioDocenteConfiguracion
 from .models import EstudianteOcultoAsignacion
 from .models import EstudianteAdecuacionAsignacion
 from .models import EstudianteAdecuacionNoSignificativaAsignacion
@@ -330,6 +331,62 @@ def _colores_por_materia(nombre_materia):
     digest = hashlib.md5(base.encode("utf-8")).hexdigest()
     idx = int(digest[:8], 16) % len(paleta)
     return paleta[idx]
+
+
+def _dia_label_iso(dia_iso):
+    labels = {
+        1: "Lunes",
+        2: "Martes",
+        3: "Miércoles",
+        4: "Jueves",
+        5: "Viernes",
+        6: "Sábado",
+        7: "Domingo",
+    }
+    return labels.get(dia_iso, "Día")
+
+
+def _periodo_id_para_asignacion(asignacion, fecha_ref=None):
+    fecha_ref = fecha_ref or timezone.localdate()
+    periodo = _infer_periodo(asignacion, fecha_ref)
+    if periodo:
+        return periodo.id
+    first = (
+        PeriodoCursoLectivo.objects.filter(
+            institucion_id=asignacion.subarea_curso.institucion_id,
+            curso_lectivo=asignacion.curso_lectivo,
+            activo=True,
+        )
+        .order_by("periodo__numero")
+        .values_list("periodo_id", flat=True)
+        .first()
+    )
+    return first
+
+
+def _acciones_rapidas_asignacion(asignacion, fecha_ref=None):
+    periodo_id = _periodo_id_para_asignacion(asignacion, fecha_ref=fecha_ref)
+    tipos = _tipos_habilitados_por_esquema(asignacion)
+    acciones = {
+        "asistencia": reverse("libro_docente:asistencia", args=[asignacion.id]),
+        "estudiantes": reverse("libro_docente:estudiantes_config", args=[asignacion.id]),
+        "minuta": reverse("libro_docente:asistencia", args=[asignacion.id]),
+        "detalle": reverse("libro_docente:resumen_evaluacion", args=[asignacion.id]),
+        "tarea": None,
+        "prueba": None,
+    }
+    if periodo_id:
+        if ActividadEvaluacion.TAREA in tipos:
+            acciones["tarea"] = (
+                reverse("libro_docente:actividad_create", args=[asignacion.id])
+                + f"?periodo={periodo_id}&tipo={ActividadEvaluacion.TAREA}"
+            )
+        if ActividadEvaluacion.PRUEBA in tipos:
+            acciones["prueba"] = (
+                reverse("libro_docente:actividad_create", args=[asignacion.id])
+                + f"?periodo={periodo_id}&tipo={ActividadEvaluacion.PRUEBA}"
+            )
+    return acciones
 
 
 def _formatear_cantidad_asistencia(valor):
@@ -793,6 +850,7 @@ def home_docente(request):
     materias_filtro = []
     niveles_filtro = []
     grupos_filtro = []
+    clases_hoy = []
     centro_sel_id = 0
     materia_sel_id = 0
     nivel_sel_id = 0
@@ -833,6 +891,39 @@ def home_docente(request):
         grupo_sel = (request.GET.get("grupo", "") or "").strip()
 
         limite_asignaciones = _limite_asignaciones_docente(profesor)
+        dia_hoy_iso = timezone.localdate().isoweekday()
+        clases_hoy_qs = (
+            HorarioDocenteBloque.objects.filter(
+                configuracion__docente=profesor,
+                configuracion__institucion=profesor.institucion,
+                dia_semana=dia_hoy_iso,
+                docente_asignacion__activo=True,
+            )
+            .select_related(
+                "configuracion__centro_trabajo",
+                "docente_asignacion__subarea_curso__subarea",
+                "docente_asignacion__seccion__nivel",
+                "docente_asignacion__subgrupo__seccion__nivel",
+            )
+            .order_by("leccion_numero")
+        )
+        if es_general and centro_sel_id:
+            clases_hoy_qs = clases_hoy_qs.filter(configuracion__centro_trabajo_id=centro_sel_id)
+        for b in clases_hoy_qs:
+            asig = b.docente_asignacion
+            grupo_label = str(asig.subgrupo) if asig.subgrupo_id else (str(asig.seccion) if asig.seccion_id else "—")
+            color_primario, color_secundario = _colores_por_materia(asig.subarea_curso.subarea.nombre)
+            clases_hoy.append({
+                "leccion": b.leccion_numero,
+                "asignacion": asig,
+                "materia": asig.subarea_curso.subarea.nombre,
+                "grupo_label": grupo_label,
+                "centro": b.configuracion.centro_trabajo.nombre if b.configuracion.centro_trabajo_id else "",
+                "color_primario": color_primario,
+                "color_secundario": color_secundario,
+                "acciones": _acciones_rapidas_asignacion(asig),
+            })
+
         componentes_prefetch = Prefetch(
             "eval_scheme_snapshot__componentes_esquema",
             queryset=EsquemaEvalComponente.objects.select_related("componente").order_by("componente__nombre"),
@@ -1020,6 +1111,8 @@ def home_docente(request):
         "materia_sel_id": materia_sel_id,
         "nivel_sel_id": nivel_sel_id,
         "grupo_sel": grupo_sel,
+        "clases_hoy": clases_hoy,
+        "dia_hoy_label": _dia_label_iso(timezone.localdate().isoweekday()),
     })
 
 
@@ -1251,6 +1344,148 @@ def centros_trabajo_view(request):
         "centro_editar": centro_editar,
         "asignaciones": asignaciones,
         "centros_destino": centros,
+    })
+
+
+@login_required
+@permission_required("libro_docente.access_libro_docente", raise_exception=True)
+def horario_docente_view(request):
+    profesor = _get_profesor(request)
+    if not profesor:
+        messages.error(request, "No tienes perfil docente registrado en esta institución.")
+        return redirect("libro_docente:home")
+
+    institucion = profesor.institucion
+    es_general = _es_institucion_general_profesor(profesor)
+    centros = []
+    centro_sel_id = 0
+    centro_actual = None
+    if es_general:
+        _asegurar_centro_principal(profesor)
+        centros = list(
+            CentroTrabajo.objects.filter(
+                docente=profesor,
+                institucion=institucion,
+                activo=True,
+            ).order_by("nombre")
+        )
+        try:
+            centro_sel_id = int((request.POST.get("centro") if request.method == "POST" else request.GET.get("centro")) or 0)
+        except (TypeError, ValueError):
+            centro_sel_id = 0
+        if not centro_sel_id and centros:
+            centro_sel_id = centros[0].id
+        centro_actual = next((c for c in centros if c.id == centro_sel_id), None)
+        if not centro_actual and centros:
+            centro_actual = centros[0]
+            centro_sel_id = centro_actual.id
+
+    config_qs = HorarioDocenteConfiguracion.objects.filter(docente=profesor, institucion=institucion)
+    if es_general:
+        config_qs = config_qs.filter(centro_trabajo=centro_actual)
+    else:
+        config_qs = config_qs.filter(centro_trabajo__isnull=True)
+    config, _ = config_qs.get_or_create(
+        defaults={
+            "max_lecciones_dia": 8,
+            "centro_trabajo": centro_actual if es_general else None,
+        }
+    )
+
+    asignaciones_qs = (
+        DocenteAsignacion.objects.filter(docente=profesor, activo=True)
+        .select_related("subarea_curso__subarea", "seccion__nivel", "subgrupo__seccion__nivel", "centro_trabajo")
+        .order_by("subarea_curso__subarea__nombre")
+    )
+    if es_general:
+        asignaciones_qs = asignaciones_qs.filter(centro_trabajo=centro_actual)
+    asignaciones = list(asignaciones_qs)
+    asignaciones_ids = {a.id for a in asignaciones}
+
+    if request.method == "POST" and request.POST.get("accion") == "guardar_horario":
+        max_raw = request.POST.get("max_lecciones_dia")
+        try:
+            max_lecciones = int(max_raw)
+        except (TypeError, ValueError):
+            max_lecciones = config.max_lecciones_dia
+        if max_lecciones not in {6, 8, 10, 12, 16}:
+            max_lecciones = config.max_lecciones_dia
+        if config.max_lecciones_dia != max_lecciones:
+            config.max_lecciones_dia = max_lecciones
+            config.save(update_fields=["max_lecciones_dia", "updated_at"])
+
+        nuevos = []
+        for dia, _ in HorarioDocenteBloque.DIA_CHOICES:
+            for lec in range(1, config.max_lecciones_dia + 1):
+                k = f"h_{dia}_{lec}"
+                asignacion_id = request.POST.get(k)
+                if not (asignacion_id and str(asignacion_id).isdigit()):
+                    continue
+                asignacion_id = int(asignacion_id)
+                if asignacion_id not in asignaciones_ids:
+                    continue
+                nuevos.append(
+                    HorarioDocenteBloque(
+                        configuracion=config,
+                        dia_semana=dia,
+                        leccion_numero=lec,
+                        docente_asignacion_id=asignacion_id,
+                    )
+                )
+        with transaction.atomic():
+            config.bloques.all().delete()
+            if nuevos:
+                HorarioDocenteBloque.objects.bulk_create(nuevos)
+        messages.success(request, "Horario guardado correctamente.")
+        next_url = reverse("libro_docente:horario_docente")
+        if es_general and centro_sel_id:
+            next_url += f"?centro={centro_sel_id}"
+        return redirect(next_url)
+
+    bloques = list(
+        HorarioDocenteBloque.objects.filter(configuracion=config)
+        .select_related("docente_asignacion__subarea_curso__subarea")
+    )
+    celdas = {(b.dia_semana, b.leccion_numero): b.docente_asignacion_id for b in bloques}
+    asig_by_id = {a.id: a for a in asignaciones}
+
+    filas = []
+    for lec in range(1, config.max_lecciones_dia + 1):
+        celdas_fila = []
+        for dia, dia_label in HorarioDocenteBloque.DIA_CHOICES:
+            aid = celdas.get((dia, lec))
+            asignacion = asig_by_id.get(aid) if aid else None
+            grupo_label = ""
+            color_primario = color_secundario = "#f3f4f6"
+            acciones = None
+            if asignacion:
+                grupo_label = str(asignacion.subgrupo) if asignacion.subgrupo_id else (str(asignacion.seccion) if asignacion.seccion_id else "—")
+                color_primario, color_secundario = _colores_por_materia(asignacion.subarea_curso.subarea.nombre)
+                acciones = _acciones_rapidas_asignacion(asignacion)
+            celdas_fila.append({
+                "dia": dia,
+                "dia_label": dia_label,
+                "leccion": lec,
+                "asignacion_id": aid or "",
+                "asignacion": asignacion,
+                "grupo_label": grupo_label,
+                "color_primario": color_primario,
+                "color_secundario": color_secundario,
+                "acciones": acciones,
+            })
+        filas.append({"leccion": lec, "celdas": celdas_fila})
+
+    return render(request, "libro_docente/horario_docente.html", {
+        "profesor": profesor,
+        "es_institucion_general": es_general,
+        "centros_trabajo": centros,
+        "centro_sel_id": centro_sel_id,
+        "centro_actual": centro_actual,
+        "config": config,
+        "asignaciones": asignaciones,
+        "filas": filas,
+        "dias": HorarioDocenteBloque.DIA_CHOICES,
+        "opciones_lecciones": [6, 8, 10, 12, 16],
     })
 
 

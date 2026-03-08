@@ -632,6 +632,149 @@ class ListaEstudiantesDocenteItem(models.Model):
         ordering = ("orden", "id")
 
 
+class HorarioDocenteConfiguracion(models.Model):
+    """
+    Configuración simple de horario por docente.
+    En Institución General se separa por centro de trabajo.
+    """
+    OPCIONES_LECCIONES = (
+        (6, "6"),
+        (8, "8"),
+        (10, "10"),
+        (12, "12"),
+        (16, "16"),
+    )
+
+    docente = models.ForeignKey(
+        "config_institucional.Profesor",
+        on_delete=models.CASCADE,
+        related_name="horarios_docente",
+        verbose_name="Docente",
+    )
+    institucion = models.ForeignKey(
+        "core.Institucion",
+        on_delete=models.PROTECT,
+        related_name="horarios_docente",
+        verbose_name="Institución",
+    )
+    centro_trabajo = models.ForeignKey(
+        "evaluaciones.CentroTrabajo",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="horarios_docente",
+        verbose_name="Centro de trabajo",
+    )
+    max_lecciones_dia = models.PositiveSmallIntegerField(
+        "Máximo de lecciones por día",
+        choices=OPCIONES_LECCIONES,
+        default=8,
+    )
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "libro_docente_horario_config"
+        verbose_name = "Configuración de horario docente"
+        verbose_name_plural = "Configuraciones de horario docente"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["docente", "centro_trabajo"],
+                condition=models.Q(centro_trabajo__isnull=False),
+                name="uniq_horario_docente_centro",
+            ),
+            models.UniqueConstraint(
+                fields=["docente"],
+                condition=models.Q(centro_trabajo__isnull=True),
+                name="uniq_horario_docente_sin_centro",
+            ),
+        ]
+
+    def __str__(self):
+        if self.centro_trabajo_id:
+            return f"{self.docente} · {self.centro_trabajo} ({self.max_lecciones_dia})"
+        return f"{self.docente} · Horario ({self.max_lecciones_dia})"
+
+    def clean(self):
+        if self.docente_id and self.institucion_id and self.docente.institucion_id != self.institucion_id:
+            raise ValidationError("La institución del horario debe coincidir con la del docente.")
+        if self.centro_trabajo_id:
+            if self.centro_trabajo.docente_id != self.docente_id:
+                raise ValidationError("El centro de trabajo no pertenece al docente.")
+            if self.centro_trabajo.institucion_id != self.institucion_id:
+                raise ValidationError("El centro de trabajo no pertenece a la institución del horario.")
+        super().clean()
+
+
+class HorarioDocenteBloque(models.Model):
+    """
+    Bloque semanal simple: día + lección + asignación.
+    """
+    LUNES = 1
+    MARTES = 2
+    MIERCOLES = 3
+    JUEVES = 4
+    VIERNES = 5
+    SABADO = 6
+    DOMINGO = 7
+    DIA_CHOICES = [
+        (LUNES, "Lunes"),
+        (MARTES, "Martes"),
+        (MIERCOLES, "Miércoles"),
+        (JUEVES, "Jueves"),
+        (VIERNES, "Viernes"),
+        (SABADO, "Sábado"),
+        (DOMINGO, "Domingo"),
+    ]
+
+    configuracion = models.ForeignKey(
+        HorarioDocenteConfiguracion,
+        on_delete=models.CASCADE,
+        related_name="bloques",
+        verbose_name="Configuración de horario",
+    )
+    dia_semana = models.PositiveSmallIntegerField("Día de semana", choices=DIA_CHOICES)
+    leccion_numero = models.PositiveSmallIntegerField("Lección")
+    docente_asignacion = models.ForeignKey(
+        "evaluaciones.DocenteAsignacion",
+        on_delete=models.CASCADE,
+        related_name="bloques_horario_docente",
+        verbose_name="Asignación docente",
+    )
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "libro_docente_horario_bloque"
+        verbose_name = "Bloque de horario docente"
+        verbose_name_plural = "Bloques de horario docente"
+        ordering = ("dia_semana", "leccion_numero")
+        constraints = [
+            models.UniqueConstraint(
+                fields=["configuracion", "dia_semana", "leccion_numero"],
+                name="uniq_horario_docente_bloque",
+            ),
+        ]
+
+    def __str__(self):
+        return f"{self.get_dia_semana_display()} L{self.leccion_numero} · {self.docente_asignacion}"
+
+    def clean(self):
+        if self.leccion_numero < 1:
+            raise ValidationError("La lección debe ser mayor o igual a 1.")
+        if self.configuracion_id and self.leccion_numero > self.configuracion.max_lecciones_dia:
+            raise ValidationError(
+                f"La lección no puede exceder {self.configuracion.max_lecciones_dia} para esta configuración."
+            )
+        if self.configuracion_id and self.docente_asignacion_id:
+            if self.docente_asignacion.docente_id != self.configuracion.docente_id:
+                raise ValidationError("La asignación no pertenece al docente del horario.")
+            if self.docente_asignacion.subarea_curso.institucion_id != self.configuracion.institucion_id:
+                raise ValidationError("La asignación no pertenece a la institución del horario.")
+            if self.configuracion.centro_trabajo_id:
+                if self.docente_asignacion.centro_trabajo_id != self.configuracion.centro_trabajo_id:
+                    raise ValidationError("La asignación no corresponde al centro de trabajo del horario.")
+        super().clean()
+
+
 class AsistenciaSesion(models.Model):
     """
     Representa una pasada de lista diaria de un docente para una asignación.

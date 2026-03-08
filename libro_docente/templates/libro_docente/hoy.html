@@ -55,6 +55,14 @@
 .tipo-acad{background:#dbeafe;color:#1e40af;}
 .tipo-tec{background:#ede9fe;color:#5b21b6;}
 .form-control{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;}
+.today-list{display:grid;gap:10px;grid-template-columns:1fr;}
+.today-item{background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px 12px;}
+.today-row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;}
+.today-main{font-weight:700;color:#145591;}
+.today-chip{font-size:.72rem;font-weight:700;border-radius:999px;padding:2px 8px;background:#e0e7ff;color:#3730a3;}
+.today-acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;}
+.today-acts a{font-size:.74rem;text-decoration:none;border:1px solid #d1d5db;border-radius:999px;padding:3px 9px;color:#145591;background:#fff;}
+.today-acts a:hover{background:#eff6ff;}
 </style>
 {% endblock %}
 
@@ -74,10 +82,37 @@
       {% if es_institucion_general %}
       <a href="{% url 'libro_docente:centros_trabajo' %}" class="btn btn-outline">Centros de trabajo</a>
       {% endif %}
+      <a href="{% url 'libro_docente:horario_docente' %}{% if es_institucion_general and centro_sel_id %}?centro={{ centro_sel_id }}{% endif %}" class="btn btn-outline">Horario</a>
       {% if can_create_asignacion %}
       <a href="{% url 'libro_docente:asignacion_onboarding' %}" class="btn btn-primary">Crear asignación</a>
       {% endif %}
     </div>
+  </div>
+
+  <div class="alert alert-info">
+    <strong>Clases de hoy ({{ dia_hoy_label }})</strong>
+    {% if clases_hoy %}
+      <div class="today-list" style="margin-top:8px;">
+        {% for c in clases_hoy %}
+        <div class="today-item">
+          <div class="today-row">
+            <div class="today-main">Lección {{ c.leccion }} — {{ c.materia }} {{ c.grupo_label }}</div>
+            {% if c.centro %}<span class="today-chip">{{ c.centro }}</span>{% endif %}
+          </div>
+          <div class="today-acts">
+            <a href="{{ c.acciones.asistencia }}">Pasar lista</a>
+            <a href="{{ c.acciones.estudiantes }}">Ver estudiantes</a>
+            {% if c.acciones.tarea %}<a href="{{ c.acciones.tarea }}">Registrar tarea</a>{% endif %}
+            {% if c.acciones.prueba %}<a href="{{ c.acciones.prueba }}">Registrar prueba</a>{% endif %}
+            <a href="{{ c.acciones.minuta }}">Abrir bitácora/minuta</a>
+            <a href="{{ c.acciones.detalle }}">Detalles asignación</a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div style="margin-top:6px;">No hay clases registradas para hoy en tu horario.</div>
+    {% endif %}
   </div>
 
   {% if es_institucion_general and centros_trabajo %}

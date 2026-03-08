@@ -1,0 +1,125 @@
+{% extends "admin/base_site.html" %}
+
+{% block title %}Horario docente{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+  .wrap{max-width:1220px;margin:20px auto;padding:0 14px;font-family:"Segoe UI",system-ui,sans-serif;}
+  .card{background:#fff;border:1px solid #dee2e6;border-radius:12px;padding:14px 16px;margin-bottom:14px;}
+  .title{font-size:1.2rem;font-weight:700;margin:0 0 8px;color:#145591;}
+  .muted{font-size:.85rem;color:#6b7280;}
+  .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;text-decoration:none;border:none;cursor:pointer;font-weight:600}
+  .btn-primary{background:#1a6eb5;color:#fff;}
+  .btn-outline{background:#fff;color:#1a6eb5;border:1px solid #1a6eb5;}
+  .form-control{width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;background:#fff;}
+  table{width:100%;border-collapse:collapse;font-size:.84rem;}
+  th,td{border:1px solid #e5e7eb;padding:8px;vertical-align:top;}
+  th{background:#f8fafc;font-size:.74rem;text-transform:uppercase;color:#6b7280;}
+  .cell-asig{margin-top:6px;border-radius:8px;padding:6px 7px;color:#fff;}
+  .cell-asig .nom{font-weight:700;font-size:.8rem;line-height:1.2;}
+  .cell-asig .grp{font-size:.75rem;opacity:.95;}
+  .acts{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px;}
+  .act{font-size:.69rem;padding:2px 6px;border-radius:999px;background:rgba(255,255,255,.2);color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.35);}
+  .row-top{display:flex;gap:10px;flex-wrap:wrap;align-items:end;}
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div class="wrap">
+  <div class="card">
+    <p class="title">Horario docente</p>
+    <p class="muted">Registra día + lección + asignación. Se usa para mostrar tus clases de hoy y acceso rápido.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <a class="btn btn-outline" href="{% url 'libro_docente:home' %}">Volver a Mis asignaciones</a>
+    </div>
+  </div>
+
+  {% if es_institucion_general and centros_trabajo %}
+  <div class="card">
+    <form method="get" class="row-top">
+      <div style="min-width:260px;">
+        <label class="muted" style="display:block;margin-bottom:4px;font-weight:700;">Centro de trabajo</label>
+        <select name="centro" class="form-control" onchange="this.form.submit()">
+          {% for c in centros_trabajo %}
+            <option value="{{ c.id }}" {% if centro_sel_id == c.id %}selected{% endif %}>{{ c.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <noscript><button type="submit" class="btn btn-primary">Aplicar</button></noscript>
+    </form>
+  </div>
+  {% endif %}
+
+  <div class="card">
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="accion" value="guardar_horario">
+      {% if es_institucion_general and centro_sel_id %}
+      <input type="hidden" name="centro" value="{{ centro_sel_id }}">
+      {% endif %}
+      <div class="row-top" style="margin-bottom:10px;">
+        <div style="min-width:220px;">
+          <label class="muted" style="display:block;margin-bottom:4px;font-weight:700;">Máx. lecciones por día</label>
+          <select name="max_lecciones_dia" class="form-control">
+            {% for n in opciones_lecciones %}
+              <option value="{{ n }}" {% if config.max_lecciones_dia == n %}selected{% endif %}>{{ n }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div style="margin-left:auto;">
+          <button type="submit" class="btn btn-primary">Guardar horario</button>
+        </div>
+      </div>
+
+      <div style="overflow:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:72px;">Lección</th>
+              {% for dia, dia_label in dias %}
+              <th>{{ dia_label }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for fila in filas %}
+            <tr>
+              <td><strong>{{ fila.leccion }}</strong></td>
+              {% for c in fila.celdas %}
+              <td>
+                <select name="h_{{ c.dia }}_{{ c.leccion }}" class="form-control">
+                  <option value="">— Libre —</option>
+                  {% for a in asignaciones %}
+                  <option value="{{ a.id }}" {% if c.asignacion_id == a.id %}selected{% endif %}>
+                    {{ a.subarea_curso.subarea.nombre }} · {% if a.subgrupo_id %}{{ a.subgrupo }}{% else %}{{ a.seccion|default:"—" }}{% endif %}
+                  </option>
+                  {% endfor %}
+                </select>
+                {% if c.asignacion %}
+                <div class="cell-asig" style="background:linear-gradient(135deg, {{ c.color_primario }} 0%, {{ c.color_secundario }} 100%);">
+                  <div class="nom">{{ c.asignacion.subarea_curso.subarea.nombre }}</div>
+                  <div class="grp">{{ c.grupo_label }}</div>
+                  <div class="acts">
+                    <a class="act" href="{{ c.acciones.asistencia }}">Lista</a>
+                    <a class="act" href="{{ c.acciones.estudiantes }}">Estudiantes</a>
+                    {% if c.acciones.tarea %}<a class="act" href="{{ c.acciones.tarea }}">Tarea</a>{% endif %}
+                    {% if c.acciones.prueba %}<a class="act" href="{{ c.acciones.prueba }}">Prueba</a>{% endif %}
+                    <a class="act" href="{{ c.acciones.minuta }}">Minuta</a>
+                    <a class="act" href="{{ c.acciones.detalle }}">Detalle</a>
+                  </div>
+                </div>
+                {% endif %}
+              </td>
+              {% endfor %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
