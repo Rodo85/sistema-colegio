@@ -19,21 +19,75 @@
   table{width:100%;border-collapse:collapse;font-size:.84rem;}
   th,td{border:1px solid #e5e7eb;padding:8px;vertical-align:top;}
   th{background:#f8fafc;font-size:.74rem;text-transform:uppercase;color:#6b7280;}
-  .receso-row td{background:#fffbeb;color:#92400e;font-weight:700;text-align:center;}
+  .schedule-grid{
+    display:grid;
+    grid-template-columns:72px repeat(5, minmax(150px,1fr));
+    grid-template-rows:38px repeat(var(--grid-body-rows), 64px);
+    position:relative;
+    border:1px solid #e5e7eb;
+    border-bottom:none;
+    border-right:none;
+    background:#fff;
+    min-width:860px;
+  }
+  .gcell{
+    border-right:1px solid #e5e7eb;
+    border-bottom:1px solid #e5e7eb;
+    padding:6px 8px;
+    box-sizing:border-box;
+    position:relative;
+    z-index:1;
+    background:#fff;
+  }
+  .ghead{
+    background:#f8fafc;
+    font-size:.74rem;
+    text-transform:uppercase;
+    color:#6b7280;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .glesson{
+    background:#f8fafc;
+    font-weight:700;
+    text-align:center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .greceso{
+    background:#fffbeb;
+    color:#92400e;
+    font-weight:800;
+    text-align:center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:2;
+  }
   .blk{border-radius:10px;padding:8px 8px;color:#fff;min-height:54px;position:relative;}
   .blk .grp{font-weight:800;font-size:.86rem;line-height:1.15;}
-  .blk .mat{font-size:.76rem;opacity:.95;line-height:1.1;margin-top:3px;}
-  .blk .rng{font-size:.7rem;opacity:.9;margin-top:4px;}
+  .blk .mat{font-size:.74rem;opacity:.95;line-height:1.1;margin-top:3px;letter-spacing:.02em;}
   .menu-wrap{position:absolute;top:6px;right:6px;}
-  .menu-btn{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:999px;padding:0 6px;cursor:pointer;font-weight:700;}
+  .menu-btn{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:999px;padding:0 6px;cursor:pointer;font-weight:700;opacity:0;pointer-events:none;transition:opacity .15s ease;}
+  .blk:hover .menu-btn, .menu-wrap:hover .menu-btn{opacity:1;pointer-events:auto;}
   .menu-items{display:none;position:absolute;top:20px;right:0;min-width:170px;background:#fff;border:1px solid #e5e7eb;border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,.15);z-index:20;}
   .menu-items a{display:block;padding:7px 9px;font-size:.76rem;text-decoration:none;color:#145591;border-bottom:1px solid #f3f4f6;}
   .menu-items a:last-child{border-bottom:none;}
   .menu-wrap:hover .menu-items{display:block;}
-  .empty-cell{background:#f8fafc;}
+  .gblock{
+    z-index:3;
+    padding:4px;
+    box-sizing:border-box;
+    min-height:0;
+  }
+  .gblock .blk{
+    height:100%;
+    min-height:0;
+  }
   .row-top{display:flex;gap:10px;flex-wrap:wrap;align-items:end;}
-  .legend{display:flex;gap:8px;flex-wrap:wrap;}
-  .legend .tag{padding:5px 9px;border-radius:999px;color:#fff;font-size:.75rem;font-weight:700;}
 </style>
 {% endblock %}
 
@@ -75,63 +129,48 @@
         <button type="button" class="btn btn-outline" onclick="toggleEditor()">Editar horario</button>
       </div>
     </div>
-    {% if leyenda_colores %}
-    <div style="margin-bottom:10px;">
-      <p class="muted" style="font-weight:700;margin:0 0 6px;">Mapa de colores</p>
-      <div class="legend">
-        {% for it in leyenda_colores %}
-        <span class="tag" style="background:{{ it.color }};">{{ it.etiqueta }}</span>
+    <div style="overflow:auto;">
+      <div class="schedule-grid" style="--grid-body-rows: {{ grid_rows|length }};">
+        <div class="gcell ghead" style="grid-column:1;grid-row:1;">Lección</div>
+        {% for h in grid_day_headers %}
+        <div class="gcell ghead" style="grid-column:{{ h.col_start }};grid-row:1;">{{ h.dia_label }}</div>
+        {% endfor %}
+
+        {% for r in grid_rows %}
+          {% if r.tipo == "leccion" %}
+          <div class="gcell glesson" style="grid-column:1;grid-row:{{ r.row_num }};">{{ r.leccion }}</div>
+          {% else %}
+          <div class="gcell glesson" style="grid-column:1;grid-row:{{ r.row_num }};">—</div>
+          {% endif %}
+          {% for h in grid_day_headers %}
+          <div class="gcell" style="grid-column:{{ h.col_start }};grid-row:{{ r.row_num }};"></div>
+          {% endfor %}
+        {% endfor %}
+
+        {% for rb in grid_receso_bands %}
+        <div class="gcell greceso" style="grid-column:{{ rb.col_start }} / {{ rb.col_end }};grid-row:{{ rb.row_num }};">RECESO</div>
+        {% endfor %}
+
+        {% for gb in grid_blocks %}
+        <div class="gblock" style="grid-column:{{ gb.col_start }};grid-row:{{ gb.row_start }} / {{ gb.row_end }};">
+          <div class="blk" title="{{ gb.block.materia_full }}" style="background:linear-gradient(135deg, {{ gb.block.color_primario }} 0%, {{ gb.block.color_secundario }} 100%);">
+            <div class="grp">{{ gb.block.grupo_label }}</div>
+            <div class="mat">{{ gb.block.materia_corta }}</div>
+            <div class="menu-wrap">
+              <button class="menu-btn" type="button">⋮</button>
+              <div class="menu-items">
+                <a href="{{ gb.block.acciones.asistencia }}">Pasar lista</a>
+                <a href="{{ gb.block.acciones.estudiantes }}">Ver estudiantes</a>
+                {% if gb.block.acciones.tarea %}<a href="{{ gb.block.acciones.tarea }}">Registrar tarea</a>{% endif %}
+                {% if gb.block.acciones.prueba %}<a href="{{ gb.block.acciones.prueba }}">Registrar prueba</a>{% endif %}
+                <a href="{{ gb.block.acciones.minuta }}">Bitácora / minuta</a>
+                <a href="{{ gb.block.acciones.detalle }}">Detalles asignación</a>
+              </div>
+            </div>
+          </div>
+        </div>
         {% endfor %}
       </div>
-    </div>
-    {% endif %}
-    <div style="overflow:auto;">
-      <table>
-        <thead>
-          <tr>
-            <th style="width:72px;">Lección</th>
-            {% for dia, dia_label in dias %}
-            <th>{{ dia_label }}</th>
-            {% endfor %}
-          </tr>
-        </thead>
-        <tbody>
-          {% for row in tabla_compacta %}
-            {% if row.tipo == "receso" %}
-            <tr class="receso-row"><td colspan="6">RECESO</td></tr>
-            {% else %}
-            <tr>
-              <td><strong>{{ row.leccion }}</strong></td>
-              {% for c in row.celdas %}
-                {% if c.skip %}
-                {% elif c.block %}
-                <td rowspan="{{ c.block.rowspan }}">
-                  <div class="blk" style="background:linear-gradient(135deg, {{ c.block.color_primario }} 0%, {{ c.block.color_secundario }} 100%);">
-                    <div class="grp">{{ c.block.grupo_label }}</div>
-                    <div class="mat">{{ c.block.materia }}</div>
-                    <div class="rng">{{ c.block.rango }}</div>
-                    <div class="menu-wrap">
-                      <button class="menu-btn" type="button">⋮</button>
-                      <div class="menu-items">
-                        <a href="{{ c.block.acciones.asistencia }}">Pasar lista</a>
-                        <a href="{{ c.block.acciones.estudiantes }}">Ver estudiantes</a>
-                        {% if c.block.acciones.tarea %}<a href="{{ c.block.acciones.tarea }}">Registrar tarea</a>{% endif %}
-                        {% if c.block.acciones.prueba %}<a href="{{ c.block.acciones.prueba }}">Registrar prueba</a>{% endif %}
-                        <a href="{{ c.block.acciones.minuta }}">Bitácora / minuta</a>
-                        <a href="{{ c.block.acciones.detalle }}">Detalles asignación</a>
-                      </div>
-                    </div>
-                  </div>
-                </td>
-                {% else %}
-                <td class="empty-cell"></td>
-                {% endif %}
-              {% endfor %}
-            </tr>
-            {% endif %}
-          {% endfor %}
-        </tbody>
-      </table>
     </div>
   </div>
 

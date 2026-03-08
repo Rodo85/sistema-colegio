@@ -159,6 +159,11 @@ tbody td{padding:8px 12px;vertical-align:middle;}
           <div class="fg">
             <label for="lecciones-input">Lecciones del día</label>
             <input type="number" min="1" step="1" id="lecciones-input" name="lecciones" value="{{ lecciones }}" class="form-control" style="max-width:150px;">
+            {% if lecciones_programadas %}
+              <small style="margin-top:4px;color:var(--muted);font-size:.74rem;">
+                Autocompletado por horario: {{ lecciones_programadas }} lección{{ lecciones_programadas|pluralize:"es" }}.
+              </small>
+            {% endif %}
           </div>
         </div>
         {% if sesion_actual %}

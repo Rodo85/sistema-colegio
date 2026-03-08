@@ -427,6 +427,44 @@ def _color_y_etiqueta_horario(asignacion):
     return key, etiqueta, color_primario, color_secundario
 
 
+def _nombre_corto_materia(nombre):
+    txt = (nombre or "").strip()
+    if not txt:
+        return "MATERIA"
+    palabras = [p for p in txt.replace("-", " ").split() if p]
+    stop = {"DE", "DEL", "LA", "LAS", "EL", "LOS", "Y", "E", "EN", "PARA"}
+    utiles = [p for p in palabras if p.upper() not in stop]
+    base = utiles or palabras
+    if len(base) >= 2:
+        sigla = "".join(p[0] for p in base[:4]).upper()
+        if len(sigla) >= 2:
+            return sigla
+    compacto = "".join(ch for ch in txt.upper() if ch.isalnum())
+    return compacto[:8] if compacto else "MATERIA"
+
+
+def _lecciones_programadas_para_fecha(asignacion, fecha_ref):
+    """
+    Cuenta lecciones del horario para una asignación en una fecha dada.
+    Suma todos los bloques del día para esa asignación exacta.
+    """
+    if not asignacion or not fecha_ref:
+        return 0
+    try:
+        dia_iso = int(fecha_ref.isoweekday())
+    except Exception:
+        return 0
+    return (
+        HorarioDocenteBloque.objects.filter(
+            docente_asignacion=asignacion,
+            dia_semana=dia_iso,
+        )
+        .values("leccion_numero")
+        .distinct()
+        .count()
+    )
+
+
 def _formatear_cantidad_asistencia(valor):
     if valor is None:
         return None
@@ -1552,27 +1590,15 @@ def horario_docente_view(request):
                     "rowspan": span,
                     "asignacion": asignacion,
                     "grupo_label": grupo_label,
-                    "materia": asignacion.subarea_curso.subarea.nombre,
+                    "materia_corta": _nombre_corto_materia(asignacion.subarea_curso.subarea.nombre),
+                    "materia_full": asignacion.subarea_curso.subarea.nombre,
                     "color_primario": color_primario,
                     "color_secundario": color_secundario,
                     "acciones": _acciones_rapidas_asignacion(asignacion),
-                    "rango": f"Lecciones {lec} a {lec + span - 1}" if span > 1 else f"Lección {lec}",
                 }
             for x in range(lec + 1, lec + span):
                 hidden_cells.add((dia, x))
             lec += span
-
-    leyenda_colores = []
-    vistos_leyenda = set()
-    for asignacion in asignaciones:
-        k, etiqueta, color_primario, _color_secundario = _color_y_etiqueta_horario(asignacion)
-        if k in vistos_leyenda:
-            continue
-        vistos_leyenda.add(k)
-        leyenda_colores.append({
-            "etiqueta": etiqueta,
-            "color": color_primario,
-        })
 
     row_defs = []
     for lec in range(1, config.max_lecciones_dia + 1):
@@ -1595,6 +1621,52 @@ def horario_docente_view(request):
                 cells.append({"skip": False, "block": merged_blocks.get(key)})
         tabla_compacta.append({"tipo": "leccion", "leccion": lec, "celdas": cells})
 
+    day_headers = []
+    for idx, (dia, dia_label) in enumerate(weekdays, start=1):
+        day_headers.append({
+            "dia": dia,
+            "dia_label": dia_label,
+            "col_start": idx + 1,  # Columna 1 es el índice de lección
+        })
+
+    grid_rows = []
+    leccion_to_grid_row = {}
+    for idx, row in enumerate(row_defs, start=1):
+        entry = {"tipo": row["tipo"], "row_num": idx + 1}  # Fila 1 es encabezado
+        if row["tipo"] == "leccion":
+            entry["leccion"] = row["leccion"]
+            leccion_to_grid_row[row["leccion"]] = idx + 1
+        grid_rows.append(entry)
+
+    grid_blocks = []
+    for head in day_headers:
+        dia = head["dia"]
+        for lec in range(1, config.max_lecciones_dia + 1):
+            block = merged_blocks.get((dia, lec))
+            if not block:
+                continue
+            row_start = leccion_to_grid_row.get(lec)
+            if not row_start:
+                continue
+            row_end = row_start + block["rowspan"]
+            grid_blocks.append({
+                "col_start": head["col_start"],
+                "row_start": row_start,
+                "row_end": row_end,
+                "block": block,
+            })
+
+    receso_bands = []
+    first_day_col = 2
+    last_day_col = len(day_headers) + 2
+    for row in grid_rows:
+        if row["tipo"] == "receso":
+            receso_bands.append({
+                "row_num": row["row_num"],
+                "col_start": first_day_col,
+                "col_end": last_day_col,
+            })
+
     return render(request, "libro_docente/horario_docente.html", {
         "profesor": profesor,
         "es_institucion_general": es_general,
@@ -1607,7 +1679,12 @@ def horario_docente_view(request):
         "dias": weekdays,
         "tabla_compacta": tabla_compacta,
         "recesos_sel": recesos,
-        "leyenda_colores": leyenda_colores,
+        "grid_day_headers": day_headers,
+        "grid_rows": grid_rows,
+        "grid_blocks": grid_blocks,
+        "grid_receso_bands": receso_bands,
+        "grid_total_cols": len(day_headers) + 1,
+        "grid_total_rows": len(grid_rows) + 1,
     })
 
 
@@ -2220,11 +2297,12 @@ def asistencia_view(request, asignacion_id):
         fecha = hoy
 
     # ── Lecciones del día ────────────────────────────────────────────────
+    lecciones_programadas = _lecciones_programadas_para_fecha(asignacion, fecha)
     raw_lecciones = (request.POST if request.method == "POST" else request.GET).get("lecciones")
     try:
-        lecciones = int(raw_lecciones) if raw_lecciones else 1
+        lecciones = int(raw_lecciones) if raw_lecciones else (lecciones_programadas or 1)
     except (TypeError, ValueError):
-        lecciones = 1
+        lecciones = lecciones_programadas or 1
     lecciones = max(1, lecciones)
     minuta = (request.POST.get("minuta", "") if request.method == "POST" else "").strip()
 
@@ -2401,6 +2479,7 @@ def asistencia_view(request, asignacion_id):
         "periodo": periodo,
         "periodos_cl": periodos_cl,
         "minuta": minuta,
+        "lecciones_programadas": lecciones_programadas,
         "PRESENTE": AsistenciaRegistro.PRESENTE,
         "TARDIA_MEDIA": AsistenciaRegistro.TARDIA_MEDIA,
         "TARDIA_COMPLETA": AsistenciaRegistro.TARDIA_COMPLETA,
