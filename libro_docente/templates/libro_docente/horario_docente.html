@@ -73,7 +73,7 @@
   .menu-wrap{position:absolute;top:6px;right:6px;}
   .menu-btn{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:999px;padding:0 6px;cursor:pointer;font-weight:700;opacity:0;pointer-events:none;transition:opacity .15s ease;}
   .blk:hover .menu-btn, .menu-wrap:hover .menu-btn{opacity:1;pointer-events:auto;}
-  .menu-items{display:none;position:absolute;top:20px;right:0;min-width:170px;background:#fff;border:1px solid #e5e7eb;border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,.15);z-index:20;}
+  .menu-items{display:none;position:absolute;top:20px;right:0;min-width:170px;background:#fff;border:1px solid #e5e7eb;border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,.15);z-index:200;}
   .menu-items a{display:block;padding:7px 9px;font-size:.76rem;text-decoration:none;color:#145591;border-bottom:1px solid #f3f4f6;}
   .menu-items a:last-child{border-bottom:none;}
   .menu-wrap:hover .menu-items{display:block;}
@@ -82,6 +82,9 @@
     padding:4px;
     box-sizing:border-box;
     min-height:0;
+  }
+  .gblock:hover{
+    z-index:120;
   }
   .gblock .blk{
     height:100%;
@@ -129,7 +132,7 @@
         <button type="button" class="btn btn-outline" onclick="toggleEditor()">Editar horario</button>
       </div>
     </div>
-    <div style="overflow:auto;">
+    <div style="overflow-x:auto;overflow-y:visible;padding-right:220px;padding-bottom:180px;">
       <div class="schedule-grid" style="--grid-body-rows: {{ grid_rows|length }};">
         <div class="gcell ghead" style="grid-column:1;grid-row:1;">Lección</div>
         {% for h in grid_day_headers %}

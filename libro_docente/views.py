@@ -443,6 +443,13 @@ def _nombre_corto_materia(nombre):
     return compacto[:8] if compacto else "MATERIA"
 
 
+def _nombre_corto_asignacion(asignacion):
+    alias = (getattr(asignacion, "nombre_corto", "") or "").strip().upper()
+    if alias:
+        return alias
+    return _nombre_corto_materia(asignacion.subarea_curso.subarea.nombre)
+
+
 def _lecciones_programadas_para_fecha(asignacion, fecha_ref):
     """
     Cuenta lecciones del horario para una asignación en una fecha dada.
@@ -1251,6 +1258,7 @@ def asignacion_onboarding_view(request):
             seccion=sec_cl.seccion if sec_cl else None,
             subgrupo=sgr_cl.subgrupo if sgr_cl else None,
             centro_trabajo=centro,
+            nombre_corto=(form.cleaned_data.get("nombre_corto") or ""),
             activo=True,
             eval_scheme_snapshot=esquema,
         )
@@ -1268,6 +1276,7 @@ def asignacion_onboarding_view(request):
         "institucion": institucion,
         "limite_asignaciones": _limite_asignaciones_docente(profesor),
         "es_institucion_general": _es_institucion_general_profesor(profesor),
+        "is_edit": False,
     })
 
 
@@ -1590,7 +1599,7 @@ def horario_docente_view(request):
                     "rowspan": span,
                     "asignacion": asignacion,
                     "grupo_label": grupo_label,
-                    "materia_corta": _nombre_corto_materia(asignacion.subarea_curso.subarea.nombre),
+                    "materia_corta": _nombre_corto_asignacion(asignacion),
                     "materia_full": asignacion.subarea_curso.subarea.nombre,
                     "color_primario": color_primario,
                     "color_secundario": color_secundario,
@@ -2082,6 +2091,80 @@ def asignacion_estudiantes_excel_view(request, asignacion_id):
         "estudiantes": estudiantes,
         "limite": (25 if asignacion.subgrupo_id else 50),
         "form_manual": form_manual,
+    })
+
+
+@login_required
+@permission_required("libro_docente.access_libro_docente", raise_exception=True)
+def asignacion_edit_view(request, asignacion_id):
+    profesor = _get_profesor(request)
+    if not profesor:
+        messages.error(request, "No tienes perfil docente para editar asignaciones.")
+        return redirect("libro_docente:home")
+
+    asignacion = _obtener_asignacion_con_permiso(request, asignacion_id)
+    if asignacion is None:
+        messages.error(request, "No tienes acceso a esta asignación.")
+        return redirect("libro_docente:home")
+
+    institucion = profesor.institucion
+    curso_lectivo = asignacion.curso_lectivo
+    if _es_institucion_general_profesor(profesor):
+        _asegurar_centro_principal(profesor)
+
+    form = AsignacionOnboardingForm(
+        request.POST or None,
+        institucion=institucion,
+        curso_lectivo=curso_lectivo,
+        profesor=profesor,
+        asignacion=asignacion,
+    )
+
+    if request.method == "POST" and form.is_valid():
+        subarea = form.cleaned_data["subarea"]
+        esquema = form.cleaned_data["eval_scheme"]
+        centro = form.cleaned_data.get("centro_trabajo")
+        sec_cl = form.cleaned_data.get("seccion")
+        sgr_cl = form.cleaned_data.get("subgrupo")
+
+        scl, _created = SubareaCursoLectivo.objects.get_or_create(
+            institucion=institucion,
+            curso_lectivo=curso_lectivo,
+            subarea=subarea,
+            defaults={"activa": True, "eval_scheme": esquema},
+        )
+        updates_scl = []
+        if not scl.activa:
+            scl.activa = True
+            updates_scl.append("activa")
+        if not scl.eval_scheme_id:
+            scl.eval_scheme = esquema
+            updates_scl.append("eval_scheme")
+        if updates_scl:
+            scl.save(update_fields=updates_scl)
+
+        asignacion.subarea_curso = scl
+        asignacion.seccion = sec_cl.seccion if sec_cl else None
+        asignacion.subgrupo = sgr_cl.subgrupo if sgr_cl else None
+        asignacion.centro_trabajo = centro
+        asignacion.nombre_corto = (form.cleaned_data.get("nombre_corto") or "")
+        asignacion.eval_scheme_snapshot = esquema
+        try:
+            asignacion.full_clean()
+            asignacion.save()
+            messages.success(request, "Asignación actualizada correctamente.")
+            return redirect("libro_docente:home")
+        except ValidationError as exc:
+            form.add_error(None, exc)
+
+    return render(request, "libro_docente/asignacion_onboarding.html", {
+        "form": form,
+        "curso_lectivo": curso_lectivo,
+        "institucion": institucion,
+        "limite_asignaciones": _limite_asignaciones_docente(profesor),
+        "es_institucion_general": _es_institucion_general_profesor(profesor),
+        "is_edit": True,
+        "asignacion": asignacion,
     })
 
 

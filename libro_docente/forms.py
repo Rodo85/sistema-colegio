@@ -200,12 +200,22 @@ class AsignacionOnboardingForm(forms.Form):
         label="Subgrupo",
         widget=forms.Select(attrs={"class": "form-control"}),
     )
+    nombre_corto = forms.CharField(
+        required=False,
+        max_length=20,
+        label="Nombre corto (horario)",
+        widget=forms.TextInput(
+            attrs={"class": "form-control", "placeholder": "Ej: MAT, ESP, PROG"}
+        ),
+        help_text="Opcional. Si se define, se usa en el horario en lugar de siglas automáticas.",
+    )
 
-    def __init__(self, *args, institucion=None, curso_lectivo=None, profesor=None, **kwargs):
+    def __init__(self, *args, institucion=None, curso_lectivo=None, profesor=None, asignacion=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.institucion = institucion
         self.curso_lectivo = curso_lectivo
         self.profesor = profesor
+        self.asignacion = asignacion
 
         categorias = [(self.CATEGORIA_ACADEMICA, "Académica")]
         categorias += [
@@ -274,6 +284,29 @@ class AsignacionOnboardingForm(forms.Form):
                     )
             except (TypeError, ValueError):
                 pass
+
+        if asignacion and not self.is_bound:
+            subarea_obj = getattr(getattr(asignacion, "subarea_curso", None), "subarea", None)
+            if subarea_obj:
+                if subarea_obj.es_academica:
+                    self.initial.setdefault("categoria", self.CATEGORIA_ACADEMICA)
+                elif subarea_obj.especialidad_id:
+                    self.initial.setdefault("categoria", f"ESP_{subarea_obj.especialidad_id}")
+                self.initial.setdefault("subarea", subarea_obj.id)
+            esquema = asignacion.eval_scheme_snapshot or getattr(asignacion.subarea_curso, "eval_scheme", None)
+            if esquema:
+                self.initial.setdefault("eval_scheme", esquema.id)
+            if asignacion.centro_trabajo_id:
+                self.initial.setdefault("centro_trabajo", asignacion.centro_trabajo_id)
+            if asignacion.seccion_id:
+                sec_cl = self.fields["seccion"].queryset.filter(seccion_id=asignacion.seccion_id).first()
+                if sec_cl:
+                    self.initial.setdefault("seccion", sec_cl.id)
+            if asignacion.subgrupo_id:
+                sgr_cl = self.fields["subgrupo"].queryset.filter(subgrupo_id=asignacion.subgrupo_id).first()
+                if sgr_cl:
+                    self.initial.setdefault("subgrupo", sgr_cl.id)
+            self.initial.setdefault("nombre_corto", (asignacion.nombre_corto or ""))
 
     @staticmethod
     def _label_seccion(seccion_cl):
@@ -347,6 +380,8 @@ class AsignacionOnboardingForm(forms.Form):
                 subarea_curso__subarea=subarea,
                 curso_lectivo=self.curso_lectivo,
             )
+            if self.asignacion and self.asignacion.pk:
+                dup = dup.exclude(pk=self.asignacion.pk)
             if self.institucion and getattr(self.institucion, "es_institucion_general", False):
                 dup = dup.filter(centro_trabajo=centro)
             if sgr_cl:

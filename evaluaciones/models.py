@@ -428,6 +428,13 @@ class DocenteAsignacion(models.Model):
         verbose_name="Centro de trabajo",
         help_text="Obligatorio en Institución General para separar colegios/sedes.",
     )
+    nombre_corto = models.CharField(
+        "Nombre corto",
+        max_length=20,
+        blank=True,
+        default="",
+        help_text="Alias opcional para mostrar la asignación en el horario (ej. MAT, ESP, PROG).",
+    )
     activo = models.BooleanField("Activo", default=True)
     eval_scheme_snapshot = models.ForeignKey(
         EsquemaEval,
@@ -538,6 +545,8 @@ class DocenteAsignacion(models.Model):
 
     def save(self, *args, **kwargs):
         # Auto-snapshot del esquema al crear la asignación
+        if self.nombre_corto:
+            self.nombre_corto = self.nombre_corto.strip().upper()
         if not self.pk and not self.eval_scheme_snapshot_id and self.subarea_curso_id:
             self.eval_scheme_snapshot_id = self.subarea_curso.eval_scheme_id
         self.full_clean()

@@ -1,7 +1,7 @@
 {% extends "admin/base_site.html" %}
 {% load i18n %}
 
-{% block title %}Crear asignación{% endblock %}
+{% block title %}{% if is_edit %}Editar asignación{% else %}Crear asignación{% endif %}{% endblock %}
 
 {% block extrahead %}
 {{ block.super }}
@@ -27,7 +27,7 @@
 <div class="wrap">
   <div class="card">
     <div class="head">
-      <h2 style="margin:0;">Crear asignación</h2>
+      <h2 style="margin:0;">{% if is_edit %}Editar asignación{% else %}Crear asignación{% endif %}</h2>
       <div class="help">{{ institucion.nombre }} · {{ curso_lectivo.nombre }}</div>
     </div>
     <div class="body">
@@ -37,6 +37,11 @@
       <div class="alert alert-info">
         Paso A: elige categoría y materia · Paso B: elige grupo/subgrupo válido · Paso C: el esquema se asigna automáticamente.
       </div>
+      {% if is_edit %}
+      <div class="alert alert-info">
+        Puedes ajustar la asignación sin eliminarla. El nombre corto se usa en el horario semanal.
+      </div>
+      {% endif %}
       {% if es_institucion_general %}
       <div class="alert alert-info">
         Institución General: debes vincular la asignación a un <strong>Centro de trabajo</strong> para separar colegios/sedes.
@@ -84,8 +89,14 @@
           {{ form.subgrupo }}
           {{ form.subgrupo.errors }}
         </div>
+        <div class="fg">
+          <label for="{{ form.nombre_corto.id_for_label }}">{{ form.nombre_corto.label }}</label>
+          {{ form.nombre_corto }}
+          {{ form.nombre_corto.errors }}
+          {% if form.nombre_corto.help_text %}<div class="help">{{ form.nombre_corto.help_text }}</div>{% endif %}
+        </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button class="btn btn-primary" type="submit">Crear asignación</button>
+          <button class="btn btn-primary" type="submit">{% if is_edit %}Guardar cambios{% else %}Crear asignación{% endif %}</button>
           <a class="btn btn-outline" href="{% url 'libro_docente:home' %}">Volver</a>
         </div>
       </form>
