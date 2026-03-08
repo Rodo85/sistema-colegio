@@ -75,6 +75,16 @@
         <button type="button" class="btn btn-outline" onclick="toggleEditor()">Editar horario</button>
       </div>
     </div>
+    {% if leyenda_colores %}
+    <div style="margin-bottom:10px;">
+      <p class="muted" style="font-weight:700;margin:0 0 6px;">Mapa de colores</p>
+      <div class="legend">
+        {% for it in leyenda_colores %}
+        <span class="tag" style="background:{{ it.color }};">{{ it.etiqueta }}</span>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
     <div style="overflow:auto;">
       <table>
         <thead>
@@ -142,15 +152,17 @@
           </div>
         </div>
         <div style="min-width:260px;">
-          <label class="muted" style="display:block;margin-bottom:4px;font-weight:700;">Receso</label>
-          <select name="receso_despues_leccion" class="form-control">
-            <option value="">Sin receso</option>
+          <label class="muted" style="display:block;margin-bottom:4px;font-weight:700;">Recesos (puedes marcar varios)</label>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;max-width:420px;">
             {% for n in filas_edicion %}
               {% if n.leccion < config.max_lecciones_dia %}
-              <option value="{{ n.leccion }}" {% if config.receso_despues_leccion == n.leccion %}selected{% endif %}>Entre {{ n.leccion }} y {{ n.leccion|add:1 }}</option>
+              <label style="display:inline-flex;align-items:center;gap:4px;background:#f8fafc;border:1px solid #e5e7eb;border-radius:999px;padding:4px 8px;font-size:.78rem;">
+                <input type="checkbox" name="recesos_despues_leccion" value="{{ n.leccion }}" {% if n.leccion in recesos_sel %}checked{% endif %}>
+                {{ n.leccion }}-{{ n.leccion|add:1 }}
+              </label>
               {% endif %}
             {% endfor %}
-          </select>
+          </div>
         </div>
         <div style="margin-left:auto;">
           <button type="submit" class="btn btn-primary">Guardar horario</button>

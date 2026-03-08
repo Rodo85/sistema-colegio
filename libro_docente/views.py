@@ -389,6 +389,44 @@ def _acciones_rapidas_asignacion(asignacion, fecha_ref=None):
     return acciones
 
 
+def _parse_recesos_config(config):
+    raw = (getattr(config, "receso_despues_leccion", "") or "").strip()
+    if not raw:
+        return []
+    out = []
+    for p in raw.split(","):
+        p = p.strip()
+        if not p.isdigit():
+            continue
+        n = int(p)
+        if 1 <= n < config.max_lecciones_dia:
+            out.append(n)
+    return sorted(set(out))
+
+
+def _color_por_clave(clave):
+    paleta_ui = ["#4F46E5", "#F59E0B", "#06B6D4", "#10B981", "#EC4899"]
+    base = (clave or "").strip().upper()
+    if not base:
+        return (paleta_ui[0], paleta_ui[0])
+    digest = hashlib.md5(base.encode("utf-8")).hexdigest()
+    idx = int(digest[:8], 16) % len(paleta_ui)
+    color = paleta_ui[idx]
+    return (color, color)
+
+
+def _color_y_etiqueta_horario(asignacion):
+    if asignacion.subgrupo_id:
+        key = f"SUBGRUPO:{asignacion.subgrupo_id}"
+        etiqueta = f"{asignacion.subgrupo} · {asignacion.subarea_curso.subarea.nombre}"
+    else:
+        key = f"MATERIA:{asignacion.subarea_curso.subarea.nombre}"
+        sec = str(asignacion.seccion) if asignacion.seccion_id else "—"
+        etiqueta = f"{sec} · {asignacion.subarea_curso.subarea.nombre}"
+    color_primario, color_secundario = _color_por_clave(key)
+    return key, etiqueta, color_primario, color_secundario
+
+
 def _formatear_cantidad_asistencia(valor):
     if valor is None:
         return None
@@ -1419,20 +1457,24 @@ def horario_docente_view(request):
             max_lecciones = config.max_lecciones_dia
         max_lecciones = max(1, min(20, max_lecciones))
 
-        receso_raw = request.POST.get("receso_despues_leccion")
-        try:
-            receso = int(receso_raw) if receso_raw else None
-        except (TypeError, ValueError):
-            receso = None
-        if receso is not None and (receso < 1 or receso >= max_lecciones):
-            receso = None
+        recesos_raw = request.POST.getlist("recesos_despues_leccion")
+        recesos = []
+        for r in recesos_raw:
+            try:
+                n = int(r)
+            except (TypeError, ValueError):
+                continue
+            if 1 <= n < max_lecciones:
+                recesos.append(n)
+        recesos = sorted(set(recesos))
+        recesos_csv = ",".join(str(n) for n in recesos)
 
         updates = []
         if config.max_lecciones_dia != max_lecciones:
             config.max_lecciones_dia = max_lecciones
             updates.append("max_lecciones_dia")
-        if config.receso_despues_leccion != receso:
-            config.receso_despues_leccion = receso
+        if (config.receso_despues_leccion or "") != recesos_csv:
+            config.receso_despues_leccion = recesos_csv
             updates.append("receso_despues_leccion")
         if updates:
             updates.append("updated_at")
@@ -1470,6 +1512,7 @@ def horario_docente_view(request):
         HorarioDocenteBloque.objects.filter(configuracion=config)
         .select_related("docente_asignacion__subarea_curso__subarea")
     )
+    recesos = _parse_recesos_config(config)
     celdas = {(b.dia_semana, b.leccion_numero): b.docente_asignacion_id for b in bloques}
     asig_by_id = {a.id: a for a in asignaciones}
 
@@ -1497,14 +1540,14 @@ def horario_docente_view(request):
             span = 1
             nxt = lec + 1
             while nxt <= config.max_lecciones_dia and celdas.get((dia, nxt)) == aid:
-                if config.receso_despues_leccion and (nxt - 1) == config.receso_despues_leccion:
+                if (nxt - 1) in recesos:
                     break
                 span += 1
                 nxt += 1
             asignacion = asig_by_id.get(aid)
             if asignacion:
                 grupo_label = str(asignacion.subgrupo) if asignacion.subgrupo_id else (str(asignacion.seccion) if asignacion.seccion_id else "—")
-                color_primario, color_secundario = _colores_por_materia(asignacion.subarea_curso.subarea.nombre)
+                _k, _e, color_primario, color_secundario = _color_y_etiqueta_horario(asignacion)
                 merged_blocks[(dia, lec)] = {
                     "rowspan": span,
                     "asignacion": asignacion,
@@ -1519,10 +1562,22 @@ def horario_docente_view(request):
                 hidden_cells.add((dia, x))
             lec += span
 
+    leyenda_colores = []
+    vistos_leyenda = set()
+    for asignacion in asignaciones:
+        k, etiqueta, color_primario, _color_secundario = _color_y_etiqueta_horario(asignacion)
+        if k in vistos_leyenda:
+            continue
+        vistos_leyenda.add(k)
+        leyenda_colores.append({
+            "etiqueta": etiqueta,
+            "color": color_primario,
+        })
+
     row_defs = []
     for lec in range(1, config.max_lecciones_dia + 1):
         row_defs.append({"tipo": "leccion", "leccion": lec})
-        if config.receso_despues_leccion and lec == config.receso_despues_leccion:
+        if lec in recesos:
             row_defs.append({"tipo": "receso"})
 
     tabla_compacta = []
@@ -1551,6 +1606,8 @@ def horario_docente_view(request):
         "filas_edicion": filas_edicion,
         "dias": weekdays,
         "tabla_compacta": tabla_compacta,
+        "recesos_sel": recesos,
+        "leyenda_colores": leyenda_colores,
     })
 
 

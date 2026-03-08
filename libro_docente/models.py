@@ -663,12 +663,12 @@ class HorarioDocenteConfiguracion(models.Model):
         default=8,
         validators=[MinValueValidator(1), MaxValueValidator(20)],
     )
-    receso_despues_leccion = models.PositiveSmallIntegerField(
-        "Receso después de la lección",
-        null=True,
+    receso_despues_leccion = models.CharField(
+        "Recesos después de lección",
+        max_length=120,
         blank=True,
-        validators=[MinValueValidator(1), MaxValueValidator(19)],
-        help_text="Si se define, se mostrará una fila de receso entre esa lección y la siguiente.",
+        default="",
+        help_text="Lista de lecciones separadas por coma. Ejemplo: 3,6 (receso entre 3-4 y 6-7).",
     )
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -703,8 +703,13 @@ class HorarioDocenteConfiguracion(models.Model):
             if self.centro_trabajo.institucion_id != self.institucion_id:
                 raise ValidationError("El centro de trabajo no pertenece a la institución del horario.")
         if self.receso_despues_leccion:
-            if self.receso_despues_leccion >= self.max_lecciones_dia:
-                raise ValidationError("El receso debe quedar antes de la última lección del día.")
+            partes = [p.strip() for p in str(self.receso_despues_leccion).split(",") if p.strip()]
+            for p in partes:
+                if not p.isdigit():
+                    raise ValidationError("Los recesos deben ser números de lección válidos.")
+                n = int(p)
+                if n < 1 or n >= self.max_lecciones_dia:
+                    raise ValidationError("Cada receso debe quedar antes de la última lección del día.")
         super().clean()
 
 
