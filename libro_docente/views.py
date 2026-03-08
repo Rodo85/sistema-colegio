@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 from decimal import Decimal
 import csv
 import hashlib
@@ -367,11 +367,17 @@ def _periodo_id_para_asignacion(asignacion, fecha_ref=None):
 
 def _acciones_rapidas_asignacion(asignacion, fecha_ref=None):
     periodo_id = _periodo_id_para_asignacion(asignacion, fecha_ref=fecha_ref)
+    fecha_qs = ""
+    if fecha_ref:
+        try:
+            fecha_qs = f"?fecha={fecha_ref.isoformat()}"
+        except Exception:
+            fecha_qs = ""
     tipos = _tipos_habilitados_por_esquema(asignacion)
     acciones = {
-        "asistencia": reverse("libro_docente:asistencia", args=[asignacion.id]),
+        "asistencia": reverse("libro_docente:asistencia", args=[asignacion.id]) + fecha_qs,
         "estudiantes": reverse("libro_docente:estudiantes_config", args=[asignacion.id]),
-        "minuta": reverse("libro_docente:asistencia", args=[asignacion.id]),
+        "minuta": reverse("libro_docente:asistencia", args=[asignacion.id]) + fecha_qs,
         "detalle": reverse("libro_docente:resumen_evaluacion", args=[asignacion.id]),
         "tarea": None,
         "prueba": None,
@@ -1486,6 +1492,12 @@ def horario_docente_view(request):
         (HorarioDocenteBloque.JUEVES, "Jueves"),
         (HorarioDocenteBloque.VIERNES, "Viernes"),
     ]
+    hoy_ref = timezone.localdate()
+    lunes_semana = hoy_ref - timedelta(days=hoy_ref.isoweekday() - 1)
+    fecha_por_dia = {
+        dia: (lunes_semana + timedelta(days=dia - 1))
+        for dia, _ in weekdays
+    }
 
     asignaciones_qs = (
         DocenteAsignacion.objects.filter(docente=profesor, activo=True)
@@ -1604,7 +1616,7 @@ def horario_docente_view(request):
                     "materia_full": asignacion.subarea_curso.subarea.nombre,
                     "color_primario": color_primario,
                     "color_secundario": color_secundario,
-                    "acciones": _acciones_rapidas_asignacion(asignacion),
+                    "acciones": _acciones_rapidas_asignacion(asignacion, fecha_ref=fecha_por_dia.get(dia)),
                 }
             for x in range(lec + 1, lec + span):
                 hidden_cells.add((dia, x))

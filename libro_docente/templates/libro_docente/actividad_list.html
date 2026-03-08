@@ -67,6 +67,7 @@ tbody td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:m
       <span class="grupo-hero">{% if asignacion.subgrupo %}{{ asignacion.subgrupo }}{% else %}{{ asignacion.seccion }}{% endif %}</span>
     </div>
     <div style="display:flex;gap:8px;align-items:center;">
+      <a href="{% url 'libro_docente:horario_docente' %}{% if asignacion.centro_trabajo_id %}?centro={{ asignacion.centro_trabajo_id }}{% endif %}" class="back-btn">🗓 Horario</a>
       <a href="{% url 'libro_docente:estudiantes_config' asignacion.id %}" class="back-btn">👥 Estudiantes</a>
       <a href="{% url 'libro_docente:resumen_evaluacion' asignacion.id %}" class="back-btn" title="Resumen acumulado (Fase 3)">Ver resumen</a>
       <a href="{% url 'libro_docente:home' %}" class="back-btn">← Mis asignaciones</a>

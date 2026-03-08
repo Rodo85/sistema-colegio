@@ -43,7 +43,10 @@ input.form-control,select.form-control,textarea.form-control{width:100%;}
 <div class="page-wrap">
   <div class="asgn-banner">
     <span>{{ asignacion.subarea_curso.subarea.nombre }} · {{ tipo_display }} · {{ periodo.nombre }}</span>
-    <a href="{% url 'libro_docente:actividad_list' asignacion.id %}?periodo={{ periodo.id }}" class="back-btn">← Volver</a>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <a href="{% url 'libro_docente:horario_docente' %}{% if asignacion.centro_trabajo_id %}?centro={{ asignacion.centro_trabajo_id }}{% endif %}" class="back-btn">🗓 Horario</a>
+      <a href="{% url 'libro_docente:actividad_list' asignacion.id %}?periodo={{ periodo.id }}" class="back-btn">← Volver</a>
+    </div>
   </div>
 
   <form method="post" id="actividad-form">
