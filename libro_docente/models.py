@@ -1,4 +1,5 @@
 from django.core.exceptions import ValidationError
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils import timezone
 
@@ -637,14 +638,6 @@ class HorarioDocenteConfiguracion(models.Model):
     Configuración simple de horario por docente.
     En Institución General se separa por centro de trabajo.
     """
-    OPCIONES_LECCIONES = (
-        (6, "6"),
-        (8, "8"),
-        (10, "10"),
-        (12, "12"),
-        (16, "16"),
-    )
-
     docente = models.ForeignKey(
         "config_institucional.Profesor",
         on_delete=models.CASCADE,
@@ -667,8 +660,15 @@ class HorarioDocenteConfiguracion(models.Model):
     )
     max_lecciones_dia = models.PositiveSmallIntegerField(
         "Máximo de lecciones por día",
-        choices=OPCIONES_LECCIONES,
         default=8,
+        validators=[MinValueValidator(1), MaxValueValidator(20)],
+    )
+    receso_despues_leccion = models.PositiveSmallIntegerField(
+        "Receso después de la lección",
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(1), MaxValueValidator(19)],
+        help_text="Si se define, se mostrará una fila de receso entre esa lección y la siguiente.",
     )
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -702,6 +702,9 @@ class HorarioDocenteConfiguracion(models.Model):
                 raise ValidationError("El centro de trabajo no pertenece al docente.")
             if self.centro_trabajo.institucion_id != self.institucion_id:
                 raise ValidationError("El centro de trabajo no pertenece a la institución del horario.")
+        if self.receso_despues_leccion:
+            if self.receso_despues_leccion >= self.max_lecciones_dia:
+                raise ValidationError("El receso debe quedar antes de la última lección del día.")
         super().clean()
 
 

@@ -12,16 +12,28 @@
   .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;text-decoration:none;border:none;cursor:pointer;font-weight:600}
   .btn-primary{background:#1a6eb5;color:#fff;}
   .btn-outline{background:#fff;color:#1a6eb5;border:1px solid #1a6eb5;}
+  .btn-icon{width:34px;height:34px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-weight:800;}
+  .btn-plus{background:#16a34a;color:#fff;}
+  .btn-minus{background:#f59e0b;color:#fff;}
   .form-control{width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;background:#fff;}
   table{width:100%;border-collapse:collapse;font-size:.84rem;}
   th,td{border:1px solid #e5e7eb;padding:8px;vertical-align:top;}
   th{background:#f8fafc;font-size:.74rem;text-transform:uppercase;color:#6b7280;}
-  .cell-asig{margin-top:6px;border-radius:8px;padding:6px 7px;color:#fff;}
-  .cell-asig .nom{font-weight:700;font-size:.8rem;line-height:1.2;}
-  .cell-asig .grp{font-size:.75rem;opacity:.95;}
-  .acts{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px;}
-  .act{font-size:.69rem;padding:2px 6px;border-radius:999px;background:rgba(255,255,255,.2);color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.35);}
+  .receso-row td{background:#fffbeb;color:#92400e;font-weight:700;text-align:center;}
+  .blk{border-radius:10px;padding:8px 8px;color:#fff;min-height:54px;position:relative;}
+  .blk .grp{font-weight:800;font-size:.86rem;line-height:1.15;}
+  .blk .mat{font-size:.76rem;opacity:.95;line-height:1.1;margin-top:3px;}
+  .blk .rng{font-size:.7rem;opacity:.9;margin-top:4px;}
+  .menu-wrap{position:absolute;top:6px;right:6px;}
+  .menu-btn{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:999px;padding:0 6px;cursor:pointer;font-weight:700;}
+  .menu-items{display:none;position:absolute;top:20px;right:0;min-width:170px;background:#fff;border:1px solid #e5e7eb;border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,.15);z-index:20;}
+  .menu-items a{display:block;padding:7px 9px;font-size:.76rem;text-decoration:none;color:#145591;border-bottom:1px solid #f3f4f6;}
+  .menu-items a:last-child{border-bottom:none;}
+  .menu-wrap:hover .menu-items{display:block;}
+  .empty-cell{background:#f8fafc;}
   .row-top{display:flex;gap:10px;flex-wrap:wrap;align-items:end;}
+  .legend{display:flex;gap:8px;flex-wrap:wrap;}
+  .legend .tag{padding:5px 9px;border-radius:999px;color:#fff;font-size:.75rem;font-weight:700;}
 </style>
 {% endblock %}
 
@@ -54,6 +66,66 @@
   {% endif %}
 
   <div class="card">
+    <div class="row-top" style="margin-bottom:10px;justify-content:space-between;">
+      <div>
+        <p class="muted" style="font-weight:700;margin:0 0 3px;">Vista semanal</p>
+        <p class="muted" style="margin:0;">Agrupa automáticamente lecciones consecutivas de la misma asignación.</p>
+      </div>
+      <div>
+        <button type="button" class="btn btn-outline" onclick="toggleEditor()">Editar horario</button>
+      </div>
+    </div>
+    <div style="overflow:auto;">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:72px;">Lección</th>
+            {% for dia, dia_label in dias %}
+            <th>{{ dia_label }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in tabla_compacta %}
+            {% if row.tipo == "receso" %}
+            <tr class="receso-row"><td colspan="6">RECESO</td></tr>
+            {% else %}
+            <tr>
+              <td><strong>{{ row.leccion }}</strong></td>
+              {% for c in row.celdas %}
+                {% if c.skip %}
+                {% elif c.block %}
+                <td rowspan="{{ c.block.rowspan }}">
+                  <div class="blk" style="background:linear-gradient(135deg, {{ c.block.color_primario }} 0%, {{ c.block.color_secundario }} 100%);">
+                    <div class="grp">{{ c.block.grupo_label }}</div>
+                    <div class="mat">{{ c.block.materia }}</div>
+                    <div class="rng">{{ c.block.rango }}</div>
+                    <div class="menu-wrap">
+                      <button class="menu-btn" type="button">⋮</button>
+                      <div class="menu-items">
+                        <a href="{{ c.block.acciones.asistencia }}">Pasar lista</a>
+                        <a href="{{ c.block.acciones.estudiantes }}">Ver estudiantes</a>
+                        {% if c.block.acciones.tarea %}<a href="{{ c.block.acciones.tarea }}">Registrar tarea</a>{% endif %}
+                        {% if c.block.acciones.prueba %}<a href="{{ c.block.acciones.prueba }}">Registrar prueba</a>{% endif %}
+                        <a href="{{ c.block.acciones.minuta }}">Bitácora / minuta</a>
+                        <a href="{{ c.block.acciones.detalle }}">Detalles asignación</a>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                {% else %}
+                <td class="empty-cell"></td>
+                {% endif %}
+              {% endfor %}
+            </tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card" id="editorCard" style="display:none;">
     <form method="post">
       {% csrf_token %}
       <input type="hidden" name="accion" value="guardar_horario">
@@ -61,11 +133,22 @@
       <input type="hidden" name="centro" value="{{ centro_sel_id }}">
       {% endif %}
       <div class="row-top" style="margin-bottom:10px;">
-        <div style="min-width:220px;">
+        <div style="min-width:260px;">
           <label class="muted" style="display:block;margin-bottom:4px;font-weight:700;">Máx. lecciones por día</label>
-          <select name="max_lecciones_dia" class="form-control">
-            {% for n in opciones_lecciones %}
-              <option value="{{ n }}" {% if config.max_lecciones_dia == n %}selected{% endif %}>{{ n }}</option>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <button type="button" class="btn btn-icon btn-minus" onclick="chgLecciones(-1)">−</button>
+            <input id="maxLeccionesInput" type="number" min="1" max="20" name="max_lecciones_dia" class="form-control" value="{{ config.max_lecciones_dia }}" style="max-width:90px;text-align:center;font-weight:800;">
+            <button type="button" class="btn btn-icon btn-plus" onclick="chgLecciones(1)">+</button>
+          </div>
+        </div>
+        <div style="min-width:260px;">
+          <label class="muted" style="display:block;margin-bottom:4px;font-weight:700;">Receso</label>
+          <select name="receso_despues_leccion" class="form-control">
+            <option value="">Sin receso</option>
+            {% for n in filas_edicion %}
+              {% if n.leccion < config.max_lecciones_dia %}
+              <option value="{{ n.leccion }}" {% if config.receso_despues_leccion == n.leccion %}selected{% endif %}>Entre {{ n.leccion }} y {{ n.leccion|add:1 }}</option>
+              {% endif %}
             {% endfor %}
           </select>
         </div>
@@ -85,7 +168,7 @@
             </tr>
           </thead>
           <tbody>
-            {% for fila in filas %}
+            {% for fila in filas_edicion %}
             <tr>
               <td><strong>{{ fila.leccion }}</strong></td>
               {% for c in fila.celdas %}
@@ -98,20 +181,6 @@
                   </option>
                   {% endfor %}
                 </select>
-                {% if c.asignacion %}
-                <div class="cell-asig" style="background:linear-gradient(135deg, {{ c.color_primario }} 0%, {{ c.color_secundario }} 100%);">
-                  <div class="nom">{{ c.asignacion.subarea_curso.subarea.nombre }}</div>
-                  <div class="grp">{{ c.grupo_label }}</div>
-                  <div class="acts">
-                    <a class="act" href="{{ c.acciones.asistencia }}">Lista</a>
-                    <a class="act" href="{{ c.acciones.estudiantes }}">Estudiantes</a>
-                    {% if c.acciones.tarea %}<a class="act" href="{{ c.acciones.tarea }}">Tarea</a>{% endif %}
-                    {% if c.acciones.prueba %}<a class="act" href="{{ c.acciones.prueba }}">Prueba</a>{% endif %}
-                    <a class="act" href="{{ c.acciones.minuta }}">Minuta</a>
-                    <a class="act" href="{{ c.acciones.detalle }}">Detalle</a>
-                  </div>
-                </div>
-                {% endif %}
               </td>
               {% endfor %}
             </tr>
@@ -122,4 +191,21 @@
     </form>
   </div>
 </div>
+<script>
+  function toggleEditor() {
+    var el = document.getElementById("editorCard");
+    if (!el) return;
+    el.style.display = (el.style.display === "none" || !el.style.display) ? "block" : "none";
+  }
+  function chgLecciones(delta) {
+    var i = document.getElementById("maxLeccionesInput");
+    if (!i) return;
+    var v = parseInt(i.value || "1", 10);
+    if (isNaN(v)) v = 1;
+    v += delta;
+    if (v < 1) v = 1;
+    if (v > 20) v = 20;
+    i.value = String(v);
+  }
+</script>
 {% endblock %}

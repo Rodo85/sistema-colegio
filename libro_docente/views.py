@@ -1393,6 +1393,13 @@ def horario_docente_view(request):
         **config_lookup,
         defaults={"max_lecciones_dia": 8},
     )
+    weekdays = [
+        (HorarioDocenteBloque.LUNES, "Lunes"),
+        (HorarioDocenteBloque.MARTES, "Martes"),
+        (HorarioDocenteBloque.MIERCOLES, "Miércoles"),
+        (HorarioDocenteBloque.JUEVES, "Jueves"),
+        (HorarioDocenteBloque.VIERNES, "Viernes"),
+    ]
 
     asignaciones_qs = (
         DocenteAsignacion.objects.filter(docente=profesor, activo=True)
@@ -1410,14 +1417,29 @@ def horario_docente_view(request):
             max_lecciones = int(max_raw)
         except (TypeError, ValueError):
             max_lecciones = config.max_lecciones_dia
-        if max_lecciones not in {6, 8, 10, 12, 16}:
-            max_lecciones = config.max_lecciones_dia
+        max_lecciones = max(1, min(20, max_lecciones))
+
+        receso_raw = request.POST.get("receso_despues_leccion")
+        try:
+            receso = int(receso_raw) if receso_raw else None
+        except (TypeError, ValueError):
+            receso = None
+        if receso is not None and (receso < 1 or receso >= max_lecciones):
+            receso = None
+
+        updates = []
         if config.max_lecciones_dia != max_lecciones:
             config.max_lecciones_dia = max_lecciones
-            config.save(update_fields=["max_lecciones_dia", "updated_at"])
+            updates.append("max_lecciones_dia")
+        if config.receso_despues_leccion != receso:
+            config.receso_despues_leccion = receso
+            updates.append("receso_despues_leccion")
+        if updates:
+            updates.append("updated_at")
+            config.save(update_fields=updates)
 
         nuevos = []
-        for dia, _ in HorarioDocenteBloque.DIA_CHOICES:
+        for dia, _ in weekdays:
             for lec in range(1, config.max_lecciones_dia + 1):
                 k = f"h_{dia}_{lec}"
                 asignacion_id = request.POST.get(k)
@@ -1451,31 +1473,72 @@ def horario_docente_view(request):
     celdas = {(b.dia_semana, b.leccion_numero): b.docente_asignacion_id for b in bloques}
     asig_by_id = {a.id: a for a in asignaciones}
 
-    filas = []
+    filas_edicion = []
     for lec in range(1, config.max_lecciones_dia + 1):
         celdas_fila = []
-        for dia, dia_label in HorarioDocenteBloque.DIA_CHOICES:
+        for dia, _dia_label in weekdays:
             aid = celdas.get((dia, lec))
-            asignacion = asig_by_id.get(aid) if aid else None
-            grupo_label = ""
-            color_primario = color_secundario = "#f3f4f6"
-            acciones = None
+            celdas_fila.append({
+                "dia": dia,
+                "leccion": lec,
+                "asignacion_id": aid or "",
+            })
+        filas_edicion.append({"leccion": lec, "celdas": celdas_fila})
+
+    hidden_cells = set()
+    merged_blocks = {}
+    for dia, _ in weekdays:
+        lec = 1
+        while lec <= config.max_lecciones_dia:
+            aid = celdas.get((dia, lec))
+            if not aid:
+                lec += 1
+                continue
+            span = 1
+            nxt = lec + 1
+            while nxt <= config.max_lecciones_dia and celdas.get((dia, nxt)) == aid:
+                if config.receso_despues_leccion and (nxt - 1) == config.receso_despues_leccion:
+                    break
+                span += 1
+                nxt += 1
+            asignacion = asig_by_id.get(aid)
             if asignacion:
                 grupo_label = str(asignacion.subgrupo) if asignacion.subgrupo_id else (str(asignacion.seccion) if asignacion.seccion_id else "—")
                 color_primario, color_secundario = _colores_por_materia(asignacion.subarea_curso.subarea.nombre)
-                acciones = _acciones_rapidas_asignacion(asignacion)
-            celdas_fila.append({
-                "dia": dia,
-                "dia_label": dia_label,
-                "leccion": lec,
-                "asignacion_id": aid or "",
-                "asignacion": asignacion,
-                "grupo_label": grupo_label,
-                "color_primario": color_primario,
-                "color_secundario": color_secundario,
-                "acciones": acciones,
-            })
-        filas.append({"leccion": lec, "celdas": celdas_fila})
+                merged_blocks[(dia, lec)] = {
+                    "rowspan": span,
+                    "asignacion": asignacion,
+                    "grupo_label": grupo_label,
+                    "materia": asignacion.subarea_curso.subarea.nombre,
+                    "color_primario": color_primario,
+                    "color_secundario": color_secundario,
+                    "acciones": _acciones_rapidas_asignacion(asignacion),
+                    "rango": f"Lecciones {lec} a {lec + span - 1}" if span > 1 else f"Lección {lec}",
+                }
+            for x in range(lec + 1, lec + span):
+                hidden_cells.add((dia, x))
+            lec += span
+
+    row_defs = []
+    for lec in range(1, config.max_lecciones_dia + 1):
+        row_defs.append({"tipo": "leccion", "leccion": lec})
+        if config.receso_despues_leccion and lec == config.receso_despues_leccion:
+            row_defs.append({"tipo": "receso"})
+
+    tabla_compacta = []
+    for row in row_defs:
+        if row["tipo"] == "receso":
+            tabla_compacta.append({"tipo": "receso"})
+            continue
+        lec = row["leccion"]
+        cells = []
+        for dia, _ in weekdays:
+            key = (dia, lec)
+            if key in hidden_cells:
+                cells.append({"skip": True, "block": None})
+            else:
+                cells.append({"skip": False, "block": merged_blocks.get(key)})
+        tabla_compacta.append({"tipo": "leccion", "leccion": lec, "celdas": cells})
 
     return render(request, "libro_docente/horario_docente.html", {
         "profesor": profesor,
@@ -1485,9 +1548,9 @@ def horario_docente_view(request):
         "centro_actual": centro_actual,
         "config": config,
         "asignaciones": asignaciones,
-        "filas": filas,
-        "dias": HorarioDocenteBloque.DIA_CHOICES,
-        "opciones_lecciones": [6, 8, 10, 12, 16],
+        "filas_edicion": filas_edicion,
+        "dias": weekdays,
+        "tabla_compacta": tabla_compacta,
     })
 
 
