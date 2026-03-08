@@ -29,6 +29,7 @@ from matricula.models import Estudiante, EstudianteInstitucion, MatriculaAcademi
 
 from .forms import (
     ActividadEvaluacionForm,
+    AsignacionEditForm,
     AsignacionOnboardingForm,
     EstudianteCargaManualForm,
     IndicadorActividadFormSet,
@@ -1675,6 +1676,13 @@ def horario_docente_view(request):
                 "col_start": first_day_col,
                 "col_end": last_day_col,
             })
+    row_tracks = ["38px"]
+    for row in row_defs:
+        if row["tipo"] == "receso":
+            row_tracks.append("24px")
+        else:
+            row_tracks.append("54px")
+    grid_template_rows = " ".join(row_tracks)
 
     return render(request, "libro_docente/horario_docente.html", {
         "profesor": profesor,
@@ -1694,6 +1702,7 @@ def horario_docente_view(request):
         "grid_receso_bands": receso_bands,
         "grid_total_cols": len(day_headers) + 1,
         "grid_total_rows": len(grid_rows) + 1,
+        "grid_template_rows": grid_template_rows,
     })
 
 
@@ -2107,46 +2116,10 @@ def asignacion_edit_view(request, asignacion_id):
         messages.error(request, "No tienes acceso a esta asignación.")
         return redirect("libro_docente:home")
 
-    institucion = profesor.institucion
-    curso_lectivo = asignacion.curso_lectivo
-    if _es_institucion_general_profesor(profesor):
-        _asegurar_centro_principal(profesor)
-
-    form = AsignacionOnboardingForm(
-        request.POST or None,
-        institucion=institucion,
-        curso_lectivo=curso_lectivo,
-        profesor=profesor,
-        asignacion=asignacion,
-    )
+    form = AsignacionEditForm(request.POST or None, asignacion=asignacion)
 
     if request.method == "POST" and form.is_valid():
-        subarea = form.cleaned_data["subarea"]
         esquema = form.cleaned_data["eval_scheme"]
-        centro = form.cleaned_data.get("centro_trabajo")
-        sec_cl = form.cleaned_data.get("seccion")
-        sgr_cl = form.cleaned_data.get("subgrupo")
-
-        scl, _created = SubareaCursoLectivo.objects.get_or_create(
-            institucion=institucion,
-            curso_lectivo=curso_lectivo,
-            subarea=subarea,
-            defaults={"activa": True, "eval_scheme": esquema},
-        )
-        updates_scl = []
-        if not scl.activa:
-            scl.activa = True
-            updates_scl.append("activa")
-        if not scl.eval_scheme_id:
-            scl.eval_scheme = esquema
-            updates_scl.append("eval_scheme")
-        if updates_scl:
-            scl.save(update_fields=updates_scl)
-
-        asignacion.subarea_curso = scl
-        asignacion.seccion = sec_cl.seccion if sec_cl else None
-        asignacion.subgrupo = sgr_cl.subgrupo if sgr_cl else None
-        asignacion.centro_trabajo = centro
         asignacion.nombre_corto = (form.cleaned_data.get("nombre_corto") or "")
         asignacion.eval_scheme_snapshot = esquema
         try:
@@ -2157,13 +2130,8 @@ def asignacion_edit_view(request, asignacion_id):
         except ValidationError as exc:
             form.add_error(None, exc)
 
-    return render(request, "libro_docente/asignacion_onboarding.html", {
+    return render(request, "libro_docente/asignacion_edit.html", {
         "form": form,
-        "curso_lectivo": curso_lectivo,
-        "institucion": institucion,
-        "limite_asignaciones": _limite_asignaciones_docente(profesor),
-        "es_institucion_general": _es_institucion_general_profesor(profesor),
-        "is_edit": True,
         "asignacion": asignacion,
     })
 
@@ -2382,9 +2350,14 @@ def asistencia_view(request, asignacion_id):
     # ── Lecciones del día ────────────────────────────────────────────────
     lecciones_programadas = _lecciones_programadas_para_fecha(asignacion, fecha)
     raw_lecciones = (request.POST if request.method == "POST" else request.GET).get("lecciones")
-    try:
-        lecciones = int(raw_lecciones) if raw_lecciones else (lecciones_programadas or 1)
-    except (TypeError, ValueError):
+    if request.method == "POST":
+        try:
+            lecciones = int(raw_lecciones) if raw_lecciones else (lecciones_programadas or 1)
+        except (TypeError, ValueError):
+            lecciones = lecciones_programadas or 1
+    else:
+        # En GET, usar el horario para poblar el campo por defecto y evitar
+        # arrastre de parámetros antiguos en la URL.
         lecciones = lecciones_programadas or 1
     lecciones = max(1, lecciones)
     minuta = (request.POST.get("minuta", "") if request.method == "POST" else "").strip()
@@ -2407,7 +2380,7 @@ def asistencia_view(request, asignacion_id):
                 messages.success(request, f"Asistencia del {fecha.strftime('%d/%m/%Y')} eliminada correctamente.")
             else:
                 messages.warning(request, "No existe asistencia registrada para esa fecha.")
-            return redirect(f"{request.path}?fecha={fecha}&lecciones={lecciones}")
+            return redirect(f"{request.path}?fecha={fecha}")
 
         try:
             with transaction.atomic():
@@ -2444,7 +2417,7 @@ def asistencia_view(request, asignacion_id):
                             cantidad = Decimal(raw_cantidad)
                         except Exception:
                             messages.error(request, f"Cantidad inválida para estudiante ID {est_id}.")
-                            return redirect(f"{request.path}?fecha={fecha}&lecciones={lecciones}")
+                            return redirect(f"{request.path}?fecha={fecha}")
                     try:
                         lecc_inj = _resolver_lecciones_injustificadas(
                             estado=estado,
@@ -2455,7 +2428,7 @@ def asistencia_view(request, asignacion_id):
                     except ValidationError as exc:
                         msg = exc.messages[0] if getattr(exc, "messages", None) else str(exc)
                         messages.error(request, f"{msg} (estudiante ID {est_id}).")
-                        return redirect(f"{request.path}?fecha={fecha}&lecciones={lecciones}")
+                        return redirect(f"{request.path}?fecha={fecha}")
 
                     if est_id in existing:
                         reg = existing[est_id]
@@ -2489,7 +2462,7 @@ def asistencia_view(request, asignacion_id):
         except Exception as exc:
             messages.error(request, f"Error al guardar: {exc}")
 
-        return redirect(f"{request.path}?fecha={fecha}&lecciones={lecciones}")
+        return redirect(f"{request.path}?fecha={fecha}")
 
     # ── GET ──────────────────────────────────────────────────────────────
     sesion_actual = (

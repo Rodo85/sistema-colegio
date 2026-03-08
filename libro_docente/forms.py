@@ -393,6 +393,37 @@ class AsignacionOnboardingForm(forms.Form):
         return cleaned
 
 
+class AsignacionEditForm(forms.Form):
+    eval_scheme = forms.ModelChoiceField(
+        queryset=EsquemaEval.objects.none(),
+        label="Esquema de evaluación",
+        widget=forms.Select(attrs={"class": "form-control"}),
+    )
+    nombre_corto = forms.CharField(
+        required=False,
+        max_length=20,
+        label="Nombre corto (horario)",
+        widget=forms.TextInput(
+            attrs={"class": "form-control", "placeholder": "Ej: MAT, ESP, PROG"}
+        ),
+        help_text="Opcional. Si se define, se usa en el horario en lugar de siglas automáticas.",
+    )
+
+    def __init__(self, *args, asignacion=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.asignacion = asignacion
+        self.fields["eval_scheme"].queryset = (
+            EsquemaEval.objects.filter(activo=True)
+            .prefetch_related("componentes_esquema__componente")
+            .order_by("tipo", "nombre")
+        )
+        self.fields["eval_scheme"].label_from_instance = AsignacionOnboardingForm._label_esquema
+        if asignacion and not self.is_bound:
+            esquema = asignacion.eval_scheme_snapshot or getattr(asignacion.subarea_curso, "eval_scheme", None)
+            if esquema:
+                self.initial["eval_scheme"] = esquema.id
+            self.initial["nombre_corto"] = (asignacion.nombre_corto or "")
+
 class EstudianteCargaManualForm(forms.Form):
     tipo_identificacion = forms.ModelChoiceField(
         queryset=TipoIdentificacion.objects.order_by("nombre"),

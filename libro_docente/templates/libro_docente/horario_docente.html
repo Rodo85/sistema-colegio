@@ -21,14 +21,13 @@
   th{background:#f8fafc;font-size:.74rem;text-transform:uppercase;color:#6b7280;}
   .schedule-grid{
     display:grid;
-    grid-template-columns:72px repeat(5, minmax(150px,1fr));
-    grid-template-rows:38px repeat(var(--grid-body-rows), 64px);
+    grid-template-columns:72px repeat(5, minmax(180px,1fr));
     position:relative;
     border:1px solid #e5e7eb;
     border-bottom:none;
     border-right:none;
     background:#fff;
-    min-width:860px;
+    min-width:1040px;
   }
   .gcell{
     border-right:1px solid #e5e7eb;
@@ -60,18 +59,56 @@
   .greceso{
     background:#fffbeb;
     color:#92400e;
-    font-weight:800;
+    font-weight:700;
     text-align:center;
     display:flex;
     align-items:center;
     justify-content:center;
+    font-size:.72rem;
+    letter-spacing:.03em;
     z-index:2;
   }
-  .blk{border-radius:10px;padding:8px 8px;color:#fff;min-height:54px;position:relative;}
-  .blk .grp{font-weight:800;font-size:.86rem;line-height:1.15;}
-  .blk .mat{font-size:.74rem;opacity:.95;line-height:1.1;margin-top:3px;letter-spacing:.02em;}
+  .blk{
+    border-radius:10px;
+    padding:7px 10px;
+    color:#0f172a;
+    min-height:0;
+    position:relative;
+    background:#ffffff;
+    border:1px solid #dbe7f3;
+    box-shadow:0 1px 4px rgba(15, 23, 42, .05);
+    display:flex;
+    flex-direction:column;
+  }
+  .blk .mat{
+    font-size:.7rem;
+    line-height:1.05;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    font-weight:800;
+    color:#334155;
+    margin-right:20px;
+  }
+  .blk .grp{
+    font-weight:800;
+    font-size:1rem;
+    line-height:1.1;
+    text-align:center;
+    margin-top:auto;
+    margin-bottom:auto;
+    color:#0f172a;
+  }
+  .blk .corner{
+    position:absolute;
+    top:0;
+    left:0;
+    width:16px;
+    height:16px;
+    border-top-left-radius:10px;
+    border-bottom-right-radius:8px;
+  }
   .menu-wrap{position:absolute;top:6px;right:6px;}
-  .menu-btn{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:999px;padding:0 6px;cursor:pointer;font-weight:700;opacity:0;pointer-events:none;transition:opacity .15s ease;}
+  .menu-btn{background:#f8fafc;border:1px solid #cbd5e1;color:#334155;border-radius:999px;padding:0 6px;cursor:pointer;font-weight:700;opacity:0;pointer-events:none;transition:opacity .15s ease;}
   .blk:hover .menu-btn, .menu-wrap:hover .menu-btn{opacity:1;pointer-events:auto;}
   .menu-items{display:none;position:absolute;top:20px;right:0;min-width:170px;background:#fff;border:1px solid #e5e7eb;border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,.15);z-index:200;}
   .menu-items a{display:block;padding:7px 9px;font-size:.76rem;text-decoration:none;color:#145591;border-bottom:1px solid #f3f4f6;}
@@ -133,7 +170,7 @@
       </div>
     </div>
     <div style="overflow-x:auto;overflow-y:visible;padding-right:220px;padding-bottom:180px;">
-      <div class="schedule-grid" style="--grid-body-rows: {{ grid_rows|length }};">
+      <div class="schedule-grid" style="grid-template-rows: {{ grid_template_rows }};">
         <div class="gcell ghead" style="grid-column:1;grid-row:1;">Lección</div>
         {% for h in grid_day_headers %}
         <div class="gcell ghead" style="grid-column:{{ h.col_start }};grid-row:1;">{{ h.dia_label }}</div>
@@ -156,9 +193,10 @@
 
         {% for gb in grid_blocks %}
         <div class="gblock" style="grid-column:{{ gb.col_start }};grid-row:{{ gb.row_start }} / {{ gb.row_end }};">
-          <div class="blk" title="{{ gb.block.materia_full }}" style="background:linear-gradient(135deg, {{ gb.block.color_primario }} 0%, {{ gb.block.color_secundario }} 100%);">
-            <div class="grp">{{ gb.block.grupo_label }}</div>
+          <div class="blk" title="{{ gb.block.materia_full }}">
+            <span class="corner" style="background:{{ gb.block.color_primario }};"></span>
             <div class="mat">{{ gb.block.materia_corta }}</div>
+            <div class="grp">{{ gb.block.grupo_label }}</div>
             <div class="menu-wrap">
               <button class="menu-btn" type="button">⋮</button>
               <div class="menu-items">

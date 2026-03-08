@@ -1,0 +1,65 @@
+{% extends "admin/base_site.html" %}
+
+{% block title %}Editar asignación{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+.wrap{max-width:760px;margin:26px auto;padding:0 16px;font-family:"Segoe UI",system-ui,sans-serif;}
+.card{background:#fff;border:1px solid #dee2e6;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.06);}
+.head{padding:16px 18px;border-bottom:1px solid #dee2e6;background:#f8f9fc;}
+.body{padding:18px;}
+.fg{margin-bottom:14px;}
+.fg label{display:block;font-size:.82rem;font-weight:700;color:#6c757d;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px;}
+.form-control{width:100%;padding:9px 12px;border:1px solid #dee2e6;border-radius:8px;}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:8px;text-decoration:none;border:none;cursor:pointer;font-weight:600}
+.btn-primary{background:#1a6eb5;color:#fff;}
+.btn-outline{background:#fff;color:#1a6eb5;border:1px solid #1a6eb5;}
+.alert{padding:10px 12px;border-radius:8px;margin-bottom:12px;}
+.alert-info{background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;}
+.alert-danger{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;}
+.help{font-size:.85rem;color:#6c757d;margin-top:6px;}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="wrap">
+  <div class="card">
+    <div class="head">
+      <h2 style="margin:0;">Editar asignación</h2>
+      <div class="help">
+        {{ asignacion.subarea_curso.subarea.nombre }} ·
+        {% if asignacion.subgrupo_id %}{{ asignacion.subgrupo }}{% else %}{{ asignacion.seccion }}{% endif %}
+      </div>
+    </div>
+    <div class="body">
+      <div class="alert alert-info">
+        Para evitar errores, aquí solo puedes cambiar <strong>esquema de evaluación</strong> y <strong>nombre corto</strong>.
+      </div>
+      {% if form.non_field_errors %}
+      <div class="alert alert-danger">
+        {% for e in form.non_field_errors %}<div>{{ e }}</div>{% endfor %}
+      </div>
+      {% endif %}
+      <form method="post">
+        {% csrf_token %}
+        <div class="fg">
+          <label for="{{ form.eval_scheme.id_for_label }}">{{ form.eval_scheme.label }}</label>
+          {{ form.eval_scheme }}
+          {{ form.eval_scheme.errors }}
+        </div>
+        <div class="fg">
+          <label for="{{ form.nombre_corto.id_for_label }}">{{ form.nombre_corto.label }}</label>
+          {{ form.nombre_corto }}
+          {{ form.nombre_corto.errors }}
+          {% if form.nombre_corto.help_text %}<div class="help">{{ form.nombre_corto.help_text }}</div>{% endif %}
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-primary" type="submit">Guardar cambios</button>
+          <a class="btn btn-outline" href="{% url 'libro_docente:home' %}">Volver</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
