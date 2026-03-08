@@ -1,4 +1,4 @@
-from datetime import date, timedelta
+from datetime import date
 from decimal import Decimal
 import csv
 import hashlib
@@ -1492,13 +1492,6 @@ def horario_docente_view(request):
         (HorarioDocenteBloque.JUEVES, "Jueves"),
         (HorarioDocenteBloque.VIERNES, "Viernes"),
     ]
-    hoy_ref = timezone.localdate()
-    lunes_semana = hoy_ref - timedelta(days=hoy_ref.isoweekday() - 1)
-    fecha_por_dia = {
-        dia: (lunes_semana + timedelta(days=dia - 1))
-        for dia, _ in weekdays
-    }
-
     asignaciones_qs = (
         DocenteAsignacion.objects.filter(docente=profesor, activo=True)
         .select_related("subarea_curso__subarea", "seccion__nivel", "subgrupo__seccion__nivel", "centro_trabajo")
@@ -1616,7 +1609,7 @@ def horario_docente_view(request):
                     "materia_full": asignacion.subarea_curso.subarea.nombre,
                     "color_primario": color_primario,
                     "color_secundario": color_secundario,
-                    "acciones": _acciones_rapidas_asignacion(asignacion, fecha_ref=fecha_por_dia.get(dia)),
+                    "acciones": _acciones_rapidas_asignacion(asignacion),
                 }
             for x in range(lec + 1, lec + span):
                 hidden_cells.add((dia, x))

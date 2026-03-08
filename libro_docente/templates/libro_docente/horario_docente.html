@@ -139,6 +139,7 @@
 <div class="wrap">
   <div class="card">
     <p class="title">Horario docente</p>
+    <p class="muted" style="margin:0 0 6px;"><strong>Colegio:</strong> {{ profesor.institucion.nombre }}</p>
     <p class="muted">Registra día + lección + asignación. Se usa para mostrar tus clases de hoy y acceso rápido.</p>
     <div style="display:flex;gap:8px;flex-wrap:wrap;">
       <a class="btn btn-outline" href="{% url 'libro_docente:home' %}">Volver a Mis asignaciones</a>
@@ -163,10 +164,7 @@
 
   <div class="card">
     <div class="row-top" style="margin-bottom:10px;justify-content:space-between;">
-      <div>
-        <p class="muted" style="font-weight:700;margin:0 0 3px;">Vista semanal</p>
-        <p class="muted" style="margin:0;">Agrupa automáticamente lecciones consecutivas de la misma asignación.</p>
-      </div>
+      <div></div>
       <div>
         <button type="button" class="btn btn-outline" onclick="toggleEditor()">Editar horario</button>
       </div>
