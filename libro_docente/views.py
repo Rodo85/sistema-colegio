@@ -1379,17 +1379,19 @@ def horario_docente_view(request):
         if not centro_actual and centros:
             centro_actual = centros[0]
             centro_sel_id = centro_actual.id
+        if not centro_actual:
+            centro_actual = _asegurar_centro_principal(profesor)
+            if centro_actual:
+                centro_sel_id = centro_actual.id
 
-    config_qs = HorarioDocenteConfiguracion.objects.filter(docente=profesor, institucion=institucion)
-    if es_general:
-        config_qs = config_qs.filter(centro_trabajo=centro_actual)
-    else:
-        config_qs = config_qs.filter(centro_trabajo__isnull=True)
-    config, _ = config_qs.get_or_create(
-        defaults={
-            "max_lecciones_dia": 8,
-            "centro_trabajo": centro_actual if es_general else None,
-        }
+    config_lookup = {
+        "docente": profesor,
+        "institucion": institucion,
+        "centro_trabajo": centro_actual if es_general else None,
+    }
+    config, _ = HorarioDocenteConfiguracion.objects.get_or_create(
+        **config_lookup,
+        defaults={"max_lecciones_dia": 8},
     )
 
     asignaciones_qs = (
