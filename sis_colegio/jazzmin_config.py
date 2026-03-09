@@ -144,6 +144,11 @@ JAZZMIN_SETTINGS = {
                 "icon": "fas fa-clipboard-check",
                 "permissions": ["libro_docente.access_libro_docente"],
             },
+            {
+                "name": "Configurar cierre",
+                "url": "configuracion_sesion",
+                "icon": "fas fa-user-clock",
+            },
         ],
         "comedor": [
             {
