@@ -130,3 +130,15 @@ class RegistroUsuarioForm(UserCreationForm):
         if errores:
             raise forms.ValidationError(" ".join(errores))
         return password
+
+
+class SessionTimeoutForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ("tiempo_cierre_sesion_min",)
+        labels = {
+            "tiempo_cierre_sesion_min": "Tiempo de cierre automático de sesión",
+        }
+        widgets = {
+            "tiempo_cierre_sesion_min": forms.Select(attrs={"class": "form-control"}),
+        }

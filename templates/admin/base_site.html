@@ -63,11 +63,53 @@
     font-weight: 700;
 }
 
+.session-expiry-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(15,23,42,.45);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+}
+.session-expiry-modal{
+    width:min(460px,92vw);
+    background:#fff;
+    border-radius:12px;
+    border:1px solid #cbd5e1;
+    box-shadow:0 16px 34px rgba(15,23,42,.25);
+    padding:16px;
+}
+.session-expiry-title{margin:0 0 8px;font-size:1.08rem;font-weight:800;color:#0f172a;}
+.session-expiry-text{margin:0 0 14px;color:#334155;}
+.session-expiry-actions{display:flex;gap:8px;justify-content:flex-end;}
+.session-btn{
+    border-radius:8px;
+    border:1px solid #cbd5e1;
+    background:#fff;
+    color:#0f172a;
+    padding:8px 12px;
+    font-weight:700;
+    cursor:pointer;
+}
+.session-btn-primary{
+    background:#1a6eb5;
+    color:#fff;
+    border-color:#1a6eb5;
+}
+
 </style>
 {% endblock %}
 
 {% block usertools %}
   {{ block.super }}
+  {% if request.user.is_authenticated %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'configuracion_sesion' %}">
+      Config. sesión
+    </a>
+  </li>
+  {% endif %}
   <li class="nav-item">
     <a class="nav-link" href="#">
       {{ request.user.email }}
@@ -84,4 +126,88 @@
 
 {% block extra_js %}
   {{ block.super }}
+  {% if request.user.is_authenticated %}
+  <form id="sessionLogoutForm" method="post" action="{% url 'admin:logout' %}" style="display:none;">
+    {% csrf_token %}
+  </form>
+  <div id="sessionExpiryOverlay" class="session-expiry-overlay" role="dialog" aria-modal="true" aria-labelledby="sessionExpiryTitle">
+    <div class="session-expiry-modal">
+      <h3 id="sessionExpiryTitle" class="session-expiry-title">Tu sesión está por vencer</h3>
+      <p class="session-expiry-text">
+        Tu sesión expirará en <strong><span id="sessionExpiryCountdown">60</span> segundos</strong>.
+        ¿Deseas continuar?
+      </p>
+      <div class="session-expiry-actions">
+        <button id="sessionLogoutNow" type="button" class="session-btn">Cerrar sesión ahora</button>
+        <button id="sessionContinue" type="button" class="session-btn session-btn-primary">Continuar sesión</button>
+      </div>
+    </div>
+  </div>
+  <script>
+  (function () {
+    var timeoutMin = Number("{{ request.user.tiempo_cierre_sesion_min|default:15 }}");
+    if (!Number.isFinite(timeoutMin) || timeoutMin <= 0) timeoutMin = 15;
+    var timeoutSec = timeoutMin * 60;
+    var warnAtSec = 60;
+    var overlay = document.getElementById("sessionExpiryOverlay");
+    var countdownEl = document.getElementById("sessionExpiryCountdown");
+    var btnContinue = document.getElementById("sessionContinue");
+    var btnLogoutNow = document.getElementById("sessionLogoutNow");
+    var lastActivity = Date.now();
+    var warningVisible = false;
+    var pingBusy = false;
+    var pingUrl = "{% url 'sesion_ping' %}";
+    var logoutForm = document.getElementById("sessionLogoutForm");
+
+    function hideWarning() {
+      warningVisible = false;
+      if (overlay) overlay.style.display = "none";
+    }
+    function showWarning() {
+      warningVisible = true;
+      if (overlay) overlay.style.display = "flex";
+    }
+    function touchActivity() {
+      lastActivity = Date.now();
+      if (warningVisible) hideWarning();
+    }
+    function forceLogout() {
+      if (logoutForm) {
+        logoutForm.submit();
+      } else {
+        window.location.href = "{% url 'admin:logout' %}";
+      }
+    }
+    function pingSession() {
+      if (pingBusy) return;
+      pingBusy = true;
+      fetch(pingUrl, { method: "GET", credentials: "same-origin", cache: "no-store" })
+        .then(function () { touchActivity(); })
+        .catch(function () { forceLogout(); })
+        .finally(function () { pingBusy = false; });
+    }
+    function tick() {
+      var elapsedSec = Math.floor((Date.now() - lastActivity) / 1000);
+      var remaining = timeoutSec - elapsedSec;
+      if (remaining <= 0) {
+        forceLogout();
+        return;
+      }
+      if (remaining <= warnAtSec) {
+        showWarning();
+        if (countdownEl) countdownEl.textContent = String(remaining);
+      } else if (warningVisible) {
+        hideWarning();
+      }
+    }
+
+    ["mousemove", "keydown", "click", "scroll", "touchstart"].forEach(function (ev) {
+      document.addEventListener(ev, touchActivity, { passive: true });
+    });
+    if (btnContinue) btnContinue.addEventListener("click", pingSession);
+    if (btnLogoutNow) btnLogoutNow.addEventListener("click", forceLogout);
+    setInterval(tick, 1000);
+  })();
+  </script>
+  {% endif %}
 {% endblock %}

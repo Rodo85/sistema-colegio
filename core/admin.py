@@ -92,6 +92,7 @@ class UserAdmin(DjangoUserAdmin):
     fieldsets = (
         (None, {"fields": ("email", "password")}),
         (_("Información personal"), {"fields": ("first_name", "last_name","second_last_name")}),
+        (_("Preferencias"), {"fields": ("tiempo_cierre_sesion_min",)}),
         (_("Estado de cuenta"), {"fields": ("estado_solicitud", "estado_pago", "fecha_aceptacion_solicitud", "fecha_limite_pago")}),
         (_("Permisos"), {
             "fields": (
@@ -119,6 +120,7 @@ class UserAdmin(DjangoUserAdmin):
         "estado_pago",
         "fecha_aceptacion_solicitud",
         "fecha_limite_pago",
+        "tiempo_cierre_sesion_min",
         "is_staff",
         "is_superuser",
     )

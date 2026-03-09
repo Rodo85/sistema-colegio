@@ -34,6 +34,8 @@ urlpatterns = [
     path('config/', include('config_institucional.urls')),
     path('seleccionar-institucion/', core_views.seleccionar_institucion, name='seleccionar_institucion'),
     path('registrarse/', core_views.registro_view, name='registro'),
+    path("configuracion/sesion/", core_views.configuracion_sesion_view, name="configuracion_sesion"),
+    path("sesion/ping/", core_views.sesion_ping_view, name="sesion_ping"),
     path(
         "password-reset/",
         auth_views.PasswordResetView.as_view(

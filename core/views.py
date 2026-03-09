@@ -6,11 +6,13 @@ from django.db import transaction
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.models import Permission
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from datetime import timedelta
 
 from core.models import Institucion
 from config_institucional.models import Profesor
-from core.forms import RegistroUsuarioForm
+from core.forms import RegistroUsuarioForm, SessionTimeoutForm
 from core.models import Miembro, SolicitudRegistro, User
 from core.models import fecha_vencimiento_anual_por_base
 
@@ -289,3 +291,24 @@ def seleccionar_institucion(request):
         "core/seleccionar_institucion.html",
         {"membresias": membresias_activas}
     )
+
+
+@login_required
+def configuracion_sesion_view(request):
+    if request.method == "POST":
+        form = SessionTimeoutForm(request.POST, instance=request.user)
+        if form.is_valid():
+            user = form.save()
+            request.session.set_expiry(user.timeout_sesion_segundos())
+            messages.success(request, "Configuración de sesión actualizada.")
+            return redirect("configuracion_sesion")
+    else:
+        form = SessionTimeoutForm(instance=request.user)
+    return render(request, "core/configuracion_sesion.html", {"form": form})
+
+
+@login_required
+def sesion_ping_view(request):
+    timeout = request.user.timeout_sesion_segundos()
+    request.session.set_expiry(timeout)
+    return JsonResponse({"ok": True, "timeout_seconds": timeout})

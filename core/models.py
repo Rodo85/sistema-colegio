@@ -45,6 +45,16 @@ class User(AbstractBaseUser, PermissionsMixin):
         (PAGO_PENDIENTE, "Pago pendiente"),
         (PAGO_AL_DIA, "Al día"),
     ]
+    SESSION_5 = 5
+    SESSION_10 = 10
+    SESSION_15 = 15
+    SESSION_30 = 30
+    SESSION_TIMEOUT_CHOICES = [
+        (SESSION_5, "5 minutos"),
+        (SESSION_10, "10 minutos"),
+        (SESSION_15, "15 minutos"),
+        (SESSION_30, "30 minutos"),
+    ]
 
     id         = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email      = models.EmailField(unique=True)
@@ -67,6 +77,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         "Fecha límite de pago",
         default=fecha_vencimiento_anual_default,
         help_text="Si llega esta fecha y no se renueva, el acceso se bloquea.",
+    )
+    tiempo_cierre_sesion_min = models.PositiveSmallIntegerField(
+        "Tiempo de cierre automático de sesión (minutos)",
+        choices=SESSION_TIMEOUT_CHOICES,
+        default=SESSION_15,
+        help_text="Tiempo de inactividad antes de cerrar sesión automáticamente.",
     )
     fecha_aceptacion_solicitud = models.DateField(
         "Fecha de aceptación de solicitud",
@@ -98,6 +114,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         if not self.fecha_limite_pago:
             return False
         return date.today() > self.fecha_limite_pago
+
+    def timeout_sesion_segundos(self):
+        minutos = int(self.tiempo_cierre_sesion_min or self.SESSION_15)
+        return max(5, minutos) * 60
 
     def save(self, *args, **kwargs):
         # Si cambia de "Pago pendiente" a "Al día", fijar vencimiento anual automáticamente.

@@ -147,6 +147,24 @@ class InstitucionMiddleware(MiddlewareMixin):
         return None
 
 
+class SessionTimeoutMiddleware(MiddlewareMixin):
+    """
+    Ajusta el tiempo de expiración de sesión por preferencia del usuario.
+    """
+
+    def process_request(self, request):
+        user = getattr(request, "user", None)
+        if not user or not user.is_authenticated:
+            return None
+        try:
+            timeout = user.timeout_sesion_segundos()
+            request.session.set_expiry(timeout)
+        except Exception:
+            # Nunca bloquear navegación por un error de preferencia.
+            return None
+        return None
+
+
 class PagoControlMiddleware(MiddlewareMixin):
     """
     Controla alertas de pago y bloquea acceso cuando la fecha límite vence.

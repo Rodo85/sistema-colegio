@@ -1,0 +1,36 @@
+{% extends "admin/base_site.html" %}
+
+{% block title %}Configuración de sesión{% endblock %}
+
+{% block content %}
+<div style="max-width:680px;margin:24px auto;padding:0 14px;">
+  <div style="background:#fff;border:1px solid #dee2e6;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.06);">
+    <div style="padding:14px 16px;border-bottom:1px solid #e5e7eb;background:#f8fafc;">
+      <h2 style="margin:0;color:#145591;">Configuración de sesión</h2>
+    </div>
+    <div style="padding:16px;">
+      <p style="margin:0 0 12px;color:#475569;">
+        Define el tiempo de cierre automático por inactividad.
+      </p>
+      <form method="post">
+        {% csrf_token %}
+        <label for="{{ form.tiempo_cierre_sesion_min.id_for_label }}" style="display:block;font-weight:700;margin-bottom:6px;color:#64748b;">
+          {{ form.tiempo_cierre_sesion_min.label }}
+        </label>
+        {{ form.tiempo_cierre_sesion_min }}
+        {% if form.tiempo_cierre_sesion_min.errors %}
+          <div style="color:#b91c1c;margin-top:6px;">{{ form.tiempo_cierre_sesion_min.errors }}</div>
+        {% endif %}
+        <div style="display:flex;gap:8px;margin-top:16px;">
+          <button type="submit" style="background:#1a6eb5;color:#fff;border:none;border-radius:8px;padding:9px 14px;font-weight:700;cursor:pointer;">
+            Guardar
+          </button>
+          <a href="{% url 'admin:index' %}" style="display:inline-flex;align-items:center;border:1px solid #cbd5e1;border-radius:8px;padding:9px 14px;color:#145591;text-decoration:none;">
+            Volver
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

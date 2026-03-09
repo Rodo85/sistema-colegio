@@ -88,6 +88,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "core.middleware.SessionTimeoutMiddleware",
 
     # Nuestro middleware debe ir DESPUÉS de AuthenticationMiddleware
     "core.middleware.InstitucionMiddleware",
@@ -254,7 +255,7 @@ else:
 USE_DJANGO_JQUERY = True
 
 # ─────────────────────  Sesiones y seguridad de acceso  ─────────────────────
-SESSION_IDLE_TIMEOUT = int(os.getenv('SESSION_IDLE_TIMEOUT', '300'))  # 5 minutos por defecto
+SESSION_IDLE_TIMEOUT = int(os.getenv('SESSION_IDLE_TIMEOUT', '900'))  # 15 minutos por defecto
 SESSION_COOKIE_AGE = SESSION_IDLE_TIMEOUT
 SESSION_SAVE_EVERY_REQUEST = True
 
