@@ -416,6 +416,12 @@ class AsignacionEditForm(forms.Form):
         ),
         help_text="Opcional. Si se define, se usa en el horario en lugar de siglas automáticas.",
     )
+    aplicar_nombre_corto_global = forms.BooleanField(
+        required=False,
+        initial=True,
+        label="Aplicar nombre corto a todas mis asignaciones de esta materia",
+        help_text="Actualiza el nombre corto en todos tus grupos de la misma materia (mismo curso lectivo).",
+    )
 
     def __init__(self, *args, asignacion=None, **kwargs):
         super().__init__(*args, **kwargs)

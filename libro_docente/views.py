@@ -2184,12 +2184,33 @@ def asignacion_edit_view(request, asignacion_id):
 
     if request.method == "POST" and form.is_valid():
         esquema = form.cleaned_data["eval_scheme"]
-        asignacion.nombre_corto = (form.cleaned_data.get("nombre_corto") or "")
+        nombre_corto = (form.cleaned_data.get("nombre_corto") or "").strip().upper()
+        aplicar_global = bool(form.cleaned_data.get("aplicar_nombre_corto_global"))
+        asignacion.nombre_corto = nombre_corto
         asignacion.eval_scheme_snapshot = esquema
         try:
-            asignacion.full_clean()
-            asignacion.save()
-            messages.success(request, "Asignación actualizada correctamente.")
+            with transaction.atomic():
+                asignacion.full_clean()
+                asignacion.save()
+                total_global = 0
+                if aplicar_global:
+                    total_global = (
+                        DocenteAsignacion.objects.filter(
+                            docente=profesor,
+                            curso_lectivo=asignacion.curso_lectivo,
+                            subarea_curso__subarea_id=asignacion.subarea_curso.subarea_id,
+                            activo=True,
+                        )
+                        .exclude(id=asignacion.id)
+                        .update(nombre_corto=nombre_corto)
+                    )
+            if aplicar_global:
+                messages.success(
+                    request,
+                    f"Asignación actualizada. Nombre corto aplicado en {total_global + 1} asignación(es) de la materia.",
+                )
+            else:
+                messages.success(request, "Asignación actualizada correctamente.")
             return redirect("libro_docente:home")
         except ValidationError as exc:
             form.add_error(None, exc)

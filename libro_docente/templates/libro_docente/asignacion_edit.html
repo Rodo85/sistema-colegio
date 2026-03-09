@@ -19,6 +19,8 @@
 .alert-info{background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;}
 .alert-danger{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;}
 .help{font-size:.85rem;color:#6c757d;margin-top:6px;}
+.fg-check{margin:10px 0 14px;padding:10px 12px;border:1px solid #dbeafe;background:#eff6ff;border-radius:8px;}
+.fg-check label{font-size:.9rem;font-weight:700;color:#1e3a8a;margin:0;display:inline;}
 </style>
 {% endblock %}
 
@@ -53,6 +55,13 @@
           {{ form.nombre_corto }}
           {{ form.nombre_corto.errors }}
           {% if form.nombre_corto.help_text %}<div class="help">{{ form.nombre_corto.help_text }}</div>{% endif %}
+        </div>
+        <div class="fg-check">
+          <label for="{{ form.aplicar_nombre_corto_global.id_for_label }}">
+            {{ form.aplicar_nombre_corto_global }} {{ form.aplicar_nombre_corto_global.label }}
+          </label>
+          {{ form.aplicar_nombre_corto_global.errors }}
+          {% if form.aplicar_nombre_corto_global.help_text %}<div class="help">{{ form.aplicar_nombre_corto_global.help_text }}</div>{% endif %}
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button class="btn btn-primary" type="submit">Guardar cambios</button>
