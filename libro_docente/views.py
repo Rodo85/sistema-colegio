@@ -368,19 +368,20 @@ def _periodo_id_para_asignacion(asignacion, fecha_ref=None):
     return first
 
 
-def _acciones_rapidas_asignacion(asignacion, fecha_ref=None):
+def _acciones_rapidas_asignacion(asignacion, fecha_ref=None, dia_horario=None):
     periodo_id = _periodo_id_para_asignacion(asignacion, fecha_ref=fecha_ref)
-    fecha_qs = ""
-    if fecha_ref:
-        try:
-            fecha_qs = f"?fecha={fecha_ref.isoformat()}"
-        except Exception:
-            fecha_qs = ""
+    dia_qs = ""
+    try:
+        dia_int = int(dia_horario) if dia_horario is not None else None
+    except (TypeError, ValueError):
+        dia_int = None
+    if dia_int and 1 <= dia_int <= 7:
+        dia_qs = f"?dia_horario={dia_int}"
     tipos = _tipos_habilitados_por_esquema(asignacion)
     acciones = {
-        "asistencia": reverse("libro_docente:asistencia", args=[asignacion.id]) + fecha_qs,
+        "asistencia": reverse("libro_docente:asistencia", args=[asignacion.id]) + dia_qs,
         "estudiantes": reverse("libro_docente:estudiantes_config", args=[asignacion.id]),
-        "minuta": reverse("libro_docente:asistencia", args=[asignacion.id]) + fecha_qs,
+        "minuta": reverse("libro_docente:asistencia", args=[asignacion.id]) + dia_qs,
         "detalle": reverse("libro_docente:resumen_evaluacion", args=[asignacion.id]),
         "tarea": None,
         "prueba": None,
@@ -460,7 +461,7 @@ def _nombre_corto_asignacion(asignacion):
     return _nombre_corto_materia(asignacion.subarea_curso.subarea.nombre)
 
 
-def _lecciones_programadas_para_fecha(asignacion, fecha_ref):
+def _lecciones_programadas_para_fecha(asignacion, fecha_ref, dia_iso_forzado=None):
     """
     Cuenta lecciones del horario para una asignación en una fecha dada.
     Suma todos los bloques del día para esa asignación exacta.
@@ -468,7 +469,7 @@ def _lecciones_programadas_para_fecha(asignacion, fecha_ref):
     if not asignacion or not fecha_ref:
         return 0
     try:
-        dia_iso = int(fecha_ref.isoweekday())
+        dia_fecha = int(fecha_ref.isoweekday())
     except Exception:
         logger.warning(
             "asistencia_lecciones: fecha inválida asignacion=%s fecha_ref=%s",
@@ -476,6 +477,11 @@ def _lecciones_programadas_para_fecha(asignacion, fecha_ref):
             fecha_ref,
         )
         return 0
+    try:
+        dia_forzado = int(dia_iso_forzado) if dia_iso_forzado is not None else None
+    except (TypeError, ValueError):
+        dia_forzado = None
+    dia_iso = dia_forzado if dia_forzado and 1 <= dia_forzado <= 7 else dia_fecha
     total_directo = (
         HorarioDocenteBloque.objects.filter(
             docente_asignacion=asignacion,
@@ -487,9 +493,10 @@ def _lecciones_programadas_para_fecha(asignacion, fecha_ref):
     )
     if total_directo > 0:
         logger.info(
-            "asistencia_lecciones: directo asignacion=%s fecha=%s dia=%s total=%s",
+            "asistencia_lecciones: directo asignacion=%s fecha=%s dia_fecha=%s dia_calculo=%s total=%s",
             asignacion.id,
             fecha_ref,
+            dia_fecha,
             dia_iso,
             total_directo,
         )
@@ -527,9 +534,10 @@ def _lecciones_programadas_para_fecha(asignacion, fecha_ref):
         .order_by("dia_semana")
     )
     logger.warning(
-        "asistencia_lecciones: fallback asignacion=%s fecha=%s dia=%s total_directo=%s total_fallback=%s resumen_directo=%s",
+        "asistencia_lecciones: fallback asignacion=%s fecha=%s dia_fecha=%s dia_calculo=%s total_directo=%s total_fallback=%s resumen_directo=%s",
         asignacion.id,
         fecha_ref,
+        dia_fecha,
         dia_iso,
         total_directo,
         total_fallback,
@@ -1040,38 +1048,8 @@ def home_docente(request):
         grupo_sel = (request.GET.get("grupo", "") or "").strip()
 
         limite_asignaciones = _limite_asignaciones_docente(profesor)
-        dia_hoy_iso = timezone.localdate().isoweekday()
-        clases_hoy_qs = (
-            HorarioDocenteBloque.objects.filter(
-                configuracion__docente=profesor,
-                configuracion__institucion=profesor.institucion,
-                dia_semana=dia_hoy_iso,
-                docente_asignacion__activo=True,
-            )
-            .select_related(
-                "configuracion__centro_trabajo",
-                "docente_asignacion__subarea_curso__subarea",
-                "docente_asignacion__seccion__nivel",
-                "docente_asignacion__subgrupo__seccion__nivel",
-            )
-            .order_by("leccion_numero")
-        )
-        if es_general and centro_sel_id:
-            clases_hoy_qs = clases_hoy_qs.filter(configuracion__centro_trabajo_id=centro_sel_id)
-        for b in clases_hoy_qs:
-            asig = b.docente_asignacion
-            grupo_label = str(asig.subgrupo) if asig.subgrupo_id else (str(asig.seccion) if asig.seccion_id else "—")
-            color_primario, color_secundario = _colores_por_materia(asig.subarea_curso.subarea.nombre)
-            clases_hoy.append({
-                "leccion": b.leccion_numero,
-                "asignacion": asig,
-                "materia": asig.subarea_curso.subarea.nombre,
-                "grupo_label": grupo_label,
-                "centro": b.configuracion.centro_trabajo.nombre if b.configuracion.centro_trabajo_id else "",
-                "color_primario": color_primario,
-                "color_secundario": color_secundario,
-                "acciones": _acciones_rapidas_asignacion(asig),
-            })
+        # Se desactiva "Clases de hoy" para reducir carga en home docente.
+        clases_hoy = []
 
         componentes_prefetch = Prefetch(
             "eval_scheme_snapshot__componentes_esquema",
@@ -1260,8 +1238,6 @@ def home_docente(request):
         "materia_sel_id": materia_sel_id,
         "nivel_sel_id": nivel_sel_id,
         "grupo_sel": grupo_sel,
-        "clases_hoy": clases_hoy,
-        "dia_hoy_label": _dia_label_iso(timezone.localdate().isoweekday()),
     })
 
 
@@ -1668,7 +1644,7 @@ def horario_docente_view(request):
                     "materia_full": asignacion.subarea_curso.subarea.nombre,
                     "color_primario": color_primario,
                     "color_secundario": color_secundario,
-                    "acciones": _acciones_rapidas_asignacion(asignacion),
+                    "acciones": _acciones_rapidas_asignacion(asignacion, dia_horario=dia),
                 }
             for x in range(lec + 1, lec + span):
                 hidden_cells.add((dia, x))
@@ -2431,9 +2407,16 @@ def asistencia_view(request, asignacion_id):
         fecha = date.fromisoformat(fecha_str) if fecha_str else hoy
     except ValueError:
         fecha = hoy
+    dia_horario_raw = (request.POST if request.method == "POST" else request.GET).get("dia_horario")
+    try:
+        dia_horario = int(dia_horario_raw) if dia_horario_raw else None
+    except (TypeError, ValueError):
+        dia_horario = None
+    if dia_horario is not None and not (1 <= dia_horario <= 7):
+        dia_horario = None
 
     # ── Lecciones del día ────────────────────────────────────────────────
-    lecciones_programadas = _lecciones_programadas_para_fecha(asignacion, fecha)
+    lecciones_programadas = _lecciones_programadas_para_fecha(asignacion, fecha, dia_iso_forzado=dia_horario)
     raw_lecciones = (request.POST if request.method == "POST" else request.GET).get("lecciones")
     if request.method == "POST":
         try:
@@ -2465,7 +2448,10 @@ def asistencia_view(request, asignacion_id):
                 messages.success(request, f"Asistencia del {fecha.strftime('%d/%m/%Y')} eliminada correctamente.")
             else:
                 messages.warning(request, "No existe asistencia registrada para esa fecha.")
-            return redirect(f"{request.path}?fecha={fecha}")
+            next_url = f"{request.path}?fecha={fecha}"
+            if dia_horario:
+                next_url += f"&dia_horario={dia_horario}"
+            return redirect(next_url)
 
         try:
             with transaction.atomic():
@@ -2502,7 +2488,10 @@ def asistencia_view(request, asignacion_id):
                             cantidad = Decimal(raw_cantidad)
                         except Exception:
                             messages.error(request, f"Cantidad inválida para estudiante ID {est_id}.")
-                            return redirect(f"{request.path}?fecha={fecha}")
+                            next_url = f"{request.path}?fecha={fecha}"
+                            if dia_horario:
+                                next_url += f"&dia_horario={dia_horario}"
+                            return redirect(next_url)
                     try:
                         lecc_inj = _resolver_lecciones_injustificadas(
                             estado=estado,
@@ -2513,7 +2502,10 @@ def asistencia_view(request, asignacion_id):
                     except ValidationError as exc:
                         msg = exc.messages[0] if getattr(exc, "messages", None) else str(exc)
                         messages.error(request, f"{msg} (estudiante ID {est_id}).")
-                        return redirect(f"{request.path}?fecha={fecha}")
+                        next_url = f"{request.path}?fecha={fecha}"
+                        if dia_horario:
+                            next_url += f"&dia_horario={dia_horario}"
+                        return redirect(next_url)
 
                     if est_id in existing:
                         reg = existing[est_id]
@@ -2547,7 +2539,10 @@ def asistencia_view(request, asignacion_id):
         except Exception as exc:
             messages.error(request, f"Error al guardar: {exc}")
 
-        return redirect(f"{request.path}?fecha={fecha}")
+        next_url = f"{request.path}?fecha={fecha}"
+        if dia_horario:
+            next_url += f"&dia_horario={dia_horario}"
+        return redirect(next_url)
 
     # ── GET ──────────────────────────────────────────────────────────────
     sesion_actual = (
@@ -2636,6 +2631,7 @@ def asistencia_view(request, asignacion_id):
         "periodos_cl": periodos_cl,
         "minuta": minuta,
         "lecciones_programadas": lecciones_programadas,
+        "dia_horario": dia_horario,
         "PRESENTE": AsistenciaRegistro.PRESENTE,
         "TARDIA_MEDIA": AsistenciaRegistro.TARDIA_MEDIA,
         "TARDIA_COMPLETA": AsistenciaRegistro.TARDIA_COMPLETA,

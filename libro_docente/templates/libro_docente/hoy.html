@@ -89,32 +89,6 @@
     </div>
   </div>
 
-  <div class="alert alert-info">
-    <strong>Clases de hoy ({{ dia_hoy_label }})</strong>
-    {% if clases_hoy %}
-      <div class="today-list" style="margin-top:8px;">
-        {% for c in clases_hoy %}
-        <div class="today-item">
-          <div class="today-row">
-            <div class="today-main">Lección {{ c.leccion }} — {{ c.materia }} {{ c.grupo_label }}</div>
-            {% if c.centro %}<span class="today-chip">{{ c.centro }}</span>{% endif %}
-          </div>
-          <div class="today-acts">
-            <a href="{{ c.acciones.asistencia }}">Pasar lista</a>
-            <a href="{{ c.acciones.estudiantes }}">Ver estudiantes</a>
-            {% if c.acciones.tarea %}<a href="{{ c.acciones.tarea }}">Registrar tarea</a>{% endif %}
-            {% if c.acciones.prueba %}<a href="{{ c.acciones.prueba }}">Registrar prueba</a>{% endif %}
-            <a href="{{ c.acciones.minuta }}">Abrir bitácora/minuta</a>
-            <a href="{{ c.acciones.detalle }}">Detalles asignación</a>
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-    {% else %}
-      <div style="margin-top:6px;">No hay clases registradas para hoy en tu horario.</div>
-    {% endif %}
-  </div>
-
   {% if es_institucion_general and centros_trabajo %}
   <div style="margin:0 0 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
     <span style="font-size:.82rem;color:var(--muted);font-weight:700;">Centro de trabajo:</span>

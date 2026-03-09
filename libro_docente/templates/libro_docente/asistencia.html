@@ -141,6 +141,9 @@ tbody td{padding:8px 12px;vertical-align:middle;}
 
   <form method="post" id="asistencia-form">
     {% csrf_token %}
+    {% if dia_horario %}
+      <input type="hidden" name="dia_horario" value="{{ dia_horario }}">
+    {% endif %}
 
     <!-- Fecha + Período + Lecciones -->
     <div class="card">
