@@ -130,6 +130,15 @@
     min-height:0;
   }
   .row-top{display:flex;gap:10px;flex-wrap:wrap;align-items:end;}
+  .print-only{display:none;}
+  @page { size: landscape; margin: 8mm; }
+  @media print{
+    .no-print{display:none !important;}
+    .print-only{display:block !important;}
+    .wrap{max-width:none;margin:0;padding:0;}
+    .card{border:1px solid #d1d5db;box-shadow:none;margin-bottom:8px;}
+    .schedule-grid{min-width:0;border-color:#d1d5db;}
+  }
 </style>
 {% endblock %}
 
@@ -137,12 +146,11 @@
 
 {% block content %}
 <div class="wrap">
-  <div class="card">
+  <div class="card no-print">
     <p class="title">Horario docente</p>
-    <p class="muted" style="margin:0 0 6px;"><strong>Colegio:</strong> {{ profesor.institucion.nombre }}</p>
-    <p class="muted">Registra día + lección + asignación. Se usa para mostrar tus clases de hoy y acceso rápido.</p>
     <div style="display:flex;gap:8px;flex-wrap:wrap;">
       <a class="btn btn-outline" href="{% url 'libro_docente:home' %}">Volver a Mis asignaciones</a>
+      <button type="button" class="btn btn-outline" onclick="window.print()">Imprimir horario (PDF)</button>
     </div>
   </div>
 
@@ -163,9 +171,14 @@
   {% endif %}
 
   <div class="card">
+    <p class="title" style="margin-bottom:4px;">Horario docente</p>
+    <p class="muted" style="margin:0 0 10px;"><strong>Colegio:</strong> {{ profesor.institucion.nombre }}</p>
+    <p class="print-only" style="font-size:12px;color:#475569;margin:0 0 10px;">
+      Fecha de impresión: {% now "d/m/Y H:i" %}
+    </p>
     <div class="row-top" style="margin-bottom:10px;justify-content:space-between;">
       <div></div>
-      <div>
+      <div class="no-print">
         <button type="button" class="btn btn-outline" onclick="toggleEditor()">Editar horario</button>
       </div>
     </div>

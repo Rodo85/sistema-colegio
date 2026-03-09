@@ -468,11 +468,39 @@ def _lecciones_programadas_para_fecha(asignacion, fecha_ref):
         dia_iso = int(fecha_ref.isoweekday())
     except Exception:
         return 0
-    return (
+    total_directo = (
         HorarioDocenteBloque.objects.filter(
             docente_asignacion=asignacion,
             dia_semana=dia_iso,
         )
+        .values("leccion_numero")
+        .distinct()
+        .count()
+    )
+    if total_directo > 0:
+        return total_directo
+
+    # Fallback defensivo: si el horario quedó asociado a otra asignación
+    # equivalente (mismo docente/materia/grupo/centro), sumar esas lecciones.
+    filtros = Q(
+        docente_asignacion__docente_id=asignacion.docente_id,
+        docente_asignacion__curso_lectivo_id=asignacion.curso_lectivo_id,
+        docente_asignacion__subarea_curso__subarea_id=asignacion.subarea_curso.subarea_id,
+        dia_semana=dia_iso,
+    )
+    if asignacion.subgrupo_id:
+        filtros &= Q(docente_asignacion__subgrupo_id=asignacion.subgrupo_id)
+    else:
+        filtros &= Q(
+            docente_asignacion__seccion_id=asignacion.seccion_id,
+            docente_asignacion__subgrupo__isnull=True,
+        )
+    if asignacion.centro_trabajo_id:
+        filtros &= Q(docente_asignacion__centro_trabajo_id=asignacion.centro_trabajo_id)
+    else:
+        filtros &= Q(docente_asignacion__centro_trabajo__isnull=True)
+    return (
+        HorarioDocenteBloque.objects.filter(filtros)
         .values("leccion_numero")
         .distinct()
         .count()
