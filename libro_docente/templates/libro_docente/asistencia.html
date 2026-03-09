@@ -101,6 +101,10 @@ tbody td{padding:8px 12px;vertical-align:middle;}
 .stat-tc{background:#fde68a;color:#78350f;}
 .stat-ai{background:#fee2e2;color:#991b1b;}
 .stat-aj{background:#e0e7ff;color:#3730a3;}
+/* Indicador adecuación: significativa=naranja, no significativa=amarillo */
+.adec-indicator{display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:6px;vertical-align:middle;}
+.adec-indicator.sig{background:#ea580c;}
+.adec-indicator.no-sig{background:#eab308;}
 </style>
 {% endblock %}
 
@@ -130,6 +134,9 @@ tbody td{padding:8px 12px;vertical-align:middle;}
       </a>
       <a href="{% url 'libro_docente:resumen' asignacion.id %}?periodo={% if periodo %}{{ periodo.id }}{% endif %}" class="resumen-link" style="color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.4);padding:5px 12px;border-radius:6px;">
         📊 Ver resumen
+      </a>
+      <a href="{% url 'libro_docente:reporte_asistencia_agrupado' asignacion.id %}?periodo={% if periodo %}{{ periodo.id }}{% endif %}" class="resumen-link" style="color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.4);padding:5px 12px;border-radius:6px;">
+        🧾 Reporte agrupado
       </a>
       <a href="{% url 'libro_docente:home' %}" class="back-btn">← Mis asignaciones</a>
     </div>
@@ -232,7 +239,10 @@ tbody td{padding:8px 12px;vertical-align:middle;}
               <tr>
                 <td style="color:var(--muted);font-size:.8rem;">{{ forloop.counter }}</td>
                 <td>
-                  <div class="student-name">{{ est.nombre }}</div>
+                  <div class="student-name">
+                    {{ est.nombre }}
+                    {% if est.adecuacion %}<span class="adec-indicator sig" title="Adecuación significativa"></span>{% elif est.adecuacion_no_sig %}<span class="adec-indicator no-sig" title="Adecuación no significativa"></span>{% endif %}
+                  </div>
                   <div class="student-id">{{ est.identificacion }}</div>
                 </td>
                 <td>

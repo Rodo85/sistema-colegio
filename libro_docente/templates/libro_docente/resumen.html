@@ -57,6 +57,9 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
 
 /* Info nota */
 .mep-legend{font-size:.78rem;color:var(--muted);margin-top:4px;}
+.adec-indicator{display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:6px;vertical-align:middle;}
+.adec-indicator.sig{background:#ea580c;}
+.adec-indicator.no-sig{background:#eab308;}
 
 /* Alert */
 .alert{padding:11px 16px;border-radius:8px;margin-bottom:16px;font-size:.9rem;}
@@ -171,6 +174,7 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
                     <a href="{% url 'libro_docente:estudiante_consulta' asignacion.id r.estudiante.id %}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;font-weight:700;">
                       {{ r.estudiante }}
                     </a>
+                    {% if r.adecuacion %}<span class="adec-indicator sig" title="Adecuación significativa"></span>{% elif r.adecuacion_no_sig %}<span class="adec-indicator no-sig" title="Adecuación no significativa"></span>{% endif %}
                     <div style="font-size:.75rem;color:var(--muted);">{{ r.estudiante.identificacion }}</div>
                   </td>
                   <td>

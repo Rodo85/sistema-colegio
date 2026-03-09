@@ -25,6 +25,7 @@ from .views import (
     resumen_general_export_xlsx,
     resumen_evaluacion_view,
     resumen_view,
+    reporte_asistencia_agrupado_view,
 )
 
 app_name = "libro_docente"
@@ -40,6 +41,7 @@ urlpatterns = [
     path("asignacion/<int:asignacion_id>/estudiantes-config/", estudiantes_config_view, name="estudiantes_config"),
     path("asistencia/<int:asignacion_id>/", asistencia_view, name="asistencia"),
     path("asistencia/<int:asignacion_id>/resumen/", resumen_view, name="resumen"),
+    path("asistencia/<int:asignacion_id>/reporte-agrupado/", reporte_asistencia_agrupado_view, name="reporte_asistencia_agrupado"),
     path(
         "asistencia/<int:asignacion_id>/resumen/estudiante/<int:estudiante_id>/",
         detalle_estudiante_view,

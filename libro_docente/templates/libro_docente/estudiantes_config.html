@@ -19,6 +19,9 @@ th{background:var(--surface);}
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;font-size:.85rem;font-weight:600;border-radius:7px;border:none;cursor:pointer;text-decoration:none;}
 .btn-primary{background:var(--primary);color:#fff !important;}
 .help{font-size:.82rem;color:var(--muted);margin-bottom:12px;}
+.adec-indicator{display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:6px;vertical-align:middle;}
+.adec-indicator.sig{background:#ea580c;}
+.adec-indicator.no-sig{background:#eab308;}
 </style>
 {% endblock %}
 
@@ -59,7 +62,7 @@ th{background:var(--surface);}
             {% for f in filas %}
             <tr>
               <td>{{ forloop.counter }}</td>
-              <td>{{ f.nombre }}</td>
+              <td>{{ f.nombre }}{% if f.adecuacion %}<span class="adec-indicator sig" title="Adecuación significativa"></span>{% elif f.adecuacion_no_sig %}<span class="adec-indicator no-sig" title="Adecuación no significativa"></span>{% endif %}</td>
               <td>{{ f.identificacion }}</td>
               <td><input type="checkbox" name="oculto_ids" value="{{ f.id }}" {% if f.oculto %}checked{% endif %}></td>
               <td><input type="checkbox" name="adecuacion_ids" value="{{ f.id }}" {% if f.adecuacion %}checked{% endif %}></td>

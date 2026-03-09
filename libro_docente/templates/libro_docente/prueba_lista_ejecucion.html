@@ -26,6 +26,9 @@
   .doc-header .logo-right{max-height:90px;max-width:150px;object-fit:contain;}
   .doc-header-spacer{display:none;}
   .section-block{break-inside:avoid-page;page-break-inside:avoid;}
+  .adec-indicator{display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:6px;vertical-align:middle;}
+  .adec-indicator.sig{background:#ea580c;}
+  .adec-indicator.no-sig{background:#eab308;}
   @media print{
     .print-btn{display:none !important;}
     body{background:#fff !important;}
@@ -128,7 +131,7 @@
         <tr>
           <td>{{ forloop.counter }}</td>
           <td>{{ e.id }}</td>
-          <td>{{ e.nombre }}</td>
+          <td>{{ e.nombre }}{% if e.adecuacion %}<span class="adec-indicator sig" title="Adecuación significativa"></span>{% elif e.adecuacion_no_sig %}<span class="adec-indicator no-sig" title="Adecuación no significativa"></span>{% endif %}</td>
           <td class="firma"></td>
         </tr>
         {% empty %}

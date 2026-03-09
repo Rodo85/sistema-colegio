@@ -23,6 +23,7 @@ from evaluaciones.models import EsquemaEvalComponente
 from .models import (
     ActividadEvaluacion,
     EstudianteAdecuacionAsignacion,
+    EstudianteAdecuacionNoSignificativaAsignacion,
     IndicadorActividad,
     PuntajeIndicador,
     PuntajeSimple,
@@ -374,6 +375,12 @@ def calcular_resumen_evaluacion_completo(asignacion, periodo_id, matriculas):
             estudiante_id__in=est_ids,
         ).values_list("estudiante_id", flat=True)
     )
+    adecuacion_no_sig_ids = set(
+        EstudianteAdecuacionNoSignificativaAsignacion.objects.filter(
+            docente_asignacion=asignacion,
+            estudiante_id__in=est_ids,
+        ).values_list("estudiante_id", flat=True)
+    )
 
     def _resumen_por_tipo(tipo_componente):
         es_simple = tipo_componente in (ActividadEvaluacion.PRUEBA, ActividadEvaluacion.PROYECTO)
@@ -480,6 +487,8 @@ def calcular_resumen_evaluacion_completo(asignacion, periodo_id, matriculas):
             "cotidianos": resumen_cotidianos.get(est.id, {}),
             "pruebas": resumen_pruebas.get(est.id, {}),
             "proyectos": resumen_proyectos.get(est.id, {}),
+            "adecuacion": est.id in adecuacion_ids,
+            "adecuacion_no_sig": est.id in adecuacion_no_sig_ids,
         })
     return filas
 

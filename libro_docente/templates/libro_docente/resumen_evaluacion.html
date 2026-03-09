@@ -34,6 +34,9 @@
 .btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;font-size:.82rem;font-weight:600;border-radius:7px;border:none;cursor:pointer;text-decoration:none;}
 .btn-primary{background:var(--primary);color:#fff !important;}
 .btn-outline{background:#fff;border:1.5px solid var(--border);color:#333 !important;}
+.adec-indicator{display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:6px;vertical-align:middle;}
+.adec-indicator.sig{background:#ea580c;}
+.adec-indicator.no-sig{background:#eab308;}
 </style>
 {% endblock %}
 
@@ -146,6 +149,7 @@
                 <a href="{% url 'libro_docente:resumen_estudiante_detalle' asignacion.id fila.estudiante.id %}?periodo={{ periodo_id }}{% if tipo %}&tipo={{ tipo }}{% endif %}" title="Ver desglose por actividad">
                   {{ fila.estudiante.primer_apellido }} {{ fila.estudiante.segundo_apellido|default:"" }} {{ fila.estudiante.nombres }}
                 </a>
+                {% if fila.adecuacion %}<span class="adec-indicator sig" title="Adecuación significativa"></span>{% elif fila.adecuacion_no_sig %}<span class="adec-indicator no-sig" title="Adecuación no significativa"></span>{% endif %}
               </td>
               {% if not tipo or tipo == 'TAREA' %}
               <td class="num-cell">{{ fila.tareas.puntos_obtenidos|floatformat:1 }}</td>

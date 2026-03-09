@@ -54,6 +54,9 @@
 .errores-puntaje li:hover{text-decoration:underline;}
 .fila-estudiante.fila-con-error td{background:#fff1f2 !important;}
 .fila-estudiante.fila-con-error .student-col{background:#ffe4e6 !important;border-left:3px solid var(--danger);}
+.adec-indicator{display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:6px;vertical-align:middle;}
+.adec-indicator.sig{background:#ea580c;}
+.adec-indicator.no-sig{background:#eab308;}
 </style>
 {% endblock %}
 
@@ -126,7 +129,7 @@
           <tbody>
             {% for fila in filas %}
             <tr class="fila-estudiante" data-est-id="{{ fila.estudiante.id }}">
-              <td class="student-col">{{ fila.estudiante.primer_apellido }} {{ fila.estudiante.segundo_apellido|default:"" }} {{ fila.estudiante.nombres }}</td>
+              <td class="student-col">{{ fila.estudiante.primer_apellido }} {{ fila.estudiante.segundo_apellido|default:"" }} {{ fila.estudiante.nombres }}{% if fila.adecuacion %}<span class="adec-indicator sig" title="Adecuación significativa"></span>{% elif fila.adecuacion_no_sig %}<span class="adec-indicator no-sig" title="Adecuación no significativa"></span>{% endif %}</td>
               {% for ind, p in fila.indicador_puntajes %}
               <td>
                 <input type="text" inputmode="numeric" name="p_{{ ind.id }}_{{ fila.estudiante.id }}"

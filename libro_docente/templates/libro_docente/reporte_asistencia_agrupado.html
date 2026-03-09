@@ -1,0 +1,96 @@
+{% extends "admin/base_site.html" %}
+
+{% block title %}Reporte agrupado de asistencia{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+.wrap{max-width:1200px;margin:20px auto;padding:0 14px;font-family:"Segoe UI",system-ui,sans-serif;}
+.card{background:#fff;border:1px solid #dee2e6;border-radius:12px;padding:14px 16px;margin-bottom:14px;}
+.title{font-size:1.15rem;font-weight:800;margin:0 0 8px;color:#145591;}
+.muted{font-size:.85rem;color:#6b7280;}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:8px;text-decoration:none;border:1px solid #cbd5e1;background:#fff;color:#145591;font-weight:700;cursor:pointer;}
+.table-wrap{overflow:auto;}
+table{width:100%;border-collapse:collapse;font-size:.84rem;}
+th,td{border:1px solid #e5e7eb;padding:8px;}
+th{background:#f8fafc;color:#475569;text-transform:uppercase;font-size:.72rem;}
+.no-print{}
+.adec-indicator{display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:6px;vertical-align:middle;}
+.adec-indicator.sig{background:#ea580c;}
+.adec-indicator.no-sig{background:#eab308;}
+@media print{
+  .no-print{display:none !important;}
+  .wrap{max-width:none;margin:0;padding:0;}
+  .card{box-shadow:none;}
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="wrap">
+  <div class="card no-print">
+    <p class="title">Reporte agrupado de asistencia</p>
+    <p class="muted" style="margin:0 0 8px;">
+      Grupo: <strong>{{ grupo_label }}</strong> · Materia base: <strong>{{ asignacion_base.subarea_curso.subarea.nombre }}</strong>
+    </p>
+    <form method="get" style="display:flex;gap:8px;flex-wrap:wrap;align-items:end;">
+      <div>
+        <label class="muted" style="display:block;margin-bottom:4px;font-weight:700;">Período</label>
+        <select name="periodo" class="btn" style="padding:7px 10px;">
+          {% for pcl in periodos_cl %}
+          <option value="{{ pcl.periodo_id }}" {% if periodo_id == pcl.periodo_id %}selected{% endif %}>{{ pcl.periodo.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button class="btn" type="submit">Actualizar</button>
+      <button class="btn" type="button" onclick="window.print()">Imprimir PDF</button>
+      <a class="btn" href="{% url 'libro_docente:asistencia' asignacion_base.id %}">Volver</a>
+    </form>
+    <p class="muted" style="margin:10px 0 0;">
+      Materias incluidas: {% for a in asignaciones %}{{ a.subarea_curso.subarea.nombre }}{% if not forloop.last %}, {% endif %}{% endfor %}
+      · Sesiones contabilizadas: {{ total_sesiones }}
+    </p>
+  </div>
+
+  <div class="card">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Estudiante</th>
+            <th>Lecc.</th>
+            <th>P</th>
+            <th>TM</th>
+            <th>TC</th>
+            <th>AI</th>
+            <th>AJ</th>
+            <th>Inj. equiv.</th>
+            <th>% Aus.</th>
+            <th>% Asist.</th>
+            <th>Nota</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in filas %}
+          <tr>
+            <td>{{ r.estudiante }}{% if r.adecuacion %}<span class="adec-indicator sig" title="Adecuación significativa"></span>{% elif r.adecuacion_no_sig %}<span class="adec-indicator no-sig" title="Adecuación no significativa"></span>{% endif %}</td>
+            <td>{{ r.total_lecciones }}</td>
+            <td>{{ r.presentes }}</td>
+            <td>{{ r.tm }}</td>
+            <td>{{ r.tc }}</td>
+            <td>{{ r.ai }}</td>
+            <td>{{ r.aj }}</td>
+            <td>{{ r.aus_inj_equiv }}</td>
+            <td>{{ r.pct_aus }}%</td>
+            <td>{{ r.pct_asis }}%</td>
+            <td>{{ r.nota_mep }}</td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="11">Sin datos para el período seleccionado.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

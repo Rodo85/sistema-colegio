@@ -25,6 +25,9 @@
 .puntaje-input.error{border-color:var(--danger);background:#fef2f2;box-shadow:0 0 0 1px var(--danger);}
 .fila-con-error td{background:#fff1f2 !important;}
 .nota-cell,.pct-cell{font-weight:700;text-align:center;}
+.adec-indicator{display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:6px;vertical-align:middle;}
+.adec-indicator.sig{background:#ea580c;}
+.adec-indicator.no-sig{background:#eab308;}
 </style>
 {% endblock %}
 
@@ -66,7 +69,7 @@
           <tbody>
             {% for f in filas %}
             <tr class="fila-estudiante">
-              <td class="student-col">{{ f.estudiante.primer_apellido }} {{ f.estudiante.segundo_apellido|default:"" }} {{ f.estudiante.nombres }}</td>
+              <td class="student-col">{{ f.estudiante.primer_apellido }} {{ f.estudiante.segundo_apellido|default:"" }} {{ f.estudiante.nombres }}{% if f.adecuacion %}<span class="adec-indicator sig" title="Adecuación significativa"></span>{% elif f.adecuacion_no_sig %}<span class="adec-indicator no-sig" title="Adecuación no significativa"></span>{% endif %}</td>
               <td style="text-align:center;">
                 <input type="text" class="puntaje-input" inputmode="numeric" name="ps_{{ f.estudiante.id }}" data-max="{{ puntaje_total }}" value="{% if f.puntos is not None %}{{ f.puntos|floatformat:0 }}{% endif %}" placeholder="—">
               </td>

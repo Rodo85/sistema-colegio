@@ -887,6 +887,8 @@ def _calcular_resumen(asignacion, periodo, matriculas):
         if comp_asistencia:
             peso_asistencia = comp_asistencia.porcentaje
 
+    adec_sig = _get_ids_adecuacion(asignacion)
+    adec_no_sig = _get_ids_adecuacion_no_significativa(asignacion)
     resultados = []
     for m in matriculas:
         est = m.estudiante
@@ -968,6 +970,8 @@ def _calcular_resumen(asignacion, periodo, matriculas):
             "peso_asistencia": peso_asistencia,
             "aporte_real": round(aporte_real, 2),
             "nivel_alerta": nivel_alerta,
+            "adecuacion": est.id in adec_sig,
+            "adecuacion_no_sig": est.id in adec_no_sig,
         })
 
     nombre_componente = (
@@ -2135,9 +2139,13 @@ def asignacion_estudiantes_excel_view(request, asignacion_id):
             .order_by("estudiante__primer_apellido", "estudiante__segundo_apellido", "estudiante__nombres")
         )
 
+    adec_sig = _get_ids_adecuacion(asignacion)
+    adec_no_sig = _get_ids_adecuacion_no_significativa(asignacion)
     return render(request, "libro_docente/asignacion_estudiantes_excel.html", {
         "asignacion": asignacion,
         "estudiantes": estudiantes,
+        "adec_sig": adec_sig,
+        "adec_no_sig": adec_no_sig,
         "limite": (25 if asignacion.subgrupo_id else 50),
         "form_manual": form_manual,
     })
@@ -2359,6 +2367,8 @@ def prueba_lista_ejecucion_view(request, actividad_id):
                 if est.id in adec_no_sig
                 else ""
             ),
+            "adecuacion": est.id in adec_sig,
+            "adecuacion_no_sig": est.id in adec_no_sig,
         }
         if est.id in adec_reporte:
             adecuacion.append(row)
@@ -2594,6 +2604,8 @@ def asistencia_view(request, asignacion_id):
                 inj_guardadas[reg.estudiante_id] = _formatear_cantidad_asistencia(inj_val)
 
     matriculas = _get_estudiantes(asignacion)
+    adec_sig = _get_ids_adecuacion(asignacion)
+    adec_no_sig = _get_ids_adecuacion_no_significativa(asignacion)
     estudiantes = []
     for m in matriculas:
         est = m.estudiante
@@ -2605,6 +2617,8 @@ def asistencia_view(request, asignacion_id):
             "estado": estado,
             "lecciones_injustificadas": inj_guardadas.get(est.id),
             "observacion": obs_guardadas.get(est.id, ""),
+            "adecuacion": est.id in adec_sig,
+            "adecuacion_no_sig": est.id in adec_no_sig,
         })
     estudiantes.sort(key=lambda e: e["nombre"])
 
@@ -2845,6 +2859,139 @@ def resumen_view(request, asignacion_id):
         "periodo_sel": periodo_sel,
         "resumen": resumen,
         "institucion_activa_id": getattr(request, "institucion_activa_id", None),
+    })
+
+
+@login_required
+@permission_required("libro_docente.access_libro_docente", raise_exception=True)
+def reporte_asistencia_agrupado_view(request, asignacion_id):
+    """
+    Consolida asistencia por estudiante para el mismo grupo/subgrupo,
+    sumando todas las materias que imparte el docente en ese grupo.
+    """
+    asignacion = _obtener_asignacion_con_permiso(request, asignacion_id)
+    if asignacion is None:
+        messages.error(request, "No tienes acceso a esta asignación.")
+        return redirect("libro_docente:home")
+
+    periodos_cl = list(
+        PeriodoCursoLectivo.objects.filter(
+            institucion_id=asignacion.subarea_curso.institucion_id,
+            curso_lectivo=asignacion.curso_lectivo,
+            activo=True,
+        )
+        .select_related("periodo")
+        .order_by("periodo__numero")
+    )
+    try:
+        periodo_id = int(request.GET.get("periodo", "0") or "0")
+    except (TypeError, ValueError):
+        periodo_id = 0
+    if not periodo_id and periodos_cl:
+        p = _infer_periodo(asignacion, timezone.localdate())
+        periodo_id = (p.id if p else periodos_cl[0].periodo_id)
+    periodo = Periodo.objects.filter(id=periodo_id).first() if periodo_id else None
+
+    asignaciones_qs = DocenteAsignacion.objects.filter(
+        docente=asignacion.docente,
+        curso_lectivo=asignacion.curso_lectivo,
+        activo=True,
+    ).select_related("subarea_curso__subarea", "seccion", "subgrupo", "centro_trabajo")
+    if asignacion.subgrupo_id:
+        asignaciones_qs = asignaciones_qs.filter(subgrupo_id=asignacion.subgrupo_id)
+    else:
+        asignaciones_qs = asignaciones_qs.filter(seccion_id=asignacion.seccion_id, subgrupo__isnull=True)
+    if asignacion.centro_trabajo_id:
+        asignaciones_qs = asignaciones_qs.filter(centro_trabajo_id=asignacion.centro_trabajo_id)
+    else:
+        asignaciones_qs = asignaciones_qs.filter(centro_trabajo__isnull=True)
+    asignaciones = list(asignaciones_qs.order_by("subarea_curso__subarea__nombre"))
+    asignacion_ids = [a.id for a in asignaciones]
+
+    sesiones_qs = AsistenciaSesion.objects.filter(docente_asignacion_id__in=asignacion_ids)
+    if periodo:
+        sesiones_qs = sesiones_qs.filter(periodo=periodo)
+    sesiones = list(sesiones_qs.order_by("fecha", "id"))
+    sesion_ids = [s.id for s in sesiones]
+
+    registros = (
+        AsistenciaRegistro.objects.filter(sesion_id__in=sesion_ids).select_related("estudiante")
+        if sesion_ids
+        else AsistenciaRegistro.objects.none()
+    )
+    registros_map = {(r.estudiante_id, r.sesion_id): r for r in registros}
+
+    matriculas = list(_get_estudiantes(asignacion))
+    adec_sig = _get_ids_adecuacion(asignacion)
+    adec_no_sig = _get_ids_adecuacion_no_significativa(asignacion)
+    filas = []
+    for m in matriculas:
+        est = m.estudiante
+        total_lecciones = sum((s.lecciones or 1) for s in sesiones)
+        presentes = Decimal("0")
+        tm = Decimal("0")
+        tc = Decimal("0")
+        ai = Decimal("0")
+        aj = Decimal("0")
+        aus_inj_equiv = Decimal("0")
+        for s in sesiones:
+            lecciones = Decimal(str(s.lecciones or 1))
+            reg = registros_map.get((est.id, s.id))
+            if reg is None:
+                ai += lecciones
+                aus_inj_equiv += lecciones
+                continue
+            estado = _normalizar_estado_asistencia(reg.estado)
+            try:
+                detalle = _calcular_detalle_dia_asistencia(
+                    estado=estado,
+                    lecciones_dia=lecciones,
+                    cantidad_ingresada=reg.lecciones_injustificadas,
+                    legacy_full_day_ai=True,
+                    cantidad_es_equivalente=True,
+                )
+            except ValidationError:
+                detalle = _calcular_detalle_dia_asistencia(
+                    estado=estado,
+                    lecciones_dia=lecciones,
+                    cantidad_ingresada=None,
+                    legacy_full_day_ai=True,
+                )
+            presentes += detalle["presentes"]
+            tm += detalle["tm_cantidad"]
+            tc += detalle["tc_cantidad"]
+            ai += detalle["ai_cantidad"]
+            aj += detalle["aj_cantidad"]
+            aus_inj_equiv += detalle["lecc_inj_equiv"]
+
+        pct_aus, pct_asis = _calcular_porcentajes_asistencia(total_lecciones, aus_inj_equiv)
+        filas.append({
+            "estudiante": est,
+            "total_lecciones": total_lecciones,
+            "presentes": presentes.quantize(Decimal("0.1")),
+            "tm": tm.quantize(Decimal("0.1")),
+            "tc": tc.quantize(Decimal("0.1")),
+            "ai": ai.quantize(Decimal("0.1")),
+            "aj": aj.quantize(Decimal("0.1")),
+            "aus_inj_equiv": aus_inj_equiv.quantize(Decimal("0.01")),
+            "pct_aus": round(pct_aus, 2),
+            "pct_asis": round(pct_asis, 2),
+            "nota_mep": _nota_mep(pct_aus),
+            "adecuacion": est.id in adec_sig,
+            "adecuacion_no_sig": est.id in adec_no_sig,
+        })
+
+    filas.sort(key=lambda r: str(r["estudiante"]))
+    grupo_label = str(asignacion.subgrupo) if asignacion.subgrupo_id else str(asignacion.seccion)
+    return render(request, "libro_docente/reporte_asistencia_agrupado.html", {
+        "asignacion_base": asignacion,
+        "grupo_label": grupo_label,
+        "periodos_cl": periodos_cl,
+        "periodo_id": periodo_id,
+        "periodo": periodo,
+        "asignaciones": asignaciones,
+        "filas": filas,
+        "total_sesiones": len(sesiones),
     })
 
 
@@ -3480,7 +3627,8 @@ def actividad_calificar_view(request, actividad_id):
             messages.info(request, "No hubo cambios que guardar.")
         return redirect(reverse("libro_docente:actividad_calificar", args=[actividad_id]))
 
-    # Construir filas para la grilla: cada fila tiene indicador_puntajes = [(ind, valor), ...]
+    adec_sig = _get_ids_adecuacion(asignacion)
+    adec_no_sig = _get_ids_adecuacion_no_significativa(asignacion)
     filas = []
     for m in matriculas:
         est = m.estudiante
@@ -3503,6 +3651,8 @@ def actividad_calificar_view(request, actividad_id):
             "total_obtenido": total_obt,
             "porcentaje_logro": pct,
             "observacion_tarea": observaciones_existentes.get(est.id, ""),
+            "adecuacion": est.id in adec_sig,
+            "adecuacion_no_sig": est.id in adec_no_sig,
         })
 
     # Orden por apellido (primer_apellido, segundo_apellido, nombres)
@@ -3579,6 +3729,8 @@ def _calificar_simple(request, actividad, asignacion, matriculas):
         messages.success(request, "Puntajes guardados.")
         return redirect(reverse("libro_docente:actividad_calificar", args=[actividad.id]))
 
+    adec_sig = _get_ids_adecuacion(asignacion)
+    adec_no_sig = _get_ids_adecuacion_no_significativa(asignacion)
     filas = []
     for m in matriculas:
         est = m.estudiante
@@ -3591,6 +3743,8 @@ def _calificar_simple(request, actividad, asignacion, matriculas):
             "puntos": puntos,
             "nota": nota,
             "porcentaje": porcentaje,
+            "adecuacion": est.id in adec_sig,
+            "adecuacion_no_sig": est.id in adec_no_sig,
         })
 
     filas.sort(

@@ -1,5 +1,13 @@
 {% extends "admin/base_site.html" %}
 {% block title %}Estudiantes por Excel{% endblock %}
+{% block extrahead %}
+{{ block.super }}
+<style>
+.adec-indicator{display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:6px;vertical-align:middle;}
+.adec-indicator.sig{background:#ea580c;}
+.adec-indicator.no-sig{background:#eab308;}
+</style>
+{% endblock %}
 {% block content %}
 <div class="container py-3">
   <div class="d-flex justify-content-between align-items-center mb-3">
@@ -99,7 +107,7 @@
         <tbody>
           {% for m in estudiantes %}
           <tr>
-            <td>{{ m.estudiante.identificacion }}</td>
+            <td>{{ m.estudiante.identificacion }}{% if m.estudiante.id in adec_sig %}<span class="adec-indicator sig" title="Adecuación significativa"></span>{% elif m.estudiante.id in adec_no_sig %}<span class="adec-indicator no-sig" title="Adecuación no significativa"></span>{% endif %}</td>
             <td>
               <input form="edit-est-{{ m.estudiante.id }}" type="text" name="primer_apellido" class="form-control form-control-sm" value="{{ m.estudiante.primer_apellido }}" required>
             </td>
