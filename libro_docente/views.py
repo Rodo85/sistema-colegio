@@ -2,6 +2,7 @@ from datetime import date
 from decimal import Decimal
 import csv
 import hashlib
+import logging
 import re
 import unicodedata
 
@@ -73,6 +74,8 @@ _MEP_RANGES = [
     (40, 50, 1),
     (50, 100.01, 0),  # >= 50%
 ]
+
+logger = logging.getLogger(__name__)
 
 TIPOS_EVALUACION = (
     ActividadEvaluacion.TAREA,
@@ -467,6 +470,11 @@ def _lecciones_programadas_para_fecha(asignacion, fecha_ref):
     try:
         dia_iso = int(fecha_ref.isoweekday())
     except Exception:
+        logger.warning(
+            "asistencia_lecciones: fecha inválida asignacion=%s fecha_ref=%s",
+            getattr(asignacion, "id", None),
+            fecha_ref,
+        )
         return 0
     total_directo = (
         HorarioDocenteBloque.objects.filter(
@@ -478,6 +486,13 @@ def _lecciones_programadas_para_fecha(asignacion, fecha_ref):
         .count()
     )
     if total_directo > 0:
+        logger.info(
+            "asistencia_lecciones: directo asignacion=%s fecha=%s dia=%s total=%s",
+            asignacion.id,
+            fecha_ref,
+            dia_iso,
+            total_directo,
+        )
         return total_directo
 
     # Fallback defensivo: si el horario quedó asociado a otra asignación
@@ -499,12 +514,28 @@ def _lecciones_programadas_para_fecha(asignacion, fecha_ref):
         filtros &= Q(docente_asignacion__centro_trabajo_id=asignacion.centro_trabajo_id)
     else:
         filtros &= Q(docente_asignacion__centro_trabajo__isnull=True)
-    return (
+    total_fallback = (
         HorarioDocenteBloque.objects.filter(filtros)
         .values("leccion_numero")
         .distinct()
         .count()
     )
+    resumen_directo = list(
+        HorarioDocenteBloque.objects.filter(docente_asignacion=asignacion)
+        .values("dia_semana")
+        .annotate(total=Count("leccion_numero", distinct=True))
+        .order_by("dia_semana")
+    )
+    logger.warning(
+        "asistencia_lecciones: fallback asignacion=%s fecha=%s dia=%s total_directo=%s total_fallback=%s resumen_directo=%s",
+        asignacion.id,
+        fecha_ref,
+        dia_iso,
+        total_directo,
+        total_fallback,
+        resumen_directo,
+    )
+    return total_fallback
 
 
 def _formatear_cantidad_asistencia(valor):
@@ -2507,6 +2538,21 @@ def asistencia_view(request, asignacion_id):
     if sesion_actual:
         lecciones = sesion_actual.lecciones or 1
         minuta = sesion_actual.minuta or ""
+        logger.info(
+            "asistencia_lecciones: sesion_existente asignacion=%s fecha=%s lecciones_guardadas=%s lecciones_horario=%s",
+            asignacion.id,
+            fecha,
+            lecciones,
+            lecciones_programadas,
+        )
+    else:
+        logger.info(
+            "asistencia_lecciones: sesion_nueva asignacion=%s fecha=%s lecciones_horario=%s lecciones_form=%s",
+            asignacion.id,
+            fecha,
+            lecciones_programadas,
+            lecciones,
+        )
 
     # Estados guardados de la fecha seleccionada
     estados_guardados = {}
@@ -3074,6 +3120,8 @@ def actividad_edit_view(request, actividad_id):
     formset = None
     if request.method == "POST":
         post_data = request.POST.copy()
+        fecha_asignacion_raw = (request.POST.get("fecha_asignacion") or "").strip()
+        fecha_entrega_raw = (request.POST.get("fecha_entrega") or "").strip()
         post_data.setdefault("tipo_componente", actividad.tipo_componente)
         if es_simple:
             post_data.setdefault("estado", actividad.estado or ActividadEvaluacion.BORRADOR)
@@ -3102,12 +3150,23 @@ def actividad_edit_view(request, actividad_id):
                         )
                 else:
                     with transaction.atomic():
-                        form.save()
+                        obj = form.save(commit=False)
+                        if not fecha_asignacion_raw and actividad.fecha_asignacion:
+                            obj.fecha_asignacion = actividad.fecha_asignacion
+                        if not fecha_entrega_raw and actividad.fecha_entrega:
+                            obj.fecha_entrega = actividad.fecha_entrega
+                        obj.save()
                     messages.success(request, "Actividad actualizada.")
                     return redirect(reverse("libro_docente:actividad_edit", args=[actividad_id]))
             else:
                 with transaction.atomic():
-                    form.save()
+                    obj = form.save(commit=False)
+                    if not fecha_asignacion_raw and actividad.fecha_asignacion:
+                        obj.fecha_asignacion = actividad.fecha_asignacion
+                    if not fecha_entrega_raw and actividad.fecha_entrega:
+                        obj.fecha_entrega = actividad.fecha_entrega
+                    obj.save()
+                    formset.instance = obj
                     formset.save()
                     crear_copia_adecuacion = (
                         request.POST.get("crear_copia_adecuacion") == "1"

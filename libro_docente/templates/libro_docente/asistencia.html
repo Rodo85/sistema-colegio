@@ -122,6 +122,9 @@ tbody td{padding:8px 12px;vertical-align:middle;}
       </p>
     </div>
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <a href="{% url 'libro_docente:horario_docente' %}{% if asignacion.centro_trabajo_id %}?centro={{ asignacion.centro_trabajo_id }}{% endif %}" class="resumen-link" style="color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.4);padding:5px 12px;border-radius:6px;">
+        🗓 Horario
+      </a>
       <a href="{% url 'libro_docente:estudiantes_config' asignacion.id %}" class="resumen-link" style="color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.4);padding:5px 12px;border-radius:6px;">
         👥 Configurar estudiantes
       </a>
@@ -162,6 +165,10 @@ tbody td{padding:8px 12px;vertical-align:middle;}
             {% if lecciones_programadas %}
               <small style="margin-top:4px;color:var(--muted);font-size:.74rem;">
                 Autocompletado por horario: {{ lecciones_programadas }} lección{{ lecciones_programadas|pluralize:"es" }}.
+              </small>
+            {% else %}
+              <small style="margin-top:4px;color:#b45309;font-size:.74rem;">
+                No se encontraron lecciones en horario para hoy. Se usa valor manual.
               </small>
             {% endif %}
           </div>
