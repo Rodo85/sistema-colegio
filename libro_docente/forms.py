@@ -36,13 +36,21 @@ class ActividadEvaluacionForm(forms.ModelForm):
             "alcance_estudiantes": forms.Select(attrs={"class": "form-control"}),
             "puntaje_total": forms.NumberInput(attrs={"class": "form-control", "step": "1", "min": "0"}),
             "porcentaje_actividad": forms.NumberInput(attrs={"class": "form-control", "step": "1", "min": "0", "max": "100"}),
-            "fecha_asignacion": forms.DateInput(attrs={"class": "form-control", "type": "date"}),
-            "fecha_entrega": forms.DateInput(attrs={"class": "form-control", "type": "date"}),
+            "fecha_asignacion": forms.DateInput(
+                format="%Y-%m-%d",
+                attrs={"class": "form-control", "type": "date"},
+            ),
+            "fecha_entrega": forms.DateInput(
+                format="%Y-%m-%d",
+                attrs={"class": "form-control", "type": "date"},
+            ),
             "estado": forms.Select(attrs={"class": "form-control"}),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields["fecha_asignacion"].input_formats = ["%Y-%m-%d"]
+        self.fields["fecha_entrega"].input_formats = ["%Y-%m-%d"]
         tipo = (
             self.data.get("tipo_componente")
             or self.initial.get("tipo_componente")
