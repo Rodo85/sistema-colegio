@@ -26,6 +26,7 @@ from .views import (
     resumen_evaluacion_view,
     resumen_view,
     reporte_asistencia_agrupado_view,
+    reporte_asistencia_estudiante_view,
 )
 
 app_name = "libro_docente"
@@ -46,6 +47,11 @@ urlpatterns = [
         "asistencia/<int:asignacion_id>/resumen/estudiante/<int:estudiante_id>/",
         detalle_estudiante_view,
         name="detalle_estudiante",
+    ),
+    path(
+        "asistencia/<int:asignacion_id>/resumen/estudiante/<int:estudiante_id>/reporte/",
+        reporte_asistencia_estudiante_view,
+        name="reporte_asistencia_estudiante",
     ),
     path(
         "asistencia/<int:asignacion_id>/resumen/estudiante/<int:estudiante_id>/consulta/",

@@ -1,0 +1,137 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block title %}Reporte asistencia – {{ estudiante }}{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+.page-wrap{max-width:900px;margin:20px auto;padding:0 14px;font-family:Arial,sans-serif;}
+.card{background:#fff;border:1px solid #d1d5db;border-radius:10px;padding:14px 16px;margin-bottom:14px;}
+.doc-header{display:flex;justify-content:space-between;align-items:center;border:1px solid #d1d5db;border-radius:10px;padding:12px 14px;background:#fff;margin-bottom:12px;}
+.doc-header .logo{max-height:110px;max-width:420px;object-fit:contain;}
+.doc-header .logo-right{max-height:90px;max-width:150px;object-fit:contain;}
+.doc-header-spacer{display:none;}
+.section-title{font-size:1rem;font-weight:700;margin:0 0 8px;color:#111827;}
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:.88rem;}
+th,td{border:1px solid #cbd5e1;padding:7px 8px;text-align:left;}
+th{background:#f8fafc;}
+.print-btn{display:inline-block;padding:8px 14px;border-radius:8px;background:#145591;color:#fff;text-decoration:none;margin:8px 8px 14px 0;}
+.no-print{}
+.badge-p{color:#065f46;background:#d1fae5;padding:2px 8px;border-radius:4px;font-weight:700;font-size:.75rem;}
+.badge-tm,.badge-tc,.badge-ai,.badge-aj{padding:2px 8px;border-radius:4px;font-weight:700;font-size:.75rem;}
+.badge-tm{color:#92400e;background:#fef3c7;}
+.badge-tc{color:#78350f;background:#fde68a;}
+.badge-ai{color:#991b1b;background:#fee2e2;}
+.badge-aj{color:#3730a3;background:#e0e7ff;}
+.resumen-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;margin-bottom:12px;}
+.res-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:8px 10px;text-align:center;font-size:.8rem;}
+.res-card .rc-val{font-weight:800;color:#145591;}
+.res-card .rc-lbl{font-size:.65rem;color:#64748b;text-transform:uppercase;}
+@media print{
+  .no-print{display:none !important;}
+  body{background:#fff !important;}
+  .page-wrap{margin:0;padding:0;}
+  .card{border:1px solid #94a3b8;box-shadow:none;}
+  .doc-header{position:fixed;top:0;left:0;right:0;z-index:20;border:none;border-bottom:1px solid #94a3b8;border-radius:0;padding:10px 12mm;background:#fff;}
+  .doc-header-spacer{display:block;height:132px;}
+}
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div class="page-wrap">
+  <div class="no-print" style="margin-bottom:14px;">
+    <button type="button" class="print-btn" onclick="window.print();">Imprimir reporte</button>
+    <a href="{% url 'libro_docente:detalle_estudiante' asignacion.id estudiante.id %}?periodo={{ periodo_id }}" class="print-btn" style="background:#6b7280;">← Volver al detalle</a>
+    {% if periodos_cl %}
+    <span style="margin-left:12px;font-size:.88rem;">
+      Período:
+      {% for pcl in periodos_cl %}
+        <a href="?periodo={{ pcl.periodo_id }}" style="margin:0 4px;{% if pcl.periodo_id == periodo_id %}font-weight:700;{% endif %}">{{ pcl.periodo.nombre }}</a>{% if not forloop.last %} · {% endif %}
+      {% endfor %}
+    </span>
+    {% endif %}
+  </div>
+
+  <div class="doc-header">
+    <div>
+      {% if plantilla and plantilla.logo_mep %}
+        <img src="{{ plantilla.logo_mep.url }}" alt="Logo MEP" class="logo">
+      {% endif %}
+    </div>
+    <div style="text-align:right;">
+      {% if asignacion.centro_trabajo_id and asignacion.centro_trabajo.logo %}
+        <img src="{{ asignacion.centro_trabajo.logo.url }}" alt="Logo centro" class="logo-right">
+      {% elif asignacion.subarea_curso.institucion.logo %}
+        <img src="{{ asignacion.subarea_curso.institucion.logo.url }}" alt="Escudo colegio" class="logo-right">
+      {% endif %}
+    </div>
+  </div>
+  <div class="doc-header-spacer"></div>
+
+  <div class="card">
+    <p class="section-title">Reporte de asistencia · {{ estudiante }}</p>
+    <p style="font-size:.9rem;color:#374151;margin:0 0 4px;"><strong>Identificación:</strong> {{ estudiante.identificacion }}</p>
+    <p style="font-size:.9rem;color:#374151;margin:0;"><strong>Grupo:</strong> {{ grupo_label }} · <strong>Curso lectivo:</strong> {{ asignacion.curso_lectivo.anio }}{% if periodo_sel %} · <strong>Período:</strong> {{ periodo_sel.nombre }}{% endif %}</p>
+  </div>
+
+  {% for sec in secciones %}
+  <div class="card">
+    <p class="section-title">{{ sec.materia }}</p>
+    <p style="font-size:.9rem;color:#374151;margin:0 0 12px;">Tabla de asistencia para el estudiante {{ estudiante }}</p>
+
+    {% if sec.resumen %}
+    <div class="resumen-grid">
+      <div class="res-card"><div class="rc-val">{{ sec.resumen.total_lecciones }}</div><div class="rc-lbl">Lecc.</div></div>
+      <div class="res-card"><div class="rc-val" style="color:#065f46;">{{ sec.resumen.presentes }}</div><div class="rc-lbl">P</div></div>
+      <div class="res-card"><div class="rc-val" style="color:#92400e;">{{ sec.resumen.tardias_media }}</div><div class="rc-lbl">TM</div></div>
+      <div class="res-card"><div class="rc-val" style="color:#78350f;">{{ sec.resumen.tardias_completa }}</div><div class="rc-lbl">TC</div></div>
+      <div class="res-card"><div class="rc-val" style="color:#991b1b;">{{ sec.resumen.ausentes_inj_lecciones }}</div><div class="rc-lbl">AI</div></div>
+      <div class="res-card"><div class="rc-val">{{ sec.resumen.pct }}%</div><div class="rc-lbl">% Aus.</div></div>
+      <div class="res-card"><div class="rc-val">{{ sec.resumen.nota_mep }}%</div><div class="rc-lbl">Asig.</div></div>
+    </div>
+    {% endif %}
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:36px;">#</th>
+            <th>Fecha</th>
+            <th>Lecciones</th>
+            <th>Estado</th>
+            <th>Lecc. inj.</th>
+            <th>Observación</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for h in sec.historial %}
+          <tr>
+            <td style="color:#64748b;font-size:.75rem;">{{ forloop.counter }}</td>
+            <td>{{ h.fecha|date:"d/m/Y" }}</td>
+            <td>{{ h.lecciones }}</td>
+            <td>
+              <span class="badge-{% if h.estado == 'P' %}p{% elif h.estado == 'TM' %}tm{% elif h.estado == 'TC' %}tc{% elif h.estado == 'AI' %}ai{% else %}aj{% endif %}">
+                {{ h.estado_display }}
+              </span>
+            </td>
+            <td>{{ h.lecciones_injustificadas|default:"—" }}</td>
+            <td style="font-size:.82rem;color:#64748b;">{{ h.observacion|default:"—" }}</td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="6" style="text-align:center;color:#64748b;padding:16px;">No hay registros en este período.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% empty %}
+  <div class="card"><p style="color:#64748b;">No hay datos de asistencia para este estudiante.</p></div>
+  {% endfor %}
+</div>
+
+{% endblock %}

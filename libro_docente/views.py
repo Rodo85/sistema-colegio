@@ -377,27 +377,14 @@ def _acciones_rapidas_asignacion(asignacion, fecha_ref=None, dia_horario=None):
         dia_int = None
     if dia_int and 1 <= dia_int <= 7:
         dia_qs = f"?dia_horario={dia_int}"
-    tipos = _tipos_habilitados_por_esquema(asignacion)
-    acciones = {
-        "asistencia": reverse("libro_docente:asistencia", args=[asignacion.id]) + dia_qs,
-        "estudiantes": reverse("libro_docente:estudiantes_config", args=[asignacion.id]),
-        "minuta": reverse("libro_docente:asistencia", args=[asignacion.id]) + dia_qs,
-        "detalle": reverse("libro_docente:resumen_evaluacion", args=[asignacion.id]),
-        "tarea": None,
-        "prueba": None,
-    }
+    evaluacion_url = reverse("libro_docente:actividad_list", args=[asignacion.id])
     if periodo_id:
-        if ActividadEvaluacion.TAREA in tipos:
-            acciones["tarea"] = (
-                reverse("libro_docente:actividad_create", args=[asignacion.id])
-                + f"?periodo={periodo_id}&tipo={ActividadEvaluacion.TAREA}"
-            )
-        if ActividadEvaluacion.PRUEBA in tipos:
-            acciones["prueba"] = (
-                reverse("libro_docente:actividad_create", args=[asignacion.id])
-                + f"?periodo={periodo_id}&tipo={ActividadEvaluacion.PRUEBA}"
-            )
-    return acciones
+        evaluacion_url += f"?periodo={periodo_id}"
+    return {
+        "asistencia": reverse("libro_docente:asistencia", args=[asignacion.id]) + dia_qs,
+        "evaluacion": evaluacion_url,
+        "detalle": reverse("libro_docente:resumen_evaluacion", args=[asignacion.id]),
+    }
 
 
 def _parse_recesos_config(config):
@@ -2791,6 +2778,154 @@ def detalle_estudiante_view(request, asignacion_id, estudiante_id):
         "resumen": resumen_est,
         "nombre_componente": nombre_componente,
         "ESTADO_CHOICES": dict(AsistenciaRegistro.ESTADO_CHOICES),
+    })
+
+
+def _asignaciones_con_estudiante(asignacion_base, estudiante_id):
+    """
+    Devuelve todas las asignaciones del mismo docente donde el estudiante
+    está en el grupo (mismo curso_lectivo, grupo/subgrupo, centro_trabajo).
+    """
+    qs = DocenteAsignacion.objects.filter(
+        docente=asignacion_base.docente,
+        curso_lectivo=asignacion_base.curso_lectivo,
+        activo=True,
+    ).select_related("subarea_curso__subarea", "seccion", "subgrupo", "centro_trabajo")
+    if asignacion_base.subgrupo_id:
+        qs = qs.filter(subgrupo_id=asignacion_base.subgrupo_id)
+    else:
+        qs = qs.filter(seccion_id=asignacion_base.seccion_id, subgrupo__isnull=True)
+    if asignacion_base.centro_trabajo_id:
+        qs = qs.filter(centro_trabajo_id=asignacion_base.centro_trabajo_id)
+    else:
+        qs = qs.filter(centro_trabajo__isnull=True)
+    result = []
+    for a in qs.order_by("subarea_curso__subarea__nombre"):
+        matriculas = _get_estudiantes(a)
+        if matriculas.filter(estudiante_id=estudiante_id).exists():
+            result.append(a)
+    return result
+
+
+@login_required
+@permission_required("libro_docente.access_libro_docente", raise_exception=True)
+def reporte_asistencia_estudiante_view(request, asignacion_id, estudiante_id):
+    """
+    Reporte individual de asistencia por estudiante.
+    Si el estudiante tiene varias materias con el mismo profesor, muestra
+    una sección por materia con su tabla de asistencia.
+    Incluye encabezado estándar (logos MEP, colegio/centro).
+    """
+    asignacion = _obtener_asignacion_con_permiso(request, asignacion_id)
+    if asignacion is None:
+        messages.error(request, "No tienes acceso a esta asignación.")
+        return redirect("libro_docente:home")
+
+    inst_id = asignacion.subarea_curso.institucion_id
+    periodos_cl = list(
+        PeriodoCursoLectivo.objects
+        .filter(
+            institucion_id=inst_id,
+            curso_lectivo=asignacion.curso_lectivo,
+        )
+        .select_related("periodo")
+        .order_by("periodo__numero")
+    )
+    try:
+        periodo_id = int(request.GET.get("periodo", 0))
+    except (ValueError, TypeError):
+        periodo_id = 0
+    if not periodo_id and periodos_cl:
+        p = _infer_periodo(asignacion, timezone.localdate())
+        periodo_id = (p.id if p else periodos_cl[0].periodo_id)
+
+    periodo_sel = None
+    for pcl in periodos_cl:
+        if pcl.periodo_id == periodo_id:
+            periodo_sel = pcl.periodo
+            break
+
+    matriculas = _get_estudiantes(asignacion)
+    matricula_est = matriculas.filter(estudiante_id=estudiante_id).first()
+    if not matricula_est:
+        messages.error(request, "El estudiante no pertenece a este grupo.")
+        return redirect(reverse("libro_docente:resumen", args=[asignacion_id]) + f"?periodo={periodo_id}")
+
+    estudiante = matricula_est.estudiante
+    asignaciones = _asignaciones_con_estudiante(asignacion, estudiante_id)
+
+    secciones = []
+    for a in asignaciones:
+        mat = _get_estudiantes(a).filter(estudiante_id=estudiante_id).first()
+        if not mat:
+            continue
+        historial = []
+        resumen_est = None
+        nombre_componente = "Asistencia"
+        if periodo_sel:
+            sesiones = list(_sesiones_por_periodo(a, periodo_sel))
+            sesion_ids = [s.id for s in sesiones]
+            registros = list(
+                AsistenciaRegistro.objects
+                .filter(sesion_id__in=sesion_ids, estudiante_id=estudiante_id)
+                .select_related("sesion")
+                .order_by("sesion__fecha", "sesion__sesion_numero")
+            )
+            for reg in registros:
+                estado = reg.estado
+                if estado == "T":
+                    estado = AsistenciaRegistro.TARDIA_MEDIA
+                estado_display = dict(AsistenciaRegistro.ESTADO_CHOICES).get(estado, reg.get_estado_display())
+                historial.append({
+                    "fecha": reg.sesion.fecha,
+                    "lecciones": reg.sesion.lecciones or 1,
+                    "estado": estado,
+                    "estado_display": estado_display,
+                    "lecciones_injustificadas": reg.lecciones_injustificadas,
+                    "observacion": reg.observacion or "",
+                })
+            sesiones_data = {s.id: (s.fecha, s.lecciones or 1) for s in sesiones}
+            registradas_sesion_ids = {r.sesion_id for r in registros}
+            for sid, (f, lecciones) in sesiones_data.items():
+                if sid not in registradas_sesion_ids:
+                    historial.append({
+                        "fecha": f,
+                        "lecciones": lecciones,
+                        "estado": AsistenciaRegistro.AUSENTE_INJUSTIFICADA,
+                        "estado_display": "Ausente injustificada",
+                        "lecciones_injustificadas": lecciones,
+                        "observacion": "(sin registro)",
+                    })
+            historial.sort(key=lambda x: x["fecha"])
+            resumen = _calcular_resumen(a, periodo_sel, [mat])
+            nombre_componente = resumen.get("nombre_componente", "Asistencia")
+            for r in resumen["estudiantes"]:
+                if r["estudiante"].id == estudiante_id:
+                    resumen_est = r
+                    break
+        secciones.append({
+            "asignacion": a,
+            "materia": a.subarea_curso.subarea.nombre,
+            "grupo_label": str(a.subgrupo) if a.subgrupo_id else str(a.seccion),
+            "historial": historial,
+            "resumen": resumen_est,
+            "nombre_componente": nombre_componente,
+        })
+
+    plantilla = PlantillaImpresionMatricula.objects.filter(
+        institucion_id=inst_id
+    ).first()
+    grupo_label = str(asignacion.subgrupo) if asignacion.subgrupo_id else str(asignacion.seccion)
+
+    return render(request, "libro_docente/reporte_asistencia_estudiante.html", {
+        "asignacion": asignacion,
+        "estudiante": estudiante,
+        "periodos_cl": periodos_cl,
+        "periodo_id": periodo_id,
+        "periodo_sel": periodo_sel,
+        "secciones": secciones,
+        "plantilla": plantilla,
+        "grupo_label": grupo_label,
     })
 
 

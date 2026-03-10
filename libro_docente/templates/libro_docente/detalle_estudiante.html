@@ -65,7 +65,10 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
         {% if asignacion.centro_trabajo_id %} · Centro: {{ asignacion.centro_trabajo.nombre }}{% endif %}
       </p>
     </div>
-    <a href="{% url 'libro_docente:resumen' asignacion.id %}?periodo={{ periodo_id }}" class="back-btn">← Ver resumen</a>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <a href="{% url 'libro_docente:reporte_asistencia_estudiante' asignacion.id estudiante.id %}?periodo={{ periodo_id }}" class="back-btn">Imprimir reporte</a>
+      <a href="{% url 'libro_docente:resumen' asignacion.id %}?periodo={{ periodo_id }}" class="back-btn">← Ver resumen</a>
+    </div>
   </div>
 
   <!-- Selector de período -->
