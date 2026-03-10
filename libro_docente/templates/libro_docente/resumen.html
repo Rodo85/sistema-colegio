@@ -65,6 +65,26 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
 .alert{padding:11px 16px;border-radius:8px;margin-bottom:16px;font-size:.9rem;}
 .alert-info{background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;}
 .alert-warning{background:#fffbeb;border:1px solid #fde68a;color:#92400e;}
+
+/* Print - encabezado igual que reporte_asistencia_estudiante */
+.no-print{}
+.print-header{display:none;}
+.col-no-print{}
+.doc-header-print{display:none;}
+.doc-header-spacer-print{display:none;}
+.doc-header-print .logo{max-height:110px;max-width:420px;object-fit:contain;}
+.doc-header-print .logo-right{max-height:90px;max-width:150px;object-fit:contain;}
+@media print{
+  .no-print,.col-no-print{display:none !important;}
+  .asgn-banner,.card:first-of-type,.resumen-grid,.mep-legend,.periodo-btn,.back-btn,.card-header{display:none !important;}
+  .doc-header-print{display:flex !important;justify-content:space-between;align-items:center;position:fixed;top:0;left:0;right:0;z-index:20;border:none;border-bottom:1px solid #94a3b8;border-radius:0;padding:10px 12mm;background:#fff;}
+  .doc-header-spacer-print{display:block !important;height:132px;}
+  .print-header{display:block !important;margin-bottom:12px;font-size:1rem;font-weight:700;color:#145591;}
+  .card-body{padding-top:0 !important;}
+  .page-wrap{max-width:none;margin:0;padding:0;}
+  .card{box-shadow:none;border:1px solid #94a3b8;}
+  body{background:#fff !important;}
+}
 </style>
 {% endblock %}
 
@@ -82,7 +102,10 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
         {% if asignacion.centro_trabajo_id %} · Centro: {{ asignacion.centro_trabajo.nombre }}{% endif %}
       </p>
     </div>
-    <a href="{% url 'libro_docente:asistencia' asignacion.id %}" class="back-btn">← Pasar lista</a>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <a href="{% url 'libro_docente:reporte_asistencia_agrupado' asignacion.id %}?periodo={% if periodo_id %}{{ periodo_id }}{% endif %}" class="back-btn" style="background:rgba(255,255,255,.2);">🧾 Reporte agrupado</a>
+      <a href="{% url 'libro_docente:asistencia' asignacion.id %}" class="back-btn">← Pasar lista</a>
+    </div>
   </div>
 
   <!-- Selector de período -->
@@ -144,7 +167,31 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
 
       <!-- Tabla por estudiante -->
       <div class="card">
-        <div class="card-header"><i class="fas fa-table" style="color:var(--primary)"></i><h3>Detalle por estudiante · {{ periodo_sel.nombre }}</h3></div>
+        <div class="doc-header doc-header-print">
+          <div>
+            {% if plantilla and plantilla.logo_mep %}
+              <img src="{{ plantilla.logo_mep.url }}" alt="Logo MEP" class="logo">
+            {% endif %}
+          </div>
+          <div style="text-align:right;">
+            {% if asignacion.centro_trabajo_id and asignacion.centro_trabajo.logo %}
+              <img src="{{ asignacion.centro_trabajo.logo.url }}" alt="Logo centro" class="logo-right">
+            {% elif asignacion.subarea_curso.institucion.logo %}
+              <img src="{{ asignacion.subarea_curso.institucion.logo.url }}" alt="Escudo colegio" class="logo-right">
+            {% endif %}
+          </div>
+        </div>
+        <div class="doc-header-spacer doc-header-spacer-print"></div>
+        <div class="print-header">Resumen Asistencia · {{ asignacion.subarea_curso.subarea.nombre }} · {{ asignacion.seccion|default:asignacion.subgrupo }} · {{ periodo_sel.nombre }}</div>
+        <div class="card-header" style="justify-content:space-between;flex-wrap:wrap;gap:8px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <i class="fas fa-table" style="color:var(--primary)"></i>
+            <h3 style="margin:0;">Detalle por estudiante · {{ periodo_sel.nombre }}</h3>
+          </div>
+          <button type="button" class="btn btn-primary no-print" onclick="window.print();" style="margin:0;">
+            <i class="fas fa-print"></i> Imprimir estado de alerta
+          </button>
+        </div>
         <div class="card-body" style="padding:0;">
           <div class="table-wrap">
             <table>
@@ -152,7 +199,7 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
                 <tr>
                   <th>#</th>
                   <th>Estudiante</th>
-                  <th></th>
+                  <th class="col-no-print"></th>
                   <th title="Total de lecciones desde su ingreso">Lecc.</th>
                   <th title="Lecciones presentes">P</th>
                   <th title="Cantidad de tardías medias">TM</th>
@@ -177,7 +224,7 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
                     {% if r.adecuacion %}<span class="adec-indicator sig" title="Adecuación significativa"></span>{% elif r.adecuacion_no_sig %}<span class="adec-indicator no-sig" title="Adecuación no significativa"></span>{% endif %}
                     <div style="font-size:.75rem;color:var(--muted);">{{ r.estudiante.identificacion }}</div>
                   </td>
-                  <td>
+                  <td class="col-no-print">
                     <a href="{% url 'libro_docente:detalle_estudiante' asignacion.id r.estudiante.id %}?periodo={{ periodo_id }}" class="btn btn-outline" style="padding:4px 10px;font-size:.75rem;">
                       Ver detalle
                     </a>

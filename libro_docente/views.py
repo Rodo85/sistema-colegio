@@ -2987,12 +2987,14 @@ def resumen_view(request, asignacion_id):
         matriculas = _get_estudiantes(asignacion)
         resumen = _calcular_resumen(asignacion, periodo_sel, matriculas)
 
+    plantilla = PlantillaImpresionMatricula.objects.filter(institucion_id=inst_id).first()
     return render(request, "libro_docente/resumen.html", {
         "asignacion": asignacion,
         "periodos_cl": periodos_cl,
         "periodo_id": periodo_id,
         "periodo_sel": periodo_sel,
         "resumen": resumen,
+        "plantilla": plantilla,
         "institucion_activa_id": getattr(request, "institucion_activa_id", None),
     })
 
@@ -3118,6 +3120,8 @@ def reporte_asistencia_agrupado_view(request, asignacion_id):
 
     filas.sort(key=lambda r: str(r["estudiante"]))
     grupo_label = str(asignacion.subgrupo) if asignacion.subgrupo_id else str(asignacion.seccion)
+    inst_id = asignacion.subarea_curso.institucion_id
+    plantilla = PlantillaImpresionMatricula.objects.filter(institucion_id=inst_id).first()
     return render(request, "libro_docente/reporte_asistencia_agrupado.html", {
         "asignacion_base": asignacion,
         "grupo_label": grupo_label,
@@ -3127,6 +3131,7 @@ def reporte_asistencia_agrupado_view(request, asignacion_id):
         "asignaciones": asignaciones,
         "filas": filas,
         "total_sesiones": len(sesiones),
+        "plantilla": plantilla,
     })
 
 

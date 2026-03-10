@@ -18,16 +18,38 @@ th{background:#f8fafc;color:#475569;text-transform:uppercase;font-size:.72rem;}
 .adec-indicator{display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:6px;vertical-align:middle;}
 .adec-indicator.sig{background:#ea580c;}
 .adec-indicator.no-sig{background:#eab308;}
+.doc-header{display:flex;justify-content:space-between;align-items:center;border:1px solid #d1d5db;border-radius:10px;padding:12px 14px;background:#fff;margin-bottom:12px;}
+.doc-header .logo{max-height:110px;max-width:420px;object-fit:contain;}
+.doc-header .logo-right{max-height:90px;max-width:150px;object-fit:contain;}
+.doc-header-spacer{display:none;}
 @media print{
   .no-print{display:none !important;}
   .wrap{max-width:none;margin:0;padding:0;}
   .card{box-shadow:none;}
+  .doc-header{position:fixed;top:0;left:0;right:0;z-index:20;border:none;border-bottom:1px solid #94a3b8;border-radius:0;padding:10px 12mm;background:#fff;}
+  .doc-header-spacer{display:block;height:132px;}
 }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="wrap">
+  <div class="doc-header">
+    <div>
+      {% if plantilla and plantilla.logo_mep %}
+        <img src="{{ plantilla.logo_mep.url }}" alt="Logo MEP" class="logo">
+      {% endif %}
+    </div>
+    <div style="text-align:right;">
+      {% if asignacion_base.centro_trabajo_id and asignacion_base.centro_trabajo.logo %}
+        <img src="{{ asignacion_base.centro_trabajo.logo.url }}" alt="Logo centro" class="logo-right">
+      {% elif asignacion_base.subarea_curso.institucion.logo %}
+        <img src="{{ asignacion_base.subarea_curso.institucion.logo.url }}" alt="Escudo colegio" class="logo-right">
+      {% endif %}
+    </div>
+  </div>
+  <div class="doc-header-spacer"></div>
+
   <div class="card no-print">
     <p class="title">Reporte agrupado de asistencia</p>
     <p class="muted" style="margin:0 0 8px;">
@@ -44,7 +66,7 @@ th{background:#f8fafc;color:#475569;text-transform:uppercase;font-size:.72rem;}
       </div>
       <button class="btn" type="submit">Actualizar</button>
       <button class="btn" type="button" onclick="window.print()">Imprimir PDF</button>
-      <a class="btn" href="{% url 'libro_docente:asistencia' asignacion_base.id %}">Volver</a>
+      <a class="btn" href="{% url 'libro_docente:resumen' asignacion_base.id %}?periodo={% if periodo_id %}{{ periodo_id }}{% endif %}">Volver</a>
     </form>
     <p class="muted" style="margin:10px 0 0;">
       Materias incluidas: {% for a in asignaciones %}{{ a.subarea_curso.subarea.nombre }}{% if not forloop.last %}, {% endif %}{% endfor %}
@@ -64,7 +86,6 @@ th{background:#f8fafc;color:#475569;text-transform:uppercase;font-size:.72rem;}
             <th>TC</th>
             <th>AI</th>
             <th>AJ</th>
-            <th>Inj. equiv.</th>
             <th>% Aus.</th>
             <th>% Asist.</th>
             <th>Nota</th>
@@ -80,13 +101,12 @@ th{background:#f8fafc;color:#475569;text-transform:uppercase;font-size:.72rem;}
             <td>{{ r.tc }}</td>
             <td>{{ r.ai }}</td>
             <td>{{ r.aj }}</td>
-            <td>{{ r.aus_inj_equiv }}</td>
             <td>{{ r.pct_aus }}%</td>
             <td>{{ r.pct_asis }}%</td>
             <td>{{ r.nota_mep }}</td>
           </tr>
           {% empty %}
-          <tr><td colspan="11">Sin datos para el período seleccionado.</td></tr>
+          <tr><td colspan="10">Sin datos para el período seleccionado.</td></tr>
           {% endfor %}
         </tbody>
       </table>

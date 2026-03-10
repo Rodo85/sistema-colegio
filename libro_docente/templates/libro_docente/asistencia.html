@@ -135,9 +135,6 @@ tbody td{padding:8px 12px;vertical-align:middle;}
       <a href="{% url 'libro_docente:resumen' asignacion.id %}?periodo={% if periodo %}{{ periodo.id }}{% endif %}" class="resumen-link" style="color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.4);padding:5px 12px;border-radius:6px;">
         📊 Ver resumen
       </a>
-      <a href="{% url 'libro_docente:reporte_asistencia_agrupado' asignacion.id %}?periodo={% if periodo %}{{ periodo.id }}{% endif %}" class="resumen-link" style="color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.4);padding:5px 12px;border-radius:6px;">
-        🧾 Reporte agrupado
-      </a>
       <a href="{% url 'libro_docente:home' %}" class="back-btn">← Mis asignaciones</a>
     </div>
   </div>
