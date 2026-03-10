@@ -103,13 +103,6 @@
 
 {% block usertools %}
   {{ block.super }}
-  {% if request.user.is_authenticated %}
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'configuracion_sesion' %}">
-      Configurar cierre
-    </a>
-  </li>
-  {% endif %}
   <li class="nav-item">
     <a class="nav-link" href="#">
       {{ request.user.email }}

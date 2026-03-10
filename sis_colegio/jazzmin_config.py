@@ -76,6 +76,10 @@ JAZZMIN_SETTINGS = {
     
     "changeform_format": "horizontal_tabs",
     
+    "usermenu_links": [
+        {"name": "Configurar cierre", "url": "configuracion_sesion", "icon": "fas fa-user-clock"},
+    ],
+
     "topmenu_links": [
         {"app": "core"},
         {"app": "matricula"},
