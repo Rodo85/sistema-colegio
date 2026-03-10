@@ -178,6 +178,12 @@
 <div class="reporte-container">
   <h1 class="reporte-title">Reportes de Comedor</h1>
 
+  <div style="margin-bottom:1.5rem;text-align:center;">
+    <a href="{% url 'comedor:reporte_becados_por_nivel' %}{% if institucion %}?institucion={{ institucion.pk }}{% endif %}" class="btn-aplicar" style="display:inline-flex;text-decoration:none;">
+      🖨️ Imprimir becados por nivel
+    </a>
+  </div>
+
   <!-- FILTROS -->
   <form method="get" class="reporte-filtros">
     {% if es_superusuario %}

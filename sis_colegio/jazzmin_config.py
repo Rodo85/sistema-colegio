@@ -90,6 +90,7 @@ JAZZMIN_SETTINGS = {
                 {"name": "Registrar beca", "url": "comedor:registrar_beca", "icon": "fas fa-user-check"},
                 {"name": "Almuerzo", "url": "comedor:almuerzo", "icon": "fas fa-qrcode"},
                 {"name": "Reportes", "url": "comedor:reportes", "icon": "fas fa-chart-bar"},
+                {"name": "Imprimir becados por nivel", "url": "comedor:reporte_becados_por_nivel", "icon": "fas fa-print"},
                 {"name": "Tiquetes", "url": "comedor:tiquetes", "icon": "fas fa-ticket-alt"},
             ],
         },
@@ -166,6 +167,12 @@ JAZZMIN_SETTINGS = {
                 "name": "Reportes comedor",
                 "url": "comedor:reportes",
                 "icon": "fas fa-chart-bar",
+                "permissions": ["comedor.access_reportes_comedor"],
+            },
+            {
+                "name": "Imprimir becados por nivel",
+                "url": "comedor:reporte_becados_por_nivel",
+                "icon": "fas fa-print",
                 "permissions": ["comedor.access_reportes_comedor"],
             },
             {

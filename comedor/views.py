@@ -10,9 +10,10 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 
-from catalogos.models import CursoLectivo
+from catalogos.models import CursoLectivo, Nivel
 from core.models import Institucion
 from matricula.models import MatriculaAcademica
+from matricula.models import PlantillaImpresionMatricula
 
 from .models import (
     BecaComedor,
@@ -692,3 +693,74 @@ def reportes_comedor(request):
         "por_dia_tiquete": por_dia_tiquete,
     }
     return render(request, "comedor/reportes.html", contexto)
+
+
+# ---------------------------------------------------------------------------
+# Reporte becados por nivel
+# ---------------------------------------------------------------------------
+
+@login_required
+@permission_required("comedor.access_reportes_comedor", raise_exception=True)
+def reporte_becados_por_nivel(request):
+    """
+    Reporte imprimible de alumnos con beca activa, filtrado por nivel(es).
+    Columnas: Identificación, Apellidos, Nombre. Ordenado alfabéticamente por apellidos.
+    """
+    todos_cursos = CursoLectivo.objects.all().order_by("-anio")
+    instituciones = Institucion.objects.all().order_by("nombre") if request.user.is_superuser else []
+    niveles = Nivel.objects.all().order_by("numero")
+
+    curso_lectivo = CursoLectivo.get_activo()
+    if request.user.is_superuser:
+        cl_id = request.GET.get("curso_lectivo") or request.POST.get("curso_lectivo")
+        if cl_id:
+            curso_lectivo = CursoLectivo.objects.filter(pk=cl_id).first() or curso_lectivo
+
+    institucion = _resolver_institucion(request, request.GET.get("institucion") or request.POST.get("institucion"))
+    nivel_ids = [
+        int(x) for x in request.GET.getlist("nivel") or request.POST.getlist("nivel")
+        if str(x).isdigit()
+    ]
+
+    becados = []
+    plantilla = PlantillaImpresionMatricula.objects.filter(institucion=institucion).first() if institucion else None
+
+    if curso_lectivo and institucion and nivel_ids:
+
+        est_ids_nivel = set(
+            MatriculaAcademica.objects.filter(
+                institucion=institucion,
+                curso_lectivo=curso_lectivo,
+                estado__iexact=MatriculaAcademica.ACTIVO,
+                nivel_id__in=nivel_ids,
+            ).values_list("estudiante_id", flat=True)
+        )
+
+        becas_qs = (
+            BecaComedor.objects.filter(
+                institucion=institucion,
+                curso_lectivo=curso_lectivo,
+                activa=True,
+                estudiante_id__in=est_ids_nivel,
+            )
+            .select_related("estudiante")
+            .order_by(
+                "estudiante__primer_apellido",
+                "estudiante__segundo_apellido",
+                "estudiante__nombres",
+            )
+        )
+        becados = list(becas_qs)
+
+    context = {
+        "curso_lectivo": curso_lectivo,
+        "todos_cursos": todos_cursos,
+        "instituciones": instituciones,
+        "institucion": institucion,
+        "niveles": niveles,
+        "nivel_ids": nivel_ids,
+        "becados": becados,
+        "plantilla": plantilla,
+        "es_superusuario": request.user.is_superuser,
+    }
+    return render(request, "comedor/reporte_becados_por_nivel.html", context)

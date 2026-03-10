@@ -1,0 +1,143 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block title %}Alumnos con beca por nivel{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+.page-wrap{max-width:900px;margin:20px auto;padding:0 14px;font-family:Arial,sans-serif;}
+.card{background:#fff;border:1px solid #d1d5db;border-radius:10px;padding:14px 16px;margin-bottom:14px;}
+.doc-header{display:flex;justify-content:space-between;align-items:center;border:1px solid #d1d5db;border-radius:10px;padding:12px 14px;background:#fff;margin-bottom:12px;}
+.doc-header .logo{max-height:110px;max-width:420px;object-fit:contain;}
+.doc-header .logo-right{max-height:90px;max-width:150px;object-fit:contain;}
+.doc-header-spacer{display:none;}
+.section-title{font-size:1rem;font-weight:700;margin:0 0 8px;color:#111827;}
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:.88rem;}
+th,td{border:1px solid #cbd5e1;padding:7px 8px;text-align:left;}
+th{background:#f8fafc;}
+.print-btn{display:inline-block;padding:8px 14px;border-radius:8px;background:#145591;color:#fff;text-decoration:none;margin:8px 8px 14px 0;border:none;cursor:pointer;font-size:.9rem;font-weight:600;}
+.no-print{}
+.filtros-form{display:flex;flex-wrap:wrap;gap:1rem;align-items:flex-end;margin-bottom:1rem;}
+.filtros-form .form-group{display:flex;flex-direction:column;min-width:180px;}
+.filtros-form label{font-size:.85rem;font-weight:600;color:#495057;margin-bottom:.35rem;}
+.filtros-form select{padding:.6rem .9rem;border:1px solid #dee2e6;border-radius:6px;font-size:.9rem;}
+.niveles-check{display:flex;flex-wrap:wrap;gap:.5rem 1.2rem;align-items:center;}
+.niveles-check label{display:flex;align-items:center;gap:6px;font-weight:500;cursor:pointer;}
+.niveles-check input{width:18px;height:18px;}
+@media print{
+  .no-print{display:none !important;}
+  body{background:#fff !important;}
+  .page-wrap{margin:0;padding:0;}
+  .card{border:1px solid #94a3b8;box-shadow:none;}
+  .doc-header{position:fixed;top:0;left:0;right:0;z-index:20;border:none;border-bottom:1px solid #94a3b8;border-radius:0;padding:10px 12mm;background:#fff;}
+  .doc-header-spacer{display:block;height:132px;}
+}
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div class="page-wrap">
+  <div class="no-print" style="margin-bottom:14px;">
+    <a href="{% url 'comedor:reportes' %}" class="print-btn" style="background:#6b7280;">← Volver a reportes</a>
+  </div>
+
+  <div class="doc-header">
+    <div>
+      {% if plantilla and plantilla.logo_mep %}
+        <img src="{{ plantilla.logo_mep.url }}" alt="Logo MEP" class="logo">
+      {% endif %}
+    </div>
+    <div style="text-align:right;">
+      {% if institucion %}
+        {% if institucion.logo %}
+          <img src="{{ institucion.logo.url }}" alt="Escudo colegio" class="logo-right">
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+  <div class="doc-header-spacer"></div>
+
+  <div class="card no-print">
+    <p class="section-title">Alumnos con beca por nivel</p>
+    <form method="get" class="filtros-form">
+      {% if es_superusuario %}
+      <div class="form-group">
+        <label for="id_institucion">Institución *</label>
+        <select name="institucion" id="id_institucion" required>
+          <option value="">Seleccione...</option>
+          {% for inst in instituciones %}
+            <option value="{{ inst.pk }}" {% if institucion and inst.pk == institucion.pk %}selected{% endif %}>{{ inst.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      {% endif %}
+      {% if es_superusuario and todos_cursos %}
+      <div class="form-group">
+        <label for="id_curso">Curso lectivo</label>
+        <select name="curso_lectivo" id="id_curso">
+          {% for cl in todos_cursos %}
+            <option value="{{ cl.pk }}" {% if curso_lectivo and cl.pk == curso_lectivo.pk %}selected{% endif %}>{{ cl.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      {% endif %}
+      <div class="form-group">
+        <label>Niveles (seleccione uno o más)</label>
+        <div class="niveles-check">
+          {% for nivel in niveles %}
+            <label>
+              <input type="checkbox" name="nivel" value="{{ nivel.pk }}" {% if nivel.pk in nivel_ids %}checked{% endif %}>
+              {{ nivel.nombre }}
+            </label>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="form-group">
+        <button type="submit" class="print-btn">Filtrar</button>
+      </div>
+    </form>
+    <p style="font-size:.85rem;color:#6b7280;margin:0;">
+      {% if institucion %}{{ institucion.nombre }}{% endif %}
+      {% if curso_lectivo %} · {{ curso_lectivo.nombre }}{% endif %}
+      {% if nivel_ids %}
+        · Niveles: {% for n in niveles %}{% if n.pk in nivel_ids %}{{ n.nombre }}{% if not forloop.last %}, {% endif %}{% endif %}{% endfor %}
+      {% else %}
+        · Seleccione al menos un nivel
+      {% endif %}
+    </p>
+  </div>
+
+  <div class="card">
+    <div class="no-print" style="margin-bottom:10px;">
+      <button type="button" class="print-btn" onclick="window.print();">Imprimir</button>
+    </div>
+    <p class="section-title">Listado de becados ({{ becados|length }})</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Identificación</th>
+            <th>Apellidos</th>
+            <th>Nombre</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for beca in becados %}
+          <tr>
+            <td>{{ beca.estudiante.identificacion }}</td>
+            <td>{{ beca.estudiante.primer_apellido }}{% if beca.estudiante.segundo_apellido %} {{ beca.estudiante.segundo_apellido }}{% endif %}</td>
+            <td>{{ beca.estudiante.nombres }}</td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="3" style="text-align:center;color:#6b7280;padding:16px;">{% if nivel_ids %}No hay becados con los filtros seleccionados.{% else %}Seleccione al menos un nivel y filtre para ver el listado.{% endif %}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
