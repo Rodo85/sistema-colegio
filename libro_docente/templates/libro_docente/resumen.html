@@ -102,10 +102,7 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
         {% if asignacion.centro_trabajo_id %} · Centro: {{ asignacion.centro_trabajo.nombre }}{% endif %}
       </p>
     </div>
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-      <a href="{% url 'libro_docente:reporte_asistencia_agrupado' asignacion.id %}?periodo={% if periodo_id %}{{ periodo_id }}{% endif %}" class="back-btn" style="background:rgba(255,255,255,.2);">🧾 Reporte agrupado</a>
-      <a href="{% url 'libro_docente:asistencia' asignacion.id %}" class="back-btn">← Pasar lista</a>
-    </div>
+    <a href="{% url 'libro_docente:asistencia' asignacion.id %}" class="back-btn">← Pasar lista</a>
   </div>
 
   <!-- Selector de período -->
