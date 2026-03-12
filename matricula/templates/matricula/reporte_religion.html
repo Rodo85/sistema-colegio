@@ -1,0 +1,228 @@
+{% extends 'admin/base_site.html' %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+.reporte-container{background:#fff;border-radius:16px;padding:2rem;box-shadow:0 12px 32px rgba(44,62,80,.12);margin-bottom:2rem;}
+.reporte-title{font-size:2.2rem;font-weight:700;color:#2c3e50;text-align:center;margin-bottom:1.5rem;text-transform:uppercase;letter-spacing:1px;}
+.reporte-filtros{display:flex;flex-wrap:wrap;gap:1.5rem;align-items:flex-end;justify-content:center;margin-bottom:2rem;}
+.reporte-filtros .form-group{display:flex;flex-direction:column;min-width:200px;}
+.reporte-filtros label{font-size:.9rem;font-weight:600;color:#495057;margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.5px;}
+.reporte-filtros select{padding:.75rem 1rem;border:2px solid #e9ecef;border-radius:8px;font-size:1rem;background:#fff;}
+.reporte-filtros select:focus{outline:none;border-color:#1976d2;}
+.btn-generar{background:linear-gradient(135deg,#1976d2,#115293);color:#fff;border:none;padding:.8rem 1.8rem;border-radius:10px;font-size:1rem;font-weight:600;cursor:pointer;}
+.btn-generar:hover{transform:translateY(-2px);}
+.alert{padding:1rem 1.5rem;border-radius:8px;margin-bottom:1.5rem;}
+.alert-info{background:#e3f2fd;color:#1976d2;border:1px solid #bbdefb;}
+.alert-warning{background:#fff3e0;color:#f57c00;border:1px solid #ffe0b2;}
+.doc-header{display:flex;justify-content:space-between;align-items:center;border:1px solid #d1d5db;border-radius:10px;padding:12px 14px;background:#fff;margin-bottom:12px;}
+.doc-header .logo{max-height:110px;max-width:420px;object-fit:contain;}
+.doc-header .logo-right{max-height:90px;max-width:150px;object-fit:contain;}
+.doc-header-spacer{display:none;}
+.tabla-reporte{width:100%;border-collapse:collapse;font-size:.9rem;}
+.tabla-reporte th,.tabla-reporte td{padding:.6rem .8rem;border:1px solid #e5e7eb;text-align:left;}
+.tabla-reporte th{background:#1976d2;color:#fff;}
+.tabla-reporte tbody tr:nth-child(even){background:#f8fafc;}
+.no-print{}
+@media print{
+  .no-print{display:none !important;}
+  .doc-header{position:fixed;top:0;left:0;right:0;z-index:20;border:none;border-bottom:1px solid #94a3b8;padding:10px 12mm;background:#fff;}
+  .doc-header-spacer{display:block;height:132px;}
+  body{background:#fff !important;}
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="reporte-container">
+  <h1 class="reporte-title">Reporte Religión</h1>
+
+  <div class="alert alert-info">
+    <strong>ℹ️ Información:</strong> Estudiantes matriculados que reciben o no Educación Religiosa. Filtre por institución, curso lectivo, nivel y/o sección.
+  </div>
+
+  <form method="get" class="reporte-filtros no-print">
+    {% if es_superusuario %}
+    <div class="form-group">
+      <label for="id_institucion">Institución *</label>
+      <select name="institucion" id="id_institucion" required>
+        <option value="">Seleccione...</option>
+        {% for inst in instituciones %}
+          <option value="{{ inst.pk }}" {% if institucion and inst.pk == institucion.pk %}selected{% endif %}>{{ inst.nombre }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    {% endif %}
+
+    <div class="form-group">
+      <label for="id_curso_lectivo">Curso lectivo *</label>
+      <select name="curso_lectivo_id" id="id_curso_lectivo" required>
+        <option value="">Seleccione...</option>
+        {% for cl in cursos_lectivos %}
+          <option value="{{ cl.pk }}" {% if curso_lectivo and cl.pk == curso_lectivo.pk %}selected{% endif %}>{{ cl.nombre }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="id_nivel">Nivel</label>
+      <select name="nivel_id" id="id_nivel">
+        <option value="">Todos</option>
+        {% for n in niveles %}
+          <option value="{{ n.pk }}" {% if nivel_id == n.pk|stringformat:"s" %}selected{% endif %}>{{ n.nombre }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="id_seccion">Sección</label>
+      <select name="seccion_id" id="id_seccion">
+        <option value="">Todas</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="id_subgrupo">Subgrupo</label>
+      <select name="subgrupo_id" id="id_subgrupo">
+        <option value="">Todos</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="id_recibe">Recibe Religión</label>
+      <select name="recibe_religion" id="id_recibe">
+        <option value="todos" {% if recibe_religion == "todos" %}selected{% endif %}>Todos</option>
+        <option value="si" {% if recibe_religion == "si" %}selected{% endif %}>Sí</option>
+        <option value="no" {% if recibe_religion == "no" %}selected{% endif %}>No</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <button type="submit" class="btn-generar">Filtrar</button>
+    </div>
+  </form>
+
+  {% if not institucion and not es_superusuario %}
+  <div class="alert alert-warning">No se pudo determinar la institución. Contacte al administrador.</div>
+  {% elif filas is not None %}
+  <div class="no-print" style="margin-bottom:10px;">
+    <button type="button" class="btn-generar" onclick="window.print();">Imprimir PDF</button>
+    <a href="{% url 'matricula:reporte_religion' %}" style="margin-left:10px;color:#1976d2;">Limpiar</a>
+  </div>
+
+  {% if institucion and curso_lectivo %}
+  <div class="doc-header">
+    <div>
+      {% if plantilla and plantilla.logo_mep %}
+        <img src="{{ plantilla.logo_mep.url }}" alt="Logo MEP" class="logo">
+      {% endif %}
+    </div>
+    <div style="text-align:right;">
+      {% if institucion.logo %}
+        <img src="{{ institucion.logo.url }}" alt="Escudo colegio" class="logo-right">
+      {% endif %}
+    </div>
+  </div>
+  <div class="doc-header-spacer"></div>
+  {% endif %}
+
+  <p style="font-size:.9rem;margin-bottom:12px;">
+    <strong>Reporte Religión</strong>
+    {% if institucion %} · {{ institucion.nombre }}{% endif %}
+    {% if curso_lectivo %} · {{ curso_lectivo.nombre }}{% endif %}
+    {% if recibe_religion == "si" %} · Reciben Religión{% elif recibe_religion == "no" %} · No reciben Religión{% endif %}
+  </p>
+
+  <table class="tabla-reporte">
+    <thead>
+      <tr>
+        <th>Sección</th>
+        <th>Apellidos</th>
+        <th>Nombre</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for f in filas %}
+      <tr>
+        <td>{{ f.seccion }}</td>
+        <td>{{ f.apellidos }}</td>
+        <td>{{ f.nombre }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="3" style="text-align:center;color:#6b7280;padding:16px;">No hay estudiantes con los filtros seleccionados.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const cursoSelect = document.getElementById('id_curso_lectivo');
+  const nivelSelect = document.getElementById('id_nivel');
+  const seccionSelect = document.getElementById('id_seccion');
+  const subgrupoSelect = document.getElementById('id_subgrupo');
+  const institucionSelect = document.getElementById('id_institucion');
+
+  function getInstitucionId() {
+    return institucionSelect ? institucionSelect.value : '{{ institucion_id|default:"" }}';
+  }
+
+  const seccionIdInicial = '{{ seccion_id|default:"" }}';
+  const subgrupoIdInicial = '{{ subgrupo_id|default:"" }}';
+
+  function cargarSecciones() {
+    const cursoId = cursoSelect.value;
+    const nivelId = nivelSelect.value;
+    const instId = getInstitucionId();
+    seccionSelect.innerHTML = '<option value="">Todas</option>';
+    subgrupoSelect.innerHTML = '<option value="">Todos</option>';
+    if (!cursoId || !nivelId) return Promise.resolve();
+    let url = '/matricula/api/secciones/?curso_lectivo_id=' + encodeURIComponent(cursoId) + '&nivel_id=' + encodeURIComponent(nivelId);
+    if (instId) url += '&institucion_id=' + encodeURIComponent(instId);
+    return fetch(url).then(r => r.json()).then(data => {
+      if (data.success) data.secciones.forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s.id;
+        opt.textContent = s.nombre;
+        seccionSelect.appendChild(opt);
+      });
+      if (seccionIdInicial) seccionSelect.value = seccionIdInicial;
+    });
+  }
+
+  function cargarSubgrupos() {
+    const cursoId = cursoSelect.value;
+    const seccionId = seccionSelect.value;
+    const instId = getInstitucionId();
+    subgrupoSelect.innerHTML = '<option value="">Todos</option>';
+    if (!cursoId || !seccionId) return Promise.resolve();
+    let url = '/matricula/api/subgrupos/?curso_lectivo_id=' + encodeURIComponent(cursoId) + '&seccion_id=' + encodeURIComponent(seccionId);
+    if (instId) url += '&institucion_id=' + encodeURIComponent(instId);
+    return fetch(url).then(r => r.json()).then(data => {
+      if (data.success) data.subgrupos.forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s.id;
+        opt.textContent = s.nombre;
+        subgrupoSelect.appendChild(opt);
+      });
+      if (subgrupoIdInicial) subgrupoSelect.value = subgrupoIdInicial;
+    });
+  }
+
+  nivelSelect.addEventListener('change', function() {
+    cargarSecciones().then(function() { if (seccionSelect.value) cargarSubgrupos(); });
+  });
+  seccionSelect.addEventListener('change', cargarSubgrupos);
+  if (institucionSelect) institucionSelect.addEventListener('change', function() {
+    cargarSecciones().then(function() { if (seccionSelect.value) cargarSubgrupos(); });
+  });
+
+  if (nivelSelect.value) {
+    cargarSecciones().then(function() {
+      if (seccionSelect.value) cargarSubgrupos();
+    });
+  }
+});
+</script>
+{% endblock %}

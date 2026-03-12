@@ -6,8 +6,7 @@ from django.utils.encoding import smart_str
 from django.utils import timezone
 from django.db.models import Count, Q, Value
 from django.db.models.functions import Coalesce
-from config_institucional.models import Nivel
-from catalogos.models import CursoLectivo, Seccion, Subgrupo, Especialidad
+from catalogos.models import CursoLectivo, Nivel, Seccion, Subgrupo, Especialidad
 from core.models import Institucion
 from .models import Estudiante, EstudianteInstitucion, MatriculaAcademica, PlantillaImpresionMatricula
 from dal import autocomplete
@@ -749,6 +748,108 @@ def reporte_pas_seccion(request):
     }
     
     return render(request, 'matricula/reporte_pas_seccion.html', context)
+
+
+@login_required
+@permission_required('matricula.access_reporte_matricula', raise_exception=True)
+def reporte_religion(request):
+    """
+    Reporte de estudiantes que reciben o no Educación Religiosa.
+    Filtros: institución, curso lectivo, nivel, sección, subgrupo, recibe religión.
+    Columnas: Sección, Apellidos, Nombre. Ordenado por sección y apellidos.
+    """
+    cursos_lectivos = CursoLectivo.objects.all().order_by('-anio')
+    niveles = Nivel.objects.all().order_by('numero')
+
+    instituciones = []
+    institucion = None
+    if request.user.is_superuser:
+        instituciones = Institucion.objects.all().order_by('nombre')
+    else:
+        institucion_id = getattr(request, 'institucion_activa_id', None)
+        if institucion_id:
+            institucion = Institucion.objects.filter(pk=institucion_id).first()
+
+    # Parámetros del filtro
+    institucion_id = request.GET.get('institucion')
+    if request.user.is_superuser and institucion_id:
+        institucion = Institucion.objects.filter(pk=institucion_id).first()
+    elif not request.user.is_superuser:
+        institucion_id = str(institucion.pk) if institucion else None
+
+    curso_lectivo_id = request.GET.get('curso_lectivo_id')
+    curso_lectivo = CursoLectivo.objects.filter(pk=curso_lectivo_id).first() if curso_lectivo_id else CursoLectivo.get_activo()
+    nivel_id = request.GET.get('nivel_id')
+    seccion_id = request.GET.get('seccion_id')
+    subgrupo_id = request.GET.get('subgrupo_id')
+    recibe_religion = request.GET.get('recibe_religion', 'todos')  # si, no, todos
+
+    filas = []
+    plantilla = None
+
+    if institucion and curso_lectivo:
+        plantilla = PlantillaImpresionMatricula.objects.filter(institucion=institucion).first()
+
+        base_filtros = {
+            'institucion': institucion,
+            'curso_lectivo': curso_lectivo,
+            'estado__iexact': MatriculaAcademica.ACTIVO,
+        }
+        if nivel_id:
+            base_filtros['nivel_id'] = nivel_id
+
+        if subgrupo_id:
+            base_filtros['subgrupo_id'] = subgrupo_id
+            qs = MatriculaAcademica.objects.filter(**base_filtros)
+        elif seccion_id:
+            qs = MatriculaAcademica.objects.filter(**base_filtros).filter(
+                Q(seccion_id=seccion_id) | Q(subgrupo__seccion_id=seccion_id)
+            )
+        else:
+            qs = MatriculaAcademica.objects.filter(**base_filtros)
+
+        qs = (
+            qs
+            .select_related('estudiante', 'nivel', 'seccion', 'subgrupo')
+            .order_by(
+                'seccion__nivel__numero', 'seccion__numero',
+                'subgrupo__letra',
+                'estudiante__primer_apellido',
+                'estudiante__segundo_apellido',
+                'estudiante__nombres',
+            )
+        )
+
+        if recibe_religion == 'si':
+            qs = qs.filter(estudiante__ed_religiosa=True)
+        elif recibe_religion == 'no':
+            qs = qs.filter(estudiante__ed_religiosa=False)
+
+        for mat in qs:
+            seccion_label = str(mat.subgrupo) if mat.subgrupo_id else str(mat.seccion) if mat.seccion_id else '-'
+            apellidos = f"{mat.estudiante.primer_apellido} {mat.estudiante.segundo_apellido or ''}".strip()
+            filas.append({
+                'seccion': seccion_label,
+                'apellidos': apellidos,
+                'nombre': mat.estudiante.nombres,
+            })
+
+    context = {
+        'cursos_lectivos': cursos_lectivos,
+        'curso_lectivo': curso_lectivo,
+        'niveles': niveles,
+        'instituciones': instituciones,
+        'institucion': institucion,
+        'institucion_id': institucion_id,
+        'nivel_id': nivel_id,
+        'seccion_id': seccion_id,
+        'subgrupo_id': subgrupo_id,
+        'recibe_religion': recibe_religion,
+        'filas': filas,
+        'plantilla': plantilla,
+        'es_superusuario': request.user.is_superuser,
+    }
+    return render(request, 'matricula/reporte_religion.html', context)
 
 
 @csrf_exempt

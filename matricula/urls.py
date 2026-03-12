@@ -5,7 +5,7 @@ from .views import (
     asignacion_grupos, ejecutar_asignacion_grupos,
     exportar_listas_clase_excel,
     comprobante_matricula, pas_estudiante, pas_seccion, reporte_pas_seccion,
-    reporte_matricula,
+    reporte_matricula, reporte_religion,
     api_secciones_por_curso_nivel, api_subgrupos_por_curso_seccion,
     buscar_estudiante_existente, agregar_estudiante_a_institucion,
 )
@@ -15,6 +15,7 @@ app_name = 'matricula'
 urlpatterns = [
     path('consulta-estudiante/', consulta_estudiante, name='consulta_estudiante'),
     path('reporte-matricula/', reporte_matricula, name='reporte_matricula'),
+    path('reporte-religion/', reporte_religion, name='reporte_religion'),
     path('comprobante-matricula/', comprobante_matricula, name='comprobante_matricula'),
     path('pas-estudiante/', pas_estudiante, name='pas_estudiante'),
     path('pas-seccion/', pas_seccion, name='pas_seccion'),

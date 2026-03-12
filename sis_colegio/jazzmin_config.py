@@ -121,6 +121,12 @@ JAZZMIN_SETTINGS = {
                 "icon": "fas fa-id-card-alt",
                 "permissions": ["matricula.access_reporte_pas_seccion"],
             },
+            {
+                "name": "Reporte Religión",
+                "url": "matricula:reporte_religion",
+                "icon": "fas fa-book",
+                "permissions": ["matricula.access_reporte_matricula"],
+            },
         ],
         "evaluaciones": [
             {
