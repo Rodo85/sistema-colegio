@@ -520,7 +520,7 @@ def _lecciones_programadas_para_fecha(asignacion, fecha_ref, dia_iso_forzado=Non
         .annotate(total=Count("leccion_numero", distinct=True))
         .order_by("dia_semana")
     )
-    logger.warning(
+    logger.info(
         "asistencia_lecciones: fallback asignacion=%s fecha=%s dia_fecha=%s dia_calculo=%s total_directo=%s total_fallback=%s resumen_directo=%s",
         asignacion.id,
         fecha_ref,
@@ -2195,9 +2195,22 @@ def asignacion_edit_view(request, asignacion_id):
 @login_required
 @permission_required("libro_docente.access_libro_docente", raise_exception=True)
 def asignacion_delete_view(request, asignacion_id):
-    asignacion = _obtener_asignacion_con_permiso(request, asignacion_id)
+    # Usar filter().first() en vez de get_object_or_404 para evitar 404 cuando
+    # la asignación ya fue eliminada (reintento, doble clic, recarga).
+    profesor = _get_profesor(request)
+    qs = DocenteAsignacion.objects.filter(id=asignacion_id, activo=True).select_related(
+        "subarea_curso__subarea", "curso_lectivo",
+        "seccion__nivel", "subgrupo__seccion__nivel",
+        "centro_trabajo",
+    )
+    if not request.user.is_superuser:
+        if not profesor:
+            messages.error(request, "No tienes acceso a esta asignación.")
+            return redirect("libro_docente:home")
+        qs = qs.filter(docente=profesor)
+    asignacion = qs.first()
     if asignacion is None:
-        messages.error(request, "No tienes acceso a esta asignación.")
+        messages.info(request, "La asignación ya fue eliminada o no existe.")
         return redirect("libro_docente:home")
 
     if request.method == "POST":
