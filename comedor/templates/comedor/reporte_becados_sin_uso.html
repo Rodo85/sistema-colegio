@@ -119,16 +119,21 @@ th{background:#f8fafc;}
           </tr>
         </thead>
         <tbody>
-          {% for f in filas %}
-          <tr>
-            <td>{{ f.subgrupo }}</td>
-            <td>{{ f.identificacion }}</td>
-            <td>{{ f.primer_apellido }}</td>
-            <td>{{ f.segundo_apellido }}</td>
-            <td>{{ f.nombre }}</td>
-            <td>{{ f.nombre_encargado }}</td>
-            <td>{{ f.telefono_encargado }}</td>
-          </tr>
+          {% regroup filas by subgrupo as grupos %}
+          {% for grupo in grupos %}
+            {% for f in grupo.list %}
+            <tr>
+              {% if forloop.first %}
+                <td rowspan="{{ grupo.list|length }}" style="vertical-align:middle;font-weight:600;background:#f1f5f9;">{{ grupo.grouper }}</td>
+              {% endif %}
+              <td>{{ f.identificacion }}</td>
+              <td>{{ f.primer_apellido }}</td>
+              <td>{{ f.segundo_apellido }}</td>
+              <td>{{ f.nombre }}</td>
+              <td>{{ f.nombre_encargado }}</td>
+              <td>{{ f.telefono_encargado }}</td>
+            </tr>
+            {% endfor %}
           {% empty %}
           <tr><td colspan="7" style="text-align:center;color:#6b7280;padding:16px;">{% if institucion %}Todos los becados usaron el comedor en este período.{% else %}Seleccione institución y filtre para ver el listado.{% endif %}</td></tr>
           {% endfor %}

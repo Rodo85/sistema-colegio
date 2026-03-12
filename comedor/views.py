@@ -773,7 +773,7 @@ def reporte_becados_sin_uso(request):
             curso_lectivo=curso_lectivo,
             estado__iexact=MatriculaAcademica.ACTIVO,
             estudiante_id__in=[b.estudiante_id for b in becados_sin_uso],
-        ).select_related("subgrupo", "seccion"):
+        ).select_related("subgrupo__seccion__nivel", "seccion__nivel"):
             matricula_map[m.estudiante_id] = m
 
         encargados = {}
@@ -786,8 +786,20 @@ def reporte_becados_sin_uso(request):
         for beca in becados_sin_uso:
             mat = matricula_map.get(beca.estudiante_id)
             subgrupo_label = "-"
+            orden_nivel, orden_seccion, orden_letra = 9999, 9999, "z"
             if mat:
-                subgrupo_label = str(mat.subgrupo) if mat.subgrupo_id else (str(mat.seccion) if mat.seccion_id else "-")
+                if mat.subgrupo_id:
+                    sg = mat.subgrupo
+                    subgrupo_label = str(sg)
+                    orden_nivel = sg.seccion.nivel.numero
+                    orden_seccion = sg.seccion.numero
+                    orden_letra = (sg.letra or "").strip().upper() or "z"
+                elif mat.seccion_id:
+                    sec = mat.seccion
+                    subgrupo_label = str(sec)
+                    orden_nivel = sec.nivel.numero
+                    orden_seccion = sec.numero
+                    orden_letra = ""
 
             contacto = encargados.get(beca.estudiante_id)
             nombre_encargado = str(contacto) if contacto else "-"
@@ -797,6 +809,9 @@ def reporte_becados_sin_uso(request):
 
             filas.append({
                 "subgrupo": subgrupo_label,
+                "orden_nivel": orden_nivel,
+                "orden_seccion": orden_seccion,
+                "orden_letra": orden_letra,
                 "identificacion": beca.estudiante.identificacion,
                 "primer_apellido": beca.estudiante.primer_apellido,
                 "segundo_apellido": beca.estudiante.segundo_apellido or "",
@@ -804,6 +819,8 @@ def reporte_becados_sin_uso(request):
                 "nombre_encargado": nombre_encargado,
                 "telefono_encargado": telefono_encargado,
             })
+
+        filas.sort(key=lambda f: (f["orden_nivel"], f["orden_seccion"], f["orden_letra"], f["primer_apellido"], f["segundo_apellido"], f["nombre"]))
 
     periodo_label = (
         "Hoy" if periodo == "dia"
