@@ -28,6 +28,8 @@
   .no-print{display:none !important;}
   .doc-header{position:fixed;top:0;left:0;right:0;z-index:20;border:none;border-bottom:1px solid #94a3b8;padding:10px 12mm;background:#fff;}
   .doc-header-spacer{display:block;height:132px;}
+  .print-title{font-size:1.1rem !important;margin-top:8px !important;}
+  .reporte-container{padding-top:0 !important;}
   body{background:#fff !important;}
 }
 </style>
@@ -35,9 +37,9 @@
 
 {% block content %}
 <div class="reporte-container">
-  <h1 class="reporte-title">Reporte Religión</h1>
+  <h1 class="reporte-title no-print">Reporte Religión</h1>
 
-  <div class="alert alert-info">
+  <div class="alert alert-info no-print">
     <strong>ℹ️ Información:</strong> Estudiantes matriculados que reciben o no Educación Religiosa. Filtre por institución, curso lectivo, nivel y/o sección.
   </div>
 
@@ -126,7 +128,7 @@
   <div class="doc-header-spacer"></div>
   {% endif %}
 
-  <p style="font-size:.9rem;margin-bottom:12px;">
+  <p style="font-size:.9rem;margin-bottom:12px;" class="print-title">
     <strong>Reporte Religión</strong>
     {% if institucion %} · {{ institucion.nombre }}{% endif %}
     {% if curso_lectivo %} · {{ curso_lectivo.nombre }}{% endif %}

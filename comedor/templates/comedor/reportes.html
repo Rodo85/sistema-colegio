@@ -178,9 +178,12 @@
 <div class="reporte-container">
   <h1 class="reporte-title">Reportes de Comedor</h1>
 
-  <div style="margin-bottom:1.5rem;text-align:center;">
+  <div style="margin-bottom:1.5rem;text-align:center;display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;">
     <a href="{% url 'comedor:reporte_becados_por_nivel' %}{% if institucion %}?institucion={{ institucion.pk }}{% endif %}" class="btn-aplicar" style="display:inline-flex;text-decoration:none;">
       🖨️ Imprimir becados por nivel
+    </a>
+    <a href="{% url 'comedor:reporte_becados_sin_uso' %}{% if institucion %}?institucion={{ institucion.pk }}{% endif %}{% if periodo %}&periodo={{ periodo }}{% endif %}{% if fecha_inicio %}&fecha_inicio={{ fecha_inicio|date:'Y-m-d' }}{% endif %}{% if fecha_fin %}&fecha_fin={{ fecha_fin|date:'Y-m-d' }}{% endif %}" class="btn-aplicar" style="display:inline-flex;text-decoration:none;background:linear-gradient(135deg,#d35400,#e67e22);">
+      📋 Becados sin uso (PDF)
     </a>
   </div>
 

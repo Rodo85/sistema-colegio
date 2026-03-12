@@ -1,0 +1,156 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block title %}Becados sin uso en el período{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+.page-wrap{max-width:1100px;margin:20px auto;padding:0 14px;font-family:Arial,sans-serif;}
+.card{background:#fff;border:1px solid #d1d5db;border-radius:10px;padding:14px 16px;margin-bottom:14px;}
+.doc-header{display:flex;justify-content:space-between;align-items:center;border:1px solid #d1d5db;border-radius:10px;padding:12px 14px;background:#fff;margin-bottom:12px;}
+.doc-header .logo{max-height:110px;max-width:420px;object-fit:contain;}
+.doc-header .logo-right{max-height:90px;max-width:150px;object-fit:contain;}
+.doc-header-spacer{display:none;}
+.section-title{font-size:1rem;font-weight:700;margin:0 0 8px;color:#111827;}
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:.85rem;}
+th,td{border:1px solid #cbd5e1;padding:6px 8px;text-align:left;}
+th{background:#f8fafc;}
+.print-btn{display:inline-block;padding:8px 14px;border-radius:8px;background:#145591;color:#fff;text-decoration:none;margin:8px 8px 14px 0;border:none;cursor:pointer;font-size:.9rem;font-weight:600;}
+.no-print{}
+.filtros-form{display:flex;flex-wrap:wrap;gap:1rem;align-items:flex-end;margin-bottom:1rem;}
+.filtros-form .form-group{display:flex;flex-direction:column;min-width:160px;}
+.filtros-form label{font-size:.85rem;font-weight:600;color:#495057;margin-bottom:.35rem;}
+.filtros-form select,.filtros-form input[type="date"]{padding:.6rem .9rem;border:1px solid #dee2e6;border-radius:6px;font-size:.9rem;}
+@media print{
+  .no-print{display:none !important;}
+  body{background:#fff !important;}
+  .page-wrap{margin:0;padding:0;}
+  .card{border:1px solid #94a3b8;box-shadow:none;}
+  .doc-header{position:fixed;top:0;left:0;right:0;z-index:20;border:none;border-bottom:1px solid #94a3b8;border-radius:0;padding:10px 12mm;background:#fff;}
+  .doc-header-spacer{display:block;height:132px;}
+}
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div class="page-wrap">
+  <div class="no-print" style="margin-bottom:14px;">
+    <a href="{% url 'comedor:reportes' %}{% if institucion %}?institucion={{ institucion.pk }}{% endif %}" class="print-btn" style="background:#6b7280;">← Volver a reportes</a>
+  </div>
+
+  <div class="doc-header">
+    <div>
+      {% if plantilla and plantilla.logo_mep %}
+        <img src="{{ plantilla.logo_mep.url }}" alt="Logo MEP" class="logo">
+      {% endif %}
+    </div>
+    <div style="text-align:right;">
+      {% if institucion %}
+        {% if institucion.logo %}
+          <img src="{{ institucion.logo.url }}" alt="Escudo colegio" class="logo-right">
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+  <div class="doc-header-spacer"></div>
+
+  <div class="card no-print">
+    <p class="section-title">Becados sin uso en el período</p>
+    <form method="get" class="filtros-form">
+      {% if es_superusuario %}
+      <div class="form-group">
+        <label for="id_institucion">Institución *</label>
+        <select name="institucion" id="id_institucion" required>
+          <option value="">Seleccione...</option>
+          {% for inst in instituciones %}
+            <option value="{{ inst.pk }}" {% if institucion and inst.pk == institucion.pk %}selected{% endif %}>{{ inst.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      {% endif %}
+      <div class="form-group">
+        <label for="id_periodo">Período</label>
+        <select name="periodo" id="id_periodo">
+          <option value="dia" {% if periodo == "dia" %}selected{% endif %}>Hoy</option>
+          <option value="semana" {% if periodo == "semana" %}selected{% endif %}>Esta semana</option>
+          <option value="mes" {% if periodo == "mes" %}selected{% endif %}>Este mes</option>
+          <option value="rango" {% if periodo == "rango" %}selected{% endif %}>Fecha a fecha</option>
+        </select>
+      </div>
+      <div class="form-group" id="grupo-fecha-inicio" {% if periodo != "rango" %}style="display:none;"{% endif %}>
+        <label for="id_fecha_inicio">Fecha inicio</label>
+        <input type="date" name="fecha_inicio" id="id_fecha_inicio" value="{{ fecha_inicio|date:'Y-m-d' }}">
+      </div>
+      <div class="form-group" id="grupo-fecha-fin" {% if periodo != "rango" %}style="display:none;"{% endif %}>
+        <label for="id_fecha_fin">Fecha fin</label>
+        <input type="date" name="fecha_fin" id="id_fecha_fin" value="{{ fecha_fin|date:'Y-m-d' }}">
+      </div>
+      <div class="form-group">
+        <button type="submit" class="print-btn">Filtrar</button>
+      </div>
+    </form>
+    <p style="font-size:.85rem;color:#6b7280;margin:0;">
+      {% if institucion %}{{ institucion.nombre }}{% endif %}
+      {% if curso_lectivo %} · {{ curso_lectivo.nombre }}{% endif %}
+      · Período: {{ periodo_label }}
+    </p>
+  </div>
+
+  <div class="card">
+    <div class="no-print" style="margin-bottom:10px;">
+      <button type="button" class="print-btn" onclick="window.print();">Imprimir PDF</button>
+    </div>
+    <p class="section-title">Becados sin uso ({{ filas|length }}) — Control de seguimiento</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Subgrupo</th>
+            <th>Identificación</th>
+            <th>1° Apellido</th>
+            <th>2° Apellido</th>
+            <th>Nombre</th>
+            <th>Nombre encargado principal</th>
+            <th>Teléfono encargado</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for f in filas %}
+          <tr>
+            <td>{{ f.subgrupo }}</td>
+            <td>{{ f.identificacion }}</td>
+            <td>{{ f.primer_apellido }}</td>
+            <td>{{ f.segundo_apellido }}</td>
+            <td>{{ f.nombre }}</td>
+            <td>{{ f.nombre_encargado }}</td>
+            <td>{{ f.telefono_encargado }}</td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="7" style="text-align:center;color:#6b7280;padding:16px;">{% if institucion %}Todos los becados usaron el comedor en este período.{% else %}Seleccione institución y filtre para ver el listado.{% endif %}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const periodoSel = document.getElementById('id_periodo');
+  const grupoInicio = document.getElementById('grupo-fecha-inicio');
+  const grupoFin = document.getElementById('grupo-fecha-fin');
+  if (!periodoSel) return;
+  function toggleFechas() {
+    const mostrar = periodoSel.value === 'rango';
+    if (grupoInicio) grupoInicio.style.display = mostrar ? '' : 'none';
+    if (grupoFin) grupoFin.style.display = mostrar ? '' : 'none';
+  }
+  periodoSel.addEventListener('change', toggleFechas);
+  toggleFechas();
+});
+</script>
+{% endblock %}

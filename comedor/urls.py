@@ -7,6 +7,7 @@ from .views import (
     registrar_beca_comedor,
     reportes_comedor,
     reporte_becados_por_nivel,
+    reporte_becados_sin_uso,
     toggle_tiquete,
 )
 
@@ -17,6 +18,7 @@ urlpatterns = [
     path("almuerzo/", almuerzo_comedor, name="almuerzo"),
     path("reportes/", reportes_comedor, name="reportes"),
     path("reportes/becados-por-nivel/", reporte_becados_por_nivel, name="reporte_becados_por_nivel"),
+    path("reportes/becados-sin-uso/", reporte_becados_sin_uso, name="reporte_becados_sin_uso"),
     path("tiquetes/", gestionar_tiquetes, name="tiquetes"),
     path("tiquetes/<int:tiquete_id>/toggle/", toggle_tiquete, name="toggle_tiquete"),
     path("tiquetes/imprimir/", imprimir_tiquetes, name="imprimir_tiquetes"),

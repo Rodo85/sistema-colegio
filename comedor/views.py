@@ -12,8 +12,7 @@ from django.utils import timezone
 
 from catalogos.models import CursoLectivo, Nivel
 from core.models import Institucion
-from matricula.models import MatriculaAcademica
-from matricula.models import PlantillaImpresionMatricula
+from matricula.models import EncargadoEstudiante, MatriculaAcademica, PlantillaImpresionMatricula
 
 from .models import (
     BecaComedor,
@@ -693,6 +692,139 @@ def reportes_comedor(request):
         "por_dia_tiquete": por_dia_tiquete,
     }
     return render(request, "comedor/reportes.html", contexto)
+
+
+# ---------------------------------------------------------------------------
+# Reporte becados sin uso (PDF)
+# ---------------------------------------------------------------------------
+
+@login_required
+@permission_required("comedor.access_reportes_comedor", raise_exception=True)
+def reporte_becados_sin_uso(request):
+    """
+    Reporte imprimible de becados que no usaron el comedor en el periodo.
+    Columnas: Subgrupo, Identificación, 1° Apellido, 2° Apellido, Nombre,
+    Nombre encargado principal, Teléfono encargado.
+    """
+    curso_lectivo = CursoLectivo.get_activo()
+    instituciones = Institucion.objects.all().order_by("nombre") if request.user.is_superuser else []
+    institucion = _resolver_institucion(request, request.GET.get("institucion"))
+
+    hoy = timezone.localdate()
+    periodo = request.GET.get("periodo", "mes")
+    fecha_inicio_txt = request.GET.get("fecha_inicio")
+    fecha_fin_txt = request.GET.get("fecha_fin")
+
+    if periodo == "dia":
+        fecha_inicio = hoy
+        fecha_fin = hoy
+    elif periodo == "semana":
+        fecha_inicio = hoy - timedelta(days=hoy.weekday())
+        fecha_fin = hoy
+    elif periodo == "rango" and fecha_inicio_txt and fecha_fin_txt:
+        try:
+            fecha_inicio = datetime.strptime(fecha_inicio_txt, "%Y-%m-%d").date()
+            fecha_fin = datetime.strptime(fecha_fin_txt, "%Y-%m-%d").date()
+            if fecha_inicio > fecha_fin:
+                fecha_inicio, fecha_fin = fecha_fin, fecha_inicio
+        except ValueError:
+            fecha_inicio = hoy.replace(day=1)
+            fecha_fin = hoy
+    else:
+        fecha_inicio = hoy.replace(day=1)
+        fecha_fin = hoy
+        periodo = "mes"
+
+    filas = []
+    plantilla = None
+
+    if curso_lectivo and institucion:
+        plantilla = PlantillaImpresionMatricula.objects.filter(institucion=institucion).first()
+
+        becas_qs = (
+            BecaComedor.objects.filter(
+                institucion=institucion,
+                curso_lectivo=curso_lectivo,
+                activa=True,
+                estudiante__matriculas_academicas__curso_lectivo=curso_lectivo,
+                estudiante__matriculas_academicas__institucion=institucion,
+                estudiante__matriculas_academicas__estado__iexact=MatriculaAcademica.ACTIVO,
+            )
+            .select_related("estudiante")
+            .distinct()
+        )
+
+        becados_sin_uso = list(
+            becas_qs.exclude(
+                estudiante__registros_almuerzo__institucion=institucion,
+                estudiante__registros_almuerzo__curso_lectivo=curso_lectivo,
+                estudiante__registros_almuerzo__fecha__range=(fecha_inicio, fecha_fin),
+            )
+            .order_by(
+                "estudiante__primer_apellido",
+                "estudiante__segundo_apellido",
+                "estudiante__nombres",
+            )
+        )
+
+        matricula_map = {}
+        for m in MatriculaAcademica.objects.filter(
+            institucion=institucion,
+            curso_lectivo=curso_lectivo,
+            estado__iexact=MatriculaAcademica.ACTIVO,
+            estudiante_id__in=[b.estudiante_id for b in becados_sin_uso],
+        ).select_related("subgrupo", "seccion"):
+            matricula_map[m.estudiante_id] = m
+
+        encargados = {}
+        for enc in EncargadoEstudiante.objects.filter(
+            estudiante_id__in=[b.estudiante_id for b in becados_sin_uso],
+            principal=True,
+        ).select_related("persona_contacto"):
+            encargados[enc.estudiante_id] = enc.persona_contacto
+
+        for beca in becados_sin_uso:
+            mat = matricula_map.get(beca.estudiante_id)
+            subgrupo_label = "-"
+            if mat:
+                subgrupo_label = str(mat.subgrupo) if mat.subgrupo_id else (str(mat.seccion) if mat.seccion_id else "-")
+
+            contacto = encargados.get(beca.estudiante_id)
+            nombre_encargado = str(contacto) if contacto else "-"
+            telefono_encargado = "-"
+            if contacto:
+                telefono_encargado = (contacto.celular_avisos or contacto.telefono_trabajo or "-").strip() or "-"
+
+            filas.append({
+                "subgrupo": subgrupo_label,
+                "identificacion": beca.estudiante.identificacion,
+                "primer_apellido": beca.estudiante.primer_apellido,
+                "segundo_apellido": beca.estudiante.segundo_apellido or "",
+                "nombre": beca.estudiante.nombres,
+                "nombre_encargado": nombre_encargado,
+                "telefono_encargado": telefono_encargado,
+            })
+
+    periodo_label = (
+        "Hoy" if periodo == "dia"
+        else "Semana" if periodo == "semana"
+        else "Mes actual" if periodo == "mes"
+        else f"{fecha_inicio.strftime('%d/%m/%Y')} – {fecha_fin.strftime('%d/%m/%Y')}"
+    )
+
+    context = {
+        "curso_lectivo": curso_lectivo,
+        "instituciones": instituciones,
+        "institucion": institucion,
+        "periodo": periodo,
+        "fecha_inicio": fecha_inicio,
+        "fecha_fin": fecha_fin,
+        "periodo_label": periodo_label,
+        "filas": filas,
+        "plantilla": plantilla,
+        "es_superusuario": request.user.is_superuser,
+    }
+    return render(request, "comedor/reporte_becados_sin_uso.html", context)
 
 
 # ---------------------------------------------------------------------------
