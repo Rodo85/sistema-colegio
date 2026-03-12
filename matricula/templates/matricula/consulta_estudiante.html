@@ -272,8 +272,8 @@
       <label for="id_institucion" class="form-label">Institución</label>
       <select name="institucion" id="id_institucion" class="form-select" required>
         <option value="">Seleccione una institución</option>
-        {% for institucion in instituciones %}
-          <option value="{{ institucion.pk }}" {% if institucion and institucion.pk == institucion.pk %}selected{% endif %}>{{ institucion.nombre }}</option>
+        {% for inst in instituciones %}
+          <option value="{{ inst.pk }}" {% if institucion and inst.pk == institucion.pk %}selected{% endif %}>{{ inst.nombre }}</option>
         {% endfor %}
       </select>
     </div>

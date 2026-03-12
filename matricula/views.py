@@ -33,7 +33,13 @@ def consulta_estudiante(request):
     error = ''
     institucion = None
     edad_estudiante = ""
-    
+
+    # En GET: pre-seleccionar institución de sesión para superusuario (no cambiar la que eligió)
+    if request.method == 'GET' and request.user.is_superuser:
+        inst_id = getattr(request, 'institucion_activa_id', None) or request.session.get('institucion_id')
+        if inst_id:
+            institucion = Institucion.objects.filter(pk=inst_id).first()
+
     # Obtener todos los cursos lectivos disponibles para el select
     cursos_lectivos = CursoLectivo.objects.all().order_by('-anio')
     
@@ -166,9 +172,8 @@ def consulta_estudiante(request):
                             else:
                                 edad_estudiante = f"{years} años y {months} meses"
                     else:
-                        # No hay matrícula activa, mostrar error
+                        # No hay matrícula activa, mostrar error (mantener institución seleccionada)
                         estudiante = None
-                        institucion = None
                         encargados = []
                         error = f'No existe matrícula activa para el estudiante con identificación {identificacion} en el curso lectivo {curso_lectivo.nombre}.'
                         
