@@ -1,0 +1,142 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block title %}Lista de clase – {{ asignacion.subarea_curso.subarea.nombre }}{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+:root{--primary:#1a6eb5;--primary-dark:#145591;--border:#dee2e6;--surface:#f8f9fc;--muted:#6c757d;}
+.page-wrap{max-width:900px;margin:20px auto;padding:0 14px;font-family:"Segoe UI",system-ui,sans-serif;}
+.asgn-banner{background:linear-gradient(135deg,#145591 0%,#1a6eb5 100%);border-radius:12px;padding:16px 22px;color:#fff;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+.back-btn{color:#fff !important;font-size:.83rem;text-decoration:none !important;border:1px solid rgba(255,255,255,.4);border-radius:6px;padding:5px 12px;}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:18px;}
+.doc-header{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--border);border-radius:10px;padding:12px 14px;background:#fff;margin-bottom:12px;}
+.doc-header .logo{max-height:110px;max-width:420px;object-fit:contain;}
+.doc-header .logo-right{max-height:90px;max-width:150px;object-fit:contain;}
+.doc-header-spacer{display:none;}
+.section-title{font-size:1.1rem;font-weight:700;margin:0 0 10px;color:#111827;}
+.obs-section{margin-bottom:14px;padding:12px 14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;}
+.obs-section .obs-label{font-size:.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px;}
+.obs-section .obs-content{font-size:.9rem;color:#374151;white-space:pre-wrap;}
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:.88rem;}
+th,td{border:1px solid #cbd5e1;padding:7px 10px;text-align:left;}
+th{background:#f8fafc;font-weight:700;font-size:.75rem;text-transform:uppercase;letter-spacing:.4px;}
+.print-btn{display:inline-block;padding:8px 16px;border-radius:8px;background:#145591;color:#fff;border:none;cursor:pointer;font-size:.9rem;font-weight:600;}
+.print-btn:hover{opacity:.95;}
+.no-print{}
+.form-group{margin-bottom:14px;}
+.form-group label{display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:6px;}
+.form-group textarea{width:100%;min-height:100px;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:.9rem;resize:vertical;}
+.form-group textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(26,110,181,.15);}
+@media print{
+  .no-print{display:none !important;}
+  body{background:#fff !important;}
+  .page-wrap{margin:0;padding:0;}
+  .card{border:1px solid #94a3b8;box-shadow:none;}
+  .doc-header{position:fixed;top:0;left:0;right:0;z-index:20;border:none;border-bottom:1px solid #94a3b8;border-radius:0;padding:10px 12mm;background:#fff;}
+  .doc-header-spacer{display:block !important;height:132px;}
+}
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div class="page-wrap">
+
+  <div class="asgn-banner no-print">
+    <div>
+      <strong>Listas de clase</strong>
+      <div style="opacity:.9;font-size:.85rem;">{{ asignacion.subarea_curso.subarea.nombre }} · {{ grupo_label }}</div>
+    </div>
+    <a href="{% url 'libro_docente:asistencia' asignacion.id %}" class="back-btn">← Volver a clase</a>
+  </div>
+
+  <div class="card no-print">
+    <p class="section-title">Observación (opcional)</p>
+    <p style="font-size:.85rem;color:var(--muted);margin:0 0 12px;">Escribe una observación que aparecerá en la parte superior del PDF. No se guarda en el sistema.</p>
+    <div class="form-group">
+      <label for="id_observacion">Texto de observación</label>
+      <textarea id="id_observacion" name="observacion" placeholder="Ej: Lista para firma de encargados, reunión del 15/03, etc."></textarea>
+    </div>
+    <button type="button" class="print-btn" id="btn-imprimir">
+      <i class="fas fa-print"></i> Imprimir PDF
+    </button>
+  </div>
+
+  <!-- Área imprimible -->
+  <div id="print-area">
+    <div class="doc-header">
+      <div>
+        {% if plantilla and plantilla.logo_mep %}
+          <img src="{{ plantilla.logo_mep.url }}" alt="Logo MEP" class="logo">
+        {% endif %}
+      </div>
+      <div style="text-align:right;">
+        {% if asignacion.centro_trabajo_id and asignacion.centro_trabajo.logo %}
+          <img src="{{ asignacion.centro_trabajo.logo.url }}" alt="Logo centro" class="logo-right">
+        {% elif asignacion.subarea_curso.institucion.logo %}
+          <img src="{{ asignacion.subarea_curso.institucion.logo.url }}" alt="Escudo colegio" class="logo-right">
+        {% endif %}
+      </div>
+    </div>
+    <div class="doc-header-spacer"></div>
+
+    <div id="obs-print-container" style="display:none;" class="obs-section">
+      <div class="obs-label">Observación</div>
+      <div class="obs-content" id="obs-print-content"></div>
+    </div>
+
+    <div class="card">
+      <p class="section-title">Lista de estudiantes {{ grupo_label }}</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Identificación</th>
+              <th>Primer apellido</th>
+              <th>Segundo apellido</th>
+              <th>Nombre</th>
+              <th>Firma</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for e in estudiantes %}
+            <tr>
+              <td>{{ e.identificacion }}</td>
+              <td>{{ e.primer_apellido }}</td>
+              <td>{{ e.segundo_apellido }}</td>
+              <td>{{ e.nombres }}</td>
+              <td style="min-width:120px;border-bottom:1px solid #94a3b8;"></td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px;">No hay estudiantes en este grupo.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var btn = document.getElementById('btn-imprimir');
+  var textarea = document.getElementById('id_observacion');
+  var obsContainer = document.getElementById('obs-print-container');
+  var obsContent = document.getElementById('obs-print-content');
+
+  if (btn) {
+    btn.addEventListener('click', function() {
+      var texto = (textarea && textarea.value) ? textarea.value.trim() : '';
+      if (obsContent) obsContent.textContent = texto;
+      if (obsContainer) obsContainer.style.display = texto ? 'block' : 'none';
+      window.print();
+    });
+  }
+});
+</script>
+{% endblock %}

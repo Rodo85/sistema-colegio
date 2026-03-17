@@ -2238,6 +2238,41 @@ def asignacion_delete_view(request, asignacion_id):
 
 @login_required
 @permission_required("libro_docente.access_libro_docente", raise_exception=True)
+def lista_clase_imprimir_view(request, asignacion_id):
+    """
+    Lista de clase imprimible con observación opcional.
+    El docente puede escribir una observación antes de imprimir; no se guarda en BD.
+    """
+    asignacion = _obtener_asignacion_con_permiso(request, asignacion_id)
+    if asignacion is None:
+        messages.error(request, "No tienes acceso a esta asignación.")
+        return redirect("libro_docente:home")
+
+    matriculas = list(_get_estudiantes(asignacion))
+    estudiantes = [
+        {
+            "identificacion": m.estudiante.identificacion,
+            "primer_apellido": m.estudiante.primer_apellido,
+            "segundo_apellido": m.estudiante.segundo_apellido or "",
+            "nombres": m.estudiante.nombres,
+        }
+        for m in matriculas
+    ]
+    grupo_label = str(asignacion.subgrupo) if asignacion.subgrupo_id else str(asignacion.seccion)
+    institucion = asignacion.subarea_curso.institucion
+    plantilla = PlantillaImpresionMatricula.objects.filter(institucion=institucion).first()
+
+    context = {
+        "asignacion": asignacion,
+        "estudiantes": estudiantes,
+        "grupo_label": grupo_label,
+        "plantilla": plantilla,
+    }
+    return render(request, "libro_docente/lista_clase.html", context)
+
+
+@login_required
+@permission_required("libro_docente.access_libro_docente", raise_exception=True)
 def estudiantes_config_view(request, asignacion_id):
     """
     Pantalla independiente para gestionar estudiantes ocultos y con adecuación.

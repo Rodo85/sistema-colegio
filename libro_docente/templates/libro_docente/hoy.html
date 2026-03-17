@@ -199,6 +199,7 @@
             {% endif %}
             <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
               <a href="{% url 'libro_docente:asignacion_edit' a.id %}" class="btn btn-sm btn-outline">Editar asignación</a>
+              <a href="{% url 'libro_docente:lista_clase' a.id %}" class="btn btn-sm btn-outline">Listas de clase</a>
               {% if a.subarea_curso.institucion.es_institucion_general %}
                 <a href="{% url 'libro_docente:asignacion_estudiantes_excel' a.id %}" class="btn btn-sm btn-outline">Estudiantes (Excel)</a>
               {% endif %}

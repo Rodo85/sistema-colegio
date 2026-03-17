@@ -132,6 +132,9 @@ tbody td{padding:8px 12px;vertical-align:middle;}
       <a href="{% url 'libro_docente:estudiantes_config' asignacion.id %}" class="resumen-link" style="color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.4);padding:5px 12px;border-radius:6px;">
         👥 Configurar estudiantes
       </a>
+      <a href="{% url 'libro_docente:lista_clase' asignacion.id %}" class="resumen-link" style="color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.4);padding:5px 12px;border-radius:6px;">
+        📋 Listas de clase
+      </a>
       <a href="{% url 'libro_docente:resumen' asignacion.id %}?periodo={% if periodo %}{{ periodo.id }}{% endif %}" class="resumen-link" style="color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.4);padding:5px 12px;border-radius:6px;">
         📊 Ver resumen
       </a>
