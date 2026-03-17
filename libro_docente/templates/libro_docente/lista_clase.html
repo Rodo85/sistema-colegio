@@ -227,7 +227,6 @@ table.lista-clase td{
   padding:7px 8px;
   text-align:left;
   vertical-align:middle;
-  /* Sin fondo en pantalla también */
   background:#fff !important;
   color:#1f2937 !important;
 }
@@ -275,8 +274,41 @@ table.lista-clase .col-observacion{width:17%;}
     margin:0 !important;
     padding:0 !important;
     background:#fff !important;
+    background-color:#fff !important;
     -webkit-print-color-adjust:exact;
     print-color-adjust:exact;
+  }
+
+
+  /* Elimina el fondo grisáceo #F4F6F9 del admin */
+  *{
+    background-color:transparent !important;
+  }
+
+
+  /* Restaura fondo blanco explícito donde se necesita */
+  table.lista-clase th,
+  table.lista-clase td,
+  .obs-section,
+  .print-doc,
+  #print-area,
+  body,
+  html{
+    background-color:#fff !important;
+  }
+
+
+  body,
+  #container,
+  #content,
+  .content-wrapper,
+  .wrapper,
+  #main,
+  .main,
+  #page-wrapper,
+  .page-wrapper{
+    background:#fff !important;
+    background-color:#fff !important;
   }
 
 
@@ -434,7 +466,6 @@ table.lista-clase .col-observacion{width:17%;}
     border:1px solid #98a6b8;
     padding:6px 7px;
     vertical-align:middle;
-    /* Fondo blanco puro, sin grises del admin */
     background:#fff !important;
     color:#000 !important;
     -webkit-print-color-adjust:exact;
