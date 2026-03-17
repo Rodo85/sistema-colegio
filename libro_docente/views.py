@@ -2261,12 +2261,14 @@ def lista_clase_imprimir_view(request, asignacion_id):
     grupo_label = str(asignacion.subgrupo) if asignacion.subgrupo_id else str(asignacion.seccion)
     institucion = asignacion.subarea_curso.institucion
     plantilla = PlantillaImpresionMatricula.objects.filter(institucion=institucion).first()
+    hoy = timezone.localdate()
 
     context = {
         "asignacion": asignacion,
         "estudiantes": estudiantes,
         "grupo_label": grupo_label,
         "plantilla": plantilla,
+        "fecha_hoy": hoy,
     }
     return render(request, "libro_docente/lista_clase.html", context)
 

@@ -2,7 +2,7 @@
 # Este archivo define los iconos y configuraciones del menú lateral
 
 JAZZMIN_SETTINGS = {
-    "copyright": "Ing. Rodolfo Garro Monge",
+    "copyright": "School Smart",
     "welcome_sign": "Sistema Integral de Gestión Administrativa y Educativa",
     "site_title": "School Smart",
     "site_header": "School Smart",
