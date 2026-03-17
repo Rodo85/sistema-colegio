@@ -1,7 +1,9 @@
 {% extends "admin/base_site.html" %}
 {% load i18n %}
 
+
 {% block title %}Lista de clase – {{ asignacion.subarea_curso.subarea.nombre }}{% endblock %}
+
 
 {% block extrahead %}
 {{ block.super }}
@@ -15,6 +17,7 @@
   --text:#1f2937;
 }
 
+
 .page-wrap{
   max-width:1100px;
   margin:20px auto;
@@ -22,6 +25,7 @@
   font-family:"Segoe UI", system-ui, sans-serif;
   color:var(--text);
 }
+
 
 .asgn-banner{
   background:linear-gradient(135deg,#145591 0%,#1a6eb5 100%);
@@ -36,6 +40,7 @@
   gap:10px;
 }
 
+
 .back-btn{
   color:#fff !important;
   font-size:.83rem;
@@ -45,6 +50,7 @@
   padding:5px 12px;
 }
 
+
 .card{
   background:#fff;
   border:1px solid var(--border);
@@ -52,6 +58,7 @@
   padding:14px 18px;
   margin-bottom:18px;
 }
+
 
 .doc-header{
   display:flex;
@@ -63,17 +70,20 @@
   margin-bottom:10px;
 }
 
+
 .doc-header .logo{
   max-height:92px;
   max-width:360px;
   object-fit:contain;
 }
 
+
 .doc-header .logo-right{
   max-height:78px;
   max-width:130px;
   object-fit:contain;
 }
+
 
 .section-title,
 .lista-title{
@@ -83,15 +93,18 @@
   color:#111827;
 }
 
+
 .lista-title{
   font-size:1.35rem;
   margin-bottom:12px;
   text-align:center;
 }
 
+
 .form-group{
   margin-bottom:14px;
 }
+
 
 .form-group label{
   display:block;
@@ -100,6 +113,7 @@
   color:#374151;
   margin-bottom:6px;
 }
+
 
 .form-group textarea{
   width:100%;
@@ -111,11 +125,13 @@
   resize:vertical;
 }
 
+
 .form-group textarea:focus{
   outline:none;
   border-color:var(--primary);
   box-shadow:0 0 0 3px rgba(26,110,181,.15);
 }
+
 
 .form-group input[type="date"]{
   padding:8px 12px;
@@ -124,6 +140,7 @@
   font-size:.9rem;
 }
 
+
 .form-row{
   display:flex;
   flex-wrap:wrap;
@@ -131,10 +148,12 @@
   align-items:flex-end;
 }
 
+
 .form-row .form-group{
   flex:1;
   min-width:180px;
 }
+
 
 .print-btn{
   display:inline-block;
@@ -148,9 +167,11 @@
   font-weight:600;
 }
 
+
 .print-btn:hover{
   opacity:.95;
 }
+
 
 .fecha-print{
   font-size:.95rem;
@@ -159,12 +180,14 @@
   font-weight:500;
 }
 
+
 .obs-section{
   margin-bottom:14px;
   padding:10px 12px;
   border:1px solid #dbe3ec;
   border-radius:8px;
 }
+
 
 .obs-section .obs-label{
   font-size:.75rem;
@@ -175,6 +198,7 @@
   margin-bottom:4px;
 }
 
+
 .obs-section .obs-content{
   font-size:.92rem;
   color:#334155;
@@ -183,9 +207,11 @@
   min-height:22px;
 }
 
+
 .table-wrap{
   overflow-x:auto;
 }
+
 
 table.lista-clase{
   width:100%;
@@ -194,13 +220,18 @@ table.lista-clase{
   font-size:.88rem;
 }
 
+
 table.lista-clase th,
 table.lista-clase td{
   border:1px solid #b9c4d1;
   padding:7px 8px;
   text-align:left;
   vertical-align:middle;
+  /* Sin fondo en pantalla también */
+  background:#fff !important;
+  color:#1f2937 !important;
 }
+
 
 table.lista-clase th{
   font-weight:700;
@@ -209,9 +240,11 @@ table.lista-clase th{
   line-height:1.15;
 }
 
+
 table.lista-clase td{
   min-height:34px;
 }
+
 
 table.lista-clase .col-id{width:16%;}
 table.lista-clase .col-ap1{width:17%;}
@@ -220,6 +253,7 @@ table.lista-clase .col-nom{width:18%;}
 table.lista-clase .col-firma{width:15%;}
 table.lista-clase .col-observacion{width:17%;}
 
+
 .print-footer{
   font-size:.75rem;
   color:#94a3b8;
@@ -227,11 +261,13 @@ table.lista-clase .col-observacion{width:17%;}
   margin-top:10px;
 }
 
+
 @media print{
   @page{
     size:A4;
     margin:10mm 10mm 12mm 10mm;
   }
+
 
   html, body{
     width:100%;
@@ -243,10 +279,12 @@ table.lista-clase .col-observacion{width:17%;}
     print-color-adjust:exact;
   }
 
+
   .no-print,
   .no-print *{
     display:none !important;
   }
+
 
   body .main-header,
   body .main-sidebar,
@@ -256,14 +294,34 @@ table.lista-clase .col-observacion{width:17%;}
   body .sidebar,
   body .main-footer,
   body .content-header,
-  body .content-wrapper .content-header{
+  body .content-wrapper .content-header,
+  #header,
+  #branding,
+  #user-tools,
+  #nav-sidebar,
+  .breadcrumbs{
     display:none !important;
   }
+
 
   body .content-wrapper{
     margin-left:0 !important;
     padding:0 !important;
   }
+
+
+  body > #container,
+  #container{
+    padding-top:0 !important;
+    margin-top:0 !important;
+  }
+
+
+  #content{
+    padding:0 !important;
+    margin:0 !important;
+  }
+
 
   .page-wrap{
     max-width:none !important;
@@ -272,6 +330,7 @@ table.lista-clase .col-observacion{width:17%;}
     padding:0 !important;
   }
 
+
   #print-area{
     width:100% !important;
     max-width:none !important;
@@ -279,12 +338,14 @@ table.lista-clase .col-observacion{width:17%;}
     padding:0 !important;
   }
 
+
   .print-doc{
     width:100% !important;
     max-width:none !important;
     margin:0 !important;
     padding:0 !important;
   }
+
 
   #print-area .card{
     border:none !important;
@@ -295,6 +356,7 @@ table.lista-clase .col-observacion{width:17%;}
     margin:0 !important;
   }
 
+
   .doc-header{
     border:none;
     border-bottom:1px solid #aeb8c5;
@@ -302,21 +364,25 @@ table.lista-clase .col-observacion{width:17%;}
     margin-bottom:8px;
   }
 
+
   .doc-header .logo{
     max-height:58px;
     max-width:320px;
   }
+
 
   .doc-header .logo-right{
     max-height:78px;
     max-width:160px;
   }
 
+
   .fecha-print{
     font-size:9pt;
     margin:0 0 8px 0;
     color:#334155;
   }
+
 
   .obs-section{
     margin:0 0 10px 0;
@@ -326,16 +392,19 @@ table.lista-clase .col-observacion{width:17%;}
     border-radius:4px;
   }
 
+
   .obs-section .obs-label{
     font-size:7.5pt;
     margin-bottom:3px;
   }
+
 
   .obs-section .obs-content{
     font-size:8.8pt;
     line-height:1.28;
     min-height:10px;
   }
+
 
   .lista-title{
     font-size:15pt;
@@ -346,10 +415,12 @@ table.lista-clase .col-observacion{width:17%;}
     letter-spacing:.2px;
   }
 
+
   .table-wrap{
     overflow:visible !important;
     margin:0;
   }
+
 
   table.lista-clase{
     width:100% !important;
@@ -357,19 +428,28 @@ table.lista-clase .col-observacion{width:17%;}
     font-size:9pt;
   }
 
+
   table.lista-clase th,
   table.lista-clase td{
     border:1px solid #98a6b8;
     padding:6px 7px;
     vertical-align:middle;
+    /* Fondo blanco puro, sin grises del admin */
+    background:#fff !important;
+    color:#000 !important;
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
   }
+
 
   table.lista-clase th{
     font-size:7.8pt;
     line-height:1.1;
     text-transform:none;
     white-space:normal;
+    font-weight:700;
   }
+
 
   table.lista-clase td{
     height:11mm;
@@ -377,12 +457,14 @@ table.lista-clase .col-observacion{width:17%;}
     font-size:8.8pt;
   }
 
+
   table.lista-clase .col-id{width:15%;}
   table.lista-clase .col-ap1{width:17%;}
   table.lista-clase .col-ap2{width:17%;}
   table.lista-clase .col-nom{width:17%;}
   table.lista-clase .col-firma{width:16%;}
   table.lista-clase .col-observacion{width:18%;}
+
 
   .print-footer{
     margin-top:8px;
@@ -395,10 +477,13 @@ table.lista-clase .col-observacion{width:17%;}
 </style>
 {% endblock %}
 
+
 {% block breadcrumbs %}{% endblock %}
+
 
 {% block content %}
 <div class="page-wrap">
+
 
   <div class="asgn-banner no-print">
     <div>
@@ -407,6 +492,7 @@ table.lista-clase .col-observacion{width:17%;}
     </div>
     <a href="{% url 'libro_docente:asistencia' asignacion.id %}" class="back-btn">← Volver a clase</a>
   </div>
+
 
   <div class="card no-print">
     <p class="section-title">Opciones de impresión</p>
@@ -425,6 +511,7 @@ table.lista-clase .col-observacion{width:17%;}
     </button>
   </div>
 
+
   <div id="print-area">
     <div class="doc-header">
       <div>
@@ -441,16 +528,20 @@ table.lista-clase .col-observacion{width:17%;}
       </div>
     </div>
 
+
     <div class="print-doc">
       <p class="fecha-print" id="fecha-print-container"></p>
+
 
       <div id="obs-print-container" class="obs-section">
         <div class="obs-label">Observación</div>
         <div class="obs-content" id="obs-print-content"></div>
       </div>
 
+
       <div class="card">
         <h2 class="lista-title">Lista de estudiantes {{ grupo_label }}</h2>
+
 
         <div class="table-wrap">
           <table class="lista-clase">
@@ -486,11 +577,14 @@ table.lista-clase .col-observacion{width:17%;}
         </div>
       </div>
 
+
       <p class="print-footer">School Smart</p>
     </div>
   </div>
 
+
 </div>
+
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -499,6 +593,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var fechaInput = document.getElementById('id_fecha');
   var obsContent = document.getElementById('obs-print-content');
   var fechaContainer = document.getElementById('fecha-print-container');
+
 
   function formatearFecha(val) {
     if (!val) return '';
@@ -510,23 +605,29 @@ document.addEventListener('DOMContentLoaded', function() {
     return dia + '/' + mes + '/' + anio;
   }
 
+
   function actualizarPrintArea() {
     var texto = textarea && textarea.value ? textarea.value.trim() : '';
     var fechaVal = fechaInput && fechaInput.value ? fechaInput.value : '';
 
+
     if (obsContent) {
       obsContent.textContent = texto || ' ';
     }
+
 
     if (fechaContainer) {
       fechaContainer.textContent = fechaVal ? 'Fecha: ' + formatearFecha(fechaVal) : '';
     }
   }
 
+
   if (fechaInput) fechaInput.addEventListener('change', actualizarPrintArea);
   if (textarea) textarea.addEventListener('input', actualizarPrintArea);
 
+
   actualizarPrintArea();
+
 
   if (btn) {
     btn.addEventListener('click', function() {
