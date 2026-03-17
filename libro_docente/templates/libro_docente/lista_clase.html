@@ -20,11 +20,15 @@
 .obs-section .obs-label{font-size:.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px;}
 .obs-section .obs-content{font-size:.9rem;color:#374151;white-space:pre-wrap;}
 .table-wrap{overflow-x:auto;}
-table.lista-clase{width:100%;border-collapse:collapse;font-size:.88rem;}
-table.lista-clase th,table.lista-clase td{border:1px solid #cbd5e1;padding:7px 10px;text-align:left;}
-table.lista-clase th{background:#f8fafc;font-weight:700;font-size:.75rem;text-transform:uppercase;letter-spacing:.4px;}
-table.lista-clase .col-firma{min-width:360px;width:360px;}
-table.lista-clase .col-observacion{min-width:200px;}
+table.lista-clase{width:100%;max-width:190mm;border-collapse:collapse;font-size:.8rem;table-layout:fixed;}
+table.lista-clase th,table.lista-clase td{border:1px solid #cbd5e1;padding:5px 6px;text-align:left;overflow-wrap:break-word;word-break:break-word;}
+table.lista-clase th{background:#f8fafc;font-weight:700;font-size:.7rem;text-transform:uppercase;letter-spacing:.3px;}
+table.lista-clase .col-id{width:11%;}
+table.lista-clase .col-ap1{width:14%;}
+table.lista-clase .col-ap2{width:14%;}
+table.lista-clase .col-nom{width:16%;}
+table.lista-clase .col-firma{width:12%;}
+table.lista-clase .col-observacion{width:33%;}
 .print-btn{display:inline-block;padding:8px 16px;border-radius:8px;background:#145591;color:#fff;border:none;cursor:pointer;font-size:.9rem;font-weight:600;}
 .print-btn:hover{opacity:.95;}
 .no-print{}
@@ -37,12 +41,18 @@ table.lista-clase .col-observacion{min-width:200px;}
 .form-row .form-group{flex:1;min-width:180px;}
 .fecha-print{font-size:.9rem;color:#374151;margin-bottom:10px;font-weight:500;}
 @media print{
+  @page{size:A4;margin:12mm;}
   .no-print{display:none !important;}
-  body{background:#fff !important;}
-  .page-wrap{margin:0;padding:0;}
+  body{background:#fff !important;font-size:9pt;}
+  .page-wrap{margin:0;padding:0;max-width:186mm;}
+  #print-area{max-width:186mm;}
   .card{border:1px solid #94a3b8;box-shadow:none;}
-  .doc-header{position:fixed;top:0;left:0;right:0;z-index:20;border:none;border-bottom:1px solid #94a3b8;border-radius:0;padding:10px 12mm;background:#fff;}
-  .doc-header-spacer{display:block !important;height:132px;}
+  .doc-header{position:fixed;top:0;left:0;right:0;z-index:20;border:none;border-bottom:1px solid #94a3b8;border-radius:0;padding:8px 12mm;background:#fff;max-width:186mm;margin:0 auto;}
+  .doc-header .logo{max-height:70px;}
+  .doc-header .logo-right{max-height:60px;}
+  .doc-header-spacer{display:block !important;height:90px;}
+  table.lista-clase{font-size:8pt;max-width:186mm;}
+  table.lista-clase th,table.lista-clase td{padding:4px 5px;}
 }
 </style>
 {% endblock %}
@@ -108,10 +118,10 @@ table.lista-clase .col-observacion{min-width:200px;}
         <table class="lista-clase">
           <thead>
             <tr>
-              <th>Identificación</th>
-              <th>Primer apellido</th>
-              <th>Segundo apellido</th>
-              <th>Nombre</th>
+              <th class="col-id">Identificación</th>
+              <th class="col-ap1">Primer apellido</th>
+              <th class="col-ap2">Segundo apellido</th>
+              <th class="col-nom">Nombre</th>
               <th class="col-firma">Firma</th>
               <th class="col-observacion">Observación</th>
             </tr>
@@ -119,10 +129,10 @@ table.lista-clase .col-observacion{min-width:200px;}
           <tbody>
             {% for e in estudiantes %}
             <tr>
-              <td>{{ e.identificacion }}</td>
-              <td>{{ e.primer_apellido }}</td>
-              <td>{{ e.segundo_apellido }}</td>
-              <td>{{ e.nombres }}</td>
+              <td class="col-id">{{ e.identificacion }}</td>
+              <td class="col-ap1">{{ e.primer_apellido }}</td>
+              <td class="col-ap2">{{ e.segundo_apellido }}</td>
+              <td class="col-nom">{{ e.nombres }}</td>
               <td class="col-firma" style="border-bottom:1px solid #94a3b8;"></td>
               <td class="col-observacion" style="border-bottom:1px solid #94a3b8;"></td>
             </tr>
