@@ -23,9 +23,14 @@ class NoCacheMiddleware:
         return response
 
 
+# Rutas que usan el admin base (logout, menú) y deben evitar caché para no tener CSRF stale
+_NO_CACHE_PREFIXES = ("/admin/", "/docente/", "/matricula/", "/comedor/", "/evaluaciones/", "/ingreso/")
+
+
 class AdminNoCacheMiddleware:
     """
-    Evita que el navegador reutilice HTML viejo del admin (incluyendo forms con CSRF stale).
+    Evita que el navegador reutilice HTML viejo (forms con CSRF stale).
+    Aplica a admin y a vistas que extienden base_site (docente, matrícula, etc.).
     """
 
     def __init__(self, get_response):
@@ -35,7 +40,7 @@ class AdminNoCacheMiddleware:
         response = self.get_response(request)
 
         content_type = (response.get("Content-Type") or "").lower()
-        if request.path.startswith("/admin/") and "text/html" in content_type:
+        if "text/html" in content_type and any(request.path.startswith(p) for p in _NO_CACHE_PREFIXES):
             response["Cache-Control"] = "no-cache, no-store, must-revalidate, max-age=0, private"
             response["Pragma"] = "no-cache"
             response["Expires"] = "Thu, 01 Jan 1970 00:00:00 GMT"

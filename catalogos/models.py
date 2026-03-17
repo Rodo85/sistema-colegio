@@ -139,6 +139,16 @@ class SubArea(models.Model):
             raise ValidationError("Una materia académica no debe tener especialidad asignada.")
         if not self.es_academica and self.especialidad is None:
             raise ValidationError("Una materia técnica debe tener especialidad asignada.")
+        # Evitar duplicados (nombre, especialidad) — mensaje claro en vez de IntegrityError
+        nombre_norm = self.nombre.strip().upper() if self.nombre else ""
+        if nombre_norm:
+            qs = SubArea.objects.filter(nombre=nombre_norm, especialidad=self.especialidad)
+            if self.pk:
+                qs = qs.exclude(pk=self.pk)
+            if qs.exists():
+                raise ValidationError(
+                    {"nombre": "Ya existe una subárea con este nombre y especialidad."}
+                )
 
     def save(self, *args, **kwargs):
         # Normalizar texto: mayúsculas y sin espacios de sobra

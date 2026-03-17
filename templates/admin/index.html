@@ -1,11 +1,31 @@
 {% extends "admin/base_site.html" %}
 {% load admin_extras %}
 
+{% block extrahead %}
+{{ block.super }}
+<style>
+.btn-tutoriales,.btn-instagram{display:inline-flex!important;align-items:center;gap:8px;padding:10px 16px;border-radius:8px;color:#fff!important;text-decoration:none!important;font-weight:600;transition:opacity .2s,transform .2s;}
+.btn-tutoriales{background:#ff0000;}
+.btn-tutoriales:hover,.btn-instagram:hover{opacity:.9;transform:translateY(-1px);}
+.btn-instagram{background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);}
+</style>
+{% endblock %}
+
 {% block content %}
 <div id="content-main">
     <div class="module">
         <h2>Bienvenido al Sistema Integral de Gestión Administrativa y Educativa</h2>
         <p>Seleccione una opción del menú lateral para comenzar.</p>
+        <div class="tutoriales-redes" style="margin-top:1.5rem;display:flex;flex-wrap:wrap;gap:1rem;align-items:center;">
+            <a href="https://www.youtube.com/@rodolfogarromonge2458/playlists" target="_blank" rel="noopener noreferrer" title="Tutoriales en YouTube" class="btn-tutoriales">
+                <i class="fab fa-youtube" style="font-size:1.5rem;"></i>
+                <span>Tutoriales</span>
+            </a>
+            <a href="https://www.instagram.com/schoolsmartcr?igsh=MTJ2cXBjYzVvbXFicw%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer" title="School Smart en Instagram" class="btn-instagram">
+                <i class="fab fa-instagram" style="font-size:1.5rem;"></i>
+                <span>Instagram</span>
+            </a>
+        </div>
     </div>
     {% if request.user.is_superuser %}
       {% pending_solicitudes_count as pendientes %}
