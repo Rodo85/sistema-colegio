@@ -162,7 +162,6 @@
 .obs-section{
   margin-bottom:14px;
   padding:10px 12px;
-  background:#fafbfd;
   border:1px solid #dbe3ec;
   border-radius:8px;
 }
@@ -204,7 +203,6 @@ table.lista-clase td{
 }
 
 table.lista-clase th{
-  background:#f3f6fa;
   font-weight:700;
   font-size:.78rem;
   white-space:normal;
@@ -310,8 +308,8 @@ table.lista-clase .col-observacion{width:17%;}
   }
 
   .doc-header .logo-right{
-    max-height:52px;
-    max-width:110px;
+    max-height:78px;
+    max-width:160px;
   }
 
   .fecha-print{
@@ -325,7 +323,6 @@ table.lista-clase .col-observacion{width:17%;}
     padding:7px 9px;
     min-height:0;
     border:1px solid #c8d2de;
-    background:#fbfcfe;
     border-radius:4px;
   }
 
@@ -368,7 +365,6 @@ table.lista-clase .col-observacion{width:17%;}
   }
 
   table.lista-clase th{
-    background:#eef3f8 !important;
     font-size:7.8pt;
     line-height:1.1;
     text-transform:none;
@@ -468,7 +464,7 @@ table.lista-clase .col-observacion{width:17%;}
                 <th class="col-observacion">Observación</th>
               </tr>
             </thead>
-            <tbody id="lista-tbody">
+            <tbody>
               {% for e in estudiantes %}
               <tr>
                 <td class="col-id">{{ e.identificacion }}</td>
@@ -503,8 +499,6 @@ document.addEventListener('DOMContentLoaded', function() {
   var fechaInput = document.getElementById('id_fecha');
   var obsContent = document.getElementById('obs-print-content');
   var fechaContainer = document.getElementById('fecha-print-container');
-  var tbody = document.getElementById('lista-tbody');
-  var filasVacias = [];
 
   function formatearFecha(val) {
     if (!val) return '';
@@ -529,36 +523,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  function agregarFilasVacias() {
-    if (!tbody) return;
-
-    var filas = tbody.querySelectorAll('tr:not([data-vacia])');
-    var n = 0;
-
-    for (var j = 0; j < filas.length; j++) {
-      if (filas[j].cells.length === 6) n++;
-    }
-
-    if (n === 0 || n >= 20) return;
-
-    var faltan = 20 - n;
-
-    for (var i = 0; i < faltan; i++) {
-      var tr = document.createElement('tr');
-      tr.setAttribute('data-vacia', '1');
-      tr.innerHTML = '<td class="col-id"></td><td class="col-ap1"></td><td class="col-ap2"></td><td class="col-nom"></td><td class="col-firma"></td><td class="col-observacion"></td>';
-      filasVacias.push(tr);
-      tbody.appendChild(tr);
-    }
-  }
-
-  function quitarFilasVacias() {
-    filasVacias.forEach(function(tr) {
-      if (tr.parentNode) tr.parentNode.removeChild(tr);
-    });
-    filasVacias = [];
-  }
-
   if (fechaInput) fechaInput.addEventListener('change', actualizarPrintArea);
   if (textarea) textarea.addEventListener('input', actualizarPrintArea);
 
@@ -567,9 +531,7 @@ document.addEventListener('DOMContentLoaded', function() {
   if (btn) {
     btn.addEventListener('click', function() {
       actualizarPrintArea();
-      agregarFilasVacias();
       window.print();
-      setTimeout(quitarFilasVacias, 700);
     });
   }
 });
