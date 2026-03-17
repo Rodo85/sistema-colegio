@@ -15,7 +15,8 @@
 .doc-header .logo{max-height:110px;max-width:420px;object-fit:contain;}
 .doc-header .logo-right{max-height:90px;max-width:150px;object-fit:contain;}
 .doc-header-spacer{display:none;}
-.section-title{font-size:1.1rem;font-weight:700;margin:0 0 10px;color:#111827;}
+.section-title,.lista-title{font-size:1.1rem;font-weight:700;margin:0 0 10px;color:#111827;}
+.lista-title{font-size:1.25rem;}
 .obs-section{margin-bottom:14px;padding:12px 14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;}
 .obs-section .obs-label{font-size:.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px;}
 .obs-section .obs-content{font-size:.9rem;color:#374151;white-space:pre-wrap;}
@@ -41,18 +42,36 @@ table.lista-clase .col-observacion{width:33%;}
 .form-row .form-group{flex:1;min-width:180px;}
 .fecha-print{font-size:.9rem;color:#374151;margin-bottom:10px;font-weight:500;}
 @media print{
-  @page{size:A4;margin:12mm;}
-  .no-print{display:none !important;}
-  body{background:#fff !important;font-size:9pt;}
-  .page-wrap{margin:0;padding:0;max-width:186mm;}
-  #print-area{max-width:186mm;}
-  .card{border:1px solid #94a3b8;box-shadow:none;}
-  .doc-header{position:fixed;top:0;left:0;right:0;z-index:20;border:none;border-bottom:1px solid #94a3b8;border-radius:0;padding:8px 12mm;background:#fff;max-width:186mm;margin:0 auto;}
-  .doc-header .logo{max-height:70px;}
-  .doc-header .logo-right{max-height:60px;}
-  .doc-header-spacer{display:block !important;height:90px;}
-  table.lista-clase{font-size:8pt;max-width:186mm;}
-  table.lista-clase th,table.lista-clase td{padding:4px 5px;}
+  @page{size:A4;margin:15mm;}
+  .no-print,.no-print *{display:none !important;}
+  body .main-header,body .main-sidebar,body .content-wrapper>nav,body .navbar,body .brand-link,body .sidebar,body .main-footer{display:none !important;}
+  body .content-wrapper{margin-left:0 !important;}
+  body{background:#fff !important;margin:0;padding:0;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .page-wrap{margin:0;padding:0;max-width:none;width:100%;}
+  #print-area{max-width:none;width:100%;margin:0 auto;}
+  .print-doc{max-width:180mm;margin:0 auto;padding:0;}
+  .doc-header{position:fixed;top:0;left:0;right:0;z-index:20;border:none;border-bottom:1px solid #94a3b8;padding:6px 15mm;background:#fff;}
+  .doc-header .logo{max-height:56px;}
+  .doc-header .logo-right{max-height:48px;}
+  .doc-header-spacer{display:block !important;height:72px;}
+  .fecha-print{font-size:9pt;color:#475569;margin:0 0 10px;letter-spacing:.3px;}
+  .obs-section{margin-bottom:14px;padding:14px 16px;min-height:28mm;border:1px solid #cbd5e1;background:#fafbfc;}
+  .obs-section .obs-label{font-size:8pt;font-weight:700;color:#334155;letter-spacing:.5px;margin-bottom:8px;}
+  .obs-section .obs-content{font-size:9pt;color:#1e293b;line-height:1.4;min-height:12mm;}
+  .lista-title{font-size:1.6rem;font-weight:800;color:#0f172a;margin:0 0 8px;text-align:center;letter-spacing:.5px;}
+  .table-wrap{margin:0;}
+  table.lista-clase{width:100%;font-size:9pt;table-layout:fixed;}
+  table.lista-clase th,table.lista-clase td{padding:8px 10px;vertical-align:middle;border:1px solid #94a3b8;}
+  table.lista-clase th{background:#f1f5f9;font-weight:700;font-size:8pt;white-space:nowrap;}
+  table.lista-clase tbody tr{min-height:10mm;}
+  .print-footer{font-size:7pt;color:#94a3b8;text-align:center;margin-top:12px;padding-top:8px;border-top:1px solid #e2e8f0;}
+  #print-area .card{border:none;background:transparent;box-shadow:none;padding:0;}
+  table.lista-clase .col-id{width:10%;}
+  table.lista-clase .col-ap1{width:12%;}
+  table.lista-clase .col-ap2{width:12%;}
+  table.lista-clase .col-nom{width:14%;}
+  table.lista-clase .col-firma{width:18%;}
+  table.lista-clase .col-observacion{width:34%;}
 }
 </style>
 {% endblock %}
@@ -105,15 +124,16 @@ table.lista-clase .col-observacion{width:33%;}
     </div>
     <div class="doc-header-spacer"></div>
 
-    <div class="fecha-print" id="fecha-print-container" style="display:none;"></div>
+    <div class="print-doc">
+      <p class="fecha-print" id="fecha-print-container"></p>
 
-    <div id="obs-print-container" style="display:none;" class="obs-section">
-      <div class="obs-label">Observación</div>
-      <div class="obs-content" id="obs-print-content"></div>
-    </div>
+      <div id="obs-print-container" class="obs-section">
+        <div class="obs-label">OBSERVACIÓN</div>
+        <div class="obs-content" id="obs-print-content"></div>
+      </div>
 
-    <div class="card">
-      <p class="section-title">Lista de estudiantes {{ grupo_label }}</p>
+      <div class="card">
+        <h2 class="lista-title">Lista de estudiantes {{ grupo_label }}</h2>
       <div class="table-wrap">
         <table class="lista-clase">
           <thead>
@@ -126,15 +146,15 @@ table.lista-clase .col-observacion{width:33%;}
               <th class="col-observacion">Observación</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="lista-tbody">
             {% for e in estudiantes %}
             <tr>
               <td class="col-id">{{ e.identificacion }}</td>
               <td class="col-ap1">{{ e.primer_apellido }}</td>
               <td class="col-ap2">{{ e.segundo_apellido }}</td>
               <td class="col-nom">{{ e.nombres }}</td>
-              <td class="col-firma" style="border-bottom:1px solid #94a3b8;"></td>
-              <td class="col-observacion" style="border-bottom:1px solid #94a3b8;"></td>
+              <td class="col-firma"></td>
+              <td class="col-observacion"></td>
             </tr>
             {% empty %}
             <tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px;">No hay estudiantes en este grupo.</td></tr>
@@ -142,6 +162,9 @@ table.lista-clase .col-observacion{width:33%;}
           </tbody>
         </table>
       </div>
+    </div>
+
+    <p class="print-footer">School Smart</p>
     </div>
   </div>
 
@@ -166,17 +189,42 @@ document.addEventListener('DOMContentLoaded', function() {
     return dia + '/' + mes + '/' + anio;
   }
 
+  var tbody = document.getElementById('lista-tbody');
+  var filasVacias = [];
+  function actualizarPrintArea() {
+    var texto = (textarea && textarea.value) ? textarea.value.trim() : '';
+    var fechaVal = (fechaInput && fechaInput.value) ? fechaInput.value : '';
+    if (obsContent) obsContent.textContent = texto;
+    if (fechaContainer) fechaContainer.textContent = fechaVal ? 'Fecha: ' + formatearFecha(fechaVal) : '';
+  }
+  function agregarFilasVacias() {
+    if (!tbody) return;
+    var filas = tbody.querySelectorAll('tr:not([data-vacia])');
+    var n = 0;
+    for (var j = 0; j < filas.length; j++) if (filas[j].cells.length === 6) n++;
+    if (n === 0 || n >= 18) return;
+    var faltan = 18 - n;
+    for (var i = 0; i < faltan; i++) {
+      var tr = document.createElement('tr');
+      tr.setAttribute('data-vacia', '1');
+      tr.innerHTML = '<td class="col-id"></td><td class="col-ap1"></td><td class="col-ap2"></td><td class="col-nom"></td><td class="col-firma"></td><td class="col-observacion"></td>';
+      filasVacias.push(tr);
+      tbody.appendChild(tr);
+    }
+  }
+  function quitarFilasVacias() {
+    filasVacias.forEach(function(tr) { if (tr.parentNode) tr.parentNode.removeChild(tr); });
+    filasVacias = [];
+  }
+  if (fechaInput) fechaInput.addEventListener('change', actualizarPrintArea);
+  if (textarea) textarea.addEventListener('input', actualizarPrintArea);
+  actualizarPrintArea();
   if (btn) {
     btn.addEventListener('click', function() {
-      var texto = (textarea && textarea.value) ? textarea.value.trim() : '';
-      var fechaVal = (fechaInput && fechaInput.value) ? fechaInput.value : '';
-      if (obsContent) obsContent.textContent = texto;
-      if (obsContainer) obsContainer.style.display = texto ? 'block' : 'none';
-      if (fechaContainer) {
-        fechaContainer.textContent = fechaVal ? 'Fecha: ' + formatearFecha(fechaVal) : '';
-        fechaContainer.style.display = fechaVal ? 'block' : 'none';
-      }
+      actualizarPrintArea();
+      agregarFilasVacias();
       window.print();
+      setTimeout(quitarFilasVacias, 500);
     });
   }
 });
