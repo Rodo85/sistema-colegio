@@ -554,6 +554,14 @@ class ListaEstudiantesDocente(models.Model):
         related_name="listas_estudiantes_docente",
         verbose_name="Curso lectivo",
     )
+    centro_trabajo = models.ForeignKey(
+        "evaluaciones.CentroTrabajo",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="listas_estudiantes_docente",
+        verbose_name="Centro de trabajo",
+    )
     seccion = models.ForeignKey(
         "catalogos.Seccion",
         on_delete=models.PROTECT,
@@ -587,21 +595,46 @@ class ListaEstudiantesDocente(models.Model):
         verbose_name_plural = "Listas privadas de estudiantes (docente)"
         constraints = [
             models.UniqueConstraint(
-                fields=["docente", "curso_lectivo", "seccion"],
-                condition=models.Q(subgrupo__isnull=True, seccion__isnull=False),
-                name="uniq_libdoc_lista_doc_curso_seccion",
+                fields=["docente", "institucion", "curso_lectivo", "seccion"],
+                condition=models.Q(
+                    subgrupo__isnull=True,
+                    seccion__isnull=False,
+                    centro_trabajo__isnull=True,
+                ),
+                name="uniq_libdoc_lista_doc_inst_curso_seccion",
             ),
             models.UniqueConstraint(
-                fields=["docente", "curso_lectivo", "subgrupo"],
-                condition=models.Q(subgrupo__isnull=False),
-                name="uniq_libdoc_lista_doc_curso_subgrupo",
+                fields=["docente", "institucion", "curso_lectivo", "subgrupo"],
+                condition=models.Q(
+                    subgrupo__isnull=False,
+                    centro_trabajo__isnull=True,
+                ),
+                name="uniq_libdoc_lista_doc_inst_curso_subgrupo",
+            ),
+            models.UniqueConstraint(
+                fields=["docente", "institucion", "curso_lectivo", "centro_trabajo", "seccion"],
+                condition=models.Q(
+                    subgrupo__isnull=True,
+                    seccion__isnull=False,
+                    centro_trabajo__isnull=False,
+                ),
+                name="uniq_libdoc_lista_doc_inst_curso_ctr_seccion",
+            ),
+            models.UniqueConstraint(
+                fields=["docente", "institucion", "curso_lectivo", "centro_trabajo", "subgrupo"],
+                condition=models.Q(
+                    subgrupo__isnull=False,
+                    centro_trabajo__isnull=False,
+                ),
+                name="uniq_libdoc_lista_doc_inst_curso_ctr_subgrupo",
             ),
         ]
 
     def __str__(self):
+        centro = f" · {self.centro_trabajo}" if self.centro_trabajo_id else ""
         if self.subgrupo_id:
-            return f"{self.docente} · {self.subgrupo} · {self.curso_lectivo}"
-        return f"{self.docente} · {self.seccion} · {self.curso_lectivo}"
+            return f"{self.docente}{centro} · {self.subgrupo} · {self.curso_lectivo}"
+        return f"{self.docente}{centro} · {self.seccion} · {self.curso_lectivo}"
 
 
 class ListaEstudiantesDocenteItem(models.Model):
