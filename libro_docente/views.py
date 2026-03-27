@@ -284,57 +284,7 @@ def _obtener_lista_privada_docente(asignacion):
         filtros["subgrupo_id"] = asignacion.subgrupo_id
     else:
         filtros["seccion_id"] = asignacion.seccion_id
-    lista = ListaEstudiantesDocente.objects.filter(**filtros).first()
-    if lista or not _es_institucion_general(asignacion):
-        return lista
-
-    # Compatibilidad: migra automáticamente listas antiguas (sin centro_trabajo)
-    # a la lista específica del centro para evitar mezclar colegios.
-    legacy_filtros = {
-        "docente": asignacion.docente,
-        "institucion": asignacion.subarea_curso.institucion,
-        "curso_lectivo": asignacion.curso_lectivo,
-        "centro_trabajo__isnull": True,
-    }
-    if asignacion.subgrupo_id:
-        legacy_filtros["subgrupo_id"] = asignacion.subgrupo_id
-    else:
-        legacy_filtros["seccion_id"] = asignacion.seccion_id
-    legacy = ListaEstudiantesDocente.objects.filter(**legacy_filtros).first()
-    if not legacy:
-        return None
-
-    crear_filtros = {
-        "docente": asignacion.docente,
-        "institucion": asignacion.subarea_curso.institucion,
-        "curso_lectivo": asignacion.curso_lectivo,
-        "centro_trabajo_id": asignacion.centro_trabajo_id,
-    }
-    if asignacion.subgrupo_id:
-        crear_filtros["subgrupo_id"] = asignacion.subgrupo_id
-    else:
-        crear_filtros["seccion_id"] = asignacion.seccion_id
-
-    lista_centro, creada = ListaEstudiantesDocente.objects.get_or_create(
-        defaults={"created_by": legacy.created_by},
-        **crear_filtros,
-    )
-    if creada:
-        items = list(
-            legacy.items.order_by("orden", "id").values_list("estudiante_id", "orden")
-        )
-        ListaEstudiantesDocenteItem.objects.bulk_create(
-            [
-                ListaEstudiantesDocenteItem(
-                    lista=lista_centro,
-                    estudiante_id=est_id,
-                    orden=orden,
-                )
-                for est_id, orden in items
-            ],
-            ignore_conflicts=True,
-        )
-    return lista_centro
+    return ListaEstudiantesDocente.objects.filter(**filtros).first()
 
 
 def _obtener_o_crear_lista_privada_docente(asignacion, user):
