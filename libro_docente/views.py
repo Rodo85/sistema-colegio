@@ -284,7 +284,28 @@ def _obtener_lista_privada_docente(asignacion):
         filtros["subgrupo_id"] = asignacion.subgrupo_id
     else:
         filtros["seccion_id"] = asignacion.seccion_id
-    return ListaEstudiantesDocente.objects.filter(**filtros).first()
+    lista = ListaEstudiantesDocente.objects.filter(**filtros).first()
+    if lista:
+        return lista
+
+    # Fallback seguro para datos legacy:
+    # si no existe lista por centro en Institución General, usar la lista sin centro
+    # SOLO cuando haya exactamente una candidata (evita mezclar grupos/colegios).
+    if _es_institucion_general(asignacion):
+        legacy_filtros = {
+            "docente": asignacion.docente,
+            "institucion": asignacion.subarea_curso.institucion,
+            "curso_lectivo": asignacion.curso_lectivo,
+            "centro_trabajo__isnull": True,
+        }
+        if asignacion.subgrupo_id:
+            legacy_filtros["subgrupo_id"] = asignacion.subgrupo_id
+        else:
+            legacy_filtros["seccion_id"] = asignacion.seccion_id
+        candidatos = list(ListaEstudiantesDocente.objects.filter(**legacy_filtros)[:2])
+        if len(candidatos) == 1:
+            return candidatos[0]
+    return None
 
 
 def _obtener_o_crear_lista_privada_docente(asignacion, user):
