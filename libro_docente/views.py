@@ -2283,6 +2283,144 @@ def lista_clase_imprimir_view(request, asignacion_id):
 
 @login_required
 @permission_required("libro_docente.access_libro_docente", raise_exception=True)
+def diagnostico_listas_general_view(request):
+    """
+    Diagnóstico (solo superadmin):
+    - Selecciona docente de Institución General.
+    - Selecciona asignación activa.
+    - Muestra estudiantes presentes en listas privadas legacy (sin centro de trabajo)
+      para el mismo grupo/subgrupo de la asignación.
+    """
+    if not request.user.is_superuser:
+        messages.error(request, "Acceso restringido a superadministrador.")
+        return redirect("libro_docente:home")
+
+    profesores_qs = (
+        Profesor.objects
+        .filter(institucion__es_institucion_general=True)
+        .select_related("usuario", "institucion")
+        .order_by("usuario__last_name", "usuario__first_name", "id")
+    )
+
+    profesor_sel = None
+    asignacion_sel = None
+    asignaciones = []
+    listas_legacy = []
+    filas_estudiantes = []
+    resumen = {}
+
+    profesor_id = request.GET.get("profesor_id")
+    asignacion_id = request.GET.get("asignacion_id")
+
+    if profesor_id and str(profesor_id).isdigit():
+        profesor_sel = profesores_qs.filter(id=int(profesor_id)).first()
+        if profesor_sel:
+            asignaciones = list(
+                DocenteAsignacion.objects
+                .filter(
+                    docente=profesor_sel,
+                    activo=True,
+                    subarea_curso__institucion__es_institucion_general=True,
+                )
+                .select_related(
+                    "subarea_curso__subarea",
+                    "subarea_curso__institucion",
+                    "curso_lectivo",
+                    "seccion",
+                    "subgrupo",
+                    "centro_trabajo",
+                )
+                .order_by("subarea_curso__subarea__nombre", "seccion__id", "subgrupo__id", "id")
+            )
+
+    if asignacion_id and str(asignacion_id).isdigit() and asignaciones:
+        asignacion_sel = next((a for a in asignaciones if a.id == int(asignacion_id)), None)
+
+    if asignacion_sel:
+        filtros_lista = {
+            "docente": asignacion_sel.docente,
+            "institucion": asignacion_sel.subarea_curso.institucion,
+            "curso_lectivo": asignacion_sel.curso_lectivo,
+            "centro_trabajo__isnull": True,
+        }
+        if asignacion_sel.subgrupo_id:
+            filtros_lista["subgrupo_id"] = asignacion_sel.subgrupo_id
+        else:
+            filtros_lista["seccion_id"] = asignacion_sel.seccion_id
+
+        listas_legacy = list(
+            ListaEstudiantesDocente.objects
+            .filter(**filtros_lista)
+            .prefetch_related("items__estudiante")
+            .order_by("id")
+        )
+
+        lista_con_centro = ListaEstudiantesDocente.objects.filter(
+            docente=asignacion_sel.docente,
+            institucion=asignacion_sel.subarea_curso.institucion,
+            curso_lectivo=asignacion_sel.curso_lectivo,
+            centro_trabajo_id=asignacion_sel.centro_trabajo_id,
+            subgrupo_id=asignacion_sel.subgrupo_id if asignacion_sel.subgrupo_id else None,
+            seccion_id=None if asignacion_sel.subgrupo_id else asignacion_sel.seccion_id,
+        ).first()
+
+        items = []
+        for lista in listas_legacy:
+            items.extend(list(lista.items.all()))
+        items.sort(key=lambda x: (x.orden, x.id))
+
+        est_ids = sorted({it.estudiante_id for it in items})
+        mat_qs = MatriculaAcademica.objects.filter(
+            estudiante_id__in=est_ids,
+            curso_lectivo=asignacion_sel.curso_lectivo,
+            institucion=asignacion_sel.subarea_curso.institucion,
+            estado=MatriculaAcademica.ACTIVO,
+        )
+        mat_map = {m.estudiante_id: m for m in mat_qs}
+
+        for it in items:
+            est = it.estudiante
+            mat = mat_map.get(est.id)
+            coincide_grupo = False
+            if mat:
+                if asignacion_sel.subgrupo_id:
+                    coincide_grupo = mat.subgrupo_id == asignacion_sel.subgrupo_id
+                else:
+                    coincide_grupo = mat.seccion_id == asignacion_sel.seccion_id
+            filas_estudiantes.append({
+                "lista_id": it.lista_id,
+                "orden": it.orden,
+                "estudiante_id": est.id,
+                "identificacion": est.identificacion,
+                "nombre": f"{est.primer_apellido} {est.segundo_apellido} {est.nombres}".strip(),
+                "matricula_id": mat.id if mat else None,
+                "matricula_seccion_id": mat.seccion_id if mat else None,
+                "matricula_subgrupo_id": mat.subgrupo_id if mat else None,
+                "coincide_grupo": coincide_grupo,
+            })
+
+        filas_estudiantes.sort(key=lambda x: (x["lista_id"], x["orden"], x["estudiante_id"]))
+        resumen = {
+            "listas_legacy": len(listas_legacy),
+            "estudiantes_en_lista": len(filas_estudiantes),
+            "coinciden_grupo": sum(1 for f in filas_estudiantes if f["coincide_grupo"]),
+            "sin_matricula_activa": sum(1 for f in filas_estudiantes if not f["matricula_id"]),
+            "lista_con_centro_id": lista_con_centro.id if lista_con_centro else None,
+        }
+
+    return render(request, "libro_docente/diagnostico_listas_general.html", {
+        "profesores": profesores_qs,
+        "profesor_sel": profesor_sel,
+        "asignaciones": asignaciones,
+        "asignacion_sel": asignacion_sel,
+        "listas_legacy": listas_legacy,
+        "filas_estudiantes": filas_estudiantes,
+        "resumen": resumen,
+    })
+
+
+@login_required
+@permission_required("libro_docente.access_libro_docente", raise_exception=True)
 def estudiantes_config_view(request, asignacion_id):
     """
     Pantalla independiente para gestionar estudiantes ocultos y con adecuación.

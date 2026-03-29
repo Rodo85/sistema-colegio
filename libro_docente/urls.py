@@ -15,6 +15,7 @@ from .views import (
     asignacion_onboarding_view,
     asistencia_view,
     detalle_estudiante_view,
+    diagnostico_listas_general_view,
     estudiante_consulta_view,
     estudiantes_config_view,
     centros_trabajo_view,
@@ -34,6 +35,7 @@ app_name = "libro_docente"
 
 urlpatterns = [
     path("hoy/", home_docente, name="home"),
+    path("diagnostico/listas-general/", diagnostico_listas_general_view, name="diagnostico_listas_general"),
     path("centros-trabajo/", centros_trabajo_view, name="centros_trabajo"),
     path("horario/", horario_docente_view, name="horario_docente"),
     path("asignacion/onboarding/", asignacion_onboarding_view, name="asignacion_onboarding"),

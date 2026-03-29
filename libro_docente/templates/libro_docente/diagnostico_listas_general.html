@@ -1,0 +1,95 @@
+{% extends "admin/base_site.html" %}
+
+{% block title %}Diagnóstico listas General{% endblock %}
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div style="max-width:1200px;margin:16px auto;">
+  <h2 style="margin:0 0 10px;">Diagnóstico listas privadas (Institución General)</h2>
+  <p style="margin:0 0 14px;color:#475569;">
+    Vista solo lectura para superadministrador. Muestra estudiantes en listas legacy sin centro de trabajo.
+  </p>
+
+  <div style="background:#fff;border:1px solid #dbe3ec;border-radius:8px;padding:12px 14px;margin-bottom:14px;">
+    <form method="get" style="display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end;">
+      <div>
+        <label for="id_profesor" style="display:block;font-weight:600;margin-bottom:5px;">Docente (Institución General)</label>
+        <select id="id_profesor" name="profesor_id" style="width:100%;padding:8px;">
+          <option value="">-- Seleccione --</option>
+          {% for p in profesores %}
+            <option value="{{ p.id }}" {% if profesor_sel and p.id == profesor_sel.id %}selected{% endif %}>
+              {{ p.usuario.email }} - {{ p.usuario.full_name }} ({{ p.institucion.nombre }})
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label for="id_asignacion" style="display:block;font-weight:600;margin-bottom:5px;">Asignación activa</label>
+        <select id="id_asignacion" name="asignacion_id" style="width:100%;padding:8px;">
+          <option value="">-- Seleccione --</option>
+          {% for a in asignaciones %}
+            <option value="{{ a.id }}" {% if asignacion_sel and a.id == asignacion_sel.id %}selected{% endif %}>
+              #{{ a.id }} · {{ a.subarea_curso.subarea.nombre }} ·
+              {% if a.subgrupo_id %}Subgrupo {{ a.subgrupo }}{% else %}Sección {{ a.seccion }}{% endif %} ·
+              Centro {{ a.centro_trabajo_id|default:"NULL" }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <button type="submit" class="button default">Consultar</button>
+      </div>
+    </form>
+  </div>
+
+  {% if asignacion_sel %}
+    <div style="background:#fff;border:1px solid #dbe3ec;border-radius:8px;padding:12px 14px;margin-bottom:12px;">
+      <div><strong>Asignación:</strong> #{{ asignacion_sel.id }} · {{ asignacion_sel.subarea_curso.subarea.nombre }}</div>
+      <div><strong>Grupo:</strong> {% if asignacion_sel.subgrupo_id %}Subgrupo {{ asignacion_sel.subgrupo }}{% else %}Sección {{ asignacion_sel.seccion }}{% endif %}</div>
+      <div><strong>Centro de trabajo (asignación):</strong> {{ asignacion_sel.centro_trabajo_id|default:"NULL" }}</div>
+      <div><strong>Listas legacy sin centro:</strong> {{ resumen.listas_legacy|default:0 }}</div>
+      <div><strong>Estudiantes en listas legacy:</strong> {{ resumen.estudiantes_en_lista|default:0 }}</div>
+      <div><strong>Coinciden con grupo de la asignación:</strong> {{ resumen.coinciden_grupo|default:0 }}</div>
+      <div><strong>Sin matrícula activa:</strong> {{ resumen.sin_matricula_activa|default:0 }}</div>
+      <div><strong>Lista existente con centro de la asignación:</strong> {{ resumen.lista_con_centro_id|default:"No" }}</div>
+    </div>
+
+    <div style="background:#fff;border:1px solid #dbe3ec;border-radius:8px;padding:0;overflow:auto;">
+      <table style="width:100%;border-collapse:collapse;">
+        <thead>
+          <tr style="background:#f8fafc;">
+            <th style="border:1px solid #e2e8f0;padding:7px;">Lista</th>
+            <th style="border:1px solid #e2e8f0;padding:7px;">Orden</th>
+            <th style="border:1px solid #e2e8f0;padding:7px;">ID estudiante</th>
+            <th style="border:1px solid #e2e8f0;padding:7px;">Identificación</th>
+            <th style="border:1px solid #e2e8f0;padding:7px;">Nombre</th>
+            <th style="border:1px solid #e2e8f0;padding:7px;">Matrícula activa</th>
+            <th style="border:1px solid #e2e8f0;padding:7px;">Sección mat.</th>
+            <th style="border:1px solid #e2e8f0;padding:7px;">Subgrupo mat.</th>
+            <th style="border:1px solid #e2e8f0;padding:7px;">Coincide grupo</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for f in filas_estudiantes %}
+          <tr>
+            <td style="border:1px solid #e2e8f0;padding:7px;">{{ f.lista_id }}</td>
+            <td style="border:1px solid #e2e8f0;padding:7px;">{{ f.orden }}</td>
+            <td style="border:1px solid #e2e8f0;padding:7px;">{{ f.estudiante_id }}</td>
+            <td style="border:1px solid #e2e8f0;padding:7px;">{{ f.identificacion }}</td>
+            <td style="border:1px solid #e2e8f0;padding:7px;">{{ f.nombre }}</td>
+            <td style="border:1px solid #e2e8f0;padding:7px;">{{ f.matricula_id|default:"No" }}</td>
+            <td style="border:1px solid #e2e8f0;padding:7px;">{{ f.matricula_seccion_id|default:"NULL" }}</td>
+            <td style="border:1px solid #e2e8f0;padding:7px;">{{ f.matricula_subgrupo_id|default:"NULL" }}</td>
+            <td style="border:1px solid #e2e8f0;padding:7px;">
+              {% if f.coincide_grupo %}SI{% else %}NO{% endif %}
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="9" style="border:1px solid #e2e8f0;padding:12px;text-align:center;color:#64748b;">No hay estudiantes en listas legacy para esta asignación.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
