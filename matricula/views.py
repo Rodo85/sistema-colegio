@@ -1682,7 +1682,7 @@ def agregar_estudiante_a_institucion(request):
         return JsonResponse({'success': False, 'error': str(e)}, status=500)
 
 
-MAX_ENCARGADOS_REPORTE = 4
+MAX_ENCARGADOS_REPORTE = 2
 
 
 def _etiqueta_seccion_matricula(mat):
@@ -1811,7 +1811,11 @@ def _reporte_estudiantes_excel_response(qs, curso_lectivo):
                     [
                         smart_str(pc.identificacion),
                         nombre_pc,
-                        smart_str(getattr(ee.parentesco, "nombre", "")),
+                        smart_str(
+                            getattr(ee.parentesco, "descripcion", "")
+                            if ee.parentesco_id
+                            else ""
+                        ),
                         smart_str(pc.celular_avisos or ""),
                         smart_str(pc.correo or ""),
                         "Sí" if ee.principal else "No",
