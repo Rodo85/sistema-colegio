@@ -168,6 +168,12 @@
 <div class="reporte-container">
   <h1 class="reporte-title">Reporte de Matrícula Académica</h1>
 
+  {% if perms.matricula.access_reporte_estudiantes_encargados %}
+  <p style="text-align:center;margin:0 0 1.25rem;font-size:1rem;">
+    <a href="{% url 'matricula:reporte_estudiantes' %}" style="color:#1565c0;font-weight:600;">Reporte Excel: estudiantes y encargados</a>
+  </p>
+  {% endif %}
+
   <form method="get" class="reporte-filtros">
     <div class="form-group">
       <label for="id_curso_lectivo">Curso lectivo</label>

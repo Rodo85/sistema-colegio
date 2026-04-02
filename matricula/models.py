@@ -458,6 +458,10 @@ class MatriculaAcademica(models.Model):
         permissions = [
             ("manage_seccion_subgrupo_estado", "Puede gestionar sección, subgrupo y estado de matrícula"),
             ("access_reporte_matricula", "Puede acceder al reporte de matrícula académica"),
+            (
+                "access_reporte_estudiantes_encargados",
+                "Puede exportar reporte de estudiantes con encargados (Excel)",
+            ),
         ]
     
     def __str__(self):

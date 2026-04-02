@@ -1,0 +1,150 @@
+{% extends 'admin/base_site.html' %}
+
+{% block title %}Reporte estudiantes y encargados{% endblock %}
+
+{% block extrahead %}
+  {{ block.super }}
+  <style>
+    .rep-wrap { max-width: 960px; margin: 1.5rem auto; padding: 0 1rem; }
+    .rep-card {
+      background: #fff;
+      border: 1px solid #dee2e6;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 18px rgba(0,0,0,.06);
+    }
+    .rep-title { font-size: 1.35rem; font-weight: 700; margin: 0 0 1rem; color: #1e293b; }
+    .rep-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); align-items: end; }
+    .rep-grid label { display: block; font-weight: 600; font-size: .85rem; margin-bottom: .35rem; color: #334155; }
+    .rep-grid select { width: 100%; padding: .5rem .65rem; border-radius: 8px; border: 1px solid #cbd5e1; }
+    .rep-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.25rem; }
+    .btn-primary {
+      background: #1a6eb5; color: #fff; border: none; padding: .55rem 1.2rem;
+      border-radius: 8px; font-weight: 600; cursor: pointer;
+    }
+    .btn-primary:hover { opacity: .95; }
+    .btn-secondary {
+      background: #0f766e; color: #fff; border: none; padding: .55rem 1.2rem;
+      border-radius: 8px; font-weight: 600; cursor: pointer;
+    }
+    .alert-error { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; padding: .75rem 1rem; border-radius: 8px; margin-bottom: 1rem; }
+    .rep-help { font-size: .88rem; color: #64748b; margin-top: .75rem; }
+  </style>
+{% endblock %}
+
+{% block content %}
+<div class="rep-wrap">
+  <div class="rep-card">
+    <h1 class="rep-title">Reporte Excel: estudiantes y encargados</h1>
+    <p style="margin:0 0 1rem;color:#475569;font-size:.95rem;">
+      Incluye datos del estudiante, nivel, sección, subgrupo y hasta 4 encargados por fila.
+    </p>
+
+    {% if error %}
+      <div class="alert-error">{{ error }}</div>
+    {% endif %}
+
+    <form method="get" action="{% url 'matricula:reporte_estudiantes' %}" id="form-reporte">
+      <div class="rep-grid">
+        <div>
+          <label for="id_curso">Curso lectivo</label>
+          <select name="curso_lectivo" id="id_curso" required>
+            <option value="">-- Seleccione --</option>
+            {% for c in cursos_lectivos %}
+              <option value="{{ c.pk }}" {% if curso_lectivo_id == c.pk|stringformat:"s" %}selected{% endif %}>{{ c.nombre }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        {% if es_superusuario %}
+        <div>
+          <label for="id_institucion">Institución</label>
+          <select name="institucion" id="id_institucion" required>
+            <option value="">-- Seleccione --</option>
+            {% for ins in instituciones %}
+              <option value="{{ ins.pk }}" {% if institucion_id == ins.pk|stringformat:"s" %}selected{% endif %}>{{ ins.nombre }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        {% else %}
+          <input type="hidden" name="institucion" value="{{ institucion_id }}">
+        {% endif %}
+
+        <div style="grid-column: 1 / -1;">
+          <label>Ámbito</label>
+          <select name="alcance" id="id_alcance">
+            <option value="all" {% if alcance == "all" %}selected{% endif %}>Todos los estudiantes matriculados (activos)</option>
+            <option value="nivel" {% if alcance == "nivel" %}selected{% endif %}>Por nivel</option>
+            <option value="seccion" {% if alcance == "seccion" %}selected{% endif %}>Por sección</option>
+            <option value="subgrupo" {% if alcance == "subgrupo" %}selected{% endif %}>Por subgrupo</option>
+          </select>
+        </div>
+
+        <div id="wrap-nivel">
+          <label for="id_nivel">Nivel</label>
+          <select name="nivel_id" id="id_nivel">
+            <option value="">-- Seleccione --</option>
+            {% for n in niveles %}
+              <option value="{{ n.pk }}" {% if nivel_id == n.pk|stringformat:"s" %}selected{% endif %}>{{ n.nombre }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div id="wrap-seccion">
+          <label for="id_seccion">Sección</label>
+          <select name="seccion_id" id="id_seccion">
+            <option value="">-- Seleccione --</option>
+            {% for s in secciones %}
+              <option value="{{ s.pk }}" {% if seccion_id == s.pk|stringformat:"s" %}selected{% endif %}>
+                {{ s.nivel.numero }}-{{ s.numero }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div id="wrap-subgrupo">
+          <label for="id_subgrupo">Subgrupo</label>
+          <select name="subgrupo_id" id="id_subgrupo">
+            <option value="">-- Seleccione --</option>
+            {% for sg in subgrupos %}
+              <option value="{{ sg.pk }}" {% if subgrupo_id == sg.pk|stringformat:"s" %}selected{% endif %}>
+                {{ sg.seccion.nivel.numero }}-{{ sg.seccion.numero }}{{ sg.letra }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="rep-actions">
+        <button type="submit" class="btn-primary">Aplicar filtros</button>
+        <button type="submit" name="export" value="xlsx" class="btn-secondary" {% if error or not curso_lectivo_id %}disabled{% endif %}>
+          Descargar Excel
+        </button>
+      </div>
+      <p class="rep-help">
+        Primero elija curso e institución y pulse &laquo;Aplicar filtros&raquo; para cargar secciones y subgrupos disponibles según la matrícula activa.
+        Luego puede descargar el Excel.
+      </p>
+    </form>
+  </div>
+</div>
+
+<script>
+(function () {
+  var alcance = document.getElementById('id_alcance');
+  var wNivel = document.getElementById('wrap-nivel');
+  var wSeccion = document.getElementById('wrap-seccion');
+  var wSubgrupo = document.getElementById('wrap-subgrupo');
+  function sync() {
+    var v = (alcance && alcance.value) || 'all';
+    if (wNivel) wNivel.style.display = (v === 'nivel') ? '' : 'none';
+    if (wSeccion) wSeccion.style.display = (v === 'seccion') ? '' : 'none';
+    if (wSubgrupo) wSubgrupo.style.display = (v === 'subgrupo') ? '' : 'none';
+  }
+  if (alcance) {
+    alcance.addEventListener('change', sync);
+    sync();
+  }
+})();
+</script>
+{% endblock %}

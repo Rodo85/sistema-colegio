@@ -116,6 +116,14 @@ JAZZMIN_SETTINGS = {
                 ],
             },
             {
+                "name": "Reporte Excel: estudiantes y encargados",
+                "url": "matricula:reporte_estudiantes",
+                "icon": "fas fa-file-excel",
+                "permissions": [
+                    "matricula.access_reporte_estudiantes_encargados",
+                ],
+            },
+            {
                 "name": "Reporte PAS por Sección",
                 "url": "matricula:reporte_pas_seccion",
                 "icon": "fas fa-id-card-alt",

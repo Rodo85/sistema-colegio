@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.decorators import login_required, permission_required
@@ -8,7 +10,13 @@ from django.db.models import Count, Q, Value
 from django.db.models.functions import Coalesce
 from catalogos.models import CursoLectivo, Nivel, Seccion, Subgrupo, Especialidad
 from core.models import Institucion
-from .models import Estudiante, EstudianteInstitucion, MatriculaAcademica, PlantillaImpresionMatricula
+from .models import (
+    EncargadoEstudiante,
+    Estudiante,
+    EstudianteInstitucion,
+    MatriculaAcademica,
+    PlantillaImpresionMatricula,
+)
 from dal import autocomplete
 import json
 import io
@@ -1673,5 +1681,278 @@ def agregar_estudiante_a_institucion(request):
         logger.error(f"Error al agregar estudiante a institución: {e}")
         return JsonResponse({'success': False, 'error': str(e)}, status=500)
 
+
+MAX_ENCARGADOS_REPORTE = 4
+
+
+def _etiqueta_seccion_matricula(mat):
+    if mat.seccion_id and mat.nivel_id:
+        return f"{mat.nivel.numero}-{mat.seccion.numero}"
+    if mat.subgrupo_id:
+        sg = mat.subgrupo
+        return f"{sg.seccion.nivel.numero}-{sg.seccion.numero}"
+    return ""
+
+
+def _etiqueta_subgrupo_matricula(mat):
+    if mat.subgrupo_id:
+        sg = mat.subgrupo
+        letra = (sg.letra or "").strip().upper()
+        return f"{sg.seccion.nivel.numero}-{sg.seccion.numero}{letra}"
+    return ""
+
+
+def _reporte_estudiantes_matricula_qs(curso_lectivo, institucion_id, alcance, nivel_id, seccion_id, subgrupo_id):
+    qs = (
+        MatriculaAcademica.objects.filter(
+            curso_lectivo=curso_lectivo,
+            institucion_id=institucion_id,
+            estado__iexact="activo",
+        )
+        .select_related(
+            "estudiante",
+            "estudiante__sexo",
+            "nivel",
+            "seccion",
+            "seccion__nivel",
+            "subgrupo",
+            "subgrupo__seccion",
+            "subgrupo__seccion__nivel",
+            "institucion",
+        )
+    )
+    alcance = (alcance or "all").strip().lower()
+    if alcance == "nivel" and nivel_id:
+        qs = qs.filter(nivel_id=int(nivel_id))
+    elif alcance == "seccion" and seccion_id:
+        sid = int(seccion_id)
+        qs = qs.filter(Q(seccion_id=sid) | Q(subgrupo__seccion_id=sid))
+    elif alcance == "subgrupo" and subgrupo_id:
+        qs = qs.filter(subgrupo_id=int(subgrupo_id))
+    return qs.order_by(
+        "nivel__numero",
+        "seccion__numero",
+        "subgrupo__letra",
+        "estudiante__primer_apellido",
+        "estudiante__segundo_apellido",
+        "estudiante__nombres",
+    )
+
+
+def _reporte_estudiantes_excel_response(qs, curso_lectivo):
+    if openpyxl is None:
+        return HttpResponse("openpyxl no está instalado en el entorno", status=500)
+
+    est_ids = list(qs.values_list("estudiante_id", flat=True).distinct())
+    enc_por_est = defaultdict(list)
+    for ee in (
+        EncargadoEstudiante.objects.filter(estudiante_id__in=est_ids)
+        .select_related("persona_contacto", "parentesco")
+        .order_by("estudiante_id", "-principal", "id")
+    ):
+        enc_por_est[ee.estudiante_id].append(ee)
+
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Estudiantes"
+
+    base_headers = [
+        "Institución",
+        "Curso lectivo",
+        "Nivel",
+        "Sección",
+        "Subgrupo",
+        "Identificación estudiante",
+        "1er apellido",
+        "2do apellido",
+        "Nombres",
+        "Sexo",
+        "Correo estudiante",
+        "Celular estudiante",
+    ]
+    enc_headers = []
+    for i in range(1, MAX_ENCARGADOS_REPORTE + 1):
+        enc_headers.extend(
+            [
+                f"Enc.{i} identificación",
+                f"Enc.{i} nombre completo",
+                f"Enc.{i} parentesco",
+                f"Enc.{i} celular",
+                f"Enc.{i} correo",
+                f"Enc.{i} principal",
+            ]
+        )
+    ws.append(base_headers + enc_headers)
+
+    for mat in qs:
+        est = mat.estudiante
+        sexo = getattr(getattr(est, "sexo", None), "nombre", "") or ""
+        fila = [
+            smart_str(getattr(mat.institucion, "nombre", "")),
+            smart_str(curso_lectivo.nombre),
+            smart_str(getattr(mat.nivel, "nombre", "")),
+            _etiqueta_seccion_matricula(mat),
+            _etiqueta_subgrupo_matricula(mat),
+            smart_str(est.identificacion),
+            smart_str(est.primer_apellido),
+            smart_str(est.segundo_apellido or ""),
+            smart_str(est.nombres),
+            smart_str(sexo),
+            smart_str(est.correo or ""),
+            smart_str(est.celular or ""),
+        ]
+        encs = enc_por_est.get(est.id, [])[:MAX_ENCARGADOS_REPORTE]
+        for k in range(MAX_ENCARGADOS_REPORTE):
+            if k < len(encs):
+                ee = encs[k]
+                pc = ee.persona_contacto
+                nombre_pc = smart_str(pc)
+                fila.extend(
+                    [
+                        smart_str(pc.identificacion),
+                        nombre_pc,
+                        smart_str(getattr(ee.parentesco, "nombre", "")),
+                        smart_str(pc.celular_avisos or ""),
+                        smart_str(pc.correo or ""),
+                        "Sí" if ee.principal else "No",
+                    ]
+                )
+            else:
+                fila.extend(["", "", "", "", "", ""])
+        ws.append(fila)
+
+    for col_idx in range(1, len(base_headers + enc_headers) + 1):
+        col_letter = get_column_letter(col_idx)
+        ws.column_dimensions[col_letter].width = 18
+
+    output = io.BytesIO()
+    wb.save(output)
+    output.seek(0)
+    response = HttpResponse(
+        output.getvalue(),
+        content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    )
+    anio = getattr(curso_lectivo, "anio", "") or ""
+    response["Content-Disposition"] = (
+        f'attachment; filename="reporte_estudiantes_encargados_{anio}.xlsx"'
+    )
+    return response
+
+
+@login_required
+@permission_required(
+    "matricula.access_reporte_estudiantes_encargados", raise_exception=True
+)
+def reporte_estudiantes(request):
+    """
+    Reporte Excel: estudiantes con matrícula activa, sección/subgrupo y encargados.
+    Filtros: todos, por nivel, por sección o por subgrupo.
+    """
+    cursos_lectivos = CursoLectivo.objects.all().order_by("-anio")
+    curso_lectivo_id = request.GET.get("curso_lectivo")
+    curso_lectivo = None
+    if curso_lectivo_id:
+        curso_lectivo = cursos_lectivos.filter(pk=curso_lectivo_id).first()
+
+    instituciones = []
+    institucion = None
+    institucion_id = None
+    error = ""
+
+    if request.user.is_superuser:
+        instituciones = Institucion.objects.all().order_by("nombre")
+        institucion_id = request.GET.get("institucion")
+        if institucion_id:
+            institucion = instituciones.filter(pk=institucion_id).first()
+            if not institucion:
+                error = "La institución seleccionada no existe."
+                institucion_id = None
+    else:
+        institucion_id = getattr(request, "institucion_activa_id", None)
+        if institucion_id:
+            institucion = Institucion.objects.filter(pk=institucion_id).first()
+        if not institucion:
+            error = "No se pudo determinar la institución activa."
+
+    alcance = (request.GET.get("alcance") or "all").strip().lower()
+    nivel_id = request.GET.get("nivel_id")
+    seccion_id = request.GET.get("seccion_id")
+    subgrupo_id = request.GET.get("subgrupo_id")
+
+    niveles = Nivel.objects.all().order_by("numero")
+    secciones = []
+    subgrupos = []
+
+    if curso_lectivo and institucion_id and not error:
+        base_mat = MatriculaAcademica.objects.filter(
+            curso_lectivo=curso_lectivo,
+            institucion_id=institucion_id,
+            estado__iexact="activo",
+        )
+        sec_direct = set(
+            base_mat.exclude(seccion__isnull=True).values_list("seccion_id", flat=True)
+        )
+        sec_via_sg = set(
+            base_mat.exclude(subgrupo__isnull=True).values_list(
+                "subgrupo__seccion_id", flat=True
+            )
+        )
+        sec_ids = {s for s in (sec_direct | sec_via_sg) if s}
+        secciones = list(
+            Seccion.objects.filter(id__in=sec_ids)
+            .select_related("nivel")
+            .order_by("nivel__numero", "numero")
+        )
+        sub_ids = (
+            base_mat.exclude(subgrupo__isnull=True)
+            .values_list("subgrupo_id", flat=True)
+            .distinct()
+        )
+        subgrupos = list(
+            Subgrupo.objects.filter(id__in=sub_ids)
+            .select_related("seccion", "seccion__nivel")
+            .order_by("seccion__nivel__numero", "seccion__numero", "letra")
+        )
+
+    if request.GET.get("export") == "xlsx":
+        if not curso_lectivo:
+            return HttpResponse("Debe seleccionar un curso lectivo.", status=400)
+        if not institucion_id or error:
+            return HttpResponse("Debe seleccionar una institución válida.", status=400)
+        if alcance == "nivel" and not nivel_id:
+            return HttpResponse("Debe seleccionar un nivel para este filtro.", status=400)
+        if alcance == "seccion" and not seccion_id:
+            return HttpResponse("Debe seleccionar una sección para este filtro.", status=400)
+        if alcance == "subgrupo" and not subgrupo_id:
+            return HttpResponse("Debe seleccionar un subgrupo para este filtro.", status=400)
+
+        qs = _reporte_estudiantes_matricula_qs(
+            curso_lectivo,
+            institucion_id,
+            alcance,
+            nivel_id,
+            seccion_id,
+            subgrupo_id,
+        )
+        return _reporte_estudiantes_excel_response(qs, curso_lectivo)
+
+    context = {
+        "cursos_lectivos": cursos_lectivos,
+        "curso_lectivo": curso_lectivo,
+        "curso_lectivo_id": str(curso_lectivo.pk) if curso_lectivo else "",
+        "instituciones": instituciones,
+        "institucion": institucion,
+        "institucion_id": str(institucion_id) if institucion_id else "",
+        "es_superusuario": request.user.is_superuser,
+        "error": error,
+        "alcance": alcance,
+        "nivel_id": nivel_id or "",
+        "seccion_id": seccion_id or "",
+        "subgrupo_id": subgrupo_id or "",
+        "niveles": niveles,
+        "secciones": secciones,
+        "subgrupos": subgrupos,
+    }
+    return render(request, "matricula/reporte_estudiantes.html", context)
 
 
