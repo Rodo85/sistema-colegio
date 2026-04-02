@@ -393,6 +393,20 @@ def reporte_matricula(request):
             ).order_by('sexo__nombre')
         )
 
+        detalle_sin_matricula = (
+            (request.GET.get("detalle") or "").strip().lower() == "sin_matricula"
+        )
+        lista_activos_sin_matricula = []
+        if detalle_sin_matricula:
+            lista_activos_sin_matricula = list(
+                activos_sin_matricula.select_related("sexo").order_by(
+                    "primer_apellido", "segundo_apellido", "nombres"
+                )
+            )
+    else:
+        detalle_sin_matricula = False
+        lista_activos_sin_matricula = []
+
     tipo_estudiante_labels = dict(Estudiante.TIPO_CHOICES)
 
     context = {
@@ -412,6 +426,8 @@ def reporte_matricula(request):
         'sin_matricula': sin_matricula,
         'sin_matricula_genero': sin_matricula_genero,
         'tipo_estudiante_labels': tipo_estudiante_labels,
+        'detalle_sin_matricula': detalle_sin_matricula,
+        'lista_activos_sin_matricula': lista_activos_sin_matricula,
     }
 
     return render(request, 'matricula/reporte_matricula.html', context)

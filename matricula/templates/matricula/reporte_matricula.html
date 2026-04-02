@@ -112,6 +112,80 @@
     .resumen-card.resumen-pn { background: linear-gradient(135deg, #f39c12 0%, #d35400 100%); }
     .resumen-card.resumen-pr { background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); }
     .resumen-card.resumen-sin { background: linear-gradient(135deg, #ffb74d 0%, #f57c00 100%); }
+    a.resumen-card.resumen-card-link {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    a.resumen-card.resumen-card-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2);
+    }
+    a.resumen-card.resumen-card-link:focus {
+      outline: 3px solid rgba(255, 255, 255, 0.6);
+      outline-offset: 2px;
+    }
+    .resumen-card.resumen-sin.resumen-card-abierta {
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5), 0 12px 28px rgba(0, 0, 0, 0.2);
+    }
+    .detalle-sin-matricula-wrap {
+      margin: 0 0 2rem;
+      padding: 1.25rem 1.5rem;
+      background: #fff8f0;
+      border: 1px solid #ffcc80;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(245, 124, 0, 0.12);
+    }
+    .detalle-sin-matricula-wrap .detalle-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .detalle-sin-matricula-wrap h2 {
+      margin: 0;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #e65100;
+    }
+    .detalle-sin-matricula-wrap .btn-cerrar {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #1565c0;
+      text-decoration: none;
+    }
+    .detalle-sin-matricula-wrap .btn-cerrar:hover {
+      text-decoration: underline;
+    }
+    .tabla-detalle-est {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .tabla-detalle-est th {
+      background: #ef6c00;
+      color: #fff;
+      padding: 0.65rem 0.75rem;
+      text-align: left;
+      font-weight: 600;
+    }
+    .tabla-detalle-est td {
+      padding: 0.55rem 0.75rem;
+      border-bottom: 1px solid #ffe0b2;
+    }
+    .tabla-detalle-est tbody tr:nth-child(even) {
+      background: #fff3e0;
+    }
+    .tabla-detalle-est tbody tr:hover {
+      background: #ffe082;
+    }
     .resumen-card small {
       display: block;
       margin-top: 0.6rem;
@@ -232,12 +306,69 @@
         Plan regular (PR)
         <span class="valor">{{ resumen.pr }}</span>
       </div>
-      <div class="resumen-card resumen-sin">
+      {% if detalle_sin_matricula %}
+      <div class="resumen-card resumen-sin resumen-card-abierta" id="tarjeta-sin-matricula">
         Activos sin matrícula
         <span class="valor">{{ sin_matricula.total }}</span>
         <small>PN: {{ sin_matricula.pn }} | PR: {{ sin_matricula.pr }}</small>
       </div>
+      {% else %}
+      <a
+        href="{% url 'matricula:reporte_matricula' %}?curso_lectivo={{ curso_lectivo.pk }}{% if es_superusuario %}&institucion={{ institucion.pk }}{% endif %}&detalle=sin_matricula#detalle-sin-matricula"
+        class="resumen-card resumen-sin resumen-card-link"
+        title="Ver listado de estudiantes activos sin matrícula en este curso lectivo"
+      >
+        Activos sin matrícula
+        <span class="valor">{{ sin_matricula.total }}</span>
+        <small>PN: {{ sin_matricula.pn }} | PR: {{ sin_matricula.pr }} — Clic para ver nombres</small>
+      </a>
+      {% endif %}
     </div>
+
+    {% if detalle_sin_matricula %}
+    <div class="detalle-sin-matricula-wrap" id="detalle-sin-matricula">
+      <div class="detalle-toolbar">
+        <h2>Estudiantes activos sin matrícula ({{ curso_lectivo.nombre }})</h2>
+        <a
+          class="btn-cerrar"
+          href="{% url 'matricula:reporte_matricula' %}?curso_lectivo={{ curso_lectivo.pk }}{% if es_superusuario %}&institucion={{ institucion.pk }}{% endif %}"
+        >Ocultar lista</a>
+      </div>
+      <p style="margin:0 0 1rem;color:#5d4037;font-size:0.95rem;">
+        Relación de estudiantes con vínculo <strong>activo</strong> en la institución y <strong>sin</strong> matrícula académica <strong>activa</strong> en el curso lectivo seleccionado.
+      </p>
+      {% if lista_activos_sin_matricula %}
+      <div style="overflow-x:auto;">
+        <table class="tabla-detalle-est">
+          <thead>
+            <tr>
+              <th>Identificación</th>
+              <th>1er apellido</th>
+              <th>2do apellido</th>
+              <th>Nombres</th>
+              <th>Género</th>
+              <th>Tipo</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for est in lista_activos_sin_matricula %}
+            <tr>
+              <td>{{ est.identificacion }}</td>
+              <td>{{ est.primer_apellido }}</td>
+              <td>{{ est.segundo_apellido|default:"" }}</td>
+              <td>{{ est.nombres }}</td>
+              <td>{% if est.sexo %}{{ est.sexo.nombre }}{% else %}—{% endif %}</td>
+              <td>{{ est.get_tipo_estudiante_display }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <p style="margin:0;color:#6d4c41;font-weight:600;">No hay estudiantes en esta condición para los filtros actuales.</p>
+      {% endif %}
+    </div>
+    {% endif %}
 
     <h2 class="section-title">Distribución por género y tipo de estudiante</h2>
     <table class="tabla-resumen">
