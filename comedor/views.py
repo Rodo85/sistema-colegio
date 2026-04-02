@@ -281,9 +281,23 @@ def almuerzo_comedor(request):
             )
 
             if registro_reciente:
-                mins_transcurridos = int(
-                    (timezone.now() - registro_reciente.fecha_hora).total_seconds() / 60
-                )
+                delta_sec = (
+                    timezone.now() - registro_reciente.fecha_hora
+                ).total_seconds()
+                # Doble lectura del QR: misma respuesta que éxito sin mensaje de duplicado
+                if delta_sec < 2:
+                    return JsonResponse(
+                        {
+                            "ok": True,
+                            "status": "ok",
+                            "message": f"{nombre} — registro confirmado.",
+                            "nombre": nombre,
+                            "identificacion": matricula.estudiante.identificacion,
+                            "tipo_acceso": "Alumno becado",
+                            "idempotente": True,
+                        }
+                    )
+                mins_transcurridos = int(delta_sec / 60)
                 mins_restantes = intervalo_minutos - mins_transcurridos
                 return JsonResponse(
                     {
@@ -352,9 +366,22 @@ def almuerzo_comedor(request):
         )
 
         if registro_reciente_tiq:
-            mins_transcurridos = int(
-                (timezone.now() - registro_reciente_tiq.fecha_hora).total_seconds() / 60
-            )
+            delta_sec = (
+                timezone.now() - registro_reciente_tiq.fecha_hora
+            ).total_seconds()
+            if delta_sec < 2:
+                return JsonResponse(
+                    {
+                        "ok": True,
+                        "status": "ok",
+                        "message": f"{tiquete.get_tipo_display()} — registro confirmado.",
+                        "nombre": tiquete.get_tipo_display(),
+                        "identificacion": tiquete.codigo,
+                        "tipo_acceso": tiquete.get_tipo_display(),
+                        "idempotente": True,
+                    }
+                )
+            mins_transcurridos = int(delta_sec / 60)
             mins_restantes = intervalo_minutos - mins_transcurridos
             return JsonResponse(
                 {

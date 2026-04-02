@@ -316,6 +316,11 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   let timeoutLimpiar = null;
+  /** Evita doble envío por lector QR (mismo código en ~2 s) */
+  const DEBOUNCE_MS = 2000;
+  let ultimoCodigoEnviado = '';
+  let ultimoEnvioTs = 0;
+  let registroEnCurso = false;
 
   function mostrar(status, mensaje, nombre) {
     resultado.className = CLASES[status] || 'estado-error';
@@ -370,9 +375,13 @@ document.addEventListener('DOMContentLoaded', function () {
       const status = data.status || 'error';
       mostrar(status, data.message || 'Error desconocido.', data.nombre || null);
       const ahora = new Date().toLocaleTimeString('es-CR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-      agregarFila(ahora, data.identificacion || identificacion, data.nombre || '', status);
+      if (!data.idempotente) {
+        agregarFila(ahora, data.identificacion || identificacion, data.nombre || '', status);
+      }
+      return data;
     } catch (e) {
       mostrar('error', 'Error de comunicación con el servidor.');
+      return null;
     }
   }
 
@@ -380,7 +389,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('form-almuerzo');
     form.addEventListener('submit', async function (e) {
       e.preventDefault();
-      const val = inputId.value.trim();
+      const val = inputId.value.trim().toUpperCase();
       if (!val) return;
       {% if es_superusuario %}
       if (!getInstitucionId()) {
@@ -388,7 +397,28 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
       }
       {% endif %}
-      await registrar(val);
+      const ahora = Date.now();
+      if (
+        val === ultimoCodigoEnviado &&
+        (ahora - ultimoEnvioTs) < DEBOUNCE_MS
+      ) {
+        inputId.value = '';
+        inputId.focus();
+        return;
+      }
+      if (registroEnCurso) {
+        return;
+      }
+      registroEnCurso = true;
+      try {
+        const data = await registrar(val);
+        if (data) {
+          ultimoCodigoEnviado = val;
+          ultimoEnvioTs = Date.now();
+        }
+      } finally {
+        registroEnCurso = false;
+      }
       inputId.value = '';
       inputId.focus();
     });
