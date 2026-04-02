@@ -235,11 +235,42 @@
       .reporte-filtros { flex-direction: column; align-items: stretch; }
       .resumen-card span.valor { font-size: 2rem; }
     }
+    .msg-admin { list-style: none; padding: 0; margin: 0 0 1rem; }
+    .msg-admin li { padding: 0.75rem 1rem; border-radius: 8px; margin-bottom: 0.5rem; font-weight: 600; }
+    .msg-admin .success { background: #e8f5e9; color: #1b5e20; border: 1px solid #a5d6a7; }
+    .msg-admin .error { background: #ffebee; color: #b71c1c; border: 1px solid #ef9a9a; }
+    .msg-admin .warning { background: #fff8e1; color: #f57f17; border: 1px solid #ffcc80; }
+    .elim-basura-box {
+      margin-top: 1.25rem;
+      padding: 1rem 1.25rem;
+      background: #fff;
+      border: 2px dashed #c62828;
+      border-radius: 10px;
+      max-width: 640px;
+    }
+    .elim-basura-box h3 { margin: 0 0 0.5rem; font-size: 1rem; color: #b71c1c; }
+    .elim-basura-box input[type="text"] {
+      width: 100%; max-width: 280px; padding: 0.5rem 0.65rem; border-radius: 6px; border: 1px solid #ccc;
+      margin: 0.5rem 0;
+    }
+    .btn-peligro {
+      background: #c62828; color: #fff; border: none; padding: 0.55rem 1.1rem;
+      border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: 0.5rem;
+    }
+    .btn-peligro:disabled { opacity: 0.5; cursor: not-allowed; }
   </style>
 {% endblock %}
 
 {% block content %}
 <div class="reporte-container">
+  {% if messages %}
+  <ul class="msg-admin">
+    {% for message in messages %}
+      <li class="{{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
   <h1 class="reporte-title">Reporte de Matrícula Académica</h1>
 
   {% if perms.matricula.access_reporte_estudiantes_encargados %}
@@ -336,7 +367,42 @@
       </div>
       <p style="margin:0 0 1rem;color:#5d4037;font-size:0.95rem;">
         Relación de estudiantes con vínculo <strong>activo</strong> en la institución y <strong>sin</strong> matrícula académica <strong>activa</strong> en el curso lectivo seleccionado.
+        Para el próximo ciclo conviene marcar como retirado/trasladado en lugar de borrar.
       </p>
+      <p style="margin:0 0 1rem;color:#4e342e;font-size:0.92rem;">
+        <strong>Elegibles para borrado definitivo:</strong> {{ total_eliminables }}
+        (sin matrícula activa en <em>ningún</em> curso lectivo).
+        {% if excluidos_por_matricula_otro_curso > 0 %}
+        <span style="color:#bf360c;">{{ excluidos_por_matricula_otro_curso }} figuran en esta lista pero tienen matrícula activa en otro año y no se borrarán aquí.</span>
+        {% endif %}
+      </p>
+
+      {% if puede_eliminar_basura and total_eliminables > 0 %}
+      <div class="elim-basura-box">
+        <h3>Eliminar masivamente (irreversible)</h3>
+        <p style="margin:0 0 0.75rem;font-size:0.9rem;color:#333;">
+          Borra el registro de <strong>Estudiante</strong>, historiales institucionales, vínculos encargado–estudiante y, si un encargado (persona de contacto) no tiene ya a ningún otro estudiante en el sistema, también borra esa persona. Matrículas inactivas, notas/asistencia/comedor si existieran. Escriba <strong>ELIMINAR</strong> y confirme.
+        </p>
+        <form method="post" action="{% url 'matricula:reporte_matricula' %}">
+          {% csrf_token %}
+          <input type="hidden" name="accion" value="eliminar_basura">
+          <input type="hidden" name="curso_lectivo" value="{{ curso_lectivo.pk }}">
+          {% if es_superusuario %}
+          <input type="hidden" name="institucion" value="{{ institucion.pk }}">
+          {% endif %}
+          <label for="id_confirmar_texto" style="font-size:0.88rem;font-weight:600;">Confirmación</label><br>
+          <input type="text" name="confirmar_texto" id="id_confirmar_texto" placeholder="Escriba ELIMINAR" autocomplete="off">
+          <br>
+          <button type="submit" class="btn-peligro">Eliminar {{ total_eliminables }} estudiante(s)</button>
+        </form>
+      </div>
+      {% elif detalle_sin_matricula and not puede_eliminar_basura %}
+      <p style="font-size:0.9rem;color:#6d4c41;">
+        Para usar la eliminación masiva, un administrador debe asignar el permiso
+        «Puede eliminar masivamente estudiantes sin matrícula (basura)» al grupo correspondiente.
+      </p>
+      {% endif %}
+
       {% if lista_activos_sin_matricula %}
       <div style="overflow-x:auto;">
         <table class="tabla-detalle-est">

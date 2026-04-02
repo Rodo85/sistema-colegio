@@ -462,6 +462,10 @@ class MatriculaAcademica(models.Model):
                 "access_reporte_estudiantes_encargados",
                 "Puede exportar reporte de estudiantes con encargados (Excel)",
             ),
+            (
+                "delete_estudiantes_basura_sin_matricula",
+                "Puede eliminar masivamente estudiantes sin matrícula (basura)",
+            ),
         ]
     
     def __str__(self):

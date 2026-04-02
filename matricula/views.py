@@ -1,8 +1,13 @@
 from collections import defaultdict
 
+from urllib.parse import urlencode
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse, HttpResponse
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
+from django.core.exceptions import PermissionDenied
+from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.encoding import smart_str
 from django.utils import timezone
@@ -219,6 +224,94 @@ def consulta_estudiante(request):
 @login_required
 @permission_required('matricula.access_reporte_matricula', raise_exception=True)
 def reporte_matricula(request):
+    from .estudiante_eliminacion import (
+        eliminar_estudiantes_definitivo,
+        queryset_eliminables_basura,
+    )
+
+    if request.method == "POST" and request.POST.get("accion") == "eliminar_basura":
+        if not request.user.has_perm(
+            "matricula.delete_estudiantes_basura_sin_matricula"
+        ):
+            raise PermissionDenied
+        curso_lectivo_id_post = request.POST.get("curso_lectivo")
+        if request.user.is_superuser:
+            institucion_id_post = request.POST.get("institucion")
+        else:
+            institucion_id_post = getattr(request, "institucion_activa_id", None)
+        if not curso_lectivo_id_post or not institucion_id_post:
+            messages.error(
+                request,
+                "Faltan curso lectivo o institución para ejecutar la eliminación.",
+            )
+            return redirect("matricula:reporte_matricula")
+        confirm = (request.POST.get("confirmar_texto") or "").strip()
+        if confirm != "ELIMINAR":
+            messages.error(
+                request,
+                "Debe escribir exactamente ELIMINAR (mayúsculas) para confirmar.",
+            )
+            q = urlencode(
+                {
+                    "curso_lectivo": curso_lectivo_id_post,
+                    "detalle": "sin_matricula",
+                    **(
+                        {"institucion": institucion_id_post}
+                        if request.user.is_superuser
+                        else {}
+                    ),
+                }
+            )
+            return redirect(f"{reverse('matricula:reporte_matricula')}?{q}#detalle-sin-matricula")
+        eliminables = queryset_eliminables_basura(
+            int(institucion_id_post), int(curso_lectivo_id_post)
+        )
+        ids = list(eliminables.values_list("pk", flat=True))
+        if not ids:
+            messages.warning(
+                request,
+                "No hay estudiantes elegibles para eliminar (p. ej. todos tienen "
+                "matrícula activa en algún curso lectivo).",
+            )
+            q = urlencode(
+                {
+                    "curso_lectivo": curso_lectivo_id_post,
+                    "detalle": "sin_matricula",
+                    **(
+                        {"institucion": institucion_id_post}
+                        if request.user.is_superuser
+                        else {}
+                    ),
+                }
+            )
+            return redirect(f"{reverse('matricula:reporte_matricula')}?{q}#detalle-sin-matricula")
+        try:
+            n_est, n_pc = eliminar_estudiantes_definitivo(ids)
+            messages.success(
+                request,
+                f"Se eliminaron de forma definitiva {n_est} estudiante(s), historial "
+                f"institucional y vínculos de encargado. "
+                f"Se eliminaron {n_pc} persona(s) de contacto que ya no estaban asociadas "
+                "a ningún otro estudiante.",
+            )
+        except Exception as exc:
+            messages.error(
+                request,
+                f"No se pudo completar la eliminación: {exc}",
+            )
+        q = urlencode(
+            {
+                "curso_lectivo": curso_lectivo_id_post,
+                "detalle": "sin_matricula",
+                **(
+                    {"institucion": institucion_id_post}
+                    if request.user.is_superuser
+                    else {}
+                ),
+            }
+        )
+        return redirect(f"{reverse('matricula:reporte_matricula')}?{q}#detalle-sin-matricula")
+
     cursos_lectivos = CursoLectivo.objects.all().order_by('-anio')
     curso_lectivo_id = request.GET.get('curso_lectivo')
     curso_lectivo = None
@@ -403,9 +496,17 @@ def reporte_matricula(request):
                     "primer_apellido", "segundo_apellido", "nombres"
                 )
             )
+        total_eliminables = queryset_eliminables_basura(
+            int(institucion_id), int(curso_lectivo_id)
+        ).count()
+        excluidos_por_matricula_otro_curso = max(
+            0, sin_matricula["total"] - total_eliminables
+        )
     else:
         detalle_sin_matricula = False
         lista_activos_sin_matricula = []
+        total_eliminables = 0
+        excluidos_por_matricula_otro_curso = 0
 
     tipo_estudiante_labels = dict(Estudiante.TIPO_CHOICES)
 
@@ -428,6 +529,11 @@ def reporte_matricula(request):
         'tipo_estudiante_labels': tipo_estudiante_labels,
         'detalle_sin_matricula': detalle_sin_matricula,
         'lista_activos_sin_matricula': lista_activos_sin_matricula,
+        'total_eliminables': total_eliminables,
+        'excluidos_por_matricula_otro_curso': excluidos_por_matricula_otro_curso,
+        'puede_eliminar_basura': request.user.has_perm(
+            'matricula.delete_estudiantes_basura_sin_matricula'
+        ),
     }
 
     return render(request, 'matricula/reporte_matricula.html', context)
