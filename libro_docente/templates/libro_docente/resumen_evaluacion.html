@@ -20,23 +20,24 @@
 .card{background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:18px;overflow:hidden;}
 .card-header{background:var(--surface);padding:12px 18px;border-bottom:1px solid var(--border);font-weight:700;color:var(--primary-dark);}
 .grid-wrap{overflow:auto;max-height:70vh;}
-.res-table{width:100%;border-collapse:collapse;font-size:.85rem;min-width:700px;}
-.res-table th{background:var(--surface);padding:8px 10px;border:1px solid var(--border);text-align:center;font-weight:700;white-space:nowrap;}
-.res-table th.student-col{text-align:left;min-width:180px;position:sticky;left:0;background:var(--surface);z-index:2;}
-.res-table td{padding:6px 10px;border:1px solid var(--border);vertical-align:middle;}
+.res-table{width:100%;border-collapse:collapse;font-size:.8rem;min-width:720px;}
+.res-table th{background:var(--surface);padding:6px 8px;border:1px solid var(--border);text-align:center;font-weight:700;white-space:nowrap;}
+.res-table th.student-col{text-align:left;min-width:170px;position:sticky;left:0;background:var(--surface);z-index:2;}
+.res-table td{padding:5px 8px;border:1px solid var(--border);vertical-align:middle;}
 .res-table td.student-col{position:sticky;left:0;background:#fff;font-weight:600;z-index:1;}
 .res-table tbody tr:hover td{background:#f8faff;}
 .res-table tbody tr:hover td.student-col{background:#f8faff;}
 .num-cell{text-align:center;}
 .aporte-cell{font-weight:700;color:var(--primary-dark);}
 .empty-msg{text-align:center;padding:40px 20px;color:var(--muted);}
-.comp-section{font-size:.75rem;color:var(--muted);}
+.comp-section{font-size:.72rem;color:var(--muted);font-weight:600;}
 .btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;font-size:.82rem;font-weight:600;border-radius:7px;border:none;cursor:pointer;text-decoration:none;}
 .btn-primary{background:var(--primary);color:#fff !important;}
 .btn-outline{background:#fff;border:1.5px solid var(--border);color:#333 !important;}
 .adec-indicator{display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:6px;vertical-align:middle;}
 .adec-indicator.sig{background:#ea580c;}
 .adec-indicator.no-sig{background:#eab308;}
+.gen-table{font-size:.78rem;min-width:1100px;}
 </style>
 {% endblock %}
 
@@ -72,6 +73,7 @@
         {% if has_proyecto %}
           <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=PROYECTO" class="{% if tipo == 'PROYECTO' %}active{% endif %}">Solo Proyecto</a>
         {% endif %}
+        <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=ASISTENCIA" class="{% if tipo == 'ASISTENCIA' %}active{% endif %}">Solo Asistencia</a>
       </div>
     </div>
     <div class="card-body" style="padding:0;">
@@ -88,58 +90,55 @@
         <table class="res-table">
           <thead>
             <tr>
-              <th class="student-col">Estudiante</th>
+              <th class="student-col" rowspan="2">Estudiante</th>
               {% if not tipo or tipo == 'TAREA' %}
-              <th colspan="5" style="background:#dbeafe;">TAREAS</th>
+              <th colspan="4" style="background:#dbeafe;">TAREAS</th>
               {% endif %}
               {% if not tipo or tipo == 'COTIDIANO' %}
-              <th colspan="5" style="background:#d1fae5;">COTIDIANOS</th>
+              <th colspan="4" style="background:#d1fae5;">COTIDIANO</th>
               {% endif %}
               {% if not tipo or tipo == 'PRUEBA' %}
-              <th colspan="5" style="background:#fde68a;">PRUEBAS</th>
+              <th colspan="4" style="background:#fde68a;">PRUEBAS</th>
               {% endif %}
               {% if has_proyecto %}
               {% if not tipo or tipo == 'PROYECTO' %}
-              <th colspan="5" style="background:#e9d5ff;">PROYECTO</th>
+              <th colspan="2" style="background:#e9d5ff;">PROYECTO</th>
               {% endif %}
               {% endif %}
-              <th colspan="1" style="background:#eff6ff;">ASISTENCIA</th>
-              <th colspan="1" style="background:#ecfeff;">NOTA FINAL</th>
+              {% if not tipo or tipo == 'ASISTENCIA' %}
+              <th colspan="2" style="background:#cffafe;">ASISTENCIA</th>
+              {% endif %}
+              {% if not tipo %}<th rowspan="2" style="background:#eff6ff;">NOTA FINAL</th>{% endif %}
             </tr>
             <tr>
-              <th class="student-col"></th>
               {% if not tipo or tipo == 'TAREA' %}
-              <th class="comp-section">Obtenidos</th>
-              <th class="comp-section">Máximos</th>
-              <th class="comp-section">% logro</th>
-              <th class="comp-section">% comp.</th>
-              <th class="comp-section">Aporte</th>
+              <th class="comp-section">Valor (%)</th>
+              <th class="comp-section">Pts. totales</th>
+              <th class="comp-section">Pts. obtenidos</th>
+              <th class="comp-section">% logrado</th>
               {% endif %}
               {% if not tipo or tipo == 'COTIDIANO' %}
-              <th class="comp-section">Obtenidos</th>
-              <th class="comp-section">Máximos</th>
-              <th class="comp-section">% logro</th>
-              <th class="comp-section">% comp.</th>
-              <th class="comp-section">Aporte</th>
+              <th class="comp-section">Valor (%)</th>
+              <th class="comp-section">Pts. totales</th>
+              <th class="comp-section">Pts. obtenidos</th>
+              <th class="comp-section">% logrado</th>
               {% endif %}
               {% if not tipo or tipo == 'PRUEBA' %}
-              <th class="comp-section">Obtenidos</th>
-              <th class="comp-section">Máximos</th>
-              <th class="comp-section">% logro</th>
-              <th class="comp-section">% comp.</th>
-              <th class="comp-section">Aporte</th>
+              <th class="comp-section">Valor (%)</th>
+              <th class="comp-section">Pts. totales</th>
+              <th class="comp-section">Pts. obtenidos</th>
+              <th class="comp-section">% logrado</th>
               {% endif %}
               {% if has_proyecto %}
               {% if not tipo or tipo == 'PROYECTO' %}
-              <th class="comp-section">Obtenidos</th>
-              <th class="comp-section">Máximos</th>
-              <th class="comp-section">% logro</th>
-              <th class="comp-section">% comp.</th>
-              <th class="comp-section">Aporte</th>
+              <th class="comp-section">Valor (%)</th>
+              <th class="comp-section">% logrado</th>
               {% endif %}
               {% endif %}
-              <th class="comp-section">Aporte</th>
-              <th class="comp-section">Final</th>
+              {% if not tipo or tipo == 'ASISTENCIA' %}
+              <th class="comp-section">Valor (%)</th>
+              <th class="comp-section">% logrado</th>
+              {% endif %}
             </tr>
           </thead>
           <tbody>
@@ -152,37 +151,36 @@
                 {% if fila.adecuacion %}<span class="adec-indicator sig" title="Adecuación significativa"></span>{% elif fila.adecuacion_no_sig %}<span class="adec-indicator no-sig" title="Adecuación no significativa"></span>{% endif %}
               </td>
               {% if not tipo or tipo == 'TAREA' %}
-              <td class="num-cell">{{ fila.tareas.puntos_obtenidos|floatformat:1 }}</td>
+              <td class="num-cell">{{ fila.tareas.porcentaje_componente|floatformat:1 }}</td>
               <td class="num-cell">{{ fila.tareas.puntos_maximos|floatformat:1 }}</td>
+              <td class="num-cell">{{ fila.tareas.puntos_obtenidos|floatformat:1 }}</td>
               <td class="num-cell">{{ fila.tareas.porcentaje_logro|floatformat:1 }}%</td>
-              <td class="num-cell">{{ fila.tareas.porcentaje_componente|floatformat:1 }}%</td>
-              <td class="num-cell aporte-cell">{{ fila.tareas.aporte|floatformat:1 }}</td>
               {% endif %}
               {% if not tipo or tipo == 'COTIDIANO' %}
-              <td class="num-cell">{{ fila.cotidianos.puntos_obtenidos|floatformat:1 }}</td>
+              <td class="num-cell">{{ fila.cotidianos.porcentaje_componente|floatformat:1 }}</td>
               <td class="num-cell">{{ fila.cotidianos.puntos_maximos|floatformat:1 }}</td>
+              <td class="num-cell">{{ fila.cotidianos.puntos_obtenidos|floatformat:1 }}</td>
               <td class="num-cell">{{ fila.cotidianos.porcentaje_logro|floatformat:1 }}%</td>
-              <td class="num-cell">{{ fila.cotidianos.porcentaje_componente|floatformat:1 }}%</td>
-              <td class="num-cell aporte-cell">{{ fila.cotidianos.aporte|floatformat:1 }}</td>
               {% endif %}
               {% if not tipo or tipo == 'PRUEBA' %}
-              <td class="num-cell">{{ fila.pruebas.puntos_obtenidos|floatformat:1 }}</td>
+              <td class="num-cell">{{ fila.pruebas.porcentaje_componente|floatformat:1 }}</td>
               <td class="num-cell">{{ fila.pruebas.puntos_maximos|floatformat:1 }}</td>
+              <td class="num-cell">{{ fila.pruebas.puntos_obtenidos|floatformat:1 }}</td>
               <td class="num-cell">{{ fila.pruebas.porcentaje_logro|floatformat:1 }}%</td>
-              <td class="num-cell">{{ fila.pruebas.porcentaje_componente|floatformat:1 }}%</td>
-              <td class="num-cell aporte-cell">{{ fila.pruebas.aporte|floatformat:1 }}</td>
               {% endif %}
               {% if has_proyecto %}
               {% if not tipo or tipo == 'PROYECTO' %}
-              <td class="num-cell">{{ fila.proyectos.puntos_obtenidos|floatformat:1 }}</td>
-              <td class="num-cell">{{ fila.proyectos.puntos_maximos|floatformat:1 }}</td>
+              <td class="num-cell">{{ fila.proyectos.porcentaje_componente|floatformat:1 }}</td>
               <td class="num-cell">{{ fila.proyectos.porcentaje_logro|floatformat:1 }}%</td>
-              <td class="num-cell">{{ fila.proyectos.porcentaje_componente|floatformat:1 }}%</td>
-              <td class="num-cell aporte-cell">{{ fila.proyectos.aporte|floatformat:1 }}</td>
               {% endif %}
               {% endif %}
-              <td class="num-cell aporte-cell">{{ fila.asistencia.aporte|floatformat:2 }}</td>
+              {% if not tipo or tipo == 'ASISTENCIA' %}
+              <td class="num-cell">{{ fila.asistencia.valor_pct|floatformat:1 }}</td>
+              <td class="num-cell">{{ fila.asistencia.pct_logrado|floatformat:1 }}%</td>
+              {% endif %}
+              {% if not tipo %}
               <td class="num-cell aporte-cell">{{ fila.nota_final|floatformat:2 }}</td>
+              {% endif %}
             </tr>
             {% endfor %}
           </tbody>
@@ -207,16 +205,37 @@
         <div class="empty-msg">Sin datos para resumen general.</div>
       {% else %}
       <div class="grid-wrap">
-        <table class="res-table">
+        <table class="res-table gen-table">
           <thead>
             <tr>
-              <th>id</th>
-              <th>Nombre</th>
-              <th>Trabajo cotidiano</th>
-              <th>Tareas</th>
-              <th>Pruebas</th>
-              {% if has_proyecto %}<th>Proyecto</th>{% endif %}
-              <th>Asistencia</th>
+              <th rowspan="2">Identificación</th>
+              <th rowspan="2">Nombre</th>
+              <th colspan="4" style="background:#dbeafe;">Tareas</th>
+              <th colspan="4" style="background:#d1fae5;">Cotidiano</th>
+              <th colspan="4" style="background:#fde68a;">Pruebas</th>
+              {% if has_proyecto %}<th colspan="2" style="background:#e9d5ff;">Proyecto</th>{% endif %}
+              <th colspan="2" style="background:#cffafe;">Asistencia</th>
+              <th rowspan="2" style="background:#eff6ff;">Nota final</th>
+            </tr>
+            <tr>
+              <th class="comp-section">Valor (%)</th>
+              <th class="comp-section">Pts. tot.</th>
+              <th class="comp-section">Pts. obt.</th>
+              <th class="comp-section">% logr.</th>
+              <th class="comp-section">Valor (%)</th>
+              <th class="comp-section">Pts. tot.</th>
+              <th class="comp-section">Pts. obt.</th>
+              <th class="comp-section">% logr.</th>
+              <th class="comp-section">Valor (%)</th>
+              <th class="comp-section">Pts. tot.</th>
+              <th class="comp-section">Pts. obt.</th>
+              <th class="comp-section">% logr.</th>
+              {% if has_proyecto %}
+              <th class="comp-section">Valor (%)</th>
+              <th class="comp-section">% logr.</th>
+              {% endif %}
+              <th class="comp-section">Valor (%)</th>
+              <th class="comp-section">% logr.</th>
             </tr>
           </thead>
           <tbody>
@@ -224,11 +243,25 @@
             <tr>
               <td class="num-cell">{{ r.id }}</td>
               <td>{{ r.nombre }}</td>
-              <td class="num-cell">{{ r.cotidiano|floatformat:1 }}</td>
-              <td class="num-cell">{{ r.tareas|floatformat:1 }}</td>
-              <td class="num-cell">{{ r.pruebas|floatformat:1 }}</td>
-              {% if has_proyecto %}<td class="num-cell">{{ r.proyecto|floatformat:1 }}</td>{% endif %}
-              <td class="num-cell">{{ r.asistencia|floatformat:1 }}</td>
+              <td class="num-cell">{{ r.tareas.valor_pct|floatformat:1 }}</td>
+              <td class="num-cell">{{ r.tareas.puntos_totales|floatformat:1 }}</td>
+              <td class="num-cell">{{ r.tareas.puntos_obtenidos|floatformat:1 }}</td>
+              <td class="num-cell">{{ r.tareas.pct_logrado|floatformat:1 }}%</td>
+              <td class="num-cell">{{ r.cotidiano.valor_pct|floatformat:1 }}</td>
+              <td class="num-cell">{{ r.cotidiano.puntos_totales|floatformat:1 }}</td>
+              <td class="num-cell">{{ r.cotidiano.puntos_obtenidos|floatformat:1 }}</td>
+              <td class="num-cell">{{ r.cotidiano.pct_logrado|floatformat:1 }}%</td>
+              <td class="num-cell">{{ r.pruebas.valor_pct|floatformat:1 }}</td>
+              <td class="num-cell">{{ r.pruebas.puntos_totales|floatformat:1 }}</td>
+              <td class="num-cell">{{ r.pruebas.puntos_obtenidos|floatformat:1 }}</td>
+              <td class="num-cell">{{ r.pruebas.pct_logrado|floatformat:1 }}%</td>
+              {% if has_proyecto %}
+              <td class="num-cell">{{ r.proyecto.valor_pct|floatformat:1 }}</td>
+              <td class="num-cell">{{ r.proyecto.pct_logrado|floatformat:1 }}%</td>
+              {% endif %}
+              <td class="num-cell">{{ r.asistencia.valor_pct|floatformat:1 }}</td>
+              <td class="num-cell">{{ r.asistencia.pct_logrado|floatformat:1 }}%</td>
+              <td class="num-cell aporte-cell">{{ r.nota_final|floatformat:2 }}</td>
             </tr>
             {% endfor %}
           </tbody>

@@ -31,7 +31,7 @@ th{background:var(--surface);font-weight:700;}
 <div class="page-wrap">
   <div class="asgn-banner">
     <span>{{ asignacion.subarea_curso.subarea.nombre }} · {{ asignacion.subgrupo|default:asignacion.seccion }} · {{ estudiante }}</span>
-    <a href="{% url 'libro_docente:resumen_evaluacion' asignacion.id %}?periodo={{ periodo_id }}" class="back-btn">← Resumen</a>
+    <a href="{% url 'libro_docente:resumen_evaluacion' asignacion.id %}?periodo={{ periodo_id }}{% if tipo %}&tipo={{ tipo }}{% endif %}" class="back-btn">← Resumen</a>
   </div>
 
   <div class="card">
@@ -46,7 +46,10 @@ th{background:var(--surface);font-weight:700;}
         <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=TAREA" class="{% if tipo == 'TAREA' %}active{% endif %}">Solo Tareas</a>
         <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=COTIDIANO" class="{% if tipo == 'COTIDIANO' %}active{% endif %}">Solo Cotidianos</a>
         <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=PRUEBA" class="{% if tipo == 'PRUEBA' %}active{% endif %}">Solo Pruebas</a>
+        {% if has_proyecto %}
         <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=PROYECTO" class="{% if tipo == 'PROYECTO' %}active{% endif %}">Solo Proyecto</a>
+        {% endif %}
+        <a href="?periodo={{ periodo_id }}{% if periodo_id %}&{% endif %}tipo=ASISTENCIA" class="{% if tipo == 'ASISTENCIA' %}active{% endif %}">Solo Asistencia</a>
       </div>
     </div>
   </div>
@@ -178,6 +181,7 @@ th{background:var(--surface);font-weight:700;}
   </div>
   {% endif %}
 
+  {% if has_proyecto %}
   {% if not tipo or tipo == 'PROYECTO' %}
   <div class="card">
     <div class="card-header">PROYECTO – Desglose por actividad</div>
@@ -206,6 +210,28 @@ th{background:var(--surface);font-weight:700;}
       <p style="margin-top:12px;font-size:.9rem;">Aporte: <strong>{{ proyectos.aporte|floatformat:1 }}</strong></p>
       {% else %}
       <p style="color:var(--muted);">Sin actividades PROYECTO en este período.</p>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+  {% endif %}
+
+  {% if tipo == 'ASISTENCIA' %}
+  <div class="card">
+    <div class="card-header">{{ asistencia_meta.nombre_componente|default:"Asistencia" }} – Resumen en el período</div>
+    <div class="card-body">
+      {% if asistencia_fila %}
+      <table>
+        <tbody>
+          <tr><th style="width:220px;">Valor en esquema (%)</th><td>{{ asistencia_meta.peso|floatformat:1 }}</td></tr>
+          <tr><th>% asistencia (lecciones)</th><td>{{ asistencia_fila.pct_asistencia|floatformat:1 }}%</td></tr>
+          <tr><th>Nota MEP (sobre 5)</th><td>{{ asistencia_fila.nota_mep }}</td></tr>
+          <tr><th>Aporte a nota final</th><td>{{ asistencia_fila.aporte_real|floatformat:2 }}</td></tr>
+          <tr><th>Lecciones del período</th><td>{{ asistencia_fila.total_lecciones }}</td></tr>
+        </tbody>
+      </table>
+      {% else %}
+      <p style="color:var(--muted);">No hay datos de asistencia para este período o el componente no está configurado en el esquema.</p>
       {% endif %}
     </div>
   </div>

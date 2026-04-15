@@ -524,6 +524,24 @@ table.lista-clase .col-observacion{width:17%;}
     <a href="{% url 'libro_docente:asistencia' asignacion.id %}" class="back-btn">← Volver a clase</a>
   </div>
 
+  {% if otras_asignaciones_fusion %}
+  <div class="card no-print" style="margin-bottom:16px;">
+    <p class="section-title" style="margin-top:0;">Unir con otro grupo (misma materia y docente)</p>
+    <p style="font-size:.88rem;color:var(--muted);margin:0 0 12px;">
+      Útil para exámenes cuando dos subgrupos (por ejemplo 9-1 A y 9-1 B) rinden juntos: se arma una sola lista sin repetir estudiantes.
+    </p>
+    <form method="get" action="{% url 'libro_docente:lista_clase' asignacion.id %}" class="fusion-form" style="display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center;">
+      {% for oa in otras_asignaciones_fusion %}
+        <label style="display:inline-flex;align-items:center;gap:6px;font-size:.9rem;cursor:pointer;">
+          <input type="checkbox" name="fusion" value="{{ oa.id }}" {% if oa.id in fusion_ids_seleccionados %}checked{% endif %}>
+          <span>{{ oa.subgrupo|default:oa.seccion }}</span>
+        </label>
+      {% endfor %}
+      <button type="submit" class="print-btn" style="margin:0;">Aplicar fusión</button>
+      <a href="{% url 'libro_docente:lista_clase' asignacion.id %}" class="back-btn" style="color:var(--primary-dark) !important;border-color:var(--border);">Solo este grupo</a>
+    </form>
+  </div>
+  {% endif %}
 
   <div class="card no-print">
     <p class="section-title">Opciones de impresión</p>

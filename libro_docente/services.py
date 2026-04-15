@@ -214,10 +214,16 @@ def puede_usuario_editar_actividad(actividad, request):
 # ═══════════════════════════════════════════════════════════════════════════
 
 # Regla MVP: actividades que cuentan en el acumulado
-# - Estados: ACTIVA o CERRADA (no BORRADOR)
+# - Estados: BORRADOR, ACTIVA o CERRADA
 # - Con al menos un indicador activo
 # - Permite parciales: actividades sin puntajes aportan 0 a obtenidos pero sí a máximos
-ACTIVIDADES_ACUMULADO_ESTADOS = (ActividadEvaluacion.ACTIVA, ActividadEvaluacion.CERRADA)
+# Incluye BORRADOR para que las calificaciones ingresadas cuenten en resumen
+# aunque la actividad (p. ej. prueba) no esté aún marcada como Activa/Cerrada.
+ACTIVIDADES_ACUMULADO_ESTADOS = (
+    ActividadEvaluacion.BORRADOR,
+    ActividadEvaluacion.ACTIVA,
+    ActividadEvaluacion.CERRADA,
+)
 
 # Mapeo tipo ActividadEvaluacion -> códigos ComponenteEval para buscar % en esquema
 TIPO_TO_CODIGO_ESQUEMA = {
@@ -225,6 +231,7 @@ TIPO_TO_CODIGO_ESQUEMA = {
     ActividadEvaluacion.COTIDIANO: ["COTIDIANO", "COT"],
     ActividadEvaluacion.PRUEBA: ["PRUEBA", "PRUEBAS", "PRU"],
     ActividadEvaluacion.PROYECTO: ["PROYECTO", "PROYECTOS", "PRO"],
+    "ASISTENCIA": ["ASISTENCIA", "ASIS"],
 }
 
 
@@ -244,8 +251,9 @@ def obtener_porcentaje_componente_esquema(asignacion, tipo_componente):
         ActividadEvaluacion.COTIDIANO: "cotid",
         ActividadEvaluacion.PRUEBA: "prueb",
         ActividadEvaluacion.PROYECTO: "proyect",
+        "ASISTENCIA": "asist",
     }
-    tipo_nombre = tipo_nombres.get(tipo_componente, tipo_componente.lower())
+    tipo_nombre = tipo_nombres.get(tipo_componente, str(tipo_componente).lower())
     comp = (
         EsquemaEvalComponente.objects
         .filter(esquema=asignacion.eval_scheme_snapshot)

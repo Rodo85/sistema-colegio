@@ -1,0 +1,84 @@
+{% extends "admin/base_site.html" %}
+
+{% block title %}Calificación impresa – {{ actividad.titulo }}{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+  .page-wrap{max-width:920px;margin:20px auto;padding:0 14px;font-family:Arial,sans-serif;}
+  .card{background:#fff;border:1px solid #d1d5db;border-radius:10px;padding:14px 16px;margin-bottom:14px;}
+  .head-title{font-size:1.05rem;font-weight:700;margin:0 0 6px;}
+  .meta{font-size:.88rem;color:#374151;margin:0;}
+  .print-btn{display:inline-block;padding:8px 14px;border-radius:8px;background:#145591;color:#fff;text-decoration:none;margin:8px 8px 14px 0;border:none;cursor:pointer;font-size:.9rem;font-weight:600;}
+  .doc-header{display:flex;justify-content:space-between;align-items:center;border:1px solid #d1d5db;border-radius:10px;padding:12px 14px;background:#fff;margin-bottom:12px;}
+  .doc-header .logo{max-height:100px;max-width:380px;object-fit:contain;}
+  .doc-header .logo-right{max-height:88px;max-width:140px;object-fit:contain;}
+  table{width:100%;border-collapse:collapse;font-size:.86rem;}
+  th,td{border:1px solid #cbd5e1;padding:7px 8px;text-align:left;}
+  th{background:#f8fafc;}
+  .firma{height:32px;}
+  .num{text-align:center;}
+  @media print{
+    .print-btn{display:none !important;}
+    body{background:#fff !important;}
+    .card{border:1px solid #94a3b8;box-shadow:none;}
+  }
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div class="page-wrap">
+  <button type="button" class="print-btn" onclick="window.print();">Imprimir / guardar PDF</button>
+
+  <div class="doc-header">
+    <div>
+      {% if plantilla and plantilla.logo_mep %}
+        <img src="{{ plantilla.logo_mep.url }}" alt="Logo MEP" class="logo">
+      {% endif %}
+    </div>
+    <div style="text-align:right;">
+      {% if asignacion.centro_trabajo_id and asignacion.centro_trabajo.logo %}
+        <img src="{{ asignacion.centro_trabajo.logo.url }}" alt="Logo centro" class="logo-right">
+      {% elif asignacion.subarea_curso.institucion.logo %}
+        <img src="{{ asignacion.subarea_curso.institucion.logo.url }}" alt="Escudo colegio" class="logo-right">
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="head-title">{{ actividad.titulo }}</p>
+    <p class="meta"><strong>Materia:</strong> {{ asignacion.subarea_curso.subarea.nombre }}</p>
+    <p class="meta"><strong>Grupo:</strong> {{ grupo_label }} · <strong>Período:</strong> {{ actividad.periodo.nombre|default:"—" }}</p>
+    <p class="meta"><strong>Tipo:</strong> {{ actividad.get_tipo_componente_display }} · <strong>Valor en puntos:</strong> {{ puntaje_total|floatformat:0 }} · <strong>Valor en % del período:</strong> {{ porcentaje_actividad|floatformat:1 }}%</p>
+  </div>
+
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:40px;">#</th>
+          <th>Estudiante</th>
+          <th class="num" style="width:100px;">Puntos obtenidos</th>
+          <th class="num" style="width:100px;">Nota (%)</th>
+          <th style="width:160px;">Firma estudiante</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for f in filas %}
+        <tr>
+          <td class="num">{{ forloop.counter }}</td>
+          <td>{{ f.estudiante.primer_apellido }} {{ f.estudiante.segundo_apellido|default:"" }} {{ f.estudiante.nombres }}</td>
+          <td class="num">{% if f.puntos is not None %}{{ f.puntos|floatformat:0 }}{% else %}—{% endif %}</td>
+          <td class="num">{% if f.nota is not None %}{{ f.nota|floatformat:1 }}%{% else %}—{% endif %}</td>
+          <td class="firma"></td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5" style="text-align:center;color:#6b7280;">Sin estudiantes en el grupo.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

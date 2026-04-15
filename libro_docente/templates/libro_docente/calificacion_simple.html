@@ -40,9 +40,10 @@
       <p class="asgn-title">📝 Calificar {{ actividad.get_tipo_componente_display }} · {{ actividad.titulo }}</p>
       <p style="font-size:.83rem;opacity:.9;margin:2px 0 0;">{{ asignacion.subarea_curso.subarea.nombre }} · {{ actividad.periodo.nombre }} · Puntos: {{ puntaje_total }} · %: {{ porcentaje_actividad }}</p>
     </div>
-    <div style="display:flex;gap:8px;">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
       <a href="{% url 'libro_docente:actividad_edit' actividad.id %}" class="back-btn">← Editar actividad</a>
       <a href="{% url 'libro_docente:actividad_list' asignacion.id %}?tipo={{ actividad.tipo_componente }}" class="back-btn">Lista actividades</a>
+      <a href="{% url 'libro_docente:actividad_calificacion_simple_pdf' actividad.id %}" class="back-btn" target="_blank" rel="noopener">Imprimir PDF calificación</a>
     </div>
   </div>
 

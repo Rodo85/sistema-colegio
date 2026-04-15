@@ -82,6 +82,7 @@ TIPOS_EVALUACION = (
     ActividadEvaluacion.COTIDIANO,
     ActividadEvaluacion.PRUEBA,
     ActividadEvaluacion.PROYECTO,
+    "ASISTENCIA",
 )
 
 
@@ -2265,32 +2266,113 @@ def asignacion_delete_view(request, asignacion_id):
     })
 
 
+def _asignacion_misma_base_lista_fusion(base, otra):
+    """Permite unir listas de la misma materia, curso, docente y centro (p. ej. 9-1 A + 9-1 B)."""
+    if not otra or otra.pk == base.pk or not otra.activo:
+        return False
+    return (
+        otra.docente_id == base.docente_id
+        and otra.subarea_curso_id == base.subarea_curso_id
+        and otra.curso_lectivo_id == base.curso_lectivo_id
+        and (getattr(otra, "centro_trabajo_id", None) or None)
+        == (getattr(base, "centro_trabajo_id", None) or None)
+    )
+
+
+def _otras_asignaciones_fusionables_lista_clase(request, asignacion):
+    qs = (
+        DocenteAsignacion.objects.filter(
+            activo=True,
+            docente_id=asignacion.docente_id,
+            curso_lectivo_id=asignacion.curso_lectivo_id,
+            subarea_curso_id=asignacion.subarea_curso_id,
+        )
+        .exclude(pk=asignacion.pk)
+        .select_related("seccion", "subgrupo", "subgrupo__seccion", "centro_trabajo")
+        .order_by("seccion__numero", "subgrupo__letra", "id")
+    )
+    if getattr(asignacion, "centro_trabajo_id", None):
+        qs = qs.filter(centro_trabajo_id=asignacion.centro_trabajo_id)
+    else:
+        qs = qs.filter(centro_trabajo__isnull=True)
+    out = []
+    for ot in qs:
+        if _obtener_asignacion_con_permiso(request, ot.id) is None:
+            continue
+        out.append(ot)
+    return out
+
+
 @login_required
 @permission_required("libro_docente.access_libro_docente", raise_exception=True)
 def lista_clase_imprimir_view(request, asignacion_id):
     """
     Lista de clase imprimible con observación opcional.
     El docente puede escribir una observación antes de imprimir; no se guarda en BD.
+    GET fusion=id1,id2: une estudiantes de otras asignaciones (misma materia/curso/docente).
     """
     asignacion = _obtener_asignacion_con_permiso(request, asignacion_id)
     if asignacion is None:
         messages.error(request, "No tienes acceso a esta asignación.")
         return redirect("libro_docente:home")
 
-    matriculas = list(_get_estudiantes(asignacion))
-    estudiantes = [
-        {
-            "identificacion": m.estudiante.identificacion,
-            "primer_apellido": m.estudiante.primer_apellido,
-            "segundo_apellido": m.estudiante.segundo_apellido or "",
-            "nombres": m.estudiante.nombres,
-        }
-        for m in matriculas
-    ]
+    fusion_ids = []
+    fusion_parts = request.GET.getlist("fusion")
+    if fusion_parts:
+        for part in fusion_parts:
+            part = str(part).strip()
+            if part.isdigit():
+                i = int(part)
+                if i != asignacion.id:
+                    fusion_ids.append(i)
+    else:
+        raw_f = (request.GET.get("fusion") or "").strip()
+        if raw_f:
+            for part in raw_f.split(","):
+                part = part.strip()
+                if part.isdigit():
+                    i = int(part)
+                    if i != asignacion.id:
+                        fusion_ids.append(i)
+
+    estudiantes_por_id = {}
+    orden_ids = []
+
+    def _agregar_matriculas(matriculas):
+        for m in matriculas:
+            est = m.estudiante
+            if est.id in estudiantes_por_id:
+                continue
+            estudiantes_por_id[est.id] = {
+                "identificacion": est.identificacion,
+                "primer_apellido": est.primer_apellido,
+                "segundo_apellido": est.segundo_apellido or "",
+                "nombres": est.nombres,
+            }
+            orden_ids.append(est.id)
+
+    _agregar_matriculas(list(_get_estudiantes(asignacion)))
+    fusion_ok = []
+    for fid in fusion_ids:
+        otra = _obtener_asignacion_con_permiso(request, fid)
+        if otra is None or not _asignacion_misma_base_lista_fusion(asignacion, otra):
+            continue
+        fusion_ok.append(otra)
+        _agregar_matriculas(list(_get_estudiantes(otra)))
+
+    estudiantes = [estudiantes_por_id[eid] for eid in orden_ids]
     grupo_label = str(asignacion.subgrupo) if asignacion.subgrupo_id else str(asignacion.seccion)
+    if fusion_ok:
+        extras = [
+            str(a.subgrupo) if a.subgrupo_id else str(a.seccion)
+            for a in fusion_ok
+        ]
+        grupo_label = f"{grupo_label} + " + " + ".join(extras)
+
     institucion = asignacion.subarea_curso.institucion
     plantilla = PlantillaImpresionMatricula.objects.filter(institucion=institucion).first()
     hoy = timezone.localdate()
+    otras_fusion = _otras_asignaciones_fusionables_lista_clase(request, asignacion)
 
     context = {
         "asignacion": asignacion,
@@ -2298,6 +2380,8 @@ def lista_clase_imprimir_view(request, asignacion_id):
         "grupo_label": grupo_label,
         "plantilla": plantilla,
         "fecha_hoy": hoy,
+        "otras_asignaciones_fusion": otras_fusion,
+        "fusion_ids_seleccionados": [a.id for a in fusion_ok],
     }
     return render(request, "libro_docente/lista_clase.html", context)
 
@@ -4031,6 +4115,44 @@ def actividad_calificar_view(request, actividad_id):
     })
 
 
+def _filas_calificacion_simple_get(actividad, asignacion, matriculas):
+    """
+    Filas ordenadas para calificación simple (PRUEBA/PROYECTO): puntos, nota %, aporte %.
+    """
+    puntaje_total = actividad.puntaje_total or Decimal("0")
+    porcentaje_actividad = actividad.porcentaje_actividad or Decimal("0")
+    est_ids = [m.estudiante_id for m in matriculas]
+    puntajes_existentes = {
+        p.estudiante_id: p.puntos_obtenidos
+        for p in PuntajeSimple.objects.filter(actividad=actividad, estudiante_id__in=est_ids)
+    }
+    adec_sig = _get_ids_adecuacion(asignacion)
+    adec_no_sig = _get_ids_adecuacion_no_significativa(asignacion)
+    filas = []
+    for m in matriculas:
+        est = m.estudiante
+        puntos = puntajes_existentes.get(est.id)
+        nota = (puntos / puntaje_total * Decimal("100")) if (puntos is not None and puntaje_total > 0) else None
+        porcentaje = (puntos / puntaje_total * porcentaje_actividad) if (puntos is not None and puntaje_total > 0) else None
+        filas.append({
+            "matricula": m,
+            "estudiante": est,
+            "puntos": puntos,
+            "nota": nota,
+            "porcentaje": porcentaje,
+            "adecuacion": est.id in adec_sig,
+            "adecuacion_no_sig": est.id in adec_no_sig,
+        })
+    filas.sort(
+        key=lambda f: (
+            (f["estudiante"].primer_apellido or "").upper(),
+            (f["estudiante"].segundo_apellido or "").upper(),
+            (f["estudiante"].nombres or "").upper(),
+        )
+    )
+    return filas, puntaje_total, porcentaje_actividad
+
+
 def _calificar_simple(request, actividad, asignacion, matriculas):
     puntaje_total = actividad.puntaje_total or Decimal("0")
     porcentaje_actividad = actividad.porcentaje_actividad or Decimal("0")
@@ -4086,31 +4208,7 @@ def _calificar_simple(request, actividad, asignacion, matriculas):
         messages.success(request, "Puntajes guardados.")
         return redirect(reverse("libro_docente:actividad_calificar", args=[actividad.id]))
 
-    adec_sig = _get_ids_adecuacion(asignacion)
-    adec_no_sig = _get_ids_adecuacion_no_significativa(asignacion)
-    filas = []
-    for m in matriculas:
-        est = m.estudiante
-        puntos = puntajes_existentes.get(est.id)
-        nota = (puntos / puntaje_total * Decimal("100")) if (puntos is not None and puntaje_total > 0) else None
-        porcentaje = (puntos / puntaje_total * porcentaje_actividad) if (puntos is not None and puntaje_total > 0) else None
-        filas.append({
-            "matricula": m,
-            "estudiante": est,
-            "puntos": puntos,
-            "nota": nota,
-            "porcentaje": porcentaje,
-            "adecuacion": est.id in adec_sig,
-            "adecuacion_no_sig": est.id in adec_no_sig,
-        })
-
-    filas.sort(
-        key=lambda f: (
-            (f["estudiante"].primer_apellido or "").upper(),
-            (f["estudiante"].segundo_apellido or "").upper(),
-            (f["estudiante"].nombres or "").upper(),
-        )
-    )
+    filas, puntaje_total, porcentaje_actividad = _filas_calificacion_simple_get(actividad, asignacion, matriculas)
     return render(request, "libro_docente/calificacion_simple.html", {
         "actividad": actividad,
         "asignacion": asignacion,
@@ -4123,6 +4221,100 @@ def _calificar_simple(request, actividad, asignacion, matriculas):
 
 @login_required
 @permission_required("libro_docente.access_libro_docente", raise_exception=True)
+def actividad_calificacion_simple_pdf_view(request, actividad_id):
+    """
+    Lista imprimible (navegador → PDF) con puntos, nota % y firma por estudiante.
+    Solo PRUEBA/PROYECTO; mismos permisos que calificar.
+    """
+    actividad = get_object_or_404(
+        ActividadEvaluacion.objects.select_related(
+            "docente_asignacion__subarea_curso__institucion",
+            "docente_asignacion__seccion",
+            "docente_asignacion__subgrupo",
+            "docente_asignacion__centro_trabajo",
+            "periodo",
+        ),
+        pk=actividad_id,
+    )
+    if not puede_usuario_editar_actividad(actividad, request):
+        messages.error(request, "No tienes permiso para ver esta calificación.")
+        return redirect("libro_docente:home")
+    inst_activa = getattr(request, "institucion_activa_id", None)
+    if inst_activa and not actividad_pertenece_a_institucion(actividad, inst_activa):
+        messages.error(request, "No puedes acceder a actividades de otra institución.")
+        return redirect("libro_docente:home")
+    if actividad.tipo_componente not in (ActividadEvaluacion.PRUEBA, ActividadEvaluacion.PROYECTO):
+        messages.error(request, "La impresión en PDF aplica solo a pruebas y proyectos.")
+        return redirect(reverse("libro_docente:actividad_calificar", args=[actividad_id]))
+
+    asignacion = actividad.docente_asignacion
+    matriculas = _get_estudiantes_para_actividad(asignacion, actividad)
+    filas, puntaje_total, porcentaje_actividad = _filas_calificacion_simple_get(actividad, asignacion, matriculas)
+    if puntaje_total <= 0:
+        messages.error(request, "La actividad no tiene puntaje total definido.")
+        return redirect(reverse("libro_docente:actividad_calificar", args=[actividad_id]))
+
+    inst = asignacion.subarea_curso.institucion
+    plantilla = PlantillaImpresionMatricula.objects.filter(institucion=inst).first()
+    grupo_label = str(asignacion.subgrupo) if asignacion.subgrupo_id else str(asignacion.seccion)
+    return render(
+        request,
+        "libro_docente/calificacion_simple_pdf.html",
+        {
+            "actividad": actividad,
+            "asignacion": asignacion,
+            "filas": filas,
+            "puntaje_total": puntaje_total,
+            "porcentaje_actividad": porcentaje_actividad,
+            "plantilla": plantilla,
+            "grupo_label": grupo_label,
+        },
+    )
+
+
+@login_required
+@permission_required("libro_docente.access_libro_docente", raise_exception=True)
+def _enriquecer_filas_resumen_con_asistencia(asignacion, periodo_id, matriculas, filas):
+    """
+    Añade a cada fila asistencia (valor %, % logrado, aporte) y nota_final.
+    """
+    periodo_sel = (
+        PeriodoCursoLectivo.objects
+        .filter(
+            institucion_id=asignacion.subarea_curso.institucion_id,
+            curso_lectivo=asignacion.curso_lectivo,
+            periodo_id=periodo_id,
+            activo=True,
+        )
+        .select_related("periodo")
+        .first()
+    )
+    asis_by_est = {}
+    peso_asis = Decimal("0")
+    if periodo_sel:
+        resumen_asis = _calcular_resumen(asignacion, periodo_sel.periodo, matriculas)
+        peso_asis = resumen_asis.get("peso_asistencia") or Decimal("0")
+        for r in resumen_asis.get("estudiantes", []):
+            asis_by_est[r["estudiante"].id] = r
+    for f in filas:
+        r = asis_by_est.get(f["estudiante"].id)
+        aporte_asistencia = Decimal(str(r["aporte_real"])) if r else Decimal("0")
+        pct_asis = Decimal(str(r["pct_asistencia"])) if r else Decimal("0")
+        f["asistencia"] = {
+            "aporte": aporte_asistencia,
+            "valor_pct": peso_asis,
+            "pct_logrado": pct_asis,
+        }
+        f["nota_final"] = (
+            (f.get("tareas", {}) or {}).get("aporte", Decimal("0"))
+            + (f.get("cotidianos", {}) or {}).get("aporte", Decimal("0"))
+            + (f.get("pruebas", {}) or {}).get("aporte", Decimal("0"))
+            + (f.get("proyectos", {}) or {}).get("aporte", Decimal("0"))
+            + aporte_asistencia
+        )
+    return filas
+
+
 def resumen_evaluacion_view(request, asignacion_id):
     """
     Resumen acumulado por componente (TAREAS / COTIDIANOS) por estudiante.
@@ -4160,32 +4352,8 @@ def resumen_evaluacion_view(request, asignacion_id):
     has_proyecto = ActividadEvaluacion.PROYECTO in _tipos_habilitados_por_esquema(asignacion)
     if periodo_id:
         filas = calcular_resumen_evaluacion_completo(asignacion, periodo_id, matriculas)
+        _enriquecer_filas_resumen_con_asistencia(asignacion, periodo_id, matriculas, filas)
         filas_general = _construir_resumen_general(asignacion, periodo_id, matriculas, filas)
-        periodo_sel = (
-            PeriodoCursoLectivo.objects
-            .filter(
-                institucion_id=asignacion.subarea_curso.institucion_id,
-                curso_lectivo=asignacion.curso_lectivo,
-                periodo_id=periodo_id,
-                activo=True,
-            )
-            .select_related("periodo")
-            .first()
-        )
-        asistencia_map = {}
-        if periodo_sel:
-            resumen_asis = _calcular_resumen(asignacion, periodo_sel.periodo, matriculas)
-            asistencia_map = {r["estudiante"].id: r["aporte_real"] for r in resumen_asis.get("estudiantes", [])}
-        for f in filas:
-            aporte_asistencia = asistencia_map.get(f["estudiante"].id, Decimal("0"))
-            f["asistencia"] = {"aporte": aporte_asistencia}
-            f["nota_final"] = (
-                (f.get("tareas", {}) or {}).get("aporte", Decimal("0"))
-                + (f.get("cotidianos", {}) or {}).get("aporte", Decimal("0"))
-                + (f.get("pruebas", {}) or {}).get("aporte", Decimal("0"))
-                + (f.get("proyectos", {}) or {}).get("aporte", Decimal("0"))
-                + aporte_asistencia
-            )
 
     return render(request, "libro_docente/resumen_evaluacion.html", {
         "asignacion": asignacion,
@@ -4200,37 +4368,50 @@ def resumen_evaluacion_view(request, asignacion_id):
 
 def _construir_resumen_general(asignacion, periodo_id, matriculas, filas_eval):
     """
-    Resumen final por estudiante para exportación.
+    Resumen general por estudiante (tabla en pantalla y exportación).
+    Requiere que filas_eval ya incluya asistencia y nota_final enriquecidos
+    (ver resumen_evaluacion_view).
     """
-    periodo_sel = (
-        PeriodoCursoLectivo.objects
-        .filter(
-            institucion_id=asignacion.subarea_curso.institucion_id,
-            curso_lectivo=asignacion.curso_lectivo,
-            periodo_id=periodo_id,
-            activo=True,
-        )
-        .select_related("periodo")
-        .first()
-    )
-    asist_por_est = {}
-    if periodo_sel:
-        resumen_asis = _calcular_resumen(asignacion, periodo_sel.periodo, matriculas)
-        asist_por_est = {r["estudiante"].id: r["aporte_real"] for r in resumen_asis.get("estudiantes", [])}
-
     filas_por_est = {f["estudiante"].id: f for f in filas_eval}
+
+    def _bloque_puntos(d):
+        d = d or {}
+        return {
+            "valor_pct": d.get("porcentaje_componente") or Decimal("0"),
+            "puntos_totales": d.get("puntos_maximos") or Decimal("0"),
+            "puntos_obtenidos": d.get("puntos_obtenidos") or Decimal("0"),
+            "pct_logrado": d.get("porcentaje_logro") or Decimal("0"),
+            "aporte": d.get("aporte") or Decimal("0"),
+        }
+
     rows = []
     for m in matriculas:
         est = m.estudiante
         fe = filas_por_est.get(est.id, {})
+        tareas = _bloque_puntos(fe.get("tareas"))
+        cotidiano = _bloque_puntos(fe.get("cotidianos"))
+        pruebas = _bloque_puntos(fe.get("pruebas"))
+        pj = fe.get("proyectos", {}) or {}
+        proyecto = {
+            "valor_pct": pj.get("porcentaje_componente") or Decimal("0"),
+            "pct_logrado": pj.get("porcentaje_logro") or Decimal("0"),
+            "aporte": pj.get("aporte") or Decimal("0"),
+        }
+        asis = fe.get("asistencia", {}) or {}
+        asistencia = {
+            "valor_pct": asis.get("valor_pct") or Decimal("0"),
+            "pct_logrado": asis.get("pct_logrado") or Decimal("0"),
+            "aporte": asis.get("aporte") or Decimal("0"),
+        }
         rows.append({
             "id": est.identificacion,
             "nombre": f"{est.primer_apellido} {est.segundo_apellido or ''} {est.nombres}".strip(),
-            "cotidiano": (fe.get("cotidianos", {}) or {}).get("aporte", Decimal("0")),
-            "tareas": (fe.get("tareas", {}) or {}).get("aporte", Decimal("0")),
-            "pruebas": (fe.get("pruebas", {}) or {}).get("aporte", Decimal("0")),
-            "proyecto": (fe.get("proyectos", {}) or {}).get("aporte", Decimal("0")),
-            "asistencia": asist_por_est.get(est.id, Decimal("0")),
+            "tareas": tareas,
+            "cotidiano": cotidiano,
+            "pruebas": pruebas,
+            "proyecto": proyecto,
+            "asistencia": asistencia,
+            "nota_final": fe.get("nota_final") or Decimal("0"),
         })
     return rows
 
@@ -4262,6 +4443,7 @@ def resumen_general_export_xlsx(request, asignacion_id):
 
     matriculas = _get_estudiantes(asignacion)
     filas = calcular_resumen_evaluacion_completo(asignacion, periodo_id, matriculas)
+    _enriquecer_filas_resumen_con_asistencia(asignacion, periodo_id, matriculas, filas)
     filas_general = _construir_resumen_general(asignacion, periodo_id, matriculas, filas)
     has_proyecto = ActividadEvaluacion.PROYECTO in _tipos_habilitados_por_esquema(asignacion)
 
@@ -4277,13 +4459,13 @@ def resumen_general_export_xlsx(request, asignacion_id):
         row = [
             r["id"],
             r["nombre"],
-            float(_to_2_dec(r["cotidiano"])),
-            float(_to_2_dec(r["tareas"])),
-            float(_to_2_dec(r["pruebas"])),
+            float(_to_2_dec(r["cotidiano"]["aporte"])),
+            float(_to_2_dec(r["tareas"]["aporte"])),
+            float(_to_2_dec(r["pruebas"]["aporte"])),
         ]
         if has_proyecto:
-            row.append(float(_to_2_dec(r["proyecto"])))
-        row.append(float(_to_2_dec(r["asistencia"])))
+            row.append(float(_to_2_dec(r["proyecto"]["aporte"])))
+        row.append(float(_to_2_dec(r["asistencia"]["aporte"])))
         ws.append(row)
 
     resp = HttpResponse(content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
@@ -4308,6 +4490,7 @@ def resumen_general_export_csv(request, asignacion_id):
 
     matriculas = _get_estudiantes(asignacion)
     filas = calcular_resumen_evaluacion_completo(asignacion, periodo_id, matriculas)
+    _enriquecer_filas_resumen_con_asistencia(asignacion, periodo_id, matriculas, filas)
     filas_general = _construir_resumen_general(asignacion, periodo_id, matriculas, filas)
     has_proyecto = ActividadEvaluacion.PROYECTO in _tipos_habilitados_por_esquema(asignacion)
 
@@ -4323,13 +4506,13 @@ def resumen_general_export_csv(request, asignacion_id):
         row = [
             r["id"],
             r["nombre"],
-            f"{_to_2_dec(r['cotidiano']):.2f}",
-            f"{_to_2_dec(r['tareas']):.2f}",
-            f"{_to_2_dec(r['pruebas']):.2f}",
+            f"{_to_2_dec(r['cotidiano']['aporte']):.2f}",
+            f"{_to_2_dec(r['tareas']['aporte']):.2f}",
+            f"{_to_2_dec(r['pruebas']['aporte']):.2f}",
         ]
         if has_proyecto:
-            row.append(f"{_to_2_dec(r['proyecto']):.2f}")
-        row.append(f"{_to_2_dec(r['asistencia']):.2f}")
+            row.append(f"{_to_2_dec(r['proyecto']['aporte']):.2f}")
+        row.append(f"{_to_2_dec(r['asistencia']['aporte']):.2f}")
         writer.writerow(row)
     return resp
 
@@ -4405,6 +4588,31 @@ def resumen_estudiante_detalle_view(request, asignacion_id, estudiante_id):
         if periodo_id
         else _empty_resumen
     )
+    has_proyecto = ActividadEvaluacion.PROYECTO in _tipos_habilitados_por_esquema(asignacion)
+    asistencia_fila = None
+    asistencia_meta = {}
+    if periodo_id and tipo == "ASISTENCIA":
+        pcl = (
+            PeriodoCursoLectivo.objects
+            .filter(
+                institucion_id=inst_id,
+                curso_lectivo=asignacion.curso_lectivo,
+                periodo_id=periodo_id,
+                activo=True,
+            )
+            .select_related("periodo")
+            .first()
+        )
+        if pcl:
+            full = _calcular_resumen(asignacion, pcl.periodo, matriculas)
+            asistencia_meta = {
+                "nombre_componente": full.get("nombre_componente") or "Asistencia",
+                "peso": full.get("peso_asistencia") or Decimal("0"),
+            }
+            asistencia_fila = next(
+                (x for x in full.get("estudiantes", []) if x["estudiante"].id == estudiante_id),
+                None,
+            )
 
     return render(request, "libro_docente/resumen_estudiante_detalle.html", {
         "asignacion": asignacion,
@@ -4416,4 +4624,7 @@ def resumen_estudiante_detalle_view(request, asignacion_id, estudiante_id):
         "cotidianos": cotidianos,
         "pruebas": pruebas,
         "proyectos": proyectos,
+        "has_proyecto": has_proyecto,
+        "asistencia_fila": asistencia_fila,
+        "asistencia_meta": asistencia_meta,
     })

@@ -55,9 +55,7 @@
 <div class="page-wrap">
   <a href="javascript:printScope('all');" class="print-btn">Imprimir lista completa</a>
   <a href="javascript:printScope('regulares');" class="print-btn">Imprimir regulares</a>
-  {% if adecuacion %}
-  <a href="javascript:printScope('adecuacion');" class="print-btn">Imprimir recinto aparte</a>
-  {% endif %}
+  <a href="javascript:printScope('adecuacion');" class="print-btn" title="Solo estudiantes marcados con adecuación en Configurar estudiantes">Imprimir recinto aparte</a>
   <div class="doc-header">
     <div>
       {% if plantilla and plantilla.logo_mep %}
@@ -114,9 +112,9 @@
     </table>
   </div>
 
-  {% if adecuacion %}
   <div class="card page-break solo-adecuacion section-block">
     <p class="section-title">Recinto aparte ({{ adecuacion|length }})</p>
+    <p class="meta" style="margin:0 0 8px;color:#6b7280;">Marcados en <strong>Asistencia → Configurar estudiantes</strong> (adecuación significativa o no significativa).</p>
     <table>
       <thead>
         <tr>
@@ -135,12 +133,11 @@
           <td class="firma"></td>
         </tr>
         {% empty %}
-        <tr><td colspan="4" style="text-align:center;color:#6b7280;">Sin estudiantes para recinto aparte.</td></tr>
+        <tr><td colspan="4" style="text-align:center;color:#6b7280;">Ningún estudiante con adecuación en este grupo. Use <strong>Configurar estudiantes</strong> para marcarlos; el botón de impresión sigue disponible para cuando los agregue.</td></tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
-  {% endif %}
 
   <div class="card section-block">
     <p class="section-title">Control de aplicación (llenado manual)</p>
