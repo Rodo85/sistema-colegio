@@ -51,27 +51,27 @@
     <p class="head-title">{{ actividad.titulo }}</p>
     <p class="meta"><strong>Materia:</strong> {{ asignacion.subarea_curso.subarea.nombre }}</p>
     <p class="meta"><strong>Grupo:</strong> {{ grupo_label }} · <strong>Período:</strong> {{ actividad.periodo.nombre|default:"—" }}</p>
-    <p class="meta"><strong>Tipo:</strong> {{ actividad.get_tipo_componente_display }} · <strong>Valor en puntos:</strong> {{ puntaje_total|floatformat:0 }} · <strong>Valor en % del período:</strong> {{ porcentaje_actividad|floatformat:1 }}%</p>
+    <p class="meta"><strong>Valor en puntos:</strong> {{ puntaje_total|floatformat:0 }} · <strong>Valor en % del período:</strong> {{ porcentaje_actividad|floatformat:0 }}%</p>
   </div>
 
   <div class="card">
     <table>
       <thead>
         <tr>
-          <th style="width:40px;">#</th>
           <th>Estudiante</th>
-          <th class="num" style="width:100px;">Puntos obtenidos</th>
-          <th class="num" style="width:100px;">Nota (%)</th>
-          <th style="width:160px;">Firma estudiante</th>
+          <th class="num" style="width:110px;">Puntos obtenidos</th>
+          <th class="num" style="width:72px;">Nota</th>
+          <th class="num" style="width:100px;">% obtenido</th>
+          <th style="width:150px;">Firma estudiante</th>
         </tr>
       </thead>
       <tbody>
         {% for f in filas %}
         <tr>
-          <td class="num">{{ forloop.counter }}</td>
           <td>{{ f.estudiante.primer_apellido }} {{ f.estudiante.segundo_apellido|default:"" }} {{ f.estudiante.nombres }}</td>
           <td class="num">{% if f.puntos is not None %}{{ f.puntos|floatformat:0 }}{% else %}—{% endif %}</td>
-          <td class="num">{% if f.nota is not None %}{{ f.nota|floatformat:1 }}%{% else %}—{% endif %}</td>
+          <td class="num">{% if f.nota is not None %}{{ f.nota|floatformat:0 }}{% else %}—{% endif %}</td>
+          <td class="num">{% if f.porcentaje is not None %}{{ f.porcentaje|floatformat:1 }}%{% else %}—{% endif %}</td>
           <td class="firma"></td>
         </tr>
         {% empty %}
