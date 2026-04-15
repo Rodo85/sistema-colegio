@@ -115,29 +115,29 @@
               <th class="comp-section">Valor (%)</th>
               <th class="comp-section">Pts. totales</th>
               <th class="comp-section">Pts. obtenidos</th>
-              <th class="comp-section">% logrado</th>
+              <th class="comp-section" title="Ponderado al valor del rubro en el esquema (sobre la nota final)">% logr. nota</th>
               {% endif %}
               {% if not tipo or tipo == 'COTIDIANO' %}
               <th class="comp-section">Valor (%)</th>
               <th class="comp-section">Pts. totales</th>
               <th class="comp-section">Pts. obtenidos</th>
-              <th class="comp-section">% logrado</th>
+              <th class="comp-section" title="Ponderado al valor del rubro en el esquema (sobre la nota final)">% logr. nota</th>
               {% endif %}
               {% if not tipo or tipo == 'PRUEBA' %}
               <th class="comp-section">Valor (%)</th>
               <th class="comp-section">Pts. totales</th>
               <th class="comp-section">Pts. obtenidos</th>
-              <th class="comp-section">% logrado</th>
+              <th class="comp-section" title="Ponderado al valor del rubro en el esquema (sobre la nota final)">% logr. nota</th>
               {% endif %}
               {% if has_proyecto %}
               {% if not tipo or tipo == 'PROYECTO' %}
               <th class="comp-section">Valor (%)</th>
-              <th class="comp-section">% logrado</th>
+              <th class="comp-section" title="Ponderado al valor del rubro en el esquema (sobre la nota final)">% logr. nota</th>
               {% endif %}
               {% endif %}
               {% if not tipo or tipo == 'ASISTENCIA' %}
               <th class="comp-section">Valor (%)</th>
-              <th class="comp-section">% logrado</th>
+              <th class="comp-section" title="Aporte de asistencia a la nota final">% logr. nota</th>
               {% endif %}
             </tr>
           </thead>
@@ -154,29 +154,29 @@
               <td class="num-cell">{{ fila.tareas.porcentaje_componente|floatformat:1 }}</td>
               <td class="num-cell">{{ fila.tareas.puntos_maximos|floatformat:1 }}</td>
               <td class="num-cell">{{ fila.tareas.puntos_obtenidos|floatformat:1 }}</td>
-              <td class="num-cell">{{ fila.tareas.porcentaje_logro|floatformat:1 }}%</td>
+              <td class="num-cell">{{ fila.tareas.aporte|floatformat:1 }}%</td>
               {% endif %}
               {% if not tipo or tipo == 'COTIDIANO' %}
               <td class="num-cell">{{ fila.cotidianos.porcentaje_componente|floatformat:1 }}</td>
               <td class="num-cell">{{ fila.cotidianos.puntos_maximos|floatformat:1 }}</td>
               <td class="num-cell">{{ fila.cotidianos.puntos_obtenidos|floatformat:1 }}</td>
-              <td class="num-cell">{{ fila.cotidianos.porcentaje_logro|floatformat:1 }}%</td>
+              <td class="num-cell">{{ fila.cotidianos.aporte|floatformat:1 }}%</td>
               {% endif %}
               {% if not tipo or tipo == 'PRUEBA' %}
               <td class="num-cell">{{ fila.pruebas.porcentaje_componente|floatformat:1 }}</td>
               <td class="num-cell">{{ fila.pruebas.puntos_maximos|floatformat:1 }}</td>
               <td class="num-cell">{{ fila.pruebas.puntos_obtenidos|floatformat:1 }}</td>
-              <td class="num-cell">{{ fila.pruebas.porcentaje_logro|floatformat:1 }}%</td>
+              <td class="num-cell">{{ fila.pruebas.aporte|floatformat:1 }}%</td>
               {% endif %}
               {% if has_proyecto %}
               {% if not tipo or tipo == 'PROYECTO' %}
               <td class="num-cell">{{ fila.proyectos.porcentaje_componente|floatformat:1 }}</td>
-              <td class="num-cell">{{ fila.proyectos.porcentaje_logro|floatformat:1 }}%</td>
+              <td class="num-cell">{{ fila.proyectos.aporte|floatformat:1 }}%</td>
               {% endif %}
               {% endif %}
               {% if not tipo or tipo == 'ASISTENCIA' %}
               <td class="num-cell">{{ fila.asistencia.valor_pct|floatformat:1 }}</td>
-              <td class="num-cell">{{ fila.asistencia.pct_logrado|floatformat:1 }}%</td>
+              <td class="num-cell">{{ fila.asistencia.aporte|floatformat:2 }}%</td>
               {% endif %}
               {% if not tipo %}
               <td class="num-cell aporte-cell">{{ fila.nota_final|floatformat:2 }}</td>
@@ -210,10 +210,10 @@
             <tr>
               <th rowspan="2">Identificación</th>
               <th rowspan="2">Nombre</th>
-              <th colspan="4" style="background:#dbeafe;">Tareas</th>
               <th colspan="4" style="background:#d1fae5;">Cotidiano</th>
-              <th colspan="4" style="background:#fde68a;">Pruebas</th>
+              <th colspan="4" style="background:#dbeafe;">Tareas</th>
               {% if has_proyecto %}<th colspan="2" style="background:#e9d5ff;">Proyecto</th>{% endif %}
+              <th colspan="4" style="background:#fde68a;">Pruebas</th>
               <th colspan="2" style="background:#cffafe;">Asistencia</th>
               <th rowspan="2" style="background:#eff6ff;">Nota final</th>
             </tr>
@@ -221,21 +221,21 @@
               <th class="comp-section">Valor (%)</th>
               <th class="comp-section">Pts. tot.</th>
               <th class="comp-section">Pts. obt.</th>
-              <th class="comp-section">% logr.</th>
+              <th class="comp-section" title="Ponderado al rubro (sobre nota final)">% logr. nota</th>
               <th class="comp-section">Valor (%)</th>
               <th class="comp-section">Pts. tot.</th>
               <th class="comp-section">Pts. obt.</th>
-              <th class="comp-section">% logr.</th>
-              <th class="comp-section">Valor (%)</th>
-              <th class="comp-section">Pts. tot.</th>
-              <th class="comp-section">Pts. obt.</th>
-              <th class="comp-section">% logr.</th>
+              <th class="comp-section" title="Ponderado al rubro (sobre nota final)">% logr. nota</th>
               {% if has_proyecto %}
               <th class="comp-section">Valor (%)</th>
-              <th class="comp-section">% logr.</th>
+              <th class="comp-section" title="Ponderado al rubro (sobre nota final)">% logr. nota</th>
               {% endif %}
               <th class="comp-section">Valor (%)</th>
-              <th class="comp-section">% logr.</th>
+              <th class="comp-section">Pts. tot.</th>
+              <th class="comp-section">Pts. obt.</th>
+              <th class="comp-section" title="Ponderado al rubro (sobre nota final)">% logr. nota</th>
+              <th class="comp-section">Valor (%)</th>
+              <th class="comp-section" title="Aporte asistencia a la nota final">% logr. nota</th>
             </tr>
           </thead>
           <tbody>
@@ -243,24 +243,24 @@
             <tr>
               <td class="num-cell">{{ r.id }}</td>
               <td>{{ r.nombre }}</td>
-              <td class="num-cell">{{ r.tareas.valor_pct|floatformat:1 }}</td>
-              <td class="num-cell">{{ r.tareas.puntos_totales|floatformat:1 }}</td>
-              <td class="num-cell">{{ r.tareas.puntos_obtenidos|floatformat:1 }}</td>
-              <td class="num-cell">{{ r.tareas.pct_logrado|floatformat:1 }}%</td>
               <td class="num-cell">{{ r.cotidiano.valor_pct|floatformat:1 }}</td>
               <td class="num-cell">{{ r.cotidiano.puntos_totales|floatformat:1 }}</td>
               <td class="num-cell">{{ r.cotidiano.puntos_obtenidos|floatformat:1 }}</td>
               <td class="num-cell">{{ r.cotidiano.pct_logrado|floatformat:1 }}%</td>
-              <td class="num-cell">{{ r.pruebas.valor_pct|floatformat:1 }}</td>
-              <td class="num-cell">{{ r.pruebas.puntos_totales|floatformat:1 }}</td>
-              <td class="num-cell">{{ r.pruebas.puntos_obtenidos|floatformat:1 }}</td>
-              <td class="num-cell">{{ r.pruebas.pct_logrado|floatformat:1 }}%</td>
+              <td class="num-cell">{{ r.tareas.valor_pct|floatformat:1 }}</td>
+              <td class="num-cell">{{ r.tareas.puntos_totales|floatformat:1 }}</td>
+              <td class="num-cell">{{ r.tareas.puntos_obtenidos|floatformat:1 }}</td>
+              <td class="num-cell">{{ r.tareas.pct_logrado|floatformat:1 }}%</td>
               {% if has_proyecto %}
               <td class="num-cell">{{ r.proyecto.valor_pct|floatformat:1 }}</td>
               <td class="num-cell">{{ r.proyecto.pct_logrado|floatformat:1 }}%</td>
               {% endif %}
+              <td class="num-cell">{{ r.pruebas.valor_pct|floatformat:1 }}</td>
+              <td class="num-cell">{{ r.pruebas.puntos_totales|floatformat:1 }}</td>
+              <td class="num-cell">{{ r.pruebas.puntos_obtenidos|floatformat:1 }}</td>
+              <td class="num-cell">{{ r.pruebas.pct_logrado|floatformat:1 }}%</td>
               <td class="num-cell">{{ r.asistencia.valor_pct|floatformat:1 }}</td>
-              <td class="num-cell">{{ r.asistencia.pct_logrado|floatformat:1 }}%</td>
+              <td class="num-cell">{{ r.asistencia.pct_logrado|floatformat:2 }}%</td>
               <td class="num-cell aporte-cell">{{ r.nota_final|floatformat:2 }}</td>
             </tr>
             {% endfor %}

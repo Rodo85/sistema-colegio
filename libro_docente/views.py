@@ -4435,6 +4435,21 @@ def resumen_evaluacion_view(request, asignacion_id):
     })
 
 
+def _pct_logrado_sobre_nota_final(porcentaje_logro, porcentaje_componente):
+    """
+    % logrado respecto a la nota final del período (ponderado al valor del rubro).
+    Si el rubro vale 45% y el desempeño interno es 100%, aquí es 45%, no 100%.
+    Equivale al aporte cuando la nota se arma por componentes del esquema.
+    """
+    pl = porcentaje_logro if porcentaje_logro is not None else Decimal("0")
+    pc = porcentaje_componente if porcentaje_componente is not None else Decimal("0")
+    if not isinstance(pl, Decimal):
+        pl = Decimal(str(pl))
+    if not isinstance(pc, Decimal):
+        pc = Decimal(str(pc))
+    return (pl * pc) / Decimal("100")
+
+
 def _construir_resumen_general(asignacion, periodo_id, matriculas, filas_eval):
     """
     Resumen general por estudiante (tabla en pantalla y exportación).
@@ -4445,11 +4460,13 @@ def _construir_resumen_general(asignacion, periodo_id, matriculas, filas_eval):
 
     def _bloque_puntos(d):
         d = d or {}
+        pl = d.get("porcentaje_logro") or Decimal("0")
+        pc = d.get("porcentaje_componente") or Decimal("0")
         return {
-            "valor_pct": d.get("porcentaje_componente") or Decimal("0"),
+            "valor_pct": pc,
             "puntos_totales": d.get("puntos_maximos") or Decimal("0"),
             "puntos_obtenidos": d.get("puntos_obtenidos") or Decimal("0"),
-            "pct_logrado": d.get("porcentaje_logro") or Decimal("0"),
+            "pct_logrado": _pct_logrado_sobre_nota_final(pl, pc),
             "aporte": d.get("aporte") or Decimal("0"),
         }
 
@@ -4461,16 +4478,20 @@ def _construir_resumen_general(asignacion, periodo_id, matriculas, filas_eval):
         cotidiano = _bloque_puntos(fe.get("cotidianos"))
         pruebas = _bloque_puntos(fe.get("pruebas"))
         pj = fe.get("proyectos", {}) or {}
+        pl_pj = pj.get("porcentaje_logro") or Decimal("0")
+        pc_pj = pj.get("porcentaje_componente") or Decimal("0")
         proyecto = {
-            "valor_pct": pj.get("porcentaje_componente") or Decimal("0"),
-            "pct_logrado": pj.get("porcentaje_logro") or Decimal("0"),
+            "valor_pct": pc_pj,
+            "pct_logrado": _pct_logrado_sobre_nota_final(pl_pj, pc_pj),
             "aporte": pj.get("aporte") or Decimal("0"),
         }
         asis = fe.get("asistencia", {}) or {}
+        aporte_asis = asis.get("aporte") or Decimal("0")
         asistencia = {
             "valor_pct": asis.get("valor_pct") or Decimal("0"),
-            "pct_logrado": asis.get("pct_logrado") or Decimal("0"),
-            "aporte": asis.get("aporte") or Decimal("0"),
+            # En asistencia el % útil para nota final es el aporte (regla MEP + peso), no % asistencia crudo.
+            "pct_logrado": aporte_asis,
+            "aporte": aporte_asis,
         }
         rows.append({
             "id": est.identificacion,
@@ -4519,10 +4540,11 @@ def resumen_general_export_xlsx(request, asignacion_id):
     wb = openpyxl.Workbook()
     ws = wb.active
     ws.title = "Resumen General"
-    headers = ["id", "Nombre", "Trabajo cotidiano", "Tareas", "Pruebas"]
+    # Orden fijo para carga en sistema externo: Cotidiano, Tareas, [Proyecto], Pruebas, Asistencia
+    headers = ["id", "Nombre", "Trabajo cotidiano", "Tareas"]
     if has_proyecto:
         headers.append("Proyecto")
-    headers.append("Asistencia")
+    headers.extend(["Pruebas", "Asistencia"])
     ws.append(headers)
     for r in filas_general:
         row = [
@@ -4530,11 +4552,13 @@ def resumen_general_export_xlsx(request, asignacion_id):
             r["nombre"],
             float(_to_2_dec(r["cotidiano"]["aporte"])),
             float(_to_2_dec(r["tareas"]["aporte"])),
-            float(_to_2_dec(r["pruebas"]["aporte"])),
         ]
         if has_proyecto:
             row.append(float(_to_2_dec(r["proyecto"]["aporte"])))
-        row.append(float(_to_2_dec(r["asistencia"]["aporte"])))
+        row.extend([
+            float(_to_2_dec(r["pruebas"]["aporte"])),
+            float(_to_2_dec(r["asistencia"]["aporte"])),
+        ])
         ws.append(row)
 
     resp = HttpResponse(content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
@@ -4566,10 +4590,10 @@ def resumen_general_export_csv(request, asignacion_id):
     resp = HttpResponse(content_type="text/csv; charset=utf-8")
     resp["Content-Disposition"] = f'attachment; filename="resumen_general_{asignacion_id}_{periodo_id}.csv"'
     writer = csv.writer(resp)
-    headers = ["id", "Nombre", "Trabajo cotidiano", "Tareas", "Pruebas"]
+    headers = ["id", "Nombre", "Trabajo cotidiano", "Tareas"]
     if has_proyecto:
         headers.append("Proyecto")
-    headers.append("Asistencia")
+    headers.extend(["Pruebas", "Asistencia"])
     writer.writerow(headers)
     for r in filas_general:
         row = [
@@ -4577,11 +4601,13 @@ def resumen_general_export_csv(request, asignacion_id):
             r["nombre"],
             f"{_to_2_dec(r['cotidiano']['aporte']):.2f}",
             f"{_to_2_dec(r['tareas']['aporte']):.2f}",
-            f"{_to_2_dec(r['pruebas']['aporte']):.2f}",
         ]
         if has_proyecto:
             row.append(f"{_to_2_dec(r['proyecto']['aporte']):.2f}")
-        row.append(f"{_to_2_dec(r['asistencia']['aporte']):.2f}")
+        row.extend([
+            f"{_to_2_dec(r['pruebas']['aporte']):.2f}",
+            f"{_to_2_dec(r['asistencia']['aporte']):.2f}",
+        ])
         writer.writerow(row)
     return resp
 
