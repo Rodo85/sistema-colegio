@@ -21,6 +21,10 @@
   .linea{display:block;border-bottom:1px solid #111827;height:28px;}
   .label{font-size:.85rem;color:#374151;margin-top:4px;}
   .print-btn{display:inline-block;padding:8px 14px;border-radius:8px;background:#145591;color:#fff;text-decoration:none;margin:8px 8px 14px 0;}
+  .fusion-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:.88rem;}
+  .fusion-box .fusion-title{font-weight:700;margin:0 0 8px;color:#0f172a;}
+  .subgrupo-titulo{font-size:.95rem;font-weight:700;margin:12px 0 8px;color:#1e3a5f;border-bottom:1px solid #e5e7eb;padding-bottom:4px;}
+  .bloque-tabla{margin-bottom:16px;}
   .doc-header{display:flex;justify-content:space-between;align-items:center;border:1px solid #d1d5db;border-radius:10px;padding:12px 14px;background:#fff;margin-bottom:12px;}
   .doc-header .logo{max-height:110px;max-width:420px;object-fit:contain;}
   .doc-header .logo-right{max-height:90px;max-width:150px;object-fit:contain;}
@@ -31,6 +35,7 @@
   .adec-indicator.no-sig{background:#eab308;}
   @media print{
     .print-btn{display:none !important;}
+    .fusion-box{display:none !important;}
     body{background:#fff !important;}
     .card{border:1px solid #94a3b8;box-shadow:none;}
     .page-break{page-break-before:always;}
@@ -56,6 +61,24 @@
   <a href="javascript:printScope('all');" class="print-btn">Imprimir lista completa</a>
   <a href="javascript:printScope('regulares');" class="print-btn">Imprimir regulares</a>
   <a href="javascript:printScope('adecuacion');" class="print-btn" title="Solo estudiantes marcados con adecuación en Configurar estudiantes">Imprimir recinto aparte</a>
+
+  {% if otras_asignaciones_fusion %}
+  <div class="fusion-box no-print">
+    <p class="fusion-title">Unir grupos en esta lista (misma materia y docente)</p>
+    <p style="margin:0 0 10px;color:#64748b;font-size:.85rem;">Orden de impresión: 9-1 A, 9-1 B, 9-2 A… Los estudiantes se listan por subgrupo.</p>
+    <form method="get" action="{% url 'libro_docente:prueba_lista_ejecucion' actividad.id %}">
+      {% for oa in otras_asignaciones_fusion %}
+        <label style="display:inline-flex;align-items:center;gap:6px;margin-right:14px;margin-bottom:6px;cursor:pointer;">
+          <input type="checkbox" name="fusion" value="{{ oa.id }}" {% if oa.id in fusion_ids_seleccionados %}checked{% endif %}>
+          <span>{{ oa.subgrupo|default:oa.seccion }}</span>
+        </label>
+      {% endfor %}
+      <button type="submit" class="print-btn" style="margin-top:8px;">Aplicar fusión</button>
+      <a href="{% url 'libro_docente:prueba_lista_ejecucion' actividad.id %}" style="margin-left:10px;font-size:.88rem;color:#145591;">Solo este grupo</a>
+    </form>
+  </div>
+  {% endif %}
+
   <div class="doc-header">
     <div>
       {% if plantilla and plantilla.logo_mep %}
@@ -87,56 +110,94 @@
   </div>
 
   <div class="card solo-regulares section-block">
-    <p class="section-title">Regulares ({{ regulares|length }})</p>
-    <table>
-      <thead>
-        <tr>
-          <th style="width:42px;">#</th>
-          <th style="width:160px;">Identificación</th>
-          <th>Nombre completo</th>
-          <th style="width:190px;">Firma estudiante</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for e in regulares %}
-        <tr>
-          <td>{{ forloop.counter }}</td>
-          <td>{{ e.id }}</td>
-          <td>{{ e.nombre }}</td>
-          <td class="firma"></td>
-        </tr>
-        {% empty %}
-        <tr><td colspan="4" style="text-align:center;color:#6b7280;">Sin estudiantes regulares.</td></tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    <p class="section-title">Regulares ({{ total_regulares }})</p>
+    {% if regulares_blocks %}
+      {% for bloque in regulares_blocks %}
+        <div class="bloque-tabla">
+        {% if tiene_fusion %}<p class="subgrupo-titulo">{{ bloque.label }}</p>{% endif %}
+        <table>
+          <thead>
+            <tr>
+              <th style="width:42px;">#</th>
+              <th style="width:160px;">Identificación</th>
+              <th>Nombre completo</th>
+              <th style="width:190px;">Firma estudiante</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for e in bloque.filas %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ e.id }}</td>
+              <td>{{ e.nombre }}</td>
+              <td class="firma"></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        </div>
+      {% endfor %}
+    {% else %}
+      <table>
+        <thead>
+          <tr>
+            <th style="width:42px;">#</th>
+            <th style="width:160px;">Identificación</th>
+            <th>Nombre completo</th>
+            <th style="width:190px;">Firma estudiante</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="4" style="text-align:center;color:#6b7280;">Sin estudiantes regulares.</td></tr>
+        </tbody>
+      </table>
+    {% endif %}
   </div>
 
   <div class="card page-break solo-adecuacion section-block">
-    <p class="section-title">Recinto aparte ({{ adecuacion|length }})</p>
+    <p class="section-title">Recinto aparte ({{ total_adecuacion }})</p>
     <p class="meta" style="margin:0 0 8px;color:#6b7280;">Marcados en <strong>Asistencia → Configurar estudiantes</strong> (adecuación significativa o no significativa).</p>
-    <table>
-      <thead>
-        <tr>
-          <th style="width:42px;">#</th>
-          <th style="width:160px;">Identificación</th>
-          <th>Nombre completo</th>
-          <th style="width:190px;">Firma estudiante</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for e in adecuacion %}
-        <tr>
-          <td>{{ forloop.counter }}</td>
-          <td>{{ e.id }}</td>
-          <td>{{ e.nombre }}{% if e.adecuacion %}<span class="adec-indicator sig" title="Adecuación significativa"></span>{% elif e.adecuacion_no_sig %}<span class="adec-indicator no-sig" title="Adecuación no significativa"></span>{% endif %}</td>
-          <td class="firma"></td>
-        </tr>
-        {% empty %}
-        <tr><td colspan="4" style="text-align:center;color:#6b7280;">Ningún estudiante con adecuación en este grupo. Use <strong>Configurar estudiantes</strong> para marcarlos; el botón de impresión sigue disponible para cuando los agregue.</td></tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    {% if adecuacion_blocks %}
+      {% for bloque in adecuacion_blocks %}
+        <div class="bloque-tabla">
+        {% if tiene_fusion %}<p class="subgrupo-titulo">{{ bloque.label }}</p>{% endif %}
+        <table>
+          <thead>
+            <tr>
+              <th style="width:42px;">#</th>
+              <th style="width:160px;">Identificación</th>
+              <th>Nombre completo</th>
+              <th style="width:190px;">Firma estudiante</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for e in bloque.filas %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ e.id }}</td>
+              <td>{{ e.nombre }}{% if e.adecuacion %}<span class="adec-indicator sig" title="Adecuación significativa"></span>{% elif e.adecuacion_no_sig %}<span class="adec-indicator no-sig" title="Adecuación no significativa"></span>{% endif %}</td>
+              <td class="firma"></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        </div>
+      {% endfor %}
+    {% else %}
+      <table>
+        <thead>
+          <tr>
+            <th style="width:42px;">#</th>
+            <th style="width:160px;">Identificación</th>
+            <th>Nombre completo</th>
+            <th style="width:190px;">Firma estudiante</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="4" style="text-align:center;color:#6b7280;">Ningún estudiante con adecuación en estos grupos. Use <strong>Configurar estudiantes</strong> para marcarlos.</td></tr>
+        </tbody>
+      </table>
+    {% endif %}
   </div>
 
   <div class="card section-block">

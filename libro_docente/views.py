@@ -2279,6 +2279,100 @@ def _asignacion_misma_base_lista_fusion(base, otra):
     )
 
 
+def _orden_asignacion_grupo(a):
+    """
+    Orden estable para imprimir: 9-1 A, 9-1 B, 9-2 A…
+    (nivel, número de sección, letra de subgrupo).
+    """
+    try:
+        if a.subgrupo_id and getattr(a, "subgrupo", None):
+            sec = a.subgrupo.seccion
+            nv = sec.nivel.numero if sec.nivel_id else 0
+            sn = sec.numero
+            letra = (a.subgrupo.letra or "").strip().upper()
+            return (nv, sn, letra, a.pk)
+        if a.seccion_id and getattr(a, "seccion", None):
+            sec = a.seccion
+            nv = sec.nivel.numero if sec.nivel_id else 0
+            sn = sec.numero
+            return (nv, sn, "\uffff", a.pk)
+    except Exception:
+        pass
+    return (9999, 9999, "\uffff", a.pk)
+
+
+def _parse_ids_fusion_get(request, base_asignacion_id):
+    """Lee ?fusion=1&fusion=2 o ?fusion=1,2 y devuelve ids distintos de la asignación base."""
+    fusion_ids = []
+    fusion_parts = request.GET.getlist("fusion")
+    if fusion_parts:
+        for part in fusion_parts:
+            part = str(part).strip()
+            if part.isdigit():
+                i = int(part)
+                if i != base_asignacion_id:
+                    fusion_ids.append(i)
+    else:
+        raw_f = (request.GET.get("fusion") or "").strip()
+        if raw_f:
+            for part in raw_f.split(","):
+                part = part.strip()
+                if part.isdigit():
+                    i = int(part)
+                    if i != base_asignacion_id:
+                        fusion_ids.append(i)
+    return fusion_ids
+
+
+def _label_grupo_asignacion(a):
+    return str(a.subgrupo) if a.subgrupo_id else str(a.seccion)
+
+
+def _bloques_lista_prueba_por_asignaciones(todas_asignaciones):
+    """
+    Regulares y recinto aparte por subgrupo, ordenados; sin duplicar estudiante_id.
+    Cada bloque: {"label": "9-1 A", "filas": [...]}.
+    """
+    regulares_blocks = []
+    adecuacion_blocks = []
+    seen = set()
+    for asig in todas_asignaciones:
+        matriculas = list(_get_estudiantes(asig))
+        adec_sig = _get_ids_adecuacion(asig)
+        adec_no_sig = _get_ids_adecuacion_no_significativa(asig)
+        adec_reporte = adec_sig.union(adec_no_sig)
+        label = _label_grupo_asignacion(asig)
+        reg = []
+        ade = []
+        for m in matriculas:
+            est = m.estudiante
+            if est.id in seen:
+                continue
+            seen.add(est.id)
+            row = {
+                "id": est.identificacion,
+                "nombre": str(est),
+                "tipo": (
+                    "Adecuación significativa"
+                    if est.id in adec_sig
+                    else "Adecuación no significativa"
+                    if est.id in adec_no_sig
+                    else ""
+                ),
+                "adecuacion": est.id in adec_sig,
+                "adecuacion_no_sig": est.id in adec_no_sig,
+            }
+            if est.id in adec_reporte:
+                ade.append(row)
+            else:
+                reg.append(row)
+        if reg:
+            regulares_blocks.append({"label": label, "filas": reg})
+        if ade:
+            adecuacion_blocks.append({"label": label, "filas": ade})
+    return regulares_blocks, adecuacion_blocks
+
+
 def _otras_asignaciones_fusionables_lista_clase(request, asignacion):
     qs = (
         DocenteAsignacion.objects.filter(
@@ -2316,24 +2410,16 @@ def lista_clase_imprimir_view(request, asignacion_id):
         messages.error(request, "No tienes acceso a esta asignación.")
         return redirect("libro_docente:home")
 
-    fusion_ids = []
-    fusion_parts = request.GET.getlist("fusion")
-    if fusion_parts:
-        for part in fusion_parts:
-            part = str(part).strip()
-            if part.isdigit():
-                i = int(part)
-                if i != asignacion.id:
-                    fusion_ids.append(i)
-    else:
-        raw_f = (request.GET.get("fusion") or "").strip()
-        if raw_f:
-            for part in raw_f.split(","):
-                part = part.strip()
-                if part.isdigit():
-                    i = int(part)
-                    if i != asignacion.id:
-                        fusion_ids.append(i)
+    fusion_ids = _parse_ids_fusion_get(request, asignacion.id)
+    fusion_ok = []
+    for fid in fusion_ids:
+        otra = _obtener_asignacion_con_permiso(request, fid)
+        if otra is None or not _asignacion_misma_base_lista_fusion(asignacion, otra):
+            continue
+        fusion_ok.append(otra)
+
+    todas = [asignacion] + fusion_ok
+    todas.sort(key=_orden_asignacion_grupo)
 
     estudiantes_por_id = {}
     orden_ids = []
@@ -2351,23 +2437,11 @@ def lista_clase_imprimir_view(request, asignacion_id):
             }
             orden_ids.append(est.id)
 
-    _agregar_matriculas(list(_get_estudiantes(asignacion)))
-    fusion_ok = []
-    for fid in fusion_ids:
-        otra = _obtener_asignacion_con_permiso(request, fid)
-        if otra is None or not _asignacion_misma_base_lista_fusion(asignacion, otra):
-            continue
-        fusion_ok.append(otra)
-        _agregar_matriculas(list(_get_estudiantes(otra)))
+    for asig in todas:
+        _agregar_matriculas(list(_get_estudiantes(asig)))
 
     estudiantes = [estudiantes_por_id[eid] for eid in orden_ids]
-    grupo_label = str(asignacion.subgrupo) if asignacion.subgrupo_id else str(asignacion.seccion)
-    if fusion_ok:
-        extras = [
-            str(a.subgrupo) if a.subgrupo_id else str(a.seccion)
-            for a in fusion_ok
-        ]
-        grupo_label = f"{grupo_label} + " + " + ".join(extras)
+    grupo_label = " + ".join(_label_grupo_asignacion(a) for a in todas)
 
     institucion = asignacion.subarea_curso.institucion
     plantilla = PlantillaImpresionMatricula.objects.filter(institucion=institucion).first()
@@ -2614,8 +2688,8 @@ def estudiantes_config_view(request, asignacion_id):
 def prueba_lista_ejecucion_view(request, actividad_id):
     """
     Lista imprimible para ejecución de pruebas:
-    - Regulares
-    - Adecuación (significativa y no significativa)
+    - Regulares y recinto aparte, por subgrupo ordenado (9-1 A, 9-1 B…).
+    - GET fusion=id: une otros grupos de la misma materia/docente (como lista de clase).
     """
     actividad = get_object_or_404(
         ActividadEvaluacion.objects.select_related(
@@ -2636,45 +2710,40 @@ def prueba_lista_ejecucion_view(request, actividad_id):
         messages.error(request, "No tienes acceso a esta actividad.")
         return redirect("libro_docente:home")
 
-    matriculas = list(_get_estudiantes(asignacion))
-    adec_sig = _get_ids_adecuacion(asignacion)
-    adec_no_sig = _get_ids_adecuacion_no_significativa(asignacion)
-    adec_reporte = adec_sig.union(adec_no_sig)
+    fusion_ids = _parse_ids_fusion_get(request, asignacion.id)
+    fusion_ok = []
+    for fid in fusion_ids:
+        otra = _obtener_asignacion_con_permiso(request, fid)
+        if otra is None or not _asignacion_misma_base_lista_fusion(asignacion, otra):
+            continue
+        fusion_ok.append(otra)
 
-    regulares = []
-    adecuacion = []
-    for m in matriculas:
-        est = m.estudiante
-        row = {
-            "id": est.identificacion,
-            "nombre": str(est),
-            "tipo": (
-                "Adecuación significativa"
-                if est.id in adec_sig
-                else "Adecuación no significativa"
-                if est.id in adec_no_sig
-                else ""
-            ),
-            "adecuacion": est.id in adec_sig,
-            "adecuacion_no_sig": est.id in adec_no_sig,
-        }
-        if est.id in adec_reporte:
-            adecuacion.append(row)
-        else:
-            regulares.append(row)
+    todas = [asignacion] + fusion_ok
+    todas.sort(key=_orden_asignacion_grupo)
+
+    regulares_blocks, adecuacion_blocks = _bloques_lista_prueba_por_asignaciones(todas)
+    total_reg = sum(len(b["filas"]) for b in regulares_blocks)
+    total_ade = sum(len(b["filas"]) for b in adecuacion_blocks)
 
     plantilla = PlantillaImpresionMatricula.objects.filter(
         institucion=asignacion.subarea_curso.institucion
     ).first()
-    grupo_label = str(asignacion.subgrupo) if asignacion.subgrupo_id else str(asignacion.seccion)
+    grupo_label = " + ".join(_label_grupo_asignacion(a) for a in todas)
+    otras_fusion = _otras_asignaciones_fusionables_lista_clase(request, asignacion)
+
     return render(request, "libro_docente/prueba_lista_ejecucion.html", {
         "actividad": actividad,
         "asignacion": asignacion,
         "grupo_label": grupo_label,
-        "regulares": regulares,
-        "adecuacion": adecuacion,
+        "regulares_blocks": regulares_blocks,
+        "adecuacion_blocks": adecuacion_blocks,
         "plantilla": plantilla,
-        "total_estudiantes": len(regulares) + len(adecuacion),
+        "total_estudiantes": total_reg + total_ade,
+        "total_regulares": total_reg,
+        "total_adecuacion": total_ade,
+        "otras_asignaciones_fusion": otras_fusion,
+        "fusion_ids_seleccionados": [a.id for a in fusion_ok],
+        "tiene_fusion": len(todas) > 1,
     })
 
 
@@ -4272,8 +4341,6 @@ def actividad_calificacion_simple_pdf_view(request, actividad_id):
     )
 
 
-@login_required
-@permission_required("libro_docente.access_libro_docente", raise_exception=True)
 def _enriquecer_filas_resumen_con_asistencia(asignacion, periodo_id, matriculas, filas):
     """
     Añade a cada fila asistencia (valor %, % logrado, aporte) y nota_final.
@@ -4315,6 +4382,8 @@ def _enriquecer_filas_resumen_con_asistencia(asignacion, periodo_id, matriculas,
     return filas
 
 
+@login_required
+@permission_required("libro_docente.access_libro_docente", raise_exception=True)
 def resumen_evaluacion_view(request, asignacion_id):
     """
     Resumen acumulado por componente (TAREAS / COTIDIANOS) por estudiante.
